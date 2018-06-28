@@ -28,6 +28,8 @@ include_directories(external/glew/include)
 set(ENGINE_SRC
         external/glew/src/glew.c
 
+        src/application/window.cpp
+
         src/gfx/api/context.cpp
 
         src/math/vec2.cpp

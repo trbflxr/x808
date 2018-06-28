@@ -13,7 +13,7 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API Context : public utils::Singleton<Context> {
 	public:
-		static void create(const Config &config, void *deviceContext);
+		static void create(void *deviceContext, bool vSync = false);
 
 		void swapBuffers();
 

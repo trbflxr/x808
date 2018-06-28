@@ -18,7 +18,7 @@ xe::gfx::api::Context *xe::gfx::api::Context::context = nullptr;
 
 static HDC hDc;
 
-void xe::gfx::api::Context::create(const xe::Config &config, void *deviceContext) {
+void xe::gfx::api::Context::create(void *deviceContext, bool vSync) {
 	hDc = GetDC((HWND) deviceContext);
 	HGLRC hrc = wglCreateContext(hDc);
 
@@ -35,7 +35,7 @@ void xe::gfx::api::Context::create(const xe::Config &config, void *deviceContext
 	}
 
 	//setting up vsync
-	wglSwapIntervalEXT(config.vSync);
+	wglSwapIntervalEXT(vSync);
 }
 
 void xe::gfx::api::Context::swapBuffers() {
