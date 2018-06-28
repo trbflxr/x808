@@ -28,19 +28,22 @@ include_directories(external/glew/include)
 set(ENGINE_SRC
         external/glew/src/glew.c
 
+        src/gfx/api/context.cpp
+
         src/math/vec2.cpp
         src/math/vec3.cpp
         src/math/vec4.cpp
         src/math/mat4.cpp
         src/math/quat.cpp
         src/math/rect.cpp
-        src/math/aabb.cpp)
+        src/math/aabb.cpp
 
-#win32 platform
-set(ENGINE_SRC_WIN32
-        src/platform/win32/win32log.cpp)
+        src/utils/log.cpp
 
-add_library(xe SHARED ${ENGINE_SRC} ${ENGINE_SRC_WIN32})
+        src/config.cpp)
+
+
+add_library(xe SHARED ${ENGINE_SRC})
 
 target_link_libraries(xe
         glew

@@ -95,7 +95,7 @@ namespace xe { namespace internal {
 
 	template<>
 	inline const char *to_string<vec2u>(const vec2u &t) {
-		sprintf(buffer, "vec2(%d, %d)", t.x, t.y);
+		sprintf(buffer, "vec2u(%d, %d)", t.x, t.y);
 		return buffer;
 	}
 

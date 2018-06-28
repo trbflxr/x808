@@ -3,8 +3,7 @@
 //
 
 #include <windows.h>
-
-#include "utils/log.hpp"
+#include "log.hpp"
 
 void xe::internal::platformLogMessage(uint level, const char *message) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
