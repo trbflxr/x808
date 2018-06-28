@@ -26,7 +26,15 @@ include_directories(external/glew/include)
 
 #engine
 set(ENGINE_SRC
-        external/glew/src/glew.c)
+        external/glew/src/glew.c
+
+        src/math/vec2.cpp
+        src/math/vec3.cpp
+        src/math/vec4.cpp
+        src/math/mat4.cpp
+        src/math/quat.cpp
+
+        )
 
 
 add_library(xe SHARED ${ENGINE_SRC})
