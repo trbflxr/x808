@@ -9,7 +9,7 @@
 #include <cstring>
 #include <string>
 #include "common.hpp"
-#include "xeint.hpp"
+#include "math/math.hpp"
 
 #define XE_LOG_LEVEL_FATAL 0
 #define XE_LOG_LEVEL_ERROR 1
@@ -26,7 +26,7 @@ namespace std {
 //todo: support more types
 namespace xe { namespace internal {
 
-	static char to_string_buffer[1024 * 10];
+	static char buffer[1024 * 10];
 
 	XE_API void platformLogMessage(uint level, const char *message);
 
@@ -46,33 +46,57 @@ namespace xe { namespace internal {
 	inline const char *to_string<std::string>(const std::string &t) { return t.c_str(); }
 
 	template<>
-	inline const char *to_string<std::string_view >(const std::string_view &t) { return t.data(); }
+	inline const char *to_string<std::string_view>(const std::string_view &t) { return t.data(); }
 
 	template<>
 	inline const char *to_string<bool>(const bool &t) { return t ? "true" : "false"; }
 
 	template<>
 	inline const char *to_string<uint8>(const uint8 &t) {
-		sprintf(to_string_buffer, "%d",t);
-		return to_string_buffer;
+		sprintf(buffer, "%d", t);
+		return buffer;
 	}
 
 	template<>
 	inline const char *to_string<int8>(const int8 &t) {
-		sprintf(to_string_buffer, "%d",t);
-		return to_string_buffer;
+		sprintf(buffer, "%d", t);
+		return buffer;
 	}
 
 	template<>
 	inline const char *to_string<uint16>(const uint16 &t) {
-		sprintf(to_string_buffer, "%d",t);
-		return to_string_buffer;
+		sprintf(buffer, "%d", t);
+		return buffer;
 	}
 
 	template<>
 	inline const char *to_string<int16>(const int16 &t) {
-		sprintf(to_string_buffer, "%d",t);
-		return to_string_buffer;
+		sprintf(buffer, "%d", t);
+		return buffer;
+	}
+
+	template<>
+	inline const char *to_string<vec2>(const vec2 &t) {
+		sprintf(buffer, "vec2(%.3f, %.3f)", t.x, t.y);
+		return buffer;
+	}
+
+	template<>
+	inline const char *to_string<vec3>(const vec3 &t) {
+		sprintf(buffer, "vec3(%.3f, %.3f, %.3f)", t.x, t.y, t.z);
+		return buffer;
+	}
+
+	template<>
+	inline const char *to_string<vec4>(const vec4 &t) {
+		sprintf(buffer, "vec4(%.3f, %.3f, %.3f, %.3f)", t.x, t.y, t.z, t.w);
+		return buffer;
+	}
+
+	template<>
+	inline const char *to_string<vec2u>(const vec2u &t) {
+		sprintf(buffer, "vec2(%d, %d)", t.x, t.y);
+		return buffer;
 	}
 
 
@@ -155,13 +179,13 @@ namespace xe { namespace internal {
 
 #ifdef XE_DEBUG
 #define XE_ASSERT(x, ...) \
-		if (!(x)) {\
-			XE_FATAL("ASSERTION FAILED"); \
-			XE_FATAL(__FILE__, ": ", __LINE__); \
-			XE_FATAL("Condition: ", #x); \
-			XE_FATAL(__VA_ARGS__); \
-			__debugbreak(); \
-		}
+        if (!(x)) {\
+            XE_FATAL("ASSERTION FAILED"); \
+            XE_FATAL(__FILE__, ": ", __LINE__); \
+            XE_FATAL("Condition: ", #x); \
+            XE_FATAL(__VA_ARGS__); \
+            __debugbreak(); \
+        }
 #else
 #define XE_ASSERT(x, ...)
 #endif
