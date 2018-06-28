@@ -20,7 +20,7 @@ namespace xe {
 			float z;
 			float w;
 
-			explicit quat();
+			quat();
 			quat(const quat &q);
 			explicit quat(float x, float y, float z, float w);
 			explicit quat(const vec3 &xyz, float w);

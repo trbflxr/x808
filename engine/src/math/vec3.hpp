@@ -65,6 +65,8 @@ namespace xe {
 		XE_API bool operator>(const vec3 &left, const vec3 &right);
 		XE_API bool operator>=(const vec3 &left, const vec3 &right);
 
+		XE_API vec3 operator*(const vec3 &left, const mat4 &right);
+
 #define XAXIS vec3(1.0f, 0.0f, 0.0f)
 #define YAXIS vec3(0.0f, 1.0f, 0.0f)
 #define ZAXIS vec3(0.0f, 0.0f, 1.0f)

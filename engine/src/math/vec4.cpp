@@ -134,3 +134,10 @@ bool xe::math::operator>(const vec4 &left, const vec4 &right) {
 bool xe::math::operator>=(const vec4 &left, const vec4 &right) {
 	return (left.x >= right.x) && (left.y >= right.y) && (left.z >= right.z) && (left.w >= right.w);
 }
+
+xe::math::vec4 xe::math::operator*(const vec4 &left, const mat4 &right) {
+	return {right.rows[0].x * left.x + right.rows[0].y * left.y + right.rows[0].z * left.z + right.rows[0].w * left.w,
+	        right.rows[1].x * left.x + right.rows[1].y * left.y + right.rows[1].z * left.z + right.rows[1].w * left.w,
+	        right.rows[2].x * left.x + right.rows[2].y * left.y + right.rows[2].z * left.z + right.rows[2].w * left.w,
+	        right.rows[3].x * left.x + right.rows[3].y * left.y + right.rows[3].z * left.z + right.rows[3].w * left.w};
+}

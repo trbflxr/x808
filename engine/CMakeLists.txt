@@ -33,8 +33,8 @@ set(ENGINE_SRC
         src/math/vec4.cpp
         src/math/mat4.cpp
         src/math/quat.cpp
-
-        )
+        src/math/rect.cpp
+        src/math/aabb.cpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})

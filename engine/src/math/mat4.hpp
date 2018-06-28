@@ -32,7 +32,7 @@ namespace xe {
 			void setColumn(int index, const vec4 &column);
 
 			inline vec3 getPosition() const { return vec3(getColumn(3)); }
-			inline void setPosition(const vec3 &position) { setColumn(3, {position, 1.0f}); }
+			inline void setPosition(const vec3 &position) { setColumn(3, vec4(position, 1.0f)); }
 
 			mat4 &invert();
 		};

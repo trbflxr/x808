@@ -57,6 +57,8 @@ namespace xe {
 		XE_API bool operator>(const vec4 &left, const vec4 &right);
 		XE_API bool operator>=(const vec4 &left, const vec4 &right);
 
+		XE_API vec4 operator*(const vec4 &left, const mat4 &right);
+
 	}
 	typedef math::vec4 vec4;
 }
