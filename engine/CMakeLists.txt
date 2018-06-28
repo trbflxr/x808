@@ -36,8 +36,11 @@ set(ENGINE_SRC
         src/math/rect.cpp
         src/math/aabb.cpp)
 
+#win32 platform
+set(ENGINE_SRC_WIN32
+        src/platform/win32/win32log.cpp)
 
-add_library(xe SHARED ${ENGINE_SRC})
+add_library(xe SHARED ${ENGINE_SRC} ${ENGINE_SRC_WIN32})
 
 target_link_libraries(xe
         glew
