@@ -72,15 +72,17 @@ namespace xe {
 
 	class MouseWheelEvent : public Event {
 	public:
-		explicit MouseWheelEvent(int32 x, int32 y) :
-				Event(getStaticType()), x(x), y(y) { }
+		explicit MouseWheelEvent(int32 x, int32 y, int32 delta) :
+				Event(getStaticType()), x(x), y(y), delta(delta) { }
 
+		inline const int32 getDelta() const { return delta; }
 		inline const int32 getX() const { return x; }
 		inline const int32 getY() const { return y; }
 
 		inline static Type getStaticType() { return Type::SCROLL; }
 
 	protected:
+		int32 delta;
 		int32 x;
 		int32 y;
 	};

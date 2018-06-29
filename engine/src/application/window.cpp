@@ -88,14 +88,16 @@ bool xe::Window::platformInit() {
 	}
 
 	RECT size = {0, 0, (LONG) props.width, (LONG) props.height};
-	AdjustWindowRectEx(&size, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, false, WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
+	AdjustWindowRectEx(&size, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, false,
+	                   WS_EX_APPWINDOW | WS_EX_WINDOWEDGE);
 
 	hWnd = CreateWindowExA(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,
 	                       winClass.lpszClassName, props.title.c_str(),
 	                       WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 	                       GetSystemMetrics(SM_CXSCREEN) / 2 - props.width / 2,
 	                       GetSystemMetrics(SM_CYSCREEN) / 2 - props.height / 2,
-	                       size.right + (-size.left), size.bottom + (-size.top), nullptr, nullptr, hInstance, nullptr);
+	                       size.right + (-size.left), size.bottom + (-size.top), nullptr, nullptr, hInstance,
+	                       nullptr);
 
 	if (!hWnd) {
 		XE_FATAL("Could not create window!");
@@ -219,25 +221,38 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 			break;
 		case WM_SETFOCUS: xe::focusCallback(window, true);
 			break;
+
 		case WM_KILLFOCUS: xe::focusCallback(window, false);
 			break;
+
 		case WM_CLOSE:
 		case WM_DESTROY: PostQuitMessage(0);
 			break;
+
 		case WM_KEYDOWN:
 		case WM_KEYUP:
 		case WM_SYSKEYDOWN:
-		case WM_SYSKEYUP:xe::keyCallback(inputManager, static_cast<int32>(lparam), static_cast<int32>(wparam), msg);
+		case WM_SYSKEYUP:
+			xe::keyCallback(inputManager, static_cast<int32>(lparam), static_cast<int32>(wparam), msg);
 			break;
+
+		case WM_MOUSEWHEEL:
+			xe::mouseWheelCallback(inputManager, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam),
+			                       GET_WHEEL_DELTA_WPARAM(wparam));
+			break;
+
 		case WM_LBUTTONDOWN:
 		case WM_LBUTTONUP:
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONUP:
 		case WM_MBUTTONDOWN:
-		case WM_MBUTTONUP: xe::mouseButtonCallback(inputManager, msg, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+		case WM_MBUTTONUP:
+			xe::mouseButtonCallback(inputManager, msg, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 			break;
+
 		case WM_SIZE: resizeCallback(window, LOWORD(lparam), HIWORD(lparam));
 			break;
+
 		default: result = DefWindowProc(hwnd, msg, wparam, lparam);
 	}
 	return result;

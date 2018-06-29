@@ -16,29 +16,36 @@ struct Dummy {
 		dispatcher.dispatch<xe::KeyPressEvent>(METHOD(&Dummy::onKeyPressedEvent));
 		dispatcher.dispatch<xe::MousePressEvent>(METHOD(&Dummy::onMousePressedEvent));
 		dispatcher.dispatch<xe::MouseMoveEvent>(METHOD(&Dummy::onMouseMovedEvent));
+		dispatcher.dispatch<xe::MouseWheelEvent>(METHOD(&Dummy::onMouseWheelEvent));
 	}
 
 	bool onKeyPressedEvent(xe::KeyPressEvent &event) {
 		if (event.getRepeat()) return false;
-
 
 		if (event.getKey() == XE_KEY_A) {
 			printf("A pressed\n");
 			printf("mods %i\n", event.getModifiers());
 			return true;
 		}
-
 		return false;
 	}
 
 	bool onMousePressedEvent(xe::MousePressEvent &event) {
+		if (event.getButton() == XE_MOUSE_MIDDLE) {
+			printf("mmb pressed\n");
+			return true;
+		}
 		return false;
 	}
 
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event) {
 //		xe::vec2 pos = event.getPosition();
 //		printf("x: %.2f, y: %.2f\n", pos.x, pos.y);
+		return true;
+	}
 
+	bool onMouseWheelEvent(xe::MouseWheelEvent &event) {
+		printf("%i\n", event.getDelta());
 		return true;
 	}
 };

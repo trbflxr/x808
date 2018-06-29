@@ -49,6 +49,7 @@ namespace xe {
 	private:
 		friend void keyCallback(InputManager *inputManager, int32 flags, int32 key, uint message);
 		friend void mouseButtonCallback(InputManager *inputManager, int32 button, int32 x, int32 y);
+		friend void mouseWheelCallback(InputManager *inputManager, int32 x, int32 y, int32 delta);
 
 	private:
 		bool keyState[MAX_KEYS];
@@ -66,6 +67,7 @@ namespace xe {
 
 	void keyCallback(InputManager *inputManager, int32 flags, int32 key, uint message);
 	void mouseButtonCallback(InputManager *inputManager, int32 button, int32 x, int32 y);
+	void mouseWheelCallback(InputManager *inputManager, int32 x, int32 y, int32 delta);
 
 
 	class XE_API Input {
@@ -74,8 +76,8 @@ namespace xe {
 
 	public:
 		inline static bool isKeyPressed(uint keyCode) { return inputManager->isKeyPressed(keyCode); }
-		inline static bool isMouseButtonPressed(uint button) { return inputManager->isMouseButtonPressed(button); }
-		inline static bool isMouseButtonClicked(uint button) { return inputManager->isMouseButtonClicked(button); }
+		inline static bool isMouseButtonPressed(uint btn) { return inputManager->isMouseButtonPressed(btn); }
+		inline static bool isMouseButtonClicked(uint btn) { return inputManager->isMouseButtonClicked(btn); }
 		inline static const vec2 &getMousePosition() { return inputManager->getMousePosition(); }
 
 	private:

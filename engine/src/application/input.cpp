@@ -173,3 +173,8 @@ void xe::mouseButtonCallback(xe::InputManager *inputManager, int32 button, int32
 		inputManager->eventCallback(e);
 	}
 }
+
+void xe::mouseWheelCallback(InputManager *inputManager, int32 x, int32 y, int32 delta) {
+	auto e = MouseWheelEvent(x, y, delta);
+	inputManager->eventCallback(e);
+}
