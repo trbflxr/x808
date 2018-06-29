@@ -18,7 +18,7 @@ namespace xe {
 		bool fullScreen;
 		bool vSync;
 
-		uint tps;
+		uint ups;
 
 		static bool load(Config &config, const char *path = "xeconfig");
 	};

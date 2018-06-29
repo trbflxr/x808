@@ -11,6 +11,7 @@
 #include "mouseevent.hpp"
 #include "windowevent.hpp"
 #include "eventdispatcher.hpp"
+#include "ieventlistener.hpp"
 
 
 #endif //X808_EVENTS_HPP

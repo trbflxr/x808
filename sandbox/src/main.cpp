@@ -1,4 +1,5 @@
 #include <application/application.hpp>
+#include "test2d.hpp"
 
 using namespace xe;
 
@@ -11,6 +12,8 @@ public:
 
 	void init() override {
 		Application::init();
+
+		pushLayer(new Test2D());
 	}
 
 };

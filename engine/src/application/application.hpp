@@ -11,6 +11,7 @@
 #include "window.hpp"
 #include "utils/timer.hpp"
 #include "utils/timestep.hpp"
+#include "gfx/layers/layer.hpp"
 
 namespace xe {
 
@@ -20,6 +21,14 @@ namespace xe {
 		virtual ~Application();
 
 		virtual void init();
+
+		void pushLayer(gfx::Layer *layer);
+		gfx::Layer *popLayer();
+		gfx::Layer *popLayer(gfx::Layer *layer);
+
+		void pushOverlay(gfx::Layer *layer);
+		gfx::Layer *popOverlay();
+		gfx::Layer *popOverlay(gfx::Layer *layer);
 
 		void start();
 		void suspend();
@@ -52,16 +61,15 @@ namespace xe {
 		bool suspend_;
 
 		Timer *timer;
-
 		uint fps;
 		uint ups;
 		float frameTime;
 
 		Config config;
-
 		Window *window;
 
-		//todo: layer stack?
+		std::vector<gfx::Layer *> layerStack;
+		std::vector<gfx::Layer *> overlayStack;
 
 		static Application *instance;
 

@@ -38,6 +38,8 @@ set(ENGINE_SRC
         src/gfx/api/vertexarray.cpp
         src/gfx/renderer.cpp
 
+        src/gfx/layers/layer2d.cpp
+
         src/math/vec2.cpp
         src/math/vec3.cpp
         src/math/vec4.cpp

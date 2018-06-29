@@ -13,7 +13,8 @@ link_directories(../libs)
 
 #sandbox
 set(S2D_SRC
-        src/main.cpp)
+        src/main.cpp
+        src/test2d.cpp)
 
 add_executable(sandbox2d ${S2D_SRC})
 

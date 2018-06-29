@@ -18,8 +18,8 @@ void writeKeyValue(xe::Config &config, const char *key, const char *value) {
 		config.fullScreen = (bool) atoi(value);
 	} else if (strcmp(key, "vSync") == 0) {
 		config.vSync = (bool) atoi(value);
-	} else if (strcmp(key, "tps") == 0) {
-		config.tps = (uint) atoi(value);
+	} else if (strcmp(key, "ups") == 0) {
+		config.ups = (uint) atoi(value);
 	}
 }
 

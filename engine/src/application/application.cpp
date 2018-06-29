@@ -58,7 +58,7 @@ void xe::Application::run() {
 	float time = 0.0f;
 
 	float updateTimer = timer->elapsed();
-	float updateTick = 1000.0f / config.tps;
+	float updateTick = 1000.0f / config.ups;
 
 	uint frames = 0;
 	uint updates = 0;
@@ -101,17 +101,91 @@ void xe::Application::run() {
 }
 
 void xe::Application::tick() {
+	for (auto &&overlayLayer : overlayStack) {
+		overlayLayer->tick();
+	}
 
+	for (auto &&layer : layerStack) {
+		layer->tick();
+	}
 }
 
 void xe::Application::update(const xe::TimeStep &ts) {
+	for (auto &&overlayLayer : overlayStack) {
+		overlayLayer->update(ts);
+	}
 
+	for (auto &&layer : layerStack) {
+		layer->update(ts);
+	}
 }
 
 void xe::Application::render() {
+	for (auto &&overlayLayer : overlayStack) {
+		if (overlayLayer->isVisible()) {
+			overlayLayer->render();
+		}
+	}
 
+	for (auto &&layer : layerStack) {
+		if (layer->isVisible()) {
+			layer->render();
+		}
+	}
 }
 
 void xe::Application::onEvent(xe::Event &event) {
+	for (int i = static_cast<int>(overlayStack.size() - 1); i >= 0; i--) {
+		overlayStack[i]->onEvent(event);
+		if (event.isHandled()) return;
+	}
 
+
+	for (int i = static_cast<int>(layerStack.size() - 1); i >= 0; i--) {
+		layerStack[i]->onEvent(event);
+		if (event.isHandled()) return;
+	}
+}
+
+void xe::Application::pushLayer(xe::gfx::Layer *layer) {
+	layerStack.push_back(layer);
+	layer->init();
+}
+
+xe::gfx::Layer *xe::Application::popLayer() {
+	gfx::Layer *layer = layerStack.back();
+	layerStack.pop_back();
+	return layer;
+}
+
+xe::gfx::Layer *xe::Application::popLayer(xe::gfx::Layer *layer) {
+	for (uint i = 0; i < layerStack.size(); i++) {
+		if (layerStack[i] == layer) {
+			layerStack.erase(layerStack.begin() + i);
+			break;
+		}
+	}
+	return layer;
+}
+
+void xe::Application::pushOverlay(xe::gfx::Layer *layer) {
+	overlayStack.push_back(layer);
+	layer->init();
+}
+
+xe::gfx::Layer *xe::Application::popOverlay() {
+	gfx::Layer *layer = overlayStack.back();
+	overlayStack.pop_back();
+	return layer;
+
+}
+
+xe::gfx::Layer *xe::Application::popOverlay(xe::gfx::Layer *layer) {
+	for (uint i = 0; i < overlayStack.size(); i++) {
+		if (overlayStack[i] == layer) {
+			overlayStack.erase(overlayStack.begin() + i);
+			break;
+		}
+	}
+	return layer;
 }
