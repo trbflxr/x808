@@ -33,6 +33,7 @@ set(ENGINE_SRC
         src/application/application.cpp
 
         src/gfx/api/context.cpp
+        src/gfx/renderer.cpp
 
         src/math/vec2.cpp
         src/math/vec3.cpp

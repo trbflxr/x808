@@ -10,9 +10,9 @@
 #define NOGDI
 
 #include <FreeImage.h>
-#include <msplog.h>
-#include <gfx/api/context.hpp>
 
+#include "gfx/api/context.hpp"
+#include "gfx/renderer.hpp"
 #include "window.hpp"
 #include "utils/log.hpp"
 
@@ -64,7 +64,7 @@ bool xe::Window::init() {
 		return false;
 	}
 
-	//todo: init renderer
+	gfx::Renderer::get().init();
 
 	setTitle(props.title);
 
@@ -130,7 +130,7 @@ bool xe::Window::platformInit() {
 }
 
 void xe::Window::clear() const {
-	//todo: renderer clear
+	gfx::Renderer::get().clear(gfx::RENDERER_BUFFER_COLOR | gfx::RENDERER_BUFFER_DEPTH);
 }
 
 void xe::Window::update() {
@@ -151,7 +151,7 @@ void xe::Window::platformUpdate() {
 	}
 
 	inputManager->platformUpdate();
-	//todo: renderer flush
+	gfx::Renderer::get().flush();
 }
 
 void xe::Window::setTitle(const std::string_view &title) {

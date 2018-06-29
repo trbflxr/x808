@@ -4,6 +4,8 @@
 
 #include "application.hpp"
 
+xe::Application *xe::Application::instance = nullptr;
+
 xe::Application::Application(const xe::Config &config) :
 		config(config),
 		frameTime(0.0f) {
