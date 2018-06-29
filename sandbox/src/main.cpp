@@ -2,6 +2,46 @@
 #include <utils/log.hpp>
 #include <cstdio>
 #include <application/window.hpp>
+#include <events/events.hpp>
+
+struct Dummy {
+	xe::Window window;
+
+	Dummy(xe::WindowProperties props) : window(props) {
+		window.setEventCallback(METHOD(&Dummy::eventCallback));
+	}
+
+	void eventCallback(xe::Event &event) {
+		xe::EventDispatcher dispatcher(event);
+		dispatcher.dispatch<xe::KeyPressEvent>(METHOD(&Dummy::onKeyPressedEvent));
+		dispatcher.dispatch<xe::MousePressEvent>(METHOD(&Dummy::onMousePressedEvent));
+		dispatcher.dispatch<xe::MouseMoveEvent>(METHOD(&Dummy::onMouseMovedEvent));
+	}
+
+	bool onKeyPressedEvent(xe::KeyPressEvent &event) {
+		if (event.getRepeat()) return false;
+
+
+		if (event.getKey() == XE_KEY_A) {
+			printf("A pressed\n");
+			printf("mods %i\n", event.getModifiers());
+			return true;
+		}
+
+		return false;
+	}
+
+	bool onMousePressedEvent(xe::MousePressEvent &event) {
+		return false;
+	}
+
+	bool onMouseMovedEvent(xe::MouseMoveEvent &event) {
+//		xe::vec2 pos = event.getPosition();
+//		printf("x: %.2f, y: %.2f\n", pos.x, pos.y);
+
+		return true;
+	}
+};
 
 int main() {
 	xe::WindowProperties props;
@@ -11,12 +51,10 @@ int main() {
 	props.vSync = true;
 	props.fullScreen = false;
 
-	xe::Window window(props);
+	Dummy dummy(props);
 
-	window.setTitle("aye2k");
-
-	while(!window.shouldClose()){
-		window.update();
+	while (!dummy.window.shouldClose()) {
+		dummy.window.update();
 	}
 
 	xe::vec2u v1(2, 2);

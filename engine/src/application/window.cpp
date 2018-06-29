@@ -52,7 +52,8 @@ xe::Window::Window(const xe::WindowProperties &props) :
 	FreeImage_Initialise();
 
 	//todo: init audio
-	//todo: init input
+
+	inputManager = new InputManager();
 }
 
 xe::Window::~Window() { }
@@ -147,7 +148,7 @@ void xe::Window::platformUpdate() {
 		DispatchMessage(&message);
 	}
 
-	//todo: update input
+	inputManager->platformUpdate();
 	//todo: renderer flush
 }
 
@@ -158,7 +159,7 @@ void xe::Window::setTitle(const std::string_view &title) {
 
 void xe::Window::setEventCallback(const xe::WindowEventCallback &callback) {
 	eventCallback = callback;
-	//todo: set event callback in input manager
+	inputManager->setEventCallback(callback);
 }
 
 void xe::Window::registerWindowClass(void *handle, xe::Window *window) {
@@ -171,7 +172,8 @@ xe::Window *xe::Window::getWindowClass(void *handle) {
 
 void xe::focusCallback(xe::Window *window, bool focused) {
 	if (!focused) {
-		//todo: clear input here
+		window->inputManager->clearKeys();
+		window->inputManager->clearMouseButtons();
 	}
 }
 
@@ -182,8 +184,8 @@ void xe::resizeCallback(xe::Window *window, uint width, uint height) {
 	//todo: scale font
 
 	if (window->eventCallback) {
-		//todo: create resize event
-//		window->eventCallback(e);
+		auto e = WindowResizeEvent(width, height);
+		window->eventCallback(e);
 	}
 }
 
@@ -192,6 +194,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 
 	xe::Window *window = xe::Window::getWindowClass(hwnd);
 	if (window == nullptr) return DefWindowProc(hwnd, msg, wparam, lparam);
+
+	xe::InputManager *inputManager = window->getInputManager();
 
 	switch (msg) {
 		case WM_ACTIVATE: {
@@ -223,14 +227,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		case WM_KEYDOWN:
 		case WM_KEYUP:
 		case WM_SYSKEYDOWN:
-		case WM_SYSKEYUP: //todo: key event
+		case WM_SYSKEYUP:xe::keyCallback(inputManager, static_cast<int32>(lparam), static_cast<int32>(wparam), msg);
 			break;
 		case WM_LBUTTONDOWN:
 		case WM_LBUTTONUP:
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONUP:
 		case WM_MBUTTONDOWN:
-		case WM_MBUTTONUP: //todo: mouse event
+		case WM_MBUTTONUP: xe::mouseButtonCallback(inputManager, msg, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 			break;
 		case WM_SIZE: resizeCallback(window, LOWORD(lparam), HIWORD(lparam));
 			break;

@@ -183,7 +183,7 @@ namespace xe { namespace internal {
             XE_FATAL("ASSERTION FAILED"); \
             XE_FATAL(__FILE__, ": ", __LINE__); \
             XE_FATAL("Condition: ", #x); \
-            XE_FATAL(__VA_ARGS__); \
+            XE_FATAL("Args: ", #__VA_ARGS__); \
             __debugbreak(); \
         }
 #else

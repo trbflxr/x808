@@ -9,6 +9,7 @@
 #include <map>
 #include <functional>
 #include "events/event.hpp"
+#include "input.hpp"
 
 namespace xe {
 
@@ -22,10 +23,9 @@ namespace xe {
 		bool vSync;
 	};
 
-	//todo: create input manager
 	class XE_API Window {
 	public:
-		explicit Window( const WindowProperties &props);
+		explicit Window(const WindowProperties &props);
 		~Window();
 
 		void clear() const;
@@ -37,6 +37,8 @@ namespace xe {
 
 		inline uint getWidth() const { return props.width; }
 		inline uint getHeight() const { return props.height; }
+
+		inline InputManager *getInputManager() { return inputManager; }
 
 		void setEventCallback(const WindowEventCallback &callback);
 
@@ -57,6 +59,7 @@ namespace xe {
 		bool closed;
 		WindowProperties props;
 
+		InputManager *inputManager;
 		WindowEventCallback eventCallback;
 	};
 

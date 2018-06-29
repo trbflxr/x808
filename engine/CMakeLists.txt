@@ -29,6 +29,7 @@ set(ENGINE_SRC
         external/glew/src/glew.c
 
         src/application/window.cpp
+        src/application/input.cpp
 
         src/gfx/api/context.cpp
 

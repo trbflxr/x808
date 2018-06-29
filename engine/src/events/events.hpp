@@ -7,6 +7,10 @@
 
 
 #include "event.hpp"
+#include "keyevent.hpp"
+#include "mouseevent.hpp"
+#include "windowevent.hpp"
+#include "eventdispatcher.hpp"
 
 
 #endif //X808_EVENTS_HPP
