@@ -42,6 +42,7 @@ set(ENGINE_SRC
         src/math/aabb.cpp
 
         src/utils/log.cpp
+        src/utils/timer.cpp
 
         src/config.cpp)
 
