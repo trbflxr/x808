@@ -1,0 +1,67 @@
+//
+// Created by FLXR on 6/29/2018.
+//
+
+#include "vertexbuffer.hpp"
+#include "gfx/glcommon.hpp"
+
+static uint bufferTypeToOpenGL(xe::gfx::api::BufferType type) {
+	switch (type) {
+		case xe::gfx::api::BufferType::STATIC: return GL_STATIC_DRAW;
+		case xe::gfx::api::BufferType::DYNAMIC: return GL_DYNAMIC_DRAW;
+	}
+}
+
+xe::gfx::api::VertexBuffer::VertexBuffer(xe::gfx::api::BufferType type) :
+		type(type) {
+
+	glCall(glGenBuffers(1, &handle));
+}
+
+xe::gfx::api::VertexBuffer::~VertexBuffer() {
+	glCall(glDeleteBuffers(1, &handle));
+}
+
+void xe::gfx::api::VertexBuffer::resize(uint size) {
+	VertexBuffer::size = size;
+
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
+	glCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, bufferTypeToOpenGL(type)));
+}
+
+void xe::gfx::api::VertexBuffer::setLayout(const xe::gfx::api::BufferLayout &layout) {
+	VertexBuffer::layout = layout;
+	const auto &l = layout.getLayout();
+
+	for (uint i = 0; i < l.size(); i++) {
+		const BufferElement &element = l[i];
+		glCall(glEnableVertexAttribArray(i));
+		glCall(glVertexAttribPointer(i, element.count, element.type,
+		                             static_cast<GLboolean>(element.normalized), layout.getStride(),
+		                             reinterpret_cast<const void *> (element.offset)));
+	}
+}
+
+void xe::gfx::api::VertexBuffer::setData(uint size, const void *data) {
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
+	glCall(glBufferData(GL_ARRAY_BUFFER, size, data, bufferTypeToOpenGL(type)));
+}
+
+void xe::gfx::api::VertexBuffer::releasePointer() {
+	glCall(glUnmapBuffer(GL_ARRAY_BUFFER));
+}
+
+void xe::gfx::api::VertexBuffer::bind() {
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
+	setLayout(layout);
+}
+
+void xe::gfx::api::VertexBuffer::unbind() {
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+}
+
+void *xe::gfx::api::VertexBuffer::getPointerInternal() {
+	void *result;
+	glCall(result = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+	return result;
+}

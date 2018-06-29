@@ -11,11 +11,11 @@
 #include "utils/log.hpp"
 
 namespace xe {
-	extern uint glCheckError() {
+	static uint glCheckError() {
 		return glGetError();
 	}
 
-	extern bool glLogCall(const char *function, const char *file, uint line) {
+	static bool glLogCall(const char *function, const char *file, uint line) {
 		uint error = glCheckError();
 		if (error != GL_NO_ERROR) {
 			char buffer[1024 * 10];
