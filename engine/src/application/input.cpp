@@ -36,7 +36,6 @@ void xe::InputManager::platformUpdate() {
 
 	vec2 mousePos = {(float) mouse.x, (float) mouse.y};
 	if (mousePos != mousePosition) {
-		//todo: mouse drag handle
 		auto e = MouseMoveEvent(mousePos.x, mousePos.y, mouseButtons[XE_MOUSE_LEFT]);
 
 		XE_ASSERT(eventCallback);

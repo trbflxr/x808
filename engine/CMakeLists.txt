@@ -30,6 +30,7 @@ set(ENGINE_SRC
 
         src/application/window.cpp
         src/application/input.cpp
+        src/application/application.cpp
 
         src/gfx/api/context.cpp
 
