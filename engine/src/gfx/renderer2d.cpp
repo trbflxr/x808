@@ -105,6 +105,66 @@ void xe::gfx::Renderer2D::begin() {
 	buffer = vertexArray->getBuffer()->getPointer<VertexData>();
 }
 
+
+//todo: remove
+static const std::vector<xe::vec2> &getDefaultUVs() {
+	static std::vector<xe::vec2> UVs;
+	if (UVs.empty()) {
+		UVs.emplace_back(0, 1);
+		UVs.emplace_back(1, 1);
+		UVs.emplace_back(1, 0);
+		UVs.emplace_back(0, 0);
+	}
+	return UVs;
+}
+
+void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
+	//todo: create normal renderable
+
+	const rect bounds({-2, -2}, {5, 5});
+	const vec3 min = vec3(bounds.getMinBound());
+	const vec3 max = vec3(bounds.getMaxBound());
+
+	const uint color = 0xffffffff;
+	const std::vector<vec2> &uv = getDefaultUVs();
+	const api::Texture *texture = renderable->texture;
+
+	float textureSlot = 0.0f;
+	if (texture) {
+		textureSlot = submitTexture(renderable->texture);
+	}
+
+	vec3 vertex = *transformationBack * min;
+	buffer->vertex = vertex;
+	buffer->uv = uv[0];
+	buffer->tid = textureSlot;
+	buffer->color = color;
+	buffer++;
+
+	vertex = *transformationBack * vec3(max.x, min.y);
+	buffer->vertex = vertex;
+	buffer->uv = uv[1];
+	buffer->tid = textureSlot;
+	buffer->color = color;
+	buffer++;
+
+	vertex = *transformationBack * max;
+	buffer->vertex = vertex;
+	buffer->uv = uv[2];
+	buffer->tid = textureSlot;
+	buffer->color = color;
+	buffer++;
+
+	vertex = *transformationBack * vec3(min.x, max.y);
+	buffer->vertex = vertex;
+	buffer->uv = uv[3];
+	buffer->tid = textureSlot;
+	buffer->color = color;
+	buffer++;
+
+	indexCount += 6;
+}
+
 void xe::gfx::Renderer2D::end() {
 	vertexArray->getBuffer()->releasePointer();
 	vertexArray->unbind();
@@ -119,7 +179,9 @@ void xe::gfx::Renderer2D::flush() {
 	//todo: set system uniforms
 	shader->updateUniforms(*camera);
 
-	//todo: bind textures
+	for (uint i = 0; i < textures.size(); i++) {
+		textures[i]->bind(i);
+	}
 
 	vertexArray->bind();
 	indexBuffer->bind();
@@ -129,21 +191,11 @@ void xe::gfx::Renderer2D::flush() {
 	indexBuffer->unbind();
 	vertexArray->unbind();
 
-	//todo: unbind textures
+	for (uint i = 0; i < textures.size(); i++) {
+		textures[i]->unbind(i);
+	}
 
 	indexCount = 0;
-}
-
-//todo: remove
-static const std::vector<xe::vec2> &getDefaultUVs() {
-	static std::vector<xe::vec2> UVs;
-	if (UVs.empty()) {
-		UVs.emplace_back(0, 1);
-		UVs.emplace_back(1, 1);
-		UVs.emplace_back(1, 0);
-		UVs.emplace_back(0, 0);
-	}
-	return UVs;
 }
 
 void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, uint color, float thickness) {
@@ -247,3 +299,28 @@ void xe::gfx::Renderer2D::fillRect(const xe::vec2 &position, const xe::vec2 &siz
 void xe::gfx::Renderer2D::fillRect(const xe::rect &rectangle, uint color) {
 	fillRect(rectangle.getMinBound(), rectangle.size * 2.0f, color);
 }
+
+float xe::gfx::Renderer2D::submitTexture(xe::gfx::api::Texture *texture) {
+	float result = 0.0f;
+	bool found = false;
+
+	for (uint i = 0; i < textures.size(); i++) {
+		if (textures[i] == texture) {
+			result = (float) (i + 1);
+			found = true;
+			break;
+		}
+	}
+
+	if (!found) {
+		if (textures.size() >= RENDERER_MAX_TEXTURES) {
+			end();
+			flush();
+			begin();
+		}
+		textures.push_back(texture);
+		result = (float) (textures.size());
+	}
+	return result;
+}
+

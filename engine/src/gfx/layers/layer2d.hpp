@@ -29,6 +29,9 @@ namespace xe { namespace gfx {
 
 	private:
 		Renderer2D *renderer;
+
+		//todo: remove
+		Renderable2D* dummy;
 	};
 
 }}

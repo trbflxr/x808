@@ -12,6 +12,7 @@
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
+#include "gfx/api/texture.hpp"
 
 namespace xe { namespace gfx {
 
@@ -23,6 +24,10 @@ namespace xe { namespace gfx {
 		uint color;
 	};
 #define RENDERER_VERTEX_SIZE sizeof(VertexData)
+
+	struct Renderable2D {
+		api::Texture *texture;
+	};
 
 	class XE_API Renderer2D {
 	public:
@@ -36,7 +41,7 @@ namespace xe { namespace gfx {
 		void setCamera(Camera *camera);
 
 		void begin();
-		//todo: submit renderable
+		void submit(const Renderable2D *renderable);
 		void end();
 		void flush();
 
@@ -60,6 +65,7 @@ namespace xe { namespace gfx {
 
 	private:
 		void init();
+		float submitTexture(api::Texture* texture);
 
 	private:
 		std::vector<mat4> transformationStack;
@@ -69,10 +75,9 @@ namespace xe { namespace gfx {
 
 		api::VertexArray *vertexArray;
 		api::IndexBuffer *indexBuffer;
-//		unsigned vbo;
-//		unsigned vao;
 		uint indexCount;
 		VertexData *buffer;
+		std::vector<api::Texture *> textures;
 
 		vec2u screenSize;
 		vec2u viewportSize;

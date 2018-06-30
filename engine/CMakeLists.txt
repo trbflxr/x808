@@ -55,7 +55,7 @@ set(ENGINE_SRC
         src/config.cpp
 
         #todo: remove
-        src/gfx/api/basicshader.cpp src/gfx/renderer2d.cpp src/gfx/renderer2d.hpp src/gfx/camera.hpp)
+        src/gfx/api/basicshader.cpp src/gfx/renderer2d.cpp src/gfx/renderer2d.hpp src/gfx/camera.hpp src/gfx/api/texture.cpp src/gfx/api/texture.hpp src/gfx/api/texture2d.cpp src/gfx/api/texture2d.hpp src/utils/loadimage.cpp src/utils/loadimage.hpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})

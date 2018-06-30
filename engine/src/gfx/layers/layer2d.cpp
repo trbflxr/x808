@@ -5,15 +5,28 @@
 #include "layer2d.hpp"
 #include "application/application.hpp"
 
+//todo: remove
+#include "gfx/api/texture2d.hpp"
+
 xe::gfx::Layer2D::Layer2D(const xe::mat4 &projectionMatrix) {
 	const uint width = Application::getApplication().getWindowWidth();
 	const uint height = Application::getApplication().getWindowHeight();
 
 	renderer = new Renderer2D(width, height);
+
+
+	//todo: remove
+	api::TextureParameters params(api::TextureFilter::NEAREST);
+
+	dummy = new Renderable2D();
+	dummy->texture = new api::Texture2D("test1", "assets/textures/test1.png", params);
+
+	api::Texture::setWrap(api::TextureWrap::CLAMP_TO_BORDER);
 }
 
 xe::gfx::Layer2D::~Layer2D() {
-
+	delete dummy->texture;
+	delete dummy;
 }
 
 void xe::gfx::Layer2D::init() {
@@ -28,8 +41,9 @@ void xe::gfx::Layer2D::render() {
 	renderer->begin();
 
 	renderer->drawLine(0, 0, 100, 100, 0xffffffff, 0.1f);
+	renderer->fillRect({-15, -5}, {5, 5}, 0xffff00ff);
 
-	renderer->fillRect({-2,-2},{5,5}, 0xffff00ff);
+	renderer->submit(dummy);
 
 	renderer->end();
 	renderer->flush();
