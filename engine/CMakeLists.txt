@@ -39,6 +39,7 @@ set(ENGINE_SRC
         src/gfx/api/shader.cpp
         src/gfx/api/texture.cpp
         src/gfx/api/texture2d.cpp
+        src/gfx/sprite.cpp
         src/gfx/renderer.cpp
         src/gfx/renderer2d.cpp
         src/gfx/renderer2d.hpp

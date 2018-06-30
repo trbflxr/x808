@@ -50,10 +50,6 @@ namespace xe { namespace gfx {
 		inline void setSize(const vec2 &size) { bounds.size = size; }
 		inline void setColor(uint color) { Renderable2D::color = color; }
 
-		inline void setColor(const vec4 &color) {
-			Renderable2D::color = color::rgba(color.x, color.y, color.z, color.w);
-		}
-
 		inline void setVisible(bool visible) { Renderable2D::visible = visible; }
 
 		static const std::vector<vec2> &getDefaultUVs();

@@ -14,15 +14,14 @@ Test2D::Test2D() :
 		Layer2D(xe::mat4(1.0f)) { }
 
 Test2D::~Test2D() {
-	delete dummy;
+	delete sprite;
 }
 
 void Test2D::init(xe::gfx::Renderer2D &renderer) {
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
 
-	dummy = new Dummy({0, 0}, {5, 5}, color::WHITE,
-	                  new Texture2D("test1", "assets/textures/test1.png", params));
+	sprite = new Sprite(0, 0, 5, 5, new Texture2D("test1", "assets/textures/test1.png", params));
 }
 
 void Test2D::tick() {
@@ -37,7 +36,7 @@ void Test2D::render(xe::gfx::Renderer2D &renderer) {
 	renderer.drawLine(0, 0, 100, 100, xe::color::CYAN, 0.1f);
 	renderer.fillRect({-15, -5}, {5, 5}, xe::color::PINK);
 
-	renderer.submit(dummy);
+	renderer.submit(sprite);
 }
 
 void Test2D::onEvent(xe::Event &event) {

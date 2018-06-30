@@ -8,16 +8,7 @@
 
 #include <gfx/layers/layer2d.hpp>
 #include <gfx/api/texture2d.hpp>
-
-class Dummy : public xe::gfx::Renderable2D {
-public:
-	Dummy(const xe::vec2 &position, const xe::vec2 &size, uint color, xe::gfx::api::Texture2D *texture) :
-			Renderable2D(position, size, color) {
-
-		Renderable2D::texture = texture;
-	}
-};
-
+#include <gfx/sprite.hpp>
 
 class Test2D : public xe::gfx::Layer2D {
 public:
@@ -35,7 +26,7 @@ public:
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
 
 private:
-	Dummy *dummy;
+	xe::gfx::Sprite *sprite;
 };
 
 
