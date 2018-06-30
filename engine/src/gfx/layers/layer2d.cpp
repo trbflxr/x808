@@ -40,8 +40,8 @@ void xe::gfx::Layer2D::init(xe::gfx::Renderer2D &renderer) {
 void xe::gfx::Layer2D::render() {
 	renderer->begin();
 
-	renderer->drawLine(0, 0, 100, 100, 0xffffffff, 0.1f);
-	renderer->fillRect({-15, -5}, {5, 5}, 0xffff00ff);
+	renderer->drawLine(0, 0, 100, 100, color::CYAN, 0.1f);
+	renderer->fillRect({-15, -5}, {5, 5}, color::PINK);
 
 	renderer->submit(dummy);
 

@@ -9,6 +9,7 @@
 #include "common.hpp"
 #include "xeint.hpp"
 #include "camera.hpp"
+#include "color.hpp"
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
@@ -45,15 +46,15 @@ namespace xe { namespace gfx {
 		void end();
 		void flush();
 
-		void drawLine(float x0, float y0, float x1, float y1, uint color = 0xffffffff, float thickness = 0.02f);
-		void drawLine(const vec2 &start, const vec2 &end, uint color = 0xffffffff, float thickness = 0.02f);
-		void drawRect(float x, float y, float width, float height, uint color = 0xffffffff);
-		void drawRect(const vec2 &position, const vec2 &size, uint color = 0xffffffff);
-		void drawRect(const rect &rectangle, uint color = 0xffffffff);
+		void drawLine(float x0, float y0, float x1, float y1, uint color = color::WHITE, float thickness = 0.02f);
+		void drawLine(const vec2 &start, const vec2 &end, uint color = color::WHITE, float thickness = 0.02f);
+		void drawRect(float x, float y, float width, float height, uint color = color::WHITE);
+		void drawRect(const vec2 &position, const vec2 &size, uint color = color::WHITE);
+		void drawRect(const rect &rectangle, uint color = color::WHITE);
 
-		void fillRect(float x, float y, float width, float height, uint color = 0xffffffff);
-		void fillRect(const vec2 &position, const vec2 &size, uint color = 0xffffffff);
-		void fillRect(const rect &rectangle, uint color = 0xffffffff);
+		void fillRect(float x, float y, float width, float height, uint color = color::WHITE);
+		void fillRect(const vec2 &position, const vec2 &size, uint color = color::WHITE);
+		void fillRect(const rect &rectangle, uint color = color::WHITE);
 
 		//todo: draw string function
 
@@ -65,7 +66,7 @@ namespace xe { namespace gfx {
 
 	private:
 		void init();
-		float submitTexture(api::Texture* texture);
+		float submitTexture(api::Texture *texture);
 
 	private:
 		std::vector<mat4> transformationStack;

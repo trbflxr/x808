@@ -125,7 +125,7 @@ void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 	const vec3 min = vec3(bounds.getMinBound());
 	const vec3 max = vec3(bounds.getMaxBound());
 
-	const uint color = 0xffffffff;
+	const uint color = color::WHITE;
 	const std::vector<vec2> &uv = getDefaultUVs();
 	const api::Texture *texture = renderable->texture;
 
