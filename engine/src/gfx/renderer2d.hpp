@@ -8,7 +8,7 @@
 
 #include "common.hpp"
 #include "xeint.hpp"
-#include "camera.hpp"
+#include "gfx/camera/camera.hpp"
 #include "color.hpp"
 #include "renderable2d.hpp"
 #include "gfx/api/vertexarray.hpp"

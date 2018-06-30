@@ -6,28 +6,42 @@
 #include "application/application.hpp"
 
 
+xe::gfx::Layer2D::Layer2D(xe::gfx::Scene2D *scene) :
+		scene(scene) {
+
+	const uint width = Application::getApplication().getWindowWidth();
+	const uint height = Application::getApplication().getWindowHeight();
+
+	renderer = new Renderer2D(width, height);
+	renderer->setCamera(scene->getCamera());
+}
+
 xe::gfx::Layer2D::Layer2D(const xe::mat4 &projectionMatrix) {
 	const uint width = Application::getApplication().getWindowWidth();
 	const uint height = Application::getApplication().getWindowHeight();
 
 	renderer = new Renderer2D(width, height);
+	scene = new Scene2D(projectionMatrix);
+	renderer->setCamera(scene->getCamera());
 }
 
 xe::gfx::Layer2D::~Layer2D() {
 	delete renderer;
+	delete scene;
 }
 
 void xe::gfx::Layer2D::init() {
 	init(*renderer);
 }
 
-void xe::gfx::Layer2D::init(xe::gfx::Renderer2D &renderer) {
-
-}
-
 xe::gfx::Renderable2D *xe::gfx::Layer2D::submit(xe::gfx::Renderable2D *renderable) {
 	submittedRenderables.push_back(renderable);
 	return renderable;
+}
+
+xe::gfx::Sprite *xe::gfx::Layer2D::add(xe::gfx::Sprite *sprite) {
+	//todo: create an entity from sprite and push it to scene
+	return sprite;
 }
 
 void xe::gfx::Layer2D::render() {
@@ -41,9 +55,12 @@ void xe::gfx::Layer2D::render() {
 
 	renderer->end();
 	renderer->flush();
+
+	submittedRenderables.clear();
 }
 
 bool xe::gfx::Layer2D::resize(uint width, uint height) {
+	renderer->setScreenSize({width, height});
+	scene->getRenderer()->setScreenSize({width, height});
 	return false;
 }
-

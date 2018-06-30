@@ -11,7 +11,7 @@
 #include "common.hpp"
 #include "xeint.hpp"
 #include "math/math.hpp"
-#include "gfx/camera.hpp"
+#include "gfx/camera/camera.hpp"
 
 namespace xe { namespace gfx { namespace api {
 

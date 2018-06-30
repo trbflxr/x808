@@ -10,8 +10,7 @@ using namespace xe;
 using namespace gfx;
 using namespace gfx::api;
 
-Test2D::Test2D() :
-		Layer2D(xe::mat4(1.0f)) { }
+Test2D::Test2D() : Layer2D(new Scene2D(math::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f))) { }
 
 Test2D::~Test2D() {
 	delete sprite;
@@ -22,6 +21,8 @@ void Test2D::init(xe::gfx::Renderer2D &renderer) {
 	TextureParameters params(TextureFilter::NEAREST);
 
 	sprite = new Sprite(0, 0, 5, 5, new Texture2D("test1", "assets/textures/test1.png", params));
+
+	add(new Sprite(-5.0f, -5.0f, 3, 3, 0xffff00ff));
 }
 
 void Test2D::tick() {

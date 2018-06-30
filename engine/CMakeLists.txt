@@ -39,13 +39,13 @@ set(ENGINE_SRC
         src/gfx/api/shader.cpp
         src/gfx/api/texture.cpp
         src/gfx/api/texture2d.cpp
+        src/gfx/camera/camera.hpp
         src/gfx/sprite.cpp
         src/gfx/renderer.cpp
         src/gfx/renderer2d.cpp
         src/gfx/renderer2d.hpp
         src/gfx/renderable2d.cpp
-        src/gfx/camera.hpp
-
+        src/gfx/scene2d.cpp
         src/gfx/layers/layer2d.cpp
 
         src/math/vec2.cpp

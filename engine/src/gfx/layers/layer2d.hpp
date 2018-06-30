@@ -9,6 +9,8 @@
 #include "layer.hpp"
 #include "common.hpp"
 #include "gfx/renderer2d.hpp"
+#include "gfx/scene2d.hpp"
+#include "gfx/sprite.hpp"
 #include "math/mat4.hpp"
 
 namespace xe { namespace gfx {
@@ -16,15 +18,19 @@ namespace xe { namespace gfx {
 	class XE_API Layer2D : public Layer {
 	public:
 		explicit Layer2D(const mat4 &projectionMatrix);
+		explicit Layer2D(Scene2D *scene);
 		~Layer2D() override;
 
 		virtual void init();
-		virtual void init(Renderer2D& renderer);
+		virtual void init(Renderer2D& renderer) { }
 
 		void render() override;
 		virtual void render(Renderer2D& renderer) { }
 
+		virtual Sprite *add(Sprite *sprite);
 		virtual Renderable2D *submit(Renderable2D *renderable);
+
+		inline Scene2D *getScene() { return scene; }
 
 	protected:
 		bool resize(uint width, uint height) override;
@@ -32,6 +38,7 @@ namespace xe { namespace gfx {
 	protected:
 		Renderer2D *renderer;
 
+		Scene2D *scene;
 		std::vector<Renderable2D *> submittedRenderables;
 	};
 
