@@ -5,28 +5,16 @@
 #include "layer2d.hpp"
 #include "application/application.hpp"
 
-//todo: remove
-#include "gfx/api/texture2d.hpp"
 
 xe::gfx::Layer2D::Layer2D(const xe::mat4 &projectionMatrix) {
 	const uint width = Application::getApplication().getWindowWidth();
 	const uint height = Application::getApplication().getWindowHeight();
 
 	renderer = new Renderer2D(width, height);
-
-
-	//todo: remove
-	api::TextureParameters params(api::TextureFilter::NEAREST);
-
-	dummy = new Renderable2D();
-	dummy->texture = new api::Texture2D("test1", "assets/textures/test1.png", params);
-
-	api::Texture::setWrap(api::TextureWrap::CLAMP_TO_BORDER);
 }
 
 xe::gfx::Layer2D::~Layer2D() {
-	delete dummy->texture;
-	delete dummy;
+	delete renderer;
 }
 
 void xe::gfx::Layer2D::init() {
@@ -37,24 +25,25 @@ void xe::gfx::Layer2D::init(xe::gfx::Renderer2D &renderer) {
 
 }
 
+xe::gfx::Renderable2D *xe::gfx::Layer2D::submit(xe::gfx::Renderable2D *renderable) {
+	submittedRenderables.push_back(renderable);
+	return renderable;
+}
+
 void xe::gfx::Layer2D::render() {
 	renderer->begin();
 
-	renderer->drawLine(0, 0, 100, 100, color::CYAN, 0.1f);
-	renderer->fillRect({-15, -5}, {5, 5}, color::PINK);
+	for (auto &&renderable : submittedRenderables) {
+		renderable->submit(renderer);
+	}
 
-	renderer->submit(dummy);
+	render(*renderer);
 
 	renderer->end();
 	renderer->flush();
-
-	render(*renderer);
-}
-
-void xe::gfx::Layer2D::render(xe::gfx::Renderer2D &renderer) {
-
 }
 
 bool xe::gfx::Layer2D::resize(uint width, uint height) {
 	return false;
 }
+

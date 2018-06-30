@@ -105,33 +105,20 @@ void xe::gfx::Renderer2D::begin() {
 	buffer = vertexArray->getBuffer()->getPointer<VertexData>();
 }
 
-
-//todo: remove
-static const std::vector<xe::vec2> &getDefaultUVs() {
-	static std::vector<xe::vec2> UVs;
-	if (UVs.empty()) {
-		UVs.emplace_back(0, 1);
-		UVs.emplace_back(1, 1);
-		UVs.emplace_back(1, 0);
-		UVs.emplace_back(0, 0);
-	}
-	return UVs;
-}
-
 void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
-	//todo: create normal renderable
+	if (!renderable->isVisible()) return;
 
-	const rect bounds({-2, -2}, {5, 5});
+	const rect &bounds = renderable->getBounds();
 	const vec3 min = vec3(bounds.getMinBound());
 	const vec3 max = vec3(bounds.getMaxBound());
 
-	const uint color = color::WHITE;
-	const std::vector<vec2> &uv = getDefaultUVs();
-	const api::Texture *texture = renderable->texture;
+	const uint color = renderable->getColor();
+	const std::vector<vec2> &uv = renderable->getUVs();
+	const api::Texture *texture = renderable->getTexture();
 
 	float textureSlot = 0.0f;
 	if (texture) {
-		textureSlot = submitTexture(renderable->texture);
+		textureSlot = submitTexture(renderable->getTexture());
 	}
 
 	vec3 vertex = *transformationBack * min;
@@ -199,7 +186,7 @@ void xe::gfx::Renderer2D::flush() {
 }
 
 void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, uint color, float thickness) {
-	const std::vector<vec2> &uv = getDefaultUVs();
+	const std::vector<vec2> &uv = Renderable2D::getDefaultUVs();
 	float ts = 0.0f;
 
 	vec2 normal = math::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
@@ -257,7 +244,7 @@ void xe::gfx::Renderer2D::drawRect(const xe::rect &rectangle, uint color) {
 void xe::gfx::Renderer2D::fillRect(float x, float y, float width, float height, uint color) {
 	vec3 position(x, y, 0.0f);
 	vec2 size(width, height);
-	const std::vector<vec2> &uv = getDefaultUVs();
+	const std::vector<vec2> &uv = Renderable2D::getDefaultUVs();
 
 	float ts = 0.0f;
 

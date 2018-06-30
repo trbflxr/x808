@@ -7,6 +7,17 @@
 
 
 #include <gfx/layers/layer2d.hpp>
+#include <gfx/api/texture2d.hpp>
+
+class Dummy : public xe::gfx::Renderable2D {
+public:
+	Dummy(const xe::vec2 &position, const xe::vec2 &size, uint color, xe::gfx::api::Texture2D *texture) :
+			Renderable2D(position, size, color) {
+
+		Renderable2D::texture = texture;
+	}
+};
+
 
 class Test2D : public xe::gfx::Layer2D {
 public:
@@ -14,6 +25,7 @@ public:
 	~Test2D() override;
 
 	void init(xe::gfx::Renderer2D &renderer) override;
+	void render(xe::gfx::Renderer2D &renderer) override;
 
 	void tick() override;
 	void onEvent(xe::Event &event) override;
@@ -23,7 +35,7 @@ public:
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
 
 private:
-	xe::gfx::Renderer2D *renderer;
+	Dummy *dummy;
 };
 
 

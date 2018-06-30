@@ -10,25 +10,12 @@
 #include "xeint.hpp"
 #include "camera.hpp"
 #include "color.hpp"
+#include "renderable2d.hpp"
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
-#include "gfx/api/texture.hpp"
 
 namespace xe { namespace gfx {
-
-	//todo: move to "renderable"
-	struct VertexData {
-		vec3 vertex;
-		vec2 uv;
-		float tid;
-		uint color;
-	};
-#define RENDERER_VERTEX_SIZE sizeof(VertexData)
-
-	struct Renderable2D {
-		api::Texture *texture;
-	};
 
 	class XE_API Renderer2D {
 	public:

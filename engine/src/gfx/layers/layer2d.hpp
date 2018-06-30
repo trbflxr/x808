@@ -22,16 +22,17 @@ namespace xe { namespace gfx {
 		virtual void init(Renderer2D& renderer);
 
 		void render() override;
-		void render(Renderer2D& renderer);
+		virtual void render(Renderer2D& renderer) { }
+
+		virtual Renderable2D *submit(Renderable2D *renderable);
 
 	protected:
 		bool resize(uint width, uint height) override;
 
-	private:
+	protected:
 		Renderer2D *renderer;
 
-		//todo: remove
-		Renderable2D* dummy;
+		std::vector<Renderable2D *> submittedRenderables;
 	};
 
 }}
