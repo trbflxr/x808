@@ -31,8 +31,6 @@ namespace xe { namespace gfx { namespace api {
 	public:
 		BufferLayout() : size(0) { }
 
-		//todo: d3d cases
-
 		template<typename T>
 		void push(const std::string_view &name, uint count = 1, bool normalized = false) {
 			XE_ASSERT(false, "Unknown type!"); //for default types only
@@ -43,8 +41,8 @@ namespace xe { namespace gfx { namespace api {
 
 	private:
 		void push(const std::string_view &name, uint type, uint size, uint count, bool normalized) {
-			layout.emplace_back(name, type, size, count, size, normalized);
-			size += size * count;
+			layout.emplace_back(name, type, size, count, BufferLayout::size, normalized);
+			BufferLayout::size += size * count;
 		}
 
 	private:
@@ -69,17 +67,20 @@ namespace xe { namespace gfx { namespace api {
 
 	template<>
 	inline void BufferLayout::push<vec2>(const std::string_view &name, uint count, bool normalized) {
-		push(name, GL_FLOAT, sizeof(vec2), 2 * count, normalized);
+		XE_ASSERT(count <= 1, "cant push more then 1 vec2")
+		push(name, GL_FLOAT, sizeof(float), 2, normalized);
 	}
 
 	template<>
 	inline void BufferLayout::push<vec3>(const std::string_view &name, uint count, bool normalized) {
-		push(name, GL_FLOAT, sizeof(vec3), 3 * count, normalized);
+		XE_ASSERT(count <= 1, "cant push more then 1 vec3")
+		push(name, GL_FLOAT, sizeof(float), 3, normalized);
 	}
 
 	template<>
 	inline void BufferLayout::push<vec4>(const std::string_view &name, uint count, bool normalized) {
-		push(name, GL_FLOAT, sizeof(vec4), 4 * count, normalized);
+		XE_ASSERT(count <= 1, "cant push more then 1 vec4")
+		push(name, GL_FLOAT, sizeof(float), 4, normalized);
 	}
 
 }}}

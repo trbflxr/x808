@@ -14,8 +14,8 @@ Test2D::~Test2D() {
 
 }
 
-void Test2D::render() {
-
+void Test2D::init(xe::gfx::Renderer2D &renderer) {
+	Test2D::renderer = &renderer;
 }
 
 void Test2D::tick() {

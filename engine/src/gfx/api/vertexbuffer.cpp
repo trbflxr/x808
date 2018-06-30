@@ -34,7 +34,7 @@ void xe::gfx::api::VertexBuffer::setLayout(const xe::gfx::api::BufferLayout &lay
 	const auto &l = layout.getLayout();
 
 	for (uint i = 0; i < l.size(); i++) {
-		const BufferElement &element = l[i];
+		auto &&element = l[i];
 		glCall(glEnableVertexAttribArray(i));
 		glCall(glVertexAttribPointer(i, element.count, element.type,
 		                             static_cast<GLboolean>(element.normalized), layout.getStride(),
@@ -61,7 +61,6 @@ void xe::gfx::api::VertexBuffer::unbind() {
 }
 
 void *xe::gfx::api::VertexBuffer::getPointerInternal() {
-	void *result;
-	glCall(result = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+	glCall(void *result = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 	return result;
 }

@@ -36,6 +36,7 @@ set(ENGINE_SRC
         src/gfx/api/vertexbuffer.cpp
         src/gfx/api/indexbuffer.cpp
         src/gfx/api/vertexarray.cpp
+        src/gfx/api/shader.cpp
         src/gfx/renderer.cpp
 
         src/gfx/layers/layer2d.cpp
@@ -51,7 +52,10 @@ set(ENGINE_SRC
         src/utils/log.cpp
         src/utils/timer.cpp
 
-        src/config.cpp)
+        src/config.cpp
+
+        #todo: remove
+        src/gfx/api/basicshader.cpp src/gfx/renderer2d.cpp src/gfx/renderer2d.hpp src/gfx/camera.hpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})

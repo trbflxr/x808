@@ -8,6 +8,7 @@
 
 #include "layer.hpp"
 #include "common.hpp"
+#include "gfx/renderer2d.hpp"
 #include "math/mat4.hpp"
 
 namespace xe { namespace gfx {
@@ -18,12 +19,16 @@ namespace xe { namespace gfx {
 		~Layer2D() override;
 
 		virtual void init();
+		virtual void init(Renderer2D& renderer);
 
 		void render() override;
+		void render(Renderer2D& renderer);
 
 	protected:
 		bool resize(uint width, uint height) override;
 
+	private:
+		Renderer2D *renderer;
 	};
 
 }}
