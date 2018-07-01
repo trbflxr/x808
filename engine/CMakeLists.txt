@@ -45,8 +45,6 @@ set(ENGINE_SRC
         src/gfx/renderer2d.cpp
         src/gfx/renderer2d.hpp
         src/gfx/renderable2d.cpp
-        src/gfx/scene2d.cpp
-        src/gfx/layers/layer2d.cpp
 
         src/math/vec2.cpp
         src/math/vec3.cpp

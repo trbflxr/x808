@@ -26,10 +26,6 @@ namespace xe {
 		gfx::Layer *popLayer();
 		gfx::Layer *popLayer(gfx::Layer *layer);
 
-		void pushOverlay(gfx::Layer *layer);
-		gfx::Layer *popOverlay();
-		gfx::Layer *popOverlay(gfx::Layer *layer);
-
 		void start();
 		void suspend();
 		void resume();
@@ -69,7 +65,6 @@ namespace xe {
 		Window *window;
 
 		std::vector<gfx::Layer *> layerStack;
-		std::vector<gfx::Layer *> overlayStack;
 
 		static Application *instance;
 

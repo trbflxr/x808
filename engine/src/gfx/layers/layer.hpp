@@ -27,7 +27,6 @@ namespace xe { namespace gfx {
 		virtual void tick() { }
 
 		virtual void update(const TimeStep &ts) { }
-		virtual void updateInternal(const TimeStep &ts) { }
 
 		void onEvent(Event &event) override {
 			EventDispatcher dispatcher(event);
