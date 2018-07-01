@@ -64,7 +64,8 @@ set(ENGINE_SRC
         src/gfx/api/basicshader.cpp
 
         #experimental
-        src/components/transform.cpp)
+        src/core/transform.cpp
+        src/core/gameobject.cpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})

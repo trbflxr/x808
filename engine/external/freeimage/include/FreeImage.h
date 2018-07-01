@@ -81,7 +81,7 @@
 #endif // !FREEIMAGE_[BIG|LITTLE]ENDIAN
 
 // Color-Order:
-// The specified order of color components red, green and blue affects 24-
+// The specified order of color core red, green and blue affects 24-
 // and 32-bit images of type FIT_BITMAP as well as the colors that are part
 // of a color palette. All other images always use RGB order. By default,
 // color order is coupled to endianness:
