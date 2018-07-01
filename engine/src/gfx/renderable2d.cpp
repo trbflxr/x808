@@ -11,17 +11,17 @@ xe::gfx::Renderable2D::Renderable2D() :
 	UVs = getDefaultUVs();
 }
 
-xe::gfx::Renderable2D::Renderable2D(const xe::vec2 &position, const xe::vec2 &size, uint color) :
-		bounds(position, size),
+
+xe::gfx::Renderable2D::Renderable2D(const vec2 &size, uint color) :
+		size(size),
 		color(color),
-		texture(nullptr),
-		visible(true) {
+		visible(true),
+		texture(nullptr) {
 
 	UVs = getDefaultUVs();
 }
-xe::gfx::Renderable2D::~Renderable2D() { }
 
-void xe::gfx::Renderable2D::submit(xe::gfx::Renderer2D *renderer) const {
+void xe::gfx::Renderable2D::submit(xe::gfx::Renderer2D *renderer) {
 	renderer->submit(this);
 }
 

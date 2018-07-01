@@ -13,8 +13,6 @@
 #include "utils/timestep.hpp"
 
 namespace xe { namespace gfx {
-	class RenderingEngine;
-
 	namespace api {
 		class Shader;
 	}
@@ -24,28 +22,27 @@ namespace xe {
 
 	class Application;
 
-	class GameComponent;
-
 	class XE_API GameObject {
 	public:
-		explicit GameObject(Application* app);
+		explicit GameObject() = default;
 		virtual ~GameObject() = default;
 
 		GameObject &addObject(GameObject *object);
-		GameObject &addComponent(GameComponent *component);
 
 		void update(const TimeStep &ts);
 		void input(const TimeStep &ts);
-
-		void render(const gfx::api::Shader *shader, const gfx::RenderingEngine *renderingEngine) const;
+		void render(const gfx::api::Shader *shader);
 
 		inline Transform &getTransform() { return transform; }
 
+	protected:
+		virtual void updateInternal(const TimeStep &ts) { }
+		virtual void inputInternal(const TimeStep &ts) { }
+		virtual void renderInternal(const gfx::api::Shader *shader) { }
+
 	private:
 		Transform transform;
-		Application* application;
 		std::vector<std::unique_ptr<GameObject>> objects;
-		std::vector<std::unique_ptr<GameComponent>> components;
 	};
 
 }

@@ -15,9 +15,11 @@ namespace xe {
 	public:
 		explicit Transform();
 
-		void rotate(float deg, const vec3& axis);
-		void lookAt(const vec3& point, const vec3& up);
-		quat getLookAtRotation(const vec3& point, const vec3& up) const;
+		void move(const vec3 &direction);
+		void rotate(float deg, const vec3 &axis);
+
+		void lookAt(const vec3 &point, const vec3 &up);
+		quat getLookAtRotation(const vec3 &point, const vec3 &up) const;
 
 		mat4 getTransformation() const;
 

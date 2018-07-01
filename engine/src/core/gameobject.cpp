@@ -3,10 +3,6 @@
 //
 
 #include "gameobject.hpp"
-#include "components/gamecomponent.hpp"
-
-
-xe::GameObject::GameObject(xe::Application *app) : application(app) { }
 
 xe::GameObject &xe::GameObject::addObject(xe::GameObject *object) {
 	object->getTransform().setParent(&transform);
@@ -15,17 +11,8 @@ xe::GameObject &xe::GameObject::addObject(xe::GameObject *object) {
 	return *this;
 }
 
-xe::GameObject &xe::GameObject::addComponent(xe::GameComponent *component) {
-	component->setBase(this);
-	components.emplace_back(std::unique_ptr<GameComponent>(component));
-
-	return *this;
-}
-
 void xe::GameObject::update(const xe::TimeStep &ts) {
-	for (auto &&component : components) {
-		component->update(ts);
-	}
+	updateInternal(ts);
 
 	for (auto &&object : objects) {
 		object->update(ts);
@@ -33,23 +20,17 @@ void xe::GameObject::update(const xe::TimeStep &ts) {
 }
 
 void xe::GameObject::input(const xe::TimeStep &ts) {
-	for (auto &&component : components) {
-		component->input(ts);
-	}
+	inputInternal(ts);
 
 	for (auto &&object : objects) {
 		object->input(ts);
 	}
 }
 
-void xe::GameObject::render(const xe::gfx::api::Shader *shader,
-                            const xe::gfx::RenderingEngine *renderingEngine) const {
-
-	for (auto &&component : components) {
-		component->render(shader, renderingEngine);
-	}
+void xe::GameObject::render(const xe::gfx::api::Shader *shader) {
+	renderInternal(shader);
 
 	for (auto &&object : objects) {
-		object->render(shader, renderingEngine);
+		object->render(shader);
 	}
 }

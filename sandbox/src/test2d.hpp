@@ -8,6 +8,9 @@
 
 #include <gfx/layers/layer.hpp>
 #include <gfx/api/texture2d.hpp>
+#include <gfx/renderer2d.hpp>
+#include <core/gameobject.hpp>
+#include <gfx/api/basicshader.hpp>
 
 class Test2D : public xe::gfx::Layer {
 public:
@@ -24,6 +27,12 @@ public:
 	bool onKeyPressedEvent(xe::KeyPressEvent &event);
 	bool onMousePressedEvent(xe::MousePressEvent &event);
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
+
+private:
+	xe::gfx::Renderer2D *renderer;
+	xe::gfx::api::BasicShader *shader;
+
+	xe::GameObject *root;
 
 };
 

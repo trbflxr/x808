@@ -11,6 +11,9 @@ xe::Transform::Transform() :
 		parent(nullptr),
 		parentMatrix(1.0f) { }
 
+void xe::Transform::move(const xe::vec3 &direction) {
+	position += direction;
+}
 
 void xe::Transform::rotate(float deg, const xe::vec3 &axis) {
 	rotation = math::rotation(to_rad(deg), axis) * math::normalize(rotation);

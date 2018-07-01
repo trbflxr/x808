@@ -105,12 +105,13 @@ void xe::gfx::Renderer2D::begin() {
 	buffer = vertexArray->getBuffer()->getPointer<VertexData>();
 }
 
-void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
+void xe::gfx::Renderer2D::submit(xe::gfx::Renderable2D *renderable) {
 	if (!renderable->isVisible()) return;
 
-	const rect &bounds = renderable->getBounds();
-	const vec3 min = vec3(bounds.getMinBound());
-	const vec3 max = vec3(bounds.getMaxBound());
+	const vec3 size = vec3(renderable->getSize());
+
+	const vec3 min = renderable->getTransform().getPosition();
+	const vec3 max = min+size;
 
 	const uint color = renderable->getColor();
 	const std::vector<vec2> &uv = renderable->getUVs();
@@ -135,7 +136,7 @@ void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * max;
+	vertex = *transformationBack * vec3(max);
 	buffer->vertex = vertex;
 	buffer->uv = uv[2];
 	buffer->tid = textureSlot;
@@ -287,7 +288,7 @@ void xe::gfx::Renderer2D::fillRect(const xe::rect &rectangle, uint color) {
 	fillRect(rectangle.getMinBound(), rectangle.size * 2.0f, color);
 }
 
-float xe::gfx::Renderer2D::submitTexture(xe::gfx::api::Texture *texture) {
+float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 	float result = 0.0f;
 	bool found = false;
 

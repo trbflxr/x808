@@ -29,7 +29,7 @@ namespace xe { namespace gfx {
 		void setCamera(Camera *camera);
 
 		void begin();
-		void submit(const Renderable2D *renderable);
+		void submit(Renderable2D *renderable);
 		void end();
 		void flush();
 
@@ -53,7 +53,7 @@ namespace xe { namespace gfx {
 
 	private:
 		void init();
-		float submitTexture(api::Texture *texture);
+		float submitTexture(const api::Texture *texture);
 
 	private:
 		std::vector<mat4> transformationStack;
@@ -65,7 +65,7 @@ namespace xe { namespace gfx {
 		api::IndexBuffer *indexBuffer;
 		uint indexCount;
 		VertexData *buffer;
-		std::vector<api::Texture *> textures;
+		std::vector<const api::Texture *> textures;
 
 		vec2u screenSize;
 		vec2u viewportSize;

@@ -40,7 +40,6 @@ set(ENGINE_SRC
         src/gfx/api/texture.cpp
         src/gfx/api/texture2d.cpp
         src/gfx/camera/camera.hpp
-        src/gfx/sprite.cpp
         src/gfx/renderer.cpp
         src/gfx/renderer2d.cpp
         src/gfx/renderer2d.hpp
@@ -65,7 +64,7 @@ set(ENGINE_SRC
 
         #experimental
         src/core/transform.cpp
-        src/core/gameobject.cpp)
+        src/core/gameobject.cpp src/components/spritecomponent.cpp src/components/spritecomponent.hpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})
