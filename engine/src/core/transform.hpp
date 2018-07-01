@@ -42,7 +42,6 @@ namespace xe {
 
 	private:
 		Transform *parent;
-		mat4 parentMatrix;
 
 		vec3 position;
 		quat rotation;

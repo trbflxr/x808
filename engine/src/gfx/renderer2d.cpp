@@ -108,10 +108,8 @@ void xe::gfx::Renderer2D::begin() {
 void xe::gfx::Renderer2D::submit(xe::gfx::Renderable2D *renderable) {
 	if (!renderable->isVisible()) return;
 
-	const vec3 size = vec3(renderable->getSize());
-
-	const vec3 min = renderable->getTransform().getPosition();
-	const vec3 max = min+size;
+	const vec3 min = renderable->getTransform().getTransformedPos();
+	const vec3 max = min + vec3(renderable->size);
 
 	const uint color = renderable->getColor();
 	const std::vector<vec2> &uv = renderable->getUVs();

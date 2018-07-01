@@ -8,8 +8,7 @@ xe::Transform::Transform() :
 		position(0, 0, 0),
 		rotation(0, 0, 0, 1),
 		scale(1, 1, 1),
-		parent(nullptr),
-		parentMatrix(1.0f) { }
+		parent(nullptr) { }
 
 void xe::Transform::move(const xe::vec3 &direction) {
 	position += direction;

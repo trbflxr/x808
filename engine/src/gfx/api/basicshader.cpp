@@ -37,8 +37,6 @@ xe::gfx::api::BasicShader::BasicShader() {
 		in float tid0;
 		in vec4 color0;
 
-		uniform vec2 cursorPos = vec2(0,0);
-
 		uniform sampler2D textures[32];
 
 		void main() {

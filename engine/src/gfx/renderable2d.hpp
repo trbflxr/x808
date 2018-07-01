@@ -27,6 +27,9 @@ namespace xe { namespace gfx {
 #define RENDERER_VERTEX_SIZE sizeof(VertexData)
 
 	class XE_API Renderable2D : public GameObject {
+	private:
+		friend class Renderer2D;
+
 	public:
 		explicit Renderable2D(const vec2 &size, uint color);
 		virtual ~Renderable2D() = default;

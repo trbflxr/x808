@@ -94,7 +94,7 @@ xe::mat4 xe::math::quat::toRotationMatrix() const {
 	vec3 up(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
 	vec3 right(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
 
-	return xe::mat4();
+	return math::initRotation(forward, up, right);
 }
 
 float xe::math::length(const quat &q) {

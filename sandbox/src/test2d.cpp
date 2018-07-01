@@ -20,17 +20,17 @@ Test2D::Test2D() {
 
 	root->addObject(new SpriteComponent(renderer, {5, 5}, color::RED));
 
-	SpriteComponent *s = new SpriteComponent(renderer, {3, 3},
+	SpriteComponent *s = new SpriteComponent(renderer, {4, 4},
 	                                         new Texture2D("test1", "assets/textures/test3.png", params));
-	s->getTransform().rotate(25, ZAXIS);
+//	s->getTransform().rotate(25, ZAXIS);
 	s->getTransform().setPosition({-8, 3, 0});
 
 
-	SpriteComponent *s2 = new SpriteComponent(renderer, {3, 3}, color::PINK);
-//	s2->getTransform().setPosition({2, 1, 0});
+	SpriteComponent *s2 = new SpriteComponent(renderer, {3, 3},
+	                                          new Texture2D("test5", "assets/textures/test5.png", params));
+	s2->getTransform().setPosition({-2, 1, 0});
 
 	s->addObject(s2);
-
 
 
 	root->addObject(s);
@@ -54,9 +54,6 @@ void Test2D::update(const xe::TimeStep &ts) {
 
 void Test2D::render() {
 	renderer->begin();
-
-//	renderer->fillRect(1, 1, 3, 3, color::GREEN);
-//	renderer->fillRect(0, 0, 3, 3, color::rgba(1,0,1,0.3f));
 
 	root->render(shader);
 
