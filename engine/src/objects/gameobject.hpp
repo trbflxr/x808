@@ -24,7 +24,6 @@ namespace xe {
 
 	class XE_API GameObject {
 	public:
-		explicit GameObject() = default;
 		virtual ~GameObject() = default;
 
 		GameObject &addObject(GameObject *object);

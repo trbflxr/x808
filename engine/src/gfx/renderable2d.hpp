@@ -11,7 +11,7 @@
 #include "color.hpp"
 #include "math/math.hpp"
 #include "gfx/api/texture.hpp"
-#include "core/gameobject.hpp"
+#include "objects/gameobject.hpp"
 
 namespace xe { namespace gfx {
 

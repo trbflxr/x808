@@ -6,19 +6,15 @@
 #define X808_TEST_HPP
 
 
-#include <gfx/layers/layer.hpp>
+#include <gfx/layers/layer2d.hpp>
 #include <gfx/api/texture2d.hpp>
-#include <gfx/renderer2d.hpp>
-#include <core/gameobject.hpp>
 #include <gfx/api/basicshader.hpp>
 
-class Test2D : public xe::gfx::Layer {
+class Test2D : public xe::gfx::Layer2D {
 public:
 	explicit Test2D();
 	~Test2D() override;
 
-	void init() override;
-	void render() override;
 	void update(const xe::TimeStep &ts) override;
 	void tick() override;
 
@@ -27,12 +23,6 @@ public:
 	bool onKeyPressedEvent(xe::KeyPressEvent &event);
 	bool onMousePressedEvent(xe::MousePressEvent &event);
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
-
-private:
-	xe::gfx::Renderer2D *renderer;
-	xe::gfx::api::BasicShader *shader;
-
-	xe::GameObject *root;
 
 };
 

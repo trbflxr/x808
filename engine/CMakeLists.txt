@@ -39,6 +39,7 @@ set(ENGINE_SRC
         src/gfx/api/shader.cpp
         src/gfx/api/texture.cpp
         src/gfx/api/texture2d.cpp
+        src/gfx/layers/layer2d.cpp
         src/gfx/camera/camera.hpp
         src/gfx/renderer.cpp
         src/gfx/renderer2d.cpp
@@ -53,6 +54,10 @@ set(ENGINE_SRC
         src/math/rect.cpp
         src/math/aabb.cpp
 
+        src/objects/transform.cpp
+        src/objects/gameobject.cpp
+        src/objects/spritecomponent.cpp
+
         src/utils/log.cpp
         src/utils/timer.cpp
         src/utils/loadimage.cpp
@@ -60,11 +65,7 @@ set(ENGINE_SRC
         src/config.cpp
 
         #todo: remove
-        src/gfx/api/basicshader.cpp
-
-        #experimental
-        src/core/transform.cpp
-        src/core/gameobject.cpp src/components/spritecomponent.cpp src/components/spritecomponent.hpp)
+        src/gfx/api/basicshader.cpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})

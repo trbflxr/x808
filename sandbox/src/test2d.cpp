@@ -4,25 +4,23 @@
 
 #include <application/application.hpp>
 #include <gfx/api/texture2d.hpp>
-#include <components/spritecomponent.hpp>
+#include <objects/spritecomponent.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
 using namespace gfx;
 using namespace gfx::api;
 
-Test2D::Test2D() {
-	renderer = new Renderer2D(800, 600);
+Test2D::Test2D() :
+		Layer2D(math::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f), new api::BasicShader()) {
+
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
-
-	root = new GameObject();
 
 	root->addObject(new SpriteComponent(renderer, {5, 5}, color::RED));
 
 	SpriteComponent *s = new SpriteComponent(renderer, {4, 4},
 	                                         new Texture2D("test1", "assets/textures/test3.png", params));
-//	s->getTransform().rotate(25, ZAXIS);
 	s->getTransform().setPosition({-8, 3, 0});
 
 
@@ -32,33 +30,16 @@ Test2D::Test2D() {
 
 	s->addObject(s2);
 
-
 	root->addObject(s);
-
-
 }
 
 Test2D::~Test2D() {
-	delete renderer;
-	delete root;
+	delete shader;
 }
 
-void Test2D::init() {
-	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureFilter::NEAREST);
-}
 
 void Test2D::update(const xe::TimeStep &ts) {
 
-}
-
-void Test2D::render() {
-	renderer->begin();
-
-	root->render(shader);
-
-	renderer->end();
-	renderer->flush();
 }
 
 void Test2D::tick() {
