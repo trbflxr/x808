@@ -20,7 +20,7 @@ void Test2D::init() {
 }
 
 void Test2D::update(const xe::TimeStep &ts) {
-		
+
 }
 
 void Test2D::render() {

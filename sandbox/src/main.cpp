@@ -1,4 +1,6 @@
 #include <application/application.hpp>
+#include <math/mat4.hpp>
+#include <utils/log.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -19,6 +21,7 @@ public:
 };
 
 int main() {
+
 	xe::Config config{ };
 	xe::Config::load(config);
 

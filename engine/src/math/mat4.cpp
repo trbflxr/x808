@@ -34,7 +34,8 @@ xe::math::mat4::mat4(const vec4 &row0, const vec4 &row1, const vec4 &row2, const
 }
 
 xe::math::vec4 xe::mat4::getColumn(int index) const {
-	return vec4(elements[index + 0 * 4], elements[index + 1 * 4], elements[index + 2 * 4], elements[index + 3 * 4]);
+	return vec4(elements[index + 0 * 4], elements[index + 1 * 4], elements[index + 2 * 4],
+	            elements[index + 3 * 4]);
 }
 
 void xe::math::mat4::setColumn(int index, const vec4 &column) {
@@ -159,7 +160,8 @@ xe::mat4 &xe::math::mat4::invert() {
 	           elements[8] * elements[1] * elements[6] -
 	           elements[8] * elements[2] * elements[5];
 
-	float determinant = elements[0] * temp[0] + elements[1] * temp[4] + elements[2] * temp[8] + elements[3] * temp[12];
+	float determinant =
+			elements[0] * temp[0] + elements[1] * temp[4] + elements[2] * temp[8] + elements[3] * temp[12];
 	determinant = 1.0f / determinant;
 
 	for (int i = 0; i < 4 * 4; i++) {
@@ -167,6 +169,41 @@ xe::mat4 &xe::math::mat4::invert() {
 	}
 
 	return *this;
+}
+
+xe::vec3 xe::math::mat4::transform(const vec3 &r) const {
+	return vec3(rows[0].x * r.x + rows[0].y * r.y + rows[0].z * r.z + rows[0].w,
+	            rows[1].x * r.x + rows[1].y * r.y + rows[1].z * r.z + rows[1].w,
+	            rows[2].x * r.x + rows[2].y * r.y + rows[2].z * r.z + rows[2].w);
+}
+
+xe::math::mat4 xe::math::initRotation(const vec3 &forward, const vec3 &up) {
+	vec3 f = math::normalize(forward);
+	vec3 r = math::normalize(up);
+	r = math::cross(r, f);
+
+	vec3 u = math::cross(f, r);
+
+
+	return initRotation(f, u, r);
+}
+
+xe::math::mat4 xe::math::initRotation(const vec3 &forward, const vec3 &up, const vec3 &right) {
+	mat4 res(1.0f);
+
+	res.rows[0].x = right.x;
+	res.rows[0].y = right.y;
+	res.rows[0].z = right.z;
+
+	res.rows[1].x = up.x;
+	res.rows[1].y = up.y;
+	res.rows[1].z = up.z;
+
+	res.rows[2].x = forward.x;
+	res.rows[2].y = forward.y;
+	res.rows[2].z = forward.z;
+
+	return res;
 }
 
 xe::mat4 xe::math::ortho(float left, float right, float bottom, float top, float near, float far) {

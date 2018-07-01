@@ -34,8 +34,13 @@ namespace xe {
 			inline vec3 getPosition() const { return vec3(getColumn(3)); }
 			inline void setPosition(const vec3 &position) { setColumn(3, vec4(position, 1.0f)); }
 
+			vec3 transform(const vec3 &r) const;
+
 			mat4 &invert();
 		};
+
+		XE_API mat4 initRotation(const vec3 &forward, const vec3 &up);
+		XE_API mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 
 		XE_API mat4 ortho(float left, float right, float bottom, float top, float near, float far);
 		XE_API mat4 perspective(float fov, float aspectRatio, float near, float far);

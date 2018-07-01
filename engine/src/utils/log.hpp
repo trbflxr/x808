@@ -99,6 +99,12 @@ namespace xe { namespace internal {
 		return buffer;
 	}
 
+	template<>
+	inline const char *to_string<quat>(const quat &t) {
+		sprintf(buffer, "quat(%.3f, %.3f, %.3f, %.3f)", t.x, t.y, t.z, t.w);
+		return buffer;
+	}
+
 
 	template<typename First>
 	static void print_log_internal(char *buffer, uint &position, First &&first) {

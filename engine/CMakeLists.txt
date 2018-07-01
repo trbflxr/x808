@@ -61,7 +61,10 @@ set(ENGINE_SRC
         src/config.cpp
 
         #todo: remove
-        src/gfx/api/basicshader.cpp)
+        src/gfx/api/basicshader.cpp
+
+        #experimental
+        src/components/transform.cpp)
 
 
 add_library(xe SHARED ${ENGINE_SRC})

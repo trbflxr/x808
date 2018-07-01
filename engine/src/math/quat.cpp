@@ -37,6 +37,44 @@ xe::math::quat::quat(const vec3 &xyz, float w) : x(xyz.x), y(xyz.y), z(xyz.z), w
 xe::math::quat::quat(const vec4 &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) { }
 xe::math::quat::quat(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) { }
 
+xe::math::quat::quat(const xe::mat4 &rot) {
+	float trace = rot.rows[0].x + rot.rows[1].y + rot.rows[2].z;
+
+	if (trace > 0) {
+		float s = 0.5f / sqrtf(trace + 1.0f);
+		w = 0.25f / s;
+		x = (rot.rows[1].z - rot.rows[2].y) * s;
+		y = (rot.rows[2].x - rot.rows[0].z) * s;
+		z = (rot.rows[0].y - rot.rows[1].x) * s;
+	} else {
+		if (rot.rows[0].x > rot.rows[1].y && rot.rows[0].x > rot.rows[2].z) {
+			float s = 2.0f * sqrtf(1.0f + rot.rows[0].x - rot.rows[1].y - rot.rows[2].z);
+			w = (rot.rows[1].z - rot.rows[2].y) / s;
+			x = 0.25f * s;
+			y = (rot.rows[1].x + rot.rows[0].y) / s;
+			z = (rot.rows[2].x + rot.rows[0].z) / s;
+		} else if (rot.rows[1].y > rot.rows[2].z) {
+			float s = 2.0f * sqrtf(1.0f + rot.rows[1].y - rot.rows[0].x - rot.rows[2].z);
+			w = (rot.rows[2].x - rot.rows[0].z) / s;
+			x = (rot.rows[1].x + rot.rows[0].y) / s;
+			y = 0.25f * s;
+			z = (rot.rows[2].y + rot.rows[1].z) / s;
+		} else {
+			float s = 2.0f * sqrtf(1.0f + rot.rows[2].z - rot.rows[0].x - rot.rows[1].y);
+			w = (rot.rows[0].y - rot.rows[1].x) / s;
+			x = (rot.rows[2].x + rot.rows[0].z) / s;
+			y = (rot.rows[1].z + rot.rows[2].y) / s;
+			z = 0.25f * s;
+		}
+	}
+
+	float length = sqrtf(x * x + y * y + z * z + w * w);
+	x /= length;
+	y /= length;
+	z /= length;
+	w /= length;
+}
+
 xe::vec3 xe::math::quat::getAxis() const {
 	float x = 1.0f - w * w;
 	if (x < 0.0000001f) return XAXIS;
@@ -49,6 +87,23 @@ xe::vec3 xe::math::quat::toEulerAngles() const {
 	return vec3(atan2f(2 * x * w - 2 * y * z, 1 - 2 * x * x - 2 * z * z),
 	            atan2f(2 * y * w - 2 * x * z, 1 - 2 * y * y - 2 * z * z),
 	            asinf(2 * x * y + 2 * z * w));
+}
+
+xe::mat4 xe::math::quat::toRotationMatrix() const {
+	vec3 forward(2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
+	vec3 up(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
+	vec3 right(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
+
+	return xe::mat4();
+}
+
+float xe::math::length(const quat &q) {
+	return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+}
+
+xe::math::quat xe::math::normalize(const quat &q) {
+	float l = length(q);
+	return quat(q.x / l, q.y / l, q.z / l, q.w / l);
 }
 
 float xe::math::dot(const quat &left, const quat &right) {
@@ -118,10 +173,11 @@ xe::math::quat xe::math::operator-(const quat &left, const quat &right) {
 }
 
 xe::math::quat xe::math::operator*(const quat &left, const quat &right) {
-	return normalizeQuat(quat((((left.w * right.x) + (left.x * right.w)) + (left.y * right.z)) - (left.z * right.y),
-	                          (((left.w * right.y) + (left.y * right.w)) + (left.z * right.x)) - (left.x * right.z),
-	                          (((left.w * right.z) + (left.z * right.w)) + (left.x * right.y)) - (left.y * right.x),
-	                          (((left.w * right.w) - (left.x * right.x)) - (left.y * right.y)) - (left.z * right.z)));
+	return normalizeQuat(
+			quat((((left.w * right.x) + (left.x * right.w)) + (left.y * right.z)) - (left.z * right.y),
+			     (((left.w * right.y) + (left.y * right.w)) + (left.z * right.x)) - (left.x * right.z),
+			     (((left.w * right.z) + (left.z * right.w)) + (left.x * right.y)) - (left.y * right.x),
+			     (((left.w * right.w) - (left.x * right.x)) - (left.y * right.y)) - (left.z * right.z)));
 }
 
 xe::math::quat xe::math::operator*(const quat &left, float right) {

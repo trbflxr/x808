@@ -13,6 +13,7 @@ namespace xe {
 
 		struct vec3;
 		struct vec4;
+		struct mat4;
 
 		struct XE_API quat {
 			float x;
@@ -26,10 +27,15 @@ namespace xe {
 			explicit quat(const vec3 &xyz, float w);
 			explicit quat(const vec4 &vec);
 			explicit quat(float scalar);
+			explicit quat(const mat4 &rot);
 
 			vec3 getAxis() const;
 			vec3 toEulerAngles() const;
+			mat4 toRotationMatrix() const;
 		};
+
+		XE_API float length(const quat &q);
+		XE_API quat normalize(const quat &q);
 
 		XE_API float dot(const quat &left, const quat &right);
 		XE_API quat conjugate(const quat &q);
