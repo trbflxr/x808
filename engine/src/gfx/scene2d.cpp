@@ -29,7 +29,15 @@ void xe::gfx::Scene2D::render() {
 
 	renderer->begin();
 
-	//todo: submit components
+	for (auto &&e : entities) {
+		SpriteComponent* spriteComponent = e->getComponent<SpriteComponent>();
+		if(spriteComponent){
+			TransformComponent* transformComponent = e->getComponent<TransformComponent>();
+			XE_ASSERT(transformComponent, "Sprite does not have transform");
+
+			spriteComponent->sprite->submit(renderer);
+		}
+	}
 
 	render(*renderer);
 

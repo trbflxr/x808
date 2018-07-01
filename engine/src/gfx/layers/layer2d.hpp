@@ -21,7 +21,7 @@ namespace xe { namespace gfx {
 		explicit Layer2D(Scene2D *scene);
 		~Layer2D() override;
 
-		virtual void init();
+		void init() override;
 		virtual void init(Renderer2D& renderer) { }
 
 		void render() override;

@@ -8,7 +8,6 @@
 
 #include <gfx/layers/layer2d.hpp>
 #include <gfx/api/texture2d.hpp>
-#include <gfx/sprite.hpp>
 
 class Test2D : public xe::gfx::Layer2D {
 public:
@@ -26,7 +25,7 @@ public:
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
 
 private:
-	xe::gfx::Sprite *sprite;
+	xe::Entity *entity;
 };
 
 
