@@ -168,6 +168,8 @@ void xe::gfx::Renderer2D::flush() {
 	for (uint i = 0; i < textures.size(); i++) {
 		textures[i]->bind(i);
 	}
+	shader->setUniform1iv("textures", static_cast<uint>(textureSlots.size()), textureSlots.data());
+
 
 	vertexArray->bind();
 	indexBuffer->bind();
@@ -306,6 +308,7 @@ float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 		}
 		textures.push_back(texture);
 		result = (float) (textures.size());
+		textureSlots.push_back((int32) result - 1);
 	}
 	return result;
 }

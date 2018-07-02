@@ -4,7 +4,7 @@
 
 #include <application/application.hpp>
 #include <gfx/api/texture2d.hpp>
-#include <objects/spritecomponent.hpp>
+#include <objects/sprite.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -17,14 +17,14 @@ Test2D::Test2D() :
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
 
-	root->addObject(new SpriteComponent(renderer, {5, 5}, color::RED));
+	root->addObject(new Sprite(renderer, {5, 5}, color::RED));
 
-	SpriteComponent *s = new SpriteComponent(renderer, {4, 4},
+	Sprite *s = new Sprite(renderer, {4, 4},
 	                                         new Texture2D("test1", "assets/textures/test3.png", params));
 	s->getTransform().setPosition({-8, 3, 0});
 
 
-	SpriteComponent *s2 = new SpriteComponent(renderer, {3, 3},
+	Sprite *s2 = new Sprite(renderer, {3, 3},
 	                                          new Texture2D("test5", "assets/textures/test5.png", params));
 	s2->getTransform().setPosition({-2, 1, 0});
 

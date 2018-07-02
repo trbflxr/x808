@@ -26,7 +26,6 @@ namespace xe { namespace gfx {
 	protected:
 		OrthographicCamera *camera;
 
-		//todo: each object must have own shader
 		api::Shader *shader;
 		Renderer2D *renderer;
 		xe::GameObject *root;

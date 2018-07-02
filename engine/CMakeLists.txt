@@ -56,7 +56,7 @@ set(ENGINE_SRC
 
         src/objects/transform.cpp
         src/objects/gameobject.cpp
-        src/objects/spritecomponent.cpp
+        src/objects/sprite.cpp
 
         src/utils/log.cpp
         src/utils/timer.cpp

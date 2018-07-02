@@ -16,15 +16,11 @@ namespace xe { namespace gfx {
 
 namespace xe {
 
-	class XE_API SpriteComponent : public gfx::Renderable2D {
+	class XE_API Sprite : public gfx::Renderable2D {
 	public:
-		explicit SpriteComponent(gfx::Renderer2D *renderer,
-		                         const vec2 &size,
-		                         const gfx::api::Texture2D *texture);
+		explicit Sprite(gfx::Renderer2D *renderer, const vec2 &size, const gfx::api::Texture2D *texture);
 
-		explicit SpriteComponent(gfx::Renderer2D *renderer,
-		                         const vec2 &size,
-		                         uint color = color::WHITE);
+		explicit Sprite(gfx::Renderer2D *renderer, const vec2 &size, uint color = color::WHITE);
 
 	protected:
 		void renderInternal(const gfx::api::Shader *shader) override;

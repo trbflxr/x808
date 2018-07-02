@@ -66,6 +66,7 @@ namespace xe { namespace gfx {
 		uint indexCount;
 		VertexData *buffer;
 		std::vector<const api::Texture *> textures;
+		std::vector<int32> textureSlots;
 
 		vec2u screenSize;
 		vec2u viewportSize;
