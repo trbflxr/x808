@@ -68,6 +68,8 @@ namespace xe { namespace gfx { namespace api {
 		virtual std::string_view getName() const = 0;
 		virtual std::string_view getFilePath() const = 0;
 
+		virtual uint getHandle() const = 0;
+
 		static byte getStrideFromFormat(TextureFormat format);
 
 		inline static void setWrap(TextureWrap mode) { wrapMode = mode; }

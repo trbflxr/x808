@@ -39,7 +39,7 @@ namespace xe { namespace gfx { namespace api {
 		inline uint getWidth() const { return width; }
 		inline uint getHeight() const { return height; }
 
-		inline uint getHandle() const { return handle; }
+		inline uint getHandle() const override { return handle; }
 
 		static uint textureFormatToGL(TextureFormat format);
 		static uint textureWrapToGL(TextureWrap wrap);

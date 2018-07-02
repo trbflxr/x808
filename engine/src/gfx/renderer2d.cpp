@@ -2,6 +2,8 @@
 // Created by FLXR on 6/29/2018.
 //
 
+#include <freetype-gl/freetype-gl.h>
+
 #include "renderer2d.hpp"
 #include "renderer.hpp"
 #include "api/basicshader.hpp"
@@ -143,6 +145,126 @@ void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 	buffer++;
 
 	indexCount += 6;
+}
+
+void xe::gfx::Renderer2D::submitText(const xe::gfx::Text &text, const xe::vec2 &position) {
+	using namespace ftgl;
+
+	const Font &font = *text.getFont();
+	ftgl::texture_font_t *ftFont = font.getFTFont();
+	const std::string &string = text.text;
+	const uint color = text.textColor;
+	const uint outlineColor = text.outlineColor;
+
+	const float tid = submitTexture(font.getTexture());
+	const float scale = font.getSize() / text.getSize();
+
+	float x = position.x;
+	const float y = -position.y;
+
+	if (ftFont->outline_thickness > 0) {
+		for (uint i = 0; i < string.length(); i++) {
+			auto *glyph = ftgl::texture_font_get_glyph(ftFont, string[i]);
+			if (glyph) {
+
+				if (i > 0) {
+					float kerning = ftgl::texture_glyph_get_kerning(glyph, string[i - 1]);
+					x += kerning / scale;
+				}
+
+				float x0 = x + glyph->offset_x / scale;
+				float y0 = y - glyph->offset_y / scale;
+				float x1 = x0 + glyph->width / scale;
+				float y1 = y0 + glyph->height / scale;
+
+				float s0 = glyph->s0;
+				float t0 = glyph->t0;
+				float s1 = glyph->s1;
+				float t1 = glyph->t1;
+
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y0));
+				buffer->uv = xe::vec2(s0, t0);
+				buffer->tid = tid;
+				buffer->color = outlineColor;
+				++buffer;
+
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y1));
+				buffer->uv = xe::vec2(s0, t1);
+				buffer->tid = tid;
+				buffer->color = outlineColor;
+				++buffer;
+
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y1));
+				buffer->uv = xe::vec2(s1, t1);
+				buffer->tid = tid;
+				buffer->color = outlineColor;
+				++buffer;
+
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y0));
+				buffer->uv = xe::vec2(s1, t0);
+				buffer->tid = tid;
+				buffer->color = outlineColor;
+				++buffer;
+
+				indexCount += 6;
+
+				x += glyph->advance_x / scale;
+			}
+		}
+		x = position.x;
+		ftFont->outline_type = 0;
+	}
+
+	for (uint i = 0; i < string.length(); i++) {
+		auto *glyph = ftgl::texture_font_get_glyph(ftFont, string[i]);
+		if (glyph) {
+
+			if (i > 0) {
+				float kerning = ftgl::texture_glyph_get_kerning(glyph, string[i - 1]);
+				x += kerning / scale;
+			}
+
+			float x0 = x + glyph->offset_x / scale;
+			float y0 = y - glyph->offset_y / scale;
+			float x1 = x0 + glyph->width / scale;
+			float y1 = y0 + glyph->height / scale;
+
+			float s0 = glyph->s0;
+			float t0 = glyph->t0;
+			float s1 = glyph->s1;
+			float t1 = glyph->t1;
+
+
+			buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y0));
+			buffer->uv = xe::vec2(s0, t0);
+			buffer->tid = tid;
+			buffer->color = color;
+			++buffer;
+
+			buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y1));
+			buffer->uv = xe::vec2(s0, t1);
+			buffer->tid = tid;
+			buffer->color = color;
+			++buffer;
+
+			buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y1));
+			buffer->uv = xe::vec2(s1, t1);
+			buffer->tid = tid;
+			buffer->color = color;
+			++buffer;
+
+			buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y0));
+			buffer->uv = xe::vec2(s1, t0);
+			buffer->tid = tid;
+			buffer->color = color;
+			++buffer;
+
+			indexCount += 6;
+
+			x += glyph->advance_x / scale;
+		}
+	}
+	ftFont->outline_type = 2;
 }
 
 void xe::gfx::Renderer2D::end() {
@@ -306,4 +428,5 @@ float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 	}
 	return result;
 }
+
 

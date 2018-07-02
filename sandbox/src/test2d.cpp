@@ -68,7 +68,7 @@ Test2D::Test2D() :
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-	uint texCount = 31;x
+	uint texCount = 31;
 
 #define sp_size  1
 
@@ -95,6 +95,14 @@ Test2D::Test2D() :
 
 	XE_INFO("size: ", renderables.size());
 
+//	font = new Font("assets/fonts/consolata.otf", 100);
+	font = new Font("assets/fonts/sourcesanspro-regular.ttf", 100);
+
+	text = new Text("CJIOHIK", 20, *font);
+	text->setColor(color::WHITE);
+	text->setOutlineColor(color::BLACK);
+	text->setOutlineThickness(2);
+
 }
 
 Test2D::~Test2D() {
@@ -104,6 +112,9 @@ Test2D::~Test2D() {
 		delete texture;
 	}
 	textures.clear();
+
+	delete text;
+	delete font;
 }
 
 
@@ -116,6 +127,8 @@ void Test2D::render() {
 //		r->rotate(1);
 		renderer->submit(r);
 	}
+
+	renderer->submitText(*text, {-50, 0});
 
 	renderer->end();
 	renderer->flush();

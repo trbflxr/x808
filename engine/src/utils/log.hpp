@@ -152,32 +152,32 @@ namespace xe { namespace internal {
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_FATAL
-#define XE_FATAL(...) xe::internal::log_message(XE_LOG_LEVEL_FATAL, true, "XE:    ", __VA_ARGS__)
-#define _XE_FATAL(...) xe::internal::log_message(XE_LOG_LEVEL_FATAL, false, __VA_ARGS__)
+#define XE_FATAL(...) xe::internal::log_message(XE_LOG_LEVEL_FATAL, true, "XE:    ", ##__VA_ARGS__)
+#define _XE_FATAL(...) xe::internal::log_message(XE_LOG_LEVEL_FATAL, false, ##__VA_ARGS__)
 #else
 #define XE_FATAL(...)
 #define _XE_FATAL(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_ERROR
-#define XE_ERROR(...) xe::internal::log_message(XE_LOG_LEVEL_ERROR, true, "XE:    ", __VA_ARGS__)
-#define _XE_ERROR(...) xe::internal::log_message(XE_LOG_LEVEL_ERROR, false, __VA_ARGS__)
+#define XE_ERROR(...) xe::internal::log_message(XE_LOG_LEVEL_ERROR, true, "XE:    ", ##__VA_ARGS__)
+#define _XE_ERROR(...) xe::internal::log_message(XE_LOG_LEVEL_ERROR, false, ##__VA_ARGS__)
 #else
 #define XE_ERROR(...)
 #define _XE_ERROR(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_WARN
-#define XE_WARN(...) xe::internal::log_message(XE_LOG_LEVEL_WARN, true, "XE:    ", __VA_ARGS__)
-#define _XE_WARN(...) xe::internal::log_message(XE_LOG_LEVEL_WARN, false, __VA_ARGS__)
+#define XE_WARN(...) xe::internal::log_message(XE_LOG_LEVEL_WARN, true, "XE:    ", ##__VA_ARGS__)
+#define _XE_WARN(...) xe::internal::log_message(XE_LOG_LEVEL_WARN, false, ##__VA_ARGS__)
 #else
 #define XE_WARN(...)
 #define _XE_WARN(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_INFO
-#define XE_INFO(...) xe::internal::log_message(XE_LOG_LEVEL_INFO, true, "XE:    ", __VA_ARGS__)
-#define _XE_INFO(...) xe::internal::log_message(XE_LOG_LEVEL_INFO, false, __VA_ARGS__)
+#define XE_INFO(...) xe::internal::log_message(XE_LOG_LEVEL_INFO, true, "XE:    ", ##__VA_ARGS__)
+#define _XE_INFO(...) xe::internal::log_message(XE_LOG_LEVEL_INFO, false, ##__VA_ARGS__)
 #else
 #define XE_INFO(...)
 #define _XE_INFO(...)
@@ -189,7 +189,7 @@ namespace xe { namespace internal {
             XE_FATAL("ASSERTION FAILED"); \
             XE_FATAL(__FILE__, ": ", __LINE__); \
             XE_FATAL("Condition: ", #x); \
-            XE_FATAL("Args: ", #__VA_ARGS__); \
+            XE_FATAL(__VA_ARGS__); \
             __debugbreak(); \
         }
 #else

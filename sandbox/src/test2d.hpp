@@ -9,6 +9,8 @@
 #include <gfx/layers/layer2d.hpp>
 #include <gfx/api/texture2d.hpp>
 #include <gfx/api/basicshader.hpp>
+#include <gfx/text.hpp>
+#include <resources/font.hpp>
 
 class Test2D : public xe::gfx::Layer2D {
 public:
@@ -27,6 +29,9 @@ public:
 
 private:
 	std::vector<xe::gfx::api::Texture2D *> textures;
+
+	xe::Font *font;
+	xe::gfx::Text *text;
 };
 
 

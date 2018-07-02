@@ -14,6 +14,7 @@
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
+#include "text.hpp"
 
 namespace xe { namespace gfx {
 
@@ -29,9 +30,11 @@ namespace xe { namespace gfx {
 		void setCamera(Camera *camera);
 
 		void begin();
-		void submit(const Renderable2D *renderable);
 		void end();
 		void flush();
+
+		void submit(const Renderable2D *renderable);
+		void submitText(const Text &text, const vec2 &position);
 
 		void drawLine(float x0, float y0, float x1, float y1, uint color = color::WHITE, float thickness = 0.02f);
 		void drawLine(const vec2 &start, const vec2 &end, uint color = color::WHITE, float thickness = 0.02f);
@@ -42,8 +45,6 @@ namespace xe { namespace gfx {
 		void fillRect(float x, float y, float width, float height, uint color = color::WHITE);
 		void fillRect(const vec2 &position, const vec2 &size, uint color = color::WHITE);
 		void fillRect(const rect &rectangle, uint color = color::WHITE);
-
-		//todo: draw string function
 
 		inline const vec2u &getScreenSize() const { return screenSize; }
 		inline void setScreenSize(const vec2u &size) { screenSize = size; }

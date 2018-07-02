@@ -21,6 +21,10 @@ include_directories(src)
 include_directories(external/freeimage/include)
 link_directories(external/freeimage/lib)
 
+#freetype-gl
+include_directories(external/freetype-gl/include)
+link_directories(external/freetype-gl/lib)
+
 #glew
 include_directories(external/glew/include)
 
@@ -45,6 +49,7 @@ set(ENGINE_SRC
         src/gfx/renderer2d.cpp
         src/gfx/renderer2d.hpp
         src/gfx/renderable2d.cpp
+        src/gfx/text.cpp
 
         src/math/vec2.cpp
         src/math/vec3.cpp
@@ -58,6 +63,8 @@ set(ENGINE_SRC
         src/objects/transform.cpp
         src/objects/gameobject.cpp
         src/gfx/sprite.cpp
+
+        src/resources/font.cpp
 
         src/utils/log.cpp
         src/utils/timer.cpp
@@ -74,4 +81,7 @@ add_library(xe SHARED ${ENGINE_SRC})
 target_link_libraries(xe
         glew
         ${OPENGL_LIBRARIES}
-        freeimage)
+        freeimage
+        freetype-gl
+        freetype
+        bz2)
