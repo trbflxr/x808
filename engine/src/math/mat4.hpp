@@ -39,6 +39,10 @@ namespace xe {
 			mat4 &invert();
 		};
 
+		XE_API vec3 translateVec(const mat4 &m, const vec2 &vec);
+		XE_API vec3 translateVec(const mat4 &m, const vec3 &vec);
+		XE_API mat4 rotateMatZ(float rad) ;
+
 		XE_API mat4 initRotation(const vec3 &forward, const vec3 &up);
 		XE_API mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 

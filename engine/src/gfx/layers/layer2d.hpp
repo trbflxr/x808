@@ -7,7 +7,6 @@
 
 
 #include "layer.hpp"
-#include "gfx/api/shader.hpp"
 #include "gfx/renderer2d.hpp"
 #include "gfx/camera/orthographiccamera.hpp"
 
@@ -20,15 +19,18 @@ namespace xe { namespace gfx {
 
 		void render() override;
 
+		Renderable2D *add(Renderable2D *renderable);
+
 	protected:
 		bool resize(uint width, uint height) override;
 
 	protected:
 		OrthographicCamera *camera;
 
+		std::vector<Renderable2D *> renderables;
+
 		api::Shader *shader;
 		Renderer2D *renderer;
-		xe::GameObject *root;
 	};
 
 }}

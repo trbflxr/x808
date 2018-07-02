@@ -8,9 +8,9 @@
 
 #include "common.hpp"
 #include "xeint.hpp"
-#include "gfx/camera/camera.hpp"
 #include "color.hpp"
 #include "renderable2d.hpp"
+#include "gfx/camera/camera.hpp"
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
@@ -29,7 +29,7 @@ namespace xe { namespace gfx {
 		void setCamera(Camera *camera);
 
 		void begin();
-		void submit(Renderable2D *renderable);
+		void submit(const Renderable2D *renderable);
 		void end();
 		void flush();
 

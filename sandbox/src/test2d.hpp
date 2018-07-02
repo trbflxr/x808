@@ -15,6 +15,7 @@ public:
 	explicit Test2D();
 	~Test2D() override;
 
+	void render() override;
 	void update(const xe::TimeStep &ts) override;
 	void tick() override;
 
@@ -24,6 +25,8 @@ public:
 	bool onMousePressedEvent(xe::MousePressEvent &event);
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
 
+private:
+	std::vector<xe::gfx::api::Texture2D *> textures;
 };
 
 

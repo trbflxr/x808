@@ -105,44 +105,38 @@ void xe::gfx::Renderer2D::begin() {
 	buffer = vertexArray->getBuffer()->getPointer<VertexData>();
 }
 
-void xe::gfx::Renderer2D::submit(xe::gfx::Renderable2D *renderable) {
+void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 	if (!renderable->isVisible()) return;
 
-	const vec3 min = renderable->getTransform().getTransformedPos();
-	const vec3 max = min + vec3(renderable->size);
-
-	const uint color = renderable->getColor();
-	const std::vector<vec2> &uv = renderable->getUVs();
-	const api::Texture *texture = renderable->getTexture();
+	const std::array<vec2, 4> &vertices = renderable->bounds.getVertices();
+	const uint color = renderable->color;
+	const std::vector<vec2> &uv = renderable->UVs;
+	const api::Texture *texture = renderable->texture;
 
 	float textureSlot = 0.0f;
 	if (texture) {
 		textureSlot = submitTexture(renderable->getTexture());
 	}
 
-	vec3 vertex = *transformationBack * min;
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vertices[0]);
 	buffer->uv = uv[0];
 	buffer->tid = textureSlot;
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * vec3(max.x, min.y);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vertices[3]);
 	buffer->uv = uv[1];
 	buffer->tid = textureSlot;
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * vec3(max);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vertices[2]);
 	buffer->uv = uv[2];
 	buffer->tid = textureSlot;
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * vec3(min.x, max.y);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vertices[1]);
 	buffer->uv = uv[3];
 	buffer->tid = textureSlot;
 	buffer->color = color;

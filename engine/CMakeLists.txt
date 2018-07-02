@@ -53,10 +53,11 @@ set(ENGINE_SRC
         src/math/quat.cpp
         src/math/rect.cpp
         src/math/aabb.cpp
+        src/math/aobb.cpp
 
         src/objects/transform.cpp
         src/objects/gameobject.cpp
-        src/objects/sprite.cpp
+        src/gfx/sprite.cpp
 
         src/utils/log.cpp
         src/utils/timer.cpp

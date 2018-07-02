@@ -177,6 +177,33 @@ xe::vec3 xe::math::mat4::transform(const vec3 &r) const {
 	            rows[2].x * r.x + rows[2].y * r.y + rows[2].z * r.z + rows[2].w);
 }
 
+xe::vec3 xe::math::translateVec(const mat4 &m, const vec2 &vec) {
+	return vec3(m.rows[0].x * vec.x + m.rows[1].x * vec.y + m.rows[3].x,
+	            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[3].y,
+	            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[3].z);
+}
+
+xe::vec3 xe::math::translateVec(const mat4 &m, const vec3 &vec) {
+	return vec3(m.rows[0].x * vec.x + m.rows[1].x * vec.y + m.rows[2].x * vec.z + m.rows[3].x,
+	            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[2].y * vec.z + m.rows[3].y,
+	            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[2].z * vec.z + m.rows[3].z);
+}
+
+xe::mat4 xe::math::rotateMatZ(float rad) {
+	mat4 m(1.0f);
+
+	const float s = sinf(rad);
+	const float c = cosf(rad);
+
+	m.rows[0].x = c;
+	m.rows[0].y = -s;
+
+	m.rows[1].x = s;
+	m.rows[1].y = c;
+
+	return m;
+}
+
 xe::math::mat4 xe::math::initRotation(const vec3 &forward, const vec3 &up) {
 	vec3 f = math::normalize(forward);
 	vec3 r = math::normalize(up);
