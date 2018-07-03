@@ -97,7 +97,7 @@ Test2D::Test2D() :
 	XE_INFO("size: ", renderables.size());
 
 
-	FontManager::add(new Font("sourceSans", "assets/fonts/sourcesanspro-regular.ttf", 100));
+	FontManager::add(new Font("sourceSans", "assets/fonts/sour1cesanspro-regular.ttf", 100));
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 
 	text = new Text("slava ukraine", 20, GETFONT("sourceSans"));
@@ -114,6 +114,8 @@ Test2D::Test2D() :
 	text3->setColor(color::YELLOW);
 	text3->setOutlineColor(color::BLACK);
 	text3->setOutlineThickness(3);
+
+	add(new Sprite({0, 0}, {20, 20}, 0, new Texture2D("test9", "assets/textures/dick.png", params)));
 }
 
 Test2D::~Test2D() {

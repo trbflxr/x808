@@ -7,6 +7,7 @@
 
 #include "loadimage.hpp"
 #include "utils/log.hpp"
+#include "gfx/color.hpp"
 
 byte *xe::utils::loadImage(const char *path, uint *width, uint *height, uint *bits, bool flipY) {
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -17,13 +18,21 @@ byte *xe::utils::loadImage(const char *path, uint *width, uint *height, uint *bi
 		fif = FreeImage_GetFIFFromFilename(path);
 	}
 
-	if (fif == FIF_UNKNOWN) return nullptr;
+	if (fif == FIF_UNKNOWN) {
+		return nullptr;
+	}
 
 	if (FreeImage_FIFSupportsReading(fif)) {
 		dib = FreeImage_Load(fif, path);
 	}
 
-	XE_ASSERT(dib, "Could not load image '", path, "'!");
+	if (!dib) {
+		XE_ERROR("Could not load image: ", path);
+		FreeImage_Unload(dib);
+
+		return nullptr;
+	}
+
 
 	FIBITMAP *bitmap = FreeImage_ConvertTo32Bits(dib);
 	FreeImage_Unload(dib);
@@ -37,7 +46,7 @@ byte *xe::utils::loadImage(const char *path, uint *width, uint *height, uint *bi
 		FreeImage_FlipVertical(bitmap);
 	}
 
-	if (FreeImage_GetRedMask(bitmap) == 0xff0000) {
+	if (FreeImage_GetRedMask(bitmap) == color::WHITE) {
 		SwapRedBlue32(bitmap);
 	}
 

@@ -16,10 +16,6 @@ namespace xe { namespace gfx { namespace api {
 		                   TextureParameters params = { },
 		                   TextureLoadOptions options = { });
 
-		explicit Texture2D(uint width, uint height, uint color,
-		                   TextureParameters params = { },
-		                   TextureLoadOptions options = { });
-
 		explicit Texture2D(const std::string_view &name,
 		                   const std::string_view &path,
 		                   TextureParameters params = { },
@@ -34,7 +30,6 @@ namespace xe { namespace gfx { namespace api {
 		inline std::string_view getFilePath() const override { return fileName; }
 
 		void setData(const void *pixels);
-		void setData(uint color);
 
 		inline uint getWidth() const { return width; }
 		inline uint getHeight() const { return height; }

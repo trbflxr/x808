@@ -13,6 +13,9 @@ namespace xe { namespace internal {
 	extern byte* DEFAULT_FONT;
 	extern uint DEFAULT_FONT_SIZE;
 
+	extern byte* DEFAULT_TEXTURE;
+	extern uint DEFAULT_TEXTURE_SIZE;
+
 }}
 
 

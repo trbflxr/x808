@@ -5,6 +5,7 @@
 #include <freetype-gl/freetype-gl.h>
 #include "font.hpp"
 #include "utils/log.hpp"
+#include "../../embedded/embedded.hpp"
 
 
 xe::Font::Font(const std::string_view &name, const std::string_view &path, float size) :
@@ -19,6 +20,12 @@ xe::Font::Font(const std::string_view &name, const std::string_view &path, float
 	ftAtlas = ftgl::texture_atlas_new(1024, 1024, 2);
 	ftFont = ftgl::texture_font_new_from_file(ftAtlas, size, path.data());
 
+	if (!ftFont) {
+		XE_ERROR("Failed to load font: ", path.data());
+		ftFont = ftgl::texture_font_new_from_memory(ftAtlas, size,
+		                                            internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE);
+	}
+
 	ftFont->outline_thickness = 0;
 	ftFont->outline_type = 2;
 
@@ -26,8 +33,6 @@ xe::Font::Font(const std::string_view &name, const std::string_view &path, float
 	                                TextureWrap::CLAMP_TO_EDGE};
 	texture = new Texture2D(1024, 1024, parameters);
 	texture->setData(ftAtlas->data);
-
-	XE_ASSERT(ftFont, "Failed to load font '", path.data(), "'!");
 }
 
 xe::Font::Font(const std::string_view &name, const byte *data, uint dataSize, float size) :

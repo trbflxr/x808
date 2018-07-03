@@ -5,6 +5,7 @@
 #include "texture2d.hpp"
 #include "gfx/glcommon.hpp"
 #include "utils/loadimage.hpp"
+#include "../../../embedded/embedded.hpp"
 
 xe::gfx::api::Texture2D::Texture2D(uint width, uint height,
                                    xe::gfx::api::TextureParameters params,
@@ -12,15 +13,6 @@ xe::gfx::api::Texture2D::Texture2D(uint width, uint height,
 		fileName("NULL"), width(width), height(height), parameters(params), loadOptions(options) {
 
 	handle = load();
-}
-
-xe::gfx::api::Texture2D::Texture2D(uint width, uint height, uint color,
-                                   xe::gfx::api::TextureParameters params,
-                                   xe::gfx::api::TextureLoadOptions options) :
-		fileName("NULL"), width(width), height(height), parameters(params), loadOptions(options) {
-
-	handle = load();
-	setData(color);
 }
 
 xe::gfx::api::Texture2D::Texture2D(const std::string_view &name,
@@ -52,30 +44,40 @@ void xe::gfx::api::Texture2D::setData(const void *pixels) {
 	                       textureFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
 }
 
-void xe::gfx::api::Texture2D::setData(uint color) {
-	XE_ASSERT(false, "not implemented");
-}
-
 uint xe::gfx::api::Texture2D::load() {
 	// todo: split  into loading from file and generating from data
 	byte *pixels = nullptr;
+
+	bool fail = false;
 
 	if (fileName != "NULL") {
 		uint bits;
 		// FreeImage loads bottom->top
 		pixels = utils::loadImage(fileName.data(), &width, &height, &bits, !loadOptions.flipY);
 
-		if (bits != 24 && bits != 32) {
-			XE_FATAL("[Texture] Unsupported image bit-depth! (', bits, ')");
+		if (!pixels) {
+			fail = true;
+			width = 247;
+			height = 200;
+
+			pixels = internal::DEFAULT_TEXTURE;
+			parameters.format = TextureFormat::RGBA;
+		} else {
+
+			if (bits != 24 && bits != 32) {
+				XE_FATAL("[Texture] Unsupported image bit-depth! (', bits, ')");
+			}
+			parameters.format = bits == 24 ? TextureFormat::RGB : TextureFormat::RGBA;
 		}
-		parameters.format = bits == 24 ? TextureFormat::RGB : TextureFormat::RGBA;
+
 	}
 
 	uint handle;
 	glCall(glGenTextures(1, &handle));
 	glCall(glBindTexture(GL_TEXTURE_2D, handle));
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-	                       parameters.filter == TextureFilter::LINEAR ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST));
+	                       parameters.filter == TextureFilter::LINEAR ? GL_LINEAR_MIPMAP_LINEAR
+	                                                                  : GL_NEAREST));
 
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
 	                       parameters.filter == TextureFilter::LINEAR ? GL_LINEAR : GL_NEAREST));
@@ -89,7 +91,9 @@ uint xe::gfx::api::Texture2D::load() {
 	glCall(glGenerateMipmap(GL_TEXTURE_2D));
 	glCall(glBindTexture(GL_TEXTURE_2D, 0));
 
-	delete[] pixels;
+	if (!fail) {
+		delete[] pixels;
+	}
 
 	return handle;
 }
