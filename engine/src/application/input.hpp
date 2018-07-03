@@ -99,6 +99,7 @@ namespace xe {
 #define XE_MODIFIER_RIGHT_ALT       BIT(4)
 #define XE_MODIFIER_RIGHT_SHIFT     BIT(5)
 
+#define XE_KEY_BACK           0x08
 #define XE_KEY_TAB            0x09
 
 #define XE_KEY_0              0x30
@@ -149,7 +150,7 @@ namespace xe {
 #define XE_KEY_CONTROL        0x11
 #define XE_KEY_MENU           0x12
 #define XE_KEY_ALT            XE_KEY_MENU
-#define XE_KEY_PAUSE          0x13
+#define XE_KEY_RETURN         0x13
 #define XE_KEY_CAPITAL        0x14
 
 #define XE_KEY_SPACE          0x20

@@ -30,6 +30,26 @@ xe::Font::Font(const std::string_view &name, const std::string_view &path, float
 	XE_ASSERT(ftFont, "Failed to load font '", path.data(), "'!");
 }
 
+xe::Font::Font(const std::string_view &name, const byte *data, uint dataSize, float size) :
+		name(name),
+		size(size),
+		texture(nullptr) {
+
+	using namespace gfx::api;
+
+	XE_ASSERT(size <= 150, "Max font size is 150");
+
+	ftAtlas = ftgl::texture_atlas_new(1024, 1024, 2);
+	ftFont = ftgl::texture_font_new_from_memory(ftAtlas, size, data, dataSize);
+
+	TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
+	                                TextureWrap::CLAMP_TO_EDGE};
+	texture = new Texture2D(1024, 1024, parameters);
+	texture->setData(ftAtlas->data);
+
+	XE_ASSERT(ftFont, "Failed to load font from data!");
+}
+
 xe::Font::~Font() {
 	ftgl::texture_atlas_delete(ftAtlas);
 	ftgl::texture_font_delete(ftFont);

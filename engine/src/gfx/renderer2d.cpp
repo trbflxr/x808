@@ -156,7 +156,10 @@ void xe::gfx::Renderer2D::submitText(const xe::gfx::Text &text, const xe::vec2 &
 	const uint color = text.textColor;
 	const uint outlineColor = text.outlineColor;
 
-	const float tid = submitTexture(font.getTexture());
+	const api::Texture2D *texture = font.getTexture();
+	XE_ASSERT(texture);
+
+	const float tid = submitTexture(texture);
 	const float scale = font.getSize() / text.getSize();
 
 	float x = position.x;
@@ -283,7 +286,9 @@ void xe::gfx::Renderer2D::flush() {
 
 	for (uint i = 0; i < textures.size(); i++) {
 		textures[i]->bind(i);
+		textureSlots.push_back(i);
 	}
+
 	shader->setUniform1iv("textures", static_cast<uint>(textureSlots.size()), textureSlots.data());
 
 
@@ -300,6 +305,9 @@ void xe::gfx::Renderer2D::flush() {
 	}
 
 	indexCount = 0;
+
+	textures.clear();
+	textureSlots.clear();
 }
 
 void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, uint color, float thickness) {
@@ -410,7 +418,7 @@ float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 
 	for (uint i = 0; i < textures.size(); i++) {
 		if (textures[i] == texture) {
-			result = (float) (i + 1);
+			result = i + 1;
 			found = true;
 			break;
 		}
@@ -423,9 +431,9 @@ float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 			begin();
 		}
 		textures.push_back(texture);
-		result = (float) (textures.size());
-		textureSlots.push_back((int32) result - 1);
+		result = textures.size();
 	}
+
 	return result;
 }
 

@@ -23,6 +23,7 @@ namespace xe {
 	class XE_API Font {
 	public:
 		explicit Font(const std::string_view &name, const std::string_view &path, float size);
+		explicit Font(const std::string_view &name, const byte *data, uint dataSize, float size);
 		virtual ~Font();
 
 		inline const std::string &getName() const { return name; }

@@ -32,6 +32,8 @@ include_directories(external/glew/include)
 set(ENGINE_SRC
         external/glew/src/glew.c
 
+        embedded/embedded.cpp
+
         src/application/window.cpp
         src/application/input.cpp
         src/application/application.cpp

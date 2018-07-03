@@ -98,12 +98,22 @@ Test2D::Test2D() :
 
 
 	FontManager::add(new Font("sourceSans", "assets/fonts/sourcesanspro-regular.ttf", 100));
+	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 
-	text = new Text("CJIOHIK", 20, GETFONT("sourceSans"));
+	text = new Text("slava ukraine", 20, GETFONT("sourceSans"));
 	text->setColor(color::WHITE);
 	text->setOutlineColor(color::BLACK);
-	text->setOutlineThickness(2);
+	text->setOutlineThickness(3);
 
+	text2 = new Text("another one", 20, GETFONT("consolata"));
+	text2->setColor(color::BLUE);
+	text2->setOutlineColor(color::BLACK);
+	text2->setOutlineThickness(3);
+
+	text3 = new Text("and another one", 20, GETFONT("default"));
+	text3->setColor(color::YELLOW);
+	text3->setOutlineColor(color::BLACK);
+	text3->setOutlineThickness(3);
 }
 
 Test2D::~Test2D() {
@@ -115,6 +125,8 @@ Test2D::~Test2D() {
 	textures.clear();
 
 	delete text;
+	delete text2;
+	delete text3;
 }
 
 
@@ -124,11 +136,13 @@ void Test2D::render() {
 	renderer->begin();
 
 	for (auto &&r : renderables) {
-//		r->rotate(1);
+		r->rotate(1);
 		renderer->submit(r);
 	}
 
-	renderer->submitText(*text, {-50, 0});
+	renderer->submitText(*text, {-70, 30});
+	renderer->submitText(*text2, {-70, -10});
+	renderer->submitText(*text3, {-70, -40});
 
 	renderer->end();
 	renderer->flush();
@@ -154,6 +168,14 @@ void Test2D::onEvent(xe::Event &event) {
 }
 
 bool Test2D::onKeyPressedEvent(xe::KeyPressEvent &event) {
+	if (Input::isKeyPressed(XE_KEY_BACK)) {
+		text->setString("");
+	} else {
+		std::string s = text->getString();
+		s += (char) event.getKey();
+		text->setString(s);
+	}
+
 	return false;
 }
 

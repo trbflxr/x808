@@ -4,9 +4,10 @@
 
 #include "fontmanager.hpp"
 #include "utils/log.hpp"
+#include "../../embedded/embedded.hpp"
 
 xe::FontManager::FontManager() {
-	fonts.emplace("default", new Font("default", "assets/fonts/consolata.otf", 100));
+	fonts.emplace("default", new Font("default", internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE, 100));
 }
 
 xe::FontManager::~FontManager() {
