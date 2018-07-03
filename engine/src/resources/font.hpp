@@ -12,7 +12,7 @@
 #include "math/vec2.hpp"
 #include "gfx/api/texture2d.hpp"
 
-namespace ftgl{
+namespace ftgl {
 	struct texture_font_t;
 	struct texture_atlas_t;
 }
@@ -22,11 +22,10 @@ namespace xe {
 
 	class XE_API Font {
 	public:
-		explicit Font(const std::string_view &path, float size);
+		explicit Font(const std::string_view &name, const std::string_view &path, float size);
 		virtual ~Font();
 
-		bool load(const std::string_view &path, float size);
-
+		inline const std::string &getName() const { return name; }
 		inline ftgl::texture_font_t *getFTFont() const { return ftFont; }
 		inline float getSize() const { return size; }
 
@@ -43,6 +42,7 @@ namespace xe {
 		mutable gfx::api::Texture2D *texture;
 
 		float size;
+		std::string name;
 	};
 
 }

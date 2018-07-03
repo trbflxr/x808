@@ -6,11 +6,28 @@
 #include "font.hpp"
 #include "utils/log.hpp"
 
-xe::Font::Font(const std::string_view &path, float size) :
+
+xe::Font::Font(const std::string_view &name, const std::string_view &path, float size) :
+		name(name),
 		size(size),
 		texture(nullptr) {
 
-	load(path, size);
+	using namespace gfx::api;
+
+	XE_ASSERT(size <= 150, "Max font size is 150");
+
+	ftAtlas = ftgl::texture_atlas_new(1024, 1024, 2);
+	ftFont = ftgl::texture_font_new_from_file(ftAtlas, size, path.data());
+
+	ftFont->outline_thickness = 0;
+	ftFont->outline_type = 2;
+
+	TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
+	                                TextureWrap::CLAMP_TO_EDGE};
+	texture = new Texture2D(1024, 1024, parameters);
+	texture->setData(ftAtlas->data);
+
+	XE_ASSERT(ftFont, "Failed to load font '", path.data(), "'!");
 }
 
 xe::Font::~Font() {
@@ -18,26 +35,6 @@ xe::Font::~Font() {
 	ftgl::texture_font_delete(ftFont);
 
 	delete texture;
-}
-
-bool xe::Font::load(const std::string_view &path, float size) {
-	XE_ASSERT(size <= 150, "Max font size is 150");
-
-	Font::size = size;
-	ftAtlas = ftgl::texture_atlas_new(1024, 1024, 2);
-	ftFont = ftgl::texture_font_new_from_file(ftAtlas, Font::size = size, path.data());
-
-	ftFont->outline_thickness = 0;
-	ftFont->outline_type = 2;
-
-	using namespace gfx::api;
-
-	TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
-	                                TextureWrap::CLAMP_TO_EDGE};
-	texture = new Texture2D(1024, 1024, parameters);
-	texture->setData(ftAtlas->data);
-
-	return static_cast<bool>(ftFont);
 }
 
 xe::vec2 xe::Font::getTextSize(const std::string_view &text, float fontSize, xe::vec2 *position) const {

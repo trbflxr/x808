@@ -30,7 +30,6 @@ public:
 private:
 	std::vector<xe::gfx::api::Texture2D *> textures;
 
-	xe::Font *font;
 	xe::gfx::Text *text;
 };
 

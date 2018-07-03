@@ -65,6 +65,7 @@ set(ENGINE_SRC
         src/gfx/sprite.cpp
 
         src/resources/font.cpp
+        src/resources/fontmanager.cpp
 
         src/utils/log.cpp
         src/utils/timer.cpp

@@ -6,6 +6,7 @@
 #include <application/application.hpp>
 #include <gfx/api/texture2d.hpp>
 #include <gfx/sprite.hpp>
+#include <resources/fontmanager.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -95,10 +96,10 @@ Test2D::Test2D() :
 
 	XE_INFO("size: ", renderables.size());
 
-//	font = new Font("assets/fonts/consolata.otf", 100);
-	font = new Font("assets/fonts/sourcesanspro-regular.ttf", 100);
 
-	text = new Text("CJIOHIK", 20, *font);
+	FontManager::add(new Font("sourceSans", "assets/fonts/sourcesanspro-regular.ttf", 100));
+
+	text = new Text("CJIOHIK", 20, GETFONT("sourceSans"));
 	text->setColor(color::WHITE);
 	text->setOutlineColor(color::BLACK);
 	text->setOutlineThickness(2);
@@ -114,7 +115,6 @@ Test2D::~Test2D() {
 	textures.clear();
 
 	delete text;
-	delete font;
 }
 
 
