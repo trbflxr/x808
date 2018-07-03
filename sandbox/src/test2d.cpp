@@ -22,55 +22,55 @@ Test2D::Test2D() :
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
 
-	textures.push_back(new Texture2D("test1", "assets/textures/test1.png", params));
-	textures.push_back(new Texture2D("test2", "assets/textures/test2.png", params));
-	textures.push_back(new Texture2D("test3", "assets/textures/test3.png", params));
-	textures.push_back(new Texture2D("test4", "assets/textures/test4.png", params));
-	textures.push_back(new Texture2D("test5", "assets/textures/test5.png", params));
-	textures.push_back(new Texture2D("test6", "assets/textures/test6.png", params));
-	textures.push_back(new Texture2D("test7", "assets/textures/test7.png", params));
-	textures.push_back(new Texture2D("test8", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture2D("0", "assets/textures/test1.png", params));
+	TextureManager::add(new Texture2D("1", "assets/textures/test2.png", params));
+	TextureManager::add(new Texture2D("2", "assets/textures/test3.png", params));
+	TextureManager::add(new Texture2D("3", "assets/textures/test4.png", params));
+	TextureManager::add(new Texture2D("4", "assets/textures/test5.png", params));
+	TextureManager::add(new Texture2D("5", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture2D("6", "assets/textures/test7.png", params));
+	TextureManager::add(new Texture2D("7", "assets/textures/test8.png", params));
 
-	textures.push_back(new Texture2D("test1", "assets/textures/test1.png", params));
-	textures.push_back(new Texture2D("test2", "assets/textures/test2.png", params));
-	textures.push_back(new Texture2D("test3", "assets/textures/test3.png", params));
-	textures.push_back(new Texture2D("test4", "assets/textures/test4.png", params));
-	textures.push_back(new Texture2D("test5", "assets/textures/test5.png", params));
-	textures.push_back(new Texture2D("test6", "assets/textures/test6.png", params));
-	textures.push_back(new Texture2D("test7", "assets/textures/test7.png", params));
-	textures.push_back(new Texture2D("test8", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture2D("8", "assets/textures/test1.png", params));
+	TextureManager::add(new Texture2D("9", "assets/textures/test2.png", params));
+	TextureManager::add(new Texture2D("10", "assets/textures/test3.png", params));
+	TextureManager::add(new Texture2D("11", "assets/textures/test4.png", params));
+	TextureManager::add(new Texture2D("12", "assets/textures/test5.png", params));
+	TextureManager::add(new Texture2D("13", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture2D("14", "assets/textures/test7.png", params));
+	TextureManager::add(new Texture2D("15", "assets/textures/test8.png", params));
 
-	textures.push_back(new Texture2D("test1", "assets/textures/test1.png", params));
-	textures.push_back(new Texture2D("test2", "assets/textures/test2.png", params));
-	textures.push_back(new Texture2D("test3", "assets/textures/test3.png", params));
-	textures.push_back(new Texture2D("test4", "assets/textures/test4.png", params));
-	textures.push_back(new Texture2D("test5", "assets/textures/test5.png", params));
-	textures.push_back(new Texture2D("test6", "assets/textures/test6.png", params));
-	textures.push_back(new Texture2D("test7", "assets/textures/test7.png", params));
-	textures.push_back(new Texture2D("test8", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture2D("16", "assets/textures/test1.png", params));
+	TextureManager::add(new Texture2D("17", "assets/textures/test2.png", params));
+	TextureManager::add(new Texture2D("18", "assets/textures/test3.png", params));
+	TextureManager::add(new Texture2D("19", "assets/textures/test4.png", params));
+	TextureManager::add(new Texture2D("20", "assets/textures/test5.png", params));
+	TextureManager::add(new Texture2D("21", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture2D("22", "assets/textures/test7.png", params));
+	TextureManager::add(new Texture2D("23", "assets/textures/test8.png", params));
 
-	textures.push_back(new Texture2D("test1", "assets/textures/test1.png", params));
-	textures.push_back(new Texture2D("test2", "assets/textures/test2.png", params));
-	textures.push_back(new Texture2D("test3", "assets/textures/test3.png", params));
-	textures.push_back(new Texture2D("test4", "assets/textures/test4.png", params));
-	textures.push_back(new Texture2D("test5", "assets/textures/test5.png", params));
-	textures.push_back(new Texture2D("test6", "assets/textures/test6.png", params));
-	textures.push_back(new Texture2D("test7", "assets/textures/test7.png", params));
-	textures.push_back(new Texture2D("test8", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture2D("24", "assets/textures/test1.png", params));
+	TextureManager::add(new Texture2D("25", "assets/textures/test2.png", params));
+	TextureManager::add(new Texture2D("26", "assets/textures/test3.png", params));
+	TextureManager::add(new Texture2D("27", "assets/textures/test4.png", params));
+	TextureManager::add(new Texture2D("28", "assets/textures/test5.png", params));
+	TextureManager::add(new Texture2D("29", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture2D("30", "assets/textures/test7.png", params));
+	TextureManager::add(new Texture2D("31", "assets/textures/test8.png", params));
 
-	textures.push_back(new Texture2D("test1", "assets/textures/test1.png", params));
-	textures.push_back(new Texture2D("test2", "assets/textures/test2.png", params));
-	textures.push_back(new Texture2D("test3", "assets/textures/test3.png", params));
-	textures.push_back(new Texture2D("test4", "assets/textures/test4.png", params));
-	textures.push_back(new Texture2D("test5", "assets/textures/test5.png", params));
-	textures.push_back(new Texture2D("test6", "assets/textures/test6.png", params));
-	textures.push_back(new Texture2D("test7", "assets/textures/test7.png", params));
-	textures.push_back(new Texture2D("test8", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture2D("32", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(new Texture2D("33", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(new Texture2D("34", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(new Texture2D("35", "assets/textures/test4.png", params));
+	TextureManager::add(new Texture2D("36", "assets/textures/test5.png", params));
+	TextureManager::add(new Texture2D("37", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture2D("38", "assets/textures/test7.png", params));
+	TextureManager::add(new Texture2D("39", "assets/textures/test8.png", params));
 
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-	uint texCount = 31;
+	uint texCount = 40;
 
 #define sp_size  1
 
@@ -78,19 +78,20 @@ Test2D::Test2D() :
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {
 		for (float y = -60; y < 60; y += 0.57f) {
-			add(new Sprite({x, y}, {0.49f, 0.49f}, 0, textures[rand() % texCount]));
+			add(new Sprite({x, y}, {0.49f, 0.49f}, 0, &GETTEXTURE(std::to_string(rand() % texCount))));
 		}
 	}
 #elif sp_size == 2
 	for (float x = -80; x < 80; x += 1.3f) {
 		for (float y = -60; y < 60; y += 1.3f) {
-			add(new Sprite({x, y}, {0.9f, 0.9f}, 0, textures[rand() % texCount]));
+			add(new Sprite({x, y}, {0.9f, 0.9f}, 0, &GETTEXTURE(std::to_string(rand() % texCount))));
 		}
 	}
 #elif sp_size == 1
 	for (int32 x = -80; x < 80; x += 4) {
 		for (int32 y = -60; y < 60; y += 4) {
-			add(new Sprite({(float) x, (float) y}, {3, 3}, 0, textures[rand() % texCount]));
+			add(new Sprite({(float) x, (float) y}, {3, 3}, 0,
+			               &GETTEXTURE(std::to_string(rand() % texCount))));
 		}
 	}
 #endif
@@ -115,22 +116,15 @@ Test2D::Test2D() :
 	text3->setColor(color::YELLOW);
 	text3->setOutlineColor(color::BLACK);
 	text3->setOutlineThickness(3);
+	
 
-
-	TextureManager::add(new Texture2D("tex1", "assets/textures/test1.png", params));
-
-	add(new Sprite({0, 0}, {20, 20}, 0, new Texture2D("test9", "assets/textures/dick.png", params)));
-	add(new Sprite({-20, -20}, {20, 20}, 0, &GETTEXTURE("tex1")));
+	add(new Sprite({0, 0}, {20, 20}, 0, &GETTEXTURE("dick")));
+	add(new Sprite({-20, -20}, {20, 20}, 0, &GETTEXTURE("0")));
 	add(new Sprite({20, 20}, {20, 20}, 0, &GETTEXTURE("default")));
 }
 
 Test2D::~Test2D() {
 	delete shader;
-
-	for (auto &&texture : textures) {
-		delete texture;
-	}
-	textures.clear();
 
 	delete text;
 	delete text2;

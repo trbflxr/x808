@@ -28,8 +28,6 @@ public:
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
 
 private:
-	std::vector<xe::gfx::api::Texture2D *> textures;
-
 	xe::gfx::Text *text;
 	xe::gfx::Text *text2;
 	xe::gfx::Text *text3;
