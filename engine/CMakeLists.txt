@@ -68,6 +68,7 @@ set(ENGINE_SRC
 
         src/resources/font.cpp
         src/resources/fontmanager.cpp
+        src/resources/texturemanager.cpp
 
         src/utils/log.cpp
         src/utils/timer.cpp

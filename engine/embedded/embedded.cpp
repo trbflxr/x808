@@ -15,11 +15,14 @@ namespace xe { namespace internal {
 	uint DEFAULT_FONT_SIZE = sizeof(DEFAULT_FONT_ARRAY);
 
 
+	///texture
 	byte DEFAULT_TEXTURE_ARRAY[] = {
 #include "files/errortexture.embed"
 	};
 
 	byte *DEFAULT_TEXTURE = DEFAULT_TEXTURE_ARRAY;
 	uint DEFAULT_TEXTURE_SIZE = sizeof(DEFAULT_TEXTURE_ARRAY);
+	uint DEFAULT_TEXTURE_WIDTH = 247;
+	uint DEFAULT_TEXTURE_HEIGHT = 200;
 
 }}

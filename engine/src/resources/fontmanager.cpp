@@ -11,7 +11,7 @@ xe::FontManager::FontManager() {
 }
 
 xe::FontManager::~FontManager() {
-	clear();
+	clean();
 }
 
 xe::FontManager &xe::FontManager::instance() {
@@ -41,6 +41,6 @@ const xe::Font &xe::FontManager::get(const std::string_view &name) {
 	return *it->second;
 }
 
-void xe::FontManager::clear() {
+void xe::FontManager::clean() {
 	instance().fonts.clear();
 }

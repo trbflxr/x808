@@ -57,8 +57,8 @@ uint xe::gfx::api::Texture2D::load() {
 
 		if (!pixels) {
 			fail = true;
-			width = 247;
-			height = 200;
+			width = internal::DEFAULT_TEXTURE_WIDTH;
+			height = internal::DEFAULT_TEXTURE_HEIGHT;
 
 			pixels = internal::DEFAULT_TEXTURE;
 			parameters.format = TextureFormat::RGBA;

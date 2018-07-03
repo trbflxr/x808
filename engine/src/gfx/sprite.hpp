@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 	class XE_API Sprite : public gfx::Renderable2D {
 	public:
 		explicit Sprite(const vec2 &position, const vec2 &size, float rotation,
-		                const api::Texture2D *texture, uint color = color::WHITE);
+		                const api::Texture *texture, uint color = color::WHITE);
 	};
 
 }}

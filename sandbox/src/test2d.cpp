@@ -7,6 +7,7 @@
 #include <gfx/api/texture2d.hpp>
 #include <gfx/sprite.hpp>
 #include <resources/fontmanager.hpp>
+#include <resources/texturemanager.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -97,7 +98,7 @@ Test2D::Test2D() :
 	XE_INFO("size: ", renderables.size());
 
 
-	FontManager::add(new Font("sourceSans", "assets/fonts/sour1cesanspro-regular.ttf", 100));
+	FontManager::add(new Font("sourceSans", "assets/fonts/sourcesanspro-regular.ttf", 100));
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 
 	text = new Text("slava ukraine", 20, GETFONT("sourceSans"));
@@ -115,7 +116,12 @@ Test2D::Test2D() :
 	text3->setOutlineColor(color::BLACK);
 	text3->setOutlineThickness(3);
 
+
+	TextureManager::add(new Texture2D("tex1", "assets/textures/test1.png", params));
+
 	add(new Sprite({0, 0}, {20, 20}, 0, new Texture2D("test9", "assets/textures/dick.png", params)));
+	add(new Sprite({-20, -20}, {20, 20}, 0, &GETTEXTURE("tex1")));
+	add(new Sprite({20, 20}, {20, 20}, 0, &GETTEXTURE("default")));
 }
 
 Test2D::~Test2D() {

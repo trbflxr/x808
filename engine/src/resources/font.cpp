@@ -21,7 +21,7 @@ xe::Font::Font(const std::string_view &name, const std::string_view &path, float
 	ftFont = ftgl::texture_font_new_from_file(ftAtlas, size, path.data());
 
 	if (!ftFont) {
-		XE_ERROR("Failed to load font: ", path.data());
+		XE_ERROR("Could not load font: ", path.data());
 		ftFont = ftgl::texture_font_new_from_memory(ftAtlas, size,
 		                                            internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE);
 	}

@@ -65,8 +65,8 @@ namespace xe { namespace gfx { namespace api {
 		virtual void bind(uint slot) const = 0;
 		virtual void unbind(uint slot) const = 0;
 
-		virtual std::string_view getName() const = 0;
-		virtual std::string_view getFilePath() const = 0;
+		virtual const std::string &getName() const = 0;
+		virtual const std::string &getFilePath() const = 0;
 
 		virtual uint getHandle() const = 0;
 

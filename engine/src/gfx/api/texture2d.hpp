@@ -26,8 +26,8 @@ namespace xe { namespace gfx { namespace api {
 		void bind(uint slot) const override;
 		void unbind(uint slot) const override;
 
-		inline std::string_view getName() const override { return name; }
-		inline std::string_view getFilePath() const override { return fileName; }
+		inline const std::string &getName() const override { return name; }
+		inline const std::string &getFilePath() const override { return fileName; }
 
 		void setData(const void *pixels);
 

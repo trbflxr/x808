@@ -3,6 +3,8 @@
 //
 
 #include "application.hpp"
+#include "resources/fontmanager.hpp"
+#include "resources/texturemanager.hpp"
 
 xe::Application *xe::Application::instance = nullptr;
 
@@ -98,6 +100,9 @@ void xe::Application::run() {
 
 		if (window->shouldClose()) running = false;
 	}
+
+	FontManager::clean();
+	TextureManager::clean();
 }
 
 void xe::Application::tick() {
