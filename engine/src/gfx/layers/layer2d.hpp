@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 
 	class XE_API Layer2D : public Layer {
 	public:
-		explicit Layer2D(const mat4 &projection, api::Shader *shader);
+		explicit Layer2D(const mat4 &projection);
 		~Layer2D() override;
 
 		void render() override;
@@ -29,7 +29,6 @@ namespace xe { namespace gfx {
 
 		std::vector<Renderable2D *> renderables;
 
-		api::Shader *shader;
 		Renderer2D *renderer;
 	};
 

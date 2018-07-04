@@ -3,6 +3,7 @@
 //
 
 #include "application.hpp"
+#include "gfx/renderer2d.hpp"
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
 
@@ -68,6 +69,7 @@ void xe::Application::run() {
 	TimeStep timeStep(timer->elapsedMillis());
 
 	while (running) {
+		gfx::Renderer2D::resetDC();
 
 		window->clear();
 

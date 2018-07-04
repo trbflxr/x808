@@ -8,7 +8,6 @@
 
 #include <gfx/layers/layer2d.hpp>
 #include <gfx/api/texture2d.hpp>
-#include <gfx/api/basicshader.hpp>
 #include <gfx/text.hpp>
 #include <resources/font.hpp>
 

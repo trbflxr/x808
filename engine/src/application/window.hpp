@@ -43,7 +43,7 @@ namespace xe {
 		void setEventCallback(const WindowEventCallback &callback);
 
 		static void registerWindowClass(void *handle, Window *window);
-		static XE_API Window *getWindowClass(void *handle);
+		static Window *getWindowClass(void *handle);
 
 	private:
 		bool init();

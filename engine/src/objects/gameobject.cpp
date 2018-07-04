@@ -27,7 +27,7 @@ void xe::GameObject::input(const xe::TimeStep &ts) {
 	}
 }
 
-void xe::GameObject::render(const xe::gfx::api::Shader *shader) {
+void xe::GameObject::render(const xe::gfx::api::Shader1 *shader) {
 	renderInternal(shader);
 
 	for (auto &&object : objects) {

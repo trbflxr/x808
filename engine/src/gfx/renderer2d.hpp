@@ -18,6 +18,26 @@
 
 namespace xe { namespace gfx {
 
+	struct UniformBuffer {
+		byte *buffer;
+		uint size;
+
+		UniformBuffer() = default;
+		explicit UniformBuffer(byte *buffer, uint size) :
+				buffer(buffer), size(size) {
+			memset(buffer, 0, size);
+		}
+	};
+
+	struct R2DSysUniform {
+		UniformBuffer buffer;
+		uint offset;
+
+		R2DSysUniform() = default;
+		explicit R2DSysUniform(const UniformBuffer &buffer, uint offset) :
+				buffer(buffer), offset(offset) { }
+	};
+
 	class XE_API Renderer2D {
 	public:
 		explicit Renderer2D(uint width, uint height);
@@ -36,7 +56,8 @@ namespace xe { namespace gfx {
 		void submit(const Renderable2D *renderable);
 		void submitText(const Text &text, const vec2 &position);
 
-		void drawLine(float x0, float y0, float x1, float y1, uint color = color::WHITE, float thickness = 0.02f);
+		void
+		drawLine(float x0, float y0, float x1, float y1, uint color = color::WHITE, float thickness = 0.02f);
 		void drawLine(const vec2 &start, const vec2 &end, uint color = color::WHITE, float thickness = 0.02f);
 		void drawRect(float x, float y, float width, float height, uint color = color::WHITE);
 		void drawRect(const vec2 &position, const vec2 &size, uint color = color::WHITE);
@@ -52,6 +73,9 @@ namespace xe { namespace gfx {
 		inline const vec2u &getViewportSize() const { return viewportSize; }
 		inline void setViewportSize(const vec2u &size) { viewportSize = size; }
 
+		static uint getDC() { return dc; }
+		static uint resetDC() { dc = 0; }
+
 	private:
 		void init();
 		float submitTexture(const api::Texture *texture);
@@ -61,19 +85,23 @@ namespace xe { namespace gfx {
 		const mat4 *transformationBack;
 
 		api::Shader *shader;
+		std::vector<R2DSysUniform> systemUniforms;
+		std::vector<UniformBuffer> systemUniformBuffers;
 
 		api::VertexArray *vertexArray;
 		api::IndexBuffer *indexBuffer;
 		uint indexCount;
 		VertexData *buffer;
+
 		std::vector<const api::Texture *> textures;
-		std::vector<int32> textureSlots;
 
 		vec2u screenSize;
 		vec2u viewportSize;
 
 		api::VertexArray *screenQuad;
 		Camera *camera;
+
+		static uint dc;
 	};
 
 }}

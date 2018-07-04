@@ -6,8 +6,8 @@
 
 #include "renderer2d.hpp"
 #include "renderer.hpp"
-#include "api/basicshader.hpp"
 #include "glcommon.hpp"
+#include "resources/shaderfactory.hpp"
 
 #define RENDERER_MAX_SPRITES    60000
 #define RENDERER_SPRITE_SIZE    (RENDERER_VERTEX_SIZE * 4)
@@ -15,6 +15,17 @@
 #define RENDERER_INDICES_SIZE    (RENDERER_MAX_SPRITES * 6)
 #define RENDERER_MAX_TEXTURES    (32 - 1)
 
+
+const uint requiredSystemUniformsCount = 2;
+const std::string requiredSystemUniforms[requiredSystemUniformsCount] = {
+		"sys_ProjectionMatrix",
+		"sys_ViewMatrix"};
+
+const uint sys_ProjectionMatrixIndex = 0;
+const uint sys_ViewMatrixIndex = 1;
+
+
+uint xe::gfx::Renderer2D::dc = 0;
 
 xe::gfx::Renderer2D::Renderer2D(uint width, uint height) :
 		indexCount(0),
@@ -36,16 +47,36 @@ xe::gfx::Renderer2D::~Renderer2D() {
 	delete indexBuffer;
 	delete vertexArray;
 	delete screenQuad;
+
+	systemUniforms.clear();
+	systemUniformBuffers.clear();
 }
 
 void xe::gfx::Renderer2D::init() {
 	transformationStack.emplace_back(1.0f);
 	transformationBack = &transformationStack.back();
 
-	shader = new api::BasicShader();
+	systemUniforms.resize(requiredSystemUniformsCount);
 
-//	todo: set system uniforms
+	shader = sf::batchRendererShader();
+	const api::ShaderUniformBufferVec &vssu = shader->getVSSystemUniforms();
 
+	XE_ASSERT(vssu.size());
+
+	for (auto &&ub : vssu) {
+		UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
+		systemUniformBuffers.push_back(buffer);
+
+		for (auto &&uniform: ub->getUniforms()) {
+			for (uint j = 0; j < requiredSystemUniformsCount; j++) {
+				if (uniform->getName() == requiredSystemUniforms[j]) {
+					systemUniforms[j] = R2DSysUniform(buffer, uniform->getOffset());
+				}
+			}
+		}
+	}
+
+	//default camera
 	setCamera(new Camera(math::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f)));
 
 	shader->bind();
@@ -97,7 +128,11 @@ void xe::gfx::Renderer2D::pop() {
 void xe::gfx::Renderer2D::setCamera(xe::gfx::Camera *camera) {
 	Renderer2D::camera = camera;
 
-	//todo: copy matrices to uniforms
+	memcpy(systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer + systemUniforms[sys_ProjectionMatrixIndex].offset,
+	       &camera->getProjectionMatrix().elements, sizeof(mat4));
+
+	memcpy(systemUniforms[sys_ViewMatrixIndex].buffer.buffer + systemUniforms[sys_ViewMatrixIndex].offset,
+	       &camera->getViewMatrix().elements, sizeof(mat4));
 }
 
 void xe::gfx::Renderer2D::begin() {
@@ -280,17 +315,13 @@ void xe::gfx::Renderer2D::flush() {
 	Renderer::get().setDepthTesting(false);
 
 	shader->bind();
-
-	//todo: set system uniforms
-	shader->updateUniforms(*camera);
+	for (uint i = 0; i < systemUniformBuffers.size(); i++) {
+		shader->setVSSystemUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
+	}
 
 	for (uint i = 0; i < textures.size(); i++) {
 		textures[i]->bind(i);
-		textureSlots.push_back(i);
 	}
-
-	shader->setUniform1iv("textures", static_cast<uint>(textureSlots.size()), textureSlots.data());
-
 
 	vertexArray->bind();
 	indexBuffer->bind();
@@ -305,9 +336,10 @@ void xe::gfx::Renderer2D::flush() {
 	}
 
 	indexCount = 0;
-
 	textures.clear();
-	textureSlots.clear();
+
+	//increment draw calls
+	++dc;
 }
 
 void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, uint color, float thickness) {

@@ -15,7 +15,7 @@ using namespace gfx;
 using namespace gfx::api;
 
 Test2D::Test2D() :
-		Layer2D(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1.0f, 1.0f), new api::BasicShader()) {
+		Layer2D(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1.0f, 1.0f)) {
 
 	srand((uint) time(nullptr));
 
@@ -70,9 +70,10 @@ Test2D::Test2D() :
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-	uint texCount = 40;
+//	uint texCount = 40;
+	uint texCount = 31;
 
-#define sp_size  1
+#define sp_size  3
 
 	//59k
 #if sp_size == 3
@@ -127,8 +128,6 @@ Test2D::Test2D() :
 }
 
 Test2D::~Test2D() {
-	delete shader;
-
 	delete text;
 	delete text2;
 	delete text3;
@@ -154,14 +153,17 @@ void Test2D::render() {
 }
 
 void Test2D::update(const xe::TimeStep &ts) {
-
+	camera->update();
+	renderer->setCamera(camera);
 }
 
 void Test2D::tick() {
 	xe::Application &app = xe::Application::getApplication();
 
 	char buff[1024];
-	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms", app.getFPS(), app.getUPS(), app.getFrameTime());
+	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
+	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer2D::getDC());
+
 	app.getWindow().setTitle(buff);
 }
 
@@ -173,15 +175,20 @@ void Test2D::onEvent(xe::Event &event) {
 }
 
 bool Test2D::onKeyPressedEvent(xe::KeyPressEvent &event) {
-	if (Input::isKeyPressed(XE_KEY_BACK)) {
-		text->setString("");
-	} else {
-		std::string s = text->getString();
-		s += (char) event.getKey();
-		text->setString(s);
+	vec3 pos = camera->getPosition();
+
+	if (Input::isKeyPressed(XE_KEY_A)) {
+		pos.x += 1;
+	} else if (Input::isKeyPressed(XE_KEY_D)) {
+		pos.x -= 1;
+	}
+	if (Input::isKeyPressed(XE_KEY_W)) {
+		pos.y -= 1;
+	} else if (Input::isKeyPressed(XE_KEY_S)) {
+		pos.y += 1;
 	}
 
-	return false;
+	camera->setPosition(pos);
 }
 
 bool Test2D::onMousePressedEvent(xe::MousePressEvent &event) {

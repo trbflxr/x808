@@ -5,9 +5,7 @@
 #include "layer2d.hpp"
 #include "application/application.hpp"
 
-xe::gfx::Layer2D::Layer2D(const mat4 &projection, api::Shader *shader) :
-		shader(shader) {
-
+xe::gfx::Layer2D::Layer2D(const mat4 &projection) {
 	const uint width = Application::getApplication().getWindowWidth();
 	const uint height = Application::getApplication().getWindowHeight();
 

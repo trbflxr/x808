@@ -14,7 +14,7 @@
 
 namespace xe { namespace gfx {
 	namespace api {
-		class Shader;
+		class Shader1;
 	}
 }}
 
@@ -30,14 +30,14 @@ namespace xe {
 
 		void update(const TimeStep &ts);
 		void input(const TimeStep &ts);
-		void render(const gfx::api::Shader *shader);
+		void render(const gfx::api::Shader1 *shader);
 
 		inline Transform &getTransform() { return transform; }
 
 	protected:
 		virtual void updateInternal(const TimeStep &ts) { }
 		virtual void inputInternal(const TimeStep &ts) { }
-		virtual void renderInternal(const gfx::api::Shader *shader) { }
+		virtual void renderInternal(const gfx::api::Shader1 *shader) { }
 
 	private:
 		Transform transform;
