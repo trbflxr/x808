@@ -1,5 +1,4 @@
 #include <application/application.hpp>
-#include <math/mat4.hpp>
 #include <utils/log.hpp>
 #include "test2d.hpp"
 

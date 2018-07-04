@@ -116,11 +116,14 @@ Test2D::Test2D() :
 	text3->setColor(color::YELLOW);
 	text3->setOutlineColor(color::BLACK);
 	text3->setOutlineThickness(3);
-	
+
+	TextureManager::add(new Texture2D("2k", "assets/textures/enemyspotted.jpg", params));
+
 
 	add(new Sprite({0, 0}, {20, 20}, 0, &GETTEXTURE("dick")));
 	add(new Sprite({-20, -20}, {20, 20}, 0, &GETTEXTURE("0")));
 	add(new Sprite({20, 20}, {20, 20}, 0, &GETTEXTURE("default")));
+	add(new Sprite({-64, -36}, {128, 72}, 0, &GETTEXTURE("2k")));
 }
 
 Test2D::~Test2D() {
