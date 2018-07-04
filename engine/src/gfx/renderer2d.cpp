@@ -3,6 +3,7 @@
 //
 
 #include <freetype-gl/freetype-gl.h>
+#include <algorithm>
 
 #include "renderer2d.hpp"
 #include "renderer.hpp"
@@ -77,7 +78,7 @@ void xe::gfx::Renderer2D::init() {
 	}
 
 	//default camera
-	setCamera(new Camera(math::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f)));
+	setCamera(new Camera(math::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1, 1000)));
 
 	shader->bind();
 
@@ -128,7 +129,8 @@ void xe::gfx::Renderer2D::pop() {
 void xe::gfx::Renderer2D::setCamera(xe::gfx::Camera *camera) {
 	Renderer2D::camera = camera;
 
-	memcpy(systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer + systemUniforms[sys_ProjectionMatrixIndex].offset,
+	memcpy(systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer +
+	       systemUniforms[sys_ProjectionMatrixIndex].offset,
 	       &camera->getProjectionMatrix().elements, sizeof(mat4));
 
 	memcpy(systemUniforms[sys_ViewMatrixIndex].buffer.buffer + systemUniforms[sys_ViewMatrixIndex].offset,
@@ -145,6 +147,10 @@ void xe::gfx::Renderer2D::begin() {
 void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 	if (!renderable->isVisible()) return;
 
+	targets.push_back(renderable);
+}
+
+void xe::gfx::Renderer2D::submitInternal(const Renderable2D *renderable) {
 	const std::array<vec2, 4> &vertices = renderable->bounds.getVertices();
 	const uint color = renderable->color;
 	const std::vector<vec2> &uv = renderable->UVs;
@@ -152,28 +158,28 @@ void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 
 	float textureSlot = 0.0f;
 	if (texture) {
-		textureSlot = submitTexture(renderable->getTexture());
+		textureSlot = submitTexture(renderable->texture);
 	}
 
-	buffer->vertex = math::translateVec(*transformationBack, vertices[0]);
+	buffer->vertex = math::translateVec(*transformationBack, vertices[0], renderable->getZIndex());
 	buffer->uv = uv[0];
 	buffer->tid = textureSlot;
 	buffer->color = color;
 	buffer++;
 
-	buffer->vertex = math::translateVec(*transformationBack, vertices[3]);
+	buffer->vertex = math::translateVec(*transformationBack, vertices[3], renderable->getZIndex());
 	buffer->uv = uv[1];
 	buffer->tid = textureSlot;
 	buffer->color = color;
 	buffer++;
 
-	buffer->vertex = math::translateVec(*transformationBack, vertices[2]);
+	buffer->vertex = math::translateVec(*transformationBack, vertices[2], renderable->getZIndex());
 	buffer->uv = uv[2];
 	buffer->tid = textureSlot;
 	buffer->color = color;
 	buffer++;
 
-	buffer->vertex = math::translateVec(*transformationBack, vertices[1]);
+	buffer->vertex = math::translateVec(*transformationBack, vertices[1], renderable->getZIndex());
 	buffer->uv = uv[3];
 	buffer->tid = textureSlot;
 	buffer->color = color;
@@ -182,23 +188,27 @@ void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
 	indexCount += 6;
 }
 
-void xe::gfx::Renderer2D::submitText(const xe::gfx::Text &text, const xe::vec2 &position) {
+void xe::gfx::Renderer2D::submitText(const xe::gfx::Text *text) {
+	Renderer2D::text.push_back(text);
+}
+
+void xe::gfx::Renderer2D::submitTextInternal(const xe::gfx::Text *text) {
 	using namespace ftgl;
 
-	const Font &font = *text.getFont();
+	const Font &font = *text->getFont();
 	ftgl::texture_font_t *ftFont = font.getFTFont();
-	const std::string &string = text.text;
-	const uint color = text.textColor;
-	const uint outlineColor = text.outlineColor;
+	const std::string &string = text->string;
+	const uint color = text->textColor;
+	const uint outlineColor = text->outlineColor;
 
 	const api::Texture2D *texture = font.getTexture();
 	XE_ASSERT(texture);
 
 	const float tid = submitTexture(texture);
-	const float scale = font.getSize() / text.getSize();
+	const float scale = font.getSize() / text->size;
 
-	float x = position.x;
-	const float y = -position.y;
+	float x = text->position.x;
+	const float y = -text->position.y;
 
 	if (ftFont->outline_thickness > 0) {
 		for (uint i = 0; i < string.length(); i++) {
@@ -249,7 +259,7 @@ void xe::gfx::Renderer2D::submitText(const xe::gfx::Text &text, const xe::vec2 &
 				x += glyph->advance_x / scale;
 			}
 		}
-		x = position.x;
+		x = text->position.x;
 		ftFont->outline_type = 0;
 	}
 
@@ -311,9 +321,35 @@ void xe::gfx::Renderer2D::end() {
 }
 
 void xe::gfx::Renderer2D::flush() {
+	Renderer::get().setDepthTesting(true);
 
-	Renderer::get().setDepthTesting(false);
+	std::sort(targets.begin(), targets.end(), [](const Renderable2D *a, const Renderable2D *b) {
+		return a->texture > b->texture;
+	});
 
+	for (auto &&target : targets) {
+		submitInternal(target);
+	}
+	end();
+
+	flushInternal();
+	targets.clear();
+
+	if (!text.empty()) {
+		Renderer::get().setDepthTesting(false);
+
+		begin();
+		for (auto &&txt : text) {
+			submitTextInternal(txt);
+		}
+		end();
+
+		flushInternal();
+		text.clear();
+	}
+}
+
+void xe::gfx::Renderer2D::flushInternal() {
 	shader->bind();
 	for (uint i = 0; i < systemUniformBuffers.size(); i++) {
 		shader->setVSSystemUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
@@ -342,35 +378,31 @@ void xe::gfx::Renderer2D::flush() {
 	++dc;
 }
 
-void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, uint color, float thickness) {
+void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, float z, uint color, float thickness) {
 	const std::vector<vec2> &uv = Renderable2D::getDefaultUVs();
-	float ts = 0.0f;
+	const float ts = 0.0f;
 
-	vec2 normal = math::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
+	const vec2 normal = math::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
 
-	vec3 vertex = *transformationBack * vec3(x0 + normal.x, y0 + normal.y, 0.0f);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vec3(x0 + normal.x, y0 + normal.y, z));
 	buffer->uv = uv[0];
 	buffer->tid = ts;
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * vec3(x1 + normal.x, y1 + normal.y, 0.0f);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vec3(x1 + normal.x, y1 + normal.y, z));
 	buffer->uv = uv[1];
 	buffer->tid = ts;
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * vec3(x1 - normal.x, y1 - normal.y, 0.0f);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vec3(x1 - normal.x, y1 - normal.y, z));
 	buffer->uv = uv[2];
 	buffer->tid = ts;
 	buffer->color = color;
 	buffer++;
 
-	vertex = *transformationBack * vec3(x0 - normal.x, y0 - normal.y, 0.0f);
-	buffer->vertex = vertex;
+	buffer->vertex = math::translateVec(*transformationBack, vec3(x0 - normal.x, y0 - normal.y, z));
 	buffer->uv = uv[3];
 	buffer->tid = ts;
 	buffer->color = color;
@@ -379,27 +411,27 @@ void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, uint 
 	indexCount += 6;
 }
 
-void xe::gfx::Renderer2D::drawLine(const xe::vec2 &start, const xe::vec2 &end, uint color, float thickness) {
-	drawLine(start.x, start.y, end.x, end.y, color, thickness);
+void xe::gfx::Renderer2D::drawLine(const vec2 &start, const vec2 &end, float z, uint color, float thickness) {
+	drawLine(start.x, start.y, end.x, end.y, z, color, thickness);
 }
 
-void xe::gfx::Renderer2D::drawRect(float x, float y, float width, float height, uint color) {
-	drawLine(x, y, x + width, y, color);
-	drawLine(x + width, y, x + width, y + height, color);
-	drawLine(x + width, y + height, x, y + height, color);
-	drawLine(x, y + height, x, y, color);
+void xe::gfx::Renderer2D::drawRect(float x, float y, float width, float height, float z, uint color) {
+	drawLine(x, y, x + width, y, z, color);
+	drawLine(x + width, y, x + width, y + height, z, color);
+	drawLine(x + width, y + height, x, y + height, z, color);
+	drawLine(x, y + height, x, y, z, color);
 }
 
-void xe::gfx::Renderer2D::drawRect(const xe::vec2 &position, const xe::vec2 &size, uint color) {
-	drawRect(position.x, position.y, size.x, size.y, color);
+void xe::gfx::Renderer2D::drawRect(const xe::vec2 &position, const xe::vec2 &size, float z, uint color) {
+	drawRect(position.x, position.y, size.x, size.y, z, color);
 }
 
-void xe::gfx::Renderer2D::drawRect(const xe::rect &rectangle, uint color) {
-	drawRect(rectangle.getMinBound(), rectangle.size * 2.0f, color);
+void xe::gfx::Renderer2D::drawRect(const xe::rect &rectangle, float z, uint color) {
+	drawRect(rectangle.getMinBound(), rectangle.size * 2.0f, z, color);
 }
 
-void xe::gfx::Renderer2D::fillRect(float x, float y, float width, float height, uint color) {
-	vec3 position(x, y, 0.0f);
+void xe::gfx::Renderer2D::fillRect(float x, float y, float width, float height, float z, uint color) {
+	vec3 position(x, y, z);
 	vec2 size(width, height);
 	const std::vector<vec2> &uv = Renderable2D::getDefaultUVs();
 
@@ -436,12 +468,12 @@ void xe::gfx::Renderer2D::fillRect(float x, float y, float width, float height, 
 	indexCount += 6;
 }
 
-void xe::gfx::Renderer2D::fillRect(const xe::vec2 &position, const xe::vec2 &size, uint color) {
-	fillRect(position.x, position.y, size.x, size.y, color);
+void xe::gfx::Renderer2D::fillRect(const xe::vec2 &position, const xe::vec2 &size, float z, uint color) {
+	fillRect(position.x, position.y, size.x, size.y, z, color);
 }
 
-void xe::gfx::Renderer2D::fillRect(const xe::rect &rectangle, uint color) {
-	fillRect(rectangle.getMinBound(), rectangle.size * 2.0f, color);
+void xe::gfx::Renderer2D::fillRect(const xe::rect &rectangle, float z, uint color) {
+	fillRect(rectangle.getMinBound(), rectangle.size * 2.0f, z, color);
 }
 
 float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
@@ -459,7 +491,7 @@ float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 	if (!found) {
 		if (textures.size() >= RENDERER_MAX_TEXTURES) {
 			end();
-			flush();
+			flushInternal();
 			begin();
 		}
 		textures.push_back(texture);
@@ -468,5 +500,4 @@ float xe::gfx::Renderer2D::submitTexture(const xe::gfx::api::Texture *texture) {
 
 	return result;
 }
-
 

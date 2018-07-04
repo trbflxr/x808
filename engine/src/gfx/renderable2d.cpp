@@ -11,8 +11,9 @@ xe::gfx::Renderable2D::Renderable2D() :
 	UVs = getDefaultUVs();
 }
 
-xe::gfx::Renderable2D::Renderable2D(const vec2 &position, const vec2 &size, float rotation, uint color) :
-		bounds(position, size, rotation),
+xe::gfx::Renderable2D::Renderable2D(const vec2 &pos, float z, const vec2 &size, float rotation, uint color) :
+		bounds(pos, size, rotation),
+		zIndex(z),
 		color(color),
 		texture(nullptr),
 		visible(true) {

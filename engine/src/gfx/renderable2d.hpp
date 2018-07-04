@@ -43,6 +43,9 @@ namespace xe { namespace gfx {
 		inline const vec2 &getPosition() const { return bounds.getPosition(); }
 		inline void setPosition(const vec2 &position) { bounds.setPosition(position); }
 
+		inline float getZIndex() const { return zIndex; }
+		inline void setZIndex(float zIndex) { Renderable2D::zIndex = zIndex; }
+
 		inline float getRotation() const { return bounds.getRotation(); }
 		inline void setRotation(float deg) { bounds.setRotation(deg); }
 
@@ -59,11 +62,14 @@ namespace xe { namespace gfx {
 		static const std::vector<vec2> &getDefaultUVs();
 
 	protected:
-		explicit Renderable2D(const vec2 &position, const vec2 &size, float rotation, uint color = color::WHITE);
+		explicit Renderable2D(const vec2 &pos, float z, const vec2 &size,
+		                      float rotation, uint color = color::WHITE);
+
 		Renderable2D();
 
 	protected:
 		aobb bounds;
+		float zIndex;
 		uint color;
 
 		std::vector<vec2> UVs;

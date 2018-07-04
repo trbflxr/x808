@@ -50,22 +50,24 @@ namespace xe { namespace gfx {
 		void setCamera(Camera *camera);
 
 		void begin();
-		void end();
 		void flush();
 
 		void submit(const Renderable2D *renderable);
-		void submitText(const Text &text, const vec2 &position);
+		void submitText(const Text *text);
 
-		void
-		drawLine(float x0, float y0, float x1, float y1, uint color = color::WHITE, float thickness = 0.02f);
-		void drawLine(const vec2 &start, const vec2 &end, uint color = color::WHITE, float thickness = 0.02f);
-		void drawRect(float x, float y, float width, float height, uint color = color::WHITE);
-		void drawRect(const vec2 &position, const vec2 &size, uint color = color::WHITE);
-		void drawRect(const rect &rectangle, uint color = color::WHITE);
+		void drawLine(float x0, float y0, float x1, float y1, float z,
+		              uint color = color::WHITE, float thickness = 0.02f);
 
-		void fillRect(float x, float y, float width, float height, uint color = color::WHITE);
-		void fillRect(const vec2 &position, const vec2 &size, uint color = color::WHITE);
-		void fillRect(const rect &rectangle, uint color = color::WHITE);
+		void drawLine(const vec2 &start, const vec2 &end, float z,
+		              uint color = color::WHITE, float thickness = 0.02f);
+
+		void drawRect(float x, float y, float width, float height, float z, uint color = color::WHITE);
+		void drawRect(const vec2 &position, const vec2 &size, float z, uint color = color::WHITE);
+		void drawRect(const rect &rectangle, float z, uint color = color::WHITE);
+
+		void fillRect(float x, float y, float width, float height, float z, uint color = color::WHITE);
+		void fillRect(const vec2 &position, const vec2 &size, float z, uint color = color::WHITE);
+		void fillRect(const rect &rectangle, float z, uint color = color::WHITE);
 
 		inline const vec2u &getScreenSize() const { return screenSize; }
 		inline void setScreenSize(const vec2u &size) { screenSize = size; }
@@ -79,6 +81,12 @@ namespace xe { namespace gfx {
 	private:
 		void init();
 		float submitTexture(const api::Texture *texture);
+
+		void submitInternal(const Renderable2D *renderable);
+		void submitTextInternal(const Text *text);
+
+		void end();
+		void flushInternal();
 
 	private:
 		std::vector<mat4> transformationStack;
@@ -100,6 +108,9 @@ namespace xe { namespace gfx {
 
 		api::VertexArray *screenQuad;
 		Camera *camera;
+
+		std::vector<const Renderable2D *> targets;
+		std::vector<const Text *> text;
 
 		static uint dc;
 	};

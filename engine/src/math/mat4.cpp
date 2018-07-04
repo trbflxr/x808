@@ -188,6 +188,11 @@ xe::vec3 xe::math::translateVec(const mat4 &m, const vec3 &vec) {
 	            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[2].y * vec.z + m.rows[3].y,
 	            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[2].z * vec.z + m.rows[3].z);
 }
+xe::vec3 xe::math::translateVec(const mat4 &m, const vec2 &vec, float z) {
+	return vec3(m.rows[0].x * vec.x + m.rows[1].x * vec.y + m.rows[2].x * z + m.rows[3].x,
+	            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[2].y * z + m.rows[3].y,
+	            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[2].z * z + m.rows[3].z);
+}
 
 xe::mat4 xe::math::rotateMatZ(float rad) {
 	mat4 m(1.0f);

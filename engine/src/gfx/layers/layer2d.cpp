@@ -28,7 +28,6 @@ void xe::gfx::Layer2D::render() {
 		renderer->submit(renderable);
 	}
 
-	renderer->end();
 	renderer->flush();
 }
 

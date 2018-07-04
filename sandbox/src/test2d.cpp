@@ -15,7 +15,7 @@ using namespace gfx;
 using namespace gfx::api;
 
 Test2D::Test2D() :
-		Layer2D(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1.0f, 1.0f)) {
+		Layer2D(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000)) {
 
 	srand((uint) time(nullptr));
 
@@ -70,29 +70,29 @@ Test2D::Test2D() :
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-//	uint texCount = 40;
-	uint texCount = 31;
+	uint texCount = 40;
+//	uint texCount = 31;
 
-#define sp_size  3
+#define sp_size  2
 
 	//59k
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {
 		for (float y = -60; y < 60; y += 0.57f) {
-			add(new Sprite({x, y}, {0.49f, 0.49f}, 0, &GETTEXTURE(std::to_string(rand() % texCount))));
+			add(new Sprite({x, y}, 0, {0.49f, 0.49f}, 0, &GETTEXTURE(std::to_string(rand() % texCount))));
 		}
 	}
 #elif sp_size == 2
 	for (float x = -80; x < 80; x += 1.3f) {
 		for (float y = -60; y < 60; y += 1.3f) {
-			add(new Sprite({x, y}, {0.9f, 0.9f}, 0, &GETTEXTURE(std::to_string(rand() % texCount))));
+			add(new Sprite({x, y}, 0, {0.9f, 0.9f}, 0, &GETTEXTURE(std::to_string(rand() % texCount))));
 		}
 	}
 #elif sp_size == 1
 	for (int32 x = -80; x < 80; x += 4) {
 		for (int32 y = -60; y < 60; y += 4) {
-			add(new Sprite({(float) x, (float) y}, {3, 3}, 0,
-			               &GETTEXTURE(std::to_string(rand() % texCount))));
+			add(new Sprite({(float) x, (float) y}, 0, {3, 3}, 0,
+						   &GETTEXTURE(std::to_string(rand() % texCount))));
 		}
 	}
 #endif
@@ -103,17 +103,17 @@ Test2D::Test2D() :
 	FontManager::add(new Font("sourceSans", "assets/fonts/sourcesanspro-regular.ttf", 100));
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 
-	text = new Text("slava ukraine", 20, GETFONT("sourceSans"));
+	text = new Text("slava ukraine", 20, {-70, 30}, GETFONT("sourceSans"));
 	text->setColor(color::WHITE);
 	text->setOutlineColor(color::BLACK);
 	text->setOutlineThickness(3);
 
-	text2 = new Text("another one", 20, GETFONT("consolata"));
+	text2 = new Text("another one", 20, {-70, -10}, GETFONT("consolata"));
 	text2->setColor(color::BLUE);
 	text2->setOutlineColor(color::BLACK);
 	text2->setOutlineThickness(3);
 
-	text3 = new Text("and another one", 20, GETFONT("default"));
+	text3 = new Text("and another one", 20, {-70, -40}, GETFONT("default"));
 	text3->setColor(color::YELLOW);
 	text3->setOutlineColor(color::BLACK);
 	text3->setOutlineThickness(3);
@@ -121,10 +121,10 @@ Test2D::Test2D() :
 	TextureManager::add(new Texture2D("2k", "assets/textures/enemyspotted.jpg", params));
 
 
-	add(new Sprite({0, 0}, {20, 20}, 0, &GETTEXTURE("dick")));
-	add(new Sprite({-20, -20}, {20, 20}, 0, &GETTEXTURE("0")));
-	add(new Sprite({20, 20}, {20, 20}, 0, &GETTEXTURE("default")));
-	add(new Sprite({-64, -36}, {128, 72}, 0, &GETTEXTURE("2k")));
+	add(new Sprite({0, 0}, 1, {20, 20}, 0, &GETTEXTURE("dick")));
+	add(new Sprite({-20, -20}, 1, {20, 20}, 0, &GETTEXTURE("0")));
+	add(new Sprite({20, 20}, 1, {20, 20}, 0, &GETTEXTURE("default")));
+//	add(new Sprite({-64, -36, 1}, {128, 72}, 0, &GETTEXTURE("2k")));
 }
 
 Test2D::~Test2D() {
@@ -140,15 +140,16 @@ void Test2D::render() {
 	renderer->begin();
 
 	for (auto &&r : renderables) {
-		r->rotate(1);
+//		r->rotate(1);
 		renderer->submit(r);
 	}
 
-	renderer->submitText(*text, {-70, 30});
-	renderer->submitText(*text2, {-70, -10});
-	renderer->submitText(*text3, {-70, -40});
+	renderer->submitText(text);
+	renderer->submitText(text2);
+	renderer->submitText(text3);
 
-	renderer->end();
+//	renderer->drawLine(-20, -20, 200, 200, 1, color::GREEN, 2);
+
 	renderer->flush();
 }
 
