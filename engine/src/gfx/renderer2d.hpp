@@ -75,9 +75,6 @@ namespace xe { namespace gfx {
 		inline const vec2u &getViewportSize() const { return viewportSize; }
 		inline void setViewportSize(const vec2u &size) { viewportSize = size; }
 
-		static uint getDC() { return dc; }
-		static uint resetDC() { dc = 0; }
-
 	private:
 		void init();
 		float submitTexture(const api::Texture *texture);
@@ -111,8 +108,6 @@ namespace xe { namespace gfx {
 
 		std::vector<const Renderable2D *> targets;
 		std::vector<const Text *> text;
-
-		static uint dc;
 	};
 
 }}

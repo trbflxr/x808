@@ -12,12 +12,13 @@
 #include "utils/timer.hpp"
 #include "utils/timestep.hpp"
 #include "gfx/layers/layer.hpp"
+#include "gfx/api/context.hpp"
 
 namespace xe {
 
 	class XE_API Application {
 	public:
-		explicit Application(const Config& config);
+		explicit Application(const Config& config, gfx::api::RenderAPI api);
 		virtual ~Application();
 
 		virtual void init();

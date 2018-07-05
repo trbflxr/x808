@@ -3,15 +3,15 @@
 //
 
 #include "application/application.hpp"
-#include "gfx/renderer2d.hpp"
+#include "gfx/renderer.hpp"
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
 
-xe::Application::Application(const xe::Config &config) :
+xe::Application::Application(const xe::Config &config, gfx::api::RenderAPI api) :
 		config(config),
 		frameTime(0.0f) {
 
-	//todo: set rendering api
+	gfx::api::Context::setRenderAPI(api);
 	instance = this;
 }
 
@@ -64,7 +64,7 @@ void xe::Application::run() {
 	TimeStep timeStep(timer->elapsedMillis());
 
 	while (running) {
-		gfx::Renderer2D::resetDC();
+		gfx::Renderer::resetDC();
 
 		window->clear();
 

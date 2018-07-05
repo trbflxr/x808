@@ -7,18 +7,24 @@
 
 
 #include "config.hpp"
-#include "utils/singleton.hpp"
+#include "application/window.hpp"
 
 namespace xe { namespace gfx { namespace api {
 
-	class XE_API Context : public utils::Singleton<Context> {
-	public:
-		static void create(void *deviceContext, bool vSync = false);
+	enum class RenderAPI {
+		NONE, OPENGL, DIRECT3D
+	};
 
-		void swapBuffers();
+	class XE_API Context {
+	public:
+		static void create(const WindowProperties &props, void *deviceContext);
+
+		static RenderAPI getRenderAPI() { return api; }
+		static void setRenderAPI(RenderAPI api) { Context::api = api; }
 
 	protected:
 		static Context *context;
+		static RenderAPI api;
 	};
 
 }}}

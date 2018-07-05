@@ -34,7 +34,7 @@ bool xe::Window::init() {
 		return false;
 	}
 
-	gfx::Renderer::get().init();
+	gfx::Renderer::init();
 
 	setTitle(props.title);
 
@@ -42,7 +42,7 @@ bool xe::Window::init() {
 }
 
 void xe::Window::clear() const {
-	gfx::Renderer::get().clear(gfx::RENDERER_BUFFER_COLOR | gfx::RENDERER_BUFFER_DEPTH);
+	gfx::Renderer::clear(gfx::RENDERER_BUFFER_COLOR | gfx::RENDERER_BUFFER_DEPTH);
 }
 
 void xe::Window::update() {

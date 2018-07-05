@@ -8,8 +8,6 @@
 
 #include "common.hpp"
 #include "xeint.hpp"
-#include "utils/singleton.hpp"
-#include "api/context.hpp"
 
 namespace xe { namespace gfx {
 
@@ -28,23 +26,51 @@ namespace xe { namespace gfx {
 		NONE, ADD, SUBTRACT
 	};
 
-	class XE_API Renderer : public utils::Singleton<Renderer> {
+	class XE_API Renderer {
+	private:
+		friend class Renderer2D;
+
 	public:
-		void init();
+		static void init();
 
-		void clear(uint buffer);
-		void flush();
+		static void clear(uint buffer) { instance->clearInternal(buffer); }
+		static void flush() { instance->flushInternal(); }
 
-		void setDepthTesting(bool enabled);
-		void setBlend(bool enabled);
+		static void setDepthTesting(bool enabled) { instance->setDepthTestingInternal(enabled); }
+		static void setBlend(bool enabled) { instance->setBlendInternal(enabled); }
 
-		void setViewport(uint x, uint y, uint width, uint height);
+		static void setViewport(uint x, uint y, uint width, uint height) {
+			instance->setViewportInternal(x, y, width, height);
+		}
 
-		void setBlendFunction(BlendFunction source, BlendFunction destination);
-		void setBlendEquation(BlendEquation equation);
+		static void setBlendFunction(BlendFunction source, BlendFunction destination) {
+			instance->setBlendFunctionInternal(source, destination);
+		}
+
+		static void setBlendEquation(BlendEquation equation) {
+			instance->setBlendEquationInternal(equation);
+		}
+
+		static uint getDC() { return dc; }
+		static uint resetDC() { dc = 0; }
+
+	protected:
+		virtual void initInternal() = 0;
+
+		virtual void clearInternal(uint buffer) = 0;
+		virtual void flushInternal() = 0;
+
+		virtual void setDepthTestingInternal(bool enabled) = 0;
+		virtual void setBlendInternal(bool enabled) = 0;
+
+		virtual void setViewportInternal(uint x, uint y, uint width, uint height) = 0;
+
+		virtual void setBlendFunctionInternal(BlendFunction source, BlendFunction destination) = 0;
+		virtual void setBlendEquationInternal(BlendEquation equation) = 0;
 
 	private:
-		api::Context *context;
+		static Renderer *instance;
+		static uint dc;
 	};
 
 }}

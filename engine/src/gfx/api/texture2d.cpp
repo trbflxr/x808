@@ -3,7 +3,7 @@
 //
 
 #include "texture2d.hpp"
-#include "gfx/glcommon.hpp"
+#include "platform/opengl/glcommon.hpp"
 #include "utils/loadimage.hpp"
 #include "../../../embedded/embedded.hpp"
 

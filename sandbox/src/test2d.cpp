@@ -9,6 +9,7 @@
 #include <resources/fontmanager.hpp>
 #include <resources/texturemanager.hpp>
 #include <resources/soundmanager.hpp>
+#include <gfx/renderer.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -170,7 +171,7 @@ void Test2D::tick() {
 
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
-	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer2D::getDC());
+	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer::getDC());
 
 	app.getWindow().setTitle(buff);
 }

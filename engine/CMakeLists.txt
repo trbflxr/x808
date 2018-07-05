@@ -99,7 +99,7 @@ set(ENGINE_SRC
 file(GLOB ENGINE_WIN32_SRC src/platform/win32/*.cpp)
 
 #opengl
-file(GLOB ENGINE_GL_SRC)
+file(GLOB ENGINE_GL_SRC src/platform/opengl/*.cpp)
 
 
 #total platform files
@@ -113,4 +113,4 @@ if (XE_PLATFORM_GL)
     list(APPEND PLATFORM_SRC ${ENGINE_GL_SRC})
 endif ()
 
-add_library(xe SHARED ${ENGINE_SRC} ${PLATFORM_SRC})
+add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})

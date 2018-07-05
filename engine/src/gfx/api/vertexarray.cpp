@@ -3,7 +3,7 @@
 //
 
 #include "vertexarray.hpp"
-#include "gfx/glcommon.hpp"
+#include "platform/opengl/glcommon.hpp"
 
 void xe::gfx::api::VertexArray::bind() const {
 	buffers.front()->bind();

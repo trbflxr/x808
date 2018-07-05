@@ -7,7 +7,6 @@
 
 #include "renderer2d.hpp"
 #include "renderer.hpp"
-#include "glcommon.hpp"
 #include "resources/shaderfactory.hpp"
 
 #define RENDERER_MAX_SPRITES    60000
@@ -25,8 +24,6 @@ const std::string requiredSystemUniforms[requiredSystemUniformsCount] = {
 const uint sys_ProjectionMatrixIndex = 0;
 const uint sys_ViewMatrixIndex = 1;
 
-
-uint xe::gfx::Renderer2D::dc = 0;
 
 xe::gfx::Renderer2D::Renderer2D(uint width, uint height) :
 		indexCount(0),
@@ -138,7 +135,7 @@ void xe::gfx::Renderer2D::setCamera(xe::gfx::Camera *camera) {
 }
 
 void xe::gfx::Renderer2D::begin() {
-	Renderer::get().setViewport(0, 0, screenSize.x, screenSize.y);
+	Renderer::setViewport(0, 0, screenSize.x, screenSize.y);
 
 	vertexArray->bind();
 	buffer = vertexArray->getBuffer()->getPointer<VertexData>();
@@ -322,7 +319,7 @@ void xe::gfx::Renderer2D::end() {
 
 void xe::gfx::Renderer2D::flush() {
 	//enable for correct z-index work
-	Renderer::get().setDepthTesting(true);
+	Renderer::setDepthTesting(true);
 
 	//draw sprites
 	std::sort(targets.begin(), targets.end(), [](const Renderable2D *a, const Renderable2D *b) {
@@ -340,7 +337,7 @@ void xe::gfx::Renderer2D::flush() {
 	//draw text
 	if (!text.empty()) {
 		//disable for text drawing
-		Renderer::get().setDepthTesting(false);
+		Renderer::setDepthTesting(false);
 
 		begin();
 		for (auto &&txt : text) {
@@ -379,8 +376,7 @@ void xe::gfx::Renderer2D::flushInternal() {
 	textures.clear();
 
 	//increment draw calls
-	//todo: move to renderer
-	++dc;
+	++Renderer::dc;
 }
 
 void xe::gfx::Renderer2D::drawLine(float x0, float y0, float x1, float y1, float z, uint color, float thickness) {

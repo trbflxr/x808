@@ -2,42 +2,16 @@
 // Created by FLXR on 6/28/2018.
 //
 
-#undef NOGDI
-
-#include <windows.h>
-
-#define NOGDI
-
-#include <GL/glew.h>
-#include <GL/wglew.h>
-
 #include "context.hpp"
-#include "utils/log.hpp"
+#include "platform/opengl/glcontext.hpp"
 
 xe::gfx::api::Context *xe::gfx::api::Context::context = nullptr;
+xe::gfx::api::RenderAPI xe::gfx::api::Context::api = RenderAPI::NONE;
 
-static HDC hDc;
-
-void xe::gfx::api::Context::create(void *deviceContext, bool vSync) {
-	hDc = GetDC((HWND) deviceContext);
-	HGLRC hrc = wglCreateContext(hDc);
-
-	if (hrc) {
-		if (!wglMakeCurrent(hDc, hrc)) {
-			XE_FATAL("Failed setting OpenGL context!");
-		}
-	} else {
-		XE_FATAL("Failed creating OpenGL context!");
+void xe::gfx::api::Context::create(const WindowProperties &props, void *deviceContext) {
+	switch (getRenderAPI()) {
+		case RenderAPI::OPENGL: context = new GLContext(props, deviceContext);
+			break;
+		default: break;
 	}
-
-	if (glewInit() != GLEW_OK) {
-		XE_FATAL("Could not initialize GLEW!");
-	}
-
-	//setting up vsync
-	wglSwapIntervalEXT(vSync);
-}
-
-void xe::gfx::api::Context::swapBuffers() {
-	SwapBuffers(hDc);
 }

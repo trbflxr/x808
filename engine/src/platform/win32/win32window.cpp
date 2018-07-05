@@ -87,7 +87,7 @@ bool xe::Window::platformInit() {
 	}
 
 
-	gfx::api::Context::create(hWnd, props.vSync);
+	gfx::api::Context::create(props, hWnd);
 
 	ShowWindow(hWnd, SW_SHOW);
 	SetFocus(hWnd);
@@ -108,7 +108,7 @@ void xe::Window::platformUpdate() {
 	}
 
 	inputManager->platformUpdate();
-	gfx::Renderer::get().flush();
+	gfx::Renderer::flush();
 }
 
 void xe::Window::setTitle(const std::string_view &title) {

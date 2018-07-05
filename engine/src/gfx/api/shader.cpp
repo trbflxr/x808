@@ -3,7 +3,7 @@
 //
 
 #include "shader.hpp"
-#include "gfx/glcommon.hpp"
+#include "platform/opengl/glcommon.hpp"
 #include "utils/string.hpp"
 
 xe::gfx::api::Shader::Shader(const std::string_view &name, const std::string &source) :

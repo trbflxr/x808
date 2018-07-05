@@ -3,7 +3,7 @@
 //
 
 #include "vertexbuffer.hpp"
-#include "gfx/glcommon.hpp"
+#include "platform/opengl/glcommon.hpp"
 
 static uint bufferTypeToOpenGL(xe::gfx::api::BufferType type) {
 	switch (type) {

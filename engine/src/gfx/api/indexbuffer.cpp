@@ -3,7 +3,7 @@
 //
 
 #include "indexbuffer.hpp"
-#include "gfx/glcommon.hpp"
+#include "platform/opengl/glcommon.hpp"
 
 xe::gfx::api::IndexBuffer::IndexBuffer(uint16 *data, uint count) {
 	glCall(glGenBuffers(1, &handle));
