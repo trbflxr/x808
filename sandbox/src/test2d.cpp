@@ -124,7 +124,7 @@ Test2D::Test2D() :
 	add(new Sprite({0, 0}, 1, {20, 20}, 0, &GETTEXTURE("dick")));
 	add(new Sprite({-20, -20}, 1, {20, 20}, 0, &GETTEXTURE("0")));
 	add(new Sprite({20, 20}, 1, {20, 20}, 0, &GETTEXTURE("default")));
-//	add(new Sprite({-64, -36, 1}, {128, 72}, 0, &GETTEXTURE("2k")));
+	add(new Sprite({-64, -36}, 1, {128, 72}, 0, &GETTEXTURE("2k")));
 }
 
 Test2D::~Test2D() {

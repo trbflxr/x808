@@ -321,8 +321,10 @@ void xe::gfx::Renderer2D::end() {
 }
 
 void xe::gfx::Renderer2D::flush() {
+	//enable for correct z-index work
 	Renderer::get().setDepthTesting(true);
 
+	//draw sprites
 	std::sort(targets.begin(), targets.end(), [](const Renderable2D *a, const Renderable2D *b) {
 		return a->texture > b->texture;
 	});
@@ -335,7 +337,9 @@ void xe::gfx::Renderer2D::flush() {
 	flushInternal();
 	targets.clear();
 
+	//draw text
 	if (!text.empty()) {
+		//disable for text drawing
 		Renderer::get().setDepthTesting(false);
 
 		begin();
