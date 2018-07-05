@@ -15,6 +15,7 @@
 #include "gfx/renderer.hpp"
 #include "window.hpp"
 #include "utils/log.hpp"
+#include "resources/soundmanager.hpp"
 
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
@@ -51,8 +52,7 @@ xe::Window::Window(const xe::WindowProperties &props) :
 
 	FreeImage_Initialise();
 
-	//todo: init audio
-
+	SoundManager::init();
 	inputManager = new InputManager();
 }
 
@@ -136,7 +136,7 @@ void xe::Window::clear() const {
 void xe::Window::update() {
 	platformUpdate();
 
-	//todo: update audio
+	SoundManager::update();
 }
 
 void xe::Window::platformUpdate() {
@@ -246,8 +246,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONUP:
 		case WM_MBUTTONDOWN:
-		case WM_MBUTTONUP:
-			xe::mouseButtonCallback(inputManager, msg, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+		case WM_MBUTTONUP: xe::mouseButtonCallback(inputManager, msg, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
 			break;
 
 		case WM_SIZE: resizeCallback(window, LOWORD(lparam), HIWORD(lparam));

@@ -8,8 +8,11 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D S2D_DEBUG -D XE_DEBUG")
 
 
+link_directories(../engine/external/freeimage/lib)
+link_directories(../engine/external/gorilla-audio/lib)
+
+
 include_directories(../engine/src)
-link_directories(../libs)
 
 #sandbox
 set(S2D_SRC
@@ -18,4 +21,4 @@ set(S2D_SRC
 
 add_executable(sandbox2d ${S2D_SRC})
 
-target_link_libraries(sandbox2d xe freeimage)
+target_link_libraries(sandbox2d xe)

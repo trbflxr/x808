@@ -8,6 +8,7 @@
 #include <gfx/sprite.hpp>
 #include <resources/fontmanager.hpp>
 #include <resources/texturemanager.hpp>
+#include <resources/soundmanager.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -125,6 +126,12 @@ Test2D::Test2D() :
 	add(new Sprite({-20, -20}, 1, {20, 20}, 0, &GETTEXTURE("0")));
 	add(new Sprite({20, 20}, 1, {20, 20}, 0, &GETTEXTURE("default")));
 	add(new Sprite({-64, -36}, 1, {128, 72}, 0, &GETTEXTURE("2k")));
+
+	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
+	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
+
+//	GETSOUND("orunec")->loop();
+//	GETSOUND("orunec")->setGain(0.2f);
 }
 
 Test2D::~Test2D() {
@@ -190,6 +197,18 @@ bool Test2D::onKeyPressedEvent(xe::KeyPressEvent &event) {
 	}
 
 	camera->setPosition(pos);
+
+
+
+	if (Input::isKeyPressed(XE_KEY_1)) {
+		GETSOUND("orunec")->play();
+		GETSOUND("orunec")->setGain(2);
+	}
+	if (Input::isKeyPressed(XE_KEY_2)) {
+		GETSOUND("test")->play();
+		GETSOUND("test")->setGain(0.2f);
+	}
+
 }
 
 bool Test2D::onMousePressedEvent(xe::MousePressEvent &event) {

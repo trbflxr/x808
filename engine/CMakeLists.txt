@@ -20,13 +20,21 @@ include_directories(src)
 #freeimage
 include_directories(external/freeimage/include)
 link_directories(external/freeimage/lib)
+link_libraries(freeimage)
 
 #freetype-gl
 include_directories(external/freetype-gl/include)
 link_directories(external/freetype-gl/lib)
+link_libraries(freetype-gl freetype bz2)
 
 #glew
 include_directories(external/glew/include)
+link_libraries(glew ${OPENGL_LIBRARIES})
+
+#gorilla-audio
+include_directories(external/gorilla-audio/include)
+link_directories(external/gorilla-audio/lib)
+link_libraries(gorilla openal32)
 
 #engine
 set(ENGINE_SRC
@@ -72,6 +80,8 @@ set(ENGINE_SRC
         src/resources/fontmanager.cpp
         src/resources/texturemanager.cpp
         src/resources/shaderfactory.cpp
+        src/resources/sound.cpp
+        src/resources/soundmanager.cpp
 
         src/utils/log.cpp
         src/utils/timer.cpp
@@ -82,11 +92,3 @@ set(ENGINE_SRC
 
 
 add_library(xe SHARED ${ENGINE_SRC})
-
-target_link_libraries(xe
-        glew
-        ${OPENGL_LIBRARIES}
-        freeimage
-        freetype-gl
-        freetype
-        bz2)
