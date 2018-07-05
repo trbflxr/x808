@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(xe)
 
+
+option(XE_PLATFORM_WIN32 "Win32" ON)
+option(XE_PLATFORM_GL "OpenGL" ON)
+
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
@@ -13,9 +18,14 @@ add_definitions(
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D XE_DEBUG")
 
+include_directories(src)
+
+#opengl
 find_package(OpenGL REQUIRED)
 
-include_directories(src)
+#glew
+include_directories(external/glew/include)
+link_libraries(glew ${OPENGL_LIBRARIES})
 
 #freeimage
 include_directories(external/freeimage/include)
@@ -26,10 +36,6 @@ link_libraries(freeimage)
 include_directories(external/freetype-gl/include)
 link_directories(external/freetype-gl/lib)
 link_libraries(freetype-gl freetype bz2)
-
-#glew
-include_directories(external/glew/include)
-link_libraries(glew ${OPENGL_LIBRARIES})
 
 #gorilla-audio
 include_directories(external/gorilla-audio/include)
@@ -83,12 +89,28 @@ set(ENGINE_SRC
         src/resources/sound.cpp
         src/resources/soundmanager.cpp
 
-        src/utils/log.cpp
-        src/utils/timer.cpp
         src/utils/loadimage.cpp
         src/utils/string.cpp
 
         src/config.cpp)
 
 
-add_library(xe SHARED ${ENGINE_SRC})
+#win32
+file(GLOB ENGINE_WIN32_SRC src/platform/win32/*.cpp)
+
+#opengl
+file(GLOB ENGINE_GL_SRC)
+
+
+#total platform files
+file(GLOB PLATFORM_SRC)
+
+if (XE_PLATFORM_WIN32)
+    list(APPEND PLATFORM_SRC ${ENGINE_WIN32_SRC})
+endif ()
+
+if (XE_PLATFORM_GL)
+    list(APPEND PLATFORM_SRC ${ENGINE_GL_SRC})
+endif ()
+
+add_library(xe SHARED ${ENGINE_SRC} ${PLATFORM_SRC})

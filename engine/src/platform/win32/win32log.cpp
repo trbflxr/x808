@@ -1,9 +1,9 @@
 //
-// Created by FLXR on 6/28/2018.
+// Created by FLXR on 7/5/2018.
 //
 
 #include <windows.h>
-#include "log.hpp"
+#include "utils/log.hpp"
 
 void xe::internal::platformLogMessage(uint level, const char *message) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

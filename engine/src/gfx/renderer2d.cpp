@@ -379,6 +379,7 @@ void xe::gfx::Renderer2D::flushInternal() {
 	textures.clear();
 
 	//increment draw calls
+	//todo: move to renderer
 	++dc;
 }
 
