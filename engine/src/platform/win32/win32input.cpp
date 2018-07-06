@@ -41,6 +41,10 @@ void xe::InputManager::setMouseCursor(int32 cursor) {
 }
 
 void xe::keyCallback(xe::InputManager *inputManager, int32 flags, int32 key, uint message) {
+	if (message == WM_SYSKEYDOWN && key == VK_F4) {
+		PostQuitMessage(0);
+	}
+
 	bool pressed = message == WM_KEYDOWN || message == WM_SYSKEYDOWN;
 	inputManager->keyState[key] = pressed;
 

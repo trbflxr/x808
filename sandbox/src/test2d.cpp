@@ -130,9 +130,6 @@ Test2D::Test2D() :
 
 	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
-
-//	GETSOUND("orunec")->loop();
-//	GETSOUND("orunec")->setGain(0.2f);
 }
 
 Test2D::~Test2D() {
@@ -184,6 +181,8 @@ void Test2D::onEvent(xe::Event &event) {
 }
 
 bool Test2D::onKeyPressedEvent(xe::KeyPressEvent &event) {
+	printf("key: %u, mod: %u\n", event.getKey(),event.getModifiers());
+
 	vec3 pos = camera->getPosition();
 
 	if (Input::isKeyPressed(XE_KEY_A)) {
@@ -203,7 +202,7 @@ bool Test2D::onKeyPressedEvent(xe::KeyPressEvent &event) {
 
 	if (Input::isKeyPressed(XE_KEY_1)) {
 		GETSOUND("orunec")->play();
-		GETSOUND("orunec")->setGain(2);
+		GETSOUND("orunec")->setGain(0.2f);
 	}
 	if (Input::isKeyPressed(XE_KEY_2)) {
 		GETSOUND("test")->play();
