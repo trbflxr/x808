@@ -10,7 +10,8 @@
 #include <vector>
 #include "utils/log.hpp"
 #include "xeint.hpp"
-#include "gltypes.hpp"
+#include "context.hpp"
+#include "platform/opengl/gltypes.hpp"
 
 namespace xe { namespace gfx { namespace api {
 
@@ -52,35 +53,68 @@ namespace xe { namespace gfx { namespace api {
 
 	template<>
 	inline void BufferLayout::push<float>(const std::string_view &name, uint count, bool normalized) {
-		push(name, GL_FLOAT, sizeof(float), count, normalized);
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), count, normalized);
+				break;
+
+			default: break;
+		}
 	}
 
 	template<>
 	inline void BufferLayout::push<uint>(const std::string_view &name, uint count, bool normalized) {
-		push(name, GL_UNSIGNED_INT, sizeof(uint), count, normalized);
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_UNSIGNED_INT, sizeof(uint), count, normalized);
+				break;
+
+			default: break;
+		}
 	}
 
 	template<>
 	inline void BufferLayout::push<byte>(const std::string_view &name, uint count, bool normalized) {
-		push(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);
+				break;
+
+			default: break;
+		}
 	}
 
 	template<>
 	inline void BufferLayout::push<vec2>(const std::string_view &name, uint count, bool normalized) {
-		XE_ASSERT(count <= 1, "cant push more then 1 vec2")
-		push(name, GL_FLOAT, sizeof(float), 2, normalized);
+		XE_ASSERT(count <= 1, "cant push more then 1 vec2");
+
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 2, normalized);
+				break;
+
+			default: break;
+		}
 	}
 
 	template<>
 	inline void BufferLayout::push<vec3>(const std::string_view &name, uint count, bool normalized) {
-		XE_ASSERT(count <= 1, "cant push more then 1 vec3")
-		push(name, GL_FLOAT, sizeof(float), 3, normalized);
+		XE_ASSERT(count <= 1, "cant push more then 1 vec3");
+
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 3, normalized);
+				break;
+
+			default: break;
+		}
 	}
 
 	template<>
 	inline void BufferLayout::push<vec4>(const std::string_view &name, uint count, bool normalized) {
-		XE_ASSERT(count <= 1, "cant push more then 1 vec4")
-		push(name, GL_FLOAT, sizeof(float), 4, normalized);
+		XE_ASSERT(count <= 1, "cant push more then 1 vec4");
+
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 4, normalized);
+				break;
+
+			default: break;
+		}
 	}
 
 }}}

@@ -12,16 +12,15 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API VertexArray {
 	public:
-		void bind() const;
-		void unbind() const;
+		virtual void bind() const = 0;
+		virtual void unbind() const = 0;
 
-		void draw(uint count) const;
+		virtual void draw(uint count) const = 0;
 
-		inline VertexBuffer *getBuffer(uint index = 0) { return buffers[index]; };
-		void pushBuffer(VertexBuffer *buffer);
+		virtual VertexBuffer *getBuffer(uint index) = 0;
+		virtual void pushBuffer(VertexBuffer *buffer) = 0;
 
-	private:
-		std::vector<VertexBuffer *> buffers;
+		static VertexArray* create();
 	};
 
 }}}

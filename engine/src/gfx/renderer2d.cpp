@@ -79,7 +79,7 @@ void xe::gfx::Renderer2D::init() {
 
 	shader->bind();
 
-	api::VertexBuffer *buffer = new api::VertexBuffer(api::BufferType::DYNAMIC);
+	api::VertexBuffer *buffer = api::VertexBuffer::create(api::BufferType::DYNAMIC);
 	buffer->resize(RENDERER_BUFFER_SIZE);
 
 	api::BufferLayout layout;
@@ -89,7 +89,7 @@ void xe::gfx::Renderer2D::init() {
 	layout.push<byte>("COLOR", 4, true); // Color
 	buffer->setLayout(layout);
 
-	vertexArray = new api::VertexArray();
+	vertexArray = api::VertexArray::create();
 	vertexArray->pushBuffer(buffer);
 
 	uint *indices = new uint[RENDERER_INDICES_SIZE];
@@ -107,7 +107,7 @@ void xe::gfx::Renderer2D::init() {
 		offset += 4;
 	}
 
-	indexBuffer = new api::IndexBuffer(indices, RENDERER_INDICES_SIZE);
+	indexBuffer = api::IndexBuffer::create(indices, RENDERER_INDICES_SIZE);
 	vertexArray->unbind();
 }
 
@@ -138,7 +138,7 @@ void xe::gfx::Renderer2D::begin() {
 	Renderer::setViewport(0, 0, screenSize.x, screenSize.y);
 
 	vertexArray->bind();
-	buffer = vertexArray->getBuffer()->getPointer<VertexData>();
+	buffer = vertexArray->getBuffer(0)->getPointer<VertexData>();
 }
 
 void xe::gfx::Renderer2D::submit(const xe::gfx::Renderable2D *renderable) {
@@ -313,7 +313,7 @@ void xe::gfx::Renderer2D::submitTextInternal(const xe::gfx::Text *text) {
 }
 
 void xe::gfx::Renderer2D::end() {
-	vertexArray->getBuffer()->releasePointer();
+	vertexArray->getBuffer(0)->releasePointer();
 	vertexArray->unbind();
 }
 

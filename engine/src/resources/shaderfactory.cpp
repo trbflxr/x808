@@ -9,5 +9,5 @@ static const char *batchRendererShaderGL =
 		;
 
 xe::gfx::api::Shader *xe::gfx::sf::batchRendererShader() {
-	return new api::Shader("BatchRenderer", batchRendererShaderGL);
+	return api::Shader::createFromSource("BatchRenderer", batchRendererShaderGL);
 }

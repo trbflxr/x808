@@ -43,56 +43,22 @@ link_directories(external/gorilla-audio/lib)
 link_libraries(gorilla openal32)
 
 #engine
-set(ENGINE_SRC
+file(GLOB ENGINE_SRC
         external/glew/src/glew.c
 
         embedded/embedded.cpp
 
-        src/application/window.cpp
-        src/application/input.cpp
-        src/application/application.cpp
-
-        src/gfx/api/context.cpp
-        src/gfx/api/vertexbuffer.cpp
-        src/gfx/api/indexbuffer.cpp
-        src/gfx/api/vertexarray.cpp
-        src/gfx/api/texture.cpp
-        src/gfx/api/texture2d.cpp
-        src/gfx/api/shaderresource.cpp
-        src/gfx/api/shaderuniform.cpp
-        src/gfx/api/shader.cpp
-        src/gfx/layers/layer2d.cpp
-        src/gfx/camera/camera.hpp
-        src/gfx/renderer.cpp
-        src/gfx/renderer2d.cpp
-        src/gfx/renderer2d.hpp
-        src/gfx/renderable2d.cpp
-        src/gfx/text.cpp
-
-        src/math/vec2.cpp
-        src/math/vec3.cpp
-        src/math/vec4.cpp
-        src/math/mat4.cpp
-        src/math/quat.cpp
-        src/math/rect.cpp
-        src/math/aabb.cpp
-        src/math/aobb.cpp
-
-        src/objects/transform.cpp
-        src/objects/gameobject.cpp
-        src/gfx/sprite.cpp
-
-        src/resources/font.cpp
-        src/resources/fontmanager.cpp
-        src/resources/texturemanager.cpp
-        src/resources/shaderfactory.cpp
-        src/resources/sound.cpp
-        src/resources/soundmanager.cpp
-
-        src/utils/loadimage.cpp
-        src/utils/string.cpp
-
-        src/config.cpp)
+        src/application/*.cpp
+        src/events/*.cpp
+        src/gfx/api/*.cpp
+        src/gfx/camera/*.cpp
+        src/gfx/layers/*.cpp
+        src/gfx/*.cpp
+        src/math/*.cpp
+        src/objects/*.cpp
+        src/resources/*.cpp
+        src/utils/*.cpp
+        src/*.cpp)
 
 
 #win32

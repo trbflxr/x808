@@ -17,29 +17,27 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API VertexBuffer {
 	public:
-		explicit VertexBuffer(BufferType type);
-		~VertexBuffer();
+		virtual ~VertexBuffer() = default;
 
-		void resize(uint size);
-		void setLayout(const BufferLayout &layout);
-		void setData(uint size, const void *data);
+		virtual void resize(uint size) = 0;
+		virtual void setLayout(const BufferLayout &layout) = 0;
+		virtual void setData(uint size, const void *data) = 0;
 
-		void releasePointer();
+		virtual void releasePointer() = 0;
 
-		void bind();
-		void unbind();
+		virtual void bind() = 0;
+		virtual void unbind() = 0;
 
 		template<typename T>
 		T *getPointer() { return (T *) getPointerInternal(); }
 
-	private:
-		void *getPointerInternal();
+		static VertexBuffer* create(BufferType type = BufferType::STATIC);
 
-	private:
-		uint handle;
-		uint size;
-		BufferType type;
-		BufferLayout layout;
+	protected:
+		VertexBuffer() = default;
+
+		virtual void *getPointerInternal() = 0;
+
 	};
 
 }}}

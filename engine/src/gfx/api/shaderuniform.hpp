@@ -13,9 +13,39 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	//todo: move ShaderStruct to file
-	class ShaderUniform;
+	class XE_API ShaderUniform {
+	private:
+		friend class Shader;
+		friend class GLShader;
+		friend class ShaderStruct;
 
+	public:
+		virtual const std::string &getName() const = 0;
+		virtual uint getSize() const = 0;
+		virtual uint getCount() const = 0;
+		virtual uint getOffset() const = 0;
+
+	protected:
+		virtual void setOffset(uint offset) = 0;
+	};
+	typedef std::vector<ShaderUniform *> ShaderUniformVec;
+
+
+	///---------------------------///
+	class XE_API ShaderUniformBuffer {
+	public:
+		virtual const std::string &getName() const = 0;
+		virtual uint getRegister() const = 0;
+		virtual uint getShaderType() const = 0;
+		virtual uint getSize() const = 0;
+		virtual const ShaderUniformVec &getUniforms() const = 0;
+
+		virtual ShaderUniform *findUniform(const std::string_view &name) = 0;
+	};
+	typedef std::vector<ShaderUniformBuffer *> ShaderUniformBufferVec;
+
+
+	///---------------------------///
 	class ShaderStruct {
 	private:
 		friend class Shader;
@@ -23,7 +53,16 @@ namespace xe { namespace gfx { namespace api {
 	public:
 		explicit ShaderStruct(const std::string_view &name) : name(name), size(0), offset(0) { }
 
-		void addField(ShaderUniform *field);
+		void addField(ShaderUniform *field) {
+			size += field->getSize();
+			uint offset = 0;
+			if (!fields.empty()) {
+				ShaderUniform *previous = fields.back();
+				offset = previous->getOffset() + previous->getSize();
+			}
+			field->setOffset(offset);
+			fields.push_back(field);
+		}
 
 		inline void setOffset(uint offset) { ShaderStruct::offset = offset; }
 
@@ -39,86 +78,6 @@ namespace xe { namespace gfx { namespace api {
 		uint offset;
 	};
 	typedef std::vector<ShaderStruct *> ShaderStructVec;
-
-
-	class XE_API ShaderUniform {
-	private:
-		friend class Shader;
-		friend class ShaderUniformBuffer;
-		friend class ShaderStruct;
-
-	public:
-		enum class Type {
-			NONE, FLOAT32, VEC2, VEC3, VEC4, MAT4, INT32, STRUCT
-		};
-
-	public:
-		explicit ShaderUniform(Type type, const std::string_view &name, uint count = 1);
-		explicit ShaderUniform(ShaderStruct *uniformStruct, const std::string_view &name, uint count = 1);
-
-		inline const std::string &getName() const { return name; }
-		inline uint getSize() const { return size; }
-		inline uint getCount() const { return count; }
-		inline uint getOffset() const { return offset; }
-		inline uint getAbsoluteOffset() const { return struct_ ? struct_->getOffset() + offset : offset; }
-
-		uint getLocation() const { return location; }
-		inline Type getType() const { return type; }
-		const ShaderStruct &getShaderUniformStruct() const;
-
-		static uint sizeOfUniformType(Type type);
-		static Type stringToType(const std::string_view &type);
-		static std::string typeToString(Type type);
-
-	protected:
-		void setOffset(uint offset);
-
-	private:
-		std::string name;
-		uint size;
-		uint count;
-		uint offset;
-
-		Type type;
-		ShaderStruct *struct_;
-		mutable uint location;
-	};
-	typedef std::vector<ShaderUniform *> ShaderUniformVec;
-
-
-	struct ShaderUniformField {
-		ShaderUniform::Type type;
-		std::string name;
-		uint count;
-		mutable uint size;
-		mutable int32 location;
-	};
-
-
-	class ShaderUniformBuffer {
-	private:
-		friend class Shader1;
-
-	private:
-		std::string name;
-		ShaderUniformVec uniforms;
-		uint register_;
-		uint size;
-		uint shaderType; // 0 = VS, 1 = FS
-	public:
-		explicit ShaderUniformBuffer(const std::string_view &name, uint shaderType);
-
-		void pushUniform(ShaderUniform *uniform);
-
-		inline const std::string &getName() const { return name; }
-		inline uint getRegister() const { return register_; }
-		inline uint getShaderType() const { return shaderType; }
-		inline uint getSize() const { return size; }
-		inline const ShaderUniformVec &getUniforms() const { return uniforms; }
-
-		ShaderUniform *findUniform(const std::string_view &name);
-	};
-	typedef std::vector<ShaderUniformBuffer *> ShaderUniformBufferVec;
 
 }}}
 

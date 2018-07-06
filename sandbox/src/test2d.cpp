@@ -24,50 +24,50 @@ Test2D::Test2D() :
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
 
-	TextureManager::add(new Texture2D("0", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture2D("1", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture2D("2", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture2D("3", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture2D("4", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture2D("5", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture2D("6", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture2D("7", "assets/textures/test8.png", params));
+	TextureManager::add(Texture2D::create("0", "assets/textures/test1.png", params));
+	TextureManager::add(Texture2D::create("1", "assets/textures/test2.png", params));
+	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
+	TextureManager::add(Texture2D::create("3", "assets/textures/test4.png", params));
+	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("5", "assets/textures/test6.png", params));
+	TextureManager::add(Texture2D::create("6", "assets/textures/test7.png", params));
+	TextureManager::add(Texture2D::create("7", "assets/textures/test8.png", params));
 
-	TextureManager::add(new Texture2D("8", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture2D("9", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture2D("10", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture2D("11", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture2D("12", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture2D("13", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture2D("14", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture2D("15", "assets/textures/test8.png", params));
+	TextureManager::add(Texture2D::create("8", "assets/textures/test1.png", params));
+	TextureManager::add(Texture2D::create("9", "assets/textures/test2.png", params));
+	TextureManager::add(Texture2D::create("10", "assets/textures/test3.png", params));
+	TextureManager::add(Texture2D::create("11", "assets/textures/test4.png", params));
+	TextureManager::add(Texture2D::create("12", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("13", "assets/textures/test6.png", params));
+	TextureManager::add(Texture2D::create("14", "assets/textures/test7.png", params));
+	TextureManager::add(Texture2D::create("15", "assets/textures/test8.png", params));
 
-	TextureManager::add(new Texture2D("16", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture2D("17", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture2D("18", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture2D("19", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture2D("20", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture2D("21", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture2D("22", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture2D("23", "assets/textures/test8.png", params));
+	TextureManager::add(Texture2D::create("16", "assets/textures/test1.png", params));
+	TextureManager::add(Texture2D::create("17", "assets/textures/test2.png", params));
+	TextureManager::add(Texture2D::create("18", "assets/textures/test3.png", params));
+	TextureManager::add(Texture2D::create("19", "assets/textures/test4.png", params));
+	TextureManager::add(Texture2D::create("20", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("21", "assets/textures/test6.png", params));
+	TextureManager::add(Texture2D::create("22", "assets/textures/test7.png", params));
+	TextureManager::add(Texture2D::create("23", "assets/textures/test8.png", params));
 
-	TextureManager::add(new Texture2D("24", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture2D("25", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture2D("26", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture2D("27", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture2D("28", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture2D("29", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture2D("30", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture2D("31", "assets/textures/test8.png", params));
+	TextureManager::add(Texture2D::create("24", "assets/textures/test1.png", params));
+	TextureManager::add(Texture2D::create("25", "assets/textures/test2.png", params));
+	TextureManager::add(Texture2D::create("26", "assets/textures/test3.png", params));
+	TextureManager::add(Texture2D::create("27", "assets/textures/test4.png", params));
+	TextureManager::add(Texture2D::create("28", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("29", "assets/textures/test6.png", params));
+	TextureManager::add(Texture2D::create("30", "assets/textures/test7.png", params));
+	TextureManager::add(Texture2D::create("31", "assets/textures/test8.png", params));
 
-	TextureManager::add(new Texture2D("32", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture2D("33", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture2D("34", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture2D("35", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture2D("36", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture2D("37", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture2D("38", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture2D("39", "assets/textures/test8.png", params));
+	TextureManager::add(Texture2D::create("32", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(Texture2D::create("33", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(Texture2D::create("34", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(Texture2D::create("35", "assets/textures/test4.png", params));
+	TextureManager::add(Texture2D::create("36", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("37", "assets/textures/test6.png", params));
+	TextureManager::add(Texture2D::create("38", "assets/textures/test7.png", params));
+	TextureManager::add(Texture2D::create("39", "assets/textures/test8.png", params));
 
 	/// 1 - 1.2k
 	/// 2 - 11k
@@ -120,7 +120,7 @@ Test2D::Test2D() :
 	text3->setOutlineColor(color::BLACK);
 	text3->setOutlineThickness(3);
 
-	TextureManager::add(new Texture2D("2k", "assets/textures/enemyspotted.jpg", params));
+	TextureManager::add(Texture2D::create("2k", "assets/textures/enemyspotted.jpg", params));
 
 
 	add(new Sprite({0, 0}, 1, {20, 20}, 0, &GETTEXTURE("dick")));

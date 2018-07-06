@@ -13,20 +13,14 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API IndexBuffer {
 	public:
-		explicit IndexBuffer(uint16 *data, uint count);
-		explicit IndexBuffer(uint *data, uint count);
-		~IndexBuffer();
+		virtual void bind() const = 0;
+		virtual void unbind() const = 0;
 
-		void bind() const;
-		void unbind() const;
+		virtual uint getCount() const = 0;
 
-		inline uint getCount() const { return count; }
-
-	private:
-		uint handle;
-		uint count;
+		static IndexBuffer *create(uint16 *data, uint count);
+		static IndexBuffer *create(uint *data, uint count);
 	};
-
 
 }}}
 

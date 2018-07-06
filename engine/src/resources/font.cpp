@@ -31,7 +31,7 @@ xe::Font::Font(const std::string_view &name, const std::string_view &path, float
 
 	TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
 	                                TextureWrap::CLAMP_TO_EDGE};
-	texture = new Texture2D(1024, 1024, parameters);
+	texture = Texture2D::create(1024, 1024, parameters);
 	texture->setData(ftAtlas->data);
 }
 
@@ -49,7 +49,7 @@ xe::Font::Font(const std::string_view &name, const byte *data, uint dataSize, fl
 
 	TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
 	                                TextureWrap::CLAMP_TO_EDGE};
-	texture = new Texture2D(1024, 1024, parameters);
+	texture = Texture2D::create(1024, 1024, parameters);
 	texture->setData(ftAtlas->data);
 
 	XE_ASSERT(ftFont, "Failed to load font from data!");

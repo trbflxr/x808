@@ -3,20 +3,12 @@
 //
 
 #include "vertexarray.hpp"
-#include "platform/opengl/glcommon.hpp"
+#include "platform/opengl/glvertexarray.hpp"
 
-void xe::gfx::api::VertexArray::bind() const {
-	buffers.front()->bind();
-}
+xe::gfx::api::VertexArray *xe::gfx::api::VertexArray::create() {
+	switch (Context::getRenderAPI()) {
+		case RenderAPI::OPENGL: return new GLVertexArray();
 
-void xe::gfx::api::VertexArray::unbind() const {
-	buffers.front()->unbind();
-}
-
-void xe::gfx::api::VertexArray::draw(uint count) const {
-	glCall(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr));
-}
-
-void xe::gfx::api::VertexArray::pushBuffer(xe::gfx::api::VertexBuffer *buffer) {
-	buffers.push_back(buffer);
+		default: return nullptr;
+	}
 }

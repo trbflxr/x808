@@ -12,8 +12,8 @@ xe::TextureManager::TextureManager() {
 
 	TextureParameters params(TextureFilter::NEAREST);
 
-	Texture2D *texture = new Texture2D(internal::DEFAULT_TEXTURE_WIDTH,
-	                                   internal::DEFAULT_TEXTURE_HEIGHT, params);
+	Texture2D *texture = Texture2D::create(internal::DEFAULT_TEXTURE_WIDTH,
+	                                       internal::DEFAULT_TEXTURE_HEIGHT, params);
 	texture->setData(internal::DEFAULT_TEXTURE);
 
 	textures.emplace("default", texture);
