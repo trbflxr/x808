@@ -21,11 +21,7 @@ namespace xe {
 
 		static void clean();
 
-		TextureManager(TextureManager &other) = delete;
-		TextureManager(TextureManager &&other) = delete;
-
-		TextureManager &operator=(TextureManager &other) = delete;
-		TextureManager &operator=(TextureManager &&other) = delete;
+		NULL_COPY_AND_ASSIGN(TextureManager);
 
 	private:
 		TextureManager();

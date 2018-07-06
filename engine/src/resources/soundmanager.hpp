@@ -29,11 +29,7 @@ namespace xe {
 		static void update();
 		static void clean();
 
-		SoundManager(SoundManager &other) = delete;
-		SoundManager(SoundManager &&other) = delete;
-
-		SoundManager &operator=(SoundManager &other) = delete;
-		SoundManager &operator=(SoundManager &&other) = delete;
+		NULL_COPY_AND_ASSIGN(SoundManager);
 
 	private:
 		SoundManager();

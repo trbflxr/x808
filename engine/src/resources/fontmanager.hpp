@@ -21,11 +21,7 @@ namespace xe {
 
 		static void clean();
 
-		FontManager(FontManager &other) = delete;
-		FontManager(FontManager &&other) = delete;
-
-		FontManager &operator=(FontManager &other) = delete;
-		FontManager &operator=(FontManager &&other) = delete;
+		NULL_COPY_AND_ASSIGN(FontManager);
 
 	private:
 		FontManager();

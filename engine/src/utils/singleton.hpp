@@ -15,11 +15,7 @@ namespace xe { namespace utils {
 	public:
 		virtual ~Singleton() = default;
 
-		Singleton(Singleton &other) = delete;
-		Singleton(Singleton &&other) = delete;
-
-		Singleton &operator=(Singleton &other) = delete;
-		Singleton &operator=(Singleton &&other) = delete;
+		NULL_COPY_AND_ASSIGN(Singleton);
 
 		static T &get() {
 			static T instance;

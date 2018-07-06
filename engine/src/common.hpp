@@ -22,4 +22,10 @@
 #define METHOD_1(x) std::bind(x, this, std::placeholders::_1)
 #define METHOD(x) METHOD_1(x)
 
+#define NULL_COPY_AND_ASSIGN(T) \
+        T(T &) = delete;\
+        T(T &&) = delete;\
+        T &operator=(T &) = delete;\
+        T &operator=(T &&) = delete;
+
 #endif //X808_COMMON_HPP
