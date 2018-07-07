@@ -22,10 +22,10 @@ include_directories(src)
 
 #opengl
 find_package(OpenGL REQUIRED)
+link_libraries(${OPENGL_LIBRARIES})
 
 #glew
 include_directories(external/glew/include)
-link_libraries(glew ${OPENGL_LIBRARIES})
 
 #freeimage
 include_directories(external/freeimage/include)

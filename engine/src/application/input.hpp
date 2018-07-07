@@ -79,6 +79,7 @@ namespace xe {
 		inline static bool isMouseButtonPressed(uint btn) { return inputManager->isMouseButtonPressed(btn); }
 		inline static bool isMouseButtonClicked(uint btn) { return inputManager->isMouseButtonClicked(btn); }
 		inline static const vec2 &getMousePosition() { return inputManager->getMousePosition(); }
+		inline static void setMousePosition(const vec2 &pos) { return inputManager->setMousePosition(pos); }
 
 	private:
 		static InputManager *inputManager;

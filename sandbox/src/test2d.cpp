@@ -72,10 +72,10 @@ Test2D::Test2D() :
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-	uint texCount = 40;
-//	uint texCount = 31;
+//	uint texCount = 40;
+	uint texCount = 31;
 
-#define sp_size  2
+#define sp_size  3
 
 	//59k
 #if sp_size == 3
@@ -161,6 +161,26 @@ void Test2D::render() {
 void Test2D::update(const xe::TimeStep &ts) {
 	camera->update();
 	renderer->setCamera(camera);
+
+	///input
+	if(Input::isKeyPressed(XE_KEY_M)){
+		Input::setMousePosition({0,0});
+	}
+
+	vec3 pos = camera->getPosition();
+
+	if (Input::isKeyPressed(XE_KEY_A)) {
+		pos.x += 1;
+	} else if (Input::isKeyPressed(XE_KEY_D)) {
+		pos.x -= 1;
+	}
+	if (Input::isKeyPressed(XE_KEY_W)) {
+		pos.y -= 1;
+	} else if (Input::isKeyPressed(XE_KEY_S)) {
+		pos.y += 1;
+	}
+
+	camera->setPosition(pos);
 }
 
 void Test2D::tick() {
@@ -181,34 +201,18 @@ void Test2D::onEvent(xe::Event &event) {
 }
 
 bool Test2D::onKeyPressedEvent(xe::KeyPressEvent &event) {
-	printf("key: %u, mod: %u\n", event.getKey(),event.getModifiers());
+	if(event.getRepeat()) return false;
 
-	vec3 pos = camera->getPosition();
-
-	if (Input::isKeyPressed(XE_KEY_A)) {
-		pos.x += 1;
-	} else if (Input::isKeyPressed(XE_KEY_D)) {
-		pos.x -= 1;
-	}
-	if (Input::isKeyPressed(XE_KEY_W)) {
-		pos.y -= 1;
-	} else if (Input::isKeyPressed(XE_KEY_S)) {
-		pos.y += 1;
-	}
-
-	camera->setPosition(pos);
-
-
-
-	if (Input::isKeyPressed(XE_KEY_1)) {
+	if (event.getKey() == XE_KEY_1) {
 		GETSOUND("orunec")->play();
 		GETSOUND("orunec")->setGain(0.2f);
 	}
-	if (Input::isKeyPressed(XE_KEY_2)) {
+	if (event.getKey() == XE_KEY_2) {
 		GETSOUND("test")->play();
 		GETSOUND("test")->setGain(0.2f);
 	}
 
+	return false;
 }
 
 bool Test2D::onMousePressedEvent(xe::MousePressEvent &event) {
