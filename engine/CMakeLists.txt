@@ -49,6 +49,7 @@ file(GLOB ENGINE_SRC
         embedded/embedded.cpp
 
         src/application/*.cpp
+        src/ecs/*.cpp
         src/events/*.cpp
         src/gfx/api/*.cpp
         src/gfx/camera/*.cpp

@@ -66,8 +66,6 @@ void xe::Application::run() {
 	while (running) {
 		gfx::Renderer::resetDC();
 
-		window->clear();
-
 		float now = timer->elapsedMillis();
 
 		if (now - updateTimer > updateTick) {
@@ -78,6 +76,8 @@ void xe::Application::run() {
 			updates++;
 			updateTimer += updateTick;
 		}
+
+		window->clear();
 
 		Timer frameTimer;
 		render();
