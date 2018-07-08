@@ -8,21 +8,18 @@
 
 #include "layer.hpp"
 #include "gfx/renderer2d.hpp"
-#include "gfx/camera/orthographiccamera.hpp"
 
 namespace xe { namespace gfx {
 
 	class XE_API Layer2D : public Layer {
 	public:
-		explicit Layer2D(const mat4 &projection);
+		explicit Layer2D();
 		~Layer2D() override;
 
 	protected:
 		bool resize(uint width, uint height) override;
 
 	protected:
-		OrthographicCamera *camera;
-
 		Renderer2D *renderer;
 	};
 

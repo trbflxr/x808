@@ -36,6 +36,9 @@ namespace xe {namespace gfx {
 		inline void rotate(const vec3 &rotation) { Camera::rotation += rotation; }
 		inline void rotate(float x, float y, float z) { rotation += {x, y, z}; }
 
+		inline void move(const vec3 &direction) { Camera::position += direction; }
+		inline void move(float x, float y, float z) { position += {x, y, z}; }
+
 	protected:
 		mat4 projectionMatrix;
 		mat4 viewMatrix;

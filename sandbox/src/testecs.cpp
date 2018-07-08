@@ -15,8 +15,7 @@ using namespace gfx;
 using namespace gfx::api;
 
 
-TestECS::TestECS() :
-		Layer2D(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000)) {
+TestECS::TestECS() {
 
 	srand((uint) time(nullptr));
 
@@ -81,7 +80,18 @@ TestECS::TestECS() :
 
 	//render system
 	spriteRenderer = new SpriteRendererSystem(renderer);
+
 	renderingPipeline.addSystem(*spriteRenderer);
+
+	//main systems
+	cameraSystem = new OrthoCameraSystem(renderer);
+
+	mainSystems.addSystem(*cameraSystem);
+
+
+	//create camera
+	OrthoCameraComponent camera(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
+	ecs.makeEntity(camera);
 
 	//sprite components
 	SpriteComponent sprite;
@@ -160,6 +170,7 @@ TestECS::TestECS() :
 
 TestECS::~TestECS() {
 	delete spriteRenderer;
+	delete cameraSystem;
 }
 
 void TestECS::render() {
@@ -209,10 +220,10 @@ bool TestECS::onKeyPressedEvent(xe::KeyPressEvent &event) {
 		GETSOUND("test")->setGain(0.2f);
 	}
 	if (event.getKey() == XE_KEY_3) {
-		if(!GETSOUND("orunec")->isPlaying()){
+		if (!GETSOUND("orunec")->isPlaying()) {
 			GETSOUND("orunec")->loop();
 			GETSOUND("orunec")->setGain(0.2f);
-		}else {
+		} else {
 			GETSOUND("orunec")->stop();
 		}
 	}

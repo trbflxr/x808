@@ -11,6 +11,7 @@
 #include <ecs/components/transform2dcomponent.hpp>
 #include <ecs/systems/spriterenderersystem.hpp>
 #include <gfx/layers/layer2d.hpp>
+#include "orthocamerasystem.hpp"
 
 class TestECS : public xe::gfx::Layer2D {
 public:
@@ -29,6 +30,8 @@ public:
 
 private:
 	xe::ECS ecs;
+
+	OrthoCameraSystem *cameraSystem;
 
 	xe::SpriteRendererSystem *spriteRenderer;
 
