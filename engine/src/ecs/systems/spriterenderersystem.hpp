@@ -18,7 +18,7 @@ namespace xe {
 			addComponentType(Transform2DComponent::ID);
 		}
 
-		void updateComponents(float delta, BaseECSComponent **components) override {
+		void updateComponents(const TimeStep &ts, BaseECSComponent **components) override {
 			SpriteComponent *sprite = (SpriteComponent *) components[0];
 			Transform2DComponent *transform = (Transform2DComponent *) components[1];
 

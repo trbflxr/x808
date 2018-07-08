@@ -6,7 +6,6 @@
 #define X808_TESTECS_HPP
 
 
-#include <ecs/ecs.hpp>
 #include <ecs/components/spritecomponent.hpp>
 #include <ecs/components/transform2dcomponent.hpp>
 #include <ecs/systems/spriterenderersystem.hpp>
@@ -29,7 +28,7 @@ public:
 	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
 
 private:
-	xe::ECS ecs;
+	xe::ECS &ecs;
 
 	OrthoCameraSystem *cameraSystem;
 

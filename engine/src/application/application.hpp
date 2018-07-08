@@ -11,14 +11,19 @@
 #include "window.hpp"
 #include "utils/timer.hpp"
 #include "utils/timestep.hpp"
-#include "gfx/layers/layer.hpp"
 #include "gfx/api/context.hpp"
+#include "ecs/ecs.hpp"
+
+
+namespace xe { namespace gfx {
+	class Layer;
+}}
 
 namespace xe {
 
 	class XE_API Application {
 	public:
-		explicit Application(const Config& config, gfx::api::RenderAPI api);
+		explicit Application(const Config &config, gfx::api::RenderAPI api);
 		virtual ~Application();
 
 		virtual void init();
@@ -42,6 +47,8 @@ namespace xe {
 		inline uint getWindowWidth() const { return window->getWidth(); }
 		inline uint getWindowHeight() const { return window->getHeight(); }
 
+		inline ECS &getEcs() { return ecs; }
+
 		inline static Application &getApplication() { return *instance; }
 
 	private:
@@ -64,6 +71,8 @@ namespace xe {
 
 		Config config;
 		Window *window;
+
+		ECS ecs;
 
 		std::vector<gfx::Layer *> layerStack;
 

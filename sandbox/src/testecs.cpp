@@ -15,7 +15,8 @@ using namespace gfx;
 using namespace gfx::api;
 
 
-TestECS::TestECS() {
+TestECS::TestECS() :
+		ecs(app.getEcs()) {
 
 	srand((uint) time(nullptr));
 
@@ -184,7 +185,7 @@ TestECS::~TestECS() {
 void TestECS::render() {
 	renderer->begin();
 
-	ecs.updateSystems(renderingPipeline, 0.0f);
+	ecs.updateSystems(renderingPipeline, TimeStep(0));
 //	renderer->drawLine(-20, -20, 200, 200, 1, color::GREEN, 2);
 
 	renderer->submitText(text);
@@ -211,12 +212,10 @@ void TestECS::update(const xe::TimeStep &ts) {
 	t->bounds.setPosition(pos);
 
 
-	ecs.updateSystems(mainSystems, ts.getSeconds());
+	ecs.updateSystems(mainSystems, ts);
 }
 
 void TestECS::tick() {
-	xe::Application &app = xe::Application::getApplication();
-
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
 	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer::getDC());

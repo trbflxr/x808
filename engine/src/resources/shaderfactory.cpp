@@ -5,7 +5,7 @@
 #include "shaderfactory.hpp"
 
 static const char *batchRendererShaderGL =
-#include "gfx/shaders/batchrenderer.shader"
+#include "platform/opengl/shaders/batchrenderer.shader"
 		;
 
 xe::gfx::api::Shader *xe::gfx::sf::batchRendererShader() {

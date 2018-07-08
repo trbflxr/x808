@@ -6,10 +6,7 @@
 #include "application/application.hpp"
 
 xe::gfx::Layer2D::Layer2D() {
-	const uint width = Application::getApplication().getWindowWidth();
-	const uint height = Application::getApplication().getWindowHeight();
-
-	renderer = new Renderer2D(width, height);
+	renderer = new Renderer2D(window.getWidth(), window.getHeight());
 }
 
 xe::gfx::Layer2D::~Layer2D() {

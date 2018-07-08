@@ -4,6 +4,7 @@
 
 #include "application.hpp"
 #include "gfx/renderer2d.hpp"
+#include "gfx/layers/layer.hpp"
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
 

@@ -7,11 +7,10 @@
 
 
 #include "events/events.hpp"
-#include "application/window.hpp"
+#include "application/application.hpp"
 #include "utils/timestep.hpp"
 
 namespace xe { namespace gfx {
-
 
 	class Layer : public IEventListener {
 	public:
@@ -38,12 +37,16 @@ namespace xe { namespace gfx {
 		}
 
 	protected:
-		explicit Layer() : window(Window::getWindowClass(nullptr)), visible(true) { }
+		explicit Layer() :
+				app(Application::getApplication()),
+				window(*Window::getWindowClass(nullptr)),
+				visible(true) { }
 
 		virtual bool resize(uint width, uint height) { }
 
 	protected:
-		Window *window;
+		Application &app;
+		Window &window;
 		bool visible;
 	};
 

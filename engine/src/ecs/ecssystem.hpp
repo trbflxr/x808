@@ -7,6 +7,7 @@
 
 
 #include "ecscomponent.hpp"
+#include "utils/timestep.hpp"
 
 namespace xe {
 
@@ -19,7 +20,7 @@ namespace xe {
 	public:
 		BaseECSSystem() = default;
 
-		virtual void updateComponents(float delta, BaseECSComponent **components) { }
+		virtual void updateComponents(const TimeStep &ts, BaseECSComponent **components) { }
 
 		inline const std::vector<uint> &getComponentTypes() const { return componentTypes; }
 		inline const std::vector<uint> &getComponentFlags() const { return componentFlags; }
