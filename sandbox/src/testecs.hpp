@@ -6,33 +6,11 @@
 #define X808_TESTECS_HPP
 
 
-#include <gfx/layers/layer2d.hpp>
 #include <ecs/ecs.hpp>
-
-///components
-struct Renderable2DComponent : public xe::ECSComponent<Renderable2DComponent> {
-	xe::gfx::Renderable2D *renderable;
-};
-
-///systems
-class Renderable2DSystem : public xe::BaseECSSystem {
-public:
-	explicit Renderable2DSystem(xe::gfx::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
-		addComponentType(Renderable2DComponent::ID);
-	}
-
-	void updateComponents(float delta, xe::BaseECSComponent **components) override {
-		Renderable2DComponent *r = (Renderable2DComponent *) components[0];
-
-		r->renderable->rotate(1);
-
-		renderer->submit(r->renderable);
-	}
-
-private:
-	xe::gfx::Renderer2D *renderer;
-};
-
+#include <ecs/components/spritecomponent.hpp>
+#include <ecs/components/transform2dcomponent.hpp>
+#include <ecs/systems/spriterenderersystem.hpp>
+#include <gfx/layers/layer2d.hpp>
 
 class TestECS : public xe::gfx::Layer2D {
 public:
@@ -52,10 +30,13 @@ public:
 private:
 	xe::ECS ecs;
 
-	Renderable2DSystem *r2ds;
+	xe::SpriteRendererSystem *spriteRenderer;
 
 	xe::ECSSystemList mainSystems;
 	xe::ECSSystemList renderingPipeline;
+
+	xe::gfx::Text *text;
+	xe::EntityHandle a;
 };
 
 

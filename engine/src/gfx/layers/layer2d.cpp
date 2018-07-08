@@ -17,23 +17,6 @@ xe::gfx::Layer2D::Layer2D(const mat4 &projection) {
 xe::gfx::Layer2D::~Layer2D() {
 	delete renderer;
 	delete camera;
-
-	renderables.clear();
-}
-
-void xe::gfx::Layer2D::render() {
-	renderer->begin();
-
-	for (auto &&renderable : renderables) {
-		renderer->submit(renderable);
-	}
-
-	renderer->flush();
-}
-
-xe::gfx::Renderable2D *xe::gfx::Layer2D::add(xe::gfx::Renderable2D *renderable) {
-	renderables.push_back(renderable);
-	return renderable;
 }
 
 bool xe::gfx::Layer2D::resize(uint width, uint height) {

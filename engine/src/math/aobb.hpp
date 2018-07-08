@@ -33,7 +33,9 @@ namespace xe {
 			const std::array<vec2, 4> &getVertices() const;
 
 			void setPosition(const vec2 &position);
+			void setPosition(float x, float y);
 			void setSize(const vec2 &size);
+			void setSize(float width, float height);
 			void setRotation(float deg);
 
 		private:

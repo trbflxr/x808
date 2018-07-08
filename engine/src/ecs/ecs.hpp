@@ -9,6 +9,7 @@
 #include <map>
 #include "ecscomponent.hpp"
 #include "ecssystem.hpp"
+#include "utils/log.hpp"
 
 
 namespace xe {
@@ -96,17 +97,22 @@ namespace xe {
 		///component methods
 		template<class Component>
 		inline void addComponent(EntityHandle entity, Component *component) {
+			XE_ASSERT(entity, "[ECS->addComponent]: Entity is nullptr");
+			XE_ASSERT(component, "[ECS->addComponent]: Component is nullptr");
 			addComponentInternal(entity, handleToEntity(entity), Component::ID, component);
 		}
 
 		template<class Component>
 		bool removeComponent(EntityHandle entity) {
+			XE_ASSERT(entity, "[ECS->removeComponent]: Entity is nullptr");
 			return removeComponentInternal(entity, Component::ID);
 		}
 
 		template<class Component>
 		Component *getComponent(EntityHandle entity) {
-			return (Component *) getComponentInternal(handleToEntity(entity), components[Component::ID],
+			XE_ASSERT(entity, "[ECS->getComponent]: Entity is nullptr");
+			return (Component *) getComponentInternal(handleToEntity(entity),
+			                                          components[Component::ID],
 			                                          Component::ID);
 		}
 

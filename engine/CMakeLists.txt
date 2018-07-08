@@ -50,6 +50,8 @@ file(GLOB ENGINE_SRC
 
         src/application/*.cpp
         src/ecs/*.cpp
+        src/ecs/components/*.cpp
+        src/ecs/systems/*.cpp
         src/events/*.cpp
         src/gfx/api/*.cpp
         src/gfx/camera/*.cpp

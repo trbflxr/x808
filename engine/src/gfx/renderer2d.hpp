@@ -9,12 +9,13 @@
 #include "common.hpp"
 #include "xeint.hpp"
 #include "color.hpp"
-#include "renderable2d.hpp"
 #include "gfx/camera/camera.hpp"
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
 #include "text.hpp"
+#include "ecs/components/spritecomponent.hpp"
+#include "ecs/components/transform2dcomponent.hpp"
 
 namespace xe { namespace gfx {
 
@@ -38,7 +39,26 @@ namespace xe { namespace gfx {
 				buffer(buffer), offset(offset) { }
 	};
 
+	struct VertexData {
+		vec3 vertex;
+		vec2 uv;
+		float tid;
+		uint color;
+	};
+
+#define RENDERER_VERTEX_SIZE sizeof(VertexData)
+
 	class XE_API Renderer2D {
+	public:
+		struct RenderTarget {
+			const SpriteComponent *sprite;
+			const Transform2DComponent *transform;
+
+			RenderTarget(const SpriteComponent *sprite,
+			             const Transform2DComponent *transform) noexcept :
+					sprite(sprite), transform(transform) { }
+		};
+
 	public:
 		explicit Renderer2D(uint width, uint height);
 		explicit Renderer2D(const vec2u &screenSize);
@@ -52,7 +72,7 @@ namespace xe { namespace gfx {
 		void begin();
 		void flush();
 
-		void submit(const Renderable2D *renderable);
+		void submit(const SpriteComponent *sprite, const Transform2DComponent *transform);
 		void submitText(const Text *text);
 
 		void drawLine(float x0, float y0, float x1, float y1, float z,
@@ -79,7 +99,7 @@ namespace xe { namespace gfx {
 		void init();
 		float submitTexture(const api::Texture *texture);
 
-		void submitInternal(const Renderable2D *renderable);
+		void submitInternal(RenderTarget target);
 		void submitTextInternal(const Text *text);
 
 		void end();
@@ -106,7 +126,8 @@ namespace xe { namespace gfx {
 		api::VertexArray *screenQuad;
 		Camera *camera;
 
-		std::vector<const Renderable2D *> targets;
+//		std::vector<std::pair<const SpriteComponent *, const Transform2DComponent *>> targets;
+		std::vector<RenderTarget> targets;
 		std::vector<const Text *> text;
 	};
 

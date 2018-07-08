@@ -41,8 +41,20 @@ void xe::math::aobb::setPosition(const xe::vec2 &position) {
 	transformed = true;
 }
 
+void xe::math::aobb::setPosition(float x, float y) {
+	position.x = x;
+	position.y = y;
+	transformed = true;
+}
+
 void xe::math::aobb::setSize(const xe::vec2 &size) {
 	aobb::size = size;
+	transformed = true;
+}
+
+void xe::math::aobb::setSize(float width, float height) {
+	size.x = width;
+	size.y = height;
 	transformed = true;
 }
 
@@ -79,7 +91,8 @@ const std::array<xe::vec2, 4> &xe::math::aobb::getVertices() const {
 		vertices[0] = {localXCos - localYSin + worldOriginX, localYCos + localXSin + worldOriginY};
 		vertices[1] = {localXCos - localY2Sin + worldOriginX, localY2Cos + localXSin + worldOriginY};
 		vertices[2] = {localX2Cos - localY2Sin + worldOriginX, localY2Cos + localX2Sin + worldOriginY};
-		vertices[3] = {vertices[0].x + (vertices[2].x - vertices[1].x), vertices[2].y - (vertices[1].y - vertices[0].y)};
+		vertices[3] = {vertices[0].x + (vertices[2].x - vertices[1].x),
+		               vertices[2].y - (vertices[1].y - vertices[0].y)};
 	}
 
 	return vertices;

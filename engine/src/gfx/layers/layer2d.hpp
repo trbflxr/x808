@@ -17,17 +17,11 @@ namespace xe { namespace gfx {
 		explicit Layer2D(const mat4 &projection);
 		~Layer2D() override;
 
-		void render() override;
-
-		Renderable2D *add(Renderable2D *renderable);
-
 	protected:
 		bool resize(uint width, uint height) override;
 
 	protected:
 		OrthographicCamera *camera;
-
-		std::vector<Renderable2D *> renderables;
 
 		Renderer2D *renderer;
 	};
