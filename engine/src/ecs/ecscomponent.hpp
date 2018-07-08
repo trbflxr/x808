@@ -8,6 +8,7 @@
 
 #include <tuple>
 #include <vector>
+#include <functional>
 #include "xeint.hpp"
 #include "common.hpp"
 
@@ -17,9 +18,8 @@ namespace xe {
 
 	typedef void *EntityHandle;
 
-	//todo: replace with std::function
-	typedef uint (*ECSComponentCreateFn)(std::vector<uint8> &memory, EntityHandle entity, BaseECSComponent *comp);
-	typedef void (*ECSComponentFreeFn)(BaseECSComponent *comp);
+	typedef std::function<uint(std::vector<uint8> &, EntityHandle, BaseECSComponent *)> ECSComponentCreateFn;
+	typedef std::function<void(BaseECSComponent *)> ECSComponentFreeFn;
 
 	struct XE_API BaseECSComponent {
 	public:

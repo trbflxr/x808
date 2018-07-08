@@ -49,6 +49,9 @@ xe::math::vec3 xe::math::lerp(const vec3 &v, const vec3 &dest, float lerpFactor)
 	return (dest - v) * lerpFactor + v;
 }
 
+xe::math::vec3 xe::math::operator-(vec3 &vec) {
+	return vec3(-vec.x, -vec.y, -vec.z);
+}
 
 xe::math::vec3 xe::math::operator+(const vec3 &left, const vec3 &right) {
 	return vec3(left.x + right.x, left.y + right.y, left.z + right.z);

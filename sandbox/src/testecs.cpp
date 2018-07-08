@@ -159,13 +159,21 @@ TestECS::TestECS() {
 	++sprites;
 #endif
 
-
 	XE_INFO("size: ", sprites);
 
 	text = new Text("slava ukraine", 20, {-70, 30}, GETFONT("sourceSans"));
 	text->setColor(color::WHITE);
 	text->setOutlineColor(color::BLACK);
 	text->setOutlineThickness(3);
+
+
+	sprite.texture = &GETTEXTURE("32");
+
+	transform.zIndex = 1;
+	transform.bounds.setPosition(-10, -10);
+	transform.bounds.setSize(20, 20);
+
+	a = ecs.makeEntity(sprite, transform);
 }
 
 TestECS::~TestECS() {
@@ -185,8 +193,23 @@ void TestECS::render() {
 }
 
 void TestECS::update(const xe::TimeStep &ts) {
-//	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
-//	t->bounds.rotate(1);
+	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
+
+	vec2 pos = t->bounds.getPosition();
+	if (xe::Input::isKeyPressed(XE_KEY_D)) {
+		pos.x += 1;
+	}
+	if (xe::Input::isKeyPressed(XE_KEY_A)) {
+		pos.x -= 1;
+	}
+	if (xe::Input::isKeyPressed(XE_KEY_W)) {
+		pos.y += 1;
+	}
+	if (xe::Input::isKeyPressed(XE_KEY_S)) {
+		pos.y -= 1;
+	}
+	t->bounds.setPosition(pos);
+
 
 	ecs.updateSystems(mainSystems, ts.getSeconds());
 }

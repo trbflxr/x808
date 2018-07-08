@@ -23,17 +23,17 @@ public:
 		//temp solution
 		xe::vec3 pos = camera->camera.getPosition();
 
-		if (xe::Input::isKeyPressed(XE_KEY_A)) {
+		if (xe::Input::isKeyPressed(XE_KEY_D)) {
 			pos.x += 1;
 		}
-		if (xe::Input::isKeyPressed(XE_KEY_D)) {
+		if (xe::Input::isKeyPressed(XE_KEY_A)) {
 			pos.x -= 1;
 		}
 		if (xe::Input::isKeyPressed(XE_KEY_W)) {
-			pos.y -= 1;
+			pos.y += 1;
 		}
 		if (xe::Input::isKeyPressed(XE_KEY_S)) {
-			pos.y += 1;
+			pos.y -= 1;
 		}
 		camera->camera.setPosition(pos);
 

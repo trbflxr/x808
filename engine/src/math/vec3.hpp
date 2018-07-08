@@ -37,6 +37,8 @@ namespace xe {
 		XE_API vec3 rotate(const vec3 &v, const vec3 &axis, float angle);
 		XE_API vec3 lerp(const vec3 &v, const vec3 &dest, float lerpFactor);
 
+		XE_API vec3 operator-(vec3 &vec);
+
 		XE_API vec3 operator+(const vec3 &left, const vec3 &right);
 		XE_API vec3 operator-(const vec3 &left, const vec3 &right);
 		XE_API vec3 operator*(const vec3 &left, const vec3 &right);
