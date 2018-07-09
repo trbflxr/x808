@@ -13,7 +13,7 @@
 namespace xe { namespace gfx { namespace api {
 
 	class ShaderResource {
-	private:
+	public:
 		virtual const std::string &getName() const = 0;
 		virtual uint getRegister() const = 0;
 		virtual uint getCount() const = 0;
