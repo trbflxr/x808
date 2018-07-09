@@ -3,6 +3,7 @@
 //
 
 #include "application/application.hpp"
+#include "utils/random.hpp"
 #include "gfx/renderer.hpp"
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
@@ -10,6 +11,9 @@
 xe::Application::Application(const xe::Config &config, gfx::api::RenderAPI api) :
 		config(config),
 		frameTime(0.0f) {
+
+	//init random
+	random::nextInt32(0, 1);
 
 	gfx::api::Context::setRenderAPI(api);
 	instance = this;

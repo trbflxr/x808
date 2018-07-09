@@ -2,12 +2,13 @@
 // Created by FLXR on 7/8/2018.
 //
 
-#include <ctime>
+
 #include <application/application.hpp>
 #include <gfx/renderer.hpp>
 #include <resources/texturemanager.hpp>
 #include <resources/fontmanager.hpp>
 #include <resources/soundmanager.hpp>
+#include <utils/random.hpp>
 #include "testecs.hpp"
 
 using namespace xe;
@@ -17,8 +18,6 @@ using namespace gfx::api;
 
 TestECS::TestECS() :
 		ecs(app.getEcs()) {
-
-	srand((uint) time(nullptr));
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
@@ -109,7 +108,7 @@ TestECS::TestECS() :
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {
 		for (float y = -60; y < 60; y += 0.57f) {
-			sprite.texture = &GETTEXTURE(std::to_string(rand() % texCount));
+			sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 			transform.zIndex = 0;
 			transform.bounds.setPosition(x, y);
@@ -123,7 +122,7 @@ TestECS::TestECS() :
 #elif sp_size == 2
 	for (float x = -80; x < 80; x += 1.3f) {
 		for (float y = -60; y < 60; y += 1.3f) {
-			sprite.texture = &GETTEXTURE(std::to_string(rand() % texCount));
+			sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 			transform.zIndex = 0;
 			transform.bounds.setPosition(x, y);
@@ -137,7 +136,7 @@ TestECS::TestECS() :
 #elif sp_size == 1
 	for (int32 x = -80; x < 80; x += 4) {
 		for (int32 y = -60; y < 60; y += 4) {
-			sprite.texture = &GETTEXTURE(std::to_string(rand() % texCount));
+			sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 			transform.zIndex = 0;
 			transform.bounds.setPosition(x, y);
@@ -149,7 +148,7 @@ TestECS::TestECS() :
 		}
 	}
 #elif sp_size == 0
-	sprite.texture = &GETTEXTURE(std::to_string(rand() % texCount));
+	sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 	transform.zIndex = 0;
 	transform.bounds.setPosition(0, 0);
