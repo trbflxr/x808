@@ -59,7 +59,7 @@ namespace xe {
 		entities.pop_back();
 	}
 
-	void ECS::updateSystems(ECSSystemList &systems, const TimeStep &ts) {
+	void ECS::updateSystems(ECSSystemList &systems, float delta) {
 		std::vector<BaseECSComponent *> componentParam;
 		std::vector<std::vector<uint8> *> componentArrays;
 
@@ -72,10 +72,10 @@ namespace xe {
 
 				for (uint j = 0; j < array.size(); j += typeSize) {
 					BaseECSComponent *component = (BaseECSComponent *) &array[j];
-					systems[i]->updateComponents(ts, &component);
+					systems[i]->updateComponents(delta, &component);
 				}
 			} else {
-				updateSystemWithMultipleComponents(i, systems, ts, componentTypes,
+				updateSystemWithMultipleComponents(i, systems, delta, componentTypes,
 				                                   componentParam, componentArrays);
 			}
 		}
@@ -157,7 +157,7 @@ namespace xe {
 		return nullptr;
 	}
 
-	void ECS::updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, const TimeStep &ts,
+	void ECS::updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, float delta,
 	                                             const std::vector<uint> &componentTypes,
 	                                             std::vector<BaseECSComponent *> &componentParam,
 	                                             std::vector<std::vector<uint8> *> &componentArrays) {
@@ -194,7 +194,7 @@ namespace xe {
 			}
 
 			if (isValid) {
-				systems[index]->updateComponents(ts, &componentParam[0]);
+				systems[index]->updateComponents(delta, &componentParam[0]);
 			}
 		}
 

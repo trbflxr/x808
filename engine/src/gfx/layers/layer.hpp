@@ -8,7 +8,6 @@
 
 #include "events/events.hpp"
 #include "application/application.hpp"
-#include "utils/timestep.hpp"
 
 namespace xe { namespace gfx {
 
@@ -25,7 +24,7 @@ namespace xe { namespace gfx {
 
 		virtual void tick() { }
 
-		virtual void update(const TimeStep &ts) { }
+		virtual void update(float delta) { }
 
 		void onEvent(Event &event) override {
 			EventDispatcher dispatcher(event);

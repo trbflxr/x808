@@ -61,7 +61,8 @@ void xe::Application::run() {
 	uint frames = 0;
 	uint updates = 0;
 
-	TimeStep timeStep(timer->elapsedMillis());
+	float lastTime = timer->elapsedMillis();
+	float delta;
 
 	while (running) {
 		gfx::Renderer::resetDC();
@@ -69,9 +70,10 @@ void xe::Application::run() {
 		float now = timer->elapsedMillis();
 
 		if (now - updateTimer > updateTick) {
-			timeStep.update(now);
+			delta = now - lastTime;
+			lastTime = now;
 
-			update(timeStep);
+			update(delta);
 
 			updates++;
 			updateTimer += updateTick;

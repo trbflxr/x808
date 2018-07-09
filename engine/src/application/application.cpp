@@ -21,9 +21,9 @@ void xe::Application::tick() {
 	}
 }
 
-void xe::Application::update(const xe::TimeStep &ts) {
+void xe::Application::update(float delta) {
 	for (auto &&layer : layerStack) {
-		layer->update(ts);
+		layer->update(delta);
 	}
 }
 

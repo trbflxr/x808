@@ -11,14 +11,14 @@
 
 namespace xe {
 
-	class SpriteRendererSystem : public BaseECSSystem{
+	class SpriteRendererSystem : public BaseECSSystem {
 	public:
 		explicit SpriteRendererSystem(gfx::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
 			addComponentType(SpriteComponent::ID);
 			addComponentType(Transform2DComponent::ID);
 		}
 
-		void updateComponents(const TimeStep &ts, BaseECSComponent **components) override {
+		void updateComponents(float delta, BaseECSComponent **components) override {
 			SpriteComponent *sprite = (SpriteComponent *) components[0];
 			Transform2DComponent *transform = (Transform2DComponent *) components[1];
 

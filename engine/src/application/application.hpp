@@ -10,7 +10,6 @@
 #include "config.hpp"
 #include "window.hpp"
 #include "utils/timer.hpp"
-#include "utils/timestep.hpp"
 #include "gfx/api/context.hpp"
 #include "ecs/ecs.hpp"
 
@@ -56,7 +55,7 @@ namespace xe {
 		void run();
 
 		void tick();
-		void update(const TimeStep &ts);
+		void update(float delta);
 		void render();
 		void onEvent(Event &event);
 

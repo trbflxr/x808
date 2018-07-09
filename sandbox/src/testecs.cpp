@@ -185,7 +185,7 @@ TestECS::~TestECS() {
 void TestECS::render() {
 	renderer->begin();
 
-	ecs.updateSystems(renderingPipeline, TimeStep(0));
+	ecs.updateSystems(renderingPipeline, 0.0f);
 //	renderer->drawLine(-20, -20, 200, 200, 1, color::GREEN, 2);
 
 	renderer->submitText(text);
@@ -193,7 +193,7 @@ void TestECS::render() {
 	renderer->flush();
 }
 
-void TestECS::update(const xe::TimeStep &ts) {
+void TestECS::update(float delta) {
 	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
 
 	vec2 pos = t->bounds.getPosition();
@@ -212,7 +212,7 @@ void TestECS::update(const xe::TimeStep &ts) {
 	t->bounds.setPosition(pos);
 
 
-	ecs.updateSystems(mainSystems, ts);
+	ecs.updateSystems(mainSystems, delta);
 }
 
 void TestECS::tick() {

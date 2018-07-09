@@ -117,7 +117,7 @@ namespace xe {
 		}
 
 		///system methods
-		void updateSystems(ECSSystemList &systems, const TimeStep &ts);
+		void updateSystems(ECSSystemList &systems, float delta);
 
 		NULL_COPY_AND_ASSIGN(ECS);
 
@@ -148,7 +148,7 @@ namespace xe {
 		                                       std::vector<uint8> &array,
 		                                       uint componentID);
 
-		void updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, const TimeStep &ts,
+		void updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, float delta,
 		                                        const std::vector<uint> &componentTypes,
 		                                        std::vector<BaseECSComponent *> &componentParam,
 		                                        std::vector<std::vector<uint8> *> &componentArrays);

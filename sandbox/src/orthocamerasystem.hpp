@@ -17,7 +17,7 @@ public:
 		addComponentType(OrthoCameraComponent::ID);
 	}
 
-	void updateComponents(const xe::TimeStep &ts, xe::BaseECSComponent **components) override {
+	void updateComponents(float delta, xe::BaseECSComponent **components) override {
 		OrthoCameraComponent *camera = (OrthoCameraComponent *) components[0];
 
 		//temp solution

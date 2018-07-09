@@ -6,6 +6,7 @@
 #define X808_TESTECS_HPP
 
 
+#include <ecs/ecs.hpp>
 #include <ecs/components/spritecomponent.hpp>
 #include <ecs/components/transform2dcomponent.hpp>
 #include <ecs/systems/spriterenderersystem.hpp>
@@ -18,7 +19,7 @@ public:
 	~TestECS() override;
 
 	void render() override;
-	void update(const xe::TimeStep &ts) override;
+	void update(float delta) override;
 	void tick() override;
 
 	void onEvent(xe::Event &event) override;
