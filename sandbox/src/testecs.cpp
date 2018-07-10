@@ -10,9 +10,6 @@
 #include <resources/soundmanager.hpp>
 #include <utils/random.hpp>
 #include <gfx/indexedmodel.hpp>
-#include <gfx/material.hpp>
-#include <utils/loadmodel.hpp>
-#include <gfx/model.hpp>
 #include "testecs.hpp"
 
 using namespace xe;
@@ -178,16 +175,6 @@ TestECS::TestECS() :
 	transform.bounds.setSize(20, 20);
 
 	a = ecs.makeEntity(sprite, transform);
-
-
-	std::vector<IndexedModel> models;
-
-	utils::loadModels("assets/models/monkey3.obj", models);
-
-	Model *model = new Model(models[0]);
-
-	delete model;
-
 }
 
 TestECS::~TestECS() {
