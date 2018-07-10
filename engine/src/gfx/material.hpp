@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <map>
 #include <string>
 #include "xeint.hpp"
 #include "common.hpp"

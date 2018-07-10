@@ -32,6 +32,11 @@ include_directories(external/freeimage/include)
 link_directories(external/freeimage/lib)
 link_libraries(freeimage)
 
+#assimp
+include_directories(external/assimp/include)
+link_directories(external/assimp/lib)
+link_libraries(assimp)
+
 #freetype-gl
 include_directories(external/freetype-gl/include)
 link_directories(external/freetype-gl/lib)

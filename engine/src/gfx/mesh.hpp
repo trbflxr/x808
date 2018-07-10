@@ -16,10 +16,11 @@ namespace xe { namespace gfx {
 
 	struct Vertex {
 		vec3 position;
-		vec3 normal;
 		vec2 uv;
-		vec3 binormal;
-		vec3 tangent;
+		vec3 normal;
+
+		Vertex(const vec3 &position, const vec2 &uv, const vec3 &normal = {0, 0, 0}) :
+				position(position), uv(uv), normal(normal) { }
 	};
 
 	class XE_API Mesh {
@@ -28,11 +29,11 @@ namespace xe { namespace gfx {
 		              api::IndexBuffer *indexBuffer,
 		              MaterialInstance *materialInstance);
 
-		Mesh(const Mesh *other);
+		Mesh(const Mesh &other);
 
 		~Mesh();
 
-		void render(Renderer3D &renderer);
+		void render(Renderer3D *renderer);
 
 		inline void setMaterial(MaterialInstance *material) { materialInstance = material; }
 		inline MaterialInstance *getMaterial() const { return materialInstance; }

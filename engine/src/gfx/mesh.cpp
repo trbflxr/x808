@@ -11,10 +11,10 @@ namespace xe { namespace gfx {
 			indexBuffer(indexBuffer),
 			materialInstance(materialInstance) { }
 
-	Mesh::Mesh(const Mesh *other) :
-			vertexArray(other->vertexArray),
-			indexBuffer(other->indexBuffer),
-			materialInstance(other->materialInstance) { }
+	Mesh::Mesh(const Mesh &other) :
+			vertexArray(other.vertexArray),
+			indexBuffer(other.indexBuffer),
+			materialInstance(other.materialInstance) { }
 
 	Mesh::~Mesh() {
 		delete vertexArray;
@@ -22,7 +22,7 @@ namespace xe { namespace gfx {
 		delete materialInstance;
 	}
 
-	void Mesh::render(Renderer3D &renderer) {
+	void Mesh::render(Renderer3D *renderer) {
 		materialInstance->bind();
 
 		vertexArray->bind();
