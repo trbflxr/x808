@@ -38,6 +38,8 @@ namespace xe { namespace gfx { namespace api {
 		virtual const std::string &getName() const = 0;
 		virtual const std::string &getFile() const = 0;
 
+		virtual void setUniform(const std::string_view &name, byte *data) = 0;
+
 		virtual const ShaderUniformBufferVec &getVSSystemUniforms() const = 0;
 		virtual const ShaderUniformBufferVec &getFSSystemUniforms() const = 0;
 		virtual const ShaderUniformBuffer *getVSUserUniformBuffer() const = 0;

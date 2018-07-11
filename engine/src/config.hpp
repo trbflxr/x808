@@ -20,6 +20,9 @@ namespace xe {
 
 		uint ups;
 
+		//engine stuff
+		float scale = 10.0f;
+
 		static bool load(Config &config, const char *path = "xeconfig");
 	};
 

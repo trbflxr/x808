@@ -92,7 +92,10 @@ TestECS::TestECS() :
 
 	//create camera
 	OrthoCameraComponent camera(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
-	ecs.makeEntity(camera);
+	cameraEntity = ecs.makeEntity(camera);
+
+	OrthoCameraComponent *cam = ecs.getComponent<OrthoCameraComponent>(cameraEntity);
+	Input::setCamera(&cam->camera);
 
 	//sprite components
 	SpriteComponent sprite;
@@ -194,22 +197,22 @@ void TestECS::render() {
 }
 
 void TestECS::update(float delta) {
-	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
-
-	vec2 pos = t->bounds.getPosition();
-	if (xe::Input::isKeyPressed(XE_KEY_D)) {
-		pos.x += 1;
-	}
-	if (xe::Input::isKeyPressed(XE_KEY_A)) {
-		pos.x -= 1;
-	}
-	if (xe::Input::isKeyPressed(XE_KEY_W)) {
-		pos.y += 1;
-	}
-	if (xe::Input::isKeyPressed(XE_KEY_S)) {
-		pos.y -= 1;
-	}
-	t->bounds.setPosition(pos);
+//	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
+//
+//	vec2 pos = t->bounds.getPosition();
+//	if (xe::Input::isKeyPressed(XE_KEY_D)) {
+//		pos.x += 1;
+//	}
+//	if (xe::Input::isKeyPressed(XE_KEY_A)) {
+//		pos.x -= 1;
+//	}
+//	if (xe::Input::isKeyPressed(XE_KEY_W)) {
+//		pos.y += 1;
+//	}
+//	if (xe::Input::isKeyPressed(XE_KEY_S)) {
+//		pos.y -= 1;
+//	}
+//	t->bounds.setPosition(pos);
 
 
 	ecs.updateSystems(mainSystems, delta);
@@ -258,5 +261,6 @@ bool TestECS::onMousePressedEvent(xe::MousePressEvent &event) {
 }
 
 bool TestECS::onMouseMovedEvent(xe::MouseMoveEvent &event) {
+//	XE_INFO("Mouse pos: ", Input::getMousePosition());
 	return false;
 }

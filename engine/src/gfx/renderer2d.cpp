@@ -228,26 +228,26 @@ namespace xe { namespace gfx {
 					float s1 = glyph->s1;
 					float t1 = glyph->t1;
 
-					buffer->vertex = math::translateVec(*transformationBack, vec2(x0, -y0));
-					buffer->uv = vec2(s0, t0);
+					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y0));
+					buffer->uv = xe::vec2(s0, t0);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = math::translateVec(*transformationBack, vec2(x0, -y1));
-					buffer->uv = vec2(s0, t1);
+					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y1));
+					buffer->uv = xe::vec2(s0, t1);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = math::translateVec(*transformationBack, vec2(x1, -y1));
-					buffer->uv = vec2(s1, t1);
+					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y1));
+					buffer->uv = xe::vec2(s1, t1);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = math::translateVec(*transformationBack, vec2(x1, -y0));
-					buffer->uv = vec2(s1, t0);
+					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y0));
+					buffer->uv = xe::vec2(s1, t0);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
@@ -281,26 +281,26 @@ namespace xe { namespace gfx {
 				float t1 = glyph->t1;
 
 
-				buffer->vertex = math::translateVec(*transformationBack, vec2(x0, -y0));
-				buffer->uv = vec2(s0, t0);
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y0));
+				buffer->uv = xe::vec2(s0, t0);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = math::translateVec(*transformationBack, vec2(x0, -y1));
-				buffer->uv = vec2(s0, t1);
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y1));
+				buffer->uv = xe::vec2(s0, t1);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = math::translateVec(*transformationBack, vec2(x1, -y1));
-				buffer->uv = vec2(s1, t1);
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y1));
+				buffer->uv = xe::vec2(s1, t1);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = math::translateVec(*transformationBack, vec2(x1, -y0));
-				buffer->uv = vec2(s1, t0);
+				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y0));
+				buffer->uv = xe::vec2(s1, t0);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
@@ -356,6 +356,10 @@ namespace xe { namespace gfx {
 		for (uint i = 0; i < systemUniformBuffers.size(); i++) {
 			shader->setVSSystemUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
 		}
+
+		//todo: temp remove
+		vec2 pos = Input::getMouseWorldPosition();
+		shader->setUniform("u_LightPos", (byte *) &pos);
 
 		for (uint i = 0; i < textures.size(); i++) {
 			textures[i]->bind(i);

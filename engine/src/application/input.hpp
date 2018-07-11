@@ -9,6 +9,7 @@
 #include "math/vec2.hpp"
 #include "common.hpp"
 #include "events/events.hpp"
+#include "gfx/camera/camera.hpp"
 
 namespace xe {
 
@@ -81,7 +82,12 @@ namespace xe {
 		inline static const vec2 &getMousePosition() { return inputManager->getMousePosition(); }
 		inline static void setMousePosition(const vec2 &pos) { return inputManager->setMousePosition(pos); }
 
-	private:
+		static vec2 getMouseWorldPosition();
+
+		inline static void setCamera(gfx::Camera *camera) { Input::camera = camera; }
+
+	protected:
+		static gfx::Camera *camera;
 		static InputManager *inputManager;
 	};
 }

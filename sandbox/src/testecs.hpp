@@ -32,6 +32,7 @@ private:
 	xe::ECS &ecs;
 
 	OrthoCameraSystem *cameraSystem;
+	xe::EntityHandle cameraEntity;
 
 	xe::SpriteRendererSystem *spriteRenderer;
 

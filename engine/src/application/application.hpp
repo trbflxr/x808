@@ -43,12 +43,14 @@ namespace xe {
 		inline Window &getWindow() { return *window; }
 		inline const Window &getWindow() const { return *window; }
 
+		inline const Config &getConfig() const { return config; }
+
 		inline uint getWindowWidth() const { return window->getWidth(); }
 		inline uint getWindowHeight() const { return window->getHeight(); }
 
 		inline ECS &getEcs() { return ecs; }
 
-		inline static Application &getApplication() { return *instance; }
+		inline static Application &get() { return *instance; }
 
 	private:
 		void platformInit();

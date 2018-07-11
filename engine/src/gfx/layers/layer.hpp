@@ -37,7 +37,7 @@ namespace xe { namespace gfx {
 
 	protected:
 		explicit Layer() :
-				app(Application::getApplication()),
+				app(Application::get()),
 				window(*Window::getWindowClass(nullptr)),
 				visible(true) { }
 

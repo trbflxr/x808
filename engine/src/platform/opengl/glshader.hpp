@@ -35,7 +35,7 @@ namespace xe { namespace gfx { namespace api {
 		void setVSUserUniformBuffer(byte *data, uint size) override;
 		void setFSUserUniformBuffer(byte *data, uint size) override;
 
-		void setUniform(const std::string_view &name, byte *data);
+		void setUniform(const std::string_view &name, byte *data) override;
 		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset);
 
 		inline const std::string &getName() const override { return name; }

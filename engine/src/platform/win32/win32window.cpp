@@ -14,6 +14,12 @@
 #include "gfx/api/context.hpp"
 #include "gfx/renderer.hpp"
 
+extern "C"
+{
+//Enable dedicated graphics
+__declspec(dllexport) bool NvOptimusEnablement = true;
+__declspec(dllexport) bool AmdPowerXpressRequestHighPerformance = true;
+}
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
