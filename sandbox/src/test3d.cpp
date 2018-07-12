@@ -21,8 +21,6 @@ Test3D::Test3D() :
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_DEPTH_CLAMP);
 
-	glEnable(GL_TEXTURE_2D);
-
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
@@ -34,34 +32,7 @@ Test3D::Test3D() :
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	shader = sf::basicForwardShader();
-	const api::ShaderUniformBufferVec &vssu = shader->getVSSystemUniforms();
-
-	XE_ASSERT(vssu.size());
-	const uint requiredSystemUniformsCount = 2;
-	const std::string requiredSystemUniforms[requiredSystemUniformsCount] = {
-			"sys_ProjectionMatrix",
-			"sys_ViewMatrix"};
-
-	systemUniforms.resize(requiredSystemUniformsCount);
-	for (auto &&ub : vssu) {
-		UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
-		systemUniformBuffers.push_back(buffer);
-
-		for (auto &&uniform: ub->getUniforms()) {
-			for (uint j = 0; j < requiredSystemUniformsCount; j++) {
-				if (uniform->getName() == requiredSystemUniforms[j]) {
-					systemUniforms[j] = R2DSysUniform(buffer, uniform->getOffset());
-				}
-			}
-		}
-	}
-
-	mat4 projection = math::translate({0, 0, 10});
-	static mat4 view(1.0f);
-
-	memcpy(systemUniforms[0].buffer.buffer + systemUniforms[0].offset, &projection.elements, sizeof(mat4));
-	memcpy(systemUniforms[1].buffer.buffer + systemUniforms[1].offset, &view.elements, sizeof(mat4));
+	shader = sf::forwardAmbientShader();
 
 
 
@@ -82,10 +53,15 @@ void Test3D::render() {
 
 
 	shader->bind();
-	for (uint i = 0; i < systemUniformBuffers.size(); i++) {
-		shader->setVSSystemUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
-	}
 
+	//temp
+	mat4 projection = math::translate({0, 0, 10});
+	mat4 view(1.0f);
+	vec3 ambientIntensity(0.3f, 0.3f, 0.3f);
+
+	shader->setUniform("sys_ProjectionMatrix", (byte *) &projection.elements);
+	shader->setUniform("sys_ViewMatrix", (byte *) &view.elements);
+	shader->setUniform("u_AmbientIntensity", (byte *) &ambientIntensity);
 
 	static const Texture *tex = &GETTEXTURE("rock");
 

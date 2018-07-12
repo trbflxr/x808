@@ -472,7 +472,7 @@ xe::gfx::api::ShaderUniform *xe::gfx::api::GLShader::findUniform(const std::stri
 
 	for (auto &&buffer : fsUniformBuffers) {
 		result = findUniform(name, buffer);
-		if (result)return result;
+		if (result) return result;
 	}
 
 	result = findUniform(name, vsUserUniformBuffer);

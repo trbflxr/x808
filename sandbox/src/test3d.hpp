@@ -9,7 +9,6 @@
 #include <gfx/layers/layer.hpp>
 #include <gfx/mesh.hpp>
 #include <gfx/api/shader.hpp>
-#include <gfx/renderer2d.hpp>
 
 using namespace xe;
 using namespace gfx;
@@ -31,9 +30,6 @@ private:
 
 	Mesh *rockMesh;
 	Shader *shader;
-
-	std::vector<R2DSysUniform> systemUniforms;
-	std::vector<UniformBuffer> systemUniformBuffers;
 };
 
 

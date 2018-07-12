@@ -11,9 +11,13 @@
 
 namespace xe { namespace gfx { namespace sf {
 
+	//2d
 	XE_API api::Shader *batchRendererShader();
 
+
+	//3d forward
 	XE_API api::Shader *basicForwardShader();
+	XE_API api::Shader *forwardAmbientShader();
 
 }}}
 
