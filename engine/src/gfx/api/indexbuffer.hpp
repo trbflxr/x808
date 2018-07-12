@@ -18,8 +18,8 @@ namespace xe { namespace gfx { namespace api {
 
 		virtual uint getCount() const = 0;
 
-		static IndexBuffer *create(uint16 *data, uint count);
-		static IndexBuffer *create(uint *data, uint count);
+		static IndexBuffer *create(const uint16 *data, uint count);
+		static IndexBuffer *create(const uint *data, uint count);
 	};
 
 }}}

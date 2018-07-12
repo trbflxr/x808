@@ -6,7 +6,7 @@
 #include "platform/opengl/glindexbuffer.hpp"
 #include "context.hpp"
 
-xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(uint16 *data, uint count) {
+xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(const uint16 *data, uint count) {
 	switch (Context::getRenderAPI()) {
 		case RenderAPI::OPENGL: return new GLIndexBuffer(data, count);
 
@@ -14,7 +14,7 @@ xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(uint16 *data, uint 
 	}
 }
 
-xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(uint *data, uint count) {
+xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(const uint *data, uint count) {
 	switch (Context::getRenderAPI()) {
 		case RenderAPI::OPENGL: return new GLIndexBuffer(data, count);
 

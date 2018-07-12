@@ -1,6 +1,7 @@
 #include <application/application.hpp>
 #include <utils/log.hpp>
 #include "testecs.hpp"
+#include "test3d.hpp"
 
 using namespace xe;
 
@@ -14,7 +15,8 @@ public:
 	void init() override {
 		Application::init();
 
-		pushLayer(new TestECS());
+//		pushLayer(new TestECS());
+		pushLayer(new Test3D());
 	}
 
 };

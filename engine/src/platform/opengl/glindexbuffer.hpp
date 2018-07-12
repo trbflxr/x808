@@ -12,8 +12,8 @@ namespace xe { namespace gfx { namespace api {
 
 	class GLIndexBuffer : public IndexBuffer {
 	public:
-		explicit GLIndexBuffer(uint16 *data, uint count);
-		explicit GLIndexBuffer(uint *data, uint count);
+		explicit GLIndexBuffer(const uint16 *data, uint count);
+		explicit GLIndexBuffer(const uint *data, uint count);
 		~GLIndexBuffer();
 
 		void bind() const override;
