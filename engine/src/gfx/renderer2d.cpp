@@ -357,10 +357,6 @@ namespace xe { namespace gfx {
 			shader->setVSSystemUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
 		}
 
-		//todo: temp remove
-		vec2 pos = Input::getMouseWorldPosition();
-		shader->setUniform("u_LightPos", (byte *) &pos);
-
 		for (uint i = 0; i < textures.size(); i++) {
 			textures[i]->bind(i);
 		}
