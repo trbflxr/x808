@@ -16,8 +16,8 @@ namespace xe { namespace gfx {
 		sprintSpeed = speed * 4.0f;
 		mouseWasGrabbed = false;
 
-		yaw = 2.4f;
-		pitch = 0.7f;
+		yaw = 0;
+		pitch = 0;
 	}
 
 	FPSCamera::~FPSCamera() {
@@ -63,7 +63,7 @@ namespace xe { namespace gfx {
 			vec3 forward = getForwardDirection(orientation);
 			vec3 right = getRightDirection(orientation);
 			vec3 up = vec3::YAXIS;
-			float speed = Input::isKeyPressed(XE_KEY_SHIFT) ? sprintSpeed : FPSCamera::speed;
+			float speed = Input::isKeyPressed(XE_KEY_CONTROL) ? sprintSpeed : FPSCamera::speed;
 			if (Input::isKeyPressed(XE_KEY_W))
 				position += forward * speed;
 			else if (Input::isKeyPressed(XE_KEY_S))
@@ -76,7 +76,7 @@ namespace xe { namespace gfx {
 
 			if (Input::isKeyPressed(XE_KEY_SPACE))
 				position += up * speed;
-			if (Input::isKeyPressed(XE_KEY_CONTROL))
+			if (Input::isKeyPressed(XE_KEY_SHIFT))
 				position -= up * speed;
 
 			mat4 rotation = math::rotate(math::conjugate(orientation));

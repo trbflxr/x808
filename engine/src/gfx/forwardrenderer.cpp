@@ -1,7 +1,6 @@
 //
 // Created by FLXR on 7/12/2018.
 //
-
 #include "forwardrenderer.hpp"
 #include "renderer.hpp"
 
@@ -20,8 +19,6 @@ namespace xe { namespace gfx {
 	}
 
 	void ForwardRenderer::render(const Model *model, const Camera *camera) {
-		Renderer::setDepthFunction(DepthFunction::EQUAL);
-
 		//first run without blending
 		ambientLight->bind();
 		ambientLight->setUniforms(model, camera);
@@ -38,6 +35,7 @@ namespace xe { namespace gfx {
 		Renderer::enableBlend(true);
 		Renderer::setBlendFunction(BlendFunction::ONE, BlendFunction::ONE);
 		Renderer::enableDepthMask(false);
+		Renderer::setDepthFunction(DepthFunction::EQUAL);
 
 		for (auto &&light : lights) {
 			light->bind();

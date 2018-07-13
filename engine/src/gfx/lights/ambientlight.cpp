@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 	}
 
 	void AmbientLight::setUniforms(const Model *model, const Camera *camera) {
-		mat4 mvp = model->transform.toMatrix() * camera->getProjectionMatrix() * camera->getViewMatrix();
+		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * model->transform.toMatrix();
 
 		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::ShaderType::VERT);
 	}

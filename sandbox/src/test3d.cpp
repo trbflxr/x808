@@ -33,7 +33,8 @@ Test3D::Test3D() :
 	material = new Material(&GETTEXTURE("2"), color::WHITE);
 
 	model = new Model(rockMesh, material);
-	model->transform.setTranslation({0, 0, 30});
+	model->transform.setTranslation({0, 0, -5});
+	model->transform.setRotation(math::rotationZ(to_rad(5)));
 
 }
 
