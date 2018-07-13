@@ -27,12 +27,17 @@ namespace xe { namespace gfx { namespace api {
 	};
 
 	struct Uniform {
+		const char *name;
 		UniformBuffer buffer;
 		uint offset;
 
 		Uniform() = default;
-		explicit Uniform(const UniformBuffer &buffer, uint offset) :
-				buffer(buffer), offset(offset) { }
+		explicit Uniform(const char *name, const UniformBuffer &buffer, uint offset) :
+				name(name), buffer(buffer), offset(offset) { }
+	};
+
+	enum class ShaderType {
+		NONE, VERT, FRAG
 	};
 
 	class XE_API Shader {

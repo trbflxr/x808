@@ -7,26 +7,24 @@ layout(location = 1) in vec2 uv;
 
 uniform mat4 sys_ProjectionMatrix;
 uniform mat4 sys_ViewMatrix;
-uniform vec3 sys_AmbientIntensity;
 
 out vec2 uv0;
-out vec3 ambientIntensity0;
 
 void main() {
   gl_Position = (sys_ProjectionMatrix * sys_ViewMatrix) * position;
   uv0 = uv;
-  ambientIntensity0 = sys_AmbientIntensity;
 }
 
 #shader fragment
 #version 330
 
 in vec2 uv0;
-in vec3 ambientIntensity0;
+
+uniform vec3 sys_AmbientIntensity;
 
 uniform sampler2D sampler;
 
 void main() {
-  gl_FragColor = texture(sampler, uv0) * vec4(ambientIntensity0, 1.0);
+  gl_FragColor = texture(sampler, uv0) * vec4(sys_AmbientIntensity, 1.0);
 }
 )"

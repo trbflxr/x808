@@ -29,8 +29,8 @@ namespace xe { namespace gfx {
 
 		//temp
 		//same order like in shader
-		lights[0]->setUniform(0, &projection.elements, sizeof(mat4));
-		lights[0]->setUniform(1, &view.elements, sizeof(mat4));
+		lights[0]->setUniform("sys_ProjectionMatrix", &projection.elements, sizeof(mat4), api::ShaderType::VERT);
+		lights[0]->setUniform("sys_ViewMatrix", &view.elements, sizeof(mat4), api::ShaderType::VERT);
 
 		//temp
 		texture = &GETTEXTURE("rock");

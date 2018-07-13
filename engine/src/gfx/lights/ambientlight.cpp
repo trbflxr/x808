@@ -9,7 +9,7 @@ namespace xe { namespace gfx {
 	AmbientLight::AmbientLight(api::Shader *shader, const vec3 &ambientIntensity) :
 			BaseLight(shader) {
 
-		setUniform(2, &ambientIntensity, sizeof(vec3));
+		setUniform("sys_AmbientIntensity", &ambientIntensity, sizeof(vec3), api::ShaderType::FRAG);
 	}
 
 }}

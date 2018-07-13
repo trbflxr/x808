@@ -19,7 +19,7 @@ namespace xe { namespace gfx {
 
 
 	const uint requiredSystemUniformsCount = 2;
-	const std::string requiredSystemUniforms[requiredSystemUniformsCount] = {
+	const char *requiredSystemUniforms[requiredSystemUniformsCount] = {
 			"sys_ProjectionMatrix",
 			"sys_ViewMatrix"};
 
@@ -69,8 +69,8 @@ namespace xe { namespace gfx {
 
 			for (auto &&uniform: ub->getUniforms()) {
 				for (uint j = 0; j < requiredSystemUniformsCount; j++) {
-					if (uniform->getName() == requiredSystemUniforms[j]) {
-						systemUniforms[j] = api::Uniform(buffer, uniform->getOffset());
+					if (strcmp(uniform->getName().c_str(), requiredSystemUniforms[j]) == 0) {
+						systemUniforms[j] = api::Uniform(uniform->getName().c_str(), buffer, uniform->getOffset());
 					}
 				}
 			}

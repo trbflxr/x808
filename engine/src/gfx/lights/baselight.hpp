@@ -16,7 +16,8 @@ namespace xe { namespace gfx {
 
 		void bindAndSetUniforms();
 
-		void setUniform(uint index, const void *data, size_t size);
+		void setUniform(const char *name, const void *data, size_t size,
+		                api::ShaderType shader = api::ShaderType::NONE);
 
 	protected:
 		explicit BaseLight(api::Shader *shader);
@@ -24,8 +25,11 @@ namespace xe { namespace gfx {
 	protected:
 		api::Shader *shader;
 
-		std::vector<api::Uniform> uniforms;
-		std::vector<api::UniformBuffer> uniformBuffers;
+		std::vector<api::Uniform> vsUniforms;
+		std::vector<api::UniformBuffer> vsUniformBuffers;
+
+		std::vector<api::Uniform> fsUniforms;
+		std::vector<api::UniformBuffer> fsUniformBuffers;
 	};
 
 }}
