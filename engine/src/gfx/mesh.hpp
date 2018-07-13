@@ -13,13 +13,10 @@
 
 namespace xe { namespace gfx {
 
-	struct Vertex {
+	struct MeshVertexData {
 		vec3 position;
 		vec2 uv;
-		vec3 normal;
-
-		Vertex(const vec3 &position, const vec2 &uv, const vec3 &normal = {0, 0, 0}) :
-				position(position), uv(uv), normal(normal) { }
+		vec3 normal; // 0, 0, 0
 	};
 
 	class XE_API Mesh {
@@ -28,7 +25,7 @@ namespace xe { namespace gfx {
 		explicit Mesh(const std::string_view &path);
 		~Mesh();
 
-		void render();
+		void render() const;
 
 	private:
 		void initMesh(const IndexedModel &model);

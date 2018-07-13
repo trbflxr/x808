@@ -6,10 +6,24 @@
 #define X808_FORWARDRENDERER_HPP
 
 
+#include "gfx/api/texture.hpp"
+#include "gfx/lights/baselight.hpp"
+#include "mesh.hpp"
+
 namespace xe { namespace gfx {
 
-	class ForwardRenderer {
+	class XE_API ForwardRenderer {
+	public:
+		explicit ForwardRenderer();
+		~ForwardRenderer();
 
+		void render(const Mesh *mesh);
+
+	private:
+		std::vector<BaseLight *> lights;
+
+		//temp
+		const api::Texture *texture;
 	};
 
 }}

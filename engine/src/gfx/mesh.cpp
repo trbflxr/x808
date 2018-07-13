@@ -9,12 +9,6 @@
 
 namespace xe { namespace gfx {
 
-	struct MeshVertexData {
-		vec3 position;
-		vec2 uv;
-		vec3 normal;
-	};
-
 	Mesh::Mesh(const IndexedModel &model) {
 		initMesh(model);
 	}
@@ -61,7 +55,7 @@ namespace xe { namespace gfx {
 			data[i].normal = model.normals[i];
 		}
 
-		buffer->setData(static_cast<uint>(size* sizeof(MeshVertexData)), &data);
+		buffer->setData(static_cast<uint>(size * sizeof(MeshVertexData)), &data);
 
 		vertexArray = api::VertexArray::create();
 		vertexArray->pushBuffer(buffer);
@@ -69,7 +63,7 @@ namespace xe { namespace gfx {
 		indexBuffer = api::IndexBuffer::create(&model.indices[0], indicesSize);
 	}
 
-	void Mesh::render() {
+	void Mesh::render() const {
 		vertexArray->bind();
 		indexBuffer->bind();
 

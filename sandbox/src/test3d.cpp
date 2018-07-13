@@ -9,18 +9,11 @@
 #include <resources/soundmanager.hpp>
 #include <resources/shaderfactory.hpp>
 #include "test3d.hpp"
-#include "../../engine/external/glew/include/GL/glew.h"
 
 Test3D::Test3D() :
 		ecs(app.getEcs()) {
 
-//	glFrontFace(GL_CW);
-	glCullFace(GL_BACK);
-
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_DEPTH_CLAMP);
-
+	renderer = new ForwardRenderer();
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
@@ -32,9 +25,6 @@ Test3D::Test3D() :
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	shader = sf::forwardAmbientShader();
-
-
 
 //	rockMesh = new Mesh("assets/models/rock.obj");
 	rockMesh = new Mesh("assets/models/monkey3.obj");
@@ -43,38 +33,11 @@ Test3D::Test3D() :
 
 Test3D::~Test3D() {
 	delete rockMesh;
+	delete renderer;
 }
 
 void Test3D::render() {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE);
-	glDepthMask(GL_FALSE);
-	glDepthFunc(GL_EQUAL);
-
-
-	shader->bind();
-
-	//temp
-	mat4 projection = math::translate({0, 0, 10});
-	mat4 view(1.0f);
-	vec3 ambientIntensity(0.3f, 0.3f, 0.3f);
-
-	shader->setUniform("sys_ProjectionMatrix", (byte *) &projection.elements);
-	shader->setUniform("sys_ViewMatrix", (byte *) &view.elements);
-	shader->setUniform("u_AmbientIntensity", (byte *) &ambientIntensity);
-
-	static const Texture *tex = &GETTEXTURE("rock");
-
-	tex->bind(0);
-
-	rockMesh->render();
-
-	tex->unbind(0);
-
-
-	glDepthFunc(GL_LESS);
-	glDepthMask(GL_TRUE);
-	glDisable(GL_BLEND);
+	renderer->render(rockMesh);
 }
 
 void Test3D::tick() {

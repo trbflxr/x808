@@ -9,6 +9,7 @@
 #include <gfx/layers/layer.hpp>
 #include <gfx/mesh.hpp>
 #include <gfx/api/shader.hpp>
+#include <gfx/forwardrenderer.hpp>
 
 using namespace xe;
 using namespace gfx;
@@ -17,7 +18,7 @@ using namespace gfx::api;
 class Test3D : public Layer {
 public:
 	explicit Test3D();
-	~Test3D();
+	~Test3D() override;
 
 	void render() override;
 	void tick() override;
@@ -29,7 +30,8 @@ private:
 	ECS &ecs;
 
 	Mesh *rockMesh;
-	Shader *shader;
+
+	ForwardRenderer *renderer;
 };
 
 

@@ -21,13 +21,18 @@ namespace xe { namespace gfx {
 		void clearInternal(uint buffer) override;
 		void flushInternal() override;
 
-		void setDepthTestingInternal(bool enabled) override;
-		void setBlendInternal(bool enabled) override;
+		void enableDepthTestingInternal(bool enabled) override;
+		void enableBlendInternal(bool enabled) override;
+		void enableDepthMaskInternal(bool enabled) override;
+		void enableCullFaceInternal(bool enabled) override;
+		void enableDepthClampInternal(bool enabled) override;
 
 		void setViewportInternal(uint x, uint y, uint width, uint height) override;
 
 		void setBlendFunctionInternal(BlendFunction source, BlendFunction destination) override;
 		void setBlendEquationInternal(BlendEquation equation) override;
+		void setDepthFunctionInternal(DepthFunction function) override;
+		void setCullFaceInternal(CullFace cullFace) override;
 
 	private:
 		api::GLContext *context;

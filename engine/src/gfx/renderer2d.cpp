@@ -64,13 +64,13 @@ namespace xe { namespace gfx {
 		XE_ASSERT(vssu.size());
 
 		for (auto &&ub : vssu) {
-			UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
+			api::UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
 			systemUniformBuffers.push_back(buffer);
 
 			for (auto &&uniform: ub->getUniforms()) {
 				for (uint j = 0; j < requiredSystemUniformsCount; j++) {
 					if (uniform->getName() == requiredSystemUniforms[j]) {
-						systemUniforms[j] = R2DSysUniform(buffer, uniform->getOffset());
+						systemUniforms[j] = api::Uniform(buffer, uniform->getOffset());
 					}
 				}
 			}
@@ -320,7 +320,7 @@ namespace xe { namespace gfx {
 
 	void Renderer2D::flush() {
 		//enable for correct z-index work
-		Renderer::setDepthTesting(true);
+		Renderer::enableDepthTesting(true);
 
 		std::sort(targets.begin(), targets.end(),
 		          [](const RenderTarget a, const RenderTarget b) {
@@ -338,7 +338,7 @@ namespace xe { namespace gfx {
 		//draw text
 		if (!text.empty()) {
 			//disable for text drawing
-			Renderer::setDepthTesting(false);
+			Renderer::enableDepthTesting(false);
 
 			begin();
 			for (auto &&txt : text) {

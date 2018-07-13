@@ -26,6 +26,14 @@ namespace xe { namespace gfx {
 		NONE, ADD, SUBTRACT
 	};
 
+	enum class DepthFunction {
+		NONE, EQUAL, LESS
+	};
+
+	enum class CullFace {
+		NONE, FRONT, BACK
+	};
+
 	class XE_API Renderer {
 	private:
 		friend class Renderer2D;
@@ -36,8 +44,11 @@ namespace xe { namespace gfx {
 		static void clear(uint buffer) { instance->clearInternal(buffer); }
 		static void flush() { instance->flushInternal(); }
 
-		static void setDepthTesting(bool enabled) { instance->setDepthTestingInternal(enabled); }
-		static void setBlend(bool enabled) { instance->setBlendInternal(enabled); }
+		static void enableDepthTesting(bool enabled) { instance->enableDepthTestingInternal(enabled); }
+		static void enableBlend(bool enabled) { instance->enableBlendInternal(enabled); }
+		static void enableDepthMask(bool enabled) { instance->enableDepthMaskInternal(enabled); }
+		static void enableCullFace(bool enabled) { instance->enableCullFaceInternal(enabled); }
+		static void enableDepthClamp(bool enabled) { instance->enableDepthClampInternal(enabled); }
 
 		static void setViewport(uint x, uint y, uint width, uint height) {
 			instance->setViewportInternal(x, y, width, height);
@@ -51,6 +62,14 @@ namespace xe { namespace gfx {
 			instance->setBlendEquationInternal(equation);
 		}
 
+		static void setDepthFunction(DepthFunction function) {
+			instance->setDepthFunctionInternal(function);
+		}
+
+		static void setCullFace(CullFace cullFace){
+			instance->setCullFaceInternal(cullFace);
+		}
+
 		static uint getDC() { return dc; }
 		static uint resetDC() { dc = 0; }
 
@@ -60,13 +79,18 @@ namespace xe { namespace gfx {
 		virtual void clearInternal(uint buffer) = 0;
 		virtual void flushInternal() = 0;
 
-		virtual void setDepthTestingInternal(bool enabled) = 0;
-		virtual void setBlendInternal(bool enabled) = 0;
+		virtual void enableDepthTestingInternal(bool enabled) = 0;
+		virtual void enableBlendInternal(bool enabled) = 0;
+		virtual void enableDepthMaskInternal(bool enabled) = 0;
+		virtual void enableCullFaceInternal(bool enabled) = 0;
+		virtual void enableDepthClampInternal(bool enabled) = 0;
 
 		virtual void setViewportInternal(uint x, uint y, uint width, uint height) = 0;
 
 		virtual void setBlendFunctionInternal(BlendFunction source, BlendFunction destination) = 0;
 		virtual void setBlendEquationInternal(BlendEquation equation) = 0;
+		virtual void setDepthFunctionInternal(DepthFunction function) = 0;
+		virtual void setCullFaceInternal(CullFace cullFace) = 0;
 
 	private:
 		static Renderer *instance;

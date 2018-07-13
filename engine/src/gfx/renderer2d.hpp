@@ -19,26 +19,6 @@
 
 namespace xe { namespace gfx {
 
-	struct UniformBuffer {
-		byte *buffer;
-		uint size;
-
-		UniformBuffer() = default;
-		explicit UniformBuffer(byte *buffer, uint size) :
-				buffer(buffer), size(size) {
-			memset(buffer, 0, size);
-		}
-	};
-
-	struct R2DSysUniform {
-		UniformBuffer buffer;
-		uint offset;
-
-		R2DSysUniform() = default;
-		explicit R2DSysUniform(const UniformBuffer &buffer, uint offset) :
-				buffer(buffer), offset(offset) { }
-	};
-
 	struct VertexData {
 		vec3 vertex;
 		vec2 uv;
@@ -110,8 +90,8 @@ namespace xe { namespace gfx {
 		const mat4 *transformationBack;
 
 		api::Shader *shader;
-		std::vector<R2DSysUniform> systemUniforms;
-		std::vector<UniformBuffer> systemUniformBuffers;
+		std::vector<api::Uniform> systemUniforms;
+		std::vector<api::UniformBuffer> systemUniformBuffers;
 
 		api::VertexArray *vertexArray;
 		api::IndexBuffer *indexBuffer;

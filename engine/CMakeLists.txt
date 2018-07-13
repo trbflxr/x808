@@ -15,7 +15,6 @@ add_definitions(
         -D FREEIMAGE_LIB
         -D GLEW_STATIC)
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D XE_DEBUG")
 
 include_directories(src)
@@ -61,6 +60,7 @@ file(GLOB ENGINE_SRC
         src/gfx/api/*.cpp
         src/gfx/camera/*.cpp
         src/gfx/layers/*.cpp
+        src/gfx/lights/*.cpp
         src/gfx/*.cpp
         src/math/*.cpp
         src/objects/*.cpp

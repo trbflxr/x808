@@ -6,6 +6,7 @@
 #define X808_SHADER_HPP
 
 
+#include <cstring>
 #include "common.hpp"
 #include "xeint.hpp"
 #include "shaderuniform.hpp"
@@ -13,6 +14,26 @@
 #include "math/math.hpp"
 
 namespace xe { namespace gfx { namespace api {
+
+	struct UniformBuffer {
+		byte *buffer;
+		uint size;
+
+		UniformBuffer() = default;
+		explicit UniformBuffer(byte *buffer, uint size) :
+				buffer(buffer), size(size) {
+			memset(buffer, 0, size);
+		}
+	};
+
+	struct Uniform {
+		UniformBuffer buffer;
+		uint offset;
+
+		Uniform() = default;
+		explicit Uniform(const UniformBuffer &buffer, uint offset) :
+				buffer(buffer), offset(offset) { }
+	};
 
 	class XE_API Shader {
 	public:

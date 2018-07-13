@@ -7,9 +7,7 @@ layout(location = 1) in vec2 uv;
 
 uniform mat4 sys_ProjectionMatrix;
 uniform mat4 sys_ViewMatrix;
-//uniform mat4 sys_ModelMatrix;
-
-uniform vec3 u_AmbientIntensity;
+uniform vec3 sys_AmbientIntensity;
 
 out vec2 uv0;
 out vec3 ambientIntensity0;
@@ -17,7 +15,7 @@ out vec3 ambientIntensity0;
 void main() {
   gl_Position = (sys_ProjectionMatrix * sys_ViewMatrix) * position;
   uv0 = uv;
-  ambientIntensity0 = u_AmbientIntensity;
+  ambientIntensity0 = sys_AmbientIntensity;
 }
 
 #shader fragment
