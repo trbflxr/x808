@@ -7,6 +7,8 @@
 
 
 #include "gfx/api/shader.hpp"
+#include "gfx/model.hpp"
+#include "gfx/camera/camera.hpp"
 
 namespace xe { namespace gfx {
 
@@ -14,7 +16,12 @@ namespace xe { namespace gfx {
 	public:
 		virtual ~BaseLight();
 
-		void bindAndSetUniforms();
+		inline void bind() { shader->bind(); }
+		inline void unbind() { shader->unbind(); }
+
+		void updateUniforms();
+
+		virtual void setUniforms(const Model *model, const Camera *camera) = 0;
 
 		void setUniform(const char *name, const void *data, size_t size,
 		                api::ShaderType shader = api::ShaderType::NONE);

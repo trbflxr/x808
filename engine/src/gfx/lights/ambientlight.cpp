@@ -7,8 +7,20 @@
 namespace xe { namespace gfx {
 
 	AmbientLight::AmbientLight(api::Shader *shader, const vec3 &ambientIntensity) :
-			BaseLight(shader) {
+			BaseLight(shader),
+			ambientIntensity(ambientIntensity) {
 
+		setUniform("sys_AmbientIntensity", &ambientIntensity, sizeof(vec3), api::ShaderType::FRAG);
+	}
+
+	void AmbientLight::setUniforms(const Model *model, const Camera *camera) {
+		mat4 mvp = model->transform.toMatrix() * camera->getProjectionMatrix() * camera->getViewMatrix();
+
+		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::ShaderType::VERT);
+	}
+
+	void AmbientLight::setAmbientIntensity(const vec3 &value) {
+		ambientIntensity = value;
 		setUniform("sys_AmbientIntensity", &ambientIntensity, sizeof(vec3), api::ShaderType::FRAG);
 	}
 

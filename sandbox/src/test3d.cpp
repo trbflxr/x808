@@ -8,36 +8,44 @@
 #include <resources/fontmanager.hpp>
 #include <resources/soundmanager.hpp>
 #include <resources/shaderfactory.hpp>
+#include <gfx/color.hpp>
 #include "test3d.hpp"
 
 Test3D::Test3D() :
 		ecs(app.getEcs()) {
 
-	renderer = new ForwardRenderer();
-
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
-
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
+	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
-
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
+	ambientLight = new AmbientLight(sf::forwardAmbientShader(), {0.3f, 0.3f, 0.3f});
+	renderer = new ForwardRenderer();
+	renderer->setAmbientLight(ambientLight);
 
+	camera = new FPSCamera(math::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
 
 //	rockMesh = new Mesh("assets/models/rock.obj");
 	rockMesh = new Mesh("assets/models/monkey3.obj");
+	material = new Material(&GETTEXTURE("2"), color::WHITE);
+
+	model = new Model(rockMesh, material);
+	model->transform.setTranslation({0, 0, 30});
 
 }
 
 Test3D::~Test3D() {
 	delete rockMesh;
 	delete renderer;
+	delete model;
+	delete ambientLight;
 }
 
 void Test3D::render() {
-	renderer->render(rockMesh);
+	renderer->render(model, camera);
 }
 
 void Test3D::tick() {
@@ -49,7 +57,31 @@ void Test3D::tick() {
 }
 
 void Test3D::update(float delta) {
+	if (Input::isKeyPressed(XE_KEY_S)) {
+		camera->move({0, 0, 0.2f});
+	}
+	if (Input::isKeyPressed(XE_KEY_W)) {
+		camera->move({0, 0, -0.2f});
+	}
+	if (Input::isKeyPressed(XE_KEY_D)) {
+		camera->move({0.2f, 0, 0});
+	}
+	if (Input::isKeyPressed(XE_KEY_A)) {
+		camera->move({-0.2f, 0, 0});
+	}
 
+	camera->update();
+
+
+	vec3 a = ambientLight->getAmbientIntensity();
+	if (Input::isKeyPressed(XE_KEY_Q)) {
+		a += 0.03f;
+	}
+	if (Input::isKeyPressed(XE_KEY_E)) {
+		a -= 0.03f;
+	}
+
+	ambientLight->setAmbientIntensity(a);
 }
 
 void Test3D::onEvent(xe::Event &event) {

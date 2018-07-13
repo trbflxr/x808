@@ -37,8 +37,7 @@ namespace xe { namespace gfx {
 		delete shader;
 	}
 
-	void BaseLight::bindAndSetUniforms() {
-		shader->bind();
+	void BaseLight::updateUniforms() {
 
 		for (uint i = 0; i < vsUniformBuffers.size(); i++) {
 			shader->setVSSystemUniformBuffer(vsUniformBuffers[i].buffer, vsUniformBuffers[i].size, i);
@@ -71,7 +70,6 @@ namespace xe { namespace gfx {
 				}
 			}
 		}
-
 
 		XE_FATAL("[BaseLight]: Uniform '", name, "' not found!");
 	}

@@ -10,6 +10,7 @@
 #include <gfx/mesh.hpp>
 #include <gfx/api/shader.hpp>
 #include <gfx/forwardrenderer.hpp>
+#include <gfx/camera/fpscamera.hpp>
 
 using namespace xe;
 using namespace gfx;
@@ -30,8 +31,14 @@ private:
 	ECS &ecs;
 
 	Mesh *rockMesh;
+	Material *material;
 
+	Model *model;
+
+	AmbientLight* ambientLight;
 	ForwardRenderer *renderer;
+
+	FPSCamera *camera;
 };
 
 

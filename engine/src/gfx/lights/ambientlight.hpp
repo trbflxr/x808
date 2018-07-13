@@ -13,6 +13,14 @@ namespace xe { namespace gfx {
 	class XE_API AmbientLight : public BaseLight {
 	public:
 		explicit AmbientLight(api::Shader *shader, const vec3 &ambientIntensity);
+
+		void setUniforms(const Model *model, const Camera *camera) override;
+
+		inline const vec3 &getAmbientIntensity() const { return ambientIntensity; }
+		void setAmbientIntensity(const vec3 &value);
+
+	private:
+		vec3 ambientIntensity;
 	};
 
 }}

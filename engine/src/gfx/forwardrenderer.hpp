@@ -6,11 +6,9 @@
 #define X808_FORWARDRENDERER_HPP
 
 
-#include <gfx/camera/fpscamera.hpp>
-
-#include "gfx/api/texture.hpp"
-#include "gfx/lights/baselight.hpp"
-#include "mesh.hpp"
+#include "gfx/camera/camera.hpp"
+#include "gfx/lights/ambientlight.hpp"
+#include "model.hpp"
 
 namespace xe { namespace gfx {
 
@@ -19,14 +17,14 @@ namespace xe { namespace gfx {
 		explicit ForwardRenderer();
 		~ForwardRenderer();
 
-		void render(const Mesh *mesh);
+		inline void setAmbientLight(AmbientLight *light) { ambientLight = light; }
+		inline void addLight(BaseLight *light) { lights.push_back(light); }
+
+		void render(const Model *model, const Camera *camera);
 
 	private:
 		std::vector<BaseLight *> lights;
-
-		//temp
-		FPSCamera *camera;
-		const api::Texture *texture;
+		AmbientLight *ambientLight;
 	};
 
 }}
