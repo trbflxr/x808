@@ -2,6 +2,6 @@ width=800
 height=600
 title=sandbox2d title
 fullScreen=0
-vSync=0
+vSync=1
 
 ups=60

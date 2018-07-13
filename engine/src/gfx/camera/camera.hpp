@@ -9,7 +9,7 @@
 #include "common.hpp"
 #include "math/math.hpp"
 
-namespace xe {namespace gfx {
+namespace xe { namespace gfx {
 
 	class XE_API Camera {
 	public:

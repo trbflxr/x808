@@ -65,7 +65,7 @@ namespace xe {
 	};
 
 	inline mat4 Transform::toMatrix() const {
-		//todo: create
+		return mat4::transform(translation, rotation, scale);
 	}
 
 	Transform Transform::operator+(const Transform &other) const {

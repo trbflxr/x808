@@ -37,12 +37,14 @@ namespace xe {
 			vec3 transform(const vec3 &r) const;
 
 			mat4 &invert();
+
+			static inline mat4 transform(const vec3 &translation, const quat &rotation, const vec3 &scale);
 		};
 
 		XE_API vec3 translateVec(const mat4 &m, const vec2 &vec);
 		XE_API vec3 translateVec(const mat4 &m, const vec3 &vec);
 		XE_API vec3 translateVec(const mat4 &m, const vec2 &vec, float z);
-		XE_API mat4 rotateMatZ(float rad) ;
+		XE_API mat4 rotateMatZ(float rad);
 
 		XE_API mat4 initRotation(const vec3 &forward, const vec3 &up);
 		XE_API mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
@@ -63,6 +65,14 @@ namespace xe {
 		XE_API mat4 operator*(const mat4 &left, const mat4 &right);
 		XE_API vec3 operator*(const mat4 &left, const vec3 &right);
 		XE_API vec4 operator*(const mat4 &left, const vec4 &right);
+
+		inline mat4 math::mat4::transform(const vec3 &translation, const quat &rotation, const vec3 &scale) {
+			mat4 t = math::translate(translation);
+			mat4 r = math::rotate(rotation);
+			mat4 s = math::scale(scale);
+
+			return t * r * s;
+		}
 	}
 	typedef math::mat4 mat4;
 }

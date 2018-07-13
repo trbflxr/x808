@@ -5,13 +5,12 @@ R"(
 layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 uv;
 
-uniform mat4 sys_ProjectionMatrix;
-uniform mat4 sys_ViewMatrix;
+uniform mat4 sys_MVP;
 
 out vec2 uv0;
 
 void main() {
-  gl_Position = (sys_ProjectionMatrix * sys_ViewMatrix) * position;
+  gl_Position = sys_MVP * position;
   uv0 = uv;
 }
 
