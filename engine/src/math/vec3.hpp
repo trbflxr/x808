@@ -26,6 +26,10 @@ namespace xe {
 			vec3(const vec3 &other);
 			explicit vec3(const vec2 &other);
 			explicit vec3(const vec4 &other);
+
+			static const vec3 XAXIS;
+			static const vec3 YAXIS;
+			static const vec3 ZAXIS;
 		};
 
 		XE_API float length(const vec3 &v);
@@ -68,10 +72,6 @@ namespace xe {
 		XE_API bool operator>=(const vec3 &left, const vec3 &right);
 
 		XE_API vec3 operator*(const vec3 &left, const mat4 &right);
-
-#define XAXIS vec3(1.0f, 0.0f, 0.0f)
-#define YAXIS vec3(0.0f, 1.0f, 0.0f)
-#define ZAXIS vec3(0.0f, 0.0f, 1.0f)
 
 	}
 

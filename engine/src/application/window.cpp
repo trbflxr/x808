@@ -49,6 +49,8 @@ void xe::Window::update() {
 	platformUpdate();
 
 	SoundManager::update();
+
+	inputManager->update();
 }
 
 void xe::Window::setEventCallback(const xe::WindowEventCallback &callback) {

@@ -23,6 +23,15 @@ namespace xe { namespace gfx {
 		vec3 getForwardDirection(const quat &orientation) const;
 		vec3 getUpDirection(const quat &orientation) const;
 		vec3 getRightDirection(const quat &orientation) const;
+
+	private:
+		//temp
+		float mouseSensitivity;
+		float speed;
+		float sprintSpeed;
+		float pitch;
+		float yaw;
+		bool mouseWasGrabbed;
 	};
 
 }}

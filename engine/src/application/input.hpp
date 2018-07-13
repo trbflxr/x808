@@ -87,6 +87,8 @@ namespace xe {
 		inline static void setCamera(gfx::Camera *camera) { Input::camera = camera; }
 
 		inline static void setMouseCursor(int32 cursor) { inputManager->setMouseCursor(cursor); }
+		inline static bool isMouseGrabbed() { return inputManager->isMouseGrabbed(); }
+		inline static void setMouseGrabbed(bool grabbed) { inputManager->setMouseGrabbed(grabbed); }
 
 	protected:
 		static gfx::Camera *camera;

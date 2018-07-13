@@ -77,7 +77,7 @@ xe::math::quat::quat(const xe::mat4 &rot) {
 
 xe::vec3 xe::math::quat::getAxis() const {
 	float x = 1.0f - w * w;
-	if (x < 0.0000001f) return XAXIS;
+	if (x < 0.0000001f) return vec3::XAXIS;
 
 	float x2 = x * x;
 	return vec3(x, y, z) / x2;
@@ -130,9 +130,9 @@ xe::math::vec3 xe::math::rotate(const quat &q, const vec3 &vec) {
 }
 
 xe::math::quat xe::math::fromEulerAngles(const vec3 &angles) {
-	quat pitch(XAXIS, angles.x);
-	quat yaw(YAXIS, angles.y);
-	quat roll(ZAXIS, angles.z);
+	quat pitch(vec3::XAXIS, angles.x);
+	quat yaw(vec3::YAXIS, angles.y);
+	quat roll(vec3::ZAXIS, angles.z);
 	return pitch * yaw * roll;
 }
 

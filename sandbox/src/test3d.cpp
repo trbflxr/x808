@@ -57,19 +57,6 @@ void Test3D::tick() {
 }
 
 void Test3D::update(float delta) {
-	if (Input::isKeyPressed(XE_KEY_S)) {
-		camera->move({0, 0, 0.2f});
-	}
-	if (Input::isKeyPressed(XE_KEY_W)) {
-		camera->move({0, 0, -0.2f});
-	}
-	if (Input::isKeyPressed(XE_KEY_D)) {
-		camera->move({0.2f, 0, 0});
-	}
-	if (Input::isKeyPressed(XE_KEY_A)) {
-		camera->move({-0.2f, 0, 0});
-	}
-
 	camera->update();
 
 
