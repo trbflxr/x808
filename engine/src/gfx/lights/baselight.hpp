@@ -7,6 +7,7 @@
 
 
 #include "gfx/api/shader.hpp"
+#include "gfx/color.hpp"
 #include "gfx/model.hpp"
 #include "gfx/camera/camera.hpp"
 
@@ -26,10 +27,21 @@ namespace xe { namespace gfx {
 		void setUniform(const char *name, const void *data, size_t size,
 		                api::ShaderType shader = api::ShaderType::NONE);
 
-	protected:
-		explicit BaseLight(api::Shader *shader);
+		inline uint getColor() const { return color; }
+		void setColor(uint color);
+
+		inline float getIntensity() const { return intensity; }
+		void setIntensity(float intensity);
 
 	protected:
+		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
+
+		virtual void setUniformsInternal() = 0;
+
+	protected:
+		uint color;
+		float intensity;
+
 		api::Shader *shader;
 
 		std::vector<api::Uniform> vsUniforms;

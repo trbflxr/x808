@@ -58,6 +58,7 @@ namespace xe {
 
 		void tick();
 		void update(float delta);
+		void fixedUpdate(float delta);
 		void render();
 		void onEvent(Event &event);
 
@@ -65,7 +66,6 @@ namespace xe {
 		bool running;
 		bool suspend_;
 
-		Timer *timer;
 		uint fps;
 		uint ups;
 		float frameTime;

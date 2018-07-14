@@ -36,11 +36,11 @@ namespace xe {
 		bool isMouseButtonPressed(uint button) const;
 		bool isMouseButtonClicked(uint button) const;
 
-		inline const vec2 &getMousePosition() const { return mousePosition; };
+		inline const vec2 &getMousePosition() const { return mousePosition; }
 		void setMousePosition(const vec2 &position);
 
-		inline bool isMouseGrabbed() const { return mouseDragged; }
-		inline void setMouseGrabbed(bool grabbed) { mouseDragged = grabbed; }
+		inline bool isMouseGrabbed() const { return mouseGrabbed; }
+		inline void setMouseGrabbed(bool grabbed) { mouseGrabbed = grabbed; }
 
 		void setMouseCursor(int32 cursor);
 
@@ -59,7 +59,7 @@ namespace xe {
 		bool mouseButtons[MAX_BUTTONS];
 		bool mouseState[MAX_BUTTONS];
 		bool mouseClicked[MAX_BUTTONS];
-		bool mouseDragged;
+		bool mouseGrabbed;
 		int32 keyModifiers;
 
 		vec2 mousePosition;
@@ -89,6 +89,11 @@ namespace xe {
 		inline static void setMouseCursor(int32 cursor) { inputManager->setMouseCursor(cursor); }
 		inline static bool isMouseGrabbed() { return inputManager->isMouseGrabbed(); }
 		inline static void setMouseGrabbed(bool grabbed) { inputManager->setMouseGrabbed(grabbed); }
+
+		NULL_COPY_AND_ASSIGN(Input);
+
+	private:
+		Input() = default;
 
 	protected:
 		static gfx::Camera *camera;

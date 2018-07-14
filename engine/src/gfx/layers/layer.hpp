@@ -26,6 +26,8 @@ namespace xe { namespace gfx {
 
 		virtual void update(float delta) { }
 
+		virtual void fixedUpdate(float delta) { }
+
 		void onEvent(Event &event) override {
 			EventDispatcher dispatcher(event);
 

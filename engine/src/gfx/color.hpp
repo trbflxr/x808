@@ -6,6 +6,7 @@
 #define X808_COLOR_HPP
 
 #include "xeint.hpp"
+#include "math/vec4.hpp"
 
 namespace xe { namespace color {
 
@@ -32,6 +33,16 @@ namespace xe { namespace color {
 
 		const uint color = a1 << 24 | b1 << 16 | g1 << 8 | r1;
 		return color;
+	}
+
+	static vec4 decode(uint color) {
+		vec4 result;
+		result.x = static_cast<byte>((color >> 0) / 255);
+		result.y = static_cast<byte>((color >> 8) / 255);
+		result.z = static_cast<byte>((color >> 16) / 255);
+		result.w = static_cast<byte>((color >> 24) / 255);
+
+		return result;
 	}
 
 }}

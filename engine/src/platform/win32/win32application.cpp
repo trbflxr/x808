@@ -3,107 +3,114 @@
 //
 
 #include "application/application.hpp"
-#include "utils/random.hpp"
 #include "gfx/renderer.hpp"
+#include "utils/random.hpp"
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
 
-xe::Application::Application(const xe::Config &config, gfx::api::RenderAPI api) :
-		config(config),
-		frameTime(0.0f) {
+namespace xe {
 
-	//init random
-	random::nextInt32(0, 1);
+	Application::Application(const Config &config, gfx::api::RenderAPI api) :
+			config(config),
+			frameTime(0.0f) {
 
-	gfx::api::Context::setRenderAPI(api);
-	instance = this;
-}
+		//init random
+		random::nextInt32(0, 1);
 
-xe::Application::~Application() {
-	delete window;
-	delete timer;
-}
+		gfx::api::Context::setRenderAPI(api);
+		instance = this;
+	}
 
-void xe::Application::platformInit() {
-	xe::WindowProperties props;
-	props.width = config.width;
-	props.height = config.height;
-	props.title = config.title;
-	props.vSync = config.vSync;
-	props.fullScreen = config.fullScreen;
+	Application::~Application() {
+		delete window;
+	}
 
-	window = new Window(props);
-	window->setEventCallback(METHOD(&Application::onEvent));
-}
+	void Application::platformInit() {
+		WindowProperties props;
+		props.width = config.width;
+		props.height = config.height;
+		props.title = config.title;
+		props.vSync = config.vSync;
+		props.fullScreen = config.fullScreen;
 
-void xe::Application::start() {
-	init();
-	running = true;
-	suspend_ = false;
-	run();
-}
+		window = new Window(props);
+		window->setEventCallback(METHOD(&Application::onEvent));
+	}
 
-void xe::Application::suspend() {
-	suspend_ = true;
-}
+	void Application::start() {
+		init();
+		running = true;
+		suspend_ = false;
+		run();
+	}
 
-void xe::Application::resume() {
-	suspend_ = false;
-}
+	void Application::suspend() {
+		suspend_ = true;
+	}
 
-void xe::Application::stop() {
-	running = false;
-}
+	void Application::resume() {
+		suspend_ = false;
+	}
 
-void xe::Application::run() {
-	timer = new Timer();
-	float time = 0.0f;
+	void Application::stop() {
+		running = false;
+	}
 
-	float updateTimer = timer->elapsed();
-	float updateTick = 1000.0f / config.ups;
+	void Application::run() {
+		Timer timer;
 
-	uint frames = 0;
-	uint updates = 0;
+		const float MS_PER_TICK = 1.0f / config.ups;
 
-	float lastTime = timer->elapsedMillis();
-	float delta;
+		uint tickCount = 0;
+		uint frames = 0;
 
-	while (running) {
-		gfx::Renderer::resetDC();
+		float time = 0.0f;
 
-		float now = timer->elapsedMillis();
+		float lastTime = timer.elapsed();
+		float tickLag = 0;
 
-		if (now - updateTimer > updateTick) {
-			delta = now - lastTime;
-			lastTime = now;
+		while (running) {
+			gfx::Renderer::resetDC();
+
+			float currentTime = timer.elapsed();
+			float delta = currentTime - lastTime;
+
+			lastTime = currentTime;
+			tickLag += delta;
+
+			while (tickLag >= MS_PER_TICK) {
+				++tickCount;
+
+				fixedUpdate(delta);
+
+				tickLag -= MS_PER_TICK;
+			}
 
 			update(delta);
 
-			updates++;
-			updateTimer += updateTick;
+			window->clear();
+
+			Timer frameTimer;
+			render();
+			frames++;
+			frameTime = frameTimer.elapsedMillis();
+
+			window->update();
+			if (timer.elapsed() - time > 1.0f) {
+				time += 1.0f;
+				fps = frames;
+				ups = tickCount;
+				frames = 0;
+				tickCount = 0;
+
+				tick();
+			}
+
+			if (window->shouldClose()) running = false;
 		}
 
-		window->clear();
-
-		Timer frameTimer;
-		render();
-		frames++;
-		frameTime = frameTimer.elapsedMillis();
-
-		window->update();
-		if (timer->elapsed() - time > 1.0f) {
-			time += 1.0f;
-			fps = frames;
-			ups = updates;
-			frames = 0;
-			updates = 0;
-
-			tick();
-		}
-
-		if (window->shouldClose()) running = false;
+		FontManager::clean();
+		TextureManager::clean();
 	}
 
-	FontManager::clean();
-	TextureManager::clean();
 }

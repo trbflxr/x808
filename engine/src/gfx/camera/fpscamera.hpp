@@ -13,25 +13,22 @@ namespace xe { namespace gfx {
 	class XE_API FPSCamera : public Camera {
 	public:
 		explicit FPSCamera(const mat4 &projection);
-		~FPSCamera();
 
-		void focus() override;
 		void update() override;
 
-	private:
+		inline float getPitch() const { return pitch; }
+		inline void setPitch(float pitch) { FPSCamera::pitch = pitch; }
+		inline float getYaw() const { return yaw; }
+		inline void setYaw(float yaw) { FPSCamera::yaw = yaw; }
+
 		quat getOrientation() const;
 		vec3 getForwardDirection(const quat &orientation) const;
 		vec3 getUpDirection(const quat &orientation) const;
 		vec3 getRightDirection(const quat &orientation) const;
 
 	private:
-		//temp
-		float mouseSensitivity;
-		float speed;
-		float sprintSpeed;
 		float pitch;
 		float yaw;
-		bool mouseWasGrabbed;
 	};
 
 }}

@@ -13,7 +13,7 @@ namespace xe {
 		clearKeys();
 		clearMouseButtons();
 
-		mouseDragged = false;
+		mouseGrabbed = false;
 
 		Input::inputManager = this;
 	}

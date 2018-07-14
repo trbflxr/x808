@@ -11,6 +11,7 @@
 #include <gfx/api/shader.hpp>
 #include <gfx/forwardrenderer.hpp>
 #include <gfx/camera/fpscamera.hpp>
+#include "dummyplayer.hpp"
 
 using namespace xe;
 using namespace gfx;
@@ -24,6 +25,7 @@ public:
 	void render() override;
 	void tick() override;
 	void update(float delta) override;
+	void fixedUpdate(float delta) override;
 
 	void onEvent(Event &event) override;
 
@@ -38,7 +40,7 @@ private:
 	AmbientLight* ambientLight;
 	ForwardRenderer *renderer;
 
-	FPSCamera *camera;
+	DummyPlayer *player;
 };
 
 

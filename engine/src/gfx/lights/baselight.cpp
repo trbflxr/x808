@@ -7,8 +7,10 @@
 
 namespace xe { namespace gfx {
 
-	BaseLight::BaseLight(api::Shader *shader) :
-			shader(shader) {
+	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
+			shader(shader),
+			intensity(intensity),
+			color(color) {
 
 		const api::ShaderUniformBufferVec &vssu = shader->getVSSystemUniforms();
 
@@ -72,6 +74,16 @@ namespace xe { namespace gfx {
 		}
 
 		XE_FATAL("[BaseLight]: Uniform '", name, "' not found!");
+	}
+
+	void BaseLight::setColor(uint color) {
+		BaseLight::color = color;
+		setUniformsInternal();
+	}
+
+	void BaseLight::setIntensity(float intensity) {
+		BaseLight::intensity = intensity;
+		setUniformsInternal();
 	}
 
 }}

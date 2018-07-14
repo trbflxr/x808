@@ -6,11 +6,10 @@
 
 namespace xe { namespace gfx {
 
-	AmbientLight::AmbientLight(api::Shader *shader, const vec3 &ambientIntensity) :
-			BaseLight(shader),
-			ambientIntensity(ambientIntensity) {
+	AmbientLight::AmbientLight(api::Shader *shader, float intensity, uint color) :
+			BaseLight(shader, intensity, color) {
 
-		setUniform("sys_AmbientIntensity", &ambientIntensity, sizeof(vec3), api::ShaderType::FRAG);
+		setUniformsInternal();
 	}
 
 	void AmbientLight::setUniforms(const Model *model, const Camera *camera) {
@@ -19,9 +18,11 @@ namespace xe { namespace gfx {
 		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::ShaderType::VERT);
 	}
 
-	void AmbientLight::setAmbientIntensity(const vec3 &value) {
-		ambientIntensity = value;
-		setUniform("sys_AmbientIntensity", &ambientIntensity, sizeof(vec3), api::ShaderType::FRAG);
+	void AmbientLight::setUniformsInternal() {
+		vec4 c = color::decode(color);
+
+		setUniform("sys_Intensity", &intensity, sizeof(float), api::ShaderType::FRAG);
+		setUniform("sys_Color", &c, sizeof(vec4), api::ShaderType::FRAG);
 	}
 
 }}

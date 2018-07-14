@@ -55,7 +55,7 @@ namespace xe { namespace math {
 		return (dest - v) * lerpFactor + v;
 	}
 
-	vec3 operator-(vec3 &vec) {
+	vec3 operator-(const vec3 &vec) {
 		return vec3(-vec.x, -vec.y, -vec.z);
 	}
 

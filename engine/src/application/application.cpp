@@ -3,62 +3,69 @@
 //
 
 #include "application.hpp"
-#include "gfx/renderer2d.hpp"
 #include "gfx/layers/layer.hpp"
-#include "resources/fontmanager.hpp"
-#include "resources/texturemanager.hpp"
 
-xe::Application *xe::Application::instance = nullptr;
+namespace xe {
+
+	Application *Application::instance = nullptr;
 
 
-void xe::Application::init() {
-	platformInit();
-}
-
-void xe::Application::tick() {
-	for (auto &&layer : layerStack) {
-		layer->tick();
+	void Application::init() {
+		platformInit();
 	}
-}
 
-void xe::Application::update(float delta) {
-	for (auto &&layer : layerStack) {
-		layer->update(delta);
-	}
-}
-
-void xe::Application::render() {
-	for (auto &&layer : layerStack) {
-		if (layer->isVisible()) {
-			layer->render();
+	void Application::tick() {
+		for (auto &&layer : layerStack) {
+			layer->tick();
 		}
 	}
-}
 
-void xe::Application::onEvent(xe::Event &event) {
-	for (int i = static_cast<int32>(layerStack.size() - 1); i >= 0; i--) {
-		layerStack[i]->onEvent(event);
-		if (event.isHandled()) return;
-	}
-}
-
-void xe::Application::pushLayer(xe::gfx::Layer *layer) {
-	layerStack.push_back(layer);
-	layer->init();
-}
-
-xe::gfx::Layer *xe::Application::popLayer() {
-	gfx::Layer *layer = layerStack.back();
-	layerStack.pop_back();
-	return layer;
-}
-
-xe::gfx::Layer *xe::Application::popLayer(xe::gfx::Layer *layer) {
-	for (uint i = 0; i < layerStack.size(); i++) {
-		if (layerStack[i] == layer) {
-			layerStack.erase(layerStack.begin() + i);
-			break;
+	void Application::update(float delta) {
+		for (auto &&layer : layerStack) {
+			layer->update(delta);
 		}
 	}
-	return layer;
+
+	void Application::fixedUpdate(float delta) {
+		for (auto &&layer : layerStack) {
+			layer->fixedUpdate(delta);
+		}
+	}
+
+	void Application::render() {
+		for (auto &&layer : layerStack) {
+			if (layer->isVisible()) {
+				layer->render();
+			}
+		}
+	}
+
+	void Application::onEvent(Event &event) {
+		for (int i = static_cast<int32>(layerStack.size() - 1); i >= 0; i--) {
+			layerStack[i]->onEvent(event);
+			if (event.isHandled()) return;
+		}
+	}
+
+	void Application::pushLayer(gfx::Layer *layer) {
+		layerStack.push_back(layer);
+		layer->init();
+	}
+
+	gfx::Layer *Application::popLayer() {
+		gfx::Layer *layer = layerStack.back();
+		layerStack.pop_back();
+		return layer;
+	}
+
+	gfx::Layer *Application::popLayer(gfx::Layer *layer) {
+		for (uint i = 0; i < layerStack.size(); i++) {
+			if (layerStack[i] == layer) {
+				layerStack.erase(layerStack.begin() + i);
+				break;
+			}
+		}
+		return layer;
+	}
+
 }

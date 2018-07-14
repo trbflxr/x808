@@ -22,11 +22,11 @@ Test3D::Test3D() :
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
-	ambientLight = new AmbientLight(sf::forwardAmbientShader(), {0.3f, 0.3f, 0.3f});
+	ambientLight = new AmbientLight(sf::forwardAmbientShader(), 0.3f, color::WHITE);
 	renderer = new ForwardRenderer();
 	renderer->setAmbientLight(ambientLight);
 
-	camera = new FPSCamera(math::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
+	player = new DummyPlayer(new FPSCamera(math::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
 //	rockMesh = new Mesh("assets/models/rock.obj");
 	rockMesh = new Mesh("assets/models/monkey3.obj");
@@ -43,10 +43,11 @@ Test3D::~Test3D() {
 	delete renderer;
 	delete model;
 	delete ambientLight;
+	delete player;
 }
 
 void Test3D::render() {
-	renderer->render(model, camera);
+	renderer->render(model, player->getCamera());
 }
 
 void Test3D::tick() {
@@ -58,18 +59,20 @@ void Test3D::tick() {
 }
 
 void Test3D::update(float delta) {
-	camera->update();
+	player->update(delta);
+}
 
-
-	vec3 a = ambientLight->getAmbientIntensity();
+void Test3D::fixedUpdate(float delta){
 	if (Input::isKeyPressed(XE_KEY_Q)) {
+		float a = ambientLight->getIntensity();
 		a += 0.03f;
+		ambientLight->setIntensity(a);
 	}
 	if (Input::isKeyPressed(XE_KEY_E)) {
+		float a = ambientLight->getIntensity();
 		a -= 0.03f;
+		ambientLight->setIntensity(a);
 	}
-
-	ambientLight->setAmbientIntensity(a);
 }
 
 void Test3D::onEvent(xe::Event &event) {
