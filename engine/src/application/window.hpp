@@ -35,6 +35,8 @@ namespace xe {
 
 		void setTitle(const std::string_view &title);
 
+		inline void *getHandle() const { return nullptr; }
+
 		inline uint getWidth() const { return props.width; }
 		inline uint getHeight() const { return props.height; }
 

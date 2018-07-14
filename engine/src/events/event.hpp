@@ -2,8 +2,8 @@
 // Created by FLXR on 6/28/2018.
 //
 
-#ifndef X808_EVENT_HPP
-#define X808_EVENT_HPP
+#ifndef X808_EVENT1_HPP
+#define X808_EVENT1_HPP
 
 
 #include "common.hpp"
@@ -49,4 +49,4 @@ namespace xe {
 }
 
 
-#endif //X808_EVENT_HPP
+#endif //X808_EVENT1_HPP

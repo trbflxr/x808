@@ -22,8 +22,6 @@ DummyPlayer::~DummyPlayer() {
 }
 
 void DummyPlayer::update(float delta) {
-	XE_INFO(mouseSensitivity * delta);
-
 	static uint windowWidth = Application::get().getWindowWidth();
 	static uint windowHeight = Application::get().getWindowHeight();
 

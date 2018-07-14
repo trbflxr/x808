@@ -66,11 +66,14 @@ file(GLOB ENGINE_SRC
         src/objects/*.cpp
         src/resources/*.cpp
         src/utils/*.cpp
+        src/window/*.cpp
         src/*.cpp)
 
 
 #win32
-file(GLOB ENGINE_WIN32_SRC src/platform/win32/*.cpp)
+file(GLOB ENGINE_WIN32_SRC
+        src/platform/win32/*.cpp
+        src/platform/win32/window/*.cpp)
 
 #opengl
 file(GLOB ENGINE_GL_SRC src/platform/opengl/*.cpp)
