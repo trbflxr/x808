@@ -8,17 +8,16 @@
 
 #include "common.hpp"
 #include "config.hpp"
-#include "window.hpp"
+#include "window/window.hpp"
 #include "utils/timer.hpp"
 #include "gfx/api/context.hpp"
 #include "ecs/ecs.hpp"
 
-
-namespace xe { namespace gfx {
-	class Layer;
-}}
-
 namespace xe {
+
+	namespace gfx{
+		class Layer;
+	}
 
 	class XE_API Application {
 	public:
@@ -40,13 +39,12 @@ namespace xe {
 		inline uint getUPS() const { return ups; }
 		inline float getFrameTime() const { return frameTime; }
 
-		inline Window &getWindow() { return *window; }
-		inline const Window &getWindow() const { return *window; }
+		inline Window &getWindow() { return window; }
+		inline const Window &getWindow() const { return window; }
 
 		inline const Config &getConfig() const { return config; }
 
-		inline uint getWindowWidth() const { return window->getWidth(); }
-		inline uint getWindowHeight() const { return window->getHeight(); }
+		inline vec2u getWindowSize() const { return window.getSize(); }
 
 		inline ECS &getEcs() { return ecs; }
 
@@ -57,10 +55,13 @@ namespace xe {
 		void run();
 
 		void tick();
+
 		void update(float delta);
 		void fixedUpdate(float delta);
+
 		void render();
-		void onEvent(Event &event);
+
+		void processEvents();
 
 	private:
 		bool running;
@@ -71,7 +72,7 @@ namespace xe {
 		float frameTime;
 
 		Config config;
-		Window *window;
+		Window window;
 
 		ECS ecs;
 

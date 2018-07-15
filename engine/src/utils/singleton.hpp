@@ -6,24 +6,17 @@
 #define X808_SINGLETON_HPP
 
 
-#include "common.hpp"
+#include "noncopyable.hpp"
 
 namespace xe { namespace utils {
 
 	template<typename T>
-	class XE_API Singleton {
+	class Singleton : NonCopyable {
 	public:
-		virtual ~Singleton() = default;
-
-		NULL_COPY_AND_ASSIGN(Singleton);
-
 		static T &get() {
 			static T instance;
 			return instance;
 		}
-
-	protected:
-		Singleton() = default;
 	};
 
 }}

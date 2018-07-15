@@ -11,6 +11,7 @@ set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
 add_definitions(
         -D NOGDI
+        -D UNICODE
         -D XE_STATIC
         -D FREEIMAGE_LIB
         -D GLEW_STATIC)
@@ -91,3 +92,8 @@ if (XE_PLATFORM_GL)
 endif ()
 
 add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
+
+#link win32 libs
+if (XE_PLATFORM_WIN32)
+    target_link_libraries(xe winmm)
+endif ()

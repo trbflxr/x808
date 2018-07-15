@@ -6,12 +6,12 @@
 #define X808_LAYER_HPP
 
 
-#include "events/events.hpp"
+#include "window/event.hpp"
 #include "application/application.hpp"
 
 namespace xe { namespace gfx {
 
-	class Layer : public IEventListener {
+	class Layer {
 	public:
 		virtual ~Layer() = default;
 
@@ -25,22 +25,14 @@ namespace xe { namespace gfx {
 		virtual void tick() { }
 
 		virtual void update(float delta) { }
-
 		virtual void fixedUpdate(float delta) { }
 
-		void onEvent(Event &event) override {
-			EventDispatcher dispatcher(event);
-
-			dispatcher.dispatch<WindowResizeEvent>(
-					[this](WindowResizeEvent &e) {
-						return resize(e.getWidth(), e.getHeight());
-					});
-		}
+		virtual void input(Event &event) { }
 
 	protected:
 		explicit Layer() :
 				app(Application::get()),
-				window(*Window::getWindowClass(nullptr)),
+				window(app.getWindow()),
 				visible(true) { }
 
 		virtual bool resize(uint width, uint height) { }

@@ -44,6 +44,7 @@ namespace xe { namespace gfx {
 		static void clear(uint buffer) { instance->clearInternal(buffer); }
 		static void flush() { instance->flushInternal(); }
 
+		static void enableVsync(bool enabled) { instance->enableVsyncInternal(enabled); }
 		static void enableDepthTesting(bool enabled) { instance->enableDepthTestingInternal(enabled); }
 		static void enableBlend(bool enabled) { instance->enableBlendInternal(enabled); }
 		static void enableDepthMask(bool enabled) { instance->enableDepthMaskInternal(enabled); }
@@ -66,7 +67,7 @@ namespace xe { namespace gfx {
 			instance->setDepthFunctionInternal(function);
 		}
 
-		static void setCullFace(CullFace cullFace){
+		static void setCullFace(CullFace cullFace) {
 			instance->setCullFaceInternal(cullFace);
 		}
 
@@ -78,6 +79,8 @@ namespace xe { namespace gfx {
 
 		virtual void clearInternal(uint buffer) = 0;
 		virtual void flushInternal() = 0;
+
+		virtual void enableVsyncInternal(bool enabled) = 0;
 
 		virtual void enableDepthTestingInternal(bool enabled) = 0;
 		virtual void enableBlendInternal(bool enabled) = 0;

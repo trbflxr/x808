@@ -71,6 +71,10 @@ namespace xe { namespace gfx {
 		context->swapBuffers();
 	}
 
+	void GLRenderer::enableVsyncInternal(bool enabled) {
+		context->enableVsync(enabled);
+	}
+
 	void GLRenderer::enableDepthTestingInternal(bool enabled) {
 		if (enabled) {
 			glCall(glEnable(GL_DEPTH_TEST));

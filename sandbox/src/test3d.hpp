@@ -23,19 +23,24 @@ public:
 	~Test3D() override;
 
 	void render() override;
+
 	void tick() override;
+
 	void update(float delta) override;
 	void fixedUpdate(float delta) override;
 
-	void onEvent(Event &event) override;
+	void input(Event &event) override;
 
 private:
 	ECS &ecs;
 
-	Mesh *rockMesh;
 	Material *material;
 
-	Model *model;
+	Mesh *rockMesh;
+	Mesh *monkeyMesh;
+
+	Model *rockModel;
+	Model *monkeyModel;
 
 	AmbientLight* ambientLight;
 	ForwardRenderer *renderer;

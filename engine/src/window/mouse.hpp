@@ -14,7 +14,6 @@ namespace xe {
 	class Window;
 
 	struct XE_API Mouse {
-
 		enum Button {
 			Left,
 			Right,

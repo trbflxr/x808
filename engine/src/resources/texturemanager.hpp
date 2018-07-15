@@ -8,20 +8,19 @@
 
 #include <unordered_map>
 #include "common.hpp"
+#include "utils/noncopyable.hpp"
 #include "gfx/api/texture.hpp"
 
 namespace xe {
 
-	class XE_API TextureManager {
+	class XE_API TextureManager : NonCopyable {
 	public:
-		~TextureManager();
+		~TextureManager() override;
 
 		static void add(gfx::api::Texture *texture);
 		static const gfx::api::Texture &get(const std::string_view &name);
 
 		static void clean();
-
-		NULL_COPY_AND_ASSIGN(TextureManager);
 
 	private:
 		TextureManager();

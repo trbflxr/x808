@@ -8,20 +8,19 @@
 
 #include <unordered_map>
 #include "common.hpp"
+#include "utils/noncopyable.hpp"
 #include "resources/font.hpp"
 
 namespace xe {
 
-	class XE_API FontManager {
+	class XE_API FontManager : NonCopyable {
 	public:
-		~FontManager();
+		~FontManager() override;
 
 		static void add(Font *font);
 		static const Font &get(const std::string_view &name);
 
 		static void clean();
-
-		NULL_COPY_AND_ASSIGN(FontManager);
 
 	private:
 		FontManager();

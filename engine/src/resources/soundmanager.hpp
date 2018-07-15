@@ -7,6 +7,7 @@
 
 
 #include <unordered_map>
+#include "utils/noncopyable.hpp"
 #include "sound.hpp"
 
 struct gau_Manager;
@@ -14,12 +15,12 @@ struct ga_Mixer;
 
 namespace xe {
 
-	class XE_API SoundManager {
+	class XE_API SoundManager : NonCopyable {
 	private:
 		friend class Sound;
 
 	public:
-		~SoundManager();
+		~SoundManager() override;
 
 		static void init();
 
@@ -28,8 +29,6 @@ namespace xe {
 
 		static void update();
 		static void clean();
-
-		NULL_COPY_AND_ASSIGN(SoundManager);
 
 	private:
 		SoundManager();

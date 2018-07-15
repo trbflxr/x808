@@ -15,6 +15,8 @@ public:
 
 	void update(float delta);
 
+	void input(xe::Event &event);
+
 	inline const xe::gfx::FPSCamera *getCamera() const { return camera; }
 
 private:
@@ -27,6 +29,8 @@ private:
 	float mouseSensitivity;
 	float speed;
 	float sprintSpeed;
+
+	bool mouseLocked;
 };
 
 

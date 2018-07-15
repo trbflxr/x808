@@ -2,7 +2,6 @@
 // Created by FLXR on 7/14/2018.
 //
 
-#include <application/input.hpp>
 #include <application/application.hpp>
 #include "dummyplayer.hpp"
 
@@ -11,10 +10,11 @@ using namespace xe;
 DummyPlayer::DummyPlayer(xe::gfx::FPSCamera *camera) :
 		camera(camera) {
 
-	mouseSensitivity = 1.00f;
+	mouseSensitivity = 0.003f;
 	speed = 4.0f;
 	sprintSpeed = speed * 4.0f;
 	mouseWasGrabbed = false;
+	mouseLocked = false;
 }
 
 DummyPlayer::~DummyPlayer() {
@@ -22,33 +22,32 @@ DummyPlayer::~DummyPlayer() {
 }
 
 void DummyPlayer::update(float delta) {
-	static uint windowWidth = Application::get().getWindowWidth();
-	static uint windowHeight = Application::get().getWindowHeight();
+	static Window &window = Application::get().getWindow();
+	static vec2u windowSize = window.getSize();
+	static vec2i windowCenter = vec2i(windowSize.x / 2, windowSize.y / 2);
 
-	static vec2 windowCenter = vec2(windowWidth / 2.0f, windowHeight / 2.0f);
+	static vec2i lastMousePosition = Mouse::getPosition();
 
-	if (Input::isMouseButtonClicked(XE_MOUSE_RIGHT)) {
-		if (!Input::isMouseGrabbed()) {
-			Input::setMouseGrabbed(true);
-			Input::setMouseCursor(XE_NO_CURSOR);
-		} else {
-			Input::setMouseGrabbed(false);
-			Input::setMouseCursor(1);
-			mouseWasGrabbed = false;
-		}
+	if (mouseLocked) {
+		window.setMouseCursorGrabbed(true);
+		window.setMouseCursorVisible(false);
+	} else {
+		window.setMouseCursorGrabbed(false);
+		window.setMouseCursorVisible(true);
+		mouseWasGrabbed = false;
 	}
 
-	if (Input::isMouseGrabbed()) {
-		vec2 mouse = Input::getMousePosition();
-		mouse -= windowCenter;
-		mouse *= (mouseSensitivity * delta);
+	if (window.isMouseCursorGrabbed()) {
+		vec2i mouseChange = Mouse::getPosition() - lastMousePosition;
+
 		if (mouseWasGrabbed) {
-			camera->setYaw(camera->getYaw() + mouse.x);
-			camera->setPitch(camera->getPitch() + mouse.y);
+			camera->setYaw(camera->getYaw() + mouseChange.x* mouseSensitivity);
+			camera->setPitch(camera->getPitch() + mouseChange.y* mouseSensitivity);
 		}
 		mouseWasGrabbed = true;
-		Input::setMousePosition(windowCenter);
 
+		Mouse::setPosition(windowCenter, window);
+		lastMousePosition = Mouse::getPosition();
 
 		quat orientation = camera->getOrientation();
 		rotation = orientation.toEulerAngles();
@@ -56,32 +55,46 @@ void DummyPlayer::update(float delta) {
 		vec3 forward = camera->getForwardDirection(orientation);
 		vec3 right = camera->getRightDirection(orientation);
 		vec3 up = vec3::YAXIS;
-		float speed = Input::isKeyPressed(XE_KEY_CONTROL) ? sprintSpeed : DummyPlayer::speed;
-		if (Input::isKeyPressed(XE_KEY_W))
+		float speed = Keyboard::isKeyPressed(Keyboard::LControl) ? sprintSpeed : DummyPlayer::speed;
+		if (Keyboard::isKeyPressed(Keyboard::W))
 			position += forward * speed * delta;
-		else if (Input::isKeyPressed(XE_KEY_S))
+		else if (Keyboard::isKeyPressed(Keyboard::S))
 			position -= forward * speed * delta;
 
-		if (Input::isKeyPressed(XE_KEY_A))
+		if (Keyboard::isKeyPressed(Keyboard::A))
 			position -= right * speed * delta;
-		else if (Input::isKeyPressed(XE_KEY_D))
+		else if (Keyboard::isKeyPressed(Keyboard::D))
 			position += right * speed * delta;
 
-		if (Input::isKeyPressed(XE_KEY_SPACE))
+		if (Keyboard::isKeyPressed(Keyboard::Space))
 			position += up * speed * delta;
-		if (Input::isKeyPressed(XE_KEY_SHIFT))
+		if (Keyboard::isKeyPressed(Keyboard::LShift))
 			position -= up * speed * delta;
 
 		camera->setPosition(position);
 		camera->setRotation(rotation);
 	}
 
-	if (Input::isKeyPressed(XE_KEY_ESCAPE)) {
-		Input::setMouseGrabbed(false);
-		Input::setMouseCursor(1);
+	if (!mouseLocked) {
+		window.setMouseCursorGrabbed(false);
+		window.setMouseCursorVisible(true);
 		mouseWasGrabbed = false;
 	}
 
-
 	camera->update();
+}
+
+void DummyPlayer::input(xe::Event &event) {
+	if (event.type == Event::MouseButtonPressed) {
+		if (event.mouseButton.button == Mouse::Right) {
+			mouseLocked = !mouseLocked;
+		}
+		event.handled = true;
+	}
+	if (event.type == Event::KeyPressed) {
+		if (event.key.code == Keyboard::Escape) {
+			mouseLocked = false;
+		}
+		event.handled = true;
+	}
 }

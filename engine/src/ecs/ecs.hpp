@@ -10,11 +10,11 @@
 #include "ecscomponent.hpp"
 #include "ecssystem.hpp"
 #include "utils/log.hpp"
-
+#include "utils/noncopyable.hpp"
 
 namespace xe {
 
-	class XE_API ECS {
+	class XE_API ECS : NonCopyable{
 	public:
 		ECS() = default;
 		virtual ~ECS();
@@ -118,9 +118,6 @@ namespace xe {
 
 		///system methods
 		void updateSystems(ECSSystemList &systems, float delta);
-
-		NULL_COPY_AND_ASSIGN(ECS);
-
 
 	private:
 		inline std::pair<uint, std::vector<std::pair<uint, uint>>> *handleToRawType(EntityHandle handle) {

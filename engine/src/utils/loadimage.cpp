@@ -2,8 +2,8 @@
 // Created by FLXR on 6/30/2018.
 //
 
-#include <FreeImage.h>
-#include <FreeImageUtilities.h>
+#include <FreeImage/FreeImage.h>
+#include <FreeImage/FreeImageUtilities.h>
 
 #include "loadimage.hpp"
 #include "utils/log.hpp"

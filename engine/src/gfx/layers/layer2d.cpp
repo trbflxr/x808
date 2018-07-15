@@ -5,16 +5,20 @@
 #include "layer2d.hpp"
 #include "application/application.hpp"
 
-xe::gfx::Layer2D::Layer2D() {
-	renderer = new Renderer2D(window.getWidth(), window.getHeight());
-}
+namespace xe { namespace gfx {
 
-xe::gfx::Layer2D::~Layer2D() {
-	delete renderer;
-}
+	Layer2D::Layer2D() {
+		renderer = new Renderer2D(window.getSize());
+	}
 
-bool xe::gfx::Layer2D::resize(uint width, uint height) {
-	renderer->setScreenSize({width, height});
-	return false;
-}
+	Layer2D::~Layer2D() {
+		delete renderer;
+	}
+
+	bool Layer2D::resize(uint width, uint height) {
+		renderer->setScreenSize({width, height});
+		return false;
+	}
+
+}}
 

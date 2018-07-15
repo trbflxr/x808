@@ -7,7 +7,6 @@
 
 
 #include "config.hpp"
-#include "application/window.hpp"
 
 namespace xe { namespace gfx { namespace api {
 
@@ -17,7 +16,7 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API Context {
 	public:
-		static void create(const WindowProperties &props, void *deviceContext);
+		static void create(void *deviceContext);
 
 		static RenderAPI getRenderAPI() { return api; }
 		static void setRenderAPI(RenderAPI api) { Context::api = api; }

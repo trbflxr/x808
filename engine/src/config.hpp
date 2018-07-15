@@ -19,6 +19,7 @@ namespace xe {
 		bool vSync;
 
 		uint ups;
+		uint fps;
 
 		//engine stuff
 		float scale = 10.0f;

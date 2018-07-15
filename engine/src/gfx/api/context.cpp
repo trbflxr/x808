@@ -5,13 +5,17 @@
 #include "context.hpp"
 #include "platform/opengl/glcontext.hpp"
 
-xe::gfx::api::Context *xe::gfx::api::Context::context = nullptr;
-xe::gfx::api::RenderAPI xe::gfx::api::Context::api = RenderAPI::NONE;
+namespace xe { namespace gfx { namespace api {
 
-void xe::gfx::api::Context::create(const WindowProperties &props, void *deviceContext) {
-	switch (getRenderAPI()) {
-		case RenderAPI::OPENGL: context = new GLContext(props, deviceContext);
-			break;
-		default: break;
+	Context *Context::context = nullptr;
+	RenderAPI Context::api = RenderAPI::NONE;
+
+	void Context::create(void *deviceContext) {
+		switch (getRenderAPI()) {
+			case RenderAPI::OPENGL: context = new GLContext(deviceContext);
+				break;
+			default: break;
+		}
 	}
-}
+
+}}}

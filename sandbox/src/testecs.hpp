@@ -19,14 +19,13 @@ public:
 	~TestECS() override;
 
 	void render() override;
-	void update(float delta) override;
+
 	void tick() override;
 
-	void onEvent(xe::Event &event) override;
+	void update(float delta) override;
+	void fixedUpdate(float delta) override;
 
-	bool onKeyPressedEvent(xe::KeyPressEvent &event);
-	bool onMousePressedEvent(xe::MousePressEvent &event);
-	bool onMouseMovedEvent(xe::MouseMoveEvent &event);
+	void input(xe::Event &event) override;
 
 private:
 	xe::ECS &ecs;

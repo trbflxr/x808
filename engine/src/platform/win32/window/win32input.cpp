@@ -3,12 +3,13 @@
 //
 
 #include <windows.h>
-#include "application/window.hpp"
-#include "win32input.hpp"
+#include "window/window.hpp"
+#include "window/keyboard.hpp"
+#include "window/mouse.hpp"
 
-namespace xe { namespace internal {
+namespace xe {
 
-	bool PlatformInput::isKeyPressed(Keyboard::Key key) {
+	bool Keyboard::isKeyPressed(Keyboard::Key key) {
 		int vkey = 0;
 		switch (key) {
 			default: vkey = 0;
@@ -221,7 +222,7 @@ namespace xe { namespace internal {
 	}
 
 	///mouse
-	bool PlatformInput::isMouseButtonPressed(Mouse::Button button) {
+	bool Mouse::isButtonPressed(Mouse::Button button) {
 		int vkey = 0;
 		switch (button) {
 			case Mouse::Left: vkey = GetSystemMetrics(SM_SWAPBUTTON) ? VK_RBUTTON : VK_LBUTTON;
@@ -241,13 +242,13 @@ namespace xe { namespace internal {
 		return (GetAsyncKeyState(vkey) & 0x8000) != 0;
 	}
 
-	vec2i PlatformInput::getMousePosition() {
+	vec2i Mouse::getPosition() {
 		POINT point;
 		GetCursorPos(&point);
 		return vec2i(point.x, point.y);
 	}
 
-	vec2i PlatformInput::getMousePosition(const Window &relativeTo) {
+	vec2i Mouse::getPosition(const Window &relativeTo) {
 		void *handle = relativeTo.getHandle();
 		if (handle) {
 			POINT point;
@@ -259,11 +260,11 @@ namespace xe { namespace internal {
 		}
 	}
 
-	void PlatformInput::setMousePosition(const vec2i &position) {
+	void Mouse::setPosition(const vec2i &position) {
 		SetCursorPos(position.x, position.y);
 	}
 
-	void PlatformInput::setMousePosition(const vec2i &position, const Window &relativeTo) {
+	void Mouse::setPosition(const vec2i &position, const Window &relativeTo) {
 		void *handle = relativeTo.getHandle();
 		if (handle) {
 			POINT point = {position.x, position.y};
@@ -272,4 +273,4 @@ namespace xe { namespace internal {
 		}
 	}
 
-}}
+}

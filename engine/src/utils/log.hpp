@@ -100,6 +100,18 @@ namespace xe { namespace internal {
 	}
 
 	template<>
+	inline const char *to_string<vec2i>(const vec2i &t) {
+		sprintf(buffer, "vec2u(%d, %d)", t.x, t.y);
+		return buffer;
+	}
+
+	template<>
+	inline const char *to_string<vec2f>(const vec2f &t) {
+		sprintf(buffer, "vec2f(%f, %f)", t.x, t.y);
+		return buffer;
+	}
+
+	template<>
 	inline const char *to_string<quat>(const quat &t) {
 		sprintf(buffer, "quat(%.3f, %.3f, %.3f, %.3f)", t.x, t.y, t.z, t.w);
 		return buffer;

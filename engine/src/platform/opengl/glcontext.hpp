@@ -12,9 +12,11 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API GLContext : public Context {
 	public:
-		explicit GLContext(const WindowProperties &props, void *deviceContext);
+		explicit GLContext(void *deviceContext);
 
 		void swapBuffers();
+
+		void enableVsync(bool enabled);
 
 		inline static GLContext *get() { return (GLContext *) context; }
 	};

@@ -94,8 +94,8 @@ TestECS::TestECS() :
 	OrthoCameraComponent camera(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
 	cameraEntity = ecs.makeEntity(camera);
 
-	OrthoCameraComponent *cam = ecs.getComponent<OrthoCameraComponent>(cameraEntity);
-	Input::setCamera(&cam->camera);
+//	OrthoCameraComponent *cam = ecs.getComponent<OrthoCameraComponent>(cameraEntity);
+//	Input::setCamera(&cam->camera);
 
 	//sprite components
 	SpriteComponent sprite;
@@ -218,6 +218,10 @@ void TestECS::update(float delta) {
 	ecs.updateSystems(mainSystems, delta);
 }
 
+void TestECS::fixedUpdate(float delta) {
+
+}
+
 void TestECS::tick() {
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
@@ -226,41 +230,40 @@ void TestECS::tick() {
 	app.getWindow().setTitle(buff);
 }
 
-void TestECS::onEvent(xe::Event &event) {
-	xe::EventDispatcher dispatcher(event);
-	dispatcher.dispatch<xe::KeyPressEvent>(METHOD(&TestECS::onKeyPressedEvent));
-	dispatcher.dispatch<xe::MousePressEvent>(METHOD(&TestECS::onMousePressedEvent));
-	dispatcher.dispatch<xe::MouseMoveEvent>(METHOD(&TestECS::onMouseMovedEvent));
-}
+void TestECS::input(xe::Event &event) {
+	switch (event.type) {
+		default: break;
 
-bool TestECS::onKeyPressedEvent(xe::KeyPressEvent &event) {
-	if (event.getRepeat()) return false;
-
-	if (event.getKey() == XE_KEY_1) {
-		GETSOUND("orunec")->play();
-		GETSOUND("orunec")->setGain(0.2f);
-	}
-	if (event.getKey() == XE_KEY_2) {
-		GETSOUND("test")->play();
-		GETSOUND("test")->setGain(0.2f);
-	}
-	if (event.getKey() == XE_KEY_3) {
-		if (!GETSOUND("orunec")->isPlaying()) {
-			GETSOUND("orunec")->loop();
-			GETSOUND("orunec")->setGain(0.2f);
-		} else {
-			GETSOUND("orunec")->stop();
+		case Event::KeyPressed: {
+			if (event.key.code == Keyboard::Num1) {
+				GETSOUND("orunec")->play();
+				GETSOUND("orunec")->setGain(0.2f);
+				event.handled = true;
+			}
+			if (event.key.code == Keyboard::Num2) {
+				GETSOUND("test")->play();
+				GETSOUND("test")->setGain(0.2f);
+				event.handled = true;
+			}
+			if (event.key.code == Keyboard::Num3) {
+				if (!GETSOUND("orunec")->isPlaying()) {
+					GETSOUND("orunec")->loop();
+					GETSOUND("orunec")->setGain(0.2f);
+				} else {
+					GETSOUND("orunec")->stop();
+				}
+				event.handled = true;
+			}
 		}
+
+		case Event::MouseButtonPressed: {
+
+		}
+
+		case Event::MouseMoved: {
+//			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
+		}
+
 	}
 
-	return false;
-}
-
-bool TestECS::onMousePressedEvent(xe::MousePressEvent &event) {
-	return false;
-}
-
-bool TestECS::onMouseMovedEvent(xe::MouseMoveEvent &event) {
-//	XE_INFO("Mouse pos: ", Input::getMousePosition());
-	return false;
 }

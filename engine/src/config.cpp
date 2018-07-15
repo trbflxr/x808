@@ -20,6 +20,8 @@ void writeKeyValue(xe::Config &config, const char *key, const char *value) {
 		config.vSync = (bool) atoi(value);
 	} else if (strcmp(key, "ups") == 0) {
 		config.ups = (uint) atoi(value);
+	} else if (strcmp(key, "fps") == 0) {
+		config.fps = (uint) atoi(value);
 	}
 }
 

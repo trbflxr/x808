@@ -28,26 +28,37 @@ Test3D::Test3D() :
 
 	player = new DummyPlayer(new FPSCamera(math::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
-//	rockMesh = new Mesh("assets/models/rock.obj");
-	rockMesh = new Mesh("assets/models/monkey3.obj");
 	material = new Material(&GETTEXTURE("2"), color::WHITE);
 
-	model = new Model(rockMesh, material);
-	model->transform.setTranslation({0, 0, -5});
-	model->transform.setRotation(math::rotationZ(to_rad(5)));
+	rockMesh = new Mesh("assets/models/rock.obj");
+	monkeyMesh = new Mesh("assets/models/monkey3.obj");
+
+	monkeyModel = new Model(monkeyMesh, material);
+	monkeyModel->transform.setTranslation({5, 0, -5});
+	monkeyModel->transform.setRotation(math::rotationZ(to_rad(30)));
+
+	rockModel = new Model(rockMesh, material);
+	rockModel->transform.setTranslation({0, 0, -5});
+	rockModel->transform.setRotation(math::rotationZ(to_rad(5)));
 
 }
 
 Test3D::~Test3D() {
-	delete rockMesh;
 	delete renderer;
-	delete model;
 	delete ambientLight;
+
+	delete rockMesh;
+	delete monkeyMesh;
+
+	delete monkeyModel;
+	delete rockModel;
+
 	delete player;
 }
 
 void Test3D::render() {
-	renderer->render(model, player->getCamera());
+	renderer->render(monkeyModel, player->getCamera());
+	renderer->render(rockModel, player->getCamera());
 }
 
 void Test3D::tick() {
@@ -62,19 +73,19 @@ void Test3D::update(float delta) {
 	player->update(delta);
 }
 
-void Test3D::fixedUpdate(float delta){
-	if (Input::isKeyPressed(XE_KEY_Q)) {
+void Test3D::fixedUpdate(float delta) {
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::Q)) {
 		float a = ambientLight->getIntensity();
 		a += 0.03f;
 		ambientLight->setIntensity(a);
 	}
-	if (Input::isKeyPressed(XE_KEY_E)) {
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::E)) {
 		float a = ambientLight->getIntensity();
 		a -= 0.03f;
 		ambientLight->setIntensity(a);
 	}
 }
 
-void Test3D::onEvent(xe::Event &event) {
-
+void Test3D::input(xe::Event &event) {
+	player->input(event);
 }

@@ -76,6 +76,8 @@ namespace xe {
 			MouseButtonEvent mouseButton;
 			MouseWheelEvent mouseWheel;
 		};
+
+		bool handled = false;
 	};
 
 }
