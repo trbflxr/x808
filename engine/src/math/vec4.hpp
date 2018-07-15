@@ -9,58 +9,151 @@
 #include "common.hpp"
 
 namespace xe {
-	namespace math {
 
-		struct vec3;
-		struct mat4;
+	struct vec3;
+	struct mat4;
 
-		struct XE_API vec4 {
-			float x;
-			float y;
-			float z;
-			float w;
+	struct XE_API vec4 {
+		float x;
+		float y;
+		float z;
+		float w;
 
-			vec4();
-			explicit vec4(float scalar);
-			vec4(float x, float y, float z, float w);
-			explicit vec4(const vec3 &xyz, float w);
-			vec4(const vec4 &vec);
-		};
+		vec4();
+		explicit vec4(float scalar);
+		vec4(float x, float y, float z, float w);
+		explicit vec4(const vec3 &xyz, float w);
+		vec4(const vec4 &vec);
 
-		XE_API float dot(const vec4 &v1, const vec4 &v2);
+		static float dot(const vec4 &v1, const vec4 &v2);
+	};
 
-		XE_API vec4 operator+(const vec4 &left, const vec4 &right);
-		XE_API vec4 operator-(const vec4 &left, const vec4 &right);
-		XE_API vec4 operator*(const vec4 &left, const vec4 &right);
-		XE_API vec4 operator/(const vec4 &left, const vec4 &right);
+	typedef vec4 vec4;
 
-		XE_API vec4 operator+(const vec4 &left, float right);
-		XE_API vec4 operator-(const vec4 &left, float right);
-		XE_API vec4 operator*(const vec4 &left, float right);
-		XE_API vec4 operator/(const vec4 &left, float right);
 
-		XE_API bool operator==(const vec4 &left, const vec4 &right);
-		XE_API bool operator!=(const vec4 &left, const vec4 &right);
+	///----- operators -----///
+	vec4 XE_API operator*(const vec4 &left, const mat4 &right);
 
-		XE_API vec4 &operator+=(vec4 &left, const vec4 &right);
-		XE_API vec4 &operator-=(vec4 &left, const vec4 &right);
-		XE_API vec4 &operator*=(vec4 &left, const vec4 &right);
-		XE_API vec4 &operator/=(vec4 &left, const vec4 &right);
-
-		XE_API vec4 &operator+=(vec4 &left, float right);
-		XE_API vec4 &operator-=(vec4 &left, float right);
-		XE_API vec4 &operator*=(vec4 &left, float right);
-		XE_API vec4 &operator/=(vec4 &left, float right);
-
-		XE_API bool operator<(const vec4 &left, const vec4 &right);
-		XE_API bool operator<=(const vec4 &left, const vec4 &right);
-		XE_API bool operator>(const vec4 &left, const vec4 &right);
-		XE_API bool operator>=(const vec4 &left, const vec4 &right);
-
-		XE_API vec4 operator*(const vec4 &left, const mat4 &right);
-
+	inline vec4 operator+(const vec4 &left, const vec4 &right) {
+		return vec4(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 	}
-	typedef math::vec4 vec4;
+
+	inline vec4 operator-(const vec4 &left, const vec4 &right) {
+		return vec4(left.x - right.x, left.y - right.y, left.z - right.z, left.w - right.w);
+	}
+
+	inline vec4 operator*(const vec4 &left, const vec4 &right) {
+		return vec4(left.x * right.x, left.y * right.x, left.z * right.z, left.w * right.w);
+	}
+
+	inline vec4 operator/(const vec4 &left, const vec4 &right) {
+		return vec4(left.x / right.x, left.y / right.x, left.z / right.z, left.w / right.w);
+	}
+
+	inline vec4 operator+(const vec4 &left, float right) {
+		return vec4(left.x + right, left.y + right, left.z + right, left.w + right);
+	}
+
+	inline vec4 operator-(const vec4 &left, float right) {
+		return vec4(left.x - right, left.y - right, left.z - right, left.w - right);
+	}
+
+	inline vec4 operator*(const vec4 &left, float right) {
+		return vec4(left.x * right, left.y * right, left.z * right, left.w * right);
+	}
+
+	inline vec4 operator/(const vec4 &left, float right) {
+		return vec4(left.x / right, left.y / right, left.z / right, left.w / right);
+	}
+
+	inline bool operator==(const vec4 &left, const vec4 &right) {
+		return (left.x == right.x) && (left.y == right.y) && (left.z == right.z) && (left.w == right.w);
+	}
+
+	inline bool operator!=(const vec4 &left, const vec4 &right) {
+		return (left.x != right.x) || (left.y != right.y) || (left.z != right.z) || (left.w != right.w);
+	}
+
+	inline vec4 &operator+=(vec4 &left, const vec4 &right) {
+		left.x += right.x;
+		left.y += right.y;
+		left.z += right.z;
+		left.w += right.w;
+		return left;
+	}
+
+	inline vec4 &operator-=(vec4 &left, const vec4 &right) {
+		left.x -= right.x;
+		left.y -= right.y;
+		left.z -= right.z;
+		left.w -= right.w;
+		return left;
+	}
+
+	inline vec4 &operator*=(vec4 &left, const vec4 &right) {
+		left.x *= right.x;
+		left.y *= right.y;
+		left.z *= right.z;
+		left.w *= right.w;
+		return left;
+	}
+
+	inline vec4 &operator/=(vec4 &left, const vec4 &right) {
+		left.x /= right.x;
+		left.y /= right.y;
+		left.z /= right.z;
+		left.w /= right.w;
+		return left;
+	}
+
+	inline vec4 &operator+=(vec4 &left, float right) {
+		left.x += right;
+		left.y += right;
+		left.z += right;
+		left.w += right;
+		return left;
+	}
+
+	inline vec4 &operator-=(vec4 &left, float right) {
+		left.x -= right;
+		left.y -= right;
+		left.z -= right;
+		left.w -= right;
+		return left;
+	}
+
+	inline vec4 &operator*=(vec4 &left, float right) {
+		left.x *= right;
+		left.y *= right;
+		left.z *= right;
+		left.w *= right;
+		return left;
+	}
+
+	inline vec4 &operator/=(vec4 &left, float right) {
+		left.x /= right;
+		left.y /= right;
+		left.z /= right;
+		left.w /= right;
+		return left;
+	}
+
+	inline bool operator<(const vec4 &left, const vec4 &right) {
+		return (left.x < right.x) && (left.y < right.y) && (left.z < right.z) && (left.w < right.w);
+	}
+
+	inline bool operator<=(const vec4 &left, const vec4 &right) {
+		return (left.x <= right.x) && (left.y <= right.y) && (left.z <= right.z) && (left.w <= right.w);
+	}
+
+	inline bool operator>(const vec4 &left, const vec4 &right) {
+		return (left.x > right.x) && (left.y > right.y) && (left.z > right.z) && (left.w > right.w);
+	}
+
+	inline bool operator>=(const vec4 &left, const vec4 &right) {
+		return (left.x >= right.x) && (left.y >= right.y) && (left.z >= right.z) && (left.w >= right.w);
+	}
+
 }
 
 

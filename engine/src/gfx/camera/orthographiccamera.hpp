@@ -15,7 +15,7 @@ namespace xe { namespace gfx {
 		explicit OrthographicCamera(const mat4 &projection) : Camera(projection) { }
 
 		void update() override {
-			viewMatrix = math::translate(-position);
+			viewMatrix = mat4::translate(-position);
 		}
 	};
 

@@ -10,37 +10,47 @@
 #include "vec3.hpp"
 
 namespace xe {
-	namespace math {
 
-		struct rect;
+	struct rect;
 
-		struct XE_API aabb {
-			vec3 min;
-			vec3 max;
+	struct XE_API aabb {
+		vec3 min;
+		vec3 max;
 
-			aabb();
-			explicit aabb(const rect &rect);
-			explicit aabb(const vec2 &min, const vec2 &max);
-			explicit aabb(const vec3 &min, const vec3 &max);
-			explicit aabb(float x, float y, float width, float height);
-			explicit aabb(float x, float y, float z, float width, float height, float depth);
+		aabb();
+		explicit aabb(const rect &rect);
+		explicit aabb(const vec2 &min, const vec2 &max);
+		explicit aabb(const vec3 &min, const vec3 &max);
+		explicit aabb(float x, float y, float width, float height);
+		explicit aabb(float x, float y, float z, float width, float height, float depth);
 
-			bool intersects(const aabb &other) const;
-			bool contains(const vec2 &point) const;
-			bool contains(const vec3 &point) const;
+		bool intersects(const aabb &other) const;
+		bool contains(const vec2 &point) const;
+		bool contains(const vec3 &point) const;
 
-			vec3 center() const;
-			vec3 getSize() const;
-		};
+		vec3 center() const;
+		vec3 getSize() const;
+	};
 
-		XE_API bool operator==(const aabb &left, const aabb &right);
-		XE_API bool operator!=(const aabb &left, const aabb &right);
+	typedef aabb aabb;
 
-		XE_API bool operator<(const aabb &left, const aabb &right);
-		XE_API bool operator>(const aabb &left, const aabb &right);
-
+	///----- operators -----///
+	inline bool operator==(const aabb &left, const aabb &right) {
+		return left.max == right.min && left.max == right.max;
 	}
-	typedef math::aabb aabb;
+
+	inline bool operator!=(const aabb &left, const aabb &right) {
+		return left.max != right.min && left.max != right.max;
+	}
+
+	inline bool operator<(const aabb &left, const aabb &right) {
+		return left.max < right.max;
+	}
+
+	inline bool operator>(const aabb &left, const aabb &right) {
+		return left.min > right.min;
+	}
+
 }
 
 

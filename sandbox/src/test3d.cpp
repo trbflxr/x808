@@ -26,20 +26,21 @@ Test3D::Test3D() :
 	renderer = new ForwardRenderer();
 	renderer->setAmbientLight(ambientLight);
 
-	player = new DummyPlayer(new FPSCamera(math::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
+	player = new DummyPlayer(new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
-	material = new Material(&GETTEXTURE("2"), color::WHITE);
+	monkeyMaterial = new Material(&GETTEXTURE("2"), color::WHITE);
+	rockMaterial = new Material(&GETTEXTURE("rock"), color::WHITE);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
 
-	monkeyModel = new Model(monkeyMesh, material);
+	monkeyModel = new Model(monkeyMesh, monkeyMaterial);
 	monkeyModel->transform.setTranslation({5, 0, -5});
-	monkeyModel->transform.setRotation(math::rotationZ(to_rad(30)));
+	monkeyModel->transform.setRotation(quat::rotationZ(to_rad(30)));
 
-	rockModel = new Model(rockMesh, material);
+	rockModel = new Model(rockMesh, rockMaterial);
 	rockModel->transform.setTranslation({0, 0, -5});
-	rockModel->transform.setRotation(math::rotationZ(to_rad(5)));
+	rockModel->transform.setRotation(quat::rotationZ(to_rad(5)));
 
 }
 
@@ -52,6 +53,9 @@ Test3D::~Test3D() {
 
 	delete monkeyModel;
 	delete rockModel;
+
+	delete rockMaterial;
+	delete monkeyMaterial;
 
 	delete player;
 }

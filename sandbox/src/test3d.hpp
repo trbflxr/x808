@@ -34,7 +34,8 @@ public:
 private:
 	ECS &ecs;
 
-	Material *material;
+	Material *rockMaterial;
+	Material *monkeyMaterial;
 
 	Mesh *rockMesh;
 	Mesh *monkeyMesh;

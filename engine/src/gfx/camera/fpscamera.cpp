@@ -13,25 +13,25 @@ namespace xe { namespace gfx {
 
 
 	void FPSCamera::update() {
-		mat4 rotation = math::rotate(math::conjugate(getOrientation()));
-		mat4 translation = math::translate(-position);
+		mat4 rotation = mat4::rotate(quat::conjugate(getOrientation()));
+		mat4 translation = mat4::translate(-position);
 		viewMatrix = rotation * translation;
 	}
 
 	quat FPSCamera::getOrientation() const {
-		return math::rotationY(-yaw) * math::rotationX(-pitch);
+		return quat::rotationY(-yaw) * quat::rotationX(-pitch);
 	}
 
 	vec3 FPSCamera::getForwardDirection(const quat &orientation) const {
-		return math::rotate(orientation, -vec3::ZAXIS);
+		return quat::rotate(orientation, -vec3::ZAXIS);
 	}
 
 	vec3 FPSCamera::getUpDirection(const quat &orientation) const {
-		return math::rotate(orientation, vec3::YAXIS);
+		return quat::rotate(orientation, vec3::YAXIS);
 	}
 
 	vec3 FPSCamera::getRightDirection(const quat &orientation) const {
-		return math::rotate(orientation, vec3::XAXIS);
+		return quat::rotate(orientation, vec3::XAXIS);
 	}
 
 }}

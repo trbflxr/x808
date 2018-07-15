@@ -77,7 +77,7 @@ namespace xe { namespace gfx {
 		}
 
 		//default camera
-		setCamera(new Camera(math::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1, 1000)));
+		setCamera(new Camera(mat4::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1, 1000)));
 
 		shader->bind();
 
@@ -159,25 +159,25 @@ namespace xe { namespace gfx {
 			textureSlot = submitTexture(target.sprite->texture);
 		}
 
-		buffer->vertex = math::translateVec(*transformationBack, vertices[0], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[0], target.transform->zIndex);
 		buffer->uv = uv[0];
 		buffer->tid = textureSlot;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = math::translateVec(*transformationBack, vertices[3], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[3], target.transform->zIndex);
 		buffer->uv = uv[1];
 		buffer->tid = textureSlot;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = math::translateVec(*transformationBack, vertices[2], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[2], target.transform->zIndex);
 		buffer->uv = uv[2];
 		buffer->tid = textureSlot;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = math::translateVec(*transformationBack, vertices[1], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[1], target.transform->zIndex);
 		buffer->uv = uv[3];
 		buffer->tid = textureSlot;
 		buffer->color = color;
@@ -228,25 +228,25 @@ namespace xe { namespace gfx {
 					float s1 = glyph->s1;
 					float t1 = glyph->t1;
 
-					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y0));
+					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y0));
 					buffer->uv = xe::vec2(s0, t0);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y1));
+					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y1));
 					buffer->uv = xe::vec2(s0, t1);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y1));
+					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y1));
 					buffer->uv = xe::vec2(s1, t1);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y0));
+					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y0));
 					buffer->uv = xe::vec2(s1, t0);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
@@ -281,25 +281,25 @@ namespace xe { namespace gfx {
 				float t1 = glyph->t1;
 
 
-				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y0));
+				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y0));
 				buffer->uv = xe::vec2(s0, t0);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x0, -y1));
+				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y1));
 				buffer->uv = xe::vec2(s0, t1);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y1));
+				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y1));
 				buffer->uv = xe::vec2(s1, t1);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = math::translateVec(*transformationBack, xe::vec2(x1, -y0));
+				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y0));
 				buffer->uv = xe::vec2(s1, t0);
 				buffer->tid = tid;
 				buffer->color = color;
@@ -385,27 +385,27 @@ namespace xe { namespace gfx {
 		const std::vector<vec2> &uv = SpriteComponent::getDefaultUVs();
 		const float ts = 0.0f;
 
-		const vec2 normal = math::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
+		const vec2 normal = vec2::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
 
-		buffer->vertex = math::translateVec(*transformationBack, vec3(x0 + normal.x, y0 + normal.y, z));
+		buffer->vertex = mat4::translateVec(*transformationBack, vec3(x0 + normal.x, y0 + normal.y, z));
 		buffer->uv = uv[0];
 		buffer->tid = ts;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = math::translateVec(*transformationBack, vec3(x1 + normal.x, y1 + normal.y, z));
+		buffer->vertex = mat4::translateVec(*transformationBack, vec3(x1 + normal.x, y1 + normal.y, z));
 		buffer->uv = uv[1];
 		buffer->tid = ts;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = math::translateVec(*transformationBack, vec3(x1 - normal.x, y1 - normal.y, z));
+		buffer->vertex = mat4::translateVec(*transformationBack, vec3(x1 - normal.x, y1 - normal.y, z));
 		buffer->uv = uv[2];
 		buffer->tid = ts;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = math::translateVec(*transformationBack, vec3(x0 - normal.x, y0 - normal.y, z));
+		buffer->vertex = mat4::translateVec(*transformationBack, vec3(x0 - normal.x, y0 - normal.y, z));
 		buffer->uv = uv[3];
 		buffer->tid = ts;
 		buffer->color = color;

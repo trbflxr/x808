@@ -12,45 +12,41 @@
 
 namespace xe {
 
-	namespace math {
+	class XE_API aobb {
+	public:
+		aobb();
+		explicit aobb(const vec2 &position, const vec2 &size, float rotation = 0.0f);
+		explicit aobb(float x, float y, float width, float height, float rotation = 0.0f);
+		aobb(const aobb &other);
 
-		class XE_API aobb {
-		public:
-			aobb();
-			explicit aobb(const vec2 &position, const vec2 &size, float rotation = 0.0f);
-			explicit aobb(float x, float y, float width, float height, float rotation = 0.0f);
-			aobb(const aobb &other);
+		bool contains(const vec2 &point) const;
+		bool intersects(const aobb &other) const { }
 
-			bool contains(const vec2 &point) const;
-			bool intersects(const aobb &other) const { }
+		void move(const vec2 &direction);
+		void rotate(float deg);
 
-			void move(const vec2 &direction);
-			void rotate(float deg);
+		inline const vec2 &getPosition() const { return position; }
+		inline const vec2 &getSize() const { return size; }
+		inline const float getRotation() const { return rotation; }
+		const std::array<vec2, 4> &getVertices() const;
 
-			inline const vec2 &getPosition() const { return position; }
-			inline const vec2 &getSize() const { return size; }
-			inline const float getRotation() const { return rotation; }
-			const std::array<vec2, 4> &getVertices() const;
+		void setPosition(const vec2 &position);
+		void setPosition(float x, float y);
+		void setSize(const vec2 &size);
+		void setSize(float width, float height);
+		void setRotation(float deg);
 
-			void setPosition(const vec2 &position);
-			void setPosition(float x, float y);
-			void setSize(const vec2 &size);
-			void setSize(float width, float height);
-			void setRotation(float deg);
+	private:
+		mutable bool transformed;
 
-		private:
-			mutable bool transformed;
+		vec2 position;
+		vec2 size;
+		float rotation;
 
-			vec2 position;
-			vec2 size;
-			float rotation;
+		mutable std::array<vec2, 4> vertices;
+	};
 
-			mutable std::array<vec2, 4> vertices;
-		};
-
-	}
-
-	typedef math::aobb aobb;
+	typedef aobb aobb;
 }
 
 

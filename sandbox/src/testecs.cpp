@@ -91,7 +91,7 @@ TestECS::TestECS() :
 
 
 	//create camera
-	OrthoCameraComponent camera(math::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
+	OrthoCameraComponent camera(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
 	cameraEntity = ecs.makeEntity(camera);
 
 //	OrthoCameraComponent *cam = ecs.getComponent<OrthoCameraComponent>(cameraEntity);
