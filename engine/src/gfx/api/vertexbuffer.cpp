@@ -5,10 +5,14 @@
 #include "vertexbuffer.hpp"
 #include "platform/opengl/glvertexbuffer.hpp"
 
-xe::gfx::api::VertexBuffer *xe::gfx::api::VertexBuffer::create(xe::gfx::api::BufferType type) {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL : return new GLVertexBuffer(type);
+namespace xe { namespace gfx { namespace api {
 
-		default: return nullptr;
+	VertexBuffer *VertexBuffer::create(BufferType type) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL : return new GLVertexBuffer(type);
+
+			default: return nullptr;
+		}
 	}
-}
+
+}}}

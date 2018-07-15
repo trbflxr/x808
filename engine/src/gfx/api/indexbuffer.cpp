@@ -6,18 +6,22 @@
 #include "platform/opengl/glindexbuffer.hpp"
 #include "context.hpp"
 
-xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(const uint16 *data, uint count) {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL: return new GLIndexBuffer(data, count);
+namespace xe { namespace gfx { namespace api {
 
-		default: return nullptr;
+	IndexBuffer *IndexBuffer::create(const uint16 *data, uint count) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: return new GLIndexBuffer(data, count);
+
+			default: return nullptr;
+		}
 	}
-}
 
-xe::gfx::api::IndexBuffer *xe::gfx::api::IndexBuffer::create(const uint *data, uint count) {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL: return new GLIndexBuffer(data, count);
+	IndexBuffer *IndexBuffer::create(const uint *data, uint count) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: return new GLIndexBuffer(data, count);
 
-		default: return nullptr;
+			default: return nullptr;
+		}
 	}
-}
+
+}}}

@@ -4,43 +4,47 @@
 
 #include "fontmanager.hpp"
 #include "utils/log.hpp"
-#include "../../embedded/embedded.hpp"
+#include "embedded/embedded.hpp"
 
-xe::FontManager::FontManager() {
-	fonts.emplace("default", new Font("default", internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE, 100));
-}
+namespace xe {
 
-xe::FontManager::~FontManager() {
-	clean();
-}
-
-xe::FontManager &xe::FontManager::instance() {
-	static FontManager fm;
-	return fm;
-}
-
-void xe::FontManager::add(xe::Font *font) {
-	auto &&it = instance().fonts.find(font->getName());
-
-	if (it != instance().fonts.end()) {
-		XE_ERROR(font->getName(), " already exist!");
-		return;
+	FontManager::FontManager() {
+		fonts.emplace("default", new Font("default", internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE, 100));
 	}
 
-	instance().fonts.emplace(font->getName(), font);
-}
-
-const xe::Font &xe::FontManager::get(const std::string_view &name) {
-	auto &&it = instance().fonts.find(name.data());
-	if (it == instance().fonts.end()) {
-		XE_ERROR("Font '", name, "' not found! Default font loaded instead.");
-
-		return get("default");
+	FontManager::~FontManager() {
+		clean();
 	}
 
-	return *it->second;
-}
+	FontManager &FontManager::instance() {
+		static FontManager fm;
+		return fm;
+	}
 
-void xe::FontManager::clean() {
-	instance().fonts.clear();
+	void FontManager::add(Font *font) {
+		auto &&it = instance().fonts.find(font->getName());
+
+		if (it != instance().fonts.end()) {
+			XE_ERROR(font->getName(), " already exist!");
+			return;
+		}
+
+		instance().fonts.emplace(font->getName(), font);
+	}
+
+	const Font &FontManager::get(const std::string_view &name) {
+		auto &&it = instance().fonts.find(name.data());
+		if (it == instance().fonts.end()) {
+			XE_ERROR("Font '", name, "' not found! Default font loaded instead.");
+
+			return get("default");
+		}
+
+		return *it->second;
+	}
+
+	void FontManager::clean() {
+		instance().fonts.clear();
+	}
+
 }

@@ -14,30 +14,31 @@ namespace xe {
 		double frequency;
 	};
 
-}
 
-xe::Timer::Timer() :
-		members(new(reserved) TimerMembers()) {
+	Timer::Timer() :
+			members(new(reserved) TimerMembers()) {
 
-	LARGE_INTEGER frequency;
-	QueryPerformanceFrequency(&frequency);
-	members->frequency = 1.0f / frequency.QuadPart;
+		LARGE_INTEGER frequency;
+		QueryPerformanceFrequency(&frequency);
+		members->frequency = 1.0f / frequency.QuadPart;
 
-	reset();
-}
+		reset();
+	}
 
-void xe::Timer::reset() {
-	QueryPerformanceCounter(&members->start);
-}
+	void Timer::reset() {
+		QueryPerformanceCounter(&members->start);
+	}
 
-float xe::Timer::elapsed() {
-	LARGE_INTEGER current;
-	QueryPerformanceCounter(&current);
+	float Timer::elapsed() {
+		LARGE_INTEGER current;
+		QueryPerformanceCounter(&current);
 
-	LONGLONG cycles = current.QuadPart - members->start.QuadPart;
-	return static_cast<float>(cycles * members->frequency);
-}
+		LONGLONG cycles = current.QuadPart - members->start.QuadPart;
+		return static_cast<float>(cycles * members->frequency);
+	}
 
-float xe::Timer::elapsedMillis() {
-	return elapsed() * 1000.0f;
+	float Timer::elapsedMillis() {
+		return elapsed() * 1000.0f;
+	}
+
 }

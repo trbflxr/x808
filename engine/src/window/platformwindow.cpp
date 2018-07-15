@@ -7,7 +7,7 @@
 #include "common.hpp"
 
 #ifdef XE_PLATFORM_WINDOWS
-#include "platform/win32/window/win32window.hpp"
+#include "platform/win32/win32window.hpp"
 typedef xe::internal::PlatformWindowWin32 PlatformWindowType;
 #endif
 

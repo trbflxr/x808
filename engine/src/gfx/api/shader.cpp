@@ -7,42 +7,43 @@
 #include "utils/log.hpp"
 #include "platform/opengl/glshader.hpp"
 
-xe::gfx::api::Shader *xe::gfx::api::Shader::createFromFile(const std::string_view &name,
-                                                           const std::string_view &path,
-                                                           void *address) {
-	//todo: implement
-	XE_ASSERT(false, "not implemented");
+namespace xe { namespace gfx { namespace api {
 
-	switch (Context::getRenderAPI()) {
+	Shader *Shader::createFromFile(const std::string_view &name, const std::string_view &path, void *address) {
+		//todo: implement
+		XE_ASSERT(false, "not implemented");
+
+		switch (Context::getRenderAPI()) {
 //		case RenderAPI::OPENGL: {
 //			GLShader *result = address ? new(address) GLShader(name, source) : new GLShader(name, source);
 //			result->file = path;
 //			return result;
 //		}
-		default: return nullptr;
+			default: return nullptr;
+		}
+
 	}
 
-}
+	Shader *Shader::createFromSource(const std::string_view &name, const std::string &source, void *address) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL:
+				return address ? new(address) GLShader(name, source) : new GLShader(name, source);
 
-xe::gfx::api::Shader *xe::gfx::api::Shader::createFromSource(const std::string_view &name,
-                                                             const std::string &source,
-                                                             void *address) {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL: return address ? new(address) GLShader(name, source) : new GLShader(name, source);
-
-		default: return nullptr;
+			default: return nullptr;
+		}
 	}
-}
 
-bool xe::gfx::api::Shader::tryCompile(const std::string &source, std::string &error) {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL: return GLShader::tryCompile(source, error);
+	bool Shader::tryCompile(const std::string &source, std::string &error) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: return GLShader::tryCompile(source, error);
 
-		default: return false;
+			default: return false;
+		}
 	}
-}
 
-bool xe::gfx::api::Shader::tryCompileFromFile(const std::string &file, std::string &error) {
-	//todo: implement
-	XE_ASSERT(false, "not implemented");
-}
+	bool Shader::tryCompileFromFile(const std::string &file, std::string &error) {
+		//todo: implement
+		XE_ASSERT(false, "not implemented");
+	}
+
+}}}

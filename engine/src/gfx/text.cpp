@@ -6,18 +6,22 @@
 #include "text.hpp"
 #include "color.hpp"
 
-xe::gfx::Text::Text(const std::string_view &string, float size, const vec2 &position, const xe::Font &font) :
-		font(&font),
-		string(string.data()),
-		textColor(color::BLACK),
-		outlineColor(color::TRANSPARENT),
-		size(size),
-		position(position) { }
+namespace xe { namespace gfx {
 
-void xe::gfx::Text::setOutlineThickness(float thickness) {
-	font->getFTFont()->outline_thickness = thickness;
-}
+	Text::Text(const std::string_view &string, float size, const vec2 &position, const Font &font) :
+			font(&font),
+			string(string.data()),
+			textColor(color::BLACK),
+			outlineColor(color::TRANSPARENT),
+			size(size),
+			position(position) { }
 
-float xe::gfx::Text::getOutlineThickness() const {
-	return font->getFTFont()->outline_thickness;
-}
+	void Text::setOutlineThickness(float thickness) {
+		font->getFTFont()->outline_thickness = thickness;
+	}
+
+	float Text::getOutlineThickness() const {
+		return font->getFTFont()->outline_thickness;
+	}
+
+}}

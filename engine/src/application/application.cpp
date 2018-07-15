@@ -9,7 +9,7 @@
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
 
-#include "../../embedded/embedded.hpp"
+#include "embedded/embedded.hpp"
 
 namespace xe {
 

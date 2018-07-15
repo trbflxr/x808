@@ -6,28 +6,25 @@
 #include "context.hpp"
 #include "platform/opengl/gltexture2d.hpp"
 
+namespace xe { namespace gfx { namespace api {
 
-xe::gfx::api::Texture2D *xe::gfx::api::Texture2D::create(uint width, uint height,
-                                                         TextureParameters params,
-                                                         TextureLoadOptions options) {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL : return new GLTexture2D(width, height, params, options);
+	Texture2D *Texture2D::create(uint width, uint height, TextureParameters params, TextureLoadOptions options) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL : return new GLTexture2D(width, height, params, options);
 
-		default: return nullptr;
+			default: return nullptr;
+		}
 	}
-}
 
-xe::gfx::api::Texture2D *xe::gfx::api::Texture2D::create(const std::string_view &name, const std::string_view &p,
-                                                         TextureParameters params,
-                                                         TextureLoadOptions options) {
+	Texture2D *Texture2D::create(const std::string_view &name, const std::string_view &path,
+	                             TextureParameters params,
+	                             TextureLoadOptions options) {
 
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL : return new GLTexture2D(name, p, params, options);
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL : return new GLTexture2D(name, path, params, options);
 
-		default: return nullptr;
+			default: return nullptr;
+		}
 	}
-}
 
-
-
-
+}}}

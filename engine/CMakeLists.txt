@@ -51,13 +51,11 @@ link_libraries(gorilla openal32)
 file(GLOB ENGINE_SRC
         external/glew/src/glew.c
 
-        embedded/embedded.cpp
-
         src/application/*.cpp
         src/ecs/*.cpp
         src/ecs/components/*.cpp
         src/ecs/systems/*.cpp
-        src/events/*.cpp
+        src/embedded/*.cpp
         src/gfx/api/*.cpp
         src/gfx/camera/*.cpp
         src/gfx/layers/*.cpp
@@ -72,9 +70,7 @@ file(GLOB ENGINE_SRC
 
 
 #win32
-file(GLOB ENGINE_WIN32_SRC
-        src/platform/win32/*.cpp
-        src/platform/win32/window/*.cpp)
+file(GLOB ENGINE_WIN32_SRC src/platform/win32/*.cpp)
 
 #opengl
 file(GLOB ENGINE_GL_SRC src/platform/opengl/*.cpp)

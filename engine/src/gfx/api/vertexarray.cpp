@@ -5,10 +5,14 @@
 #include "vertexarray.hpp"
 #include "platform/opengl/glvertexarray.hpp"
 
-xe::gfx::api::VertexArray *xe::gfx::api::VertexArray::create() {
-	switch (Context::getRenderAPI()) {
-		case RenderAPI::OPENGL: return new GLVertexArray();
+namespace xe { namespace gfx { namespace api {
 
-		default: return nullptr;
+	VertexArray *VertexArray::create() {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: return new GLVertexArray();
+
+			default: return nullptr;
+		}
 	}
-}
+
+}}}
