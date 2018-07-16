@@ -8,7 +8,8 @@
 namespace xe { namespace gfx {
 
 	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
-			shader(shader) {
+			shader(shader),
+			enabled(true) {
 
 		baseLight.color = color::decode(color);
 		baseLight.intensity = intensity;
@@ -45,7 +46,6 @@ namespace xe { namespace gfx {
 	}
 
 	void BaseLight::updateUniforms() {
-
 		for (uint i = 0; i < vsUniformBuffers.size(); i++) {
 			shader->setVSSystemUniformBuffer(vsUniformBuffers[i].buffer, vsUniformBuffers[i].size, i);
 		}

@@ -38,6 +38,8 @@ namespace xe { namespace gfx {
 		Renderer::setDepthFunction(DepthFunction::EQUAL);
 
 		for (auto &&light : lights) {
+			if (!light->isEnabled()) continue;
+
 			light->bind();
 
 			light->setUniforms(model, camera);

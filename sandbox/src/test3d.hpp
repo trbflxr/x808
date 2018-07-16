@@ -12,6 +12,7 @@
 #include <gfx/forwardrenderer.hpp>
 #include <gfx/camera/fpscamera.hpp>
 #include <gfx/lights/directionallight.hpp>
+#include <gfx/lights/pointlight.hpp>
 #include "dummyplayer.hpp"
 
 using namespace xe;
@@ -37,17 +38,22 @@ private:
 
 	Material *rockMaterial;
 	Material *monkeyMaterial;
+	Material *monkeyMaterial2;
 
 	Mesh *rockMesh;
 	Mesh *monkeyMesh;
 
 	Model *rockModel;
 	Model *monkeyModel;
+	Model *monkeyModel2;
 
 	AmbientLight *ambientLight;
 	ForwardRenderer *renderer;
 
 	DirectionalLight *directionalLight;
+
+	PointLight *pointLight;
+	PointLight *pointLight2;
 
 	DummyPlayer *player;
 };

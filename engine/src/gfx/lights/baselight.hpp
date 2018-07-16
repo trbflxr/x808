@@ -33,6 +33,9 @@ namespace xe { namespace gfx {
 		void setUniform(const char *name, const void *data, size_t size,
 		                api::ShaderType shader = api::ShaderType::NONE);
 
+		inline bool isEnabled() const { return enabled; }
+		inline void setEnabled(bool enabled) { BaseLight::enabled = enabled; }
+
 		inline vec4 getColor() const { return baseLight.color; }
 		void setColor(uint color);
 
@@ -47,6 +50,8 @@ namespace xe { namespace gfx {
 		virtual void setUniformsInternal() = 0;
 
 	protected:
+		bool enabled;
+
 		BaseLightStruct baseLight;
 
 		api::Shader *shader;

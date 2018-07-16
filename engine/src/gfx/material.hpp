@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 	class Material {
 	public:
 		explicit Material(const api::Texture *texture, uint color,
-		                  float specularIntensity = 2, float specularPower = 32) :
+		                  float specularIntensity = 2.0f, float specularPower = 0.5f) :
 				texture(texture),
 				color(color),
 				specularIntensity(specularIntensity),
