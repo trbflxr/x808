@@ -16,18 +16,26 @@ static const char *forwardAmbientShaderGL =
 #include "platform/opengl/shaders/forwardambient.shader"
 		;
 
-namespace xe {
+static const char *forwardDirectionalShaderGL =
+#include "platform/opengl/shaders/forwarddirectional.shader"
+		;
 
-	gfx::api::Shader *gfx::sf::batchRendererShader() {
+namespace xe { namespace gfx { namespace sf {
+
+	api::Shader *batchRendererShader() {
 		return api::Shader::createFromSource("BatchRenderer", batchRendererShaderGL);
 	}
 
-	gfx::api::Shader *gfx::sf::basicForwardShader() {
+	api::Shader *basicForwardShader() {
 		return api::Shader::createFromSource("BasicForward", basicForwardShaderGL);
 	}
 
-	gfx::api::Shader *gfx::sf::forwardAmbientShader() {
+	api::Shader *forwardAmbientShader() {
 		return api::Shader::createFromSource("ForwardAmbient", forwardAmbientShaderGL);
 	}
 
-}
+	api::Shader *forwardDirectionalShader() {
+		return api::Shader::createFromSource("ForwardDirectional", forwardDirectionalShaderGL);
+	}
+
+}}}

@@ -19,12 +19,14 @@ void main() {
 
 in vec2 uv0;
 
+out vec4 color;
+
 uniform vec4 sys_Color;
 uniform float sys_Intensity;
 
 uniform sampler2D sampler;
 
 void main() {
-  gl_FragColor = texture(sampler, uv0) * sys_Intensity * sys_Color;
+  color = texture(sampler, uv0) * sys_Intensity * sys_Color;
 }
 )"

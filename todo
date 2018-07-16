@@ -1,2 +1,6 @@
 todo: refactor math
-todo: strings
+
+{
+    todo: strings
+    todo: unicode
+}

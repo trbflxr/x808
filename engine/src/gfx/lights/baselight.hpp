@@ -14,6 +14,12 @@
 namespace xe { namespace gfx {
 
 	class XE_API BaseLight {
+	protected:
+		struct BaseLightStruct {
+			vec4 color;
+			float intensity;
+		};
+
 	public:
 		virtual ~BaseLight();
 
@@ -27,20 +33,21 @@ namespace xe { namespace gfx {
 		void setUniform(const char *name, const void *data, size_t size,
 		                api::ShaderType shader = api::ShaderType::NONE);
 
-		inline uint getColor() const { return color; }
+		inline vec4 getColor() const { return baseLight.color; }
 		void setColor(uint color);
 
-		inline float getIntensity() const { return intensity; }
+		inline float getIntensity() const { return baseLight.intensity; }
 		void setIntensity(float intensity);
 
 	protected:
 		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
 
+		void init();
+
 		virtual void setUniformsInternal() = 0;
 
 	protected:
-		uint color;
-		float intensity;
+		BaseLightStruct baseLight;
 
 		api::Shader *shader;
 

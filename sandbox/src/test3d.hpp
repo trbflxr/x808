@@ -11,6 +11,7 @@
 #include <gfx/api/shader.hpp>
 #include <gfx/forwardrenderer.hpp>
 #include <gfx/camera/fpscamera.hpp>
+#include <gfx/lights/directionallight.hpp>
 #include "dummyplayer.hpp"
 
 using namespace xe;
@@ -43,8 +44,10 @@ private:
 	Model *rockModel;
 	Model *monkeyModel;
 
-	AmbientLight* ambientLight;
+	AmbientLight *ambientLight;
 	ForwardRenderer *renderer;
+
+	DirectionalLight *directionalLight;
 
 	DummyPlayer *player;
 };

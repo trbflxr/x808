@@ -11,7 +11,26 @@
 namespace xe { namespace gfx {
 
 	class XE_API DirectionalLight : public BaseLight {
+	protected:
+		struct DirectionalLightStruct {
+			BaseLightStruct base;
+			vec3 direction;
+		};
 
+	public:
+		explicit DirectionalLight(api::Shader *shader, const vec3 &direction,
+		                          float intensity, uint color = color::WHITE);
+
+		void setUniforms(const Model *model, const Camera *camera) override;
+
+		inline const vec3 &getDirection() const { return directionalLight.direction; }
+		void setDirection(const vec3 &direction);
+
+	protected:
+		void setUniformsInternal() override;
+
+	private:
+		DirectionalLightStruct directionalLight;
 	};
 
 }}

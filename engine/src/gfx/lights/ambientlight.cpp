@@ -19,10 +19,8 @@ namespace xe { namespace gfx {
 	}
 
 	void AmbientLight::setUniformsInternal() {
-		vec4 c = color::decode(color);
-
-		setUniform("sys_Intensity", &intensity, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_Color", &c, sizeof(vec4), api::ShaderType::FRAG);
+		setUniform("sys_Intensity", &baseLight.intensity, sizeof(float), api::ShaderType::FRAG);
+		setUniform("sys_Color", &baseLight.color, sizeof(vec4), api::ShaderType::FRAG);
 	}
 
 }}

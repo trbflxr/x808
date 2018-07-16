@@ -8,10 +8,19 @@
 namespace xe { namespace gfx {
 
 	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
-			shader(shader),
-			intensity(intensity),
-			color(color) {
+			shader(shader) {
 
+		baseLight.color = color::decode(color);
+		baseLight.intensity = intensity;
+
+		init();
+	}
+
+	BaseLight::~BaseLight() {
+		delete shader;
+	}
+
+	void BaseLight::init() {
 		const api::ShaderUniformBufferVec &vssu = shader->getVSSystemUniforms();
 
 		for (auto &&ub : vssu) {
@@ -33,10 +42,6 @@ namespace xe { namespace gfx {
 				fsUniforms.emplace_back(uniform->getName().c_str(), buffer, uniform->getOffset());
 			}
 		}
-	}
-
-	BaseLight::~BaseLight() {
-		delete shader;
 	}
 
 	void BaseLight::updateUniforms() {
@@ -77,13 +82,14 @@ namespace xe { namespace gfx {
 	}
 
 	void BaseLight::setColor(uint color) {
-		BaseLight::color = color;
+		baseLight.color = color::decode(color);
 		setUniformsInternal();
 	}
 
 	void BaseLight::setIntensity(float intensity) {
-		BaseLight::intensity = intensity;
+		baseLight.intensity = intensity;
 		setUniformsInternal();
 	}
+
 
 }}

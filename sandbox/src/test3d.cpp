@@ -22,14 +22,19 @@ Test3D::Test3D() :
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
-	ambientLight = new AmbientLight(sf::forwardAmbientShader(), 0.3f, color::WHITE);
 	renderer = new ForwardRenderer();
+	
+	ambientLight = new AmbientLight(sf::forwardAmbientShader(), 0.3f, color::WHITE);
 	renderer->setAmbientLight(ambientLight);
+
+	directionalLight = new DirectionalLight(sf::forwardDirectionalShader(), {1, 0, 0}, 0.5f, color::WHITE);
+	renderer->addLight(directionalLight);
+
 
 	player = new DummyPlayer(new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
-	monkeyMaterial = new Material(&GETTEXTURE("2"), color::WHITE);
-	rockMaterial = new Material(&GETTEXTURE("rock"), color::WHITE);
+	monkeyMaterial = new Material(&GETTEXTURE("2"), color::WHITE, 1, 1);
+	rockMaterial = new Material(&GETTEXTURE("rock"), color::WHITE, 2, 2);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
@@ -47,6 +52,7 @@ Test3D::Test3D() :
 Test3D::~Test3D() {
 	delete renderer;
 	delete ambientLight;
+	delete directionalLight;
 
 	delete rockMesh;
 	delete monkeyMesh;
@@ -87,6 +93,17 @@ void Test3D::fixedUpdate(float delta) {
 		float a = ambientLight->getIntensity();
 		a -= 0.03f;
 		ambientLight->setIntensity(a);
+	}
+
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::R)) {
+		vec3 a = directionalLight->getDirection();
+		a.y += 0.03f;
+		directionalLight->setDirection(a);
+	}
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::T)) {
+		vec3 a = directionalLight->getDirection();
+		a.y -= 0.03f;
+		directionalLight->setDirection(a);
 	}
 }
 

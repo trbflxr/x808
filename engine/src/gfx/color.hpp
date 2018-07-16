@@ -35,6 +35,16 @@ namespace xe { namespace color {
 		return color;
 	}
 
+	static constexpr uint encode(const vec4 &color) {
+		const uint r1 = static_cast<uint>(color.x * 255);
+		const uint g1 = static_cast<uint>(color.y * 255);
+		const uint b1 = static_cast<uint>(color.z * 255);
+		const uint a1 = static_cast<uint>(color.w * 255);
+
+		const uint result = a1 << 24 | b1 << 16 | g1 << 8 | r1;
+		return result;
+	}
+
 	static vec4 decode(uint color) {
 		vec4 result;
 		result.x = static_cast<byte>((color >> 0) / 255);
