@@ -63,7 +63,7 @@ namespace xe {
 		delete texture;
 	}
 
-	vec2 Font::getTextSize(const std::string_view &text, float fontSize, vec2 *position) const {
+	vec2 Font::getTextSize(const std::wstring_view &text, float fontSize, vec2 *position) const {
 		const float scale = size / fontSize;
 
 		float x = 0.0f;

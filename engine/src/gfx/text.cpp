@@ -8,7 +8,7 @@
 
 namespace xe { namespace gfx {
 
-	Text::Text(const std::string_view &string, float size, const vec2 &position, const Font &font) :
+	Text::Text(const std::wstring_view &string, float size, const vec2 &position, const Font &font) :
 			font(&font),
 			string(string.data()),
 			textColor(color::BLACK),

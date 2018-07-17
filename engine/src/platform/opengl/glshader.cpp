@@ -595,7 +595,22 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	bool GLShader::tryCompile(const std::string &source, std::string &error) {
-		return false;
+		std::string vert;
+		std::string frag;
+		std::string *shaders[2] = {&vert, &frag};
+		preProcess(source, shaders);
+
+		ShaderErrorInfo *info = new ShaderErrorInfo();
+		if (!compile(shaders, info)) {
+			error = info->message[info->shader];
+			XE_FATAL(info->message[info->shader]);
+
+			delete info;
+			return false;
+		}
+
+		delete info;
+		return true;
 	}
 
 	bool GLShader::tryCompileFromFile(const std::string &file, std::string &error) {

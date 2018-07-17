@@ -32,7 +32,7 @@ namespace xe {
 
 		gfx::api::Texture2D *getTexture() const;
 
-		vec2 getTextSize(const std::string_view &text, float fontSize, vec2 *position = nullptr) const;
+		vec2 getTextSize(const std::wstring_view &text, float fontSize, vec2 *position = nullptr) const;
 
 	private:
 		void updateAtlas() const;

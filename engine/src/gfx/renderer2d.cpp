@@ -195,7 +195,7 @@ namespace xe { namespace gfx {
 
 		const Font &font = *text->getFont();
 		ftgl::texture_font_t *ftFont = font.getFTFont();
-		const std::string &string = text->string;
+		const std::wstring &string = text->string;
 		const uint color = text->textColor;
 		const uint outlineColor = text->outlineColor;
 

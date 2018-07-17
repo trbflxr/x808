@@ -10,6 +10,7 @@
 #include <resources/soundmanager.hpp>
 #include <utils/random.hpp>
 #include <gfx/indexedmodel.hpp>
+#include "utils/utf.hpp"
 #include "testecs.hpp"
 
 using namespace xe;
@@ -107,7 +108,7 @@ TestECS::TestECS() :
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 2
+#define sp_size 1
 
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {
@@ -165,11 +166,16 @@ TestECS::TestECS() :
 
 	XE_INFO("size: ", sprites);
 
-	text = new Text("slava ukraine", 20, {-70, 30}, GETFONT("sourceSans"));
+	text = new Text(L"слава ukraine", 20, {-70, 30}, GETFONT("consolata"));
 	text->setColor(color::WHITE);
 	text->setOutlineColor(color::BLACK);
 	text->setOutlineThickness(3);
 
+	inputString = L"Input:";
+	inputText = new Text(inputString, 20, {-70, -20}, GETFONT("consolata"));
+	inputText->setColor(color::PINK);
+	inputText->setOutlineColor(color::BLACK);
+	inputText->setOutlineThickness(3);
 
 	sprite.texture = &GETTEXTURE("32");
 
@@ -192,6 +198,7 @@ void TestECS::render() {
 //	renderer->drawLine(-20, -20, 200, 200, 1, color::GREEN, 2);
 
 	renderer->submitText(text);
+	renderer->submitText(inputText);
 
 	renderer->flush();
 }
@@ -254,14 +261,32 @@ void TestECS::input(xe::Event &event) {
 				}
 				event.handled = true;
 			}
+			break;
 		}
 
 		case Event::MouseButtonPressed: {
 
+			break;
 		}
 
 		case Event::MouseMoved: {
 //			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
+
+			break;
+		}
+
+		case Event::TextEntered: {
+			if (event.text.unicode == 8) {
+				if (!inputString.empty()) {
+					inputString.erase(inputString.end() - 1);
+				}
+			} else {
+				inputString += event.text.unicode;
+			}
+
+			inputText->setString(inputString);
+
+			break;
 		}
 
 	}

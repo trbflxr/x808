@@ -40,6 +40,9 @@ private:
 
 	xe::gfx::Text *text;
 	xe::EntityHandle a;
+
+	xe::gfx::Text *inputText;
+	std::wstring inputString;
 };
 
 

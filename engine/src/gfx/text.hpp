@@ -16,13 +16,13 @@ namespace xe { namespace gfx {
 		friend class Renderer2D;
 
 	public:
-		explicit Text(const std::string_view &string, float size, const vec2& position, const Font &font);
+		explicit Text(const std::wstring_view &string, float size, const vec2& position, const Font &font);
 
 		inline void setFont(const Font &font) { Text::font = &font; }
 		inline const Font *getFont() const { return font; }
 
-		inline void setString(const std::string_view &string) { Text::string = string; }
-		inline const std::string &getString() const { return string; }
+		inline void setString(const std::wstring_view &string) { Text::string = string; }
+		inline const std::wstring &getString() const { return string; }
 
 		inline void setCharacterSize(uint size) { Text::size = size; }
 		inline float getSize() const { return size; }
@@ -41,7 +41,7 @@ namespace xe { namespace gfx {
 
 	private:
 		const Font *font;
-		std::string string;
+		std::wstring string;
 		uint textColor;
 		uint outlineColor;
 		float size;
