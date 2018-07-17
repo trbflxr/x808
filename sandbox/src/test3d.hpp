@@ -13,6 +13,7 @@
 #include <gfx/camera/fpscamera.hpp>
 #include <gfx/lights/directionallight.hpp>
 #include <gfx/lights/pointlight.hpp>
+#include <gfx/lights/spotlight.hpp>
 #include "dummyplayer.hpp"
 
 using namespace xe;
@@ -54,6 +55,9 @@ private:
 
 	PointLight *pointLight;
 	PointLight *pointLight2;
+
+	bool hookSpotLight;
+	SpotLight *spotLight;
 
 	DummyPlayer *player;
 };

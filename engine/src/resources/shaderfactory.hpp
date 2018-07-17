@@ -20,6 +20,7 @@ namespace xe { namespace gfx { namespace sf {
 	api::Shader XE_API *forwardAmbientShader();
 	api::Shader XE_API *forwardDirectionalShader();
 	api::Shader XE_API *forwardPointShader();
+	api::Shader XE_API *forwardSpotShader();
 
 }}}
 

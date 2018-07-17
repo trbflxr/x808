@@ -10,7 +10,7 @@
 
 namespace xe { namespace gfx {
 
-	class PointLight : public BaseLight {
+	class XE_API PointLight : public BaseLight {
 	protected:
 		struct PointLightStruct {
 			BaseLightStruct base;
@@ -20,7 +20,7 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit XE_API PointLight(api::Shader *shader, const vec3 &position, const vec3 &attenuation,
+		explicit PointLight(api::Shader *shader, const vec3 &position, const vec3 &attenuation,
 		                    float intensity, uint color = color::WHITE);
 
 		void setUniforms(const Model *model, const Camera *camera) override;
@@ -36,7 +36,7 @@ namespace xe { namespace gfx {
 	protected:
 		void setUniformsInternal() override;
 
-	private:
+	protected:
 		PointLightStruct pointLight;
 	};
 

@@ -24,6 +24,10 @@ static const char *forwardPointShaderGL =
 #include "platform/opengl/shaders/forwardpoint.shader"
 		;
 
+static const char *forwardSpotShaderGL =
+#include "platform/opengl/shaders/forwardspot.shader"
+		;
+
 namespace xe { namespace gfx { namespace sf {
 
 	api::Shader *batchRendererShader() {
@@ -44,6 +48,10 @@ namespace xe { namespace gfx { namespace sf {
 
 	api::Shader *forwardPointShader() {
 		return api::Shader::createFromSource("ForwardPoint", forwardPointShaderGL);
+	}
+
+	api::Shader *forwardSpotShader() {
+		return api::Shader::createFromSource("ForwardSpot", forwardSpotShaderGL);
 	}
 
 }}}

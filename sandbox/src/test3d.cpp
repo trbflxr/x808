@@ -18,17 +18,18 @@ Test3D::Test3D() :
 	TextureParameters params(TextureFilter::NEAREST);
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
+	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 	renderer = new ForwardRenderer();
 
-	ambientLight = new AmbientLight(sf::forwardAmbientShader(), 0.1f, color::WHITE);
+	ambientLight = new AmbientLight(sf::forwardAmbientShader(), 0.05f, color::WHITE);
 	renderer->setAmbientLight(ambientLight);
 
-	directionalLight = new DirectionalLight(sf::forwardDirectionalShader(), {-0.5f, -0.5f, 0.5f}, 0.5f,
-	                                        color::WHITE);
+	directionalLight = new DirectionalLight(sf::forwardDirectionalShader(),
+	                                        {-0.5f, -0.5f, 0.5f}, 0.5f, color::WHITE);
 	renderer->addLight(directionalLight);
 
 	pointLight = new PointLight(sf::forwardPointShader(), {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
@@ -37,11 +38,17 @@ Test3D::Test3D() :
 	pointLight2 = new PointLight(sf::forwardPointShader(), {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
 	renderer->addLight(pointLight2);
 
+	hookSpotLight = false;
+	spotLight = new SpotLight(sf::forwardSpotShader(), {2.789f, 0.350f, -5.662f}, {0.107f, -0.132f, -0.986f},
+	                          0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::GREEN);
+
+	renderer->addLight(spotLight);
+
 
 	player = new DummyPlayer(new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
 	monkeyMaterial = new Material(&GETTEXTURE("2"), color::WHITE, 50, 2.2f);
-	monkeyMaterial2 = new Material(&GETTEXTURE("2"), color::WHITE, 1, 0.9f);
+	monkeyMaterial2 = new Material(&GETTEXTURE("4"), color::WHITE, 1, 0.2f);
 	rockMaterial = new Material(&GETTEXTURE("rock"), color::WHITE, 2, 0.2f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
@@ -66,6 +73,7 @@ Test3D::~Test3D() {
 	delete directionalLight;
 	delete pointLight;
 	delete pointLight2;
+	delete spotLight;
 
 	delete rockMesh;
 	delete monkeyMesh;
@@ -97,17 +105,22 @@ void Test3D::tick() {
 
 void Test3D::update(float delta) {
 	player->update(delta);
+
+	if (hookSpotLight) {
+		spotLight->setPosition(player->getCamera()->getPosition());
+		spotLight->setDirection(player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
+	}
 }
 
 void Test3D::fixedUpdate(float delta) {
 	if (Keyboard::isKeyPressed(Keyboard::Key::Q)) {
 		float a = ambientLight->getIntensity();
-		a += 0.03f;
+		a += 1 * delta;
 		ambientLight->setIntensity(a);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::E)) {
 		float a = ambientLight->getIntensity();
-		a -= 0.03f;
+		if ((a -= 1 * delta) < 0) a = 0;
 		ambientLight->setIntensity(a);
 	}
 
@@ -141,6 +154,9 @@ void Test3D::input(Event &event) {
 			static bool enabled = true;
 			enabled = !enabled;
 			pointLight2->setEnabled(enabled);
+		}
+		if (event.key.code == Keyboard::Key::H) {
+			hookSpotLight = !hookSpotLight;
 		}
 	}
 }

@@ -17,14 +17,7 @@ namespace xe { namespace gfx {
 		pointLight.attenuation = attenuation;
 		pointLight.position = position;
 
-		const vec4 c = color::decode(color);
-		const float x = attenuation.z;
-		const float y = attenuation.y;
-		const float z = attenuation.x - COLOR_DEPTH * intensity * __max(__max(c.x, c.y), c.z);
-
-		pointLight.range = (-y + sqrtf(y * y - 4 * x * z)) / (2 * x);
-
-		setUniformsInternal();
+		setAttenuation(attenuation);
 	}
 
 	void PointLight::setUniforms(const Model *model, const Camera *camera) {
