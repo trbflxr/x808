@@ -22,7 +22,7 @@ namespace xe { namespace gfx { namespace api {
 
 
 	enum class TextureFormat {
-		NONE = 0, RGB, RGBA, LUMINANCE, LUMINANCE_ALPHA
+		NONE = 0, RGB, RGBA, BGR, BGRA, LUMINANCE, LUMINANCE_ALPHA
 	};
 
 	struct TextureParameters {

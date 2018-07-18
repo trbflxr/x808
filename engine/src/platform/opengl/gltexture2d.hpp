@@ -29,10 +29,10 @@ namespace xe { namespace gfx { namespace api {
 		inline const std::string &getName() const override { return name; }
 		inline const std::string &getFilePath() const override { return fileName; }
 
-		void setData(const void *pixels);
+		void setData(const void *pixels) override;
 
-		inline uint getWidth() const { return width; }
-		inline uint getHeight() const { return height; }
+		inline uint getWidth() const override { return width; }
+		inline uint getHeight() const override { return height; }
 
 		inline uint getHandle() const override { return handle; }
 

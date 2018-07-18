@@ -40,13 +40,16 @@ private:
 	Material *rockMaterial;
 	Material *monkeyMaterial;
 	Material *monkeyMaterial2;
+	Material *stallMaterial;
 
 	Mesh *rockMesh;
 	Mesh *monkeyMesh;
+	Mesh *stallMesh;
 
 	Model *rockModel;
 	Model *monkeyModel;
 	Model *monkeyModel2;
+	Model *stallModel;
 
 	AmbientLight *ambientLight;
 	ForwardRenderer *renderer;
@@ -55,6 +58,8 @@ private:
 
 	PointLight *pointLight;
 	PointLight *pointLight2;
+	PointLight *pointLight3;
+	PointLight *pointLight4;
 
 	bool hookSpotLight;
 	SpotLight *spotLight;

@@ -19,6 +19,7 @@ Test3D::Test3D() :
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("stall", "assets/textures/stall.png", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
@@ -38,6 +39,12 @@ Test3D::Test3D() :
 	pointLight2 = new PointLight(sf::forwardPointShader(), {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
 	renderer->addLight(pointLight2);
 
+	pointLight3 = new PointLight(sf::forwardPointShader(), {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f, color::PINK);
+	renderer->addLight(pointLight3);
+
+	pointLight4 = new PointLight(sf::forwardPointShader(), {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f, color::CYAN);
+	renderer->addLight(pointLight4);
+
 	hookSpotLight = false;
 	spotLight = new SpotLight(sf::forwardSpotShader(), {2.789f, 0.350f, -5.662f}, {0.107f, -0.132f, -0.986f},
 	                          0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::GREEN);
@@ -50,9 +57,11 @@ Test3D::Test3D() :
 	monkeyMaterial = new Material(&GETTEXTURE("2"), color::WHITE, 50, 2.2f);
 	monkeyMaterial2 = new Material(&GETTEXTURE("4"), color::WHITE, 1, 0.2f);
 	rockMaterial = new Material(&GETTEXTURE("rock"), color::WHITE, 2, 0.2f);
+	stallMaterial = new Material(&GETTEXTURE("stall"), color::WHITE, 2, 0.2f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
+	stallMesh = new Mesh("assets/models/stall.obj");
 
 	monkeyModel = new Model(monkeyMesh, monkeyMaterial);
 	monkeyModel->transform.setTranslation({5, 0, -5});
@@ -65,6 +74,10 @@ Test3D::Test3D() :
 	rockModel->transform.setTranslation({0, 0, -5});
 	rockModel->transform.setRotation(quat::rotationZ(to_rad(5)));
 
+	stallModel = new Model(stallMesh, stallMaterial);
+	stallModel->transform.setTranslation({0, 0, -15});
+	stallModel->transform.setRotation(quat::rotationY(to_rad(-90)));
+
 }
 
 Test3D::~Test3D() {
@@ -73,18 +86,23 @@ Test3D::~Test3D() {
 	delete directionalLight;
 	delete pointLight;
 	delete pointLight2;
+	delete pointLight3;
+	delete pointLight4;
 	delete spotLight;
 
 	delete rockMesh;
 	delete monkeyMesh;
+	delete stallMesh;
 
 	delete monkeyModel;
 	delete monkeyModel2;
 	delete rockModel;
+	delete stallModel;
 
 	delete rockMaterial;
 	delete monkeyMaterial;
 	delete monkeyMaterial2;
+	delete stallMaterial;
 
 	delete player;
 }
@@ -93,6 +111,7 @@ void Test3D::render() {
 	renderer->render(monkeyModel, player->getCamera());
 	renderer->render(monkeyModel2, player->getCamera());
 	renderer->render(rockModel, player->getCamera());
+	renderer->render(stallModel, player->getCamera());
 }
 
 void Test3D::tick() {

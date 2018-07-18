@@ -13,6 +13,20 @@ namespace xe { namespace gfx { namespace api {
 		switch (format) {
 			case TextureFormat::RGBA: return GL_RGBA;
 			case TextureFormat::RGB: return GL_RGB;
+			case TextureFormat::BGRA: return GL_BGRA;
+			case TextureFormat::BGR: return GL_BGR;
+			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
+			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
+			default: return 0;
+		}
+	}
+
+	uint textureFormatToInternalGL(TextureFormat format) {
+		switch (format) {
+			case TextureFormat::RGBA: return GL_BGRA;
+			case TextureFormat::RGB: return GL_BGR;
+			case TextureFormat::BGRA: return GL_RGBA;
+			case TextureFormat::BGR: return GL_BGR;
 			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
 			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
 			default: return 0;
@@ -75,7 +89,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	uint GLTexture2D::load() {
-// todo: split  into loading from file and generating from data
+		// todo: split  into loading from file and generating from data
 		byte *pixels = nullptr;
 
 		bool fail = false;
@@ -93,7 +107,6 @@ namespace xe { namespace gfx { namespace api {
 				pixels = internal::DEFAULT_TEXTURE;
 				parameters.format = TextureFormat::RGBA;
 			} else {
-
 				if (bits != 24 && bits != 32) {
 					XE_FATAL("[Texture] Unsupported image bit-depth! (', bits, ')");
 				}
@@ -115,9 +128,12 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(wrapMode)));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
 
+		//textureFormatToGL(parameters.format)
 		glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
-		                    textureFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));
+		                    textureFormatToInternalGL(parameters.format),
+		                    GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));
 
+		//todo: check
 		glCall(glGenerateMipmap(GL_TEXTURE_2D));
 		glCall(glBindTexture(GL_TEXTURE_2D, 0));
 
