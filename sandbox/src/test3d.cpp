@@ -19,7 +19,10 @@ Test3D::Test3D() :
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
+	TextureManager::add(Texture2D::create("grass", "assets/textures/grass.png", params));
 	TextureManager::add(Texture2D::create("stall", "assets/textures/stall.png", params));
+	TextureManager::add(Texture2D::create("bricks", "assets/textures/bricks.jpg", params));
+	TextureManager::add(Texture2D::create("bricks2", "assets/textures/bricks2.jpg", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
@@ -47,7 +50,7 @@ Test3D::Test3D() :
 
 	hookSpotLight = false;
 	spotLight = new SpotLight(sf::forwardSpotShader(), {2.789f, 0.350f, -5.662f}, {0.107f, -0.132f, -0.986f},
-	                          0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::GREEN);
+	                          0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::WHITE);
 
 	renderer->addLight(spotLight);
 
@@ -58,10 +61,14 @@ Test3D::Test3D() :
 	monkeyMaterial2 = new Material(&GETTEXTURE("4"), color::WHITE, 1, 0.2f);
 	rockMaterial = new Material(&GETTEXTURE("rock"), color::WHITE, 2, 0.2f);
 	stallMaterial = new Material(&GETTEXTURE("stall"), color::WHITE, 2, 0.2f);
+	planeMaterial = new Material(&GETTEXTURE("bricks"), color::WHITE, 2, 0.2f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
 	stallMesh = new Mesh("assets/models/stall.obj");
+	planeMesh0 = new Mesh("assets/models/plane0.obj");
+	planeMesh1 = new Mesh("assets/models/plane1.obj");
+	planeMesh2 = new Mesh("assets/models/plane2.obj");
 
 	monkeyModel = new Model(monkeyMesh, monkeyMaterial);
 	monkeyModel->transform.setTranslation({5, 0, -5});
@@ -77,6 +84,18 @@ Test3D::Test3D() :
 	stallModel = new Model(stallMesh, stallMaterial);
 	stallModel->transform.setTranslation({0, 0, -15});
 	stallModel->transform.setRotation(quat::rotationY(to_rad(-90)));
+
+//	planes
+	planeModel0 = new Model(planeMesh0, planeMaterial);
+	planeModel0->transform.setTranslation({15, 0, -5});
+	planeModel0->transform.setRotation(quat::rotationY(to_rad(-10)));
+
+	planeModel1 = new Model(planeMesh1, planeMaterial);
+	planeModel1->transform.setTranslation({15, -3, -5});
+	planeModel1->transform.setRotation(quat::rotationY(to_rad(40)));
+
+	planeModel2 = new Model(planeMesh2, planeMaterial);
+	planeModel2->transform.setTranslation({15, -5, -5});
 
 }
 
@@ -94,15 +113,24 @@ Test3D::~Test3D() {
 	delete monkeyMesh;
 	delete stallMesh;
 
+	delete planeMesh0;
+	delete planeMesh1;
+	delete planeMesh2;
+
 	delete monkeyModel;
 	delete monkeyModel2;
 	delete rockModel;
 	delete stallModel;
 
+	delete planeModel0;
+	delete planeModel1;
+	delete planeModel2;
+
 	delete rockMaterial;
 	delete monkeyMaterial;
 	delete monkeyMaterial2;
 	delete stallMaterial;
+	delete planeMaterial;
 
 	delete player;
 }
@@ -112,6 +140,10 @@ void Test3D::render() {
 	renderer->render(monkeyModel2, player->getCamera());
 	renderer->render(rockModel, player->getCamera());
 	renderer->render(stallModel, player->getCamera());
+
+	renderer->render(planeModel0, player->getCamera());
+	renderer->render(planeModel1, player->getCamera());
+	renderer->render(planeModel2, player->getCamera());
 }
 
 void Test3D::tick() {

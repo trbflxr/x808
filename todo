@@ -5,3 +5,6 @@ todo: refactor light shaders
     todo: strings
     todo: unicode
 }
+
+todo: skybox
+todo: framebuffer

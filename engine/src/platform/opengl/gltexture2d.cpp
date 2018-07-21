@@ -129,6 +129,7 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
 
 		//textureFormatToGL(parameters.format)
+		//todo: fix internal format
 		glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
 		                    textureFormatToInternalGL(parameters.format),
 		                    GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));

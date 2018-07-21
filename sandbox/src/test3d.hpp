@@ -41,15 +41,24 @@ private:
 	Material *monkeyMaterial;
 	Material *monkeyMaterial2;
 	Material *stallMaterial;
+	Material *planeMaterial;
 
 	Mesh *rockMesh;
 	Mesh *monkeyMesh;
 	Mesh *stallMesh;
 
+	Mesh *planeMesh0;
+	Mesh *planeMesh1;
+	Mesh *planeMesh2;
+
 	Model *rockModel;
 	Model *monkeyModel;
 	Model *monkeyModel2;
 	Model *stallModel;
+
+	Model *planeModel0;
+	Model *planeModel1;
+	Model *planeModel2;
 
 	AmbientLight *ambientLight;
 	ForwardRenderer *renderer;
