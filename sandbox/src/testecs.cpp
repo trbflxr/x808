@@ -141,7 +141,7 @@ TestECS::TestECS() :
 #elif sp_size == 1
 	for (int32 x = -80; x < 80; x += 4) {
 		for (int32 y = -60; y < 60; y += 4) {
-			sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+			sprite.texture = GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 			transform.zIndex = 0;
 			transform.bounds.setPosition(x, y);
@@ -177,7 +177,7 @@ TestECS::TestECS() :
 	inputText->setOutlineColor(color::BLACK);
 	inputText->setOutlineThickness(3);
 
-	sprite.texture = &GETTEXTURE("32");
+	sprite.texture = GETTEXTURE("32");
 
 	transform.zIndex = 1;
 	transform.bounds.setPosition(-10, -10);

@@ -16,7 +16,7 @@ namespace xe { namespace gfx {
 		friend class Renderer2D;
 
 	public:
-		explicit Text(const std::wstring_view &string, float size, const vec2& position, const Font &font);
+		explicit Text(const std::wstring_view &string, float size, const vec2& position, const Font *font);
 
 		inline void setFont(const Font &font) { Text::font = &font; }
 		inline const Font *getFont() const { return font; }

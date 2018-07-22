@@ -36,6 +36,9 @@ namespace xe { namespace gfx {
 	protected:
 		void setUniformsInternal() override;
 
+	private:
+		float calcRange(const vec3 &attenuation);
+
 	protected:
 		PointLightStruct pointLight;
 	};

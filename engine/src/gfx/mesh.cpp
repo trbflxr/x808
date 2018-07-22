@@ -16,12 +16,12 @@ namespace xe { namespace gfx {
 	Mesh::Mesh(const std::string_view &path) {
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(path.data(), aiProcess_JoinIdenticalVertices |
+		                                                      aiProcess_Triangulate |
 		                                                      aiProcess_GenSmoothNormals |
 		                                                      aiProcess_CalcTangentSpace |
-		                                                      aiProcess_Triangulate |
 		                                                      aiProcess_FlipUVs);
 		if (!scene) {
-			XE_FATAL("[Mesh] unable to load model: ", path);
+			XE_FATAL("[Mesh]: unable to load model '", path, "'");
 			XE_ASSERT(false);
 			return;
 		}

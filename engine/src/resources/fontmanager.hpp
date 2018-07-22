@@ -18,7 +18,7 @@ namespace xe {
 		~FontManager() override;
 
 		static void add(Font *font);
-		static const Font &get(const std::string_view &name);
+		static const Font *get(const std::string_view &name);
 
 		static void clean();
 

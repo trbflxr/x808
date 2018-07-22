@@ -24,14 +24,16 @@ namespace xe { namespace gfx {
 		inline void unbind(uint slot = 0) const { texture->unbind(slot); }
 
 		inline const api::Texture *getTexture() const { return texture; }
-		inline uint getColor() const { return color; }
-		inline float getSpecularIntensity() const { return specularIntensity; }
-		inline float getSpecularPower() const { return specularPower; }
-
 		inline void setTexture(const api::Texture *texture) { Material::texture = texture; }
+
+		inline uint getColor() const { return color; }
 		inline void setColor(uint color) { Material::color = color; }
-		inline void setSpecularPower(float value) { Material::specularPower = value; }
+
+		inline float getSpecularIntensity() const { return specularIntensity; }
 		inline void setSpecularIntensity(float value) { Material::specularIntensity = value; }
+
+		inline float getSpecularPower() const { return specularPower; }
+		inline void setSpecularPower(float value) { Material::specularPower = value; }
 
 	private:
 		const api::Texture *texture;

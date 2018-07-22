@@ -73,7 +73,7 @@ namespace xe { namespace gfx { namespace api {
 		void resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size);
 		void resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size);
 
-		void setUniformStruct(GLShaderUniform *uniform, byte *data, int32 offset);
+		void setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset);
 
 		void setUniform1f(const std::string_view &name, float value);
 		void setUniform1fv(const std::string_view &name, float *value, int32 count);

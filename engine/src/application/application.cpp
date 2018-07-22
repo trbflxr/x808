@@ -8,6 +8,7 @@
 #include "utils/random.hpp"
 #include "resources/fontmanager.hpp"
 #include "resources/texturemanager.hpp"
+#include "resources/shadermanager.hpp"
 
 #include "embedded/embedded.hpp"
 
@@ -120,6 +121,7 @@ namespace xe {
 
 		FontManager::clean();
 		TextureManager::clean();
+		ShaderManager::clean();
 	}
 
 	void Application::init() {

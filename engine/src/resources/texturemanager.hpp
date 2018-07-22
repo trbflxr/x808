@@ -18,7 +18,7 @@ namespace xe {
 		~TextureManager() override;
 
 		static void add(gfx::api::Texture *texture);
-		static const gfx::api::Texture &get(const std::string_view &name);
+		static const gfx::api::Texture *get(const std::string_view &name);
 
 		static void clean();
 

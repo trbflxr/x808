@@ -16,8 +16,10 @@ namespace xe { namespace gfx {
 		pointLight.base = baseLight;
 		pointLight.attenuation = attenuation;
 		pointLight.position = position;
+		pointLight.attenuation = attenuation;
+		pointLight.range = calcRange(attenuation);
 
-		setAttenuation(attenuation);
+		setUniformsInternal();
 	}
 
 	void PointLight::setUniforms(const Model *model, const Camera *camera) {
@@ -40,12 +42,7 @@ namespace xe { namespace gfx {
 
 	void PointLight::setAttenuation(const vec3 &attenuation) {
 		pointLight.attenuation = attenuation;
-		const float x = attenuation.z;
-		const float y = attenuation.y;
-		const float z = attenuation.x - COLOR_DEPTH * baseLight.intensity *
-		                                __max(__max(baseLight.color.x, baseLight.color.y), baseLight.color.z);
-
-		pointLight.range = (-y + sqrtf(y * y - 4 * x * z)) / (2 * x);
+		pointLight.range = calcRange(attenuation);
 
 		setUniformsInternal();
 	}
@@ -54,6 +51,15 @@ namespace xe { namespace gfx {
 		pointLight.position = position;
 
 		setUniformsInternal();
+	}
+
+	float PointLight::calcRange(const vec3 &attenuation) {
+		const float x = attenuation.z;
+		const float y = attenuation.y;
+		const float z = attenuation.x - COLOR_DEPTH * baseLight.intensity *
+		                                __max(__max(baseLight.color.x, baseLight.color.y), baseLight.color.z);
+
+		return (-y + sqrtf(y * y - 4 * x * z)) / (2 * x);
 	}
 
 }}

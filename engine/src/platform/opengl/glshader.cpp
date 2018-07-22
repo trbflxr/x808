@@ -76,8 +76,7 @@ namespace xe { namespace gfx { namespace api {
 		resolveAndSetUniform((GLShaderUniform *) uniform, data, 0);
 	}
 
-	void
-	GLShader::resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) {
+	void GLShader::resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) {
 		switch (field.getType()) {
 			case GLShaderUniform::Type::FLOAT32: setUniform1f(field.getLocation(), *(float *) &data[offset]);
 				break;
@@ -99,12 +98,9 @@ namespace xe { namespace gfx { namespace api {
 		const char *vertexSource = shaders[0]->c_str();
 		const char *fragmentSource = shaders[1]->c_str();
 
-		glCall(uint
-				       program = glCreateProgram());
-		glCall(GLuint
-				       vertex = glCreateShader(GL_VERTEX_SHADER));
-		glCall(GLuint
-				       fragment = glCreateShader(GL_FRAGMENT_SHADER));
+		glCall(uint program = glCreateProgram());
+		glCall(GLuint vertex = glCreateShader(GL_VERTEX_SHADER));
+		glCall(GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER));
 
 		glCall(glShaderSource(vertex, 1, &vertexSource, nullptr));
 		glCall(glCompileShader(vertex));
@@ -450,7 +446,7 @@ namespace xe { namespace gfx { namespace api {
 	uint GLShader::getUniformLocation(const std::string_view &name) {
 		glCall(GLint result = glGetUniformLocation(handle, name.data()));
 		if (result == -1) {
-			XE_ERROR(GLShader::name, ": could not find uniform ", name, " in shader!");
+			XE_ERROR("[GLShader]: name: '", GLShader::name, "' could not find uniform '", name, "'");
 		}
 
 		return static_cast<uint>(result);
@@ -518,7 +514,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	void
-	GLShader::setUniformStruct(GLShaderUniform *uniform, byte *data, int32 offset) {
+	GLShader::setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset) {
 		const ShaderStruct &s = uniform->getShaderUniformStruct();
 		const auto &fields = s.getFields();
 

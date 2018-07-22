@@ -7,7 +7,7 @@
 
 #include "renderer2d.hpp"
 #include "renderer.hpp"
-#include "resources/shaderfactory.hpp"
+#include "resources/shadermanager.hpp"
 
 namespace xe { namespace gfx {
 
@@ -58,7 +58,8 @@ namespace xe { namespace gfx {
 
 		systemUniforms.resize(requiredSystemUniformsCount);
 
-		shader = sf::batchRendererShader();
+		shader = GETSHADER("batchRenderer");
+
 		const api::ShaderUniformBufferVec &vssu = shader->getVSSystemUniforms();
 
 		XE_ASSERT(vssu.size());

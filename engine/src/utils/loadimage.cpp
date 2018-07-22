@@ -29,7 +29,7 @@ namespace xe { namespace utils {
 		}
 
 		if (!dib) {
-			XE_ERROR("Could not load image: ", path);
+			XE_ERROR("[LoadImage]: Could not load image: ", path);
 			FreeImage_Unload(dib);
 
 			return nullptr;

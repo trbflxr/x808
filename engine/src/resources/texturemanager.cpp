@@ -41,7 +41,7 @@ namespace xe {
 		instance().textures.emplace(texture->getName(), texture);
 	}
 
-	const gfx::api::Texture &TextureManager::get(const std::string_view &name) {
+	const gfx::api::Texture *TextureManager::get(const std::string_view &name) {
 		auto &&it = instance().textures.find(name.data());
 		if (it == instance().textures.end()) {
 			XE_ERROR("Texture '", name, "' not found!");
@@ -49,7 +49,7 @@ namespace xe {
 			return get("default");
 		}
 
-		return *it->second;
+		return it->second;
 	}
 
 	void TextureManager::clean() {

@@ -32,7 +32,7 @@ namespace xe {
 		instance().fonts.emplace(font->getName(), font);
 	}
 
-	const Font &FontManager::get(const std::string_view &name) {
+	const Font *FontManager::get(const std::string_view &name) {
 		auto &&it = instance().fonts.find(name.data());
 		if (it == instance().fonts.end()) {
 			XE_ERROR("Font '", name, "' not found! Default font loaded instead.");
@@ -40,7 +40,7 @@ namespace xe {
 			return get("default");
 		}
 
-		return *it->second;
+		return it->second;
 	}
 
 	void FontManager::clean() {
