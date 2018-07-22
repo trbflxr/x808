@@ -35,4 +35,14 @@ namespace xe { namespace internal {
 	uint DEFAULT_NORMAL_W = 16;
 	uint DEFAULT_NORMAL_H = 16;
 
+	///displacement map
+	byte DEFAULT_DISP_ARRAY[] = {
+#include "files/defaultdisp.embed"
+	};
+
+	byte *DEFAULT_DISP = DEFAULT_DISP_ARRAY;
+	uint DEFAULT_DISP_SIZE = sizeof(DEFAULT_DISP_ARRAY);
+	uint DEFAULT_DISP_W = 16;
+	uint DEFAULT_DISP_H = 16;
+
 }}

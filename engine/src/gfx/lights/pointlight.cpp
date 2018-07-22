@@ -31,8 +31,12 @@ namespace xe { namespace gfx {
 
 		float specularPower = model->material->getSpecularIntensity();
 		float specularIntensity = model->material->getSpecularPower();
+		float dispScale = model->material->getDispMapScale();
+		float dispBias = model->material->getDispMapBias();
 		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::ShaderType::FRAG);
 		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::ShaderType::FRAG);
+		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::ShaderType::FRAG);
+		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::ShaderType::FRAG);
 		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::ShaderType::FRAG);
 	}
 

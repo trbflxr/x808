@@ -8,8 +8,11 @@ in vec3 worldPos0;
 
 out vec4 out_Color;
 
-uniform sampler2D diffuse;
-uniform sampler2D normalMap;
+uniform vec4 sys_Color;
+uniform float sys_Intensity;
+uniform vec3 sys_EyePos;
+
+uniform sampler2D sampler;
 uniform sampler2D dispMap;
 
 uniform float sys_DispMapScale;

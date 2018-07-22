@@ -65,7 +65,14 @@ namespace xe {
 		defaultNormal->setData(internal::DEFAULT_NORMAL);
 
 
+		///displacement map
+		Texture2D *defaultDisp = Texture2D::create(internal::DEFAULT_DISP_W,
+		                                           internal::DEFAULT_DISP_H, params);
+		defaultDisp->setData(internal::DEFAULT_DISP);
+
+
 		textures.emplace("normal", defaultNormal);
+		textures.emplace("disp", defaultDisp);
 		textures.emplace("default", errorTexture);
 	}
 

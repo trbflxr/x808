@@ -41,7 +41,9 @@ private:
 	Material *monkeyMaterial;
 	Material *monkeyMaterial2;
 	Material *stallMaterial;
-	Material *planeMaterial;
+	Material *planeMaterial0;
+	Material *planeMaterial1;
+	Material *planeMaterial2;
 
 	Mesh *rockMesh;
 	Mesh *monkeyMesh;
@@ -49,7 +51,6 @@ private:
 
 	Mesh *planeMesh0;
 	Mesh *planeMesh1;
-	Mesh *planeMesh2;
 
 	Model *rockModel;
 	Model *monkeyModel;

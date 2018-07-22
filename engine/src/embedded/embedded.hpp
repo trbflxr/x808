@@ -19,9 +19,14 @@ namespace xe { namespace internal {
 	extern uint DEFAULT_TEXTURE_H;
 
 	extern byte* DEFAULT_NORMAL;
-	extern uint DEFAULT_SIZE;
+	extern uint DEFAULT_NORMAL_SIZE;
 	extern uint DEFAULT_NORMAL_W;
 	extern uint DEFAULT_NORMAL_H;
+
+	extern byte* DEFAULT_DISP;
+	extern uint DEFAULT_DISP_SIZE;
+	extern uint DEFAULT_DISP_W;
+	extern uint DEFAULT_DISP_H;
 
 }}
 

@@ -1,0 +1,5 @@
+R"(
+vec2 CalcParallaxUV(sampler2D dispMap, mat3 tbnMat, vec3 directionToEye, vec2 uv, float scale, float bias) {
+  return uv + (directionToEye * tbnMat).xy * (texture(dispMap, uv).r * scale + bias);
+}
+)"

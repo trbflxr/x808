@@ -23,7 +23,10 @@ Test3D::Test3D() :
 	TextureManager::add(Texture2D::create("stall", "assets/textures/stall.png", params));
 	TextureManager::add(Texture2D::create("bricks", "assets/textures/bricks.jpg", params));
 	TextureManager::add(Texture2D::create("bricks2", "assets/textures/bricks2.jpg", params));
+	TextureManager::add(Texture2D::create("bricksNormal", "assets/textures/bricksNormal.jpg", params));
 	TextureManager::add(Texture2D::create("bricksNormal2", "assets/textures/bricksNormal2.png", params));
+	TextureManager::add(Texture2D::create("bricksDisp", "assets/textures/bricksDisp.png", params));
+	TextureManager::add(Texture2D::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
@@ -61,18 +64,24 @@ Test3D::Test3D() :
 	//todo: shader include
 	player = new DummyPlayer(new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
-	monkeyMaterial = new Material(GETTEXTURE("2"), color::WHITE, 50, 2.2f);
-	monkeyMaterial2 = new Material(GETTEXTURE("4"), color::WHITE, 1, 0.2f);
-	rockMaterial = new Material(GETTEXTURE("rock"), color::WHITE, 2, 0.2f);
-	stallMaterial = new Material(GETTEXTURE("stall"), color::WHITE, 2, 0.2f);
-	planeMaterial = new Material(GETTEXTURE("bricks2"), color::WHITE, 2, 0.2f, GETTEXTURE("bricksNormal2"));
+	monkeyMaterial = new Material(GETTEXTURE("2"), 50, 2.2f);
+	monkeyMaterial2 = new Material(GETTEXTURE("4"), 1, 0.2f);
+	rockMaterial = new Material(GETTEXTURE("rock"), 2, 0.2f);
+	stallMaterial = new Material(GETTEXTURE("stall"), 2, 0.2f);
+
+	planeMaterial0 = new Material(GETTEXTURE("bricks"), 3, 0.1f, GETTEXTURE("bricksNormal"));
+
+	planeMaterial1 = new Material(GETTEXTURE("bricks"), 3, 0.1f,
+	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.02f, -0.5f);
+
+	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 3, 0.1f,
+	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
 	stallMesh = new Mesh("assets/models/stall.obj");
 	planeMesh0 = new Mesh("assets/models/plane0.obj");
 	planeMesh1 = new Mesh("assets/models/plane1.obj");
-	planeMesh2 = new Mesh("assets/models/plane2.obj");
 
 	monkeyModel = new Model(monkeyMesh, monkeyMaterial);
 	monkeyModel->transform.setTranslation({5, 0, -5});
@@ -90,16 +99,17 @@ Test3D::Test3D() :
 	stallModel->transform.setRotation(quat::rotationY(to_rad(-90)));
 
 //	planes
-	planeModel0 = new Model(planeMesh0, planeMaterial);
-	planeModel0->transform.setTranslation({15, 0, -5});
-	planeModel0->transform.setRotation(quat::rotationY(to_rad(-10)));
+	planeModel0 = new Model(planeMesh0, planeMaterial0);
+	planeModel0->transform.setTranslation({15, -3, -5});
+	planeModel0->transform.setScale({0.4f, 0.4f, 0.4f});
 
-	planeModel1 = new Model(planeMesh1, planeMaterial);
-	planeModel1->transform.setTranslation({15, -3, -5});
-	planeModel1->transform.setRotation(quat::rotationY(to_rad(40)));
+	planeModel1 = new Model(planeMesh0, planeMaterial1);
+	planeModel1->transform.setTranslation({22, -3, -5});
+	planeModel1->transform.setScale({0.4f, 0.4f, 0.4f});
 
-	planeModel2 = new Model(planeMesh2, planeMaterial);
-	planeModel2->transform.setTranslation({15, -5, -5});
+	planeModel2 = new Model(planeMesh0, planeMaterial2);
+	planeModel2->transform.setTranslation({29, -3, -5});
+	planeModel2->transform.setScale({0.4f, 0.4f, 0.4f});
 
 }
 
@@ -119,7 +129,6 @@ Test3D::~Test3D() {
 
 	delete planeMesh0;
 	delete planeMesh1;
-	delete planeMesh2;
 
 	delete monkeyModel;
 	delete monkeyModel2;
@@ -134,7 +143,9 @@ Test3D::~Test3D() {
 	delete monkeyMaterial;
 	delete monkeyMaterial2;
 	delete stallMaterial;
-	delete planeMaterial;
+	delete planeMaterial0;
+	delete planeMaterial1;
+	delete planeMaterial2;
 
 	delete player;
 }
@@ -190,6 +201,19 @@ void Test3D::fixedUpdate(float delta) {
 		vec3 a = directionalLight->getDirection();
 		a.y -= 0.03f;
 		directionalLight->setDirection(a);
+	}
+
+	if (Keyboard::isKeyPressed(Keyboard::Key::Y)) {
+		float a = planeMaterial2->getDispMapBias();
+		a += 0.005f;
+		planeMaterial2->setDispMapBias(a);
+		XE_INFO(a);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::U)) {
+		float a = planeMaterial2->getDispMapBias();
+		a -= 0.005f;
+		planeMaterial2->setDispMapBias(a);
+		XE_INFO(a);
 	}
 }
 

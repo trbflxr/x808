@@ -4,7 +4,6 @@
 
 #include <string>
 
-#include <utils/log.hpp>
 #include "glshaderresource.hpp"
 
 static const char *batchRendererShaderGL =
@@ -16,7 +15,11 @@ static const char *basicForwardShaderGL =
 		;
 
 static const char *forwardAmbientShaderGL =
-#include "shaders/forward-ambient.shader"
+#include "shaders/forward-ambient.fs"
+		;
+
+static const char *forwardAmbientFrag =
+#include "shaders/ambient-light.fsh"
 		;
 
 static const char *forwardDirectionalShaderGL =
@@ -47,6 +50,10 @@ static const char *lightingSrc =
 #include "shaders/lighting.glh"
 		;
 
+static const char *samplingSrc =
+#include "shaders/sampling.glh"
+		;
+
 namespace xe { namespace gfx {
 
 	std::string batchRendererShaderSourceGL() {
@@ -58,7 +65,13 @@ namespace xe { namespace gfx {
 	}
 
 	std::string forwardAmbientShaderSourceGL() {
-		return forwardAmbientShaderGL;
+		std::string src;
+		src += lightingVert;
+		src += forwardAmbientFrag;
+		src += samplingSrc;
+		src += forwardAmbientShaderGL;
+
+		return src;
 	}
 
 	std::string forwardDirectionalShaderSourceGL() {
@@ -67,6 +80,7 @@ namespace xe { namespace gfx {
 		src += lightingFrag;
 		src += lightingSrc;
 		src += forwardDirectionalShaderGL;
+		src += samplingSrc;
 		src += lightingMain;
 
 		return src;
@@ -78,6 +92,7 @@ namespace xe { namespace gfx {
 		src += lightingFrag;
 		src += lightingSrc;
 		src += forwardPointShaderGL;
+		src += samplingSrc;
 		src += lightingMain;
 
 		return src;
@@ -89,6 +104,7 @@ namespace xe { namespace gfx {
 		src += lightingFrag;
 		src += lightingSrc;
 		src += forwardSpotShaderGL;
+		src += samplingSrc;
 		src += lightingMain;
 
 		return src;

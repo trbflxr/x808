@@ -13,9 +13,18 @@ namespace xe { namespace gfx {
 	}
 
 	void AmbientLight::setUniforms(const Model *model, const Camera *camera) {
-		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * model->transform.toMatrix();
+		mat4 world = model->transform.toMatrix();
+		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * world;
 
 		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::ShaderType::VERT);
+		setUniform("sys_Model", &world.elements, sizeof(mat4), api::ShaderType::VERT);
+
+		float dispScale = model->material->getDispMapScale();
+		float dispBias = model->material->getDispMapBias();
+		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::ShaderType::FRAG);
+		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::ShaderType::FRAG);
+
+		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::ShaderType::FRAG);
 	}
 
 	void AmbientLight::setUniformsInternal() {
