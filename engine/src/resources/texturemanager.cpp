@@ -10,15 +10,7 @@
 namespace xe {
 
 	TextureManager::TextureManager() {
-		using namespace gfx::api;
-
-		TextureParameters params(TextureFilter::NEAREST);
-
-		Texture2D *texture = Texture2D::create(internal::DEFAULT_TEXTURE_WIDTH,
-		                                       internal::DEFAULT_TEXTURE_HEIGHT, params);
-		texture->setData(internal::DEFAULT_TEXTURE);
-
-		textures.emplace("default", texture);
+		createDefaultTextures();
 	}
 
 	TextureManager::~TextureManager() {
@@ -54,6 +46,27 @@ namespace xe {
 
 	void TextureManager::clean() {
 		instance().textures.clear();
+	}
+
+	void TextureManager::createDefaultTextures() {
+		using namespace gfx::api;
+
+		TextureParameters params(TextureFilter::NEAREST);
+
+		///texture
+		Texture2D *errorTexture = Texture2D::create(internal::DEFAULT_TEXTURE_W,
+		                                            internal::DEFAULT_TEXTURE_H, params);
+		errorTexture->setData(internal::DEFAULT_TEXTURE);
+
+
+		///normal
+		Texture2D *defaultNormal = Texture2D::create(internal::DEFAULT_NORMAL_W,
+		                                             internal::DEFAULT_NORMAL_H, params);
+		defaultNormal->setData(internal::DEFAULT_NORMAL);
+
+
+		textures.emplace("normal", defaultNormal);
+		textures.emplace("default", errorTexture);
 	}
 
 }

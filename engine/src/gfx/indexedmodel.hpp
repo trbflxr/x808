@@ -19,6 +19,7 @@ namespace xe { namespace gfx {
 		std::vector<vec3> positions;
 		std::vector<vec2> uvs;
 		std::vector<vec3> normals;
+		std::vector<vec3> tangents;
 		std::vector<uint> indices;
 
 		explicit IndexedModel(const aiMesh *mesh);

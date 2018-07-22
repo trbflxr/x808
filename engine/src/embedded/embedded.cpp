@@ -22,7 +22,17 @@ namespace xe { namespace internal {
 
 	byte *DEFAULT_TEXTURE = DEFAULT_TEXTURE_ARRAY;
 	uint DEFAULT_TEXTURE_SIZE = sizeof(DEFAULT_TEXTURE_ARRAY);
-	uint DEFAULT_TEXTURE_WIDTH = 247;
-	uint DEFAULT_TEXTURE_HEIGHT = 200;
+	uint DEFAULT_TEXTURE_W = 247;
+	uint DEFAULT_TEXTURE_H = 200;
+
+	///normal
+	byte DEFAULT_NORMAL_ARRAY[] = {
+#include "files/defaultnormal.embed"
+	};
+
+	byte *DEFAULT_NORMAL = DEFAULT_NORMAL_ARRAY;
+	uint DEFAULT_NORMAL_SIZE = sizeof(DEFAULT_NORMAL_ARRAY);
+	uint DEFAULT_NORMAL_W = 16;
+	uint DEFAULT_NORMAL_H = 16;
 
 }}

@@ -25,6 +25,8 @@ namespace xe {
 	private:
 		TextureManager();
 
+		void createDefaultTextures();
+
 		static TextureManager &instance();
 
 	private:

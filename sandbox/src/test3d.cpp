@@ -24,7 +24,6 @@ Test3D::Test3D() :
 	TextureManager::add(Texture2D::create("bricks", "assets/textures/bricks.jpg", params));
 	TextureManager::add(Texture2D::create("bricks2", "assets/textures/bricks2.jpg", params));
 	TextureManager::add(Texture2D::create("bricksNormal2", "assets/textures/bricksNormal2.png", params));
-	TextureManager::add(Texture2D::create("defaultNormal", "assets/textures/defaultNormal.jpg", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
@@ -66,7 +65,7 @@ Test3D::Test3D() :
 	monkeyMaterial2 = new Material(GETTEXTURE("4"), color::WHITE, 1, 0.2f);
 	rockMaterial = new Material(GETTEXTURE("rock"), color::WHITE, 2, 0.2f);
 	stallMaterial = new Material(GETTEXTURE("stall"), color::WHITE, 2, 0.2f);
-	planeMaterial = new Material(GETTEXTURE("bricks"), color::WHITE, 2, 0.2f);
+	planeMaterial = new Material(GETTEXTURE("bricks2"), color::WHITE, 2, 0.2f, GETTEXTURE("bricksNormal2"));
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
@@ -152,7 +151,7 @@ void Test3D::render() {
 }
 
 void Test3D::tick() {
-	XE_INFO(player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
+//	XE_INFO(player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
 
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",

@@ -16,7 +16,8 @@ namespace xe { namespace gfx {
 	struct MeshVertexData {
 		vec3 position;
 		vec2 uv;
-		vec3 normal; // 0, 0, 0
+		vec3 normal;
+		vec3 tangent;
 	};
 
 	class XE_API Mesh {

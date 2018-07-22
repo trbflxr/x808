@@ -43,19 +43,22 @@ namespace xe { namespace gfx {
 		api::BufferLayout layout;
 		layout.push<vec3>("POSITION"); // Position
 		layout.push<vec2>("TEXCOORD"); // UV
-		layout.push<vec3>("NORMAL"); // Normal
+		layout.push<vec3>("NORMAL");   // Normal
+		layout.push<vec3>("TANGENT");  // Tangent
 		buffer->setLayout(layout);
 
 		size_t size = model.positions.size();
-		MeshVertexData data[size];
+		MeshVertexData *data = new MeshVertexData[size];
 
 		for (size_t i = 0; i < size; ++i) {
 			data[i].position = model.positions[i];
 			data[i].uv = model.uvs[i];
 			data[i].normal = model.normals[i];
+			data[i].tangent = model.tangents[i];
 		}
 
-		buffer->setData(static_cast<uint>(size * sizeof(MeshVertexData)), &data);
+		buffer->setData(static_cast<uint>(size * sizeof(MeshVertexData)), data);
+		delete[] data;
 
 		vertexArray = api::VertexArray::create();
 		vertexArray->pushBuffer(buffer);

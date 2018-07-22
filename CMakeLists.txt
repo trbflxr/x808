@@ -11,3 +11,4 @@ file(COPY assets xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory(engine)
 add_subdirectory(sandbox)
+add_subdirectory(tools)

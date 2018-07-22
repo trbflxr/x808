@@ -102,8 +102,8 @@ namespace xe { namespace gfx { namespace api {
 			if (!pixels) {
 				fail = true;
 				fileName = "default";
-				width = internal::DEFAULT_TEXTURE_WIDTH;
-				height = internal::DEFAULT_TEXTURE_HEIGHT;
+				width = internal::DEFAULT_TEXTURE_W;
+				height = internal::DEFAULT_TEXTURE_H;
 
 				pixels = internal::DEFAULT_TEXTURE;
 				parameters.format = TextureFormat::RGBA;

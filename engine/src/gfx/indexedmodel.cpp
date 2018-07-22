@@ -32,6 +32,14 @@ namespace xe { namespace gfx {
 			}
 		}
 
+		if (mesh->HasTangentsAndBitangents()) {
+			for (uint i = 0; i < mesh->mNumVertices; ++i) {
+				tangents.emplace_back(mesh->mTangents[i].x,
+				                     mesh->mTangents[i].y,
+				                     mesh->mTangents[i].z);
+			}
+		}
+
 		if (mesh->HasFaces()) {
 			for (uint i = 0; i < mesh->mNumFaces; ++i) {
 				for (uint j = 0; j < mesh->mFaces[i].mNumIndices; ++j) {
