@@ -16,10 +16,6 @@ namespace xe { namespace gfx {
 		setUniformsInternal();
 	}
 
-	void SpotLight::setUniforms(const Model *model, const Camera *camera) {
-		PointLight::setUniforms(model, camera);
-	}
-
 	void SpotLight::setUniformsInternal() {
 		PointLight::setUniformsInternal();
 

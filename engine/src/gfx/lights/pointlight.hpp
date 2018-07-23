@@ -23,8 +23,6 @@ namespace xe { namespace gfx {
 		explicit PointLight(api::Shader *shader, const vec3 &position, const vec3 &attenuation,
 		                    float intensity, uint color = color::WHITE);
 
-		void setUniforms(const Model *model, const Camera *camera) override;
-
 		inline const vec3 &getAttenuation() const { return pointLight.attenuation; }
 		void setAttenuation(const vec3 &attenuation);
 

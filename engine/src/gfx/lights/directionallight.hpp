@@ -21,8 +21,6 @@ namespace xe { namespace gfx {
 		explicit DirectionalLight(api::Shader *shader, const vec3 &direction,
 		                          float intensity, uint color = color::WHITE);
 
-		void setUniforms(const Model *model, const Camera *camera) override;
-
 		inline const vec3 &getDirection() const { return directionalLight.direction; }
 		void setDirection(const vec3 &direction);
 

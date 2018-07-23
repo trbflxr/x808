@@ -17,7 +17,7 @@ namespace xe { namespace gfx { namespace api {
 
 	public:
 		enum class Type {
-			NONE, FLOAT32, VEC2, VEC3, VEC4, MAT4, INT32, STRUCT
+			NONE, INT32, FLOAT32, VEC2, VEC3, VEC4, MAT4, STRUCT
 		};
 
 	public:

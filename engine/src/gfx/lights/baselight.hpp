@@ -28,7 +28,7 @@ namespace xe { namespace gfx {
 
 		void updateUniforms();
 
-		virtual void setUniforms(const Model *model, const Camera *camera) = 0;
+		virtual void setUniforms(const Model *model, const Camera *camera);
 
 		void setUniform(const char *name, const void *data, size_t size,
 		                api::ShaderType shader = api::ShaderType::NONE);
