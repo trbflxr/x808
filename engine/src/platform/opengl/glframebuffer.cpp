@@ -18,6 +18,7 @@ namespace xe { namespace gfx { namespace api {
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_FRAMEBUFFER, frameBufferHandle));
 
+			//todo: set nearest?
 			TextureParameters params(TextureFormat::DEPTH, TextureFilter::LINEAR, TextureWrap::CLAMP_TO_EDGE);
 			texture = new GLTexture2D(width, height, params);
 
@@ -32,7 +33,7 @@ namespace xe { namespace gfx { namespace api {
 			glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
 		} else {
-			TextureParameters params(TextureFormat::RGBA, TextureFilter::LINEAR, TextureWrap::CLAMP);
+			TextureParameters params(TextureFormat::RGBA, TextureFilter::NEAREST, TextureWrap::CLAMP);
 			texture = new GLTexture2D(width, height, params);
 
 

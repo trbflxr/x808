@@ -86,7 +86,7 @@ TestECS::TestECS() :
 	renderingPipeline.addSystem(*spriteRenderer);
 
 	//main systems
-	cameraSystem = new OrthoCameraSystem(renderer);
+	cameraSystem = new OrthoCameraMoveSystem(renderer);
 
 	mainSystems.addSystem(*cameraSystem);
 

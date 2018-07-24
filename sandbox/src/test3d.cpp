@@ -11,8 +11,9 @@
 #include <gfx/color.hpp>
 #include "test3d.hpp"
 
-Test3D::Test3D() :
-		ecs(app.getEcs()) {
+Test3D::Test3D(TestUI *ui) :
+		ecs(app.getEcs()),
+		ui(ui) {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
@@ -102,7 +103,6 @@ Test3D::Test3D() :
 	planeModel0 = new Model(planeMesh0, planeMaterial0);
 	planeModel0->transform.setTranslation({15, -3, -5});
 	planeModel0->transform.setScale({0.4f, 0.4f, 0.4f});
-	planeModel0->transform.setRotation(quat::rotationZ(to_rad(-90)));
 
 	planeModel1 = new Model(planeMesh0, planeMaterial1);
 	planeModel1->transform.setTranslation({22, -3, -5});
@@ -112,7 +112,7 @@ Test3D::Test3D() :
 	planeModel2->transform.setTranslation({29, -3, -5});
 	planeModel2->transform.setScale({0.4f, 0.4f, 0.4f});
 
-	frameBuffer = FrameBuffer::create(800, 600, FrameBuffer::COLOR);
+	frameBuffer = FrameBuffer::create(512, 512, FrameBuffer::COLOR);
 	frameBuffer->setClearColor({1, 0, 1, 1});
 }
 
@@ -164,17 +164,19 @@ void Test3D::render() {
 	renderer->render(stallModel, player->getCamera());
 	renderer->render(rockModel, player->getCamera());
 
-//	renderer->render(planeModel0, player->getCamera());
+	renderer->render(planeModel0, player->getCamera());
 	renderer->render(planeModel1, player->getCamera());
 	renderer->render(planeModel2, player->getCamera());
 
 	frameBuffer->unbind();
 
+
 	Renderer::setViewport(0, 0, 800, 600);
 	Renderer::setClearColor(color::BLACK);
 
-	planeModel0->material->setTexture(frameBuffer->getTexture());
-
+	//draw framebuffer to ui
+	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
+	s->texture = frameBuffer->getTexture();
 
 	renderer->render(monkeyModel, player->getCamera());
 	renderer->render(monkeyModel2, player->getCamera());
@@ -187,7 +189,7 @@ void Test3D::render() {
 }
 
 void Test3D::tick() {
-//	XE_INFO(player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
+//	XE_INFO("dir:", player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
 
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",

@@ -19,6 +19,8 @@ namespace xe { namespace gfx {
 	}
 
 	void ForwardRenderer::render(const Model *model, const Camera *camera) {
+		Renderer::enableDepthTesting(true);
+
 		//first run without blending
 		ambientLight->bind();
 		ambientLight->setUniforms(model, camera);

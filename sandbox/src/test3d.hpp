@@ -16,6 +16,7 @@
 #include <gfx/lights/spotlight.hpp>
 #include <gfx/api/framebuffer.hpp>
 #include "dummyplayer.hpp"
+#include "testui.hpp"
 
 using namespace xe;
 using namespace gfx;
@@ -23,7 +24,7 @@ using namespace gfx::api;
 
 class Test3D : public Layer {
 public:
-	explicit Test3D();
+	explicit Test3D(TestUI* ui);
 	~Test3D() override;
 
 	void render() override;
@@ -37,6 +38,7 @@ public:
 
 private:
 	ECS &ecs;
+	TestUI* ui;
 
 	Material *rockMaterial;
 	Material *monkeyMaterial;

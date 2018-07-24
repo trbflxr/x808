@@ -17,7 +17,7 @@ public:
 
 	void input(xe::Event &event);
 
-	inline const xe::gfx::FPSCamera *getCamera() const { return camera; }
+	inline xe::gfx::FPSCamera *getCamera() const { return camera; }
 
 private:
 	xe::gfx::FPSCamera *camera;

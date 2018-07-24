@@ -2,6 +2,7 @@
 #include <utils/log.hpp>
 #include "testecs.hpp"
 #include "test3d.hpp"
+#include "testui.hpp"
 
 using namespace xe;
 
@@ -15,8 +16,11 @@ public:
 	void init() override {
 		Application::init();
 
+		TestUI *ui = new TestUI();
+
 //		pushLayer(new TestECS());
-		pushLayer(new Test3D());
+		pushLayer(new Test3D(ui));
+		pushLayer(ui);
 	}
 
 };
