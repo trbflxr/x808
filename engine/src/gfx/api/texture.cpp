@@ -13,8 +13,6 @@ namespace xe { namespace gfx { namespace api {
 		switch (format) {
 			case TextureFormat::RGBA: return 4;
 			case TextureFormat::RGB: return 3;
-			case TextureFormat::BGRA: return 4;
-			case TextureFormat::BGR: return 3;
 			case TextureFormat::LUMINANCE: return 4;
 			case TextureFormat::LUMINANCE_ALPHA: return 1;
 			default: return 0;

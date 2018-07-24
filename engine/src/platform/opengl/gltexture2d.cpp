@@ -13,20 +13,6 @@ namespace xe { namespace gfx { namespace api {
 		switch (format) {
 			case TextureFormat::RGBA: return GL_RGBA;
 			case TextureFormat::RGB: return GL_RGB;
-			case TextureFormat::BGRA: return GL_BGRA;
-			case TextureFormat::BGR: return GL_BGR;
-			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
-			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
-			default: return 0;
-		}
-	}
-
-	uint textureFormatToInternalGL(TextureFormat format) {
-		switch (format) {
-			case TextureFormat::RGBA: return GL_BGRA;
-			case TextureFormat::RGB: return GL_BGR;
-			case TextureFormat::BGRA: return GL_RGBA;
-			case TextureFormat::BGR: return GL_BGR;
 			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
 			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
 			default: return 0;
@@ -139,7 +125,7 @@ namespace xe { namespace gfx { namespace api {
 			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE));
 		} else {
 			glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
-			                    textureFormatToInternalGL(parameters.format),
+			                    textureFormatToGL(parameters.format),
 			                    GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));
 
 			glCall(glGenerateMipmap(GL_TEXTURE_2D));

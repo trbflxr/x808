@@ -48,7 +48,7 @@ namespace xe { namespace utils {
 			FreeImage_FlipVertical(bitmap);
 		}
 
-		if (FreeImage_GetRedMask(bitmap) == color::WHITE) {
+		if (FreeImage_GetRedMask(bitmap) == 0xff0000) {
 			SwapRedBlue32(bitmap);
 		}
 

@@ -28,6 +28,7 @@ Test3D::Test3D(TestUI *ui) :
 	TextureManager::add(Texture2D::create("bricksNormal2", "assets/textures/bricksNormal2.png", params));
 	TextureManager::add(Texture2D::create("bricksDisp", "assets/textures/bricksDisp.png", params));
 	TextureManager::add(Texture2D::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
+	TextureManager::add(Texture2D::create("bgr", "assets/textures/bgr.jfif", params));
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
@@ -70,7 +71,7 @@ Test3D::Test3D(TestUI *ui) :
 	rockMaterial = new Material(GETTEXTURE("rock"), 2, 0.2f);
 	stallMaterial = new Material(GETTEXTURE("stall"), 2, 0.2f);
 
-	planeMaterial0 = new Material(GETTEXTURE("bricks"), 3, 0.1f);
+	planeMaterial0 = new Material(GETTEXTURE("bgr"), 3, 0.1f);
 
 	planeMaterial1 = new Material(GETTEXTURE("bricks"), 3, 0.1f,
 	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.02f, -0.5f);
