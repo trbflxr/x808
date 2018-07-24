@@ -11,11 +11,12 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	enum class BufferType {
-		STATIC, DYNAMIC
-	};
-
 	class XE_API VertexBuffer {
+	public:
+		enum Type {
+			STATIC, DYNAMIC
+		};
+
 	public:
 		virtual ~VertexBuffer() = default;
 
@@ -31,7 +32,7 @@ namespace xe { namespace gfx { namespace api {
 		template<typename T>
 		T *getPointer() { return (T *) getPointerInternal(); }
 
-		static VertexBuffer* create(BufferType type = BufferType::STATIC);
+		static VertexBuffer *create(Type type = Type::STATIC);
 
 	protected:
 		VertexBuffer() = default;

@@ -16,20 +16,20 @@ namespace xe { namespace gfx {
 		mat4 world = model->transform.toMatrix();
 		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * world;
 
-		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::ShaderType::VERT);
-		setUniform("sys_Model", &world.elements, sizeof(mat4), api::ShaderType::VERT);
+		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
+		setUniform("sys_Model", &world.elements, sizeof(mat4), api::Shader::VERT);
 
 		float dispScale = model->material->getDispMapScale();
 		float dispBias = model->material->getDispMapBias();
-		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::ShaderType::FRAG);
+		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::Shader::FRAG);
 
-		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::ShaderType::FRAG);
+		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::Shader::FRAG);
 	}
 
 	void AmbientLight::setUniformsInternal() {
-		setUniform("sys_Intensity", &baseLight.intensity, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_Color", &baseLight.color, sizeof(vec4), api::ShaderType::FRAG);
+		setUniform("sys_Intensity", &baseLight.intensity, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_Color", &baseLight.color, sizeof(vec4), api::Shader::FRAG);
 	}
 
 }}

@@ -8,11 +8,11 @@
 
 #include "gfx/api/vertexbuffer.hpp"
 
-namespace xe{namespace gfx{namespace api{
+namespace xe { namespace gfx { namespace api {
 
-	class XE_API GLVertexBuffer : public VertexBuffer{
+	class XE_API GLVertexBuffer : public VertexBuffer {
 	public:
-		explicit GLVertexBuffer(BufferType type);
+		explicit GLVertexBuffer(Type type);
 		~GLVertexBuffer() override;
 
 		void resize(uint size) override;
@@ -30,7 +30,7 @@ namespace xe{namespace gfx{namespace api{
 	private:
 		uint handle;
 		uint size;
-		BufferType type;
+		Type type;
 		BufferLayout layout;
 	};
 

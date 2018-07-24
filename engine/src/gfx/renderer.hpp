@@ -8,6 +8,8 @@
 
 #include "common.hpp"
 #include "xeint.hpp"
+#include "color.hpp"
+#include "math/vec4.hpp"
 
 namespace xe { namespace gfx {
 
@@ -44,6 +46,9 @@ namespace xe { namespace gfx {
 		static void clear(uint buffer) { instance->clearInternal(buffer); }
 		static void flush() { instance->flushInternal(); }
 
+		static void setClearColor(uint color) { instance->setClearColorInternal(color::decode(color)); }
+		static void setClearColor(const vec4 &color) { instance->setClearColorInternal(color); }
+
 		static void enableVsync(bool enabled) { instance->enableVsyncInternal(enabled); }
 		static void enableDepthTesting(bool enabled) { instance->enableDepthTestingInternal(enabled); }
 		static void enableBlend(bool enabled) { instance->enableBlendInternal(enabled); }
@@ -79,6 +84,8 @@ namespace xe { namespace gfx {
 
 		virtual void clearInternal(uint buffer) = 0;
 		virtual void flushInternal() = 0;
+
+		virtual void setClearColorInternal(const vec4 &color) = 0;
 
 		virtual void enableVsyncInternal(bool enabled) = 0;
 

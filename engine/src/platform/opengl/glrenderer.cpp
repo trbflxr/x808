@@ -71,6 +71,10 @@ namespace xe { namespace gfx {
 		context->swapBuffers();
 	}
 
+	void GLRenderer::setClearColorInternal(const vec4 &color) {
+		glCall(glClearColor(color.x, color.y, color.z, color.w));
+	}
+
 	void GLRenderer::enableVsyncInternal(bool enabled) {
 		context->enableVsync(enabled);
 	}

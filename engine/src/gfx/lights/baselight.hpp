@@ -30,8 +30,7 @@ namespace xe { namespace gfx {
 
 		virtual void setUniforms(const Model *model, const Camera *camera);
 
-		void setUniform(const char *name, const void *data, size_t size,
-		                api::ShaderType shader = api::ShaderType::NONE);
+		void setUniform(const char *name, const void *data, size_t size, uint shaderType);
 
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enabled) { BaseLight::enabled = enabled; }

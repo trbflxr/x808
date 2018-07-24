@@ -82,7 +82,7 @@ namespace xe { namespace gfx {
 
 		shader->bind();
 
-		api::VertexBuffer *buffer = api::VertexBuffer::create(api::BufferType::DYNAMIC);
+		api::VertexBuffer *buffer = api::VertexBuffer::create(api::VertexBuffer::Type::DYNAMIC);
 		buffer->resize(RENDERER_BUFFER_SIZE);
 
 		api::BufferLayout layout;

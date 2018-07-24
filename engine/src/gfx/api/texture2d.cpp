@@ -8,9 +8,9 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	Texture2D *Texture2D::create(uint width, uint height, TextureParameters params, TextureLoadOptions options) {
+	Texture2D *Texture2D::create(uint width, uint height, TextureParameters params) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLTexture2D(width, height, params, options);
+			case RenderAPI::OPENGL : return new GLTexture2D(width, height, params);
 
 			default: return nullptr;
 		}

@@ -12,9 +12,7 @@ namespace xe { namespace gfx { namespace api {
 
 	class XE_API Texture2D : public Texture {
 	public:
-		static Texture2D *create(uint width, uint height,
-		                         TextureParameters params = { },
-		                         TextureLoadOptions options = { });
+		static Texture2D *create(uint width, uint height, TextureParameters params = { });
 
 		static Texture2D *create(const std::string_view &name,
 		                         const std::string_view &path,

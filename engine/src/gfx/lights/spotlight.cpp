@@ -19,7 +19,7 @@ namespace xe { namespace gfx {
 	void SpotLight::setUniformsInternal() {
 		PointLight::setUniformsInternal();
 
-		setUniform("sys_ActiveSpotLight", &spotLight, sizeof(SpotLightStruct), api::ShaderType::FRAG);
+		setUniform("sys_ActiveSpotLight", &spotLight, sizeof(SpotLightStruct), api::Shader::FRAG);
 	}
 
 	void SpotLight::setDirection(const vec3 &direction) {

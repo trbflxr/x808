@@ -36,11 +36,12 @@ namespace xe { namespace gfx { namespace api {
 				name(name), buffer(buffer), offset(offset) { }
 	};
 
-	enum class ShaderType {
-		NONE, VERT, FRAG
-	};
-
 	class XE_API Shader {
+	public:
+		enum {
+			UNDEFINED = 0, VERT, FRAG
+		};
+
 	public:
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;

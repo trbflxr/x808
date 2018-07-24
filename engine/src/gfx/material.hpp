@@ -47,14 +47,14 @@ namespace xe { namespace gfx {
 		inline const api::Texture *getNormalMap() const { return normalMap; }
 		inline void setNormalMap(const api::Texture *normalMap) { Material::normalMap = normalMap; }
 
+		inline const api::Texture *getDispMap() const { return dispMap; }
+		inline void setDispMap(const api::Texture *dispMap) { Material::dispMap = dispMap; }
+
 		inline float getSpecularIntensity() const { return specularIntensity; }
 		inline void setSpecularIntensity(float value) { Material::specularIntensity = value; }
 
 		inline float getSpecularPower() const { return specularPower; }
 		inline void setSpecularPower(float value) { Material::specularPower = value; }
-
-		inline const api::Texture *getDispMap() const { return dispMap; }
-		inline void setDispMap(const api::Texture *dispMap) { Material::dispMap = dispMap; }
 
 		inline float getDispMapScale() const { return dispMapScale; }
 		inline void setDispMapScale(float dispMapScale) { Material::dispMapScale = dispMapScale; }

@@ -21,6 +21,8 @@ namespace xe { namespace gfx {
 		void clearInternal(uint buffer) override;
 		void flushInternal() override;
 
+		void setClearColorInternal(const vec4 &color) override;
+
 		void enableVsyncInternal(bool enabled) override;
 		void enableDepthTestingInternal(bool enabled) override;
 		void enableBlendInternal(bool enabled) override;

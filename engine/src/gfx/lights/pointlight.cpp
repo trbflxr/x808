@@ -23,7 +23,7 @@ namespace xe { namespace gfx {
 	}
 
 	void PointLight::setUniformsInternal() {
-		setUniform("sys_ActivePointLight", &pointLight, sizeof(PointLightStruct), api::ShaderType::FRAG);
+		setUniform("sys_ActivePointLight", &pointLight, sizeof(PointLightStruct), api::Shader::FRAG);
 	}
 
 	void PointLight::setAttenuation(const vec3 &attenuation) {

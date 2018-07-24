@@ -59,25 +59,26 @@ namespace xe { namespace gfx {
 		mat4 world = model->transform.toMatrix();
 		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * world;
 
-		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::ShaderType::VERT);
-		setUniform("sys_Model", &world.elements, sizeof(mat4), api::ShaderType::VERT);
+		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
+		setUniform("sys_Model", &world.elements, sizeof(mat4), api::Shader::VERT);
 
 		float specularPower = model->material->getSpecularIntensity();
 		float specularIntensity = model->material->getSpecularPower();
 		float dispScale = model->material->getDispMapScale();
 		float dispBias = model->material->getDispMapBias();
-		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::ShaderType::FRAG);
-		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::ShaderType::FRAG);
+		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::Shader::FRAG);
 	}
 
-	void BaseLight::setUniform(const char *name, const void *data, size_t size, api::ShaderType shader) {
-		switch (shader) {
-			case api::ShaderType::NONE:
+	void BaseLight::setUniform(const char *name, const void *data, size_t size, uint shaderType) {
+		switch (shaderType) {
 
-			case api::ShaderType::VERT: {
+			case api::Shader::UNDEFINED:
+
+			case api::Shader::VERT: {
 				for (auto &&uniform :  vsUniforms) {
 					if (strcmp(uniform.name, name) == 0) {
 						memcpy(uniform.buffer.buffer + uniform.offset, data, size);
@@ -86,7 +87,7 @@ namespace xe { namespace gfx {
 				}
 			}
 
-			case api::ShaderType::FRAG: {
+			case api::Shader::FRAG: {
 				for (auto &&uniform :  fsUniforms) {
 					if (strcmp(uniform.name, name) == 0) {
 						memcpy(uniform.buffer.buffer + uniform.offset, data, size);
@@ -94,6 +95,8 @@ namespace xe { namespace gfx {
 					}
 				}
 			}
+
+			default: break;
 		}
 
 		XE_FATAL("[BaseLight]: Uniform '", name, "' not found!");

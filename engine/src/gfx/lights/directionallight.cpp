@@ -17,7 +17,7 @@ namespace xe { namespace gfx {
 
 	void DirectionalLight::setUniformsInternal() {
 		setUniform("sys_ActiveDirectionalLight", &directionalLight,
-		           sizeof(DirectionalLightStruct), api::ShaderType::FRAG);
+		           sizeof(DirectionalLightStruct), api::Shader::FRAG);
 	}
 
 	void DirectionalLight::setDirection(const vec3 &direction) {

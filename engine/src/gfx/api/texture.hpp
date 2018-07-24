@@ -22,7 +22,7 @@ namespace xe { namespace gfx { namespace api {
 
 
 	enum class TextureFormat {
-		NONE = 0, RGB, RGBA, BGR, BGRA, LUMINANCE, LUMINANCE_ALPHA
+		NONE = 0, RGB, RGBA, BGR, BGRA, LUMINANCE, LUMINANCE_ALPHA, DEPTH
 	};
 
 	struct TextureParameters {
@@ -47,7 +47,8 @@ namespace xe { namespace gfx { namespace api {
 
 		TextureParameters(TextureFilter filter, TextureWrap wrap) :
 				format(TextureFormat::RGBA),
-				filter(filter), wrap(wrap) { }
+				filter(filter),
+				wrap(wrap) { }
 	};
 
 	struct TextureLoadOptions {

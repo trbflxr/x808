@@ -14,6 +14,7 @@
 #include <gfx/lights/directionallight.hpp>
 #include <gfx/lights/pointlight.hpp>
 #include <gfx/lights/spotlight.hpp>
+#include <gfx/api/framebuffer.hpp>
 #include "dummyplayer.hpp"
 
 using namespace xe;
@@ -70,6 +71,8 @@ private:
 	PointLight *pointLight2;
 	PointLight *pointLight3;
 	PointLight *pointLight4;
+
+	FrameBuffer*frameBuffer;
 
 	bool hookSpotLight;
 	SpotLight *spotLight;

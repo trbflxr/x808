@@ -45,14 +45,11 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 
-	GLTexture2D::GLTexture2D(uint width, uint height,
-	                         TextureParameters params,
-	                         TextureLoadOptions options) :
+	GLTexture2D::GLTexture2D(uint width, uint height, TextureParameters params) :
 			fileName("NULL"),
 			width(width),
 			height(height),
-			parameters(params),
-			loadOptions(options) {
+			parameters(params) {
 
 		handle = load();
 	}
@@ -83,6 +80,11 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	void GLTexture2D::setData(const void *pixels) {
+		if (parameters.format == TextureFormat::DEPTH) {
+			XE_ERROR("[GLTexture2D]: 'SetData' is unavailable for depth texture!");
+			return;
+		}
+
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 		glCall(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
 		                       textureFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
@@ -109,7 +111,7 @@ namespace xe { namespace gfx { namespace api {
 				parameters.format = TextureFormat::RGBA;
 			} else {
 				if (bits != 24 && bits != 32) {
-					XE_FATAL("[Texture] Unsupported image bit-depth! (', bits, ')");
+					XE_FATAL("[Texture] Unsupported image bit-depth! ('", bits, "')");
 				}
 				parameters.format = bits == 24 ? TextureFormat::RGB : TextureFormat::RGBA;
 			}
@@ -129,14 +131,20 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(wrapMode)));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
 
-		//textureFormatToGL(parameters.format)
-		//todo: fix internal format
-		glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
-		                    textureFormatToInternalGL(parameters.format),
-		                    GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));
+		if (parameters.format == TextureFormat::DEPTH) {
+			glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0,
+			                    GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, nullptr));
 
-		//todo: check
-		glCall(glGenerateMipmap(GL_TEXTURE_2D));
+			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL));
+			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE));
+		} else {
+			glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
+			                    textureFormatToInternalGL(parameters.format),
+			                    GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));
+
+			glCall(glGenerateMipmap(GL_TEXTURE_2D));
+		}
+
 		glCall(glBindTexture(GL_TEXTURE_2D, 0));
 
 		if (!fail) {

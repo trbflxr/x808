@@ -12,9 +12,7 @@ namespace xe { namespace gfx { namespace api {
 
 	class GLTexture2D : public Texture2D {
 	public:
-		explicit GLTexture2D(uint width, uint height,
-		                     TextureParameters params = { },
-		                     TextureLoadOptions options = { });
+		explicit GLTexture2D(uint width, uint height, TextureParameters params = { });
 
 		explicit GLTexture2D(const std::string_view &name,
 		                     const std::string_view &path,

@@ -69,13 +69,13 @@ Test3D::Test3D() :
 	rockMaterial = new Material(GETTEXTURE("rock"), 2, 0.2f);
 	stallMaterial = new Material(GETTEXTURE("stall"), 2, 0.2f);
 
-	planeMaterial0 = new Material(GETTEXTURE("bricks"), 3, 0.1f, GETTEXTURE("bricksNormal"));
+	planeMaterial0 = new Material(GETTEXTURE("bricks"), 3, 0.1f);
 
 	planeMaterial1 = new Material(GETTEXTURE("bricks"), 3, 0.1f,
 	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.02f, -0.5f);
 
 	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 3, 0.1f,
-	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -1.0f);
+	                              GETTEXTURE("bricksNormal2"));
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
@@ -102,6 +102,7 @@ Test3D::Test3D() :
 	planeModel0 = new Model(planeMesh0, planeMaterial0);
 	planeModel0->transform.setTranslation({15, -3, -5});
 	planeModel0->transform.setScale({0.4f, 0.4f, 0.4f});
+	planeModel0->transform.setRotation(quat::rotationZ(to_rad(-90)));
 
 	planeModel1 = new Model(planeMesh0, planeMaterial1);
 	planeModel1->transform.setTranslation({22, -3, -5});
@@ -111,6 +112,8 @@ Test3D::Test3D() :
 	planeModel2->transform.setTranslation({29, -3, -5});
 	planeModel2->transform.setScale({0.4f, 0.4f, 0.4f});
 
+	frameBuffer = FrameBuffer::create(800, 600, FrameBuffer::COLOR);
+	frameBuffer->setClearColor({1, 0, 1, 1});
 }
 
 Test3D::~Test3D() {
@@ -147,14 +150,36 @@ Test3D::~Test3D() {
 	delete planeMaterial1;
 	delete planeMaterial2;
 
+	delete frameBuffer;
+
 	delete player;
 }
 
 void Test3D::render() {
+	frameBuffer->bind();
+	frameBuffer->clear();
+
 	renderer->render(monkeyModel, player->getCamera());
 	renderer->render(monkeyModel2, player->getCamera());
-	renderer->render(rockModel, player->getCamera());
 	renderer->render(stallModel, player->getCamera());
+	renderer->render(rockModel, player->getCamera());
+
+//	renderer->render(planeModel0, player->getCamera());
+	renderer->render(planeModel1, player->getCamera());
+	renderer->render(planeModel2, player->getCamera());
+
+	frameBuffer->unbind();
+
+	Renderer::setViewport(0, 0, 800, 600);
+	Renderer::setClearColor(color::BLACK);
+
+	planeModel0->material->setTexture(frameBuffer->getTexture());
+
+
+	renderer->render(monkeyModel, player->getCamera());
+	renderer->render(monkeyModel2, player->getCamera());
+	renderer->render(stallModel, player->getCamera());
+	renderer->render(rockModel, player->getCamera());
 
 	renderer->render(planeModel0, player->getCamera());
 	renderer->render(planeModel1, player->getCamera());

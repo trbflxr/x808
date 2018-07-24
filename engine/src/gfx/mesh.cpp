@@ -38,7 +38,7 @@ namespace xe { namespace gfx {
 	void Mesh::initMesh(const IndexedModel &model) {
 		indicesSize = static_cast<uint>(model.indices.size());
 
-		api::VertexBuffer *buffer = api::VertexBuffer::create(api::BufferType::STATIC);
+		api::VertexBuffer *buffer = api::VertexBuffer::create(api::VertexBuffer::Type::STATIC);
 
 		api::BufferLayout layout;
 		layout.push<vec3>("POSITION"); // Position

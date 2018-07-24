@@ -7,7 +7,7 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	VertexBuffer *VertexBuffer::create(BufferType type) {
+	VertexBuffer *VertexBuffer::create(Type type) {
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OPENGL : return new GLVertexBuffer(type);
 

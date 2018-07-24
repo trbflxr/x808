@@ -7,14 +7,14 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	static uint bufferTypeToOpenGL(BufferType type) {
+	static uint bufferTypeToOpenGL(VertexBuffer::Type type) {
 		switch (type) {
-			case BufferType::STATIC: return GL_STATIC_DRAW;
-			case BufferType::DYNAMIC: return GL_DYNAMIC_DRAW;
+			case VertexBuffer::Type::STATIC: return GL_STATIC_DRAW;
+			case VertexBuffer::Type::DYNAMIC: return GL_DYNAMIC_DRAW;
 		}
 	}
 
-	GLVertexBuffer::GLVertexBuffer(BufferType type) :
+	GLVertexBuffer::GLVertexBuffer(Type type) :
 			type(type) {
 
 		glCall(glGenBuffers(1, &handle));
