@@ -29,11 +29,8 @@ namespace xe { namespace gfx { namespace api {
 		void bind() const override;
 		void unbind() const override;
 
-		void setVSSystemUniformBuffer(byte *data, uint size, uint slot) override;
-		void setFSSystemUniformBuffer(byte *data, uint size, uint slot) override;
-
-		void setVSUserUniformBuffer(byte *data, uint size) override;
-		void setFSUserUniformBuffer(byte *data, uint size) override;
+		void setVSUniformBuffer(byte *data, uint size, uint slot) override;
+		void setFSUniformBuffer(byte *data, uint size, uint slot) override;
 
 		void setUniform(const std::string_view &name, byte *data) override;
 		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset);
@@ -41,10 +38,8 @@ namespace xe { namespace gfx { namespace api {
 		inline const std::string &getName() const override { return name; }
 		inline const std::string &getFile() const override { return file; }
 
-		inline const ShaderUniformBufferVec &getVSSystemUniforms() const override { return vsUniformBuffers; }
-		inline const ShaderUniformBufferVec &getFSSystemUniforms() const override { return fsUniformBuffers; }
-		inline const ShaderUniformBuffer *getVSUserUniformBuffer() const override { return vsUserUniformBuffer; }
-		inline const ShaderUniformBuffer *getFSUserUniformBuffer() const override { return fsUserUniformBuffer; }
+		inline const ShaderUniformBufferVec &getVSUniforms() const override { return vsUniformBuffers; }
+		inline const ShaderUniformBufferVec &getFSUniforms() const override { return fsUniformBuffers; }
 		inline const ShaderResourceVec &getResources() const override { return resources; }
 
 		static bool tryCompile(const std::string &source, std::string &error);
@@ -103,8 +98,6 @@ namespace xe { namespace gfx { namespace api {
 
 		ShaderUniformBufferVec vsUniformBuffers;
 		ShaderUniformBufferVec fsUniformBuffers;
-		GLShaderUniformBuffer *vsUserUniformBuffer;
-		GLShaderUniformBuffer *fsUserUniformBuffer;
 		ShaderResourceVec resources;
 		ShaderStructVec structs;
 	};

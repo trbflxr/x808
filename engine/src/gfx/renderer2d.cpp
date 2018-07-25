@@ -60,7 +60,7 @@ namespace xe { namespace gfx {
 
 		shader = GETSHADER("batchRenderer");
 
-		const api::ShaderUniformBufferVec &vssu = shader->getVSSystemUniforms();
+		const api::ShaderUniformBufferVec &vssu = shader->getVSUniforms();
 
 		XE_ASSERT(vssu.size());
 
@@ -355,7 +355,7 @@ namespace xe { namespace gfx {
 	void Renderer2D::flushInternal() {
 		shader->bind();
 		for (uint i = 0; i < systemUniformBuffers.size(); i++) {
-			shader->setVSSystemUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
+			shader->setVSUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
 		}
 
 		for (uint i = 0; i < textures.size(); i++) {

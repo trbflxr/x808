@@ -6,14 +6,12 @@
 #define X808_BASELIGHT_HPP
 
 
-#include "gfx/api/shader.hpp"
+#include "gfx/forwardrenderershader.hpp"
 #include "gfx/color.hpp"
-#include "gfx/model.hpp"
-#include "gfx/camera/camera.hpp"
 
 namespace xe { namespace gfx {
 
-	class XE_API BaseLight {
+	class XE_API BaseLight : public ForwardRendererShader {
 	protected:
 		struct BaseLightStruct {
 			vec4 color;
@@ -21,17 +19,6 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		virtual ~BaseLight();
-
-		inline void bind() { shader->bind(); }
-		inline void unbind() { shader->unbind(); }
-
-		void updateUniforms();
-
-		virtual void setUniforms(const Model *model, const Camera *camera);
-
-		void setUniform(const char *name, const void *data, size_t size, uint shaderType);
-
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enabled) { BaseLight::enabled = enabled; }
 
@@ -44,22 +31,9 @@ namespace xe { namespace gfx {
 	protected:
 		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
 
-		void init();
-
-		virtual void setUniformsInternal() = 0;
-
 	protected:
 		bool enabled;
-
 		BaseLightStruct baseLight;
-
-		api::Shader *shader;
-
-		std::vector<api::Uniform> vsUniforms;
-		std::vector<api::UniformBuffer> vsUniformBuffers;
-
-		std::vector<api::Uniform> fsUniforms;
-		std::vector<api::UniformBuffer> fsUniformBuffers;
 	};
 
 }}

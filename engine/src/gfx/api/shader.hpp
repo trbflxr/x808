@@ -46,21 +46,16 @@ namespace xe { namespace gfx { namespace api {
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
 
-		virtual void setVSSystemUniformBuffer(byte *data, uint size, uint slot) = 0;
-		virtual void setFSSystemUniformBuffer(byte *data, uint size, uint slot) = 0;
-
-		virtual void setVSUserUniformBuffer(byte *data, uint size) = 0;
-		virtual void setFSUserUniformBuffer(byte *data, uint size) = 0;
+		virtual void setVSUniformBuffer(byte *data, uint size, uint slot) = 0;
+		virtual void setFSUniformBuffer(byte *data, uint size, uint slot) = 0;
 
 		virtual const std::string &getName() const = 0;
 		virtual const std::string &getFile() const = 0;
 
 		virtual void setUniform(const std::string_view &name, byte *data) = 0;
 
-		virtual const ShaderUniformBufferVec &getVSSystemUniforms() const = 0;
-		virtual const ShaderUniformBufferVec &getFSSystemUniforms() const = 0;
-		virtual const ShaderUniformBuffer *getVSUserUniformBuffer() const = 0;
-		virtual const ShaderUniformBuffer *getFSUserUniformBuffer() const = 0;
+		virtual const ShaderUniformBufferVec &getVSUniforms() const = 0;
+		virtual const ShaderUniformBufferVec &getFSUniforms() const = 0;
 		virtual const ShaderResourceVec &getResources() const = 0;
 
 		static Shader *createFromFile(const std::string_view &name,

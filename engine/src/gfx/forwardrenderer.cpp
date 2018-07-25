@@ -22,13 +22,13 @@ namespace xe { namespace gfx {
 		Renderer::enableDepthTesting(true);
 
 		//first run without blending
+		Renderer::enableBlend(false);
+
 		ambientLight->bind();
 		ambientLight->setUniforms(model, camera);
 		ambientLight->updateUniforms();
 
-		model->material->bind();
 		model->mesh->render();
-		model->material->unbind();
 
 		ambientLight->unbind();
 
@@ -47,9 +47,7 @@ namespace xe { namespace gfx {
 			light->setUniforms(model, camera);
 			light->updateUniforms();
 
-			model->material->bind();
 			model->mesh->render();
-			model->material->unbind();
 
 			light->unbind();
 		}

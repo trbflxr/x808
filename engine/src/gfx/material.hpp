@@ -29,18 +29,6 @@ namespace xe { namespace gfx {
 			dispMapBias = -baseBias + baseBias * dispMapOffset;
 		}
 
-		inline void bind(uint slot = 0) const {
-			texture->bind(slot++);
-			normalMap->bind(slot++);
-			dispMap->bind(slot);
-		}
-
-		inline void unbind(uint slot = 0) const {
-			texture->unbind(slot++);
-			normalMap->unbind(slot++);
-			dispMap->unbind(slot);
-		}
-
 		inline const api::Texture *getTexture() const { return texture; }
 		inline void setTexture(const api::Texture *texture) { Material::texture = texture; }
 

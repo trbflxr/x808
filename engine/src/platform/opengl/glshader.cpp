@@ -11,9 +11,7 @@ namespace xe { namespace gfx { namespace api {
 
 	GLShader::GLShader(const std::string_view &name, const std::string &source) :
 			name(name),
-			source(source),
-			vsUserUniformBuffer(nullptr),
-			fsUserUniformBuffer(nullptr) {
+			source(source) {
 
 		std::string *shaders[2] = {&vertexSource, &fragmentSource};
 		preProcess(source, shaders);
@@ -47,24 +45,16 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glUseProgram(0));
 	}
 
-	void GLShader::setVSSystemUniformBuffer(byte *data, uint size, uint slot) {
+	void GLShader::setVSUniformBuffer(byte *data, uint size, uint slot) {
 		bind();
 		XE_ASSERT(vsUniformBuffers.size() > slot);
 		resolveAndSetUniforms(vsUniformBuffers[slot], data, size);
 	}
 
-	void GLShader::setFSSystemUniformBuffer(byte *data, uint size, uint slot) {
+	void GLShader::setFSUniformBuffer(byte *data, uint size, uint slot) {
 		bind();
 		XE_ASSERT(fsUniformBuffers.size() > slot);
 		resolveAndSetUniforms(fsUniformBuffers[slot], data, size);
-	}
-
-	void GLShader::setVSUserUniformBuffer(byte *data, uint size) {
-		resolveAndSetUniforms(vsUserUniformBuffer, data, size);
-	}
-
-	void GLShader::setFSUserUniformBuffer(byte *data, uint size) {
-		resolveAndSetUniforms(fsUserUniformBuffer, data, size);
 	}
 
 	void GLShader::setUniform(const std::string_view &name, byte *data) {
@@ -258,26 +248,10 @@ namespace xe { namespace gfx { namespace api {
 				uniform = new GLShaderUniform(t, name, count);
 			}
 
-			if (utils::startsWith(name, "sys_")) {
-				if (shaderType == 0) {
-					dynamic_cast<GLShaderUniformBuffer *>(vsUniformBuffers.front())->pushUniform(uniform);
-				} else if (shaderType == 1) {
-					dynamic_cast<GLShaderUniformBuffer *>(fsUniformBuffers.front())->pushUniform(uniform);
-				}
-			} else {
-				if (shaderType == 0) {
-					if (vsUserUniformBuffer == nullptr) {
-						vsUserUniformBuffer = new GLShaderUniformBuffer("", 0);
-					}
-
-					vsUserUniformBuffer->pushUniform(uniform);
-				} else if (shaderType == 1) {
-					if (fsUserUniformBuffer == nullptr) {
-						fsUserUniformBuffer = new GLShaderUniformBuffer("", 1);
-					}
-
-					fsUserUniformBuffer->pushUniform(uniform);
-				}
+			if (shaderType == 0) {
+				dynamic_cast<GLShaderUniformBuffer *>(vsUniformBuffers.front())->pushUniform(uniform);
+			} else if (shaderType == 1) {
+				dynamic_cast<GLShaderUniformBuffer *>(fsUniformBuffers.front())->pushUniform(uniform);
 			}
 		}
 	}
@@ -373,42 +347,6 @@ namespace xe { namespace gfx { namespace api {
 				}
 			}
 
-			if (vsUserUniformBuffer) {
-				for (auto &&u : vsUserUniformBuffer->getUniforms()) {
-					GLShaderUniform *uniform = (GLShaderUniform *) u;
-
-					if (uniform->getType() == GLShaderUniform::Type::STRUCT) {
-						const ShaderStruct &s = uniform->getShaderUniformStruct();
-
-						for (auto &&f : s.getFields()) {
-							GLShaderUniform *field = (GLShaderUniform *) f;
-							field->location = getUniformLocation(uniform->name + "." + field->name);
-						}
-					} else {
-						uniform->location = getUniformLocation(uniform->name);
-					}
-				}
-			}
-
-
-			if (fsUserUniformBuffer) {
-				for (auto &&u : fsUserUniformBuffer->getUniforms()) {
-					GLShaderUniform *uniform = (GLShaderUniform *) u;
-
-					if (uniform->getType() == GLShaderUniform::Type::STRUCT) {
-						const ShaderStruct &s = uniform->getShaderUniformStruct();
-
-						for (auto &&f : s.getFields()) {
-							GLShaderUniform *field = (GLShaderUniform *) f;
-							field->location = getUniformLocation(uniform->name + "." + field->name);
-						}
-					} else {
-						uniform->location = getUniformLocation(uniform->name);
-					}
-				}
-			}
-
-
 			uint sampler = 0;
 			for (auto &res : resources) {
 				GLShaderResource *resource = (GLShaderResource *) res;
@@ -472,12 +410,6 @@ namespace xe { namespace gfx { namespace api {
 			result = findUniform(name, buffer);
 			if (result) return result;
 		}
-
-		result = findUniform(name, vsUserUniformBuffer);
-		if (result) return result;
-
-		result = findUniform(name, fsUserUniformBuffer);
-		if (result) return result;
 
 		return result;
 	}
