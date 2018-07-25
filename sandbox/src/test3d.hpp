@@ -15,6 +15,7 @@
 #include <gfx/lights/pointlight.hpp>
 #include <gfx/lights/spotlight.hpp>
 #include <gfx/api/framebuffer.hpp>
+#include <ecs/systems/forwardrenderersystem.hpp>
 #include "dummyplayer.hpp"
 #include "testui.hpp"
 
@@ -24,7 +25,7 @@ using namespace gfx::api;
 
 class Test3D : public Layer {
 public:
-	explicit Test3D(TestUI* ui);
+	explicit Test3D(TestUI *ui);
 	~Test3D() override;
 
 	void render() override;
@@ -38,7 +39,17 @@ public:
 
 private:
 	ECS &ecs;
-	TestUI* ui;
+	ECSSystemList mainSystems;
+	ECSSystemList renderingPipeline;
+
+	TestUI *ui;
+
+	FPSCamera *camera;
+
+	ForwardRenderer *renderer;
+	ForwardRendererSystem *rendererSystem;
+
+	DummyPlayer *player;
 
 	Material *rockMaterial;
 	Material *monkeyMaterial;
@@ -51,35 +62,25 @@ private:
 	Mesh *rockMesh;
 	Mesh *monkeyMesh;
 	Mesh *stallMesh;
-
 	Mesh *planeMesh0;
 	Mesh *planeMesh1;
 
-	Model *rockModel;
-	Model *monkeyModel;
-	Model *monkeyModel2;
-	Model *stallModel;
-
-	Model *planeModel0;
-	Model *planeModel1;
-	Model *planeModel2;
+	EntityHandle rockModel;
+	EntityHandle monkeyModel;
+	EntityHandle monkeyModel2;
+	EntityHandle stallModel;
+	EntityHandle planeModel0;
+	EntityHandle planeModel1;
+	EntityHandle planeModel2;
 
 	AmbientLight *ambientLight;
-	ForwardRenderer *renderer;
-
 	DirectionalLight *directionalLight;
-
 	PointLight *pointLight;
 	PointLight *pointLight2;
 	PointLight *pointLight3;
 	PointLight *pointLight4;
-
-	FrameBuffer*frameBuffer;
-
 	bool hookSpotLight;
 	SpotLight *spotLight;
-
-	DummyPlayer *player;
 };
 
 

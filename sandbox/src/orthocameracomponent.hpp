@@ -2,8 +2,8 @@
 // Created by FLXR on 7/8/2018.
 //
 
-#ifndef X808_CAMERACOMPONENT_HPP
-#define X808_CAMERACOMPONENT_HPP
+#ifndef X808_ORTHOCAMERACOMPONENT_HPP
+#define X808_ORTHOCAMERACOMPONENT_HPP
 
 
 #include <gfx/camera/orthographiccamera.hpp>
@@ -17,4 +17,4 @@ struct OrthoCameraComponent : public xe::ECSComponent<OrthoCameraComponent> {
 };
 
 
-#endif //X808_CAMERACOMPONENT_HPP
+#endif //X808_ORTHOCAMERACOMPONENT_HPP

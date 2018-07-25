@@ -7,7 +7,7 @@
 namespace xe { namespace gfx {
 
 	AmbientLight::AmbientLight(api::Shader *shader, float intensity, uint color) :
-			BaseLight(shader, intensity, color) {
+			BaseLight(shader, false, intensity, color) {
 
 		setUniformsInternal();
 	}

@@ -6,13 +6,17 @@
 #define X808_FORWARDRENDERERSHADER_HPP
 
 
+#include "math/transform.hpp"
 #include "gfx/api/shader.hpp"
 #include "gfx/camera/camera.hpp"
-#include "gfx/model.hpp"
+#include "material.hpp"
 
 namespace xe { namespace gfx {
 
 	class XE_API ForwardRendererShader {
+	private:
+		friend class ForwardRenderer;
+
 	public:
 		virtual ~ForwardRendererShader();
 
@@ -21,7 +25,7 @@ namespace xe { namespace gfx {
 
 		void updateUniforms();
 
-		void setUniforms(const Model *model, const Camera *camera);
+		void setUniforms(const Material *material, const Transform &transform, const Camera *camera);
 
 	protected:
 		explicit ForwardRendererShader(api::Shader *shader);
@@ -36,6 +40,9 @@ namespace xe { namespace gfx {
 		virtual void setUniformsInternal() = 0;
 
 		virtual void setUserUniforms() { }
+
+	private:
+		uint getSamplerLocation(const char *name);
 
 	private:
 		api::Shader *shader;

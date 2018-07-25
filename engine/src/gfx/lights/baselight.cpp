@@ -7,9 +7,10 @@
 
 namespace xe { namespace gfx {
 
-	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
+	BaseLight::BaseLight(api::Shader *shader, bool castShadow, float intensity, uint color) :
 			ForwardRendererShader(shader),
-			enabled(true) {
+			enabled(true),
+			castShadow(castShadow) {
 
 		baseLight.color = color::decode(color);
 		baseLight.intensity = intensity;

@@ -18,8 +18,8 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit SpotLight(api::Shader *shader, const vec3 &position, const vec3 &direction, float cutoff,
-		                   const vec3 &attenuation, float intensity, uint color = color::WHITE);
+		explicit SpotLight(api::Shader *shader, bool castShadow, const vec3 &position, const vec3 &direction,
+		                   float cutoff, const vec3 &attenuation, float intensity, uint color = color::WHITE);
 
 		inline const vec3 &getDirection() const { return spotLight.direction; }
 		void setDirection(const vec3 &direction);

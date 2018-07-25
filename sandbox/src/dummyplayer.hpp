@@ -7,6 +7,7 @@
 
 
 #include <gfx/camera/fpscamera.hpp>
+#include <window/event.hpp>
 
 class DummyPlayer {
 public:

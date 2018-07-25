@@ -72,7 +72,9 @@ namespace xe {
 
 				for (uint j = 0; j < array.size(); j += typeSize) {
 					BaseECSComponent *component = (BaseECSComponent *) &array[j];
+					systems[i]->preUpdateComponents(delta, &component);
 					systems[i]->updateComponents(delta, &component);
+					systems[i]->lateUpdateComponents(delta, &component);
 				}
 			} else {
 				updateSystemWithMultipleComponents(i, systems, delta, componentTypes,
@@ -194,7 +196,9 @@ namespace xe {
 			}
 
 			if (isValid) {
+				systems[index]->preUpdateComponents(delta, &componentParam[0]);
 				systems[index]->updateComponents(delta, &componentParam[0]);
+				systems[index]->lateUpdateComponents(delta, &componentParam[0]);
 			}
 		}
 

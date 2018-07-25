@@ -5,10 +5,10 @@
 #include <gfx/renderer.hpp>
 #include <gfx/api/texture2d.hpp>
 #include <resources/texturemanager.hpp>
-#include <resources/fontmanager.hpp>
-#include <resources/soundmanager.hpp>
 #include <resources/shadermanager.hpp>
 #include <gfx/color.hpp>
+#include <ecs/components/modelcomponent.hpp>
+#include <ecs/components/transformcomponent.hpp>
 #include "test3d.hpp"
 
 Test3D::Test3D(TestUI *ui) :
@@ -20,7 +20,6 @@ Test3D::Test3D(TestUI *ui) :
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("grass", "assets/textures/grass.png", params));
 	TextureManager::add(Texture2D::create("stall", "assets/textures/stall.png", params));
 	TextureManager::add(Texture2D::create("bricks", "assets/textures/bricks.jpg", params));
 	TextureManager::add(Texture2D::create("bricks2", "assets/textures/bricks2.jpg", params));
@@ -30,41 +29,40 @@ Test3D::Test3D(TestUI *ui) :
 	TextureManager::add(Texture2D::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
 	TextureManager::add(Texture2D::create("bgr", "assets/textures/bgr.jfif", params));
 
-	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
-	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
+	camera = new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
 
-	renderer = new ForwardRenderer();
+	player = new DummyPlayer(camera);
+
+	renderer = new ForwardRenderer(800, 600, 2048, camera);
+	rendererSystem = new ForwardRendererSystem(renderer);
+	renderingPipeline.addSystem(*rendererSystem);
 
 	ambientLight = new AmbientLight(GETSHADER("forwardAmbient"), 0.05f, color::WHITE);
 	renderer->setAmbientLight(ambientLight);
 
-	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"),
+	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), true,
 	                                        {-0.665f, -0.745f, -0.053f}, 0.4f, color::WHITE);
 	renderer->addLight(directionalLight);
 
-	pointLight = new PointLight(GETSHADER("forwardPoint"), {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
+	pointLight = new PointLight(GETSHADER("forwardPoint"), false, {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
 	renderer->addLight(pointLight);
 
-	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
+	pointLight2 = new PointLight(GETSHADER("forwardPoint"), false, {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
 	renderer->addLight(pointLight2);
 
-	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f,
+	pointLight3 = new PointLight(GETSHADER("forwardPoint"), false, {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f,
 	                             color::PINK);
 	renderer->addLight(pointLight3);
 
-	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f,
+	pointLight4 = new PointLight(GETSHADER("forwardPoint"), false, {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f,
 	                             color::CYAN);
 	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("forwardSpot"), {2.789f, 0.350f, -5.662f}, {0.107f, -0.132f, -0.986f},
-	                          0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::WHITE);
-
+	spotLight = new SpotLight(GETSHADER("forwardSpot"), false, {2.789f, 0.350f, -5.662f},
+	                          {0.107f, -0.132f, -0.986f}, 0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::WHITE);
 	renderer->addLight(spotLight);
 
-
-	//todo: shader include
-	player = new DummyPlayer(new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000)));
 
 	monkeyMaterial = new Material(GETTEXTURE("2"), 50, 2.2f);
 	monkeyMaterial2 = new Material(GETTEXTURE("4"), 1, 0.2f);
@@ -85,36 +83,50 @@ Test3D::Test3D(TestUI *ui) :
 	planeMesh0 = new Mesh("assets/models/plane0.obj");
 	planeMesh1 = new Mesh("assets/models/plane1.obj");
 
-	monkeyModel = new Model(monkeyMesh, monkeyMaterial);
-	monkeyModel->transform.setTranslation({5, 0, -5});
-	monkeyModel->transform.setRotation(quat::rotationZ(to_rad(30)));
+	ModelComponent model;
+	TransformComponent transform;
 
-	monkeyModel2 = new Model(monkeyMesh, monkeyMaterial2);
-	monkeyModel2->transform.setTranslation({3, 0, -8});
+	model.mesh = monkeyMesh;
+	model.material = monkeyMaterial;
+	transform.transform.setTranslation({5, 0, -5});
+	transform.transform.setRotation(quat::rotationZ(to_rad(30)));
+	monkeyModel = ecs.makeEntity(model, transform);
 
-	rockModel = new Model(rockMesh, rockMaterial);
-	rockModel->transform.setTranslation({0, 0, -5});
-	rockModel->transform.setRotation(quat::rotationZ(to_rad(5)));
+	model.mesh = monkeyMesh;
+	model.material = monkeyMaterial2;
+	transform.transform.setTranslation({3, 0, -8});
+	monkeyModel2 = ecs.makeEntity(model, transform);
 
-	stallModel = new Model(stallMesh, stallMaterial);
-	stallModel->transform.setTranslation({0, 0, -15});
-	stallModel->transform.setRotation(quat::rotationY(to_rad(-90)));
+	model.mesh = rockMesh;
+	model.material = rockMaterial;
+	transform.transform.setTranslation({0, 0, -5});
+	transform.transform.setRotation(quat::rotationZ(to_rad(5)));
+	rockModel = ecs.makeEntity(model, transform);
+
+	model.mesh = stallMesh;
+	model.material = stallMaterial;
+	transform.transform.setTranslation({0, 0, -15});
+	transform.transform.setRotation(quat::rotationY(to_rad(-90)));
+	stallModel = ecs.makeEntity(model, transform);
 
 //	planes
-	planeModel0 = new Model(planeMesh0, planeMaterial0);
-	planeModel0->transform.setTranslation({15, -3, -5});
-	planeModel0->transform.setScale({0.4f, 0.4f, 0.4f});
+	model.mesh = planeMesh0;
+	model.material = planeMaterial0;
+	transform.transform.setTranslation({15, -3, -5});
+	transform.transform.setScale({0.4f, 0.4f, 0.4f});
+	planeModel0 = ecs.makeEntity(model, transform);
 
-	planeModel1 = new Model(planeMesh0, planeMaterial1);
-	planeModel1->transform.setTranslation({22, -3, -5});
-	planeModel1->transform.setScale({0.4f, 0.4f, 0.4f});
+	model.mesh = planeMesh0;
+	model.material = planeMaterial1;
+	transform.transform.setTranslation({22, -3, -5});
+	transform.transform.setScale({0.4f, 0.4f, 0.4f});
+	planeModel1 = ecs.makeEntity(model, transform);
 
-	planeModel2 = new Model(planeMesh0, planeMaterial2);
-	planeModel2->transform.setTranslation({29, -3, -5});
-	planeModel2->transform.setScale({0.4f, 0.4f, 0.4f});
-
-	frameBuffer = FrameBuffer::create(512, 512, FrameBuffer::COLOR);
-	frameBuffer->setClearColor({1, 0, 1, 1});
+	model.mesh = planeMesh0;
+	model.material = planeMaterial2;
+	transform.transform.setTranslation({29, -3, -5});
+	transform.transform.setScale({0.4f, 0.4f, 0.4f});
+	planeModel2 = ecs.makeEntity(model, transform);
 }
 
 Test3D::~Test3D() {
@@ -130,18 +142,8 @@ Test3D::~Test3D() {
 	delete rockMesh;
 	delete monkeyMesh;
 	delete stallMesh;
-
 	delete planeMesh0;
 	delete planeMesh1;
-
-	delete monkeyModel;
-	delete monkeyModel2;
-	delete rockModel;
-	delete stallModel;
-
-	delete planeModel0;
-	delete planeModel1;
-	delete planeModel2;
 
 	delete rockMaterial;
 	delete monkeyMaterial;
@@ -151,42 +153,44 @@ Test3D::~Test3D() {
 	delete planeMaterial1;
 	delete planeMaterial2;
 
-	delete frameBuffer;
+	delete renderer;
+	delete rendererSystem;
+
+	delete camera;
 
 	delete player;
 }
 
 void Test3D::render() {
-	frameBuffer->bind();
-	frameBuffer->clear();
-
-	renderer->render(monkeyModel, player->getCamera());
-	renderer->render(monkeyModel2, player->getCamera());
-	renderer->render(stallModel, player->getCamera());
-	renderer->render(rockModel, player->getCamera());
-
-	renderer->render(planeModel0, player->getCamera());
-	renderer->render(planeModel1, player->getCamera());
-	renderer->render(planeModel2, player->getCamera());
-
-	frameBuffer->unbind();
-
-
-	Renderer::setViewport(0, 0, 800, 600);
-	Renderer::setClearColor(color::BLACK);
-
-	//draw framebuffer to ui
 	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
-	s->texture = frameBuffer->getTexture();
 
-	renderer->render(monkeyModel, player->getCamera());
-	renderer->render(monkeyModel2, player->getCamera());
-	renderer->render(stallModel, player->getCamera());
-	renderer->render(rockModel, player->getCamera());
+	renderer->begin();
 
-	renderer->render(planeModel0, player->getCamera());
-	renderer->render(planeModel1, player->getCamera());
-	renderer->render(planeModel2, player->getCamera());
+	ecs.updateSystems(renderingPipeline, 0.0f);
+
+	renderer->flush(s);
+
+//	frameBuffer->bind();
+//	frameBuffer->clear();
+////
+//	frameBuffer->unbind();
+//
+//
+//	Renderer::setViewport(0, 0, 800, 600);
+//	Renderer::setClearColor(color::BLACK);
+//
+//	//draw framebuffer to ui
+//	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
+//	s->texture = frameBuffer->getTexture();
+//
+//	renderer->render(monkeyModel, player->getCamera());
+//	renderer->render(monkeyModel2, player->getCamera());
+//	renderer->render(stallModel, player->getCamera());
+//	renderer->render(rockModel, player->getCamera());
+//
+//	renderer->render(planeModel0, player->getCamera());
+//	renderer->render(planeModel1, player->getCamera());
+//	renderer->render(planeModel2, player->getCamera());
 }
 
 void Test3D::tick() {
@@ -202,9 +206,11 @@ void Test3D::tick() {
 void Test3D::update(float delta) {
 	player->update(delta);
 
+	ecs.updateSystems(mainSystems, delta);
+
 	if (hookSpotLight) {
-		spotLight->setPosition(player->getCamera()->getPosition());
-		spotLight->setDirection(player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
+		spotLight->setPosition(camera->getPosition());
+		spotLight->setDirection(camera->getForwardDirection(camera->getOrientation()));
 	}
 }
 

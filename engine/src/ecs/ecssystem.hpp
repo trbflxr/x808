@@ -19,7 +19,9 @@ namespace xe {
 	public:
 		BaseECSSystem() = default;
 
+		virtual void preUpdateComponents(float delta, BaseECSComponent **components) { }
 		virtual void updateComponents(float delta, BaseECSComponent **components) { }
+		virtual void lateUpdateComponents(float delta, BaseECSComponent **components) { }
 
 		inline const std::vector<uint> &getComponentTypes() const { return componentTypes; }
 		inline const std::vector<uint> &getComponentFlags() const { return componentFlags; }

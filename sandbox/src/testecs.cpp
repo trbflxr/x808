@@ -195,7 +195,6 @@ void TestECS::render() {
 	renderer->begin();
 
 	ecs.updateSystems(renderingPipeline, 0.0f);
-//	renderer->drawLine(-20, -20, 200, 200, 1, color::GREEN, 2);
 
 	renderer->submitText(text);
 	renderer->submitText(inputText);
@@ -205,23 +204,6 @@ void TestECS::render() {
 
 void TestECS::update(float delta) {
 //	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
-//
-//	vec2 pos = t->bounds.getPosition();
-//	if (xe::Input::isKeyPressed(XE_KEY_D)) {
-//		pos.x += 1;
-//	}
-//	if (xe::Input::isKeyPressed(XE_KEY_A)) {
-//		pos.x -= 1;
-//	}
-//	if (xe::Input::isKeyPressed(XE_KEY_W)) {
-//		pos.y += 1;
-//	}
-//	if (xe::Input::isKeyPressed(XE_KEY_S)) {
-//		pos.y -= 1;
-//	}
-//	t->bounds.setPosition(pos);
-
-
 	ecs.updateSystems(mainSystems, delta);
 }
 

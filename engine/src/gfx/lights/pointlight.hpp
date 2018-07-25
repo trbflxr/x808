@@ -20,7 +20,7 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit PointLight(api::Shader *shader, const vec3 &position, const vec3 &attenuation,
+		explicit PointLight(api::Shader *shader, bool castShadow, const vec3 &position, const vec3 &attenuation,
 		                    float intensity, uint color = color::WHITE);
 
 		inline const vec3 &getAttenuation() const { return pointLight.attenuation; }

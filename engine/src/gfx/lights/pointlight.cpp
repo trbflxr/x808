@@ -9,9 +9,9 @@ namespace xe { namespace gfx {
 	//todo: move to constructor?
 	static constexpr short COLOR_DEPTH = 256;
 
-	PointLight::PointLight(api::Shader *shader, const vec3 &position,
+	PointLight::PointLight(api::Shader *shader, bool castShadow, const vec3 &position,
 	                       const vec3 &attenuation, float intensity, uint color) :
-			BaseLight(shader, intensity, color) {
+			BaseLight(shader, castShadow, intensity, color) {
 
 		pointLight.base = baseLight;
 		pointLight.attenuation = attenuation;

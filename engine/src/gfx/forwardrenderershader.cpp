@@ -60,18 +60,19 @@ namespace xe { namespace gfx {
 		}
 	}
 
-	void ForwardRendererShader::setUniforms(const Model *model, const Camera *camera) {
-		mat4 world = model->transform.toMatrix();
+	void ForwardRendererShader::setUniforms(const Material *material, const Transform &transform,
+	                                        const Camera *camera) {
+		mat4 world = transform.toMatrix();
 		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * world;
 
 		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
 		setUniform("sys_Model", &world.elements, sizeof(mat4), api::Shader::VERT);
 		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::Shader::FRAG);
 
-		float specularPower = model->material->getSpecularIntensity();
-		float specularIntensity = model->material->getSpecularPower();
-		float dispScale = model->material->getDispMapScale();
-		float dispBias = model->material->getDispMapBias();
+		float specularPower = material->getSpecularIntensity();
+		float specularIntensity = material->getSpecularPower();
+		float dispScale = material->getDispMapScale();
+		float dispBias = material->getDispMapBias();
 		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::Shader::FRAG);
 		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::Shader::FRAG);
 		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::Shader::FRAG);
@@ -79,7 +80,7 @@ namespace xe { namespace gfx {
 
 		setUserUniforms();
 
-		bindSamplers(model->material);
+		bindSamplers(material);
 	}
 
 	void ForwardRendererShader::setUniform(const char *name, const void *data, size_t size, uint shaderType) {
@@ -144,6 +145,15 @@ namespace xe { namespace gfx {
 				dispMap->unbind(sampler->getRegister());
 			}
 		}
+	}
+
+	uint ForwardRendererShader::getSamplerLocation(const char *name) {
+		for (auto &&sampler : shader->getResources()) {
+			if (sampler->getName() == name) {
+				return sampler->getRegister();
+			}
+		}
+		return 0;
 	}
 
 }}

@@ -20,7 +20,10 @@ namespace xe { namespace gfx {
 
 	public:
 		inline bool isEnabled() const { return enabled; }
-		inline void setEnabled(bool enabled) { BaseLight::enabled = enabled; }
+		inline void setEnabled(bool enable) { BaseLight::enabled = enable; }
+
+		inline bool isCastShadow() const { return castShadow; }
+		inline void setCastShadow(bool enable) { BaseLight::castShadow = enable; }
 
 		inline vec4 getColor() const { return baseLight.color; }
 		void setColor(uint color);
@@ -29,9 +32,10 @@ namespace xe { namespace gfx {
 		void setIntensity(float intensity);
 
 	protected:
-		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
+		explicit BaseLight(api::Shader *shader, bool castShadow, float intensity, uint color = color::WHITE);
 
 	protected:
+		bool castShadow;
 		bool enabled;
 		BaseLightStruct baseLight;
 	};

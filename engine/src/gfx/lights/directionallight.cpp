@@ -6,8 +6,9 @@
 
 namespace xe { namespace gfx {
 
-	DirectionalLight::DirectionalLight(api::Shader *shader, const vec3 &direction, float intensity, uint color) :
-			BaseLight(shader, intensity, color) {
+	DirectionalLight::DirectionalLight(api::Shader *shader, bool castShadow,
+	                                   const vec3 &direction, float intensity, uint color) :
+			BaseLight(shader, castShadow, intensity, color) {
 
 		directionalLight.base = baseLight;
 		directionalLight.direction = vec3::normalize(direction);
