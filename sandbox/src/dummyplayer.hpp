@@ -6,27 +6,30 @@
 #define X808_DUMMYPLAYER_HPP
 
 
-#include <gfx/camera/fpscamera.hpp>
+#include <gfx/camera.hpp>
 #include <window/event.hpp>
+#include <gameobject.hpp>
 
-class DummyPlayer {
+class DummyPlayer : public xe::GameObject {
 public:
-	explicit DummyPlayer(xe::gfx::FPSCamera *camera);
+	explicit DummyPlayer(xe::gfx::Camera *camera);
 	~DummyPlayer();
 
 	void update(float delta);
 
 	void input(xe::Event &event);
 
-	inline xe::gfx::FPSCamera *getCamera() const { return camera; }
+	inline xe::gfx::Camera *getCamera() const { return camera; }
 
 private:
-	xe::gfx::FPSCamera *camera;
+	void move(const xe::vec3 &dir, float amt);
+
+private:
+	xe::gfx::Camera *camera;
 
 	xe::vec3 position;
 	xe::vec3 rotation;
 
-	bool mouseWasGrabbed;
 	float mouseSensitivity;
 	float speed;
 	float sprintSpeed;

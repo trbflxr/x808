@@ -18,6 +18,12 @@ namespace xe {
 	vec3::vec3(const vec2 &vec) : x(vec.x), y(vec.y), z(0.0f) { }
 	vec3::vec3(const vec4 &vec) : x(vec.x), y(vec.y), z(vec.z) { }
 
+	vec3 vec3::rotate(const quat &rotation) const {
+		quat cq = quat::conjugate(rotation);
+		quat w = rotation * (*this) * cq;
+		return vec3(w.x, w.y, w.z);
+	}
+
 	float vec3::length(const vec3 &v) {
 		return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 	}

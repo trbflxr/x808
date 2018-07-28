@@ -7,13 +7,12 @@
 
 
 #include "gfx/api/framebuffer.hpp"
-#include "gfx/camera/camera.hpp"
+#include "gfx/camera.hpp"
 #include "gfx/lights/ambientlight.hpp"
 #include "material.hpp"
 #include "mesh.hpp"
 #include "math/transform.hpp"
-
-#include "ecs/components/spritecomponent.hpp"
+#include "resources/shadermanager.hpp"
 
 namespace xe { namespace gfx {
 
@@ -29,32 +28,43 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit ForwardRenderer(uint width, uint height, uint shadowMapSize, const Camera *camera);
+		explicit ForwardRenderer(uint width, uint height, const Camera *camera, uint shadowMapSize = 0,
+		                         api::Shader *shadowMapShader = GETSHADER("shadowMap"),
+		                         api::Shader *defaultShader = GETSHADER("forwardAmbient"));
 		~ForwardRenderer();
 
-		inline void setAmbientLight(AmbientLight *light) { ambientLight = light; }
 		inline void addLight(BaseLight *light) { lights.push_back(light); }
 
 		void begin();
 		void submit(const Mesh *mesh, const Material *material, const Transform &transform);
-		void flush(SpriteComponent *s);
+		void flush();
 
 		inline const Camera *getCamera() const { return camera; }
 		inline void setCamera(const Camera *camera) { ForwardRenderer::camera = camera; }
 
+		inline AmbientLight *getAmbientLight() { return ambientLight; }
+		inline const AmbientLight *getAmbientLight() const { return ambientLight; }
+
+	private:
+		void renderShadows(BaseLight *light);
+
 	private:
 		std::vector<RenderTarget> targets;
-
 		std::vector<BaseLight *> lights;
-		AmbientLight *ambientLight;
 
 		uint width;
 		uint height;
 
 		const Camera *camera;
 
+		AmbientLight *ambientLight;
+		ForwardRendererShader *shadowMapShader;
+
 		bool enableShadows;
 		api::FrameBuffer *shadowBuffer;
+		Camera *lightCamera;
+
+		mat4 lightMatrix;
 	};
 
 }}

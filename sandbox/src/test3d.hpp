@@ -10,7 +10,6 @@
 #include <gfx/mesh.hpp>
 #include <gfx/api/shader.hpp>
 #include <gfx/forwardrenderer.hpp>
-#include <gfx/camera/fpscamera.hpp>
 #include <gfx/lights/directionallight.hpp>
 #include <gfx/lights/pointlight.hpp>
 #include <gfx/lights/spotlight.hpp>
@@ -44,7 +43,7 @@ private:
 
 	TestUI *ui;
 
-	FPSCamera *camera;
+	Camera *camera;
 
 	ForwardRenderer *renderer;
 	ForwardRendererSystem *rendererSystem;
@@ -73,7 +72,6 @@ private:
 	EntityHandle planeModel1;
 	EntityHandle planeModel2;
 
-	AmbientLight *ambientLight;
 	DirectionalLight *directionalLight;
 	PointLight *pointLight;
 	PointLight *pointLight2;

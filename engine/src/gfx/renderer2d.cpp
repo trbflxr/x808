@@ -131,7 +131,7 @@ namespace xe { namespace gfx {
 
 		memcpy(systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer +
 		       systemUniforms[sys_ProjectionMatrixIndex].offset,
-		       &camera->getProjectionMatrix().elements, sizeof(mat4));
+		       &camera->getProjection().elements, sizeof(mat4));
 
 		memcpy(systemUniforms[sys_ViewMatrixIndex].buffer.buffer + systemUniforms[sys_ViewMatrixIndex].offset,
 		       &camera->getViewMatrix().elements, sizeof(mat4));

@@ -8,7 +8,7 @@
 
 #include "math/transform.hpp"
 #include "gfx/api/shader.hpp"
-#include "gfx/camera/camera.hpp"
+#include "camera.hpp"
 #include "material.hpp"
 
 namespace xe { namespace gfx {
@@ -18,18 +18,16 @@ namespace xe { namespace gfx {
 		friend class ForwardRenderer;
 
 	public:
-		virtual ~ForwardRendererShader();
+		explicit ForwardRendererShader(api::Shader *shader);
 
 		void bind() const;
 		void unbind() const;
 
 		void updateUniforms();
 
-		void setUniforms(const Material *material, const Transform &transform, const Camera *camera);
+		virtual void setUniforms(const Material *material, const Transform &transform, const Camera *camera) = 0;
 
 	protected:
-		explicit ForwardRendererShader(api::Shader *shader);
-
 		void init();
 
 		void setUniform(const char *name, const void *data, size_t size, uint shaderType);

@@ -9,6 +9,7 @@
 #include <gfx/color.hpp>
 #include <ecs/components/modelcomponent.hpp>
 #include <ecs/components/transformcomponent.hpp>
+#include <gfx/lights/shadowmapshader.hpp>
 #include "test3d.hpp"
 
 Test3D::Test3D(TestUI *ui) :
@@ -29,37 +30,34 @@ Test3D::Test3D(TestUI *ui) :
 	TextureManager::add(Texture2D::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
 	TextureManager::add(Texture2D::create("bgr", "assets/textures/bgr.jfif", params));
 
-	camera = new FPSCamera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
+	camera = new Camera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
 
 	player = new DummyPlayer(camera);
 
-	renderer = new ForwardRenderer(800, 600, 2048, camera);
+	renderer = new ForwardRenderer(800, 600, camera, 2048);
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
-	ambientLight = new AmbientLight(GETSHADER("forwardAmbient"), 0.05f, color::WHITE);
-	renderer->setAmbientLight(ambientLight);
-
-	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), true,
-	                                        {-0.665f, -0.745f, -0.053f}, 0.4f, color::WHITE);
+	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), 0.4f, color::WHITE);
+	directionalLight->transform.setRotation(quat(vec3::XAXIS, to_rad(-45)));
 	renderer->addLight(directionalLight);
 
-	pointLight = new PointLight(GETSHADER("forwardPoint"), false, {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
+	pointLight = new PointLight(GETSHADER("forwardPoint"), {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
 	renderer->addLight(pointLight);
 
-	pointLight2 = new PointLight(GETSHADER("forwardPoint"), false, {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
+	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
 	renderer->addLight(pointLight2);
 
-	pointLight3 = new PointLight(GETSHADER("forwardPoint"), false, {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f,
+	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f,
 	                             color::PINK);
 	renderer->addLight(pointLight3);
 
-	pointLight4 = new PointLight(GETSHADER("forwardPoint"), false, {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f,
+	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f,
 	                             color::CYAN);
 	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("forwardSpot"), false, {2.789f, 0.350f, -5.662f},
+	spotLight = new SpotLight(GETSHADER("forwardSpot"), {2.789f, 0.350f, -5.662f},
 	                          {0.107f, -0.132f, -0.986f}, 0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::WHITE);
 	renderer->addLight(spotLight);
 
@@ -71,11 +69,11 @@ Test3D::Test3D(TestUI *ui) :
 
 	planeMaterial0 = new Material(GETTEXTURE("bgr"), 3, 0.1f);
 
-	planeMaterial1 = new Material(GETTEXTURE("bricks"), 3, 0.1f,
-	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.02f, -0.5f);
+	planeMaterial1 = new Material(GETTEXTURE("bricks"), 4, 0.5f,
+	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.03f, -0.5f);
 
-	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 3, 0.1f,
-	                              GETTEXTURE("bricksNormal2"));
+	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 8, 1.0f,
+	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
@@ -95,6 +93,7 @@ Test3D::Test3D(TestUI *ui) :
 	model.mesh = monkeyMesh;
 	model.material = monkeyMaterial2;
 	transform.transform.setTranslation({3, 0, -8});
+	transform.transform.setRotation(quat::rotationZ(to_rad(0)));
 	monkeyModel2 = ecs.makeEntity(model, transform);
 
 	model.mesh = rockMesh;
@@ -112,8 +111,8 @@ Test3D::Test3D(TestUI *ui) :
 //	planes
 	model.mesh = planeMesh0;
 	model.material = planeMaterial0;
-	transform.transform.setTranslation({15, -3, -5});
-	transform.transform.setScale({0.4f, 0.4f, 0.4f});
+	transform.transform.setTranslation({0, -5, -9});
+	transform.transform.setScale({3.4f, 3.4f, 3.4f});
 	planeModel0 = ecs.makeEntity(model, transform);
 
 	model.mesh = planeMesh0;
@@ -131,7 +130,6 @@ Test3D::Test3D(TestUI *ui) :
 
 Test3D::~Test3D() {
 	delete renderer;
-	delete ambientLight;
 	delete directionalLight;
 	delete pointLight;
 	delete pointLight2;
@@ -162,39 +160,17 @@ Test3D::~Test3D() {
 }
 
 void Test3D::render() {
-	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
+//	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
 
 	renderer->begin();
 
 	ecs.updateSystems(renderingPipeline, 0.0f);
 
-	renderer->flush(s);
-
-//	frameBuffer->bind();
-//	frameBuffer->clear();
-////
-//	frameBuffer->unbind();
-//
-//
-//	Renderer::setViewport(0, 0, 800, 600);
-//	Renderer::setClearColor(color::BLACK);
-//
-//	//draw framebuffer to ui
-//	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
-//	s->texture = frameBuffer->getTexture();
-//
-//	renderer->render(monkeyModel, player->getCamera());
-//	renderer->render(monkeyModel2, player->getCamera());
-//	renderer->render(stallModel, player->getCamera());
-//	renderer->render(rockModel, player->getCamera());
-//
-//	renderer->render(planeModel0, player->getCamera());
-//	renderer->render(planeModel1, player->getCamera());
-//	renderer->render(planeModel2, player->getCamera());
+	renderer->flush();
 }
 
 void Test3D::tick() {
-//	XE_INFO("dir:", player->getCamera()->getForwardDirection(player->getCamera()->getOrientation()));
+//	XE_INFO("dir:", player->getCamera()->transform.getRotation().getForward());
 
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
@@ -209,45 +185,44 @@ void Test3D::update(float delta) {
 	ecs.updateSystems(mainSystems, delta);
 
 	if (hookSpotLight) {
-		spotLight->setPosition(camera->getPosition());
-		spotLight->setDirection(camera->getForwardDirection(camera->getOrientation()));
+		spotLight->setPosition(camera->transform.getTranslation());
+		spotLight->setDirection(player->getCamera()->transform.getRotation().getForward());
 	}
 }
 
 void Test3D::fixedUpdate(float delta) {
 	if (Keyboard::isKeyPressed(Keyboard::Key::Q)) {
-		float a = ambientLight->getIntensity();
+		float a = renderer->getAmbientLight()->getIntensity();
 		a += 1 * delta;
-		ambientLight->setIntensity(a);
+		renderer->getAmbientLight()->setIntensity(a);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::E)) {
-		float a = ambientLight->getIntensity();
+		float a = renderer->getAmbientLight()->getIntensity();
 		if ((a -= 1 * delta) < 0) a = 0;
-		ambientLight->setIntensity(a);
+		renderer->getAmbientLight()->setIntensity(a);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::Z)) {
+		float a = directionalLight->getIntensity();
+		a += 1 * delta;
+		directionalLight->setIntensity(a);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::X)) {
+		float a = directionalLight->getIntensity();
+		if ((a -= 1 * delta) < 0) a = 0;
+		directionalLight->setIntensity(a);
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::Key::R)) {
-		vec3 a = directionalLight->getDirection();
-		a.y += 0.03f;
-		directionalLight->setDirection(a);
+	if (Keyboard::isKeyPressed(Keyboard::Key::Left)) {
+		directionalLight->transform.rotate(vec3::YAXIS, to_rad(1));
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::T)) {
-		vec3 a = directionalLight->getDirection();
-		a.y -= 0.03f;
-		directionalLight->setDirection(a);
+	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
+		directionalLight->transform.rotate(vec3::YAXIS, to_rad(-1));
 	}
-
-	if (Keyboard::isKeyPressed(Keyboard::Key::Y)) {
-		float a = planeMaterial2->getDispMapBias();
-		a += 0.005f;
-		planeMaterial2->setDispMapBias(a);
-		XE_INFO(a);
+	if (Keyboard::isKeyPressed(Keyboard::Key::Up)) {
+		directionalLight->transform.rotate(vec3::XAXIS, to_rad(1));
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::U)) {
-		float a = planeMaterial2->getDispMapBias();
-		a -= 0.005f;
-		planeMaterial2->setDispMapBias(a);
-		XE_INFO(a);
+	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
+		directionalLight->transform.rotate(vec3::XAXIS, to_rad(-1));
 	}
 }
 

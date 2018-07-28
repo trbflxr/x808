@@ -6,14 +6,14 @@
 #define X808_ORTHOCAMERACOMPONENT_HPP
 
 
-#include <gfx/camera/orthographiccamera.hpp>
+#include <gfx/camera.hpp>
 #include <ecs/ecscomponent.hpp>
 
 
-struct OrthoCameraComponent : public xe::ECSComponent<OrthoCameraComponent> {
-	xe::gfx::OrthographicCamera camera;
+struct CameraComponent : public xe::ECSComponent<CameraComponent> {
+	xe::gfx::Camera camera;
 
-	explicit OrthoCameraComponent(const xe::mat4 &projection) : camera(projection) { }
+	explicit CameraComponent(const xe::mat4 &projection) : camera(projection) { }
 };
 
 

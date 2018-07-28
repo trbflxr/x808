@@ -7,23 +7,64 @@
 
 namespace xe { namespace gfx {
 
-	BaseLight::BaseLight(api::Shader *shader, bool castShadow, float intensity, uint color) :
+	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
 			ForwardRendererShader(shader),
 			enabled(true),
-			castShadow(castShadow) {
+			shadowInfo(nullptr) {
 
-		baseLight.color = color::decode(color);
-		baseLight.intensity = intensity;
+		light.color = color::decode(color);
+		light.intensity = intensity;
+	}
+
+	BaseLight::~BaseLight() {
+		delete shadowInfo;
+	}
+
+	void BaseLight::setUniforms(const Material *material, const Transform &transform, const Camera *camera) {
+		if (BaseLight::transform.isDirty()) {
+			setUniformsInternal();
+			BaseLight::transform.setDirty(false);
+		}
+
+		mat4 world = transform.toMatrix();
+		mat4 mvp = camera->getViewProjection() * world;
+		vec3 camPos = camera->transform.getTranslation();
+
+		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
+		setUniform("sys_Model", &world.elements, sizeof(mat4), api::Shader::VERT);
+		setUniform("sys_EyePos", &camPos, sizeof(vec3), api::Shader::FRAG);
+
+		float specularPower = material->getSpecularIntensity();
+		float specularIntensity = material->getSpecularPower();
+		float dispScale = material->getDispMapScale();
+		float dispBias = material->getDispMapBias();
+		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::Shader::FRAG);
+		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::Shader::FRAG);
+
+		setUserUniforms();
+
+		bindSamplers(material);
 	}
 
 	void BaseLight::setColor(uint color) {
-		baseLight.color = color::decode(color);
+		light.color = color::decode(color);
 		setUniformsInternal();
 	}
 
 	void BaseLight::setIntensity(float intensity) {
-		baseLight.intensity = intensity;
+		light.intensity = intensity;
 		setUniformsInternal();
+	}
+
+	void BaseLight::setShadowInfo(ShadowInfo *shadowInfo) {
+		delete BaseLight::shadowInfo;
+		BaseLight::shadowInfo = shadowInfo;
+	}
+
+	void BaseLight::setLightMatrix(const mat4 &matrix) {
+		setUniform("sys_LightMat", &matrix, sizeof(mat4), api::Shader::VERT);
 	}
 
 }}

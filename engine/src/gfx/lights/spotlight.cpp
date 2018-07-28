@@ -6,9 +6,9 @@
 
 namespace xe { namespace gfx {
 
-	SpotLight::SpotLight(api::Shader *shader, bool castShadow, const vec3 &position, const vec3 &direction,
-	                     float cutoff, const vec3 &attenuation, float intensity, uint color) :
-			PointLight(shader, castShadow, position, attenuation, intensity, color) {
+	SpotLight::SpotLight(api::Shader *shader, const vec3 &position, const vec3 &direction,
+	                     float cutoff, const Attenuation &attenuation, float intensity, uint color) :
+			PointLight(shader, position, attenuation, intensity, color) {
 
 		spotLight.direction = direction;
 		spotLight.cutoff = cutoff;

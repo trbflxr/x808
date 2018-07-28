@@ -18,7 +18,10 @@ static const char *forwardAmbientShaderGL =
 #include "shaders/forward-ambient.fs"
 		;
 
-static const char *forwardAmbientFrag =
+static const char *forwardAmbientVertGL =
+#include "shaders/ambient-light.vsh"
+		;
+static const char *forwardAmbientFragGL =
 #include "shaders/ambient-light.fsh"
 		;
 
@@ -34,24 +37,28 @@ static const char *forwardSpotShaderGL =
 #include "shaders/forward-spot.fs"
 		;
 
-static const char *lightingMain =
+static const char *lightingMainGL =
 #include "shaders/lightingMain.fsh"
 		;
 
-static const char *lightingVert =
+static const char *lightingVertGL =
 #include "shaders/lighting.vsh"
 		;
 
-static const char *lightingFrag =
+static const char *lightingFragGL =
 #include "shaders/lighting.fsh"
 		;
 
-static const char *lightingSrc =
+static const char *lightingSrcGL =
 #include "shaders/lighting.glh"
 		;
 
-static const char *samplingSrc =
+static const char *samplingSrcGL =
 #include "shaders/sampling.glh"
+		;
+
+static const char *shadowMapSrcGL =
+#include "shaders/shadowmap-generator.shader"
 		;
 
 namespace xe { namespace gfx {
@@ -66,9 +73,9 @@ namespace xe { namespace gfx {
 
 	std::string forwardAmbientShaderSourceGL() {
 		std::string src;
-		src += lightingVert;
-		src += forwardAmbientFrag;
-		src += samplingSrc;
+		src += forwardAmbientVertGL;
+		src += forwardAmbientFragGL;
+		src += samplingSrcGL;
 		src += forwardAmbientShaderGL;
 
 		return src;
@@ -76,38 +83,42 @@ namespace xe { namespace gfx {
 
 	std::string forwardDirectionalShaderSourceGL() {
 		std::string src;
-		src += lightingVert;
-		src += lightingFrag;
-		src += lightingSrc;
+		src += lightingVertGL;
+		src += lightingFragGL;
+		src += lightingSrcGL;
 		src += forwardDirectionalShaderGL;
-		src += samplingSrc;
-		src += lightingMain;
+		src += samplingSrcGL;
+		src += lightingMainGL;
 
 		return src;
 	}
 
 	std::string forwardPointShaderSourceGL() {
 		std::string src;
-		src += lightingVert;
-		src += lightingFrag;
-		src += lightingSrc;
+		src += lightingVertGL;
+		src += lightingFragGL;
+		src += lightingSrcGL;
 		src += forwardPointShaderGL;
-		src += samplingSrc;
-		src += lightingMain;
+		src += samplingSrcGL;
+		src += lightingMainGL;
 
 		return src;
 	}
 
 	std::string forwardSpotShaderSourceGL() {
 		std::string src;
-		src += lightingVert;
-		src += lightingFrag;
-		src += lightingSrc;
+		src += lightingVertGL;
+		src += lightingFragGL;
+		src += lightingSrcGL;
 		src += forwardSpotShaderGL;
-		src += samplingSrc;
-		src += lightingMain;
+		src += samplingSrcGL;
+		src += lightingMainGL;
 
 		return src;
+	}
+
+	std::string shadowMapSourceGL() {
+		return shadowMapSrcGL;
 	}
 
 }}

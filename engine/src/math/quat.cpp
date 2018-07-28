@@ -19,25 +19,21 @@ namespace xe {
 		return sqrtf(norm(q));
 	}
 
-	quat normalizeQuat(const quat &q) {
-		const float lenSqr = norm(q);
-		const float lenInv = 1.0f / sqrtf(lenSqr);
-		return q * lenInv;
-	}
-
-	quat normalizeEst(const quat &q) {
-		const float lenSqr = norm(q);
-		const float lenInv = 1.0f / sqrtf(lenSqr);
-		return q * lenInv;
-	}
-
-
 	quat::quat() : x(0), y(0), z(0), w(1) { }
 	quat::quat(const xe::quat &q) : x(q.x), y(q.y), z(q.z), w(q.w) { }
 	quat::quat(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) { }
-	quat::quat(const vec3 &xyz, float w) : x(xyz.x), y(xyz.y), z(xyz.z), w(w) { }
 	quat::quat(const vec4 &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) { }
 	quat::quat(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) { }
+
+	quat::quat(const vec3 &axis, float angle) {
+		float sinHalfAngle = sinf(angle / 2);
+		float cosHalfAngle = cosf(angle / 2);
+
+		x = axis.x * sinHalfAngle;
+		y = axis.y * sinHalfAngle;
+		z = axis.z * sinHalfAngle;
+		w = cosHalfAngle;
+	}
 
 	quat::quat(const xe::mat4 &rot) {
 		float trace = rot.rows[0].x + rot.rows[1].y + rot.rows[2].z;
@@ -99,6 +95,30 @@ namespace xe {
 		return mat4::initRotation(forward, up, right);
 	}
 
+	vec3 quat::getForward() const {
+		return vec3(0, 0, -1).rotate(*this);
+	}
+
+	vec3 quat::getBackward() const {
+		return vec3(0, 0, 1).rotate(*this);
+	}
+
+	vec3 quat::getUp() const {
+		return vec3(0, 1, 0).rotate(*this);
+	}
+
+	vec3 quat::getDown() const {
+		return vec3(0, -1, 0).rotate(*this);
+	}
+
+	vec3 quat::getRight() const {
+		return vec3(1, 0, 0).rotate(*this);
+	}
+
+	vec3 quat::getLeft() const {
+		return vec3(-1, 0, 0).rotate(*this);
+	}
+
 	float quat::length(const quat &q) {
 		return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 	}
@@ -131,13 +151,6 @@ namespace xe {
 		            ((((tmpW * q.z) + (tmpZ * q.w)) - (tmpX * q.y)) + (tmpY * q.x)));
 	}
 
-	quat quat::fromEulerAngles(const vec3 &angles) {
-		quat pitch(vec3::XAXIS, angles.x);
-		quat yaw(vec3::YAXIS, angles.y);
-		quat roll(vec3::ZAXIS, angles.z);
-		return pitch * yaw * roll;
-	}
-
 	quat quat::rotation(const vec3 &unitVec0, const vec3 &unitVec1) {
 		const float cosHalfAngleX2 = sqrtf((2.0f * (1.0f + vec3::dot(unitVec0, unitVec1))));
 		const float recipCosHalfAngleX2 = (1.0f / cosHalfAngleX2);
@@ -165,7 +178,7 @@ namespace xe {
 	}
 
 
-///operators
+	///operators
 	quat operator+(const quat &left, const quat &right) {
 		return quat(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 	}
@@ -175,15 +188,25 @@ namespace xe {
 	}
 
 	quat operator*(const quat &left, const quat &right) {
-		return normalizeQuat(
-				quat((((left.w * right.x) + (left.x * right.w)) + (left.y * right.z)) - (left.z * right.y),
-				     (((left.w * right.y) + (left.y * right.w)) + (left.z * right.x)) - (left.x * right.z),
-				     (((left.w * right.z) + (left.z * right.w)) + (left.x * right.y)) - (left.y * right.x),
-				     (((left.w * right.w) - (left.x * right.x)) - (left.y * right.y)) - (left.z * right.z)));
+		const float w = (left.w * right.w) - (left.x * right.x) - (left.y * right.y) - (left.z * right.z);
+		const float x = (left.x * right.w) + (left.w * right.x) + (left.y * right.z) - (left.z * right.y);
+		const float y = (left.y * right.w) + (left.w * right.y) + (left.z * right.x) - (left.x * right.z);
+		const float z = (left.z * right.w) + (left.w * right.z) + (left.x * right.y) - (left.y * right.x);
+
+		return quat(x, y, z, w);
 	}
 
 	quat operator*(const quat &left, float right) {
 		return quat(left.x * right, left.y * right, left.z * right, left.w * right);
+	}
+
+	quat operator*(const quat &left, const vec3 &right) {
+		const float w = -(left.x * right.x) - (left.y * right.y) - (left.z * right.z);
+		const float x = (left.w * right.x) + (left.y * right.z) - (left.z * right.y);
+		const float y = (left.w * right.y) + (left.z * right.x) - (left.x * right.z);
+		const float z = (left.w * right.z) + (left.x * right.y) - (left.y * right.x);
+
+		return quat(x, y, z, w);
 	}
 
 	quat operator/(const quat &left, float right) {
@@ -206,6 +229,11 @@ namespace xe {
 	}
 
 	quat operator*=(quat &left, float right) {
+		left = left * right;
+		return left;
+	}
+
+	quat operator*=(quat &left, const vec3 &right) {
 		left = left * right;
 		return left;
 	}

@@ -174,6 +174,29 @@ namespace xe {
 		return *this;
 	}
 
+	void mat4::rotate(float angleDeg, const vec3 &axis) {
+		const float r = to_rad(angleDeg);
+		const float c = cosf(r);
+		const float s = sinf(r);
+		const float omc = 1.0f - c;
+
+		const float x = axis.x;
+		const float y = axis.y;
+		const float z = axis.z;
+
+		elements[0 + 0 * 4] = x * x * omc + c;
+		elements[0 + 1 * 4] = y * x * omc + z * s;
+		elements[0 + 2 * 4] = x * z * omc - y * s;
+
+		elements[1 + 0 * 4] = x * y * omc - z * s;
+		elements[1 + 1 * 4] = y * y * omc + c;
+		elements[1 + 2 * 4] = y * z * omc + x * s;
+
+		elements[2 + 0 * 4] = x * z * omc + y * s;
+		elements[2 + 1 * 4] = y * z * omc - x * s;
+		elements[2 + 2 * 4] = z * z * omc + c;
+	}
+
 	vec3 mat4::transform(const vec3 &r) const {
 		return vec3(rows[0].x * r.x + rows[0].y * r.y + rows[0].z * r.z + rows[0].w,
 		            rows[1].x * r.x + rows[1].y * r.y + rows[1].z * r.z + rows[1].w,
@@ -291,10 +314,10 @@ namespace xe {
 		m.elements[2 + 1 * 4] = -f.y;
 		m.elements[2 + 2 * 4] = -f.z;
 
-		return m * translate(vec3(-camera.x, -camera.y, -camera.z));
+		return m * translation(vec3(-camera.x, -camera.y, -camera.z));
 	}
 
-	mat4 mat4::translate(const vec3 &translation) {
+	mat4 mat4::translation(const vec3 &translation) {
 		mat4 m(1.0f);
 
 		m.elements[3 + 0 * 4] = translation.x;
@@ -304,10 +327,10 @@ namespace xe {
 		return m;
 	}
 
-	mat4 mat4::rotate(float angle, const vec3 &axis) {
+	mat4 mat4::rotation(float angleDeg, const vec3 &axis) {
 		mat4 m(1.0f);
 
-		const float r = to_rad(angle);
+		const float r = to_rad(angleDeg);
 		const float c = cosf(r);
 		const float s = sinf(r);
 		const float omc = 1.0f - c;
@@ -331,7 +354,7 @@ namespace xe {
 		return m;
 	}
 
-	mat4 mat4::rotate(const quat &q) {
+	mat4 mat4::rotation(const quat &q) {
 		mat4 m(1.0f);
 
 		float qx, qy, qz, qw, qx2, qy2, qz2, qxqx2, qyqy2, qzqz2, qxqy2, qyqz2, qzqw2, qxqz2, qyqw2, qxqw2;
@@ -383,8 +406,8 @@ namespace xe {
 	}
 
 	mat4 mat4::transform(const vec3 &translation, const quat &rotation, const vec3 &scale) {
-		mat4 t = translate(translation);
-		mat4 r = rotate(rotation);
+		mat4 t = mat4::translation(translation);
+		mat4 r = mat4::rotation(rotation);
 		mat4 s = mat4::scale(scale);
 
 		return t * r * s;

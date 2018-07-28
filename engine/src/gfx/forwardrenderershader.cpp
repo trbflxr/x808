@@ -15,10 +15,6 @@ namespace xe { namespace gfx {
 		init();
 	}
 
-	ForwardRendererShader::~ForwardRendererShader() {
-		delete shader;
-	}
-
 	void ForwardRendererShader::init() {
 		const api::ShaderUniformBufferVec &vssu = shader->getVSUniforms();
 		for (auto &&ub : vssu) {
@@ -60,29 +56,6 @@ namespace xe { namespace gfx {
 		}
 	}
 
-	void ForwardRendererShader::setUniforms(const Material *material, const Transform &transform,
-	                                        const Camera *camera) {
-		mat4 world = transform.toMatrix();
-		mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * world;
-
-		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
-		setUniform("sys_Model", &world.elements, sizeof(mat4), api::Shader::VERT);
-		setUniform("sys_EyePos", &camera->getPosition(), sizeof(vec3), api::Shader::FRAG);
-
-		float specularPower = material->getSpecularIntensity();
-		float specularIntensity = material->getSpecularPower();
-		float dispScale = material->getDispMapScale();
-		float dispBias = material->getDispMapBias();
-		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::Shader::FRAG);
-		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::Shader::FRAG);
-		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::Shader::FRAG);
-		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::Shader::FRAG);
-
-		setUserUniforms();
-
-		bindSamplers(material);
-	}
-
 	void ForwardRendererShader::setUniform(const char *name, const void *data, size_t size, uint shaderType) {
 		switch (shaderType) {
 
@@ -117,14 +90,12 @@ namespace xe { namespace gfx {
 			if (sampler->getName() == "diffuse") {
 				diffuse = material->getTexture();
 				diffuse->bind(sampler->getRegister());
-			}
 
-			if (sampler->getName() == "normalMap") {
+			} else if (sampler->getName() == "normalMap") {
 				normalMap = material->getNormalMap();
 				normalMap->bind(sampler->getRegister());
-			}
 
-			if (sampler->getName() == "dispMap") {
+			} else if (sampler->getName() == "dispMap") {
 				dispMap = material->getDispMap();
 				dispMap->bind(sampler->getRegister());
 			}
@@ -135,13 +106,11 @@ namespace xe { namespace gfx {
 		for (auto &&sampler : shader->getResources()) {
 			if (sampler->getName() == "diffuse") {
 				diffuse->unbind(sampler->getRegister());
-			}
 
-			if (sampler->getName() == "normalMap") {
+			} else if (sampler->getName() == "normalMap") {
 				normalMap->unbind(sampler->getRegister());
-			}
 
-			if (sampler->getName() == "dispMap") {
+			} else if (sampler->getName() == "dispMap") {
 				dispMap->unbind(sampler->getRegister());
 			}
 		}

@@ -11,20 +11,27 @@
 namespace xe { namespace gfx {
 
 	class XE_API PointLight : public BaseLight {
+	public:
+		struct Attenuation {
+			float constant;
+			float linear;
+			float exponent;
+		};
+
 	protected:
 		struct PointLightStruct {
 			BaseLightStruct base;
-			vec3 attenuation;
+			Attenuation attenuation;
 			vec3 position;
 			float range;
 		};
 
 	public:
-		explicit PointLight(api::Shader *shader, bool castShadow, const vec3 &position, const vec3 &attenuation,
+		explicit PointLight(api::Shader *shader, const vec3 &position, const Attenuation &attenuation,
 		                    float intensity, uint color = color::WHITE);
 
-		inline const vec3 &getAttenuation() const { return pointLight.attenuation; }
-		void setAttenuation(const vec3 &attenuation);
+		inline const Attenuation &getAttenuation() const { return pointLight.attenuation; }
+		void setAttenuation(const Attenuation &attenuation);
 
 		inline const vec3 &getPosition() const { return pointLight.position; }
 		void setPosition(const vec3 &position);
@@ -35,7 +42,7 @@ namespace xe { namespace gfx {
 		void setUniformsInternal() override;
 
 	private:
-		float calcRange(const vec3 &attenuation);
+		float calcRange(const Attenuation &attenuation);
 
 	protected:
 		PointLightStruct pointLight;

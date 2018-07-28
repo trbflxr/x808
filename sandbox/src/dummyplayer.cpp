@@ -7,14 +7,15 @@
 
 using namespace xe;
 
-DummyPlayer::DummyPlayer(xe::gfx::FPSCamera *camera) :
+DummyPlayer::DummyPlayer(xe::gfx::Camera *camera) :
 		camera(camera) {
 
-	mouseSensitivity = 0.003f;
+	mouseSensitivity = 0.15f;
 	speed = 4.0f;
 	sprintSpeed = speed * 4.0f;
-	mouseWasGrabbed = false;
 	mouseLocked = false;
+
+	camera->hookEntity(this);
 }
 
 DummyPlayer::~DummyPlayer() {
@@ -28,60 +29,57 @@ void DummyPlayer::update(float delta) {
 
 	static vec2i lastMousePosition = Mouse::getPosition();
 
+
 	if (mouseLocked) {
 		window.setMouseCursorGrabbed(true);
 		window.setMouseCursorVisible(false);
 	} else {
 		window.setMouseCursorGrabbed(false);
 		window.setMouseCursorVisible(true);
-		mouseWasGrabbed = false;
 	}
 
 	if (window.isMouseCursorGrabbed()) {
 		vec2i mouseChange = Mouse::getPosition() - lastMousePosition;
 
-		if (mouseWasGrabbed) {
-			camera->setYaw(camera->getYaw() + mouseChange.x* mouseSensitivity);
-			camera->setPitch(camera->getPitch() + mouseChange.y* mouseSensitivity);
-		}
-		mouseWasGrabbed = true;
+		//rotate
+		transform.rotate(-vec3::YAXIS, to_rad(mouseChange.x * mouseSensitivity));
+		transform.rotate(transform.getRotation().getLeft(), to_rad(mouseChange.y * mouseSensitivity));
 
 		Mouse::setPosition(windowCenter, window);
 		lastMousePosition = Mouse::getPosition();
 
-		quat orientation = camera->getOrientation();
-		rotation = orientation.toEulerAngles();
 
-		vec3 forward = camera->getForwardDirection(orientation);
-		vec3 right = camera->getRightDirection(orientation);
-		vec3 up = vec3::YAXIS;
+		//move
 		float speed = Keyboard::isKeyPressed(Keyboard::LControl) ? sprintSpeed : DummyPlayer::speed;
-		if (Keyboard::isKeyPressed(Keyboard::W))
-			position += forward * speed * delta;
-		else if (Keyboard::isKeyPressed(Keyboard::S))
-			position -= forward * speed * delta;
+		if (Keyboard::isKeyPressed(Keyboard::W)) {
+			move(transform.getRotation().getForward(), speed * delta);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::S)) {
+			move(transform.getRotation().getBackward(), speed * delta);
+		}
 
-		if (Keyboard::isKeyPressed(Keyboard::A))
-			position -= right * speed * delta;
-		else if (Keyboard::isKeyPressed(Keyboard::D))
-			position += right * speed * delta;
+		if (Keyboard::isKeyPressed(Keyboard::A)) {
+			move(transform.getRotation().getLeft(), speed * delta);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::D)) {
+			move(transform.getRotation().getRight(), speed * delta);
+		}
 
-		if (Keyboard::isKeyPressed(Keyboard::Space))
-			position += up * speed * delta;
-		if (Keyboard::isKeyPressed(Keyboard::LShift))
-			position -= up * speed * delta;
+		if (Keyboard::isKeyPressed(Keyboard::Space)) {
+			move(vec3::YAXIS, speed * delta);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+			move(-vec3::YAXIS, speed * delta);
+		}
 
-		camera->setPosition(position);
-		camera->setRotation(rotation);
+		camera->update();
 	}
 
 	if (!mouseLocked) {
 		window.setMouseCursorGrabbed(false);
 		window.setMouseCursorVisible(true);
-		mouseWasGrabbed = false;
 	}
 
-	camera->update();
 }
 
 void DummyPlayer::input(xe::Event &event) {
@@ -97,4 +95,8 @@ void DummyPlayer::input(xe::Event &event) {
 		}
 		event.handled = true;
 	}
+}
+
+void DummyPlayer::move(const xe::vec3 &dir, float amt) {
+	transform.setTranslation(transform.getTranslation() + (dir * amt));
 }

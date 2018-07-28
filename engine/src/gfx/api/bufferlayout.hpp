@@ -16,15 +16,14 @@
 namespace xe { namespace gfx { namespace api {
 
 	struct BufferElement {
-		std::string name;
+		const char *name;
 		uint type;
 		uint size;
 		uint count;
 		uint offset;
 		bool normalized;
 
-		BufferElement(const std::string_view &name, uint type,
-		              uint size, uint count, uint offset, bool normalized) :
+		BufferElement(const char *name, uint type, uint size, uint count, uint offset, bool normalized) :
 				name(name), type(type), size(size), count(count), offset(offset), normalized(normalized) { }
 	};
 
@@ -33,7 +32,7 @@ namespace xe { namespace gfx { namespace api {
 		BufferLayout() : size(0) { }
 
 		template<typename T>
-		void push(const std::string_view &name, uint count = 1, bool normalized = false) {
+		void push(const char *name, uint count = 1, bool normalized = false) {
 			XE_ASSERT(false, "Unknown type!"); //for default types only
 		}
 
@@ -41,7 +40,7 @@ namespace xe { namespace gfx { namespace api {
 		inline uint getStride() const { return size; }
 
 	private:
-		void push(const std::string_view &name, uint type, uint size, uint count, bool normalized) {
+		void push(const char *name, uint type, uint size, uint count, bool normalized) {
 			layout.emplace_back(name, type, size, count, BufferLayout::size, normalized);
 			BufferLayout::size += size * count;
 		}
@@ -52,7 +51,7 @@ namespace xe { namespace gfx { namespace api {
 	};
 
 	template<>
-	inline void BufferLayout::push<float>(const std::string_view &name, uint count, bool normalized) {
+	inline void BufferLayout::push<float>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), count, normalized);
 				break;
@@ -62,7 +61,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	template<>
-	inline void BufferLayout::push<uint>(const std::string_view &name, uint count, bool normalized) {
+	inline void BufferLayout::push<uint>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OPENGL: push(name, GL_UNSIGNED_INT, sizeof(uint), count, normalized);
 				break;
@@ -72,7 +71,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	template<>
-	inline void BufferLayout::push<byte>(const std::string_view &name, uint count, bool normalized) {
+	inline void BufferLayout::push<byte>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OPENGL: push(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);
 				break;
@@ -82,7 +81,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	template<>
-	inline void BufferLayout::push<vec2>(const std::string_view &name, uint count, bool normalized) {
+	inline void BufferLayout::push<vec2>(const char *name, uint count, bool normalized) {
 		XE_ASSERT(count <= 1, "cant push more then 1 vec2");
 
 		switch (Context::getRenderAPI()) {
@@ -94,7 +93,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	template<>
-	inline void BufferLayout::push<vec3>(const std::string_view &name, uint count, bool normalized) {
+	inline void BufferLayout::push<vec3>(const char *name, uint count, bool normalized) {
 		XE_ASSERT(count <= 1, "cant push more then 1 vec3");
 
 		switch (Context::getRenderAPI()) {
@@ -106,7 +105,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	template<>
-	inline void BufferLayout::push<vec4>(const std::string_view &name, uint count, bool normalized) {
+	inline void BufferLayout::push<vec4>(const char *name, uint count, bool normalized) {
 		XE_ASSERT(count <= 1, "cant push more then 1 vec4");
 
 		switch (Context::getRenderAPI()) {

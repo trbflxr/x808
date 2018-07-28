@@ -23,7 +23,7 @@ namespace xe {
 		quat();
 		quat(const quat &q);
 		explicit quat(float x, float y, float z, float w);
-		explicit quat(const vec3 &xyz, float w);
+		explicit quat(const vec3 &axis, float angle);
 		explicit quat(const vec4 &vec);
 		explicit quat(float scalar);
 		explicit quat(const mat4 &rot);
@@ -32,6 +32,13 @@ namespace xe {
 		vec3 toEulerAngles() const;
 		mat4 toRotationMatrix() const;
 
+		vec3 getForward() const;
+		vec3 getBackward() const;
+		vec3 getUp() const;
+		vec3 getDown() const;
+		vec3 getRight() const;
+		vec3 getLeft() const;
+
 		static float length(const quat &q);
 		static quat normalize(const quat &q);
 
@@ -39,7 +46,6 @@ namespace xe {
 		static quat conjugate(const quat &q);
 		static vec3 rotate(const quat &q, const vec3 &vec);
 
-		static quat fromEulerAngles(const vec3 &angles);
 		static quat rotation(const vec3 &unitVec0, const vec3 &unitVec1);
 		static quat rotation(float radians, const vec3 &unitVec);
 		static quat rotationX(float radians);
@@ -54,12 +60,14 @@ namespace xe {
 	quat XE_API operator-(const quat &left, const quat &right);
 	quat XE_API operator*(const quat &left, const quat &right);
 	quat XE_API operator*(const quat &left, float right);
+	quat XE_API operator*(const quat &left, const vec3 &right);
 	quat XE_API operator/(const quat &left, float right);
 
 	quat XE_API operator+=(quat &left, const quat &right);
 	quat XE_API operator-=(quat &left, const quat &right);
 	quat XE_API operator*=(quat &left, const quat &right);
 	quat XE_API operator*=(quat &left, float right);
+	quat XE_API operator*=(quat &left, const vec3 &right);
 	quat XE_API operator/=(quat &left, float right);
 
 }

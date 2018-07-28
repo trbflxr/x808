@@ -10,16 +10,13 @@ layout(location = 3) in vec3 tangent;
 out vec2 uv0;
 out mat3 tbnMat0;
 out vec3 worldPos0;
-out vec4 shadowMapUV0;
 
 uniform mat4 sys_Model;
 uniform mat4 sys_MVP;
-uniform mat4 sys_LightMat;
 
 void main() {
   gl_Position = sys_MVP * position;
   uv0 = uv;
-  shadowMapUV0 = sys_LightMat * position;
   worldPos0 = (sys_Model * position).xyz;
 
   vec3 n = normalize((sys_Model * vec4(normal, 0.0)).xyz);

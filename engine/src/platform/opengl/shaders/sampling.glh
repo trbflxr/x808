@@ -1,5 +1,11 @@
 R"(
+const float bias = 0.005;
+
 vec2 CalcParallaxUV(sampler2D dispMap, mat3 tbnMat, vec3 directionToEye, vec2 uv, float scale, float bias) {
   return uv + (directionToEye * tbnMat).xy * (texture(dispMap, uv).r * scale + bias);
+}
+
+float SampleShadowMap(sampler2D shadowMap, vec2 uv, float compare) {
+  return compare - bias > texture(shadowMap, uv).r ? 0.0 : 1.0;
 }
 )"

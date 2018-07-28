@@ -20,7 +20,7 @@ TestUI::TestUI() :
 	mainSystems.addSystem(*cameraSystem);
 
 	//create camera
-	OrthoCameraComponent camera(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
+	CameraComponent camera(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
 	cameraEntity = ecs.makeEntity(camera);
 
 	//sprite components

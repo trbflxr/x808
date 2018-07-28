@@ -108,8 +108,7 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glGenTextures(1, &handle));
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-		                       parameters.filter == TextureFilter::LINEAR ? GL_LINEAR_MIPMAP_LINEAR
-		                                                                  : GL_NEAREST));
+		                       parameters.filter == TextureFilter::LINEAR ? GL_LINEAR : GL_NEAREST));
 
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
 		                       parameters.filter == TextureFilter::LINEAR ? GL_LINEAR : GL_NEAREST));
@@ -117,12 +116,12 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(wrapMode)));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
 
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0));
+
 		if (parameters.format == TextureFormat::DEPTH) {
 			glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0,
-			                    GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, nullptr));
-
-			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL));
-			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE));
+			                    GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr));
 		} else {
 			glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
 			                    textureFormatToGL(parameters.format),

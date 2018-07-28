@@ -11,7 +11,13 @@
 
 namespace xe { namespace gfx {
 
-	class XE_API BaseLight : public ForwardRendererShader {
+	struct ShadowInfo {
+		mat4 projection;
+
+		inline explicit ShadowInfo(const mat4 &projection) : projection(projection) { }
+	};
+
+	class XE_API BaseLight : public GameObject, public ForwardRendererShader {
 	protected:
 		struct BaseLightStruct {
 			vec4 color;
@@ -19,25 +25,33 @@ namespace xe { namespace gfx {
 		};
 
 	public:
+		~BaseLight();
+
+		void setUniforms(const Material *material, const Transform &transform, const Camera *camera) override;
+
+		void setLightMatrix(const mat4 &matrix);
+
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enable) { BaseLight::enabled = enable; }
 
-		inline bool isCastShadow() const { return castShadow; }
-		inline void setCastShadow(bool enable) { BaseLight::castShadow = enable; }
-
-		inline vec4 getColor() const { return baseLight.color; }
+		inline vec4 getColor() const { return light.color; }
 		void setColor(uint color);
 
-		inline float getIntensity() const { return baseLight.intensity; }
+		inline float getIntensity() const { return light.intensity; }
 		void setIntensity(float intensity);
 
-	protected:
-		explicit BaseLight(api::Shader *shader, bool castShadow, float intensity, uint color = color::WHITE);
+		inline const ShadowInfo *getShadowInfo() const { return shadowInfo; }
 
 	protected:
-		bool castShadow;
+		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
+
+		void setShadowInfo(ShadowInfo *shadowInfo);
+
+	protected:
 		bool enabled;
-		BaseLightStruct baseLight;
+		BaseLightStruct light;
+
+		ShadowInfo *shadowInfo;
 	};
 
 }}

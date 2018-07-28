@@ -67,6 +67,9 @@ namespace xe {
 
 		shaders.emplace("forwardSpot",
 		                Shader::createFromSource("forwardSpot", gfx::forwardSpotShaderSourceGL()));
+
+		shaders.emplace("shadowMap",
+		                Shader::createFromSource("shadowMap", gfx::shadowMapSourceGL()));
 	}
 
 }

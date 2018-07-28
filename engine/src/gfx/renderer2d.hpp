@@ -9,7 +9,7 @@
 #include "common.hpp"
 #include "xeint.hpp"
 #include "color.hpp"
-#include "gfx/camera/camera.hpp"
+#include "camera.hpp"
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"

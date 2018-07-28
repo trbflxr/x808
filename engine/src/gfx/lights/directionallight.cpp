@@ -6,25 +6,20 @@
 
 namespace xe { namespace gfx {
 
-	DirectionalLight::DirectionalLight(api::Shader *shader, bool castShadow,
-	                                   const vec3 &direction, float intensity, uint color) :
-			BaseLight(shader, castShadow, intensity, color) {
-
-		directionalLight.base = baseLight;
-		directionalLight.direction = vec3::normalize(direction);
+	DirectionalLight::DirectionalLight(api::Shader *shader, float intensity, uint color) :
+			BaseLight(shader, intensity, color) {
 
 		setUniformsInternal();
+
+		setShadowInfo(new ShadowInfo(mat4::ortho(-40, 40, -40, 40, -40, 40)));
 	}
 
 	void DirectionalLight::setUniformsInternal() {
+		directionalLight.base = light;
+		directionalLight.direction = quat::rotate(transform.getRotation(), -vec3::ZAXIS);
+
 		setUniform("sys_ActiveDirectionalLight", &directionalLight,
 		           sizeof(DirectionalLightStruct), api::Shader::FRAG);
-	}
-
-	void DirectionalLight::setDirection(const vec3 &direction) {
-		directionalLight.direction = vec3::normalize(direction);
-
-		setUniformsInternal();
 	}
 
 }}

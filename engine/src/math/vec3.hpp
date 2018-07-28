@@ -12,6 +12,7 @@ namespace xe {
 
 	struct vec2;
 	struct vec4;
+	struct quat;
 	struct mat4;
 
 	struct XE_API vec3 {
@@ -25,6 +26,8 @@ namespace xe {
 		vec3(const vec3 &other);
 		explicit vec3(const vec2 &other);
 		explicit vec3(const vec4 &other);
+
+		vec3 rotate(const quat &rotation) const;
 
 		static float length(const vec3 &v);
 		static float max(const vec3 &v);

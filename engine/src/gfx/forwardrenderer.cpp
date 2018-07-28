@@ -1,17 +1,21 @@
 //
 // Created by FLXR on 7/12/2018.
 //
-#include <ecs/components/spritecomponent.hpp>
+
 #include "forwardrenderer.hpp"
 #include "renderer.hpp"
+#include "resources/shadermanager.hpp"
+#include "gfx/lights/shadowmapshader.hpp"
 
 namespace xe { namespace gfx {
 
-	ForwardRenderer::ForwardRenderer(uint width, uint height, uint shadowMapSize, const Camera *camera) :
+	ForwardRenderer::ForwardRenderer(uint width, uint height, const Camera *camera, uint shadowMapSize,
+	                                 api::Shader *shadowMapShader,
+	                                 api::Shader *defaultShader) :
 			width(width),
 			height(height),
 			camera(camera),
-			enableShadows(shadowMapSize != 0) {
+			enableShadows(shadowMapSize > 0 && shadowMapShader != nullptr) {
 
 		Renderer::enableCullFace(true);
 		Renderer::enableDepthTesting(true);
@@ -19,28 +23,29 @@ namespace xe { namespace gfx {
 
 		Renderer::setCullFace(CullFace::BACK);
 
-		if (enableShadows) {
-			shadowBuffer = api::FrameBuffer::create(shadowMapSize, shadowMapSize, api::FrameBuffer::COLOR);
-			shadowBuffer->setClearColor({1, 0, 1, 1});
-		}
+		ForwardRenderer::shadowMapShader = new ShadowMapShader(shadowMapShader);
+		ambientLight = new AmbientLight(defaultShader, 0.1f, color::WHITE);
+
+		lightCamera = new Camera(mat4(1.0f));
+		shadowBuffer = api::FrameBuffer::create(shadowMapSize, shadowMapSize, api::FrameBuffer::DEPTH);
 	}
 
 	ForwardRenderer::~ForwardRenderer() {
 		delete shadowBuffer;
+		delete ambientLight;
 	}
 
 	void ForwardRenderer::begin() {
-
+		Renderer::enableDepthTesting(true);
 	}
 
 	void ForwardRenderer::submit(const Mesh *mesh, const Material *material, const Transform &transform) {
 		targets.emplace_back(mesh, material, transform);
 	}
 
-	void ForwardRenderer::flush(SpriteComponent *s) {
-		Renderer::enableDepthTesting(true);
-
+	void ForwardRenderer::flush() {
 		//first run without blending
+		//ambient light
 		Renderer::enableBlend(false);
 
 		ambientLight->bind();
@@ -54,70 +59,77 @@ namespace xe { namespace gfx {
 
 		ambientLight->unbind();
 
-		//shadows
-		if (enableShadows) {
-			shadowBuffer->bind();
-			shadowBuffer->clear();
 
-			for (auto &&light : lights) {
-				if (!light->isEnabled() || !light->isCastShadow()) continue;
-
-				light->bind();
-
-				for (auto &&target : targets) {
-					light->setUniforms(target.material, target.transform, camera);
-					light->updateUniforms();
-
-					target.mesh->render();
-				}
-
-				light->unbind();
-			}
-
-			shadowBuffer->unbind();
-		}
-
-		//runs for all lights
-		Renderer::enableBlend(true);
-		Renderer::setBlendFunction(BlendFunction::ONE, BlendFunction::ONE);
-		Renderer::enableDepthMask(false);
-		Renderer::setDepthFunction(DepthFunction::EQUAL);
-
-		Renderer::setViewport(0, 0, width, height);
-		Renderer::setClearColor(color::BLACK);
-
+		//other lights
 		for (auto &&light : lights) {
 			if (!light->isEnabled()) continue;
 
+			renderShadows(light);
+
+			//render to screen
+			Renderer::enableBlend(true);
+			Renderer::setBlendFunction(BlendFunction::ONE, BlendFunction::ONE);
+			Renderer::enableDepthMask(false);
+			Renderer::setDepthFunction(DepthFunction::EQUAL);
+
+			Renderer::setViewport(0, 0, width, height);
+
 			light->bind();
 
-			uint shadowMap = light->getSamplerLocation("shadowMap");
-			if (shadowMap) {
-
+			uint shadowMapLoc = light->getSamplerLocation("shadowMap");
+			if (shadowMapLoc) {
+				shadowBuffer->getTexture()->bind(shadowMapLoc);
 			}
 
 			for (auto &&target : targets) {
+				light->setLightMatrix(lightMatrix * target.transform.toMatrix());
 				light->setUniforms(target.material, target.transform, camera);
 				light->updateUniforms();
 
 				target.mesh->render();
 			}
 
-			if (shadowMap) {
-
+			if (shadowMapLoc) {
+				shadowBuffer->getTexture()->unbind(shadowMapLoc);
 			}
 
 			light->unbind();
+
+			Renderer::setDepthFunction(DepthFunction::LESS);
+			Renderer::enableDepthMask(true);
+			Renderer::enableBlend(false);
 		}
 
-		Renderer::setDepthFunction(DepthFunction::LESS);
-		Renderer::enableDepthMask(true);
-		Renderer::enableBlend(false);
-
 		targets.clear();
+	}
 
+	void ForwardRenderer::renderShadows(BaseLight *light) {
+		static const mat4 biasMatrix = mat4::scale({0.5f, 0.5f, 0.5f}) * mat4::translation({1.0f, 1.0f, 1.0f});
 
-		s->texture = shadowBuffer->getTexture();
+		const ShadowInfo *shadowInfo = light->getShadowInfo();
+
+		shadowBuffer->bind();
+		shadowBuffer->clear();
+
+		if (shadowInfo) {
+			lightCamera->setProjection(shadowInfo->projection);
+			lightCamera->hookEntity(light);
+
+			lightMatrix = biasMatrix * lightCamera->getViewProjection();
+
+			for (auto &&target : targets) {
+				shadowMapShader->bind();
+
+				shadowMapShader->setUniforms(nullptr, target.transform, lightCamera);
+				shadowMapShader->updateUniforms();
+
+				target.mesh->render();
+
+				shadowMapShader->unbind();
+			}
+		}
+
+		shadowBuffer->unbind();
 	}
 
 }}

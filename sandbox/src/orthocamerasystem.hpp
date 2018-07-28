@@ -13,11 +13,11 @@
 class OrthoCameraSystem : public xe::BaseECSSystem {
 public:
 	explicit OrthoCameraSystem(xe::gfx::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
-		addComponentType(OrthoCameraComponent::ID);
+		addComponentType(CameraComponent::ID);
 	}
 
 	void updateComponents(float delta, xe::BaseECSComponent **components) override {
-		OrthoCameraComponent *camera = (OrthoCameraComponent *) components[0];
+		CameraComponent *camera = (CameraComponent *) components[0];
 
 		renderer->setCamera(&camera->camera);
 	}
