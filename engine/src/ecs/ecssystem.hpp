@@ -6,6 +6,7 @@
 #define X808_ECSSYSTEM_HPP
 
 
+#include "window/event.hpp"
 #include "ecscomponent.hpp"
 
 namespace xe {
@@ -22,6 +23,8 @@ namespace xe {
 		virtual void preUpdateComponents(float delta, BaseECSComponent **components) { }
 		virtual void updateComponents(float delta, BaseECSComponent **components) { }
 		virtual void lateUpdateComponents(float delta, BaseECSComponent **components) { }
+
+		virtual void inputComponents(Event &event, BaseECSComponent **components) { }
 
 		inline const std::vector<uint> &getComponentTypes() const { return componentTypes; }
 		inline const std::vector<uint> &getComponentFlags() const { return componentFlags; }

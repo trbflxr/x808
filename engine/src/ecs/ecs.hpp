@@ -14,7 +14,7 @@
 
 namespace xe {
 
-	class XE_API ECS : NonCopyable{
+	class XE_API ECS : NonCopyable {
 	public:
 		ECS() = default;
 		virtual ~ECS();
@@ -118,6 +118,7 @@ namespace xe {
 
 		///system methods
 		void updateSystems(ECSSystemList &systems, float delta);
+		void inputSystems(ECSSystemList &systems, Event &event);
 
 	private:
 		inline std::pair<uint, std::vector<std::pair<uint, uint>>> *handleToRawType(EntityHandle handle) {
@@ -142,13 +143,18 @@ namespace xe {
 		                          BaseECSComponent *component);
 
 		BaseECSComponent *getComponentInternal(std::vector<std::pair<uint, uint>> &entityComponents,
-		                                       std::vector<uint8> &array,
+		                                       std::vector<byte> &array,
 		                                       uint componentID);
 
 		void updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, float delta,
 		                                        const std::vector<uint> &componentTypes,
 		                                        std::vector<BaseECSComponent *> &componentParam,
-		                                        std::vector<std::vector<uint8> *> &componentArrays);
+		                                        std::vector<std::vector<byte> *> &componentArrays);
+
+		void inputSystemWithMultipleComponents(uint index, ECSSystemList &systems, Event &event,
+		                                       const std::vector<uint> &componentTypes,
+		                                       std::vector<BaseECSComponent *> &componentParam,
+		                                       std::vector<std::vector<byte> *> &componentArrays);
 
 		uint findLeastCommonComponent(const std::vector<uint> &componentTypes,
 		                              const std::vector<uint> &componentFlags);
@@ -156,7 +162,7 @@ namespace xe {
 
 	private:
 		std::vector<BaseECSSystem *> systems;
-		std::map<uint, std::vector<uint8>> components;
+		std::map<uint, std::vector<byte>> components;
 		std::vector<std::pair<uint, std::vector<std::pair<uint, uint>>> *> entities;
 	};
 

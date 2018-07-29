@@ -18,7 +18,7 @@ namespace xe {
 
 	typedef void *EntityHandle;
 
-	typedef std::function<uint(std::vector<uint8> &, EntityHandle, BaseECSComponent *)> ECSComponentCreateFn;
+	typedef std::function<uint(std::vector<byte> &, EntityHandle, BaseECSComponent *)> ECSComponentCreateFn;
 	typedef std::function<void(BaseECSComponent *)> ECSComponentFreeFn;
 
 	struct XE_API BaseECSComponent {
@@ -60,7 +60,7 @@ namespace xe {
 	};
 
 	template<typename Component>
-	uint ECSComponentCreate(std::vector<uint8> &memory, EntityHandle entity, BaseECSComponent *comp) {
+	uint ECSComponentCreate(std::vector<byte> &memory, EntityHandle entity, BaseECSComponent *comp) {
 		uint index = static_cast<uint>(memory.size());
 		memory.resize(index + Component::SIZE);
 

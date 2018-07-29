@@ -15,8 +15,10 @@
 #include <gfx/lights/spotlight.hpp>
 #include <gfx/api/framebuffer.hpp>
 #include <ecs/systems/forwardrenderersystem.hpp>
-#include "dummyplayer.hpp"
+
+#include "dummyplayercomponent.hpp"
 #include "testui.hpp"
+#include "dummyplayercontrolsystem.hpp"
 
 using namespace xe;
 using namespace gfx;
@@ -48,7 +50,8 @@ private:
 	ForwardRenderer *renderer;
 	ForwardRendererSystem *rendererSystem;
 
-	DummyPlayer *player;
+	DummyPlayerControlSystem * playerControlSystem;
+	EntityHandle player;
 
 	Material *rockMaterial;
 	Material *monkeyMaterial;

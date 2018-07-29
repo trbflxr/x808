@@ -30,9 +30,17 @@ Test3D::Test3D(TestUI *ui) :
 	TextureManager::add(Texture2D::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
 	TextureManager::add(Texture2D::create("bgr", "assets/textures/bgr.jfif", params));
 
+	//init objects
+	ModelComponent model;
+	TransformComponent transform;
+
 	camera = new Camera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
 
-	player = new DummyPlayer(camera);
+	DummyPlayerComponent playerComponent(camera);
+	player = ecs.makeEntity(playerComponent, transform);
+
+	playerControlSystem = new DummyPlayerControlSystem();
+	mainSystems.addSystem(*playerControlSystem);
 
 	renderer = new ForwardRenderer(800, 600, camera, 2048);
 	rendererSystem = new ForwardRendererSystem(renderer);
@@ -80,9 +88,6 @@ Test3D::Test3D(TestUI *ui) :
 	stallMesh = new Mesh("assets/models/stall.obj");
 	planeMesh0 = new Mesh("assets/models/plane0.obj");
 	planeMesh1 = new Mesh("assets/models/plane1.obj");
-
-	ModelComponent model;
-	TransformComponent transform;
 
 	model.mesh = monkeyMesh;
 	model.material = monkeyMaterial;
@@ -153,15 +158,12 @@ Test3D::~Test3D() {
 
 	delete renderer;
 	delete rendererSystem;
+	delete playerControlSystem;
 
 	delete camera;
-
-	delete player;
 }
 
 void Test3D::render() {
-//	SpriteComponent *s = ecs.getComponent<SpriteComponent>(ui->spriteHandle);
-
 	renderer->begin();
 
 	ecs.updateSystems(renderingPipeline, 0.0f);
@@ -180,13 +182,13 @@ void Test3D::tick() {
 }
 
 void Test3D::update(float delta) {
-	player->update(delta);
+	static DummyPlayerComponent *p = ecs.getComponent<DummyPlayerComponent>(player);
 
 	ecs.updateSystems(mainSystems, delta);
 
 	if (hookSpotLight) {
 		spotLight->setPosition(camera->transform.getTranslation());
-		spotLight->setDirection(player->getCamera()->transform.getRotation().getForward());
+		spotLight->setDirection(p->camera->transform.getRotation().getForward());
 	}
 }
 
@@ -227,7 +229,7 @@ void Test3D::fixedUpdate(float delta) {
 }
 
 void Test3D::input(Event &event) {
-	player->input(event);
+	ecs.inputSystems(mainSystems, event);
 
 	if (event.type == Event::KeyPressed) {
 		if (event.key.code == Keyboard::Key::Num1) {

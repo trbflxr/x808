@@ -61,14 +61,14 @@ namespace xe {
 
 	void ECS::updateSystems(ECSSystemList &systems, float delta) {
 		std::vector<BaseECSComponent *> componentParam;
-		std::vector<std::vector<uint8> *> componentArrays;
+		std::vector<std::vector<byte> *> componentArrays;
 
 		for (uint i = 0; i < systems.size(); i++) {
 			const std::vector<uint> &componentTypes = systems[i]->getComponentTypes();
 
 			if (componentTypes.size() == 1) {
 				size_t typeSize = BaseECSComponent::getTypeSize(componentTypes[0]);
-				std::vector<uint8> &array = components[componentTypes[0]];
+				std::vector<byte> &array = components[componentTypes[0]];
 
 				for (uint j = 0; j < array.size(); j += typeSize) {
 					BaseECSComponent *component = (BaseECSComponent *) &array[j];
@@ -83,8 +83,32 @@ namespace xe {
 		}
 	}
 
+	void ECS::inputSystems(ECSSystemList &systems, Event &event) {
+		if (event.handled) return;
+
+		std::vector<BaseECSComponent *> componentParam;
+		std::vector<std::vector<byte> *> componentArrays;
+
+		for (uint i = 0; i < systems.size(); i++) {
+			const std::vector<uint> &componentTypes = systems[i]->getComponentTypes();
+
+			if (componentTypes.size() == 1) {
+				size_t typeSize = BaseECSComponent::getTypeSize(componentTypes[0]);
+				std::vector<byte> &array = components[componentTypes[0]];
+
+				for (uint j = 0; j < array.size(); j += typeSize) {
+					BaseECSComponent *component = (BaseECSComponent *) &array[j];
+					systems[i]->inputComponents(event, &component);
+				}
+			} else {
+				inputSystemWithMultipleComponents(i, systems, event, componentTypes,
+				                                  componentParam, componentArrays);
+			}
+		}
+	}
+
 	void ECS::deleteComponent(uint componentID, uint index) {
-		std::vector<uint8> &array = components[componentID];
+		std::vector<byte> &array = components[componentID];
 		ECSComponentFreeFn freeFn = BaseECSComponent::getTypeFreeFn(componentID);
 		size_t typeSize = BaseECSComponent::getTypeSize(componentID);
 
@@ -148,7 +172,7 @@ namespace xe {
 	}
 
 	BaseECSComponent *ECS::getComponentInternal(std::vector<std::pair<uint, uint>> &entityComponents,
-	                                            std::vector<uint8> &array,
+	                                            std::vector<byte> &array,
 	                                            uint componentID) {
 
 		for (auto &&component : entityComponents) {
@@ -162,7 +186,7 @@ namespace xe {
 	void ECS::updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, float delta,
 	                                             const std::vector<uint> &componentTypes,
 	                                             std::vector<BaseECSComponent *> &componentParam,
-	                                             std::vector<std::vector<uint8> *> &componentArrays) {
+	                                             std::vector<std::vector<byte> *> &componentArrays) {
 
 		const std::vector<uint> &componentFlags = systems[index]->getComponentFlags();
 
@@ -175,7 +199,7 @@ namespace xe {
 		uint minSizeIndex = findLeastCommonComponent(componentTypes, componentFlags);
 
 		size_t typeSize = BaseECSComponent::getTypeSize(componentTypes[minSizeIndex]);
-		std::vector<uint8> &array = *componentArrays[minSizeIndex];
+		std::vector<byte> &array = *componentArrays[minSizeIndex];
 
 		for (uint i = 0; i < array.size(); i += typeSize) {
 			componentParam[minSizeIndex] = (BaseECSComponent *) &array[i];
@@ -201,7 +225,50 @@ namespace xe {
 				systems[index]->lateUpdateComponents(delta, &componentParam[0]);
 			}
 		}
+	}
 
+	void ECS::inputSystemWithMultipleComponents(uint index, ECSSystemList &systems, Event &event,
+	                                            const std::vector<uint> &componentTypes,
+	                                            std::vector<BaseECSComponent *> &componentParam,
+	                                            std::vector<std::vector<byte> *> &componentArrays) {
+
+		if (event.handled) return;
+
+		const std::vector<uint> &componentFlags = systems[index]->getComponentFlags();
+
+		componentParam.resize(__max(componentParam.size(), componentTypes.size()));
+		componentArrays.resize(__max(componentArrays.size(), componentTypes.size()));
+
+		for (uint i = 0; i < componentTypes.size(); i++) {
+			componentArrays[i] = &components[componentTypes[i]];
+		}
+		uint minSizeIndex = findLeastCommonComponent(componentTypes, componentFlags);
+
+		size_t typeSize = BaseECSComponent::getTypeSize(componentTypes[minSizeIndex]);
+		std::vector<byte> &array = *componentArrays[minSizeIndex];
+
+		for (uint i = 0; i < array.size(); i += typeSize) {
+			componentParam[minSizeIndex] = (BaseECSComponent *) &array[i];
+			auto &entityComponents = handleToEntity(componentParam[minSizeIndex]->entity);
+
+			bool isValid = true;
+			for (uint j = 0; j < componentTypes.size(); j++) {
+				if (j == minSizeIndex) {
+					continue;
+				}
+
+				componentParam[j] = getComponentInternal(entityComponents, *componentArrays[j], componentTypes[j]);
+
+				if (componentParam[j] == nullptr && (componentFlags[j] & BaseECSSystem::FLAG_OPTIONAL) == 0) {
+					isValid = false;
+					break;
+				}
+			}
+
+			if (isValid) {
+				systems[index]->inputComponents(event, &componentParam[0]);
+			}
+		}
 	}
 
 	uint ECS::findLeastCommonComponent(const std::vector<uint> &componentTypes,
