@@ -13,7 +13,10 @@ namespace xe {
 
 	class SpriteRendererSystem : public BaseECSSystem {
 	public:
-		explicit SpriteRendererSystem(gfx::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
+		explicit SpriteRendererSystem(gfx::Renderer2D *renderer) :
+				BaseECSSystem(),
+				renderer(renderer) {
+
 			addComponentType(SpriteComponent::ID);
 			addComponentType(Transform2DComponent::ID);
 		}

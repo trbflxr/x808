@@ -2,16 +2,10 @@
 // Created by FLXR on 7/22/2018.
 //
 
-#include <string>
-
 #include "glshaderresource.hpp"
 
 static const char *batchRendererShaderGL =
 #include "shaders/batchrenderer.shader"
-		;
-
-static const char *basicForwardShaderGL =
-#include "shaders/basicforward.shader"
 		;
 
 static const char *forwardAmbientShaderGL =
@@ -65,10 +59,6 @@ namespace xe { namespace gfx {
 
 	std::string batchRendererShaderSourceGL() {
 		return batchRendererShaderGL;
-	}
-
-	std::string basicForwardShaderSourceGL() {
-		return basicForwardShaderGL;
 	}
 
 	std::string forwardAmbientShaderSourceGL() {

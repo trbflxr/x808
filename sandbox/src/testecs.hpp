@@ -9,7 +9,9 @@
 #include <ecs/ecs.hpp>
 #include <ecs/components/spritecomponent.hpp>
 #include <ecs/components/transform2dcomponent.hpp>
+#include <ecs/components/textcomponent.hpp>
 #include <ecs/systems/spriterenderersystem.hpp>
+#include <ecs/systems/textrenderersystem.hpp>
 #include <gfx/layers/layer2d.hpp>
 #include "orthocameramovesystem.hpp"
 
@@ -34,14 +36,15 @@ private:
 	xe::EntityHandle cameraEntity;
 
 	xe::SpriteRendererSystem *spriteRenderer;
+	xe::TextRendererSystem *textRenderer;
 
 	xe::ECSSystemList mainSystems;
 	xe::ECSSystemList renderingPipeline;
 
-	xe::gfx::Text *text;
+	xe::EntityHandle text;
+	xe::EntityHandle inputText;
 	xe::EntityHandle a;
 
-	xe::gfx::Text *inputText;
 	std::wstring inputString;
 };
 

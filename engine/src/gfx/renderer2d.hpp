@@ -13,9 +13,9 @@
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
 #include "gfx/api/shader.hpp"
-#include "text.hpp"
 #include "ecs/components/spritecomponent.hpp"
 #include "ecs/components/transform2dcomponent.hpp"
+#include "ecs/components/textcomponent.hpp"
 
 namespace xe { namespace gfx {
 
@@ -53,7 +53,7 @@ namespace xe { namespace gfx {
 		void flush();
 
 		void submit(const SpriteComponent *sprite, const Transform2DComponent *transform);
-		void submitText(const Text *text);
+		void submitText(const TextComponent *text);
 
 		void drawLine(float x0, float y0, float x1, float y1, float z,
 		              uint color = color::WHITE, float thickness = 0.02f);
@@ -80,7 +80,7 @@ namespace xe { namespace gfx {
 		float submitTexture(const api::Texture *texture);
 
 		void submitInternal(RenderTarget target);
-		void submitTextInternal(const Text *text);
+		void submitTextInternal(const TextComponent *text);
 
 		void end();
 		void flushInternal();
@@ -106,9 +106,8 @@ namespace xe { namespace gfx {
 		api::VertexArray *screenQuad;
 		Camera *camera;
 
-//		std::vector<std::pair<const SpriteComponent *, const Transform2DComponent *>> targets;
 		std::vector<RenderTarget> targets;
-		std::vector<const Text *> text;
+		std::vector<const TextComponent *> text;
 	};
 
 }}

@@ -187,18 +187,19 @@ namespace xe { namespace gfx {
 		indexCount += 6;
 	}
 
-	void Renderer2D::submitText(const Text *text) {
+	void Renderer2D::submitText(const TextComponent *text) {
 		Renderer2D::text.push_back(text);
 	}
 
-	void Renderer2D::submitTextInternal(const Text *text) {
+	void Renderer2D::submitTextInternal(const TextComponent *text) {
 		using namespace ftgl;
 
-		const Font &font = *text->getFont();
+		const Font &font = *text->font;
 		ftgl::texture_font_t *ftFont = font.getFTFont();
 		const std::wstring &string = text->string;
 		const uint color = text->textColor;
 		const uint outlineColor = text->outlineColor;
+		const float outlineThickness = text->outlineThickness;
 
 		const api::Texture2D *texture = font.getTexture();
 		XE_ASSERT(texture);
@@ -209,7 +210,10 @@ namespace xe { namespace gfx {
 		float x = text->position.x;
 		const float y = -text->position.y;
 
-		if (ftFont->outline_thickness > 0) {
+
+		if (outlineThickness > 0) {
+			ftFont->outline_thickness = outlineThickness;
+
 			for (uint i = 0; i < string.length(); i++) {
 				auto *glyph = ftgl::texture_font_get_glyph(ftFont, string[i]);
 				if (glyph) {
@@ -260,6 +264,7 @@ namespace xe { namespace gfx {
 			}
 			x = text->position.x;
 			ftFont->outline_type = 0;
+			ftFont->outline_thickness = 0;
 		}
 
 		for (uint i = 0; i < string.length(); i++) {

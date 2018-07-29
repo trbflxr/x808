@@ -13,6 +13,8 @@
 
 namespace xe {
 
+	//todo: different default font with utf8 support
+
 	class XE_API FontManager : NonCopyable {
 	public:
 		~FontManager() override;

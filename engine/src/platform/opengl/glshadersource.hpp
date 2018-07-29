@@ -6,10 +6,11 @@
 #define X808_GLSHADERSOURCE_HPP
 
 
+#include <string>
+
 namespace xe { namespace gfx {
 
 	std::string batchRendererShaderSourceGL();
-	std::string basicForwardShaderSourceGL();
 	std::string forwardAmbientShaderSourceGL();
 	std::string forwardDirectionalShaderSourceGL();
 	std::string forwardPointShaderSourceGL();

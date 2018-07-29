@@ -17,7 +17,7 @@ namespace xe {
 	class XE_API ECS : NonCopyable {
 	public:
 		ECS() = default;
-		virtual ~ECS();
+		~ECS() override;
 
 		///entity methods
 		EntityHandle makeEntity(BaseECSComponent **components, const uint *componentIDs, size_t numComponents);

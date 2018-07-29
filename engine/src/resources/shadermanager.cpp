@@ -53,9 +53,6 @@ namespace xe {
 		shaders.emplace("batchRenderer",
 		                Shader::createFromSource("batchRenderer", gfx::batchRendererShaderSourceGL()));
 
-		shaders.emplace("basicForward",
-		                Shader::createFromSource("basicForward", gfx::basicForwardShaderSourceGL()));
-
 		shaders.emplace("forwardAmbient",
 		                Shader::createFromSource("forwardAmbient", gfx::forwardAmbientShaderSourceGL()));
 

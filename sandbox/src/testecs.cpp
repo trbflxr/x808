@@ -82,8 +82,10 @@ TestECS::TestECS() :
 
 	//render system
 	spriteRenderer = new SpriteRendererSystem(renderer);
+	textRenderer = new TextRendererSystem(renderer);
 
 	renderingPipeline.addSystem(*spriteRenderer);
+	renderingPipeline.addSystem(*textRenderer);
 
 	//main systems
 	cameraSystem = new OrthoCameraMoveSystem(renderer);
@@ -94,9 +96,6 @@ TestECS::TestECS() :
 	//create camera
 	CameraComponent camera(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
 	cameraEntity = ecs.makeEntity(camera);
-
-//	OrthoCameraComponent *cam = ecs.getComponent<OrthoCameraComponent>(cameraEntity);
-//	Input::setCamera(&cam->camera);
 
 	//sprite components
 	SpriteComponent sprite;
@@ -166,19 +165,25 @@ TestECS::TestECS() :
 
 	XE_INFO("size: ", sprites);
 
-	text = new Text(L"слава ukraine", 20, {-70, 30}, GETFONT("consolata"));
-	text->setColor(color::WHITE);
-	text->setOutlineColor(color::BLACK);
-	text->setOutlineThickness(3);
+	TextComponent t;
+	t.size = 20;
+	t.font = GETFONT("consolata");
+	t.outlineThickness = 3;
 
-	inputString = L"Input:";
-	inputText = new Text(inputString, 20, {-70, -20}, GETFONT("consolata"));
-	inputText->setColor(color::PINK);
-	inputText->setOutlineColor(color::BLACK);
-	inputText->setOutlineThickness(3);
+	t.string = L"слава ukraine";
+	t.position = {-70, 30};
+	t.textColor = color::WHITE;
+	t.outlineColor = color::BLACK;
+	text = ecs.makeEntity(t);
+
+	t.string = L"Input:";
+	t.position = {-70, -20};
+	t.textColor = color::PINK;
+	t.outlineColor = color::CYAN;
+	inputText = ecs.makeEntity(t);
+
 
 	sprite.texture = GETTEXTURE("32");
-
 	transform.zIndex = 1;
 	transform.bounds.setPosition(-10, -10);
 	transform.bounds.setSize(20, 20);
@@ -188,6 +193,7 @@ TestECS::TestECS() :
 
 TestECS::~TestECS() {
 	delete spriteRenderer;
+	delete textRenderer;
 	delete cameraSystem;
 }
 
@@ -195,9 +201,6 @@ void TestECS::render() {
 	renderer->begin();
 
 	ecs.updateSystems(renderingPipeline, 0.0f);
-
-	renderer->submitText(text);
-	renderer->submitText(inputText);
 
 	renderer->flush();
 }
@@ -258,6 +261,8 @@ void TestECS::input(xe::Event &event) {
 		}
 
 		case Event::TextEntered: {
+			static TextComponent *t = ecs.getComponent<TextComponent>(inputText);
+
 			if (event.text.unicode == 8) {
 				if (!inputString.empty()) {
 					inputString.erase(inputString.end() - 1);
@@ -266,7 +271,7 @@ void TestECS::input(xe::Event &event) {
 				inputString += event.text.unicode;
 			}
 
-			inputText->setString(inputString);
+			t->string = inputString;
 
 			break;
 		}
