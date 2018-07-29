@@ -67,4 +67,12 @@ namespace xe { namespace gfx {
 		setUniform("sys_LightMat", &matrix, sizeof(mat4), api::Shader::VERT);
 	}
 
+	void BaseLight::setShadowBias(float bias) {
+		setUniform("sys_ShadowBias", &bias, sizeof(float), api::Shader::FRAG);
+	}
+
+	void BaseLight::setShadowTexelSize(const vec2 &texelSize) {
+		setUniform("sys_ShadowTexelSize", &texelSize, sizeof(vec2), api::Shader::FRAG);
+	}
+
 }}

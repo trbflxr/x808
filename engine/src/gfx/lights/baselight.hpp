@@ -13,8 +13,13 @@ namespace xe { namespace gfx {
 
 	struct ShadowInfo {
 		mat4 projection;
+		float bias;
+		bool flipFaces;
 
-		inline explicit ShadowInfo(const mat4 &projection) : projection(projection) { }
+		inline explicit ShadowInfo(const mat4 &projection, float bias, bool flipFaces) :
+				projection(projection),
+				bias(bias),
+				flipFaces(flipFaces) { }
 	};
 
 	class XE_API BaseLight : public GameObject, public ForwardRendererShader {
@@ -30,6 +35,8 @@ namespace xe { namespace gfx {
 		void setUniforms(const Material *material, const Transform &transform, const Camera *camera) override;
 
 		void setLightMatrix(const mat4 &matrix);
+		void setShadowBias(float bias);
+		void setShadowTexelSize(const vec2 &texelSize);
 
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enable) { BaseLight::enabled = enable; }

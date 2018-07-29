@@ -88,6 +88,7 @@ Test3D::Test3D(TestUI *ui) :
 	stallMesh = new Mesh("assets/models/stall.obj");
 	planeMesh0 = new Mesh("assets/models/plane0.obj");
 	planeMesh1 = new Mesh("assets/models/plane1.obj");
+	cubeMesh = new Mesh("assets/models/cube.obj");
 
 	model.mesh = monkeyMesh;
 	model.material = monkeyMaterial;
@@ -131,6 +132,14 @@ Test3D::Test3D(TestUI *ui) :
 	transform.transform.setTranslation({29, -3, -5});
 	transform.transform.setScale({0.4f, 0.4f, 0.4f});
 	planeModel2 = ecs.makeEntity(model, transform);
+
+
+	//cube
+	model.mesh = cubeMesh;
+	model.material = planeMaterial2;
+	transform.transform.setTranslation({10, -4.5f, -5});
+	transform.transform.rotate(vec3::YAXIS, to_rad(45));
+	cubeModel = ecs.makeEntity(model, transform);
 }
 
 Test3D::~Test3D() {
@@ -147,6 +156,7 @@ Test3D::~Test3D() {
 	delete stallMesh;
 	delete planeMesh0;
 	delete planeMesh1;
+	delete cubeMesh;
 
 	delete rockMaterial;
 	delete monkeyMaterial;

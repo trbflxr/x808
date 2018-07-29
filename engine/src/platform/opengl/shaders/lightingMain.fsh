@@ -1,7 +1,7 @@
 R"(
 float CalcShadowAmount(sampler2D shadowMap, vec4 initialshadowMapUV) {
   vec3 shadowMapUV = initialshadowMapUV.xyz / initialshadowMapUV.w;
-  return SampleShadowMap(shadowMap, shadowMapUV.xy, shadowMapUV.z);
+  return SampleShadowMapPCF(shadowMap, shadowMapUV.xy, shadowMapUV.z - sys_ShadowBias, sys_ShadowTexelSize);
 }
 
 void main() {

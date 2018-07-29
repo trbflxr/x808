@@ -11,7 +11,7 @@ namespace xe { namespace gfx {
 
 		setUniformsInternal();
 
-		setShadowInfo(new ShadowInfo(mat4::ortho(-40, 40, -40, 40, -40, 40)));
+		setShadowInfo(new ShadowInfo(mat4::ortho(-40, 40, -40, 40, -40, 40), 0.0f, true));
 	}
 
 	void DirectionalLight::setUniformsInternal() {

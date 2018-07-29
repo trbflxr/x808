@@ -9,6 +9,7 @@
 #include "gfx/api/framebuffer.hpp"
 #include "gfx/camera.hpp"
 #include "gfx/lights/ambientlight.hpp"
+#include "gfx/lights/shadowmapshader.hpp"
 #include "material.hpp"
 #include "mesh.hpp"
 #include "math/transform.hpp"
@@ -58,13 +59,14 @@ namespace xe { namespace gfx {
 		const Camera *camera;
 
 		AmbientLight *ambientLight;
-		ForwardRendererShader *shadowMapShader;
+		ShadowMapShader *shadowMapShader;
 
 		bool enableShadows;
 		api::FrameBuffer *shadowBuffer;
 		Camera *lightCamera;
 
 		mat4 lightMatrix;
+		float shadowBias;
 	};
 
 }}

@@ -90,8 +90,8 @@ namespace xe {
 		return mat4::transform(translation, rotation, scale);
 	}
 
-	inline void Transform::rotate(const vec3 &axis, float angle) {
-		rotate(quat(axis, angle));
+	inline void Transform::rotate(const vec3 &axis, float angleRad) {
+		rotate(quat(axis, angleRad));
 	}
 
 	inline void Transform::rotate(const quat &rotation) {

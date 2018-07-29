@@ -66,6 +66,7 @@ private:
 	Mesh *stallMesh;
 	Mesh *planeMesh0;
 	Mesh *planeMesh1;
+	Mesh *cubeMesh;
 
 	EntityHandle rockModel;
 	EntityHandle monkeyModel;
@@ -74,6 +75,7 @@ private:
 	EntityHandle planeModel0;
 	EntityHandle planeModel1;
 	EntityHandle planeModel2;
+	EntityHandle cubeModel;
 
 	DirectionalLight *directionalLight;
 	PointLight *pointLight;

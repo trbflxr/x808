@@ -1,11 +1,41 @@
 R"(
-const float bias = 0.005;
-
 vec2 CalcParallaxUV(sampler2D dispMap, mat3 tbnMat, vec3 directionToEye, vec2 uv, float scale, float bias) {
   return uv + (directionToEye * tbnMat).xy * (texture(dispMap, uv).r * scale + bias);
 }
 
 float SampleShadowMap(sampler2D shadowMap, vec2 uv, float compare) {
-  return compare - bias > texture(shadowMap, uv).r ? 0.0 : 1.0;
+  return compare > texture(shadowMap, uv).r ? 0.0 : 1.0;
+}
+
+float SampleShadowMapLinear(sampler2D shadowMap, vec2 uv, float compare, vec2 texelSize) {
+  vec2 pixelPos = uv / texelSize + vec2(0.5);
+  vec2 fracPart = fract(pixelPos);
+  vec2 startTexel = (pixelPos - fracPart) * texelSize;
+
+  float bl = SampleShadowMap(shadowMap, startTexel, compare);
+  float br = SampleShadowMap(shadowMap, startTexel + vec2(texelSize.x, 0.0), compare);
+  float tl = SampleShadowMap(shadowMap, startTexel + vec2(0.0, texelSize.y), compare);
+  float tr = SampleShadowMap(shadowMap, startTexel + texelSize, compare);
+
+  float mixA = mix(bl, tl, fracPart.y);
+  float mixB = mix(br, tr, fracPart.y);
+
+  return mix(mixA, mixB, fracPart.x);
+}
+
+float SampleShadowMapPCF(sampler2D shadowMap, vec2 uv, float compare, vec2 texelSize) {
+  const float NUM_SAMPLES = 3.0;
+  const float NUM_SAMPLES_SQUARED = NUM_SAMPLES * NUM_SAMPLES;
+  const float SAMPLES_START = (NUM_SAMPLES - 1.0) / 2.0;
+
+  float result = 0.0;
+  for (float y = -SAMPLES_START; y <= SAMPLES_START; y += 1.0f) {
+    for (float x = -SAMPLES_START; x <= SAMPLES_START; x += 1.0f) {
+      vec2 uvOffset = vec2(x, y) * texelSize;
+      result += SampleShadowMapLinear(shadowMap, uv + uvOffset, compare, texelSize);
+    }
+  }
+
+  return result / NUM_SAMPLES_SQUARED;
 }
 )"

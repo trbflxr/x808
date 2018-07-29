@@ -64,6 +64,8 @@ namespace xe { namespace gfx {
 		for (auto &&light : lights) {
 			if (!light->isEnabled()) continue;
 
+			shadowBias = 0;
+
 			renderShadows(light);
 
 			//render to screen
@@ -82,6 +84,9 @@ namespace xe { namespace gfx {
 			}
 
 			for (auto &&target : targets) {
+				light->setShadowTexelSize(vec2(1.0f / shadowBuffer->getWidth(), 1.0f / shadowBuffer->getWidth()));
+
+				light->setShadowBias(shadowBias);
 				light->setLightMatrix(lightMatrix * target.transform.toMatrix());
 				light->setUniforms(target.material, target.transform, camera);
 				light->updateUniforms();
@@ -116,17 +121,23 @@ namespace xe { namespace gfx {
 			lightCamera->hookEntity(light);
 
 			lightMatrix = biasMatrix * lightCamera->getViewProjection();
+			shadowBias = shadowInfo->bias / shadowBuffer->getWidth();
+
+			shadowMapShader->bind();
 
 			for (auto &&target : targets) {
-				shadowMapShader->bind();
-
 				shadowMapShader->setUniforms(nullptr, target.transform, lightCamera);
 				shadowMapShader->updateUniforms();
 
+				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::FRONT);
+
 				target.mesh->render();
 
-				shadowMapShader->unbind();
+				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::BACK);
+
 			}
+
+			shadowMapShader->unbind();
 		}
 
 		shadowBuffer->unbind();
