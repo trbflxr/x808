@@ -17,6 +17,4 @@ uniform float sys_DispMapScale;
 uniform float sys_DispMapBias;
 
 uniform sampler2D shadowMap;
-uniform float sys_ShadowBias;
-uniform vec2 sys_ShadowTexelSize;
 )"

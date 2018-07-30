@@ -4,7 +4,8 @@ vec2 CalcParallaxUV(sampler2D dispMap, mat3 tbnMat, vec3 directionToEye, vec2 uv
 }
 
 float SampleShadowMap(sampler2D shadowMap, vec2 uv, float compare) {
-  return compare > texture(shadowMap, uv).r ? 0.0 : 1.0;
+  // returns 1 or 0
+  return step(compare, texture(shadowMap, uv).r);
 }
 
 float SampleShadowMapLinear(sampler2D shadowMap, vec2 uv, float compare, vec2 texelSize) {
@@ -37,5 +38,16 @@ float SampleShadowMapPCF(sampler2D shadowMap, vec2 uv, float compare, vec2 texel
   }
 
   return result / NUM_SAMPLES_SQUARED;
+}
+
+float SampleVarianceShadowMap(sampler2D shadowMap, vec2 uv, float compare) {
+  vec2 moments = texture(shadowMap, uv).xy;
+  float p = step(compare, moments.x);
+  float variance = max(moments.y - moments.x * moments.x, 0.00002);
+
+  float d = compare - moments.x;
+  float pMax = variance / (variance + d * d);
+
+  return min(max(p, pMax), 1.0);
 }
 )"

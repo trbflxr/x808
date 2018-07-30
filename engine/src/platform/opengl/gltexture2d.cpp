@@ -9,12 +9,26 @@
 
 namespace xe { namespace gfx { namespace api {
 
+	uint textureInternalFormatToGL(TextureFormat format) {
+		switch (format) {
+			case TextureFormat::RGBA: return GL_RGBA;
+			case TextureFormat::RGB: return GL_RGB;
+			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
+			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
+			case TextureFormat::DEPTH: return GL_DEPTH_COMPONENT16;
+			case TextureFormat::RG32F: return GL_RG32F;
+			default: return 0;
+		}
+	}
+
 	uint textureFormatToGL(TextureFormat format) {
 		switch (format) {
 			case TextureFormat::RGBA: return GL_RGBA;
 			case TextureFormat::RGB: return GL_RGB;
 			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
 			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
+			case TextureFormat::DEPTH: return GL_DEPTH_COMPONENT;
+			case TextureFormat::RG32F: return GL_RGBA;
 			default: return 0;
 		}
 	}
@@ -31,22 +45,25 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 
-	GLTexture2D::GLTexture2D(uint width, uint height, TextureParameters params) :
+	GLTexture2D::GLTexture2D(uint width, uint height, TextureParameters params, bool mipMaps) :
 			fileName("NULL"),
 			width(width),
 			height(height),
-			parameters(params) {
+			parameters(params),
+			mipMaps(mipMaps) {
 
 		handle = load();
 	}
 
 	GLTexture2D::GLTexture2D(const std::string_view &name, const std::string_view &path,
 	                         TextureParameters params,
-	                         TextureLoadOptions options) :
+	                         TextureLoadOptions options,
+	                         bool mipMaps) :
 			name(name),
 			fileName(path),
 			parameters(params),
-			loadOptions(options) {
+			loadOptions(options),
+			mipMaps(mipMaps) {
 
 		handle = load();
 	}
@@ -73,7 +90,7 @@ namespace xe { namespace gfx { namespace api {
 
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 		glCall(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
-		                       textureFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
+		                       textureInternalFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
 	}
 
 	uint GLTexture2D::load() {
@@ -119,22 +136,16 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0));
 
-		if (parameters.format == TextureFormat::DEPTH) {
-			glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, width, height, 0,
-			                    GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, nullptr));
-		} else {
-			glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureFormatToGL(parameters.format), width, height, 0,
-			                    textureFormatToGL(parameters.format),
-			                    GL_UNSIGNED_BYTE, pixels ? pixels : nullptr));
+		glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormatToGL(parameters.format), width, height, 0,
+		                    textureFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
 
+		if (mipMaps) {
 			glCall(glGenerateMipmap(GL_TEXTURE_2D));
 		}
 
 		glCall(glBindTexture(GL_TEXTURE_2D, 0));
 
-		if (!fail) {
-			delete[] pixels;
-		}
+		if (!fail) delete[] pixels;
 
 		return handle;
 	}

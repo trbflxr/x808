@@ -27,7 +27,7 @@ namespace xe { namespace gfx {
 		ambientLight = new AmbientLight(defaultShader, 0.1f, color::WHITE);
 
 		lightCamera = new Camera(mat4(1.0f));
-		shadowBuffer = api::FrameBuffer::create(shadowMapSize, shadowMapSize, api::FrameBuffer::DEPTH);
+		shadowBuffer = api::FrameBuffer::create(shadowMapSize, shadowMapSize, api::FrameBuffer::RG32F);
 	}
 
 	ForwardRenderer::~ForwardRenderer() {
@@ -84,9 +84,6 @@ namespace xe { namespace gfx {
 			}
 
 			for (auto &&target : targets) {
-				light->setShadowTexelSize(vec2(1.0f / shadowBuffer->getWidth(), 1.0f / shadowBuffer->getWidth()));
-
-				light->setShadowBias(shadowBias);
 				light->setLightMatrix(lightMatrix * target.transform.toMatrix());
 				light->setUniforms(target.material, target.transform, camera);
 				light->updateUniforms();
@@ -134,7 +131,6 @@ namespace xe { namespace gfx {
 				target.mesh->render();
 
 				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::BACK);
-
 			}
 
 			shadowMapShader->unbind();

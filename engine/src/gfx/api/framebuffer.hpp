@@ -15,7 +15,7 @@ namespace xe { namespace gfx { namespace api {
 	class XE_API FrameBuffer {
 	public:
 		enum {
-			COLOR = 0, DEPTH
+			COLOR = 0, DEPTH, RG32F
 		};
 
 	public:

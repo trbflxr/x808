@@ -12,12 +12,13 @@ namespace xe { namespace gfx { namespace api {
 
 	class GLTexture2D : public Texture2D {
 	public:
-		explicit GLTexture2D(uint width, uint height, TextureParameters params = { });
+		explicit GLTexture2D(uint width, uint height, TextureParameters params = { }, bool mipMaps = true);
 
 		explicit GLTexture2D(const std::string_view &name,
 		                     const std::string_view &path,
 		                     TextureParameters params = { },
-		                     TextureLoadOptions options = { });
+		                     TextureLoadOptions options = { },
+		                     bool mipMaps = true);
 
 		~GLTexture2D() override;
 
@@ -32,6 +33,8 @@ namespace xe { namespace gfx { namespace api {
 		inline uint getWidth() const override { return width; }
 		inline uint getHeight() const override { return height; }
 
+		inline bool hasMipMaps() const override { return mipMaps; }
+
 		inline uint getHandle() const override { return handle; }
 
 	private:
@@ -44,6 +47,8 @@ namespace xe { namespace gfx { namespace api {
 		uint handle;
 		uint width;
 		uint height;
+
+		bool mipMaps;
 
 		TextureParameters parameters;
 		TextureLoadOptions loadOptions;

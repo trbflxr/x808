@@ -11,6 +11,7 @@ namespace xe { namespace gfx { namespace api {
 			width(width),
 			height(height),
 			type(type),
+			color(0.0f, 0.0f, 0.0f, 0.0f),
 			frameBufferHandle(0),
 			renderBufferHandle(0) {
 
@@ -24,17 +25,11 @@ namespace xe { namespace gfx { namespace api {
 			glCall(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getHandle(), 0));
 			glCall(glDrawBuffer(GL_NONE));
 
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-				XE_FATAL("[GLFrameBuffer2D]: creation fail");
-				XE_ASSERT(false);
-			}
-
-			glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-
 		} else {
-			TextureParameters params(TextureFormat::RGBA, TextureFilter::NEAREST, TextureWrap::CLAMP);
-			texture = new GLTexture2D(width, height, params);
+			auto format = type == FrameBuffer::RG32F ? TextureFormat::RG32F : TextureFormat::RGBA;
 
+			TextureParameters params(format, TextureFilter::NEAREST, TextureWrap::CLAMP);
+			texture = new GLTexture2D(width, height, params);
 
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferHandle));
@@ -50,14 +45,14 @@ namespace xe { namespace gfx { namespace api {
 			                                 GL_RENDERBUFFER, renderBufferHandle));
 
 			glCall(glDrawBuffer(GL_COLOR_ATTACHMENT0));
-
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-				XE_FATAL("[GLFrameBuffer2D]: creation fail");
-				XE_ASSERT(false);
-			}
-
-			glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 		}
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			XE_FATAL("[GLFrameBuffer2D]: creation fail");
+			XE_ASSERT(false);
+		}
+
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
 	GLFrameBuffer::~GLFrameBuffer() {

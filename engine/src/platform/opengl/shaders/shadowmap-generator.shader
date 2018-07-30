@@ -6,9 +6,7 @@ layout(location = 0) in vec4 position;
 
 uniform mat4 sys_MVP;
 
-void main() {
-  gl_Position = sys_MVP * position;
-}
+void main() { gl_Position = sys_MVP * position; }
 
 #shader fragment
 #version 330
@@ -16,6 +14,6 @@ void main() {
 out vec4 out_Color;
 
 void main() {
-  out_Color = vec4(gl_FragCoord.z);
+  out_Color = vec4(gl_FragCoord.z, gl_FragCoord.z * gl_FragCoord.z, 0.0, 0.0);
 }
 )"
