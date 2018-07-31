@@ -7,14 +7,14 @@
 
 
 #include "xeint.hpp"
-#include "texture.hpp"
+#include "texture2d.hpp"
 #include "math/vec4.hpp"
 
 namespace xe { namespace gfx { namespace api {
 
 	class XE_API FrameBuffer {
 	public:
-		enum {
+		enum Type {
 			COLOR = 0, DEPTH, RG32F
 		};
 
@@ -26,11 +26,13 @@ namespace xe { namespace gfx { namespace api {
 		virtual uint getWidth() = 0;
 		virtual uint getHeight() = 0;
 
-		virtual const Texture *getTexture() = 0;
+		virtual const Texture2D *getTexture() const = 0;
+		virtual Texture2D *getTexture()  = 0;
 
 		virtual void setClearColor(const vec4 &color) = 0;
 
-		static FrameBuffer *create(uint width, uint height, uint type);
+		static FrameBuffer *create(uint width, uint height, Type type,
+		                           TextureFilter filter = TextureFilter::NEAREST);
 
 	protected:
 		FrameBuffer() = default;

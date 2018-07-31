@@ -25,7 +25,7 @@ namespace xe { namespace gfx {
 
 		void updateUniforms();
 
-		virtual void setUniforms(const Material *material, const Transform &transform, const Camera *camera) = 0;
+		virtual void setUniforms(const Material *material, const Transform &transform, Camera *camera) = 0;
 
 	protected:
 		void init();

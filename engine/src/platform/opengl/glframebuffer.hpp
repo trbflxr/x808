@@ -14,7 +14,7 @@ namespace xe { namespace gfx { namespace api {
 
 	class GLFrameBuffer : public FrameBuffer {
 	public:
-		explicit GLFrameBuffer(uint width, uint height, uint type);
+		explicit GLFrameBuffer(uint width, uint height, Type type, TextureFilter filter);
 		~GLFrameBuffer();
 
 		void bind() override;
@@ -22,12 +22,13 @@ namespace xe { namespace gfx { namespace api {
 
 		void clear() override;
 
-		inline const Texture *getTexture() override { return texture; }
+		inline const Texture2D *getTexture() const override { return texture; }
+		inline Texture2D *getTexture() override { return texture; }
 
 		inline uint getWidth() override { return width; }
 		inline uint getHeight() override { return height; }
 
-		inline void setClearColor(const vec4 &color) override {GLFrameBuffer::color = color;}
+		inline void setClearColor(const vec4 &color) override { GLFrameBuffer::color = color; }
 
 	private:
 		uint frameBufferHandle;
@@ -36,7 +37,7 @@ namespace xe { namespace gfx { namespace api {
 
 		uint width;
 		uint height;
-		uint type;
+		Type type;
 
 		vec4 color;
 	};

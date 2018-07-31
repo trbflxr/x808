@@ -14,6 +14,8 @@ namespace xe { namespace gfx {
 	public:
 		explicit AmbientLight(api::Shader *shader, float intensity, uint color = color::WHITE);
 
+		void setUniforms(const Material *material, const Transform &transform, Camera *camera) override;
+
 	protected:
 		void setUniformsInternal() override;
 	};

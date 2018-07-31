@@ -15,6 +15,7 @@ static const char *forwardAmbientShaderGL =
 static const char *forwardAmbientVertGL =
 #include "shaders/ambient-light.vsh"
 		;
+
 static const char *forwardAmbientFragGL =
 #include "shaders/ambient-light.fsh"
 		;
@@ -53,6 +54,10 @@ static const char *samplingSrcGL =
 
 static const char *shadowMapSrcGL =
 #include "shaders/shadowmap-generator.shader"
+		;
+
+static const char *filterGaussBlurGL =
+#include "shaders/filter-gausblur7x1.shader"
 		;
 
 namespace xe { namespace gfx {
@@ -109,6 +114,10 @@ namespace xe { namespace gfx {
 
 	std::string shadowMapSourceGL() {
 		return shadowMapSrcGL;
+	}
+
+	std::string filterGaussBlurSourceGL() {
+		return filterGaussBlurGL;
 	}
 
 }}

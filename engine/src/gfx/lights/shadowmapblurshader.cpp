@@ -1,24 +1,26 @@
 //
-// Created by FLXR on 7/26/2018.
+// Created by FLXR on 7/30/2018.
 //
 
-#include "shadowmapshader.hpp"
+#include "shadowmapblurshader.hpp"
 
 namespace xe { namespace gfx {
 
-	ShadowMapShader::ShadowMapShader(api::Shader *shader) :
+	ShadowMapBlurShader::ShadowMapBlurShader(api::Shader *shader) :
 			ForwardRendererShader(shader) {
 
 		setUniformsInternal();
 	}
 
-	void ShadowMapShader::setUniforms(const Material *m, const xe::Transform &transform, Camera *camera) {
+	void ShadowMapBlurShader::setUniforms(const Material *m, const Transform &transform, Camera *camera) {
 		mat4 world = transform.toMatrix();
 		mat4 mvp = camera->getViewProjection() * world;
 
 		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
 
 		setUserUniforms();
+
+		bindSamplers(m);
 	}
 
 }}

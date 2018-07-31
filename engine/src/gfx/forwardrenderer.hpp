@@ -10,10 +10,10 @@
 #include "gfx/camera.hpp"
 #include "gfx/lights/ambientlight.hpp"
 #include "gfx/lights/shadowmapshader.hpp"
+#include "gfx/lights/shadowmapblurshader.hpp"
 #include "material.hpp"
 #include "mesh.hpp"
 #include "math/transform.hpp"
-#include "resources/shadermanager.hpp"
 
 namespace xe { namespace gfx {
 
@@ -29,9 +29,7 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit ForwardRenderer(uint width, uint height, const Camera *camera, uint shadowMapSize = 0,
-		                         api::Shader *shadowMapShader = GETSHADER("shadowMap"),
-		                         api::Shader *defaultShader = GETSHADER("forwardAmbient"));
+		explicit ForwardRenderer(uint width, uint height, Camera *camera, uint shadowMapSize = 0);
 		~ForwardRenderer();
 
 		inline void addLight(BaseLight *light) { lights.push_back(light); }
@@ -41,13 +39,18 @@ namespace xe { namespace gfx {
 		void flush();
 
 		inline const Camera *getCamera() const { return camera; }
-		inline void setCamera(const Camera *camera) { ForwardRenderer::camera = camera; }
+		inline Camera *getCamera() { return camera; }
+
+		inline void setCamera(Camera *camera) { ForwardRenderer::camera = camera; }
 
 		inline AmbientLight *getAmbientLight() { return ambientLight; }
 		inline const AmbientLight *getAmbientLight() const { return ambientLight; }
 
 	private:
 		void renderShadows(BaseLight *light);
+
+		void blurShadowMap(float blurAmount);
+		void applyFilter(ShadowMapBlurShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest);
 
 	private:
 		std::vector<RenderTarget> targets;
@@ -56,17 +59,25 @@ namespace xe { namespace gfx {
 		uint width;
 		uint height;
 
-		const Camera *camera;
+		Camera *camera;
 
 		AmbientLight *ambientLight;
 		ShadowMapShader *shadowMapShader;
+		ShadowMapBlurShader *shadowMapBlurShader;
 
 		bool enableShadows;
-		api::FrameBuffer *shadowBuffer;
+		api::FrameBuffer *shadowBuffer0;
+		api::FrameBuffer *shadowBuffer1;
 		Camera *lightCamera;
 
 		mat4 lightMatrix;
-		float shadowBias;
+		float shadowVarianceMin;
+		float shadowLightBleedingReduction;
+
+		Mesh *dummyMesh;
+		Material *dummyMaterial;
+		Transform dummyTransform;
+		GameObject dummyGameObject;
 	};
 
 }}

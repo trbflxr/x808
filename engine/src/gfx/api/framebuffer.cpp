@@ -8,9 +8,9 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	FrameBuffer *FrameBuffer::create(uint width, uint height, uint type) {
+	FrameBuffer *FrameBuffer::create(uint width, uint height, Type type, TextureFilter filter) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLFrameBuffer(width, height, type);
+			case RenderAPI::OPENGL : return new GLFrameBuffer(width, height, type, filter);
 
 			default: return nullptr;
 		}

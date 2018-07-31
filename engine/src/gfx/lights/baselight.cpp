@@ -20,7 +20,7 @@ namespace xe { namespace gfx {
 		delete shadowInfo;
 	}
 
-	void BaseLight::setUniforms(const Material *material, const Transform &transform, const Camera *camera) {
+	void BaseLight::setUniforms(const Material *material, const Transform &transform, Camera *camera) {
 		if (BaseLight::transform.isDirty()) {
 			setUniformsInternal();
 			BaseLight::transform.setDirty(false);
@@ -61,10 +61,6 @@ namespace xe { namespace gfx {
 	void BaseLight::setShadowInfo(ShadowInfo *shadowInfo) {
 		delete BaseLight::shadowInfo;
 		BaseLight::shadowInfo = shadowInfo;
-	}
-
-	void BaseLight::setLightMatrix(const mat4 &matrix) {
-		setUniform("sys_LightMat", &matrix, sizeof(mat4), api::Shader::VERT);
 	}
 
 }}

@@ -42,7 +42,7 @@ Test3D::Test3D(TestUI *ui) :
 	playerControlSystem = new DummyPlayerControlSystem();
 	mainSystems.addSystem(*playerControlSystem);
 
-	renderer = new ForwardRenderer(800, 600, camera, 2048);
+	renderer = new ForwardRenderer(800, 600, camera, 1024);
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
@@ -51,23 +51,23 @@ Test3D::Test3D(TestUI *ui) :
 	renderer->addLight(directionalLight);
 
 	pointLight = new PointLight(GETSHADER("forwardPoint"), {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
-	renderer->addLight(pointLight);
+//	renderer->addLight(pointLight);
 
 	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
-	renderer->addLight(pointLight2);
+//	renderer->addLight(pointLight2);
 
 	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f,
 	                             color::PINK);
-	renderer->addLight(pointLight3);
+//	renderer->addLight(pointLight3);
 
 	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f,
 	                             color::CYAN);
-	renderer->addLight(pointLight4);
+//	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
 	spotLight = new SpotLight(GETSHADER("forwardSpot"), {2.789f, 0.350f, -5.662f},
 	                          {0.107f, -0.132f, -0.986f}, 0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::WHITE);
-	renderer->addLight(spotLight);
+//	renderer->addLight(spotLight);
 
 
 	monkeyMaterial = new Material(GETTEXTURE("2"), 50, 2.2f);

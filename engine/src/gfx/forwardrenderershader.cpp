@@ -3,6 +3,7 @@
 //
 
 #include "forwardrenderershader.hpp"
+#include "utils/log.hpp"
 
 namespace xe { namespace gfx {
 
@@ -82,7 +83,7 @@ namespace xe { namespace gfx {
 			default: break;
 		}
 
-//		XE_FATAL("[ForwardRendererShader]: Uniform '", name, "' not found!");
+		XE_FATAL("[ForwardRendererShader]: Uniform '", name, "' not found!");
 	}
 
 	void ForwardRendererShader::bindSamplers(const Material *material) {

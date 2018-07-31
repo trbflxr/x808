@@ -20,7 +20,7 @@ public:
 
 //		pushLayer(new TestECS());
 		pushLayer(new Test3D(ui));
-		pushLayer(ui);
+//		pushLayer(ui);
 	}
 
 };

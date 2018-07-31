@@ -7,7 +7,7 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	GLFrameBuffer::GLFrameBuffer(uint width, uint height, uint type) :
+	GLFrameBuffer::GLFrameBuffer(uint width, uint height, Type type, TextureFilter filter) :
 			width(width),
 			height(height),
 			type(type),
@@ -19,7 +19,7 @@ namespace xe { namespace gfx { namespace api {
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_FRAMEBUFFER, frameBufferHandle));
 
-			TextureParameters params(TextureFormat::DEPTH, TextureFilter::NEAREST, TextureWrap::CLAMP);
+			TextureParameters params(TextureFormat::DEPTH, filter, TextureWrap::CLAMP);
 			texture = new GLTexture2D(width, height, params);
 
 			glCall(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getHandle(), 0));
@@ -28,7 +28,7 @@ namespace xe { namespace gfx { namespace api {
 		} else {
 			auto format = type == FrameBuffer::RG32F ? TextureFormat::RG32F : TextureFormat::RGBA;
 
-			TextureParameters params(format, TextureFilter::NEAREST, TextureWrap::CLAMP);
+			TextureParameters params(format, filter, TextureWrap::CLAMP);
 			texture = new GLTexture2D(width, height, params);
 
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
@@ -78,7 +78,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	void GLFrameBuffer::clear() {
-		if (type == FrameBuffer::DEPTH) {
+		if (type == FrameBuffer::DEPTH || type == FrameBuffer::RG32F) {
 			glCall(glClear(GL_DEPTH_BUFFER_BIT));
 		} else {
 			glCall(glClearColor(color.x, color.y, color.z, color.w));

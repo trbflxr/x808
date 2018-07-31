@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 	public:
 		explicit ShadowMapShader(api::Shader *shader);
 
-		void setUniforms(const Material *material, const Transform &transform, const Camera *camera) override;
+		void setUniforms(const Material *material, const Transform &transform, Camera *camera) override;
 
 	protected:
 		void setUniformsInternal() override { }

@@ -26,6 +26,8 @@ namespace xe { namespace gfx {
 			mat4 rotation = quat::conjugate(transform.getRotation()).toRotationMatrix();
 			mat4 translation = mat4::translation(-transform.getTranslation());
 			view = rotation * translation;
+
+			transform.setDirty(false);
 		}
 
 		inline void hookEntity(GameObject *entity) {
@@ -40,8 +42,19 @@ namespace xe { namespace gfx {
 		inline const mat4 &getProjection() const { return projection; }
 		inline void setProjection(const mat4 &matrix) { Camera::projection = matrix; }
 
-		inline const mat4 &getViewMatrix() const { return view; }
-		inline mat4 getViewProjection() const { return projection * view; }
+		inline const mat4 &getViewMatrix() {
+			if (transform.isDirty()) {
+				update();
+			}
+			return view;
+		}
+
+		inline mat4 getViewProjection() {
+			if (transform.isDirty()) {
+				update();
+			}
+			return projection * view;
+		}
 
 	private:
 		GameObject *entity;
