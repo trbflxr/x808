@@ -76,4 +76,32 @@ namespace xe { namespace gfx {
 		vertexArray->unbind();
 	}
 
+	Mesh *Mesh::createPlaneMesh() {
+		IndexedModel model;
+
+		for (uint i = 0; i < 4; ++i) {
+			model.normals.emplace_back(0.0f, 1.0f, 0.0f);
+			model.tangents.emplace_back(1.0f, 0.0f, 0.0f);
+		}
+
+		model.positions.emplace_back(-1.0f, 0.0f, 1.0f);
+		model.positions.emplace_back(1.0f, 0.0f, 1.0f);
+		model.positions.emplace_back(1.0f, 0.0f, -1.0f);
+		model.positions.emplace_back(-1.0f, 0.0f, -1.0f);
+
+		model.uvs.emplace_back(0, 1);
+		model.uvs.emplace_back(1, 1);
+		model.uvs.emplace_back(1, 0);
+		model.uvs.emplace_back(0, 0);
+
+		model.indices.emplace_back(0);
+		model.indices.emplace_back(1);
+		model.indices.emplace_back(2);
+		model.indices.emplace_back(0);
+		model.indices.emplace_back(2);
+		model.indices.emplace_back(3);
+
+		return new Mesh(model);
+	}
+
 }}

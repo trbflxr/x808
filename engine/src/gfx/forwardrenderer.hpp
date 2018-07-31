@@ -29,7 +29,7 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit ForwardRenderer(uint width, uint height, Camera *camera, uint shadowMapSize = 0);
+		explicit ForwardRenderer(uint width, uint height, Camera *camera);
 		~ForwardRenderer();
 
 		inline void addLight(BaseLight *light) { lights.push_back(light); }
@@ -47,9 +47,9 @@ namespace xe { namespace gfx {
 		inline const AmbientLight *getAmbientLight() const { return ambientLight; }
 
 	private:
-		void renderShadows(BaseLight *light);
+		uint renderShadows(BaseLight *light);
 
-		void blurShadowMap(float blurAmount);
+		void blurShadowMap(uint index, float blurAmount);
 		void applyFilter(ShadowMapBlurShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest);
 
 	private:
@@ -65,11 +65,14 @@ namespace xe { namespace gfx {
 		ShadowMapShader *shadowMapShader;
 		ShadowMapBlurShader *shadowMapBlurShader;
 
-		bool enableShadows;
-		api::FrameBuffer *shadowBuffer0;
-		api::FrameBuffer *shadowBuffer1;
-		Camera *lightCamera;
 
+		//shadows stuff
+		static constexpr uint NUM_SHADOW_MAPS = 10;
+
+		api::FrameBuffer *shadowBuffers0[NUM_SHADOW_MAPS];
+		api::FrameBuffer *shadowBuffers1[NUM_SHADOW_MAPS];
+
+		Camera *lightCamera;
 		mat4 lightMatrix;
 		float shadowVarianceMin;
 		float shadowLightBleedingReduction;

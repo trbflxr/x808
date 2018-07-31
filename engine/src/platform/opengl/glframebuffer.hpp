@@ -20,7 +20,7 @@ namespace xe { namespace gfx { namespace api {
 		void bind() override;
 		void unbind() override;
 
-		void clear() override;
+		void clear(uint buffer) override;
 
 		inline const Texture2D *getTexture() const override { return texture; }
 		inline Texture2D *getTexture() override { return texture; }
@@ -28,7 +28,7 @@ namespace xe { namespace gfx { namespace api {
 		inline uint getWidth() override { return width; }
 		inline uint getHeight() override { return height; }
 
-		inline void setClearColor(const vec4 &color) override { GLFrameBuffer::color = color; }
+		inline void setClearColor(const vec4 &color) override;
 
 	private:
 		uint frameBufferHandle;
@@ -38,8 +38,6 @@ namespace xe { namespace gfx { namespace api {
 		uint width;
 		uint height;
 		Type type;
-
-		vec4 color;
 	};
 
 }}}

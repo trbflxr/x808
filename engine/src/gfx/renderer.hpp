@@ -14,7 +14,6 @@
 namespace xe { namespace gfx {
 
 	enum RendererBufferType {
-		RENDERER_BUFFER_NONE = 0,
 		RENDERER_BUFFER_COLOR = BIT(0),
 		RENDERER_BUFFER_DEPTH = BIT(1),
 		RENDERER_BUFFER_STENCIL = BIT(2)

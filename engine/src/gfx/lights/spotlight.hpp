@@ -18,14 +18,16 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit SpotLight(api::Shader *shader, const vec3 &position, const vec3 &direction, float cutoff,
-		                   const Attenuation &attenuation, float intensity, uint color = color::WHITE);
+		explicit SpotLight(api::Shader *shader, const Attenuation &attenuation, float intensity,
+		                   uint color = color::WHITE,
+		                   float fovDeg = 170.0f,
+		                   uint shadowMapSizePower2 = 0,
+		                   float shadowSoftness = 1.0f,
+		                   float lightBleedReduction = 0.2f,
+		                   float minVariance = 0.00002f);
 
-		inline const vec3 &getDirection() const { return spotLight.direction; }
-		void setDirection(const vec3 &direction);
-
-		inline float getCutoff() const { return spotLight.cutoff; }
-		void setCutoff(float cutoff);
+		inline float getFov() const { return acosf(spotLight.cutoff) * 2.0f; }
+		void setFov(float fovDeg);
 
 	protected:
 		void setUniformsInternal() override;

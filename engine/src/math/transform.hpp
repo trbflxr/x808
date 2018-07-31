@@ -67,7 +67,7 @@ namespace xe {
 			dirty = true;
 		}
 
-		inline void rotate(const vec3 &axis, float angle);
+		inline void rotate(const vec3 &axis, float angleDeg);
 		inline void rotate(const quat &rotation);
 		inline void translate(const vec3 &dir);
 
@@ -90,8 +90,8 @@ namespace xe {
 		return mat4::transform(translation, rotation, scale);
 	}
 
-	inline void Transform::rotate(const vec3 &axis, float angleRad) {
-		rotate(quat(axis, angleRad));
+	inline void Transform::rotate(const vec3 &axis, float angleDeg) {
+		rotate(quat(axis, angleDeg));
 	}
 
 	inline void Transform::rotate(const quat &rotation) {

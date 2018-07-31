@@ -25,9 +25,9 @@ namespace xe {
 	quat::quat(const vec4 &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) { }
 	quat::quat(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) { }
 
-	quat::quat(const vec3 &axis, float angle) {
-		float sinHalfAngle = sinf(angle / 2);
-		float cosHalfAngle = cosf(angle / 2);
+	quat::quat(const vec3 &axis, float angleDeg) {
+		float sinHalfAngle = sinf(to_rad(angleDeg) / 2.0f);
+		float cosHalfAngle = cosf(to_rad(angleDeg) / 2.0f);
 
 		x = axis.x * sinHalfAngle;
 		y = axis.y * sinHalfAngle;
@@ -157,23 +157,23 @@ namespace xe {
 		return quat((vec3::cross(unitVec0, unitVec1) * recipCosHalfAngleX2), (cosHalfAngleX2 * 0.5f));
 	}
 
-	quat quat::rotation(float radians, const vec3 &unitVec) {
-		const float angle = radians * 0.5f;
+	quat quat::rotation(float angleDeg, const vec3 &unitVec) {
+		const float angle = to_rad(angleDeg) * 0.5f;
 		return quat((unitVec * sinf(angle)), cosf(angle));
 	}
 
-	quat quat::rotationX(float radians) {
-		const float angle = radians * 0.5f;
+	quat quat::rotationX(float angleDeg) {
+		const float angle = to_rad(angleDeg) * 0.5f;
 		return quat(sinf(angle), 0.0f, 0.0f, cosf(angle));
 	}
 
-	quat quat::rotationY(float radians) {
-		const float angle = radians * 0.5f;
+	quat quat::rotationY(float angleDeg) {
+		const float angle = to_rad(angleDeg) * 0.5f;
 		return quat(0.0f, sinf(angle), 0.0f, cosf(angle));
 	}
 
-	quat quat::rotationZ(float radians) {
-		const float angle = radians * 0.5f;
+	quat quat::rotationZ(float angleDeg) {
+		const float angle = to_rad(angleDeg) * 0.5f;
 		return quat(0.0f, 0.0f, sinf(angle), cosf(angle));
 	}
 

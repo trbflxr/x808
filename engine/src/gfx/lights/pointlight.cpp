@@ -8,19 +8,18 @@ namespace xe { namespace gfx {
 
 	static constexpr short COLOR_DEPTH = 256;
 
-	PointLight::PointLight(api::Shader *shader, const vec3 &position,
-	                       const Attenuation &attenuation, float intensity, uint color) :
+	PointLight::PointLight(api::Shader *shader, const Attenuation &attenuation, float intensity, uint color) :
 			BaseLight(shader, intensity, color) {
 
+		pointLight.base = light;
 		pointLight.attenuation = attenuation;
-		pointLight.position = position;
 		pointLight.range = calcRange(attenuation);
 
 		setUniformsInternal();
 	}
 
 	void PointLight::setUniformsInternal() {
-		pointLight.base = light;
+		pointLight.position = transform.getTranslation();
 
 		setUniform("sys_ActivePointLight", &pointLight, sizeof(PointLightStruct), api::Shader::FRAG);
 	}
@@ -28,12 +27,6 @@ namespace xe { namespace gfx {
 	void PointLight::setAttenuation(const Attenuation &attenuation) {
 		pointLight.attenuation = attenuation;
 		pointLight.range = calcRange(attenuation);
-
-		setUniformsInternal();
-	}
-
-	void PointLight::setPosition(const vec3 &position) {
-		pointLight.position = position;
 
 		setUniformsInternal();
 	}

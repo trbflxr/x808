@@ -21,7 +21,7 @@ namespace xe { namespace gfx { namespace api {
 	public:
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
-		virtual void clear() = 0;
+		virtual void clear(uint buffer) = 0;
 
 		virtual uint getWidth() = 0;
 		virtual uint getHeight() = 0;

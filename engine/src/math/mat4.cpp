@@ -278,10 +278,10 @@ namespace xe {
 		return m;
 	}
 
-	mat4 mat4::perspective(float fov, float aspectRatio, float near, float far) {
+	mat4 mat4::perspective(float fovDeg, float aspectRatio, float near, float far) {
 		mat4 m(1.0f);
 
-		float q = 1.0f / tanf(to_rad(0.5f * fov));
+		float q = 1.0f / tanf(to_rad(0.5f * fovDeg));
 		float a = q / aspectRatio;
 
 		float b = (near + far) / (near - far);

@@ -27,14 +27,11 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit PointLight(api::Shader *shader, const vec3 &position, const Attenuation &attenuation,
-		                    float intensity, uint color = color::WHITE);
+		explicit PointLight(api::Shader *shader, const Attenuation &attenuation, float intensity,
+		                    uint color = color::WHITE);
 
 		inline const Attenuation &getAttenuation() const { return pointLight.attenuation; }
 		void setAttenuation(const Attenuation &attenuation);
-
-		inline const vec3 &getPosition() const { return pointLight.position; }
-		void setPosition(const vec3 &position);
 
 		inline float getRange() const { return pointLight.range; }
 

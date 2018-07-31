@@ -17,7 +17,7 @@ Test3D::Test3D(TestUI *ui) :
 		ui(ui) {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureFilter::NEAREST);
+	TextureParameters params(TextureFilter::LINEAR);
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
@@ -42,32 +42,35 @@ Test3D::Test3D(TestUI *ui) :
 	playerControlSystem = new DummyPlayerControlSystem();
 	mainSystems.addSystem(*playerControlSystem);
 
-	renderer = new ForwardRenderer(800, 600, camera, 1024);
+	renderer = new ForwardRenderer(800, 600, camera);
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
 	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), 0.4f, color::WHITE);
-	directionalLight->transform.setRotation(quat(vec3::XAXIS, to_rad(-45)));
+	directionalLight->transform.setRotation(quat(vec3::XAXIS, -45.0f));
 	renderer->addLight(directionalLight);
 
-	pointLight = new PointLight(GETSHADER("forwardPoint"), {3, 1, -5}, {0, 0, 1}, 0.5f, color::RED);
+	pointLight = new PointLight(GETSHADER("forwardPoint"), {0, 0, 1}, 0.5f, color::RED);
+	pointLight->transform.setTranslation({3, 1, -5});
 //	renderer->addLight(pointLight);
 
-	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {1, 1, -2}, {0, 0, 1}, 0.5f, color::BLUE);
+	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 1}, 0.5f, color::BLUE);
+	pointLight2->transform.setTranslation({1, 1, -2});
 //	renderer->addLight(pointLight2);
 
-	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -13.0f}, {0, 0, 0.5f}, 0.7f,
-	                             color::PINK);
+	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 0.5f}, 0.7f, color::PINK);
+	pointLight3->transform.setTranslation({-1.5f, 3.0f, -13.0f});
 //	renderer->addLight(pointLight3);
 
-	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {-1.5f, 3.0f, -17.0f}, {0, 0, 0.5f}, 0.7f,
-	                             color::CYAN);
+	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 0.5f}, 0.7f, color::CYAN);
+	pointLight4->transform.setTranslation({-1.5f, 3.0f, -17.0f});
 //	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("forwardSpot"), {2.789f, 0.350f, -5.662f},
-	                          {0.107f, -0.132f, -0.986f}, 0.95f, {0.1f, 0.1f, 0.02f}, 0.3f, color::WHITE);
-//	renderer->addLight(spotLight);
+	spotLight = new SpotLight(GETSHADER("forwardSpot"), {0.0f, 0.0f, 0.02f}, 0.2f, color::WHITE, 90.0f, 7);
+	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
+	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
+	renderer->addLight(spotLight);
 
 
 	monkeyMaterial = new Material(GETTEXTURE("2"), 50, 2.2f);
@@ -93,25 +96,25 @@ Test3D::Test3D(TestUI *ui) :
 	model.mesh = monkeyMesh;
 	model.material = monkeyMaterial;
 	transform.transform.setTranslation({5, 0, -5});
-	transform.transform.setRotation(quat::rotationZ(to_rad(30)));
+	transform.transform.setRotation(quat::rotationZ(30.0f));
 	monkeyModel = ecs.makeEntity(model, transform);
 
 	model.mesh = monkeyMesh;
 	model.material = monkeyMaterial2;
 	transform.transform.setTranslation({3, 0, -8});
-	transform.transform.setRotation(quat::rotationZ(to_rad(0)));
+	transform.transform.setRotation(quat::rotationZ(0.0f));
 	monkeyModel2 = ecs.makeEntity(model, transform);
 
 	model.mesh = rockMesh;
 	model.material = rockMaterial;
 	transform.transform.setTranslation({0, 0, -5});
-	transform.transform.setRotation(quat::rotationZ(to_rad(5)));
+	transform.transform.setRotation(quat::rotationZ(5.0f));
 	rockModel = ecs.makeEntity(model, transform);
 
 	model.mesh = stallMesh;
 	model.material = stallMaterial;
 	transform.transform.setTranslation({0, 0, -15});
-	transform.transform.setRotation(quat::rotationY(to_rad(-90)));
+	transform.transform.setRotation(quat::rotationY(-90.0f));
 	stallModel = ecs.makeEntity(model, transform);
 
 //	planes
@@ -138,7 +141,7 @@ Test3D::Test3D(TestUI *ui) :
 	model.mesh = cubeMesh;
 	model.material = planeMaterial2;
 	transform.transform.setTranslation({10, -4.5f, -5});
-	transform.transform.rotate(vec3::YAXIS, to_rad(45));
+	transform.transform.rotate(vec3::YAXIS, 45.0f);
 	cubeModel = ecs.makeEntity(model, transform);
 }
 
@@ -182,7 +185,10 @@ void Test3D::render() {
 }
 
 void Test3D::tick() {
-//	XE_INFO("dir:", player->getCamera()->transform.getRotation().getForward());
+//	static DummyPlayerComponent *p = ecs.getComponent<DummyPlayerComponent>(player);
+
+//	XE_INFO("dir:", camera->transform.getRotation().getForward());
+//	XE_INFO("pos:", camera->transform.getTranslation());
 
 	char buff[1024];
 	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
@@ -197,8 +203,8 @@ void Test3D::update(float delta) {
 	ecs.updateSystems(mainSystems, delta);
 
 	if (hookSpotLight) {
-		spotLight->setPosition(camera->transform.getTranslation());
-		spotLight->setDirection(p->camera->transform.getRotation().getForward());
+		spotLight->transform.setTranslation(camera->transform.getTranslation());
+		spotLight->transform.setRotation(camera->transform.getRotation());
 	}
 }
 
@@ -225,16 +231,16 @@ void Test3D::fixedUpdate(float delta) {
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Key::Left)) {
-		directionalLight->transform.rotate(vec3::YAXIS, to_rad(1));
+		directionalLight->transform.rotate(vec3::YAXIS, 1.0f);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
-		directionalLight->transform.rotate(vec3::YAXIS, to_rad(-1));
+		directionalLight->transform.rotate(vec3::YAXIS, -1.0f);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::Up)) {
-		directionalLight->transform.rotate(vec3::XAXIS, to_rad(1));
+		directionalLight->transform.rotate(vec3::XAXIS, 1.0f);
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
-		directionalLight->transform.rotate(vec3::XAXIS, to_rad(-1));
+		directionalLight->transform.rotate(vec3::XAXIS, -1.0f);
 	}
 }
 

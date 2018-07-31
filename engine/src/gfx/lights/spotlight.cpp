@@ -6,33 +6,34 @@
 
 namespace xe { namespace gfx {
 
-	SpotLight::SpotLight(api::Shader *shader, const vec3 &position, const vec3 &direction,
-	                     float cutoff, const Attenuation &attenuation, float intensity, uint color) :
-			PointLight(shader, position, attenuation, intensity, color) {
+	SpotLight::SpotLight(api::Shader *shader, const PointLight::Attenuation &attenuation, float intensity,
+	                     uint color, float fovDeg, uint shadowMapSizePower2, float shadowSoftness,
+	                     float lightBleedReduction, float minVariance) :
+			PointLight(shader, attenuation, intensity, color) {
 
-		spotLight.direction = direction;
-		spotLight.cutoff = cutoff;
+		spotLight.cutoff = cosf(to_rad(fovDeg) / 2.0f);
 
 		setUniformsInternal();
+
+		if (shadowMapSizePower2) {
+			setShadowInfo(new ShadowInfo(mat4::perspective(fovDeg, 1.0f, 0.1f, pointLight.range),
+			                             shadowMapSizePower2, false, shadowSoftness,
+			                             lightBleedReduction, minVariance));
+		}
 	}
 
 	void SpotLight::setUniformsInternal() {
+		spotLight.direction = quat::rotate(transform.getRotation(), -vec3::ZAXIS);
+
 		PointLight::setUniformsInternal();
 
 		setUniform("sys_ActiveSpotLight", &spotLight, sizeof(SpotLightStruct), api::Shader::FRAG);
 	}
 
-	void SpotLight::setDirection(const vec3 &direction) {
-		spotLight.direction = direction;
+	void SpotLight::setFov(float fovDeg) {
+		spotLight.cutoff = cosf(to_rad(fovDeg) / 2.0f);
 
 		setUniformsInternal();
 	}
-
-	void SpotLight::setCutoff(float cutoff) {
-		spotLight.cutoff = cutoff;
-
-		setUniformsInternal();
-	}
-
 
 }}

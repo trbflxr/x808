@@ -4,14 +4,29 @@
 
 #include "glframebuffer.hpp"
 #include "glcommon.hpp"
+#include "gfx/renderer.hpp"
 
 namespace xe { namespace gfx { namespace api {
+
+	uint rendererBufferToGL(uint buffer) {
+		uint result = 0;
+
+		if (buffer & RENDERER_BUFFER_COLOR) {
+			result |= GL_COLOR_BUFFER_BIT;
+		}
+		if (buffer & RENDERER_BUFFER_DEPTH) {
+			result |= GL_DEPTH_BUFFER_BIT;
+		}
+		if (buffer & RENDERER_BUFFER_STENCIL) {
+			result |= GL_STENCIL_BUFFER_BIT;
+		}
+		return result;
+	}
 
 	GLFrameBuffer::GLFrameBuffer(uint width, uint height, Type type, TextureFilter filter) :
 			width(width),
 			height(height),
 			type(type),
-			color(0.0f, 0.0f, 0.0f, 0.0f),
 			frameBufferHandle(0),
 			renderBufferHandle(0) {
 
@@ -77,13 +92,12 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
 	}
 
-	void GLFrameBuffer::clear() {
-		if (type == FrameBuffer::DEPTH || type == FrameBuffer::RG32F) {
-			glCall(glClear(GL_DEPTH_BUFFER_BIT));
-		} else {
-			glCall(glClearColor(color.x, color.y, color.z, color.w));
-			glCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		}
+	void GLFrameBuffer::clear(uint buffer) {
+		glCall(glClear(rendererBufferToGL(buffer)));
+	}
+
+	void GLFrameBuffer::setClearColor(const vec4 &color) {
+		glCall(glClearColor(color.x, color.y, color.z, color.w));
 	}
 
 }}}

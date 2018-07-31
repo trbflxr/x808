@@ -22,6 +22,7 @@ namespace xe { namespace gfx {
 		std::vector<vec3> tangents;
 		std::vector<uint> indices;
 
+		IndexedModel() = default;
 		explicit IndexedModel(const aiMesh *mesh);
 	};
 

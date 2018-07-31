@@ -13,16 +13,18 @@ namespace xe { namespace gfx {
 
 	struct ShadowInfo {
 		mat4 projection;
+		uint shadowMapSizePower2;
 		bool flipFaces;
 		float shadowSoftness;
 		float lightBleedReduction;
 		float minVariance;
 
-		inline explicit ShadowInfo(const mat4 &projection, bool flipFaces,
+		inline explicit ShadowInfo(const mat4 &projection, uint shadowMapSizePower2, bool flipFaces,
 		                           float shadowSoftness = 1.0f,
 		                           float lightBleedReduction = 0.2f,
 		                           float minVariance = 0.00002f) :
 				projection(projection),
+				shadowMapSizePower2(shadowMapSizePower2),
 				flipFaces(flipFaces),
 				shadowSoftness(shadowSoftness),
 				lightBleedReduction(lightBleedReduction),

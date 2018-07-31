@@ -49,7 +49,7 @@ namespace xe {
 		static mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 
 		static mat4 ortho(float left, float right, float bottom, float top, float near, float far);
-		static mat4 perspective(float fov, float aspectRatio, float near, float far);
+		static mat4 perspective(float fovDeg, float aspectRatio, float near, float far);
 		static mat4 lookAt(const vec3 &camera, const vec3 &object, const vec3 &up);
 
 		static mat4 translation(const vec3 &translation);

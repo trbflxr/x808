@@ -23,7 +23,7 @@ namespace xe {
 		quat();
 		quat(const quat &q);
 		explicit quat(float x, float y, float z, float w);
-		explicit quat(const vec3 &axis, float angle);
+		explicit quat(const vec3 &axis, float angleDeg);
 		explicit quat(const vec4 &vec);
 		explicit quat(float scalar);
 		explicit quat(const mat4 &rot);
@@ -47,10 +47,10 @@ namespace xe {
 		static vec3 rotate(const quat &q, const vec3 &vec);
 
 		static quat rotation(const vec3 &unitVec0, const vec3 &unitVec1);
-		static quat rotation(float radians, const vec3 &unitVec);
-		static quat rotationX(float radians);
-		static quat rotationY(float radians);
-		static quat rotationZ(float radians);
+		static quat rotation(float angleDeg, const vec3 &unitVec);
+		static quat rotationX(float angleDeg);
+		static quat rotationY(float angleDeg);
+		static quat rotationZ(float angleDeg);
 	};
 
 	typedef quat quat;

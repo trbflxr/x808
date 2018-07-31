@@ -45,9 +45,8 @@ public:
 
 
 			//rotate
-			transform.rotate(-xe::vec3::YAXIS, to_rad(mouseChange.x * player->mouseSensitivity));
-			transform.rotate(transform.getRotation().getLeft(),
-			                         to_rad(mouseChange.y * player->mouseSensitivity));
+			transform.rotate(-xe::vec3::YAXIS, mouseChange.x * player->mouseSensitivity);
+			transform.rotate(transform.getRotation().getLeft(), mouseChange.y * player->mouseSensitivity);
 
 			xe::Mouse::setPosition(windowCenter, window);
 			lastMousePosition = xe::Mouse::getPosition();

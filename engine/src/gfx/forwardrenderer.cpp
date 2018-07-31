@@ -10,11 +10,11 @@
 
 namespace xe { namespace gfx {
 
-	ForwardRenderer::ForwardRenderer(uint width, uint height, Camera *camera, uint shadowMapSize) :
+	ForwardRenderer::ForwardRenderer(uint width, uint height, Camera *camera) :
 			width(width),
 			height(height),
 			camera(camera),
-			enableShadows(shadowMapSize > 0 && shadowMapShader != nullptr) {
+			lightMatrix(1.0f) {
 
 		Renderer::enableCullFace(true);
 		Renderer::enableDepthTesting(true);
@@ -27,28 +27,33 @@ namespace xe { namespace gfx {
 		shadowMapShader = new ShadowMapShader(GETSHADER("shadowMap"));
 		shadowMapBlurShader = new ShadowMapBlurShader(GETSHADER("filterGaussBlur"));
 
-		lightCamera = new Camera(mat4(1.0f));
-
-		shadowBuffer0 = api::FrameBuffer::create(shadowMapSize, shadowMapSize,
-		                                         api::FrameBuffer::RG32F, api::TextureFilter::LINEAR);
-
-		shadowBuffer1 = api::FrameBuffer::create(shadowMapSize, shadowMapSize,
-		                                         api::FrameBuffer::RG32F, api::TextureFilter::LINEAR);
 
 		//shadows stuff
-		//todo: embed plane2
-		dummyMesh = new Mesh("assets/models/plane2.obj");
+		lightCamera = new Camera(mat4(1.0f));
+
+		for (uint i = 0; i < NUM_SHADOW_MAPS; ++i) {
+			uint size = static_cast<uint>(1 << (i + 1));
+			shadowBuffers0[i] = api::FrameBuffer::create(size, size,
+			                                             api::FrameBuffer::RG32F, api::TextureFilter::LINEAR);
+
+			shadowBuffers1[i] = api::FrameBuffer::create(size, size,
+			                                             api::FrameBuffer::RG32F, api::TextureFilter::LINEAR);
+		}
+
+		dummyMesh = Mesh::createPlaneMesh();
 		dummyMaterial = new Material(nullptr, 1.0f, 8.0f);
-		dummyTransform.rotate(quat(vec3::XAXIS, to_rad(-90)));
-		dummyTransform.rotate(quat(vec3::ZAXIS, to_rad(180)));
+		dummyTransform.rotate(quat(vec3::XAXIS, -90.0f));
+		dummyTransform.rotate(quat(vec3::ZAXIS, 180.0f));
 
 		dummyGameObject.transform.setTranslation({0.0f, 0.0f, 0.0f});
-		dummyGameObject.transform.setRotation(quat(vec3::YAXIS, to_rad(180.0f)));
+		dummyGameObject.transform.setRotation(quat(vec3::YAXIS, 180.0f));
 	}
 
 	ForwardRenderer::~ForwardRenderer() {
-		delete shadowBuffer0;
-		delete shadowBuffer1;
+		for (uint i = 0; i < NUM_SHADOW_MAPS; ++i) {
+			delete shadowBuffers0[i];
+			delete shadowBuffers1[i];
+		}
 
 		delete ambientLight;
 		delete shadowMapShader;
@@ -80,17 +85,7 @@ namespace xe { namespace gfx {
 			target.mesh->render();
 		}
 
-
-		dummyMaterial->setTexture(shadowBuffer1->getTexture());
-
-		ambientLight->setUniforms(dummyMaterial, dummyTransform, camera);
-		ambientLight->updateUniforms();
-
-		dummyMesh->render();
-
-
 		ambientLight->unbind();
-
 
 		//other lights
 		for (auto &&light : lights) {
@@ -99,7 +94,7 @@ namespace xe { namespace gfx {
 			shadowVarianceMin = 0.0f;
 			shadowLightBleedingReduction = 0.0f;
 
-			renderShadows(light);
+			const uint index = renderShadows(light);
 
 			//render to screen
 			Renderer::enableBlend(true);
@@ -108,12 +103,13 @@ namespace xe { namespace gfx {
 			Renderer::setDepthFunction(DepthFunction::EQUAL);
 
 			Renderer::setViewport(0, 0, width, height);
+			Renderer::setClearColor({0.0f, 0.0f, 0.0f, 0.0f});
 
 			light->bind();
 
 			uint shadowMapLoc = light->getSamplerLocation("shadowMap");
 			if (shadowMapLoc) {
-				shadowBuffer0->getTexture()->bind(shadowMapLoc);
+				shadowBuffers0[index]->getTexture()->bind(shadowMapLoc);
 			}
 
 			for (auto &&target : targets) {
@@ -130,7 +126,7 @@ namespace xe { namespace gfx {
 			}
 
 			if (shadowMapLoc) {
-				shadowBuffer0->getTexture()->unbind(shadowMapLoc);
+				shadowBuffers0[index]->getTexture()->unbind(shadowMapLoc);
 			}
 
 			light->unbind();
@@ -143,15 +139,21 @@ namespace xe { namespace gfx {
 		targets.clear();
 	}
 
-	void ForwardRenderer::renderShadows(BaseLight *light) {
+	uint ForwardRenderer::renderShadows(BaseLight *light) {
 		static const mat4 biasMatrix = mat4::scale({0.5f, 0.5f, 0.5f}) * mat4::translation({1.0f, 1.0f, 1.0f});
 
 		const ShadowInfo *shadowInfo = light->getShadowInfo();
 
+		uint shadowMapIndex = 0;
 		if (shadowInfo) {
-			shadowBuffer0->bind();
-			shadowBuffer0->clear();
+			shadowMapIndex = shadowInfo->shadowMapSizePower2 - 1;
+		}
 
+		shadowBuffers0[shadowMapIndex]->bind();
+		shadowBuffers0[shadowMapIndex]->setClearColor({0.0f, 1.0f, 0.0f, 0.0f});
+		shadowBuffers0[shadowMapIndex]->clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
+
+		if (shadowInfo) {
 			lightCamera->setProjection(shadowInfo->projection);
 			lightCamera->hookEntity(light);
 
@@ -175,16 +177,21 @@ namespace xe { namespace gfx {
 
 			shadowMapShader->unbind();
 
-			shadowBuffer0->unbind();
-
 			lightCamera->unhookEntity();
 
 			//blur shadow map
-			blurShadowMap(shadowInfo->shadowSoftness);
+			const float shadowSoftness = shadowInfo->shadowSoftness;
+			if (shadowSoftness) {
+				blurShadowMap(shadowMapIndex, shadowSoftness);
+			}
 		}
+
+		shadowBuffers0[shadowMapIndex]->unbind();
+
+		return shadowMapIndex;
 	}
 
-	void ForwardRenderer::blurShadowMap(float blurAmount) {
+	void ForwardRenderer::blurShadowMap(uint index, float blurAmount) {
 		//set camera
 		lightCamera->setProjection(mat4(1.0f));
 		lightCamera->hookEntity(&dummyGameObject);
@@ -192,14 +199,14 @@ namespace xe { namespace gfx {
 		shadowMapBlurShader->bind();
 
 		//x blur
-		vec2 scale(1.0f / (shadowBuffer0->getWidth() * blurAmount), 0.0f);
+		vec2 scale(blurAmount / shadowBuffers0[index]->getWidth(), 0.0f);
 		shadowMapBlurShader->setUniform("sys_BlurScale", &scale, sizeof(vec2), api::Shader::FRAG);
-		applyFilter(shadowMapBlurShader, shadowBuffer0, shadowBuffer1);
+		applyFilter(shadowMapBlurShader, shadowBuffers0[index], shadowBuffers1[index]);
 
 		//y blur
-		scale = vec2(0.0f, 1.0f / (shadowBuffer0->getWidth() * blurAmount));
+		scale = vec2(0.0f, blurAmount / shadowBuffers0[index]->getWidth());
 		shadowMapBlurShader->setUniform("sys_BlurScale", &scale, sizeof(vec2), api::Shader::FRAG);
-		applyFilter(shadowMapBlurShader, shadowBuffer1, shadowBuffer0);
+		applyFilter(shadowMapBlurShader, shadowBuffers1[index], shadowBuffers0[index]);
 
 		shadowMapBlurShader->unbind();
 
@@ -212,7 +219,7 @@ namespace xe { namespace gfx {
 		dummyMaterial->setTexture(src->getTexture());
 
 		dest->bind();
-		dest->clear();
+		dest->clear(RENDERER_BUFFER_DEPTH);
 
 		filter->setUniforms(dummyMaterial, dummyTransform, lightCamera);
 		filter->updateUniforms();

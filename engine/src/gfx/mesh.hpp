@@ -28,6 +28,8 @@ namespace xe { namespace gfx {
 
 		void render() const;
 
+		static Mesh *createPlaneMesh();
+
 	private:
 		void initMesh(const IndexedModel &model);
 
