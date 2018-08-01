@@ -45,7 +45,7 @@ Test3D::Test3D(DebugUI *ui) :
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
-	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), 0.4f, color::WHITE);
+	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), 0.4f, color::WHITE, 10);
 	directionalLight->transform.setRotation(quat(vec3::XAXIS, -45.0f));
 	renderer->addLight(directionalLight);
 

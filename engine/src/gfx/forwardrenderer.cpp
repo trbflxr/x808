@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 			width(width),
 			height(height),
 			camera(camera),
-			lightMatrix(1.0f) {
+			lightMatrix(mat4::scale({0.0f, 0.0f, 0.0f})) {
 
 		Renderer::enableCullFace(true);
 		Renderer::enableDepthTesting(true);
@@ -91,9 +91,6 @@ namespace xe { namespace gfx {
 		for (auto &&light : lights) {
 			if (!light->isEnabled()) continue;
 
-			shadowVarianceMin = 0.0f;
-			shadowLightBleedingReduction = 0.0f;
-
 			const uint index = renderShadows(light);
 
 			//render to screen
@@ -150,12 +147,12 @@ namespace xe { namespace gfx {
 		}
 
 		shadowBuffers0[shadowMapIndex]->bind();
-		shadowBuffers0[shadowMapIndex]->setClearColor({0.0f, 1.0f, 0.0f, 0.0f});
+		shadowBuffers0[shadowMapIndex]->setClearColor({1.0f, 1.0f, 0.0f, 0.0f});
 		shadowBuffers0[shadowMapIndex]->clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
 
 		if (shadowInfo) {
 			lightCamera->setProjection(shadowInfo->projection);
-			lightCamera->hookEntity(light);
+			light->updateLightCamera(lightCamera, camera);
 
 			//uniforms for light
 			lightMatrix = biasMatrix * lightCamera->getViewProjection();
@@ -177,13 +174,16 @@ namespace xe { namespace gfx {
 
 			shadowMapShader->unbind();
 
-			lightCamera->unhookEntity();
-
 			//blur shadow map
 			const float shadowSoftness = shadowInfo->shadowSoftness;
 			if (shadowSoftness) {
 				blurShadowMap(shadowMapIndex, shadowSoftness);
 			}
+
+		} else {
+			lightMatrix = mat4::scale({0.0f, 0.0f, 0.0f});
+			shadowVarianceMin = 0.0f;
+			shadowLightBleedingReduction = 0.0f;
 		}
 
 		shadowBuffers0[shadowMapIndex]->unbind();

@@ -54,6 +54,8 @@ namespace xe { namespace gfx {
 
 		inline const ShadowInfo *getShadowInfo() const { return shadowInfo; }
 
+		virtual void updateLightCamera(Camera *lightCamera, Camera *mainCamera);
+
 	protected:
 		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
 

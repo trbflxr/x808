@@ -64,4 +64,10 @@ namespace xe { namespace gfx {
 		XE_ASSERT(shadowInfo->shadowMapSizePower2 <= 10, "Max shadowMap size: 10");
 	}
 
+	void BaseLight::updateLightCamera(Camera *lightCamera, Camera *mainCamera) {
+		lightCamera->unhookEntity();
+		lightCamera->transform.setRotation(transform.getRotation());
+		lightCamera->transform.setTranslation(transform.getTranslation());
+	}
+
 }}

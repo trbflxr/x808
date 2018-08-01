@@ -1,9 +1,15 @@
 R"(
+bool inRange(float val) { return val >= 0.0 && val <= 1.0; }
+
 float CalcShadowAmount(sampler2D shadowMap, vec4 initialshadowMapUV) {
   vec3 shadowMapUV = initialshadowMapUV.xyz / initialshadowMapUV.w;
 
-  return SampleVarianceShadowMap(shadowMap, shadowMapUV.xy, shadowMapUV.z, sys_shadowVarianceMin,
-                                 sys_shadowLightBleedingReduction);
+  if (inRange(shadowMapUV.x) && inRange(shadowMapUV.y) && inRange(shadowMapUV.z)) {
+    return SampleVarianceShadowMap(shadowMap, shadowMapUV.xy, shadowMapUV.z, sys_shadowVarianceMin,
+                                   sys_shadowLightBleedingReduction);
+  } else {
+    return 1.0;
+  }
 }
 
 void main() {
