@@ -1,6 +1,6 @@
 #include <application/application.hpp>
 #include <utils/log.hpp>
-#include "testecs.hpp"
+#include "test2d.hpp"
 #include "test3d.hpp"
 #include "debugui.hpp"
 
@@ -13,7 +13,7 @@ public:
 
 		ui = new DebugUI();
 
-//		pushLayer(new TestECS());
+//		pushLayer(new Test2D());
 		pushLayer(new Test3D(ui));
 		pushLayer(ui);
 	}

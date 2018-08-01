@@ -16,7 +16,7 @@ include_directories(../engine/src)
 #sandbox
 set(S2D_SRC
         src/main.cpp
-        src/testecs.cpp
+        src/test2d.cpp
         src/test3d.cpp
         src/debugui.cpp)
 

@@ -61,8 +61,6 @@ DebugUI::~DebugUI() {
 }
 
 void DebugUI::render() {
-	Renderer::enableBlend(true);
-	Renderer::setBlendFunction(BlendFunction::SOURCE_ALPHA, BlendFunction::ONE_MINUS_SOURCE_ALPHA);
 	Renderer::clear(RENDERER_BUFFER_DEPTH);
 
 	renderer->begin();

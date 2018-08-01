@@ -137,6 +137,9 @@ namespace xe { namespace gfx {
 	}
 
 	void Renderer2D::begin() {
+		Renderer::enableBlend(true);
+		Renderer::setBlendFunction(BlendFunction::SOURCE_ALPHA, BlendFunction::ONE_MINUS_SOURCE_ALPHA);
+
 		Renderer::setViewport(0, 0, screenSize.x, screenSize.y);
 
 		vertexArray->bind();
@@ -354,6 +357,8 @@ namespace xe { namespace gfx {
 			flushInternal();
 			text.clear();
 		}
+
+		Renderer::enableBlend(false);
 	}
 
 	void Renderer2D::flushInternal() {

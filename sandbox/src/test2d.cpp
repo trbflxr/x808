@@ -11,14 +11,14 @@
 #include <utils/random.hpp>
 #include <gfx/indexedmodel.hpp>
 #include "utils/utf.hpp"
-#include "testecs.hpp"
+#include "test2d.hpp"
 
 using namespace xe;
 using namespace gfx;
 using namespace gfx::api;
 
 
-TestECS::TestECS() {
+Test2D::Test2D() {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
@@ -62,7 +62,7 @@ TestECS::TestECS() {
 	TextureManager::add(Texture2D::create("32", "assets/textures/enemyspotted.png", params));
 	TextureManager::add(Texture2D::create("33", "assets/textures/enemyspotted.png", params));
 	TextureManager::add(Texture2D::create("34", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(Texture2D::create("35", "assets/textures/test4.png", params));
+	TextureManager::add(Texture2D::create("35", "assets/textures/jdm.png", params));
 	TextureManager::add(Texture2D::create("36", "assets/textures/test5.png", params));
 	TextureManager::add(Texture2D::create("37", "assets/textures/test6.png", params));
 	TextureManager::add(Texture2D::create("38", "assets/textures/test7.png", params));
@@ -77,7 +77,7 @@ TestECS::TestECS() {
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	uint texCount = 40;
+	uint texCount = 10;
 
 	//render system
 	spriteRenderer = new SpriteRendererSystem(renderer);
@@ -125,7 +125,7 @@ TestECS::TestECS() {
 #elif sp_size == 2
 	for (float x = -80; x < 80; x += 1.3f) {
 		for (float y = -60; y < 60; y += 1.3f) {
-			sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+			sprite.texture = GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 			transform.zIndex = 0;
 			transform.bounds.setPosition(x, y);
@@ -181,21 +181,28 @@ TestECS::TestECS() {
 	t.outlineColor = color::CYAN;
 	inputText = ecs.makeEntity(t);
 
-	sprite.texture = GETTEXTURE("32");
+	sprite.texture = GETTEXTURE("35");
 	transform.zIndex = 1;
 	transform.bounds.setPosition(-10, -10);
+	transform.bounds.setSize(20, 20);
+
+	ecs.makeEntity(sprite, transform);
+
+	sprite.texture = GETTEXTURE("35");
+	transform.zIndex = 2;
+	transform.bounds.setPosition(-4, -4);
 	transform.bounds.setSize(20, 20);
 
 	a = ecs.makeEntity(sprite, transform);
 }
 
-TestECS::~TestECS() {
+Test2D::~Test2D() {
 	delete spriteRenderer;
 	delete textRenderer;
 	delete cameraSystem;
 }
 
-void TestECS::render() {
+void Test2D::render() {
 	renderer->begin();
 
 	ecs.updateSystems(renderingPipeline, 0.0f);
@@ -203,12 +210,16 @@ void TestECS::render() {
 	renderer->flush();
 }
 
-void TestECS::update(float delta) {
-//	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
+void Test2D::update(float delta) {
+	static Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
+
+	vec2i p = Mouse::getPosition(app.getWindow());
+	t->bounds.setPosition({p.x / 5.0f, -p.y / 5.0f});
+
 	ecs.updateSystems(mainSystems, delta);
 }
 
-void TestECS::input(xe::Event &event) {
+void Test2D::input(xe::Event &event) {
 	switch (event.type) {
 		default: break;
 
