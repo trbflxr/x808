@@ -6,6 +6,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "mesh.hpp"
+#include "renderer.hpp"
 
 namespace xe { namespace gfx {
 
@@ -74,6 +75,8 @@ namespace xe { namespace gfx {
 
 		indexBuffer->unbind();
 		vertexArray->unbind();
+
+		gfx::Renderer::incDC();
 	}
 
 	Mesh *Mesh::createPlaneMesh() {

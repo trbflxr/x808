@@ -25,11 +25,11 @@ namespace xe {
 
 		gfx::api::Context::setRenderAPI(api);
 		instance = this;
+
+		init();
 	}
 
-	Application::~Application() {
-
-	}
+	Application::~Application() { }
 
 	void Application::platformInit() {
 		if (config.fullScreen) {
@@ -45,7 +45,6 @@ namespace xe {
 	}
 
 	void Application::start() {
-		init();
 		running = true;
 		suspend_ = false;
 		run();
@@ -116,6 +115,8 @@ namespace xe {
 				tick();
 			}
 
+			lateUpdate(delta);
+
 			if (!window.isOpen()) running = false;
 		}
 
@@ -137,6 +138,12 @@ namespace xe {
 	void Application::update(float delta) {
 		for (auto &&layer : layerStack) {
 			layer->update(delta);
+		}
+	}
+
+	void Application::lateUpdate(float delta) {
+		for (auto &&layer : layerStack) {
+			layer->lateUpdate(delta);
 		}
 	}
 

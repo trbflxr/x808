@@ -17,7 +17,7 @@
 #include <ecs/systems/forwardrenderersystem.hpp>
 
 #include "dummyplayercomponent.hpp"
-#include "testui.hpp"
+#include "debugui.hpp"
 #include "dummyplayercontrolsystem.hpp"
 
 using namespace xe;
@@ -26,8 +26,8 @@ using namespace gfx::api;
 
 class Test3D : public Layer {
 public:
-	explicit Test3D(TestUI *ui);
-	~Test3D() override;
+	explicit Test3D(DebugUI *ui);
+	~Test3D();
 
 	void render() override;
 
@@ -39,18 +39,18 @@ public:
 	void input(Event &event) override;
 
 private:
-	ECS &ecs;
+	ECS ecs;
 	ECSSystemList mainSystems;
 	ECSSystemList renderingPipeline;
 
-	TestUI *ui;
+	DebugUI *ui;
 
 	Camera *camera;
 
 	ForwardRenderer *renderer;
 	ForwardRendererSystem *rendererSystem;
 
-	DummyPlayerControlSystem * playerControlSystem;
+	DummyPlayerControlSystem *playerControlSystem;
 	EntityHandle player;
 
 	Material *rockMaterial;

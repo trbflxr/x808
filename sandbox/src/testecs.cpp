@@ -18,8 +18,7 @@ using namespace gfx;
 using namespace gfx::api;
 
 
-TestECS::TestECS() :
-		ecs(app.getEcs()) {
+TestECS::TestECS() {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::NEAREST);
@@ -182,7 +181,6 @@ TestECS::TestECS() :
 	t.outlineColor = color::CYAN;
 	inputText = ecs.makeEntity(t);
 
-
 	sprite.texture = GETTEXTURE("32");
 	transform.zIndex = 1;
 	transform.bounds.setPosition(-10, -10);
@@ -208,18 +206,6 @@ void TestECS::render() {
 void TestECS::update(float delta) {
 //	Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
 	ecs.updateSystems(mainSystems, delta);
-}
-
-void TestECS::fixedUpdate(float delta) {
-
-}
-
-void TestECS::tick() {
-	char buff[1024];
-	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
-	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer::getDC());
-
-	app.getWindow().setTitle(buff);
 }
 
 void TestECS::input(xe::Event &event) {
@@ -271,7 +257,7 @@ void TestECS::input(xe::Event &event) {
 				inputString += event.text.unicode;
 			}
 
-			t->string = inputString;
+			t->string = inputString.c_str();
 
 			break;
 		}

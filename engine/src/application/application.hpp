@@ -24,8 +24,6 @@ namespace xe {
 		explicit Application(const Config &config, gfx::api::RenderAPI api);
 		virtual ~Application();
 
-		virtual void init();
-
 		void pushLayer(gfx::Layer *layer);
 		gfx::Layer *popLayer();
 		gfx::Layer *popLayer(gfx::Layer *layer);
@@ -46,17 +44,18 @@ namespace xe {
 
 		inline vec2u getWindowSize() const { return window.getSize(); }
 
-		inline ECS &getEcs() { return ecs; }
-
 		inline static Application &get() { return *instance; }
 
 	private:
+		void init();
+
 		void platformInit();
 		void run();
 
 		void tick();
 
 		void update(float delta);
+		void lateUpdate(float delta);
 		void fixedUpdate(float delta);
 
 		void render();
@@ -73,8 +72,6 @@ namespace xe {
 
 		Config config;
 		Window window;
-
-		ECS ecs;
 
 		std::vector<gfx::Layer *> layerStack;
 

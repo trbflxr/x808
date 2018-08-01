@@ -12,8 +12,7 @@
 #include <gfx/lights/shadowmapshader.hpp>
 #include "test3d.hpp"
 
-Test3D::Test3D(TestUI *ui) :
-		ecs(app.getEcs()),
+Test3D::Test3D(DebugUI *ui) :
 		ui(ui) {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
@@ -190,11 +189,11 @@ void Test3D::tick() {
 //	XE_INFO("dir:", camera->transform.getRotation().getForward());
 //	XE_INFO("pos:", camera->transform.getTranslation());
 
-	char buff[1024];
-	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
-	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer::getDC());
-
-	app.getWindow().setTitle(buff);
+//	char buff[1024];
+//	sprintf(buff, "fps: %u | ups: %u | frame time: %f ms | DC: %u",
+//	        app.getFPS(), app.getUPS(), app.getFrameTime(), Renderer::getDC());
+//
+//	app.getWindow().setTitle(buff);
 }
 
 void Test3D::update(float delta) {

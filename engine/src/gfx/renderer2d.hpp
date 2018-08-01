@@ -103,7 +103,6 @@ namespace xe { namespace gfx {
 		vec2u screenSize;
 		vec2u viewportSize;
 
-		api::VertexArray *screenQuad;
 		Camera *camera;
 
 		std::vector<RenderTarget> targets;

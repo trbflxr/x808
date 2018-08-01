@@ -15,18 +15,25 @@ namespace xe {
 
 	struct TextComponent : public ECSComponent<TextComponent> {
 		const Font *font;
-		std::wstring string;
+		const wchar_t *string;
 		uint textColor;
 		uint outlineColor;
 		float outlineThickness;
 		float size;
 		vec2 position;
 
-		TextComponent() = default;
+		TextComponent() :
+				string(L""),
+				size(0),
+				position(0.0f, 0.0f),
+				font(GETFONT("default")),
+				textColor(color::WHITE),
+				outlineColor(color::TRANSPARENT),
+				outlineThickness(0.0f) { }
 
-		explicit TextComponent(const std::wstring_view &string, float size, const vec2 &position,
+		explicit TextComponent(const wchar_t *string, float size, const vec2 &position,
 		                       const Font *font = GETFONT("default"),
-		                       uint textColor = color::BLACK,
+		                       uint textColor = color::WHITE,
 		                       uint outlineColor = color::TRANSPARENT,
 		                       float outlineThickness = 0.0f) :
 				string(string),

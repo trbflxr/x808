@@ -25,7 +25,7 @@ namespace xe {
 		auto &&it = instance().fonts.find(font->getName());
 
 		if (it != instance().fonts.end()) {
-			XE_ERROR(font->getName(), " already exist!");
+			XE_ERROR("[FontManager]: font '", font->getName(), "' already exist!");
 			return;
 		}
 
@@ -35,7 +35,7 @@ namespace xe {
 	const Font *FontManager::get(const std::string_view &name) {
 		auto &&it = instance().fonts.find(name.data());
 		if (it == instance().fonts.end()) {
-			XE_ERROR("Font '", name, "' not found! Default font loaded instead.");
+			XE_ERROR("[FontManager]: font '", name, "' not found! Default font loaded instead.");
 
 			return get("default");
 		}

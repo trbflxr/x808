@@ -46,7 +46,6 @@ namespace xe { namespace gfx {
 	Renderer2D::~Renderer2D() {
 		delete indexBuffer;
 		delete vertexArray;
-		delete screenQuad;
 
 		systemUniforms.clear();
 		systemUniformBuffers.clear();
@@ -383,7 +382,7 @@ namespace xe { namespace gfx {
 		textures.clear();
 
 		//increment draw calls
-		++Renderer::dc;
+		Renderer::incDC();
 	}
 
 	void

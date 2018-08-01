@@ -14,7 +14,7 @@ namespace xe { namespace gfx {
 	class XE_API Layer2D : public Layer {
 	public:
 		explicit Layer2D();
-		~Layer2D() override;
+		virtual ~Layer2D();
 
 	protected:
 		bool resize(uint width, uint height) override;

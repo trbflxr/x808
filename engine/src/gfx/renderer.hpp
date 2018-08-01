@@ -36,9 +36,6 @@ namespace xe { namespace gfx {
 	};
 
 	class XE_API Renderer {
-	private:
-		friend class Renderer2D;
-
 	public:
 		static void init();
 
@@ -77,6 +74,7 @@ namespace xe { namespace gfx {
 
 		static uint getDC() { return dc; }
 		static uint resetDC() { dc = 0; }
+		static uint incDC() { ++dc; }
 
 	protected:
 		virtual void initInternal() = 0;

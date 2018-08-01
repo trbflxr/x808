@@ -2,31 +2,31 @@
 #include <utils/log.hpp>
 #include "testecs.hpp"
 #include "test3d.hpp"
-#include "testui.hpp"
+#include "debugui.hpp"
 
 using namespace xe;
 
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, gfx::api::RenderAPI::OPENGL) { }
+			Application(config, gfx::api::RenderAPI::OPENGL) {
 
-	~Test() override { }
-
-	void init() override {
-		Application::init();
-
-		TestUI *ui = new TestUI();
+		ui = new DebugUI();
 
 //		pushLayer(new TestECS());
 		pushLayer(new Test3D(ui));
-//		pushLayer(ui);
+		pushLayer(ui);
 	}
 
+	~Test() override {
+		delete ui;
+	}
+
+private:
+	DebugUI *ui;
 };
 
 int main() {
-
 	xe::Config config{ };
 	xe::Config::load(config);
 

@@ -22,15 +22,12 @@ public:
 
 	void render() override;
 
-	void tick() override;
-
 	void update(float delta) override;
-	void fixedUpdate(float delta) override;
 
 	void input(xe::Event &event) override;
 
 private:
-	xe::ECS &ecs;
+	xe::ECS ecs;
 
 	OrthoCameraMoveSystem *cameraSystem;
 	xe::EntityHandle cameraEntity;

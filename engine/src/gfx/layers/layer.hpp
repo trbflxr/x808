@@ -13,8 +13,6 @@ namespace xe { namespace gfx {
 
 	class Layer {
 	public:
-		virtual ~Layer() = default;
-
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { Layer::visible = visible; }
 
@@ -25,6 +23,7 @@ namespace xe { namespace gfx {
 		virtual void tick() { }
 
 		virtual void update(float delta) { }
+		virtual void lateUpdate(float delta) { }
 		virtual void fixedUpdate(float delta) { }
 
 		virtual void input(Event &event) { }

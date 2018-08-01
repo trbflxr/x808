@@ -61,6 +61,7 @@ namespace xe { namespace gfx {
 	void BaseLight::setShadowInfo(ShadowInfo *shadowInfo) {
 		delete BaseLight::shadowInfo;
 		BaseLight::shadowInfo = shadowInfo;
+		XE_ASSERT(shadowInfo->shadowMapSizePower2 <= 10, "Max shadowMap size: 10");
 	}
 
 }}

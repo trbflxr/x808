@@ -75,7 +75,7 @@ public:
 				move(transform, -xe::vec3::YAXIS, speed * delta);
 			}
 
-			memcpy(&player->camera->transform, &transform, sizeof(Transform));
+			memcpy(&player->camera->transform, &transform, sizeof(xe::Transform));
 			player->camera->update();
 		}
 
