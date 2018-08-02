@@ -7,7 +7,7 @@
 namespace xe { namespace gfx { namespace api {
 
 	TextureWrap  Texture::wrapMode = TextureWrap::CLAMP;
-	TextureFilter  Texture::filterMode = TextureFilter::LINEAR;
+	TextureFilter  Texture::filterMode = TextureFilter::TRILINEAR;
 
 	byte Texture::getStrideFromFormat(TextureFormat format) {
 		switch (format) {

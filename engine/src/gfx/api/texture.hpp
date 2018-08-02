@@ -13,16 +13,16 @@
 namespace xe { namespace gfx { namespace api {
 
 	enum class TextureWrap {
-		NONE = 0, REPEAT, CLAMP, MIRRORED_REPEAT, CLAMP_TO_EDGE, CLAMP_TO_BORDER
+		REPEAT = 0, CLAMP, MIRRORED_REPEAT, CLAMP_TO_EDGE, CLAMP_TO_BORDER
 	};
 
 	enum class TextureFilter {
-		NONE = 0, LINEAR, NEAREST
+		NEAREST = 0, BILINEAR, TRILINEAR, AF2, AF4, AF8, AF16
 	};
 
 
 	enum class TextureFormat {
-		NONE = 0, RGB, RGBA, LUMINANCE, LUMINANCE_ALPHA, DEPTH, RG32F
+		RGB = 0, RGBA, LUMINANCE, LUMINANCE_ALPHA, DEPTH, RG32F
 	};
 
 	struct TextureParameters {
@@ -32,7 +32,7 @@ namespace xe { namespace gfx { namespace api {
 
 		TextureParameters() :
 				format(TextureFormat::RGBA),
-				filter(TextureFilter::LINEAR),
+				filter(TextureFilter::TRILINEAR),
 				wrap(TextureWrap::CLAMP) { }
 
 		TextureParameters(TextureFormat format, TextureFilter filter, TextureWrap wrap) :

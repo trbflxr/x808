@@ -16,7 +16,7 @@ Test3D::Test3D(DebugUI *ui) :
 		ui(ui) {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureFilter::LINEAR);
+	TextureParameters params(TextureFilter::AF16);
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
@@ -82,7 +82,7 @@ Test3D::Test3D(DebugUI *ui) :
 	planeMaterial1 = new Material(GETTEXTURE("bricks"), 4, 0.5f,
 	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.03f, -0.5f);
 
-	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 8, 1.0f,
+	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 2, 0.5f,
 	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");

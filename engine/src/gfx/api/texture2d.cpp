@@ -8,9 +8,9 @@
 
 namespace xe { namespace gfx { namespace api {
 
-	Texture2D *Texture2D::create(uint width, uint height, TextureParameters params, bool mipMaps) {
+	Texture2D *Texture2D::create(uint width, uint height, TextureParameters params) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLTexture2D(width, height, params, mipMaps);
+			case RenderAPI::OPENGL : return new GLTexture2D(width, height, params);
 
 			default: return nullptr;
 		}
@@ -18,11 +18,10 @@ namespace xe { namespace gfx { namespace api {
 
 	Texture2D *Texture2D::create(const std::string_view &name, const std::string_view &path,
 	                             TextureParameters params,
-	                             TextureLoadOptions options,
-	                             bool mipMaps) {
+	                             TextureLoadOptions options) {
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLTexture2D(name, path, params, options, mipMaps);
+			case RenderAPI::OPENGL : return new GLTexture2D(name, path, params, options);
 
 			default: return nullptr;
 		}

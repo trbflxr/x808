@@ -34,10 +34,10 @@ namespace xe { namespace gfx {
 		for (uint i = 0; i < NUM_SHADOW_MAPS; ++i) {
 			uint size = static_cast<uint>(1 << (i + 1));
 			shadowBuffers0[i] = api::FrameBuffer::create(size, size,
-			                                             api::FrameBuffer::RG32F, api::TextureFilter::LINEAR);
+			                                             api::FrameBuffer::RG32F, api::TextureFilter::BILINEAR);
 
 			shadowBuffers1[i] = api::FrameBuffer::create(size, size,
-			                                             api::FrameBuffer::RG32F, api::TextureFilter::LINEAR);
+			                                             api::FrameBuffer::RG32F, api::TextureFilter::BILINEAR);
 		}
 
 		dummyMesh = Mesh::createPlaneMesh();
