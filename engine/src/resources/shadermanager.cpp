@@ -68,6 +68,9 @@ namespace xe {
 		shaders.emplace("shadowMap",
 		                Shader::createFromSource("shadowMap", gfx::shadowMapSourceGL()));
 
+		shaders.emplace("filterNULL",
+		                Shader::createFromSource("filterNULL", gfx::filterNULLSourceGL()));
+
 		shaders.emplace("filterGaussBlur",
 		                Shader::createFromSource("filterGaussBlur", gfx::filterGaussBlurSourceGL()));
 

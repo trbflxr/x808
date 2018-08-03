@@ -41,7 +41,7 @@ Test3D::Test3D(DebugUI *ui) :
 	playerControlSystem = new DummyPlayerControlSystem();
 	mainSystems.addSystem(*playerControlSystem);
 
-	renderer = new ForwardRenderer(800, 600, camera);
+	renderer = new ForwardRenderer(800, 600, camera, true);
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
@@ -80,7 +80,7 @@ Test3D::Test3D(DebugUI *ui) :
 	planeMaterial0 = new Material(GETTEXTURE("bgr"), 3, 0.1f);
 
 	planeMaterial1 = new Material(GETTEXTURE("bricks"), 4, 0.5f,
-	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.02f, -0.5f);
+	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.03f, -0.5f);
 
 	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 2, 0.5f,
 	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);

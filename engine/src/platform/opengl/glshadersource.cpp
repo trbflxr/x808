@@ -56,6 +56,10 @@ static const char *shadowMapSrcGL =
 #include "shaders/shadowmap-generator.shader"
 		;
 
+static const char *filterNULLGL =
+#include "shaders/filter-null.shader"
+		;
+
 static const char *filterGaussBlurGL =
 #include "shaders/filter-gausblur7x1.shader"
 		;
@@ -118,6 +122,10 @@ namespace xe { namespace gfx {
 
 	std::string shadowMapSourceGL() {
 		return shadowMapSrcGL;
+	}
+
+	std::string filterNULLSourceGL() {
+		return filterNULLGL;
 	}
 
 	std::string filterGaussBlurSourceGL() {

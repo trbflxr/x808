@@ -10,10 +10,11 @@
 
 namespace xe { namespace gfx {
 
-	ForwardRenderer::ForwardRenderer(uint width, uint height, Camera *camera) :
+	ForwardRenderer::ForwardRenderer(uint width, uint height, Camera *camera, bool useFXAA) :
 			width(width),
 			height(height),
 			camera(camera),
+			useFXAA(useFXAA),
 			lightMatrix(mat4::scale({0.0f, 0.0f, 0.0f})) {
 
 		Renderer::enableCullFace(true);
@@ -29,17 +30,21 @@ namespace xe { namespace gfx {
 
 		screenBuffer = api::FrameBuffer::create(width, height, api::FrameBuffer::COLOR);
 
-		fxaaFilter = new ShadowMapBlurShader(GETSHADER("filterFXAA"));
+		if (useFXAA) {
+			fxaaFilter = new ShadowMapBlurShader(GETSHADER("filterFXAA"));
 
-		float a = 8.0f;
-		float b = 1.0f / 128.0f;
-		float c = 1.0f / 8.0f;
-		vec2 textureSize = vec2(1.0f / width, 1.0f / height);
+			float a = 8.0f;
+			float b = 1.0f / 128.0f;
+			float c = 1.0f / 8.0f;
+			vec2 textureSize = vec2(1.0f / width, 1.0f / height);
 
-		fxaaFilter->setUniform("sys_fxaaSpanMax", &a, sizeof(float), api::Shader::FRAG);
-		fxaaFilter->setUniform("sys_fxaaReduceMin", &b, sizeof(float), api::Shader::FRAG);
-		fxaaFilter->setUniform("sys_fxaaReduceMul", &c, sizeof(float), api::Shader::FRAG);
-		fxaaFilter->setUniform("sys_inverseFilterTextureSize", &textureSize, sizeof(vec2), api::Shader::FRAG);
+			fxaaFilter->setUniform("sys_fxaaSpanMax", &a, sizeof(float), api::Shader::FRAG);
+			fxaaFilter->setUniform("sys_fxaaReduceMin", &b, sizeof(float), api::Shader::FRAG);
+			fxaaFilter->setUniform("sys_fxaaReduceMul", &c, sizeof(float), api::Shader::FRAG);
+			fxaaFilter->setUniform("sys_inverseFilterTextureSize", &textureSize, sizeof(vec2), api::Shader::FRAG);
+		} else {
+			fxaaFilter = new ShadowMapBlurShader(GETSHADER("filterNULL"));
+		}
 
 		//shadows stuff
 		lightCamera = new Camera(mat4(1.0f));

@@ -29,7 +29,7 @@ namespace xe { namespace gfx {
 		};
 
 	public:
-		explicit ForwardRenderer(uint width, uint height, Camera *camera);
+		explicit ForwardRenderer(uint width, uint height, Camera *camera, bool useFXAA = false);
 		~ForwardRenderer();
 
 		inline void addLight(BaseLight *light) { lights.push_back(light); }
@@ -65,6 +65,7 @@ namespace xe { namespace gfx {
 		ShadowMapShader *shadowMapShader;
 		ShadowMapBlurShader *shadowMapBlurShader;
 
+		bool useFXAA;
 		ShadowMapBlurShader *fxaaFilter;
 
 		api::FrameBuffer *screenBuffer;
