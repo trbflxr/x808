@@ -6,7 +6,6 @@
 #include "renderer.hpp"
 #include "resources/shadermanager.hpp"
 #include "gfx/api/texture2d.hpp"
-#include "gfx/lights/shadowmapshader.hpp"
 
 namespace xe { namespace gfx {
 
@@ -25,13 +24,13 @@ namespace xe { namespace gfx {
 
 		//default shaders
 		ambientLight = new AmbientLight(GETSHADER("forwardAmbient"), 0.1f, color::WHITE);
-		shadowMapShader = new ShadowMapShader(GETSHADER("shadowMap"));
-		shadowMapBlurShader = new ShadowMapBlurShader(GETSHADER("filterGaussBlur"));
+		shadowMapShader = new ForwardRendererShader(GETSHADER("shadowMap"));
+		shadowMapBlurShader = new ForwardRendererShader(GETSHADER("filterGaussBlur"));
 
 		screenBuffer = api::FrameBuffer::create(width, height, api::FrameBuffer::COLOR);
 
 		if (useFXAA) {
-			fxaaFilter = new ShadowMapBlurShader(GETSHADER("filterFXAA"));
+			fxaaFilter = new ForwardRendererShader(GETSHADER("filterFXAA"));
 
 			float a = 8.0f;
 			float b = 1.0f / 128.0f;
@@ -43,7 +42,7 @@ namespace xe { namespace gfx {
 			fxaaFilter->setUniform("sys_fxaaReduceMul", &c, sizeof(float), api::Shader::FRAG);
 			fxaaFilter->setUniform("sys_inverseFilterTextureSize", &textureSize, sizeof(vec2), api::Shader::FRAG);
 		} else {
-			fxaaFilter = new ShadowMapBlurShader(GETSHADER("filterNULL"));
+			fxaaFilter = new ForwardRendererShader(GETSHADER("filterNULL"));
 		}
 
 		//shadows stuff

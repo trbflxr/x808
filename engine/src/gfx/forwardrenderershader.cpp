@@ -126,4 +126,15 @@ namespace xe { namespace gfx {
 		return 0;
 	}
 
+	void ForwardRendererShader::setUniforms(const Material *material, const Transform &transform, Camera *camera) {
+		mat4 world = transform.toMatrix();
+		mat4 mvp = camera->getViewProjection() * world;
+
+		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
+
+		setUserUniforms();
+
+		bindSamplers(material);
+	}
+
 }}

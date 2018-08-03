@@ -31,8 +31,6 @@ public:
 
 	void render() override;
 
-	void tick() override;
-
 	void update(float delta) override;
 	void fixedUpdate(float delta) override;
 

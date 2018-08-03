@@ -25,7 +25,7 @@ namespace xe { namespace gfx {
 
 		void updateUniforms();
 
-		virtual void setUniforms(const Material *material, const Transform &transform, Camera *camera) = 0;
+		virtual void setUniforms(const Material *material, const Transform &transform, Camera *camera);
 
 	protected:
 		void init();
@@ -35,7 +35,7 @@ namespace xe { namespace gfx {
 		void bindSamplers(const Material *material);
 		void unbindSamplers() const;
 
-		virtual void setUniformsInternal() = 0;
+		virtual void setUniformsInternal() { };
 
 		virtual void setUserUniforms() { }
 

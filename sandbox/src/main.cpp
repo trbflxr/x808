@@ -2,6 +2,7 @@
 #include <utils/log.hpp>
 #include "test2d.hpp"
 #include "test3d.hpp"
+#include "test3ddeferred.hpp"
 #include "debugui.hpp"
 
 using namespace xe;
@@ -15,6 +16,7 @@ public:
 
 //		pushLayer(new Test2D());
 		pushLayer(new Test3D(ui));
+//		pushLayer(new Test3DDeferred());
 		pushLayer(ui);
 	}
 

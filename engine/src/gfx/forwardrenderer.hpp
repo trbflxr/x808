@@ -9,8 +9,7 @@
 #include "gfx/api/framebuffer.hpp"
 #include "gfx/camera.hpp"
 #include "gfx/lights/ambientlight.hpp"
-#include "gfx/lights/shadowmapshader.hpp"
-#include "gfx/lights/shadowmapblurshader.hpp"
+#include "gfx/forwardrenderershader.hpp"
 #include "material.hpp"
 #include "mesh.hpp"
 #include "math/transform.hpp"
@@ -62,11 +61,11 @@ namespace xe { namespace gfx {
 		Camera *camera;
 
 		AmbientLight *ambientLight;
-		ShadowMapShader *shadowMapShader;
-		ShadowMapBlurShader *shadowMapBlurShader;
+		ForwardRendererShader *shadowMapShader;
+		ForwardRendererShader *shadowMapBlurShader;
 
 		bool useFXAA;
-		ShadowMapBlurShader *fxaaFilter;
+		ForwardRendererShader *fxaaFilter;
 
 		api::FrameBuffer *screenBuffer;
 

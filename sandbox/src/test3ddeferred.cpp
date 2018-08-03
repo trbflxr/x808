@@ -1,19 +1,18 @@
 //
-// Created by FLXR on 7/12/2018.
+// Created by FLXR on 8/4/2018.
 //
 
-#include <gfx/renderer.hpp>
-#include <gfx/api/texture2d.hpp>
 #include <resources/texturemanager.hpp>
-#include <resources/shadermanager.hpp>
-#include <gfx/color.hpp>
+#include <gfx/api/texture2d.hpp>
 #include <ecs/components/modelcomponent.hpp>
 #include <ecs/components/transformcomponent.hpp>
-#include "test3d.hpp"
+#include "test3ddeferred.hpp"
 
-Test3D::Test3D(DebugUI *ui) :
-		ui(ui) {
+using namespace xe;
+using namespace gfx;
+using namespace gfx::api;
 
+Test3DDeferred::Test3DDeferred() {
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
 	TextureParameters params(TextureFilter::AF16);
 	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
@@ -37,40 +36,11 @@ Test3D::Test3D(DebugUI *ui) :
 	DummyPlayerComponent playerComponent(camera);
 	player = ecs.makeEntity(playerComponent, transform);
 
-	playerControlSystem = new DummyPlayerControlSystem();
-	mainSystems.addSystem(*playerControlSystem);
+//	renderer = new ForwardRenderer(800, 600, camera, true);
+//	rendererSystem = new ForwardRendererSystem(renderer);
+//	renderingPipeline.addSystem(*rendererSystem);
 
-	renderer = new ForwardRenderer(800, 600, camera, true);
-	rendererSystem = new ForwardRendererSystem(renderer);
-	renderingPipeline.addSystem(*rendererSystem);
-
-	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), 0.4f, color::WHITE, 10);
-	directionalLight->transform.setRotation(quat(vec3::XAXIS, -45.0f));
-	renderer->addLight(directionalLight);
-
-	pointLight = new PointLight(GETSHADER("forwardPoint"), {0, 0, 1}, 0.5f, color::RED);
-	pointLight->transform.setTranslation({3, 1, -5});
-//	renderer->addLight(pointLight);
-
-	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 1}, 0.5f, color::BLUE);
-	pointLight2->transform.setTranslation({1, 1, -2});
-//	renderer->addLight(pointLight2);
-
-	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 0.5f}, 0.7f, color::PINK);
-	pointLight3->transform.setTranslation({-1.5f, 3.0f, -13.0f});
-//	renderer->addLight(pointLight3);
-
-	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 0.5f}, 0.7f, color::CYAN);
-	pointLight4->transform.setTranslation({-1.5f, 3.0f, -17.0f});
-//	renderer->addLight(pointLight4);
-
-	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("forwardSpot"), {0.0f, 0.00f, 0.02f}, 0.025f, color::WHITE, 90.0f, 7);
-	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
-	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
-	renderer->addLight(spotLight);
-
-
+	//materials
 	monkeyMaterial = new Material(GETTEXTURE("2"), 50, 2.2f);
 	monkeyMaterial2 = new Material(GETTEXTURE("4"), 1, 0.2f);
 	rockMaterial = new Material(GETTEXTURE("rock"), 2, 0.2f);
@@ -84,6 +54,7 @@ Test3D::Test3D(DebugUI *ui) :
 	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 2, 0.5f,
 	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);
 
+	//meshes
 	rockMesh = new Mesh("assets/models/rock.obj");
 	monkeyMesh = new Mesh("assets/models/monkey3.obj");
 	stallMesh = new Mesh("assets/models/stall.obj");
@@ -91,6 +62,8 @@ Test3D::Test3D(DebugUI *ui) :
 	planeMesh1 = new Mesh("assets/models/plane1.obj");
 	cubeMesh = new Mesh("assets/models/cube.obj");
 
+
+	//models
 	model.mesh = monkeyMesh;
 	model.material = monkeyMaterial;
 	transform.transform.setTranslation({5, 0, -5});
@@ -143,15 +116,7 @@ Test3D::Test3D(DebugUI *ui) :
 	cubeModel = ecs.makeEntity(model, transform);
 }
 
-Test3D::~Test3D() {
-	delete renderer;
-	delete directionalLight;
-	delete pointLight;
-	delete pointLight2;
-	delete pointLight3;
-	delete pointLight4;
-	delete spotLight;
-
+Test3DDeferred::~Test3DDeferred() {
 	delete rockMesh;
 	delete monkeyMesh;
 	delete stallMesh;
@@ -167,89 +132,24 @@ Test3D::~Test3D() {
 	delete planeMaterial1;
 	delete planeMaterial2;
 
-	delete renderer;
-	delete rendererSystem;
 	delete playerControlSystem;
 
 	delete camera;
 }
 
-void Test3D::render() {
-	renderer->begin();
-
-	ecs.updateSystems(renderingPipeline, 0.0f);
-
-	renderer->flush();
+void Test3DDeferred::render() {
+//	ecs.updateSystems(renderingPipeline, 0.0f);
 }
 
-void Test3D::update(float delta) {
-	static DummyPlayerComponent *p = ecs.getComponent<DummyPlayerComponent>(player);
-
+void Test3DDeferred::update(float delta) {
 	ecs.updateSystems(mainSystems, delta);
-
-	if (hookSpotLight) {
-		spotLight->transform.setTranslation(camera->transform.getTranslation());
-		spotLight->transform.setRotation(camera->transform.getRotation());
-	}
 }
 
-void Test3D::fixedUpdate(float delta) {
-	if (Keyboard::isKeyPressed(Keyboard::Key::Q)) {
-		float a = renderer->getAmbientLight()->getIntensity();
-		a += 1 * delta;
-		renderer->getAmbientLight()->setIntensity(a);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::E)) {
-		float a = renderer->getAmbientLight()->getIntensity();
-		if ((a -= 1 * delta) < 0) a = 0;
-		renderer->getAmbientLight()->setIntensity(a);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Z)) {
-		float a = directionalLight->getIntensity();
-		a += 1 * delta;
-		directionalLight->setIntensity(a);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::X)) {
-		float a = directionalLight->getIntensity();
-		if ((a -= 1 * delta) < 0) a = 0;
-		directionalLight->setIntensity(a);
-	}
+void Test3DDeferred::fixedUpdate(float delta) {
 
-	if (Keyboard::isKeyPressed(Keyboard::Key::Left)) {
-		directionalLight->transform.rotate(vec3::YAXIS, 1.0f);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Right)) {
-		directionalLight->transform.rotate(vec3::YAXIS, -1.0f);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Up)) {
-		directionalLight->transform.rotate(vec3::XAXIS, 1.0f);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Key::Down)) {
-		directionalLight->transform.rotate(vec3::XAXIS, -1.0f);
-	}
 }
 
-void Test3D::input(Event &event) {
+void Test3DDeferred::input(Event &event) {
 	ecs.inputSystems(mainSystems, event);
-
-	if (event.type == Event::KeyPressed) {
-		if (event.key.code == Keyboard::Key::Num1) {
-			static bool enabled = true;
-			enabled = !enabled;
-			directionalLight->setEnabled(enabled);
-		}
-		if (event.key.code == Keyboard::Key::Num2) {
-			static bool enabled = true;
-			enabled = !enabled;
-			pointLight->setEnabled(enabled);
-		}
-		if (event.key.code == Keyboard::Key::Num3) {
-			static bool enabled = true;
-			enabled = !enabled;
-			pointLight2->setEnabled(enabled);
-		}
-		if (event.key.code == Keyboard::Key::H) {
-			hookSpotLight = !hookSpotLight;
-		}
-	}
 }
+
