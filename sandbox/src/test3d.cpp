@@ -66,7 +66,7 @@ Test3D::Test3D(DebugUI *ui) :
 //	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("forwardSpot"), {0.0f, 0.0f, 0.02f}, 0.2f, color::WHITE, 90.0f, 7);
+	spotLight = new SpotLight(GETSHADER("forwardSpot"), {0.0f, 0.00f, 0.02f}, 0.025f, color::WHITE, 90.0f, 7);
 	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
 	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
 	renderer->addLight(spotLight);
@@ -80,7 +80,7 @@ Test3D::Test3D(DebugUI *ui) :
 	planeMaterial0 = new Material(GETTEXTURE("bgr"), 3, 0.1f);
 
 	planeMaterial1 = new Material(GETTEXTURE("bricks"), 4, 0.5f,
-	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.03f, -0.5f);
+	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.02f, -0.5f);
 
 	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 2, 0.5f,
 	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);

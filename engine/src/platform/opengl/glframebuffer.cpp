@@ -34,7 +34,7 @@ namespace xe { namespace gfx { namespace api {
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_FRAMEBUFFER, frameBufferHandle));
 
-			TextureParameters params(TextureFormat::DEPTH, filter, TextureWrap::CLAMP);
+			TextureParameters params(TextureFormat::DEPTH16, filter, TextureWrap::CLAMP);
 			texture = new GLTexture2D(width, height, params);
 
 			glCall(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getHandle(), 0));

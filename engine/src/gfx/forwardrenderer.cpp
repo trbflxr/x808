@@ -27,6 +27,19 @@ namespace xe { namespace gfx {
 		shadowMapShader = new ShadowMapShader(GETSHADER("shadowMap"));
 		shadowMapBlurShader = new ShadowMapBlurShader(GETSHADER("filterGaussBlur"));
 
+		screenBuffer = api::FrameBuffer::create(width, height, api::FrameBuffer::COLOR);
+
+		fxaaFilter = new ShadowMapBlurShader(GETSHADER("filterFXAA"));
+
+		float a = 8.0f;
+		float b = 1.0f / 128.0f;
+		float c = 1.0f / 8.0f;
+		vec2 textureSize = vec2(1.0f / width, 1.0f / height);
+
+		fxaaFilter->setUniform("sys_fxaaSpanMax", &a, sizeof(float), api::Shader::FRAG);
+		fxaaFilter->setUniform("sys_fxaaReduceMin", &b, sizeof(float), api::Shader::FRAG);
+		fxaaFilter->setUniform("sys_fxaaReduceMul", &c, sizeof(float), api::Shader::FRAG);
+		fxaaFilter->setUniform("sys_inverseFilterTextureSize", &textureSize, sizeof(vec2), api::Shader::FRAG);
 
 		//shadows stuff
 		lightCamera = new Camera(mat4(1.0f));
@@ -55,6 +68,8 @@ namespace xe { namespace gfx {
 			delete shadowBuffers1[i];
 		}
 
+		delete screenBuffer;
+
 		delete ambientLight;
 		delete shadowMapShader;
 		delete shadowMapBlurShader;
@@ -76,6 +91,10 @@ namespace xe { namespace gfx {
 		//ambient light
 		Renderer::enableBlend(false);
 
+		screenBuffer->bind();
+		screenBuffer->setClearColor({0.0f, 0.0f, 0.0f, 0.0f});
+		screenBuffer->clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
+
 		ambientLight->bind();
 
 		for (auto &&target : targets) {
@@ -86,6 +105,8 @@ namespace xe { namespace gfx {
 		}
 
 		ambientLight->unbind();
+
+		screenBuffer->unbind();
 
 		//other lights
 		for (auto &&light : lights) {
@@ -99,8 +120,8 @@ namespace xe { namespace gfx {
 			Renderer::enableDepthMask(false);
 			Renderer::setDepthFunction(DepthFunction::EQUAL);
 
-			Renderer::setViewport(0, 0, width, height);
-			Renderer::setClearColor({0.0f, 0.0f, 0.0f, 0.0f});
+			screenBuffer->bind();
+			screenBuffer->clear(RENDERER_BUFFER_DEPTH);
 
 			light->bind();
 
@@ -131,7 +152,11 @@ namespace xe { namespace gfx {
 			Renderer::setDepthFunction(DepthFunction::LESS);
 			Renderer::enableDepthMask(true);
 			Renderer::enableBlend(false);
+
+			screenBuffer->unbind();
 		}
+
+		applyFilter(fxaaFilter, screenBuffer, nullptr);
 
 		targets.clear();
 	}
@@ -213,20 +238,28 @@ namespace xe { namespace gfx {
 		lightCamera->unhookEntity();
 	}
 
-	void ForwardRenderer::applyFilter(ShadowMapBlurShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest) {
+	void
+	ForwardRenderer::applyFilter(ForwardRendererShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest) {
 		XE_ASSERT(src != dest);
 
 		dummyMaterial->setTexture(src->getTexture());
 
-		dest->bind();
-		dest->clear(RENDERER_BUFFER_DEPTH);
+		if (dest) {
+			dest->bind();
+			dest->clear(RENDERER_BUFFER_DEPTH);
+		} else {
+			Renderer::setViewport(0, 0, width, height);
+			Renderer::clear(RENDERER_BUFFER_DEPTH);
+		}
 
 		filter->setUniforms(dummyMaterial, dummyTransform, lightCamera);
 		filter->updateUniforms();
 
 		dummyMesh->render();
 
-		dest->unbind();
+		if (dest) {
+			dest->unbind();
+		}
 	}
 
 }}

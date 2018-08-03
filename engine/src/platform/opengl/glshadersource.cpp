@@ -60,6 +60,10 @@ static const char *filterGaussBlurGL =
 #include "shaders/filter-gausblur7x1.shader"
 		;
 
+static const char *filterFXAAGL =
+#include "shaders/filter-fxaa.shader"
+		;
+
 namespace xe { namespace gfx {
 
 	std::string batchRendererShaderSourceGL() {
@@ -118,6 +122,10 @@ namespace xe { namespace gfx {
 
 	std::string filterGaussBlurSourceGL() {
 		return filterGaussBlurGL;
+	}
+
+	std::string filterFXAASourceGL() {
+		return filterFXAAGL;
 	}
 
 }}

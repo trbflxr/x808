@@ -70,6 +70,9 @@ namespace xe {
 
 		shaders.emplace("filterGaussBlur",
 		                Shader::createFromSource("filterGaussBlur", gfx::filterGaussBlurSourceGL()));
+
+		shaders.emplace("filterFXAA",
+		                Shader::createFromSource("filterFXAA", gfx::filterFXAASourceGL()));
 	}
 
 }

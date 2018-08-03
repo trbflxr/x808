@@ -50,7 +50,7 @@ namespace xe { namespace gfx {
 		uint renderShadows(BaseLight *light);
 
 		void blurShadowMap(uint index, float blurAmount);
-		void applyFilter(ShadowMapBlurShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest);
+		void applyFilter(ForwardRendererShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest);
 
 	private:
 		std::vector<RenderTarget> targets;
@@ -65,6 +65,9 @@ namespace xe { namespace gfx {
 		ShadowMapShader *shadowMapShader;
 		ShadowMapBlurShader *shadowMapBlurShader;
 
+		ShadowMapBlurShader *fxaaFilter;
+
+		api::FrameBuffer *screenBuffer;
 
 		//shadows stuff
 		static constexpr uint NUM_SHADOW_MAPS = 10;

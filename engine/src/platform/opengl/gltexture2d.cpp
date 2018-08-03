@@ -15,7 +15,8 @@ namespace xe { namespace gfx { namespace api {
 			case TextureFormat::RGB: return GL_RGB;
 			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
 			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
-			case TextureFormat::DEPTH: return GL_DEPTH_COMPONENT16;
+			case TextureFormat::DEPTH16: return GL_DEPTH_COMPONENT16;
+			case TextureFormat::DEPTH24: return GL_DEPTH_COMPONENT24;
 			case TextureFormat::RG32F: return GL_RG32F;
 		}
 	}
@@ -26,7 +27,8 @@ namespace xe { namespace gfx { namespace api {
 			case TextureFormat::RGB: return GL_RGB;
 			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
 			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
-			case TextureFormat::DEPTH: return GL_DEPTH_COMPONENT;
+			case TextureFormat::DEPTH16: return GL_DEPTH_COMPONENT;
+			case TextureFormat::DEPTH24: return GL_DEPTH_COMPONENT;
 			case TextureFormat::RG32F: return GL_RGBA;
 		}
 	}
@@ -49,13 +51,13 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-	float textureFilterAnisotropyToGL(TextureFilter filter) {
+	uint textureFilterAnisotropyToGL(TextureFilter filter) {
 		switch (filter) {
-			case TextureFilter::AF2: return 2.0f;
-			case TextureFilter::AF4: return 4.0f;
-			case TextureFilter::AF8: return 8.0f;
-			case TextureFilter::AF16: return 16.0f;
-			default: return 0.0f;
+			case TextureFilter::AF2: return 2;
+			case TextureFilter::AF4: return 4;
+			case TextureFilter::AF8: return 8;
+			case TextureFilter::AF16: return 16;
+			default: return 0;
 		}
 	}
 
@@ -94,7 +96,7 @@ namespace xe { namespace gfx { namespace api {
 	}
 
 	void GLTexture2D::setData(const void *pixels) {
-		if (parameters.format == TextureFormat::DEPTH) {
+		if (parameters.format == TextureFormat::DEPTH24) {
 			XE_ERROR("[GLTexture2D]: 'SetData' is unavailable for depth texture!");
 			return;
 		}
@@ -117,13 +119,13 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 
 		//filtering mode
-		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureFilterToGL(parameters.filter)));
-		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureFilterToGL(parameters.filter)));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
 		                       parameters.filter == TextureFilter::NEAREST ? GL_NEAREST : GL_LINEAR));
 
 		//wrap mode
-		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(wrapMode)));
-		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(wrapMode)));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
 
 		//set data
 		glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormatToGL(parameters.format), width, height, 0,
@@ -133,9 +135,9 @@ namespace xe { namespace gfx { namespace api {
 		if (parameters.filter != TextureFilter::NEAREST && parameters.filter != TextureFilter::BILINEAR) {
 			glCall(glGenerateMipmap(GL_TEXTURE_2D));
 
-			float anisotropy = textureFilterAnisotropyToGL(parameters.filter);
+			uint anisotropy = textureFilterAnisotropyToGL(parameters.filter);
 			if (anisotropy) {
-				glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy));
+				glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy));
 			}
 
 		} else {

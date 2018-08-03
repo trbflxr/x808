@@ -17,6 +17,7 @@ namespace xe { namespace gfx {
 	std::string forwardSpotShaderSourceGL();
 	std::string shadowMapSourceGL();
 	std::string filterGaussBlurSourceGL();
+	std::string filterFXAASourceGL();
 
 }}
 
