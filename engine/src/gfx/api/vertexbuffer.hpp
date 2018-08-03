@@ -9,7 +9,7 @@
 #include "common.hpp"
 #include "bufferlayout.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API VertexBuffer {
 	public:
@@ -41,7 +41,7 @@ namespace xe { namespace gfx { namespace api {
 
 	};
 
-}}}
+}}
 
 
 #endif //X808_VERTEXBUFFER_HPP

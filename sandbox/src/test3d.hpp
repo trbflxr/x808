@@ -21,8 +21,7 @@
 #include "dummyplayercontrolsystem.hpp"
 
 using namespace xe;
-using namespace gfx;
-using namespace gfx::api;
+using namespace xe::api;
 
 class Test3D : public Layer {
 public:

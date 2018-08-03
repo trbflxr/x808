@@ -9,7 +9,7 @@
 #include "gfx/forwardrenderershader.hpp"
 #include "gfx/color.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	struct ShadowInfo {
 		mat4 projection;
@@ -68,7 +68,7 @@ namespace xe { namespace gfx {
 		ShadowInfo *shadowInfo;
 	};
 
-}}
+}
 
 
 #endif //X808_BASELIGHT_HPP

@@ -5,7 +5,7 @@
 #include "glshaderuniform.hpp"
 #include "utils/log.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 ///------ GLShaderUniform ------///
 	GLShaderUniform::GLShaderUniform(GLShaderUniform::Type type, const std::string_view &name, uint count) :
@@ -98,4 +98,4 @@ namespace xe { namespace gfx { namespace api {
 		return nullptr;
 	}
 
-}}}
+}}

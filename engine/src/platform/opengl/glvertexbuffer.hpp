@@ -8,7 +8,7 @@
 
 #include "gfx/api/vertexbuffer.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API GLVertexBuffer : public VertexBuffer {
 	public:
@@ -34,7 +34,7 @@ namespace xe { namespace gfx { namespace api {
 		BufferLayout layout;
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLVERTEXBUFFER_HPP

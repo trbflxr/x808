@@ -6,7 +6,7 @@
 #include "context.hpp"
 #include "platform/opengl/gltexture2d.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	Texture2D *Texture2D::create(uint width, uint height, TextureParameters params) {
 		switch (Context::getRenderAPI()) {
@@ -27,4 +27,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

@@ -15,18 +15,16 @@
 
 namespace xe {
 
-	namespace gfx{
-		class Layer;
-	}
+	class Layer;
 
 	class XE_API Application {
 	public:
-		explicit Application(const Config &config, gfx::api::RenderAPI api);
+		explicit Application(const Config &config, api::RenderAPI api);
 		virtual ~Application();
 
-		void pushLayer(gfx::Layer *layer);
-		gfx::Layer *popLayer();
-		gfx::Layer *popLayer(gfx::Layer *layer);
+		void pushLayer(Layer *layer);
+		Layer *popLayer();
+		Layer *popLayer(Layer *layer);
 
 		void start();
 		void suspend();
@@ -73,7 +71,7 @@ namespace xe {
 		Config config;
 		Window window;
 
-		std::vector<gfx::Layer *> layerStack;
+		std::vector<Layer *> layerStack;
 
 		static Application *instance;
 

@@ -10,7 +10,7 @@
 #include <string>
 #include "xeint.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class ShaderResource {
 	public:
@@ -20,7 +20,7 @@ namespace xe { namespace gfx { namespace api {
 	};
 	typedef std::vector<ShaderResource *> ShaderResourceVec;
 
-}}}
+}}
 
 
 #endif //X808_SHADERRESOURCE_HPP

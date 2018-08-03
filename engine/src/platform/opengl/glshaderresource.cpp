@@ -4,7 +4,7 @@
 
 #include "glshaderresource.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	GLShaderResource::GLShaderResource(Type type, const std::string_view &name, uint count) :
 			type(type),
@@ -29,4 +29,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

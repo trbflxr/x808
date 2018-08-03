@@ -9,7 +9,7 @@
 #include "window/event.hpp"
 #include "application/application.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class Layer {
 	public:
@@ -42,7 +42,7 @@ namespace xe { namespace gfx {
 		bool visible;
 	};
 
-}}
+}
 
 
 #endif //X808_LAYER_HPP

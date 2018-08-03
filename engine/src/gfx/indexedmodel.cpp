@@ -5,7 +5,7 @@
 #include <assimp/mesh.h>
 #include "indexedmodel.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	IndexedModel::IndexedModel(const aiMesh *mesh) {
 
@@ -49,4 +49,4 @@ namespace xe { namespace gfx {
 		}
 	}
 
-}}
+}

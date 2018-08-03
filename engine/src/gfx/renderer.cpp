@@ -6,7 +6,7 @@
 #include "gfx/api/context.hpp"
 #include "platform/opengl/glrenderer.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	Renderer *Renderer::instance = nullptr;
 	uint Renderer::dc = 0;
@@ -23,4 +23,4 @@ namespace xe { namespace gfx {
 		instance->initInternal();
 	}
 
-}}
+}

@@ -4,7 +4,7 @@
 
 #include "directionallight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	DirectionalLight::DirectionalLight(api::Shader *shader, float intensity, uint color,
 	                                   uint shadowMapSizePower2, float shadowArea, float shadowSoftness,
@@ -50,4 +50,4 @@ namespace xe { namespace gfx {
 		lightCamera->transform.setRotation(rot);
 	}
 
-}}
+}

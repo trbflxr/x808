@@ -13,7 +13,7 @@
 
 class OrthoCameraMoveSystem : public xe::BaseECSSystem {
 public:
-	explicit OrthoCameraMoveSystem(xe::gfx::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
+	explicit OrthoCameraMoveSystem(xe::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
 		addComponentType(CameraComponent::ID);
 	}
 
@@ -42,7 +42,7 @@ public:
 	}
 
 private:
-	xe::gfx::Renderer2D *renderer;
+	xe::Renderer2D *renderer;
 };
 
 #endif //X808_ORTHOCAMERAMOVESYSTEM_HPP

@@ -10,23 +10,11 @@
 #include "gfx/camera.hpp"
 #include "gfx/lights/ambientlight.hpp"
 #include "gfx/forwardrenderershader.hpp"
-#include "material.hpp"
-#include "mesh.hpp"
-#include "math/transform.hpp"
+#include "irenderer.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
-	class XE_API ForwardRenderer {
-	private:
-		struct RenderTarget {
-			const Mesh *mesh;
-			const Material *material;
-			const Transform &transform;
-
-			RenderTarget(const Mesh *mesh, const Material *material, const Transform &transform) noexcept :
-					mesh(mesh), material(material), transform(transform) { }
-		};
-
+	class XE_API ForwardRenderer : public IRenderer {
 	public:
 		explicit ForwardRenderer(uint width, uint height, Camera *camera, bool useFXAA = false);
 		~ForwardRenderer();
@@ -86,7 +74,7 @@ namespace xe { namespace gfx {
 		GameObject dummyGameObject;
 	};
 
-}}
+}
 
 
 #endif //X808_FORWARDRENDERER_HPP

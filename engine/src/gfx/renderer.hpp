@@ -11,7 +11,7 @@
 #include "color.hpp"
 #include "math/vec4.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	enum RendererBufferType {
 		RENDERER_BUFFER_COLOR = BIT(0),
@@ -104,7 +104,7 @@ namespace xe { namespace gfx {
 		static uint dc;
 	};
 
-}}
+}
 
 
 #endif //X808_RENDERER_HPP

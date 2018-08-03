@@ -11,7 +11,7 @@
 #include "math/mat4.hpp"
 #include "math/quat.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API Camera : public GameObject {
 	public:
@@ -63,7 +63,7 @@ namespace xe { namespace gfx {
 		mat4 view;
 	};
 
-}}
+}
 
 
 #endif //X808_CAMERA_HPP

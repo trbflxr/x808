@@ -16,14 +16,14 @@ namespace xe {
 
 	Application *Application::instance = nullptr;
 
-	Application::Application(const Config &config, gfx::api::RenderAPI api) :
+	Application::Application(const Config &config, api::RenderAPI api) :
 			config(config),
 			frameTime(0.0f) {
 
 		//init random
 		random::nextInt32(0, 1);
 
-		gfx::api::Context::setRenderAPI(api);
+		api::Context::setRenderAPI(api);
 		instance = this;
 
 		init();
@@ -76,7 +76,7 @@ namespace xe {
 		float tickLag = 0;
 
 		while (running) {
-			gfx::Renderer::resetDC();
+			Renderer::resetDC();
 
 			float currentTime = timer.elapsed();
 			float delta = currentTime - lastTime;
@@ -176,18 +176,18 @@ namespace xe {
 		}
 	}
 
-	void Application::pushLayer(gfx::Layer *layer) {
+	void Application::pushLayer(Layer *layer) {
 		layerStack.push_back(layer);
 		layer->init();
 	}
 
-	gfx::Layer *Application::popLayer() {
-		gfx::Layer *layer = layerStack.back();
+	Layer *Application::popLayer() {
+		Layer *layer = layerStack.back();
 		layerStack.pop_back();
 		return layer;
 	}
 
-	gfx::Layer *Application::popLayer(gfx::Layer *layer) {
+	Layer *Application::popLayer(Layer *layer) {
 		for (uint i = 0; i < layerStack.size(); i++) {
 			if (layerStack[i] == layer) {
 				layerStack.erase(layerStack.begin() + i);

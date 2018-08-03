@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	std::string batchRendererShaderSourceGL();
 	std::string forwardAmbientShaderSourceGL();
@@ -20,7 +20,7 @@ namespace xe { namespace gfx {
 	std::string filterGaussBlurSourceGL();
 	std::string filterFXAASourceGL();
 
-}}
+}
 
 
 #endif //X808_GLSHADERSOURCE_HPP

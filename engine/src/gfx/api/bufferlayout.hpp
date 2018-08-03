@@ -13,7 +13,7 @@
 #include "context.hpp"
 #include "platform/opengl/gltypes.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	struct BufferElement {
 		const char *name;
@@ -116,7 +116,7 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}
 
 
 #endif //X808_BUFFERLAYOUT_HPP

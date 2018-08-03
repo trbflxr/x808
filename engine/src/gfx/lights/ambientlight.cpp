@@ -4,7 +4,7 @@
 
 #include "ambientlight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	AmbientLight::AmbientLight(api::Shader *shader, float intensity, uint color) :
 			BaseLight(shader, intensity, color) {
@@ -41,4 +41,4 @@ namespace xe { namespace gfx {
 		setUniform("sys_Color", &light.color, sizeof(vec4), api::Shader::FRAG);
 	}
 
-}}
+}

@@ -10,7 +10,7 @@
 #include "common.hpp"
 #include "xeint.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	enum class TextureWrap {
 		REPEAT = 0, CLAMP, MIRRORED_REPEAT, CLAMP_TO_EDGE, CLAMP_TO_BORDER
@@ -81,7 +81,7 @@ namespace xe { namespace gfx { namespace api {
 		static TextureFilter filterMode;
 	};
 
-}}}
+}}
 
 
 #endif //X808_TEXTURE_HPP

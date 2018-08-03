@@ -10,7 +10,7 @@
 #include "glshaderuniform.hpp"
 #include "glshaderresource.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	struct ShaderErrorInfo {
 		uint shader;
@@ -102,7 +102,7 @@ namespace xe { namespace gfx { namespace api {
 		ShaderStructVec structs;
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLSHADER_HPP

@@ -17,7 +17,7 @@
 #include "ecs/components/transform2dcomponent.hpp"
 #include "ecs/components/textcomponent.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	struct VertexData {
 		vec3 vertex;
@@ -109,7 +109,7 @@ namespace xe { namespace gfx {
 		std::vector<const TextComponent *> text;
 	};
 
-}}
+}
 
 
 #endif //X808_RENDERER2D_HPP

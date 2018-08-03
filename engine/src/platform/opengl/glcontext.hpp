@@ -8,7 +8,7 @@
 
 #include "gfx/api/context.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API GLContext : public Context {
 	public:
@@ -21,7 +21,7 @@ namespace xe { namespace gfx { namespace api {
 		inline static GLContext *get() { return (GLContext *) context; }
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLCONTEXT_HPP

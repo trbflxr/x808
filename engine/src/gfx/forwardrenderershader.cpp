@@ -5,7 +5,7 @@
 #include "forwardrenderershader.hpp"
 #include "utils/log.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	ForwardRendererShader::ForwardRendererShader(api::Shader *shader) :
 			shader(shader),
@@ -137,4 +137,4 @@ namespace xe { namespace gfx {
 		bindSamplers(material);
 	}
 
-}}
+}

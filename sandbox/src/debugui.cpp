@@ -7,8 +7,7 @@
 #include "debugui.hpp"
 
 using namespace xe;
-using namespace gfx;
-using namespace gfx::api;
+using namespace xe::api;
 
 DebugUI::DebugUI() {
 

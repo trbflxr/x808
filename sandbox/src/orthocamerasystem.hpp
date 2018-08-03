@@ -12,7 +12,7 @@
 
 class OrthoCameraSystem : public xe::BaseECSSystem {
 public:
-	explicit OrthoCameraSystem(xe::gfx::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
+	explicit OrthoCameraSystem(xe::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
 		addComponentType(CameraComponent::ID);
 	}
 
@@ -23,7 +23,7 @@ public:
 	}
 
 private:
-	xe::gfx::Renderer2D *renderer;
+	xe::Renderer2D *renderer;
 };
 
 

@@ -7,7 +7,7 @@
 #include "resources/shadermanager.hpp"
 #include "gfx/api/texture2d.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	ForwardRenderer::ForwardRenderer(uint width, uint height, Camera *camera, bool useFXAA) :
 			width(width),
@@ -266,4 +266,4 @@ namespace xe { namespace gfx {
 		}
 	}
 
-}}
+}

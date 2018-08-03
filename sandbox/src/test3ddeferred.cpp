@@ -9,8 +9,7 @@
 #include "test3ddeferred.hpp"
 
 using namespace xe;
-using namespace gfx;
-using namespace gfx::api;
+using namespace xe::api;
 
 Test3DDeferred::Test3DDeferred() {
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);

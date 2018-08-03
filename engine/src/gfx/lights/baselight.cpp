@@ -5,7 +5,7 @@
 #include "baselight.hpp"
 #include "utils/log.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
 			ForwardRendererShader(shader),
@@ -70,4 +70,4 @@ namespace xe { namespace gfx {
 		lightCamera->transform.setTranslation(transform.getTranslation());
 	}
 
-}}
+}

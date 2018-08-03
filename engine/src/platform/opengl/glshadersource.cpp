@@ -4,71 +4,71 @@
 
 #include "glshaderresource.hpp"
 
-static const char *batchRendererShaderGL =
-#include "shaders/batchrenderer.shader"
-		;
+namespace xe {
 
-static const char *forwardAmbientShaderGL =
-#include "shaders/forward-ambient.fs"
-		;
+	static const char *batchRendererShaderGL =
+	#include "shaders/batchrenderer.shader"
+			;
 
-static const char *forwardAmbientVertGL =
-#include "shaders/ambient-light.vsh"
-		;
+	static const char *forwardAmbientShaderGL =
+	#include "shaders/forward-ambient.fs"
+			;
 
-static const char *forwardAmbientFragGL =
-#include "shaders/ambient-light.fsh"
-		;
+	static const char *forwardAmbientVertGL =
+	#include "shaders/ambient-light.vsh"
+			;
 
-static const char *forwardDirectionalShaderGL =
-#include "shaders/forward-directional.fs"
-		;
+	static const char *forwardAmbientFragGL =
+	#include "shaders/ambient-light.fsh"
+			;
 
-static const char *forwardPointShaderGL =
-#include "shaders/forward-point.fs"
-		;
+	static const char *forwardDirectionalShaderGL =
+	#include "shaders/forward-directional.fs"
+			;
 
-static const char *forwardSpotShaderGL =
-#include "shaders/forward-spot.fs"
-		;
+	static const char *forwardPointShaderGL =
+	#include "shaders/forward-point.fs"
+			;
 
-static const char *lightingMainGL =
-#include "shaders/lightingMain.fsh"
-		;
+	static const char *forwardSpotShaderGL =
+	#include "shaders/forward-spot.fs"
+			;
 
-static const char *lightingVertGL =
-#include "shaders/lighting.vsh"
-		;
+	static const char *lightingMainGL =
+	#include "shaders/lightingMain.fsh"
+			;
 
-static const char *lightingFragGL =
-#include "shaders/lighting.fsh"
-		;
+	static const char *lightingVertGL =
+	#include "shaders/lighting.vsh"
+			;
 
-static const char *lightingSrcGL =
-#include "shaders/lighting.glh"
-		;
+	static const char *lightingFragGL =
+	#include "shaders/lighting.fsh"
+			;
 
-static const char *samplingSrcGL =
-#include "shaders/sampling.glh"
-		;
+	static const char *lightingSrcGL =
+	#include "shaders/lighting.glh"
+			;
 
-static const char *shadowMapSrcGL =
-#include "shaders/shadowmap-generator.shader"
-		;
+	static const char *samplingSrcGL =
+	#include "shaders/sampling.glh"
+			;
 
-static const char *filterNULLGL =
-#include "shaders/filter-null.shader"
-		;
+	static const char *shadowMapSrcGL =
+	#include "shaders/shadowmap-generator.shader"
+			;
 
-static const char *filterGaussBlurGL =
-#include "shaders/filter-gausblur7x1.shader"
-		;
+	static const char *filterNULLGL =
+	#include "shaders/filter-null.shader"
+			;
 
-static const char *filterFXAAGL =
-#include "shaders/filter-fxaa.shader"
-		;
+	static const char *filterGaussBlurGL =
+	#include "shaders/filter-gausblur7x1.shader"
+			;
 
-namespace xe { namespace gfx {
+	static const char *filterFXAAGL =
+	#include "shaders/filter-fxaa.shader"
+			;
 
 	std::string batchRendererShaderSourceGL() {
 		return batchRendererShaderGL;
@@ -136,4 +136,4 @@ namespace xe { namespace gfx {
 		return filterFXAAGL;
 	}
 
-}}
+}

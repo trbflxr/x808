@@ -13,7 +13,7 @@ namespace xe {
 
 	class SpriteRendererSystem : public BaseECSSystem {
 	public:
-		explicit SpriteRendererSystem(gfx::Renderer2D *renderer) :
+		explicit SpriteRendererSystem(Renderer2D *renderer) :
 				BaseECSSystem(),
 				renderer(renderer) {
 
@@ -29,7 +29,7 @@ namespace xe {
 		}
 
 	private:
-		gfx::Renderer2D *renderer;
+		Renderer2D *renderer;
 	};
 
 }

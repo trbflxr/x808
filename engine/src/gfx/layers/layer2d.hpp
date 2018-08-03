@@ -9,7 +9,7 @@
 #include "layer.hpp"
 #include "gfx/renderer2d.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API Layer2D : public Layer {
 	public:
@@ -23,7 +23,7 @@ namespace xe { namespace gfx {
 		Renderer2D *renderer;
 	};
 
-}}
+}
 
 
 #endif //X808_LAYER2D_HPP

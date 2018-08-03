@@ -13,7 +13,7 @@ namespace xe {
 
 	class TextRendererSystem : public BaseECSSystem {
 	public:
-		explicit TextRendererSystem(gfx::Renderer2D *renderer) 
+		explicit TextRendererSystem(Renderer2D *renderer)
 				: BaseECSSystem(),
 				  renderer(renderer) {
 			
@@ -27,7 +27,7 @@ namespace xe {
 		}
 
 	private:
-		gfx::Renderer2D *renderer;
+		Renderer2D *renderer;
 	};
 
 }

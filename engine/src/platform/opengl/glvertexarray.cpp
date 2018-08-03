@@ -5,7 +5,7 @@
 #include "glvertexarray.hpp"
 #include "glcommon.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	void GLVertexArray::bind() const {
 		buffers.front()->bind();
@@ -23,4 +23,4 @@ namespace xe { namespace gfx { namespace api {
 		buffers.push_back(buffer);
 	}
 
-}}}
+}}

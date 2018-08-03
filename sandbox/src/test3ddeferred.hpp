@@ -9,7 +9,7 @@
 #include <gfx/layers/layer.hpp>
 #include "dummyplayercontrolsystem.hpp"
 
-class Test3DDeferred : public xe::gfx::Layer {
+class Test3DDeferred : public xe::Layer {
 public:
 	explicit Test3DDeferred();
 	~Test3DDeferred();
@@ -26,7 +26,7 @@ private:
 	xe::ECSSystemList mainSystems;
 	xe::ECSSystemList renderingPipeline;
 
-	xe::gfx::Camera *camera;
+	xe::Camera *camera;
 
 	DummyPlayerControlSystem *playerControlSystem;
 	xe::EntityHandle player;
@@ -42,21 +42,21 @@ private:
 	xe::EntityHandle cubeModel;
 
 	//meshes
-	xe::gfx::Mesh *rockMesh;
-	xe::gfx::Mesh *monkeyMesh;
-	xe::gfx::Mesh *stallMesh;
-	xe::gfx::Mesh *planeMesh0;
-	xe::gfx::Mesh *planeMesh1;
-	xe::gfx::Mesh *cubeMesh;
+	xe::Mesh *rockMesh;
+	xe::Mesh *monkeyMesh;
+	xe::Mesh *stallMesh;
+	xe::Mesh *planeMesh0;
+	xe::Mesh *planeMesh1;
+	xe::Mesh *cubeMesh;
 
 	//materials
-	xe::gfx::Material *rockMaterial;
-	xe::gfx::Material *monkeyMaterial;
-	xe::gfx::Material *monkeyMaterial2;
-	xe::gfx::Material *stallMaterial;
-	xe::gfx::Material *planeMaterial0;
-	xe::gfx::Material *planeMaterial1;
-	xe::gfx::Material *planeMaterial2;
+	xe::Material *rockMaterial;
+	xe::Material *monkeyMaterial;
+	xe::Material *monkeyMaterial2;
+	xe::Material *stallMaterial;
+	xe::Material *planeMaterial0;
+	xe::Material *planeMaterial1;
+	xe::Material *planeMaterial2;
 };
 
 

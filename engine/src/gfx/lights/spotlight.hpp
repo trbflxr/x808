@@ -8,7 +8,7 @@
 
 #include "pointlight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API SpotLight : public PointLight {
 	protected:
@@ -36,7 +36,7 @@ namespace xe { namespace gfx {
 		SpotLightStruct spotLight;
 	};
 
-}}
+}
 
 
 #endif //X808_SPOTLIGHT_HPP

@@ -9,7 +9,7 @@
 #include "renderer.hpp"
 #include "resources/shadermanager.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 #define RENDERER_MAX_SPRITES     60000
 #define RENDERER_SPRITE_SIZE     (RENDERER_VERTEX_SIZE * 4)
@@ -515,4 +515,4 @@ namespace xe { namespace gfx {
 	}
 
 
-}}
+}

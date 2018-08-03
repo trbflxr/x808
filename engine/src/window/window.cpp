@@ -163,7 +163,7 @@ namespace xe {
 	}
 
 	void Window::setVerticalSyncEnabled(bool enabled) {
-		gfx::Renderer::enableVsync(enabled);
+		Renderer::enableVsync(enabled);
 	}
 
 	void Window::setFramerateLimit(uint limit) {
@@ -175,11 +175,11 @@ namespace xe {
 	}
 
 	void Window::clear() const {
-		gfx::Renderer::clear(gfx::RENDERER_BUFFER_COLOR | gfx::RENDERER_BUFFER_DEPTH);
+		Renderer::clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
 	}
 
 	void Window::update() {
-		gfx::Renderer::flush();
+		Renderer::flush();
 
 		//limit fps
 		if (frameTimeLimit != 0) {
@@ -193,8 +193,8 @@ namespace xe {
 	void Window::init() {
 		FreeImage_Initialise();
 
-		gfx::api::Context::create(getHandle());
-		gfx::Renderer::init();
+		api::Context::create(getHandle());
+		Renderer::init();
 
 		SoundManager::init();
 

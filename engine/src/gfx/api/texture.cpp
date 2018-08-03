@@ -4,7 +4,7 @@
 
 #include "texture.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	TextureWrap  Texture::wrapMode = TextureWrap::CLAMP;
 	TextureFilter  Texture::filterMode = TextureFilter::TRILINEAR;
@@ -19,4 +19,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

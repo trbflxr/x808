@@ -9,7 +9,7 @@
 #include "common.hpp"
 #include "xeint.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API IndexBuffer {
 	public:
@@ -22,6 +22,6 @@ namespace xe { namespace gfx { namespace api {
 		static IndexBuffer *create(const uint *data, uint count);
 	};
 
-}}}
+}}
 
 #endif //X808_INDEXBUFFER_HPP

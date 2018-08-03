@@ -4,7 +4,7 @@
 
 #include "spotlight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	SpotLight::SpotLight(api::Shader *shader, const PointLight::Attenuation &attenuation, float intensity,
 	                     uint color, float fovDeg, uint shadowMapSizePower2, float shadowSoftness,
@@ -36,4 +36,4 @@ namespace xe { namespace gfx {
 		setUniformsInternal();
 	}
 
-}}
+}

@@ -11,7 +11,7 @@
 #include "common.hpp"
 #include "xeint.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API ShaderUniform {
 	private:
@@ -79,7 +79,7 @@ namespace xe { namespace gfx { namespace api {
 	};
 	typedef std::vector<ShaderStruct *> ShaderStructVec;
 
-}}}
+}}
 
 
 #endif //X808_SHADERUNIFORM_HPP

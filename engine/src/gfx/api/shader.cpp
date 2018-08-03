@@ -7,7 +7,7 @@
 #include "utils/log.hpp"
 #include "platform/opengl/glshader.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	Shader *Shader::createFromFile(const std::string_view &name, const std::string_view &path, void *address) {
 		//todo: implement
@@ -46,4 +46,4 @@ namespace xe { namespace gfx { namespace api {
 		XE_ASSERT(false, "not implemented");
 	}
 
-}}}
+}}

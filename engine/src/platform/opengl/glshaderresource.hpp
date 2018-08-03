@@ -8,7 +8,7 @@
 
 #include "gfx/api/shaderresource.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class GLShaderResource : public ShaderResource {
 	private:
@@ -38,7 +38,7 @@ namespace xe { namespace gfx { namespace api {
 		Type type;
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLSHADERRESOURCE_HPP

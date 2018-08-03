@@ -6,7 +6,7 @@
 #include "platform/opengl/glindexbuffer.hpp"
 #include "context.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	IndexBuffer *IndexBuffer::create(const uint16 *data, uint count) {
 		switch (Context::getRenderAPI()) {
@@ -24,4 +24,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

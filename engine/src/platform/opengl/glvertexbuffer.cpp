@@ -5,7 +5,7 @@
 #include "glvertexbuffer.hpp"
 #include "glcommon.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	static uint bufferTypeToOpenGL(VertexBuffer::Type type) {
 		switch (type) {
@@ -67,4 +67,4 @@ namespace xe { namespace gfx { namespace api {
 		return result;
 	}
 
-}}}
+}}

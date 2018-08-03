@@ -5,7 +5,7 @@
 #include "glcommon.hpp"
 #include "glrenderer.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	uint rendererBufferToGL(uint buffer) {
 		uint result = 0;
@@ -138,4 +138,4 @@ namespace xe { namespace gfx {
 		glCall(glCullFace(rendererCullFaceToGL(cullFace)));
 	}
 
-}}
+}

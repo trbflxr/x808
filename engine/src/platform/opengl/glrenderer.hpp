@@ -9,7 +9,7 @@
 #include "gfx/renderer.hpp"
 #include "glcontext.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API GLRenderer : public Renderer {
 	public:
@@ -41,7 +41,7 @@ namespace xe { namespace gfx {
 		api::GLContext *context;
 	};
 
-}}
+}
 
 
 #endif //X808_GLRENDERER_HPP

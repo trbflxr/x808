@@ -8,7 +8,7 @@
 
 #include "baselight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API PointLight : public BaseLight {
 	public:
@@ -45,7 +45,7 @@ namespace xe { namespace gfx {
 		PointLightStruct pointLight;
 	};
 
-}}
+}
 
 
 #endif //X808_POINTLIGHT_HPP

@@ -13,11 +13,11 @@
 namespace xe {
 
 	struct ModelComponent : public ECSComponent<ModelComponent> {
-		gfx::Mesh *mesh;
-		gfx::Material *material;
+		Mesh *mesh;
+		Material *material;
 
 		ModelComponent() noexcept : mesh(nullptr), material(nullptr) { }
-		explicit ModelComponent(gfx::Mesh *mesh, gfx::Material *material) : mesh(mesh), material(material) { }
+		explicit ModelComponent(Mesh *mesh, Material *material) : mesh(mesh), material(material) { }
 	};
 
 }

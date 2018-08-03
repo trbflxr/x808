@@ -10,13 +10,13 @@
 #include <gfx/camera.hpp>
 
 struct DummyPlayerComponent : public xe::ECSComponent<DummyPlayerComponent> {
-	xe::gfx::Camera *camera;
+	xe::Camera *camera;
 
 	float mouseSensitivity;
 	float speed;
 	float sprintSpeed;
 
-	explicit DummyPlayerComponent(xe::gfx::Camera *camera, float mouseSensitivity = 0.15f,
+	explicit DummyPlayerComponent(xe::Camera *camera, float mouseSensitivity = 0.15f,
 	                              float speed = 4.0f, float sprintSpeed = 4.0f) :
 			camera(camera),
 			mouseSensitivity(mouseSensitivity),

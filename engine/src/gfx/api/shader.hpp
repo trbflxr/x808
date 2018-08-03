@@ -13,7 +13,7 @@
 #include "shaderresource.hpp"
 #include "math/math.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	struct UniformBuffer {
 		byte *buffer;
@@ -70,7 +70,7 @@ namespace xe { namespace gfx { namespace api {
 		static bool tryCompileFromFile(const std::string &file, std::string &error);
 	};
 
-}}}
+}}
 
 
 #endif //X808_SHADER_HPP

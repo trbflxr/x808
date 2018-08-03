@@ -8,7 +8,7 @@
 
 #include "gfx/api/texture2d.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class GLTexture2D : public Texture2D {
 	public:
@@ -51,7 +51,7 @@ namespace xe { namespace gfx { namespace api {
 		TextureLoadOptions loadOptions;
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLTEXTURE2D_HPP

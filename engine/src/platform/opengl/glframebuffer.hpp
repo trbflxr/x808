@@ -10,7 +10,7 @@
 #include "math/vec4.hpp"
 #include "gltexture2d.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class GLFrameBuffer : public FrameBuffer {
 	public:
@@ -40,7 +40,7 @@ namespace xe { namespace gfx { namespace api {
 		Type type;
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLFRAMEBUFFER_HPP

@@ -4,7 +4,7 @@
 
 #include "pointlight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	static constexpr short COLOR_DEPTH = 256;
 
@@ -40,4 +40,4 @@ namespace xe { namespace gfx {
 		return (-y + sqrtf(y * y - 4 * x * z)) / (2 * x);
 	}
 
-}}
+}

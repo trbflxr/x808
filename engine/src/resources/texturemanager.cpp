@@ -22,7 +22,7 @@ namespace xe {
 		return tm;
 	}
 
-	void TextureManager::add(gfx::api::Texture *texture) {
+	void TextureManager::add(api::Texture *texture) {
 		auto &&it = instance().textures.find(texture->getName());
 
 		if (it != instance().textures.end()) {
@@ -33,7 +33,7 @@ namespace xe {
 		instance().textures.emplace(texture->getName(), texture);
 	}
 
-	const gfx::api::Texture *TextureManager::get(const std::string_view &name) {
+	const api::Texture *TextureManager::get(const std::string_view &name) {
 		auto &&it = instance().textures.find(name.data());
 		if (it == instance().textures.end()) {
 			XE_ERROR("Texture '", name, "' not found!");
@@ -49,7 +49,7 @@ namespace xe {
 	}
 
 	void TextureManager::createDefaultTextures() {
-		using namespace gfx::api;
+		using namespace api;
 
 		TextureParameters params(TextureFilter::NEAREST);
 

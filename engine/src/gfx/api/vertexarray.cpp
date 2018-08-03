@@ -5,7 +5,7 @@
 #include "vertexarray.hpp"
 #include "platform/opengl/glvertexarray.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	VertexArray *VertexArray::create() {
 		switch (Context::getRenderAPI()) {
@@ -15,4 +15,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

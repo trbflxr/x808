@@ -14,7 +14,7 @@ namespace xe {
 			size(size),
 			texture(nullptr) {
 
-		using namespace gfx::api;
+		using namespace api;
 
 		XE_ASSERT(size <= 150, "Max font size is 150");
 
@@ -41,7 +41,7 @@ namespace xe {
 			size(size),
 			texture(nullptr) {
 
-		using namespace gfx::api;
+		using namespace api;
 
 		XE_ASSERT(size <= 150, "Max font size is 150");
 
@@ -90,7 +90,7 @@ namespace xe {
 		return {x / scale, y / scale};
 	}
 
-	gfx::api::Texture2D *Font::getTexture() const {
+	api::Texture2D *Font::getTexture() const {
 		updateAtlas();
 		return texture;
 	}

@@ -14,7 +14,7 @@
 namespace xe {
 
 	struct SpriteComponent : public ECSComponent<SpriteComponent> {
-		const gfx::api::Texture *texture;
+		const api::Texture *texture;
 		uint color;
 		std::vector<vec2> UVs;
 		bool visible;
@@ -27,7 +27,7 @@ namespace xe {
 			UVs = getDefaultUVs();
 		}
 
-		explicit SpriteComponent(const gfx::api::Texture *texture, uint color, bool visible = true) noexcept :
+		explicit SpriteComponent(const api::Texture *texture, uint color, bool visible = true) noexcept :
 				texture(texture),
 				color(color),
 				visible(visible) {

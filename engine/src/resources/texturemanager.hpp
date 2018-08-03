@@ -17,8 +17,8 @@ namespace xe {
 	public:
 		~TextureManager() override;
 
-		static void add(gfx::api::Texture *texture);
-		static const gfx::api::Texture *get(const std::string_view &name);
+		static void add(api::Texture *texture);
+		static const api::Texture *get(const std::string_view &name);
 
 		static void clean();
 
@@ -30,7 +30,7 @@ namespace xe {
 		static TextureManager &instance();
 
 	private:
-		std::unordered_map<std::string, gfx::api::Texture *> textures;
+		std::unordered_map<std::string, api::Texture *> textures;
 	};
 
 }

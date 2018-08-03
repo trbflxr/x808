@@ -10,7 +10,7 @@ using namespace xe;
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, gfx::api::RenderAPI::OPENGL) {
+			Application(config, api::RenderAPI::OPENGL) {
 
 		ui = new DebugUI();
 

@@ -8,7 +8,7 @@
 #include "mesh.hpp"
 #include "renderer.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	Mesh::Mesh(const IndexedModel &model) {
 		initMesh(model);
@@ -76,7 +76,7 @@ namespace xe { namespace gfx {
 		indexBuffer->unbind();
 		vertexArray->unbind();
 
-		gfx::Renderer::incDC();
+		Renderer::incDC();
 	}
 
 	Mesh *Mesh::createPlaneMesh() {
@@ -107,4 +107,4 @@ namespace xe { namespace gfx {
 		return new Mesh(model);
 	}
 
-}}
+}

@@ -8,7 +8,7 @@
 
 #include "vertexbuffer.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API VertexArray {
 	public:
@@ -23,7 +23,7 @@ namespace xe { namespace gfx { namespace api {
 		static VertexArray* create();
 	};
 
-}}}
+}}
 
 
 #endif //X808_VERTEXARRAY_HPP

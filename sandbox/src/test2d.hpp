@@ -15,7 +15,7 @@
 #include <gfx/layers/layer2d.hpp>
 #include "orthocameramovesystem.hpp"
 
-class Test2D : public xe::gfx::Layer2D {
+class Test2D : public xe::Layer2D {
 public:
 	explicit Test2D();
 	~Test2D() override;

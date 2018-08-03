@@ -15,7 +15,7 @@ namespace xe {
 
 	class ForwardRendererSystem : public BaseECSSystem {
 	public:
-		explicit ForwardRendererSystem(gfx::ForwardRenderer *renderer) :
+		explicit ForwardRendererSystem(ForwardRenderer *renderer) :
 				BaseECSSystem(),
 				renderer(renderer) {
 
@@ -31,7 +31,7 @@ namespace xe {
 		}
 
 	private:
-		gfx::ForwardRenderer *renderer;
+		ForwardRenderer *renderer;
 	};
 
 }

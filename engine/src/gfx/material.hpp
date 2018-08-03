@@ -10,7 +10,7 @@
 #include "gfx/api/texture.hpp"
 #include "math/math.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class Material {
 	public:
@@ -62,7 +62,7 @@ namespace xe { namespace gfx {
 		float dispMapBias;
 	};
 
-}}
+}
 
 
 #endif //X808_MATERIAL_HPP

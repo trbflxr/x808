@@ -8,7 +8,7 @@
 
 #include "baselight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API AmbientLight : public BaseLight {
 	public:
@@ -20,7 +20,7 @@ namespace xe { namespace gfx {
 		void setUniformsInternal() override;
 	};
 
-}}
+}
 
 
 #endif //X808_AMBIENTLIGHT_HPP

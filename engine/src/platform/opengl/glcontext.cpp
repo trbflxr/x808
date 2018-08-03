@@ -12,7 +12,7 @@
 #include "glcontext.hpp"
 #include "utils/log.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	static HDC hDc;
 
@@ -41,4 +41,4 @@ namespace xe { namespace gfx { namespace api {
 		wglSwapIntervalEXT(enabled);
 	}
 
-}}}
+}}

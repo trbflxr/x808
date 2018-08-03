@@ -30,7 +30,7 @@ namespace xe {
 		inline ftgl::texture_font_t *getFTFont() const { return ftFont; }
 		inline float getSize() const { return size; }
 
-		gfx::api::Texture2D *getTexture() const;
+		api::Texture2D *getTexture() const;
 
 		vec2 getTextSize(const std::wstring_view &text, float fontSize, vec2 *position = nullptr) const;
 
@@ -40,7 +40,7 @@ namespace xe {
 	private:
 		ftgl::texture_font_t *ftFont;
 		ftgl::texture_atlas_t *ftAtlas;
-		mutable gfx::api::Texture2D *texture;
+		mutable api::Texture2D *texture;
 
 		float size;
 		std::string name;

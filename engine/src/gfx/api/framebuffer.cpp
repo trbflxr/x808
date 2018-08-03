@@ -6,7 +6,7 @@
 #include "context.hpp"
 #include "platform/opengl/glframebuffer.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	FrameBuffer *FrameBuffer::create(uint width, uint height, Type type, TextureFilter filter) {
 		switch (Context::getRenderAPI()) {
@@ -16,4 +16,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

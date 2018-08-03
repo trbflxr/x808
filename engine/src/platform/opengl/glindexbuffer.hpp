@@ -8,7 +8,7 @@
 
 #include "gfx/api/indexbuffer.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class GLIndexBuffer : public IndexBuffer {
 	public:
@@ -27,6 +27,6 @@ namespace xe { namespace gfx { namespace api {
 	};
 
 
-}}}
+}}
 
 #endif //X808_GLINDEXBUFFER_HPP

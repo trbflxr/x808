@@ -5,7 +5,7 @@
 #include "layer2d.hpp"
 #include "application/application.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	Layer2D::Layer2D() {
 		renderer = new Renderer2D(window.getSize());
@@ -20,5 +20,5 @@ namespace xe { namespace gfx {
 		return false;
 	}
 
-}}
+}
 

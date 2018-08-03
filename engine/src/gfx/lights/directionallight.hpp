@@ -8,7 +8,7 @@
 
 #include "baselight.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API DirectionalLight : public BaseLight {
 	protected:
@@ -37,7 +37,7 @@ namespace xe { namespace gfx {
 		float halfShadowArea;
 	};
 
-}}
+}
 
 
 #endif //X808_DIRECTIONALLIGHT_HPP

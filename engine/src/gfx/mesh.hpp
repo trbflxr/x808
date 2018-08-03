@@ -11,7 +11,7 @@
 #include "gfx/api/vertexarray.hpp"
 #include "indexedmodel.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	struct MeshVertexData {
 		vec3 position;
@@ -40,6 +40,6 @@ namespace xe { namespace gfx {
 	};
 
 
-}}
+}
 
 #endif //X808_MESH_HPP

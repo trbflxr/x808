@@ -6,7 +6,7 @@
 #include "glcommon.hpp"
 #include "gfx/renderer.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	uint rendererBufferToGL(uint buffer) {
 		uint result = 0;
@@ -100,4 +100,4 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glClearColor(color.x, color.y, color.z, color.w));
 	}
 
-}}}
+}}

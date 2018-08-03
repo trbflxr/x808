@@ -18,8 +18,8 @@ namespace xe {
 	public:
 		~ShaderManager() override;
 
-		static void add(gfx::api::Shader *shader);
-		static gfx::api::Shader *get(const std::string_view &name);
+		static void add(api::Shader *shader);
+		static api::Shader *get(const std::string_view &name);
 
 		static void clean();
 
@@ -31,7 +31,7 @@ namespace xe {
 		static ShaderManager &instance();
 
 	private:
-		std::unordered_map<std::string, gfx::api::Shader *> shaders;
+		std::unordered_map<std::string, api::Shader *> shaders;
 	};
 
 }

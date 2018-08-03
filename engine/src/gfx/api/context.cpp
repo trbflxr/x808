@@ -5,7 +5,7 @@
 #include "context.hpp"
 #include "platform/opengl/glcontext.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	Context *Context::context = nullptr;
 	RenderAPI Context::api = RenderAPI::NONE;
@@ -18,4 +18,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

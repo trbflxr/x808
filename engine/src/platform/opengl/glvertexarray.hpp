@@ -8,7 +8,7 @@
 
 #include "gfx/api/vertexarray.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class GLVertexArray : public VertexArray {
 	public:
@@ -28,7 +28,7 @@ namespace xe { namespace gfx { namespace api {
 		std::vector<api::VertexBuffer *> buffers;
 	};
 
-}}}
+}}
 
 
 #endif //X808_GLVERTEXARRAY_HPP

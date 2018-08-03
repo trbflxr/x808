@@ -11,7 +11,7 @@
 #include "camera.hpp"
 #include "material.hpp"
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	class XE_API ForwardRendererShader {
 	private:
@@ -56,7 +56,7 @@ namespace xe { namespace gfx {
 		const api::Texture *dispMap;
 	};
 
-}}
+}
 
 
 #endif //X808_FORWARDRENDERERSHADER_HPP

@@ -5,7 +5,7 @@
 #include "vertexbuffer.hpp"
 #include "platform/opengl/glvertexbuffer.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	VertexBuffer *VertexBuffer::create(Type type) {
 		switch (Context::getRenderAPI()) {
@@ -15,4 +15,4 @@ namespace xe { namespace gfx { namespace api {
 		}
 	}
 
-}}}
+}}

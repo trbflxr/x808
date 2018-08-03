@@ -10,7 +10,7 @@
 #include "texture2d.hpp"
 #include "math/vec4.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API FrameBuffer {
 	public:
@@ -38,7 +38,7 @@ namespace xe { namespace gfx { namespace api {
 		FrameBuffer() = default;
 	};
 
-}}}
+}}
 
 
 #endif //X808_FRAMEBUFFER_HPP

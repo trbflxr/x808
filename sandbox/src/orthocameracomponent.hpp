@@ -11,7 +11,7 @@
 
 
 struct CameraComponent : public xe::ECSComponent<CameraComponent> {
-	xe::gfx::Camera camera;
+	xe::Camera camera;
 
 	explicit CameraComponent(const xe::mat4 &projection) : camera(projection) { }
 };

@@ -8,7 +8,7 @@
 
 #include "texture.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API Texture2D : public Texture {
 	public:
@@ -26,7 +26,7 @@ namespace xe { namespace gfx { namespace api {
 		virtual uint getHeight() const = 0;
 	};
 
-}}}
+}}
 
 
 #endif //X808_TEXTURE2D_HPP

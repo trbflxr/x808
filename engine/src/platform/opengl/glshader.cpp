@@ -7,7 +7,7 @@
 #include "utils/log.hpp"
 #include "utils/string.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	GLShader::GLShader(const std::string_view &name, const std::string &source) :
 			name(name),
@@ -545,4 +545,4 @@ namespace xe { namespace gfx { namespace api {
 		return false;
 	}
 
-}}}
+}}

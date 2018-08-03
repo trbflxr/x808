@@ -8,7 +8,7 @@
 
 #include "gfx/api/shaderuniform.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	class XE_API GLShaderUniform : public ShaderUniform {
 	private:
@@ -87,7 +87,7 @@ namespace xe { namespace gfx { namespace api {
 	};
 	typedef std::vector<ShaderUniformBuffer *> ShaderUniformBufferVec;
 
-}}}
+}}
 
 
 #endif //X808_GLSHADERUNIFORM_HPP

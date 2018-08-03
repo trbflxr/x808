@@ -7,7 +7,7 @@
 #include "utils/loadimage.hpp"
 #include "embedded/embedded.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	uint textureInternalFormatToGL(TextureFormat format) {
 		switch (format) {
@@ -178,4 +178,4 @@ namespace xe { namespace gfx { namespace api {
 		return outPixels;
 	}
 
-}}}
+}}

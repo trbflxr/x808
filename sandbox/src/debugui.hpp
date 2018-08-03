@@ -12,7 +12,7 @@
 #include <ecs/systems/textrenderersystem.hpp>
 #include "orthocamerasystem.hpp"
 
-class DebugUI : public xe::gfx::Layer2D {
+class DebugUI : public xe::Layer2D {
 private:
 	friend class Test3D;
 

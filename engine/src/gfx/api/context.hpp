@@ -8,7 +8,7 @@
 
 #include "config.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	enum class RenderAPI {
 		NONE, OPENGL, DIRECT3D
@@ -26,7 +26,7 @@ namespace xe { namespace gfx { namespace api {
 		static RenderAPI api;
 	};
 
-}}}
+}}
 
 
 #endif //X808_CONTEXT_HPP

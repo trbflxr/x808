@@ -13,7 +13,7 @@
 
 struct aiMesh;
 
-namespace xe { namespace gfx {
+namespace xe {
 
 	struct XE_API IndexedModel {
 		std::vector<vec3> positions;
@@ -26,7 +26,7 @@ namespace xe { namespace gfx {
 		explicit IndexedModel(const aiMesh *mesh);
 	};
 
-}}
+}
 
 
 #endif //X808_INDEXEDMODEL_HPP

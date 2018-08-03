@@ -5,7 +5,7 @@
 #include "glindexbuffer.hpp"
 #include "glcommon.hpp"
 
-namespace xe { namespace gfx { namespace api {
+namespace xe { namespace api {
 
 	GLIndexBuffer::GLIndexBuffer(const uint16 *data, uint count) {
 		glCall(glGenBuffers(1, &handle));
@@ -31,4 +31,4 @@ namespace xe { namespace gfx { namespace api {
 		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
-}}}
+}}
