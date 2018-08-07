@@ -30,18 +30,18 @@ namespace xe {
 		mat4 mvp = camera->getViewProjection() * world;
 		vec3 camPos = camera->transform.getTranslation();
 
-		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
-		setUniform("sys_Model", &world.elements, sizeof(mat4), api::Shader::VERT);
-		setUniform("sys_EyePos", &camPos, sizeof(vec3), api::Shader::FRAG);
+		setUniform("MVP", &mvp.elements, sizeof(mat4));
+		setUniform("model", &world.elements, sizeof(mat4));
+		setUniform("eyePos", &camPos, sizeof(vec3));
 
 		float specularPower = material->getSpecularIntensity();
 		float specularIntensity = material->getSpecularPower();
 		float dispScale = material->getDispMapScale();
 		float dispBias = material->getDispMapBias();
-		setUniform("sys_SpecularIntensity", &specularIntensity, sizeof(float), api::Shader::FRAG);
-		setUniform("sys_SpecularPower", &specularPower, sizeof(float), api::Shader::FRAG);
-		setUniform("sys_DispMapScale", &dispScale, sizeof(float), api::Shader::FRAG);
-		setUniform("sys_DispMapBias", &dispBias, sizeof(float), api::Shader::FRAG);
+		setUniform("specularIntensity", &specularIntensity, sizeof(float));
+		setUniform("specularPower", &specularPower, sizeof(float));
+		setUniform("dispMapScale", &dispScale, sizeof(float));
+		setUniform("dispMapBias", &dispBias, sizeof(float));
 
 		setUserUniforms();
 

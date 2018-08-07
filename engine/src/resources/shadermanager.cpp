@@ -48,32 +48,60 @@ namespace xe {
 	}
 
 	void ShaderManager::createDefaultShaders() {
-		shaders.emplace("batchRenderer",
-		                api::Shader::createFromSource("batchRenderer", batchRendererShaderSourceGL()));
+		using namespace internal;
 
-		shaders.emplace("forwardAmbient",
-		                api::Shader::createFromSource("forwardAmbient", forwardAmbientShaderSourceGL()));
+		shaders.emplace("defaultBatchRenderer", api::Shader::create("defaultBatchRenderer", {
+				ShaderFile::fromSource(ShaderType::VERT, brVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, brFragGL, { })
+		}));
 
-		shaders.emplace("forwardDirectional",
-		                api::Shader::createFromSource("forwardDirectional", forwardDirectionalShaderSourceGL()));
 
-		shaders.emplace("forwardPoint",
-		                api::Shader::createFromSource("forwardPoint", forwardPointShaderSourceGL()));
+		//lights
+		shaders.emplace("defaultForwardAmbient", api::Shader::create("defaultForwardAmbient", {
+				ShaderFile::fromSource(ShaderType::VERT, forwardAmbientVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, forwardAmbientFragGL, {samplingGL})
+		}));
 
-		shaders.emplace("forwardSpot",
-		                api::Shader::createFromSource("forwardSpot", forwardSpotShaderSourceGL()));
+		shaders.emplace("defaultForwardDirectional", api::Shader::create("defaultForwardDirectional", {
+				ShaderFile::fromSource(ShaderType::VERT, forwardLightingVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, forwardLightingFragGL,
+				                       {forwardLightingFragIncludeGL, forwardDirectionalIncludeGL, samplingGL})
+		}));
 
-		shaders.emplace("shadowMap",
-		                api::Shader::createFromSource("shadowMap", shadowMapSourceGL()));
+		shaders.emplace("defaultForwardPoint", api::Shader::create("defaultForwardPoint", {
+				ShaderFile::fromSource(ShaderType::VERT, forwardLightingVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, forwardLightingFragGL,
+				                       {forwardLightingFragIncludeGL, forwardPointIncludeGL, samplingGL})
+		}));
 
-		shaders.emplace("filterNULL",
-		                api::Shader::createFromSource("filterNULL", filterNULLSourceGL()));
+		shaders.emplace("defaultForwardSpot", api::Shader::create("defaultForwardSpot", {
+				ShaderFile::fromSource(ShaderType::VERT, forwardLightingVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, forwardLightingFragGL,
+				                       {forwardLightingFragIncludeGL, forwardSpotIncludeGL, samplingGL})
+		}));
 
-		shaders.emplace("filterGaussBlur",
-		                api::Shader::createFromSource("filterGaussBlur", filterGaussBlurSourceGL()));
+		//fx
+		shaders.emplace("defaultFXNULL", api::Shader::create("defaultFXNULL", {
+				ShaderFile::fromSource(ShaderType::VERT, fxVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, fxNULLFragGL, { })
+		}));
 
-		shaders.emplace("filterFXAA",
-		                api::Shader::createFromSource("filterFXAA", filterFXAASourceGL()));
+		shaders.emplace("defaultFXGaussBlur", api::Shader::create("defaultFXGaussBlur", {
+				ShaderFile::fromSource(ShaderType::VERT, fxVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, fxGaussBlur7x1FragGL, { })
+		}));
+
+		shaders.emplace("defaultFXFXAA", api::Shader::create("defaultFXFXAA", {
+				ShaderFile::fromSource(ShaderType::VERT, fxVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, fxFXAAFragGL, { })
+		}));
+
+		//shadow map
+		shaders.emplace("defaultShadowMap", api::Shader::create("defaultShadowMap", {
+				ShaderFile::fromSource(ShaderType::VERT, shadowMapVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, shadowMapFragGL, { })
+		}));
+
 	}
 
 }

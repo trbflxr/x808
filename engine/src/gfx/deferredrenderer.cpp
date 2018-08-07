@@ -6,4 +6,26 @@
 
 namespace xe {
 
+	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera) :
+			IRenderer3D(width, height, camera) {
+
+	}
+
+	DeferredRenderer::~DeferredRenderer() {
+
+	}
+
+	void DeferredRenderer::begin() {
+
+	}
+
+	void DeferredRenderer::submit(const Mesh *mesh, const Material *material, const Transform &transform) {
+
+	}
+
+	void DeferredRenderer::flush() {
+
+	}
+
+
 }

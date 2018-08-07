@@ -6,29 +6,23 @@
 #define X808_FORWARDRENDERER_HPP
 
 
+#include "irenderer3d.hpp"
 #include "gfx/api/framebuffer.hpp"
-#include "gfx/camera.hpp"
 #include "gfx/lights/ambientlight.hpp"
 #include "gfx/forwardrenderershader.hpp"
-#include "irenderer.hpp"
 
 namespace xe {
 
-	class XE_API ForwardRenderer : public IRenderer {
+	class XE_API ForwardRenderer : public IRenderer3D {
 	public:
 		explicit ForwardRenderer(uint width, uint height, Camera *camera, bool useFXAA = false);
 		~ForwardRenderer();
 
 		inline void addLight(BaseLight *light) { lights.push_back(light); }
 
-		void begin();
-		void submit(const Mesh *mesh, const Material *material, const Transform &transform);
-		void flush();
-
-		inline const Camera *getCamera() const { return camera; }
-		inline Camera *getCamera() { return camera; }
-
-		inline void setCamera(Camera *camera) { ForwardRenderer::camera = camera; }
+		void begin() override;
+		void submit(const Mesh *mesh, const Material *material, const Transform &transform) override;
+		void flush() override;
 
 		inline AmbientLight *getAmbientLight() { return ambientLight; }
 		inline const AmbientLight *getAmbientLight() const { return ambientLight; }
@@ -42,11 +36,6 @@ namespace xe {
 	private:
 		std::vector<RenderTarget> targets;
 		std::vector<BaseLight *> lights;
-
-		uint width;
-		uint height;
-
-		Camera *camera;
 
 		AmbientLight *ambientLight;
 		ForwardRendererShader *shadowMapShader;

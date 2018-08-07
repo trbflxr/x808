@@ -66,13 +66,12 @@ namespace xe { namespace api {
 	///------------------------------///
 	class XE_API GLShaderUniformBuffer : public ShaderUniformBuffer {
 	public:
-		explicit GLShaderUniformBuffer(const std::string_view &name, uint shaderType);
+		explicit GLShaderUniformBuffer(const std::string_view &name);
 
 		void pushUniform(GLShaderUniform *uniform);
 
 		inline const std::string &getName() const override { return name; }
 		inline uint getRegister() const override { return register_; }
-		inline uint getShaderType() const override { return shaderType; }
 		inline uint getSize() const override { return size; }
 		inline const ShaderUniformVec &getUniforms() const override { return uniforms; }
 
@@ -83,7 +82,6 @@ namespace xe { namespace api {
 		ShaderUniformVec uniforms;
 		uint register_;
 		uint size;
-		uint shaderType; // 0 = VS, 1 = FS
 	};
 	typedef std::vector<ShaderUniformBuffer *> ShaderUniformBufferVec;
 

@@ -44,28 +44,29 @@ Test3D::Test3D(DebugUI *ui) :
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
-	directionalLight = new DirectionalLight(GETSHADER("forwardDirectional"), 0.4f, color::WHITE, 10);
+	directionalLight = new DirectionalLight(GETSHADER("defaultForwardDirectional"), 0.4f, color::WHITE, 10);
 	directionalLight->transform.setRotation(quat(vec3::XAXIS, -45.0f));
 	renderer->addLight(directionalLight);
 
-	pointLight = new PointLight(GETSHADER("forwardPoint"), {0, 0, 1}, 0.5f, color::RED);
+	pointLight = new PointLight(GETSHADER("defaultForwardPoint"), {0, 0, 1}, 0.5f, color::RED);
 	pointLight->transform.setTranslation({3, 1, -5});
 //	renderer->addLight(pointLight);
 
-	pointLight2 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 1}, 0.5f, color::BLUE);
+	pointLight2 = new PointLight(GETSHADER("defaultForwardPoint"), {0, 0, 1}, 0.5f, color::BLUE);
 	pointLight2->transform.setTranslation({1, 1, -2});
 //	renderer->addLight(pointLight2);
 
-	pointLight3 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 0.5f}, 0.7f, color::PINK);
+	pointLight3 = new PointLight(GETSHADER("defaultForwardPoint"), {0, 0, 0.5f}, 0.7f, color::PINK);
 	pointLight3->transform.setTranslation({-1.5f, 3.0f, -13.0f});
 //	renderer->addLight(pointLight3);
 
-	pointLight4 = new PointLight(GETSHADER("forwardPoint"), {0, 0, 0.5f}, 0.7f, color::CYAN);
+	pointLight4 = new PointLight(GETSHADER("defaultForwardPoint"), {0, 0, 0.5f}, 0.7f, color::CYAN);
 	pointLight4->transform.setTranslation({-1.5f, 3.0f, -17.0f});
 //	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("forwardSpot"), {0.0f, 0.00f, 0.02f}, 0.025f, color::WHITE, 90.0f, 7);
+	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.025f, color::WHITE, 90.0f,
+	                          7);
 	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
 	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
 	renderer->addLight(spotLight);

@@ -27,7 +27,7 @@ namespace xe {
 
 		PointLight::setUniformsInternal();
 
-		setUniform("sys_ActiveSpotLight", &spotLight, sizeof(SpotLightStruct), api::Shader::FRAG);
+		setUniform("sys_ActiveSpotLight", &spotLight, sizeof(SpotLightStruct));
 	}
 
 	void SpotLight::setFov(float fovDeg) {

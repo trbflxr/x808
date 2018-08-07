@@ -9,41 +9,34 @@
 
 namespace xe { namespace api {
 
-	Shader *Shader::createFromFile(const std::string_view &name, const std::string_view &path, void *address) {
-		//todo: implement
-		XE_ASSERT(false, "not implemented");
+	Shader::Shader(const std::string_view &name) :
+			name(name),
+			version(Context::getRenderAPIVersion()) { }
 
-		switch (Context::getRenderAPI()) {
-//		case RenderAPI::OPENGL: {
-//			GLShader *result = address ? new(address) GLShader(name, source) : new GLShader(name, source);
-//			result->file = path;
-//			return result;
-//		}
-			default: return nullptr;
+	Shader::~Shader() {
+		for (auto &&s : structs) {
+			delete s;
 		}
 
+		for (auto &&r : resources) {
+			delete r;
+		}
+
+		for (auto &&u : uniformBuffers) {
+			delete u;
+		}
 	}
 
-	Shader *Shader::createFromSource(const std::string_view &name, const std::string &source, void *address) {
+	Shader *Shader::create(const std::string_view &name,
+	                       const std::vector<ShaderFile *> &shaderPipeline,
+	                       void *address) {
+
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OPENGL:
-				return address ? new(address) GLShader(name, source) : new GLShader(name, source);
+				return address ? new(address) GLShader(name, shaderPipeline) : new GLShader(name, shaderPipeline);
 
 			default: return nullptr;
 		}
-	}
-
-	bool Shader::tryCompile(const std::string &source, std::string &error) {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: return GLShader::tryCompile(source, error);
-
-			default: return false;
-		}
-	}
-
-	bool Shader::tryCompileFromFile(const std::string &file, std::string &error) {
-		//todo: implement
-		XE_ASSERT(false, "not implemented");
 	}
 
 }}

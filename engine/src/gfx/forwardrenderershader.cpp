@@ -17,23 +17,13 @@ namespace xe {
 	}
 
 	void ForwardRendererShader::init() {
-		const api::ShaderUniformBufferVec &vssu = shader->getVSUniforms();
-		for (auto &&ub : vssu) {
+		const api::ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
+		for (auto &&ub : shaderUniforms) {
 			api::UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
-			vsUniformBuffers.push_back(buffer);
+			uniformBuffers.push_back(buffer);
 
 			for (auto &&uniform: ub->getUniforms()) {
-				vsUniforms.emplace_back(uniform->getName().c_str(), buffer, uniform->getOffset());
-			}
-		}
-
-		const api::ShaderUniformBufferVec &fssu = shader->getFSUniforms();
-		for (auto &&ub : fssu) {
-			api::UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
-			fsUniformBuffers.push_back(buffer);
-
-			for (auto &&uniform: ub->getUniforms()) {
-				fsUniforms.emplace_back(uniform->getName().c_str(), buffer, uniform->getOffset());
+				uniforms.emplace_back(uniform->getName().c_str(), buffer, uniform->getOffset());
 			}
 		}
 	}
@@ -48,39 +38,21 @@ namespace xe {
 	}
 
 	void ForwardRendererShader::updateUniforms() {
-		for (uint i = 0; i < vsUniformBuffers.size(); i++) {
-			shader->setVSUniformBuffer(vsUniformBuffers[i].buffer, vsUniformBuffers[i].size, i);
+		for (uint i = 0; i < uniformBuffers.size(); i++) {
+			shader->setUniformBuffer(uniformBuffers[i].buffer, uniformBuffers[i].size, i);
 		}
 
-		for (uint i = 0; i < fsUniformBuffers.size(); i++) {
-			shader->setFSUniformBuffer(fsUniformBuffers[i].buffer, fsUniformBuffers[i].size, i);
+		for (uint i = 0; i < uniformBuffers.size(); i++) {
+			shader->setUniformBuffer(uniformBuffers[i].buffer, uniformBuffers[i].size, i);
 		}
 	}
 
-	void ForwardRendererShader::setUniform(const char *name, const void *data, size_t size, uint shaderType) {
-		switch (shaderType) {
-
-			case api::Shader::UNDEFINED:
-
-			case api::Shader::VERT: {
-				for (auto &&uniform : vsUniforms) {
-					if (strcmp(uniform.name, name) == 0) {
-						memcpy(uniform.buffer.buffer + uniform.offset, data, size);
-						return;
-					}
-				}
+	void ForwardRendererShader::setUniform(const char *name, const void *data, size_t size) {
+		for (auto &&uniform : uniforms) {
+			if (strcmp(uniform.name, name) == 0) {
+				memcpy(uniform.buffer.buffer + uniform.offset, data, size);
+				return;
 			}
-
-			case api::Shader::FRAG: {
-				for (auto &&uniform : fsUniforms) {
-					if (strcmp(uniform.name, name) == 0) {
-						memcpy(uniform.buffer.buffer + uniform.offset, data, size);
-						return;
-					}
-				}
-			}
-
-			default: break;
 		}
 
 		XE_FATAL("[ForwardRendererShader]: Uniform '", name, "' not found!");
@@ -130,7 +102,7 @@ namespace xe {
 		mat4 world = transform.toMatrix();
 		mat4 mvp = camera->getViewProjection() * world;
 
-		setUniform("sys_MVP", &mvp.elements, sizeof(mat4), api::Shader::VERT);
+		setUniform("MVP", &mvp.elements, sizeof(mat4));
 
 		setUserUniforms();
 

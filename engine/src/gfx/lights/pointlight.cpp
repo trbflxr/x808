@@ -21,7 +21,7 @@ namespace xe {
 	void PointLight::setUniformsInternal() {
 		pointLight.position = transform.getTranslation();
 
-		setUniform("sys_ActivePointLight", &pointLight, sizeof(PointLightStruct), api::Shader::FRAG);
+		setUniform("sys_ActivePointLight", &pointLight, sizeof(PointLightStruct));
 	}
 
 	void PointLight::setAttenuation(const Attenuation &attenuation) {

@@ -1,0 +1,7 @@
+R"(
+uniform DirectionalLight activeDirectionalLight;
+
+vec4 CalcLightingEffect(vec3 normal, vec3 worldPos) {
+  return CalcDirectionalLight(activeDirectionalLight, normal, worldPos);
+}
+)"

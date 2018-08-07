@@ -9,6 +9,7 @@ namespace xe { namespace api {
 
 	Context *Context::context = nullptr;
 	RenderAPI Context::api = RenderAPI::NONE;
+	uint Context::apiVersion = 0;
 
 	void Context::create(void *deviceContext) {
 		switch (getRenderAPI()) {

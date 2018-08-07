@@ -19,47 +19,20 @@ namespace xe { namespace api {
 	};
 
 	class GLShader : public Shader {
-	private:
-		friend class Shader;
-
 	public:
-		explicit GLShader(const std::string_view &name, const std::string &source);
-		~GLShader();
+		explicit GLShader(const std::string_view &name, const std::vector<ShaderFile *> &shaderPipeline);
+		~GLShader() override;
 
 		void bind() const override;
 		void unbind() const override;
 
-		void setVSUniformBuffer(byte *data, uint size, uint slot) override;
-		void setFSUniformBuffer(byte *data, uint size, uint slot) override;
+		void setUniformBuffer(byte *data, uint size, uint slot) override;
 
 		void setUniform(const std::string_view &name, byte *data) override;
 		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset);
 
-		inline const std::string &getName() const override { return name; }
-		inline const std::string &getFile() const override { return file; }
-
-		inline const ShaderUniformBufferVec &getVSUniforms() const override { return vsUniformBuffers; }
-		inline const ShaderUniformBufferVec &getFSUniforms() const override { return fsUniformBuffers; }
-		inline const ShaderResourceVec &getResources() const override { return resources; }
-
-		static bool tryCompile(const std::string &source, std::string &error);
-		static bool tryCompileFromFile(const std::string &file, std::string &error);
-
 	private:
-		static uint compile(std::string **shaders, ShaderErrorInfo *info);
-		static void preProcess(const std::string &source, std::string **shaders);
-
-		void parse(const std::string &vertexSource, const std::string &fragmentSource);
-		void parseUniform(const std::string &statement, uint shaderType);
-		void parseUniformStruct(const std::string &block, uint shaderType);
-
-		bool isTypeStringResource(const std::string &type);
-
-		ShaderStruct *findStruct(const std::string &name);
-
 		void resolveUniforms();
-		void validateUniforms();
-		bool isSystemUniform(ShaderUniform *uniform) const;
 		uint getUniformLocation(const std::string_view &name);
 
 		ShaderUniform *findUniform(const std::string_view &name, const ShaderUniformBuffer *buff);
@@ -90,16 +63,6 @@ namespace xe { namespace api {
 
 	private:
 		uint handle;
-		std::string name;
-		std::string file;
-		std::string source;
-		std::string vertexSource;
-		std::string fragmentSource;
-
-		ShaderUniformBufferVec vsUniformBuffers;
-		ShaderUniformBufferVec fsUniformBuffers;
-		ShaderResourceVec resources;
-		ShaderStructVec structs;
 	};
 
 }}

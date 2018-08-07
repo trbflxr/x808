@@ -36,7 +36,6 @@ namespace xe { namespace api {
 	public:
 		virtual const std::string &getName() const = 0;
 		virtual uint getRegister() const = 0;
-		virtual uint getShaderType() const = 0;
 		virtual uint getSize() const = 0;
 		virtual const ShaderUniformVec &getUniforms() const = 0;
 

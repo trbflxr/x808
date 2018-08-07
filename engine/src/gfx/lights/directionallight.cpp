@@ -26,8 +26,7 @@ namespace xe {
 		directionalLight.base = light;
 		directionalLight.direction = quat::rotate(transform.getRotation(), -vec3::ZAXIS);
 
-		setUniform("sys_ActiveDirectionalLight", &directionalLight,
-		           sizeof(DirectionalLightStruct), api::Shader::FRAG);
+		setUniform("activeDirectionalLight", &directionalLight, sizeof(DirectionalLightStruct));
 	}
 
 	void DirectionalLight::updateLightCamera(Camera *lightCamera, Camera *mainCamera) {

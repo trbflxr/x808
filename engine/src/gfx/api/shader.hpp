@@ -9,9 +9,8 @@
 #include <cstring>
 #include "common.hpp"
 #include "xeint.hpp"
-#include "shaderuniform.hpp"
-#include "shaderresource.hpp"
 #include "math/math.hpp"
+#include "resources/shaderfile.hpp"
 
 namespace xe { namespace api {
 
@@ -38,36 +37,32 @@ namespace xe { namespace api {
 
 	class XE_API Shader {
 	public:
-		enum {
-			UNDEFINED = 0, VERT, FRAG
-		};
+		virtual ~Shader();
 
-	public:
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
 
-		virtual void setVSUniformBuffer(byte *data, uint size, uint slot) = 0;
-		virtual void setFSUniformBuffer(byte *data, uint size, uint slot) = 0;
-
-		virtual const std::string &getName() const = 0;
-		virtual const std::string &getFile() const = 0;
-
+		virtual void setUniformBuffer(byte *data, uint size, uint slot) = 0;
 		virtual void setUniform(const std::string_view &name, byte *data) = 0;
 
-		virtual const ShaderUniformBufferVec &getVSUniforms() const = 0;
-		virtual const ShaderUniformBufferVec &getFSUniforms() const = 0;
-		virtual const ShaderResourceVec &getResources() const = 0;
+		inline const ShaderUniformBufferVec &getUniforms() const { return uniformBuffers; }
+		inline const ShaderResourceVec &getResources() const { return resources; }
+		inline const std::string &getName() const { return name; };
 
-		static Shader *createFromFile(const std::string_view &name,
-		                              const std::string_view &path,
-		                              void *address = nullptr);
+		static Shader *create(const std::string_view &name,
+		                      const std::vector<ShaderFile *> &shaderPipeline,
+		                      void *address = nullptr);
 
-		static Shader *createFromSource(const std::string_view &name,
-		                                const std::string &source,
-		                                void *address = nullptr);
+	protected:
+		explicit Shader(const std::string_view &name);
 
-		static bool tryCompile(const std::string &source, std::string &error);
-		static bool tryCompileFromFile(const std::string &file, std::string &error);
+	protected:
+		std::string name;
+		uint version;
+
+		ShaderUniformBufferVec uniformBuffers;
+		ShaderResourceVec resources;
+		ShaderStructVec structs;
 	};
 
 }}

@@ -30,7 +30,7 @@ namespace xe {
 	protected:
 		void init();
 
-		void setUniform(const char *name, const void *data, size_t size, uint shaderType);
+		void setUniform(const char *name, const void *data, size_t size);
 
 		void bindSamplers(const Material *material);
 		void unbindSamplers() const;
@@ -45,11 +45,8 @@ namespace xe {
 	private:
 		api::Shader *shader;
 
-		std::vector<api::Uniform> vsUniforms;
-		std::vector<api::UniformBuffer> vsUniformBuffers;
-
-		std::vector<api::Uniform> fsUniforms;
-		std::vector<api::UniformBuffer> fsUniformBuffers;
+		std::vector<api::Uniform> uniforms;
+		std::vector<api::UniformBuffer> uniformBuffers;
 
 		const api::Texture *diffuse;
 		const api::Texture *normalMap;

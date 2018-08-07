@@ -19,11 +19,17 @@ namespace xe { namespace api {
 		static void create(void *deviceContext);
 
 		static RenderAPI getRenderAPI() { return api; }
-		static void setRenderAPI(RenderAPI api) { Context::api = api; }
+		static uint getRenderAPIVersion() { return apiVersion; };
+
+		static void setRenderAPI(RenderAPI api, uint version) {
+			Context::api = api;
+			Context::apiVersion = version;
+		}
 
 	protected:
 		static Context *context;
 		static RenderAPI api;
+		static uint apiVersion;
 	};
 
 }}

@@ -110,7 +110,7 @@ Test2D::Test2D() {
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {
 		for (float y = -60; y < 60; y += 0.57f) {
-			sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+			sprite.texture = GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
 
 			transform.zIndex = 0;
 			transform.bounds.setPosition(x, y);

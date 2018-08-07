@@ -19,7 +19,7 @@ namespace xe {
 
 	class XE_API Application {
 	public:
-		explicit Application(const Config &config, api::RenderAPI api);
+		explicit Application(const Config &config, api::RenderAPI api, uint apiVersion);
 		virtual ~Application();
 
 		void pushLayer(Layer *layer);

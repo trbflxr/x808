@@ -10,9 +10,7 @@
 namespace xe {
 
 	ForwardRenderer::ForwardRenderer(uint width, uint height, Camera *camera, bool useFXAA) :
-			width(width),
-			height(height),
-			camera(camera),
+			IRenderer3D(width, height, camera),
 			useFXAA(useFXAA),
 			lightMatrix(mat4::scale({0.0f, 0.0f, 0.0f})) {
 
@@ -23,26 +21,26 @@ namespace xe {
 		Renderer::setCullFace(CullFace::BACK);
 
 		//default shaders
-		ambientLight = new AmbientLight(GETSHADER("forwardAmbient"), 0.1f, color::WHITE);
-		shadowMapShader = new ForwardRendererShader(GETSHADER("shadowMap"));
-		shadowMapBlurShader = new ForwardRendererShader(GETSHADER("filterGaussBlur"));
+		ambientLight = new AmbientLight(GETSHADER("defaultForwardAmbient"), 0.1f, color::WHITE);
+		shadowMapShader = new ForwardRendererShader(GETSHADER("defaultShadowMap"));
+		shadowMapBlurShader = new ForwardRendererShader(GETSHADER("defaultFXGaussBlur"));
 
 		screenBuffer = api::FrameBuffer::create(width, height, api::FrameBuffer::COLOR);
 
 		if (useFXAA) {
-			fxaaFilter = new ForwardRendererShader(GETSHADER("filterFXAA"));
+			fxaaFilter = new ForwardRendererShader(GETSHADER("defaultFXFXAA"));
 
 			float a = 8.0f;
 			float b = 1.0f / 128.0f;
 			float c = 1.0f / 8.0f;
 			vec2 textureSize = vec2(1.0f / width, 1.0f / height);
 
-			fxaaFilter->setUniform("sys_fxaaSpanMax", &a, sizeof(float), api::Shader::FRAG);
-			fxaaFilter->setUniform("sys_fxaaReduceMin", &b, sizeof(float), api::Shader::FRAG);
-			fxaaFilter->setUniform("sys_fxaaReduceMul", &c, sizeof(float), api::Shader::FRAG);
-			fxaaFilter->setUniform("sys_inverseFilterTextureSize", &textureSize, sizeof(vec2), api::Shader::FRAG);
+			fxaaFilter->setUniform("fxaaSpanMax", &a, sizeof(float));
+			fxaaFilter->setUniform("fxaaReduceMin", &b, sizeof(float));
+			fxaaFilter->setUniform("fxaaReduceMul", &c, sizeof(float));
+			fxaaFilter->setUniform("inverseFilterTextureSize", &textureSize, sizeof(vec2));
 		} else {
-			fxaaFilter = new ForwardRendererShader(GETSHADER("filterNULL"));
+			fxaaFilter = new ForwardRendererShader(GETSHADER("defaultFXNULL"));
 		}
 
 		//shadows stuff
@@ -136,10 +134,10 @@ namespace xe {
 
 			for (auto &&target : targets) {
 				mat4 lm = lightMatrix * target.transform.toMatrix();
-				light->setUniform("sys_LightMat", &lm, sizeof(mat4), api::Shader::VERT);
-				light->setUniform("sys_shadowVarianceMin", &shadowVarianceMin, sizeof(float), api::Shader::FRAG);
-				light->setUniform("sys_shadowLightBleedingReduction",
-				                  &shadowLightBleedingReduction, sizeof(float), api::Shader::FRAG);
+				light->setUniform("lightMat", &lm, sizeof(mat4));
+				light->setUniform("shadowVarianceMin", &shadowVarianceMin, sizeof(float));
+				light->setUniform("shadowLightBleedingReduction",
+				                  &shadowLightBleedingReduction, sizeof(float));
 
 				light->setUniforms(target.material, target.transform, camera);
 				light->updateUniforms();
@@ -229,12 +227,12 @@ namespace xe {
 
 		//x blur
 		vec2 scale(blurAmount / shadowBuffers0[index]->getWidth(), 0.0f);
-		shadowMapBlurShader->setUniform("sys_BlurScale", &scale, sizeof(vec2), api::Shader::FRAG);
+		shadowMapBlurShader->setUniform("blurScale", &scale, sizeof(vec2));
 		applyFilter(shadowMapBlurShader, shadowBuffers0[index], shadowBuffers1[index]);
 
 		//y blur
 		scale = vec2(0.0f, blurAmount / shadowBuffers0[index]->getWidth());
-		shadowMapBlurShader->setUniform("sys_BlurScale", &scale, sizeof(vec2), api::Shader::FRAG);
+		shadowMapBlurShader->setUniform("blurScale", &scale, sizeof(vec2));
 		applyFilter(shadowMapBlurShader, shadowBuffers1[index], shadowBuffers0[index]);
 
 		shadowMapBlurShader->unbind();

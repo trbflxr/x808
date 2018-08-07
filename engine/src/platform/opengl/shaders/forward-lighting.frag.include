@@ -1,7 +1,25 @@
 R"(
-uniform vec3 sys_EyePos;
-uniform float sys_SpecularIntensity;
-uniform float sys_SpecularPower;
+in vec2 uv0;
+in mat3 tbnMat0;
+in vec3 worldPos0;
+in vec4 shadowMapUV0;
+
+out vec4 out_Color;
+
+uniform sampler2D diffuse;
+uniform sampler2D normalMap;
+uniform sampler2D dispMap;
+
+uniform float dispMapScale;
+uniform float dispMapBias;
+
+uniform sampler2D shadowMap;
+uniform float shadowVarianceMin;
+uniform float shadowLightBleedingReduction;
+
+uniform vec3 eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
 
 struct DirectionalLight {
   vec4 color;
@@ -36,16 +54,16 @@ vec4 CalcLightInternal(vec4 color, float intensity, vec3 direction, vec3 normal,
   if (diffuseFactor > 0) {
     diffuseColor = color * intensity * diffuseFactor;
 
-    vec3 directionToEye = normalize(sys_EyePos - worldPos);
+    vec3 directionToEye = normalize(eyePos - worldPos);
     // vec3 reflectDirection = normalize(reflect(direction, normal));
     vec3 halfDirection = normalize(directionToEye - direction);
 
     float specularFactor = dot(halfDirection, normal);
     // float specularFactor = dot(directionToEye, reflectDirection);
-    specularFactor = pow(specularFactor, sys_SpecularPower);
+    specularFactor = pow(specularFactor, specularPower);
 
     if (specularFactor > 0) {
-      specularColor = color * sys_SpecularIntensity * specularFactor;
+      specularColor = color * specularIntensity * specularFactor;
     }
   }
 

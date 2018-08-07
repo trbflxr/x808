@@ -19,12 +19,10 @@ namespace xe {
 
 
 	const uint requiredSystemUniformsCount = 2;
-	const char *requiredSystemUniforms[requiredSystemUniformsCount] = {
-			"sys_ProjectionMatrix",
-			"sys_ViewMatrix"};
+	const char *requiredSystemUniforms[requiredSystemUniformsCount] = {"projectionMatrix", "viewMatrix"};
 
-	const uint sys_ProjectionMatrixIndex = 0;
-	const uint sys_ViewMatrixIndex = 1;
+	const uint projectionMatrixIndex = 0;
+	const uint viewMatrixIndex = 1;
 
 
 	Renderer2D::Renderer2D(uint width, uint height) :
@@ -57,13 +55,13 @@ namespace xe {
 
 		systemUniforms.resize(requiredSystemUniformsCount);
 
-		shader = GETSHADER("batchRenderer");
+		shader = GETSHADER("defaultBatchRenderer");
 
-		const api::ShaderUniformBufferVec &vssu = shader->getVSUniforms();
+		const api::ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
 
-		XE_ASSERT(vssu.size());
+		XE_ASSERT(shaderUniforms.size());
 
-		for (auto &&ub : vssu) {
+		for (auto &&ub : shaderUniforms) {
 			api::UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
 			systemUniformBuffers.push_back(buffer);
 
@@ -128,11 +126,11 @@ namespace xe {
 	void Renderer2D::setCamera(Camera *camera) {
 		Renderer2D::camera = camera;
 
-		memcpy(systemUniforms[sys_ProjectionMatrixIndex].buffer.buffer +
-		       systemUniforms[sys_ProjectionMatrixIndex].offset,
+		memcpy(systemUniforms[projectionMatrixIndex].buffer.buffer +
+		       systemUniforms[projectionMatrixIndex].offset,
 		       &camera->getProjection().elements, sizeof(mat4));
 
-		memcpy(systemUniforms[sys_ViewMatrixIndex].buffer.buffer + systemUniforms[sys_ViewMatrixIndex].offset,
+		memcpy(systemUniforms[viewMatrixIndex].buffer.buffer + systemUniforms[viewMatrixIndex].offset,
 		       &camera->getViewMatrix().elements, sizeof(mat4));
 	}
 
@@ -364,7 +362,7 @@ namespace xe {
 	void Renderer2D::flushInternal() {
 		shader->bind();
 		for (uint i = 0; i < systemUniformBuffers.size(); i++) {
-			shader->setVSUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
+			shader->setUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
 		}
 
 		for (uint i = 0; i < textures.size(); i++) {

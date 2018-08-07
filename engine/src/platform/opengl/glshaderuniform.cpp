@@ -7,7 +7,7 @@
 
 namespace xe { namespace api {
 
-///------ GLShaderUniform ------///
+	///------ GLShaderUniform ------///
 	GLShaderUniform::GLShaderUniform(GLShaderUniform::Type type, const std::string_view &name, uint count) :
 			type(type),
 			name(name),
@@ -70,10 +70,9 @@ namespace xe { namespace api {
 		GLShaderUniform::offset = offset;
 	}
 
-///------ GLShaderUniform ------///
-	GLShaderUniformBuffer::GLShaderUniformBuffer(const std::string_view &name, uint shaderType) :
+	///------ GLShaderUniform ------///
+	GLShaderUniformBuffer::GLShaderUniformBuffer(const std::string_view &name) :
 			name(name),
-			shaderType(shaderType),
 			size(0),
 			register_(0) { }
 
