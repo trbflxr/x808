@@ -81,6 +81,48 @@ namespace xe {	namespace internal {
 		#include "shaders/sampling.include"
 				;
 
+
+		//deferred
+		//ubo
+		static const char *cameraSpatialsGL =
+		#include "shaders/common/ubo/cameraSpatials.ubo"
+				;
+
+		//common
+		//vert
+		static const char *commonGenericVertGL =
+		#include "shaders/common/renderTexture2D.vert"
+				;
+
+		static const char *renderTextureCubeVertGL =
+		#include "shaders/common/renderTextureCube.vert"
+				;
+
+		//frag
+		static const char *renderTexture1DFragGL =
+		#include "shaders/common/renderTexture1D.frag"
+				;
+
+		static const char *renderTexture2DFragGL =
+		#include "shaders/common/renderTexture2D.frag"
+				;
+
+		static const char *renderTexture2DArrayFragGL =
+		#include "shaders/common/renderTexture2DArray.frag"
+				;
+
+		static const char *renderTexture3DFragGL =
+		#include "shaders/common/renderTexture3D.frag"
+				;
+
+		static const char *renderTextureCubeFragGL =
+		#include "shaders/common/renderTextureCube.frag"
+				;
+
+		static const char *renderTextureCubeArrayFragGL =
+		#include "shaders/common/renderTextureCubeArray.frag"
+				;
+
 }}
 
 

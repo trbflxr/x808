@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include "glcontext.hpp"
 #include "glshaderfile.hpp"
 #include "glcommon.hpp"
 #include "utils/string.hpp"
@@ -14,9 +15,8 @@ namespace xe {
 	GLShaderFile::GLShaderFile(bool fromSource, ShaderType type, const std::string_view &pathOrSource,
 	                           const std::vector<std::string> &dependencies,
 	                           const std::vector<std::string> &extensions) :
-			ShaderFile(fromSource, type, pathOrSource, dependencies, extensions) { }
+			ShaderFile(fromSource, type, pathOrSource, dependencies, extensions) {
 
-	uint GLShaderFile::compile(uint version) {
 		std::stringstream shaderSource;
 		std::stringstream shaderAdditions;
 		std::stringstream shaderExtensions;
@@ -33,13 +33,11 @@ namespace xe {
 			}
 		}
 
-		shaderAdditions << "#version " << version << "\n";
+		shaderAdditions << "#version " << api::Context::getRenderAPIVersion() << "\n";
 		shaderAdditions << shaderExtensions.str() << "\n";
 		shaderAdditions << MATH_PI << "\n";
 		shaderAdditions << MATH_HALF_PI << "\n";
 		shaderAdditions << MATH_2_PI << "\n";
-
-		glCall(uint id = glCreateShader(typeToGL(type)));
 
 		std::string source;
 		if (createFromSource) {
@@ -52,7 +50,7 @@ namespace xe {
 			}
 
 		} else {
-			source = loadFromFile(pathOrSource.c_str());
+			source = loadFromFile(pathOrSource.data());
 
 			if (!dependencies.empty()) {
 				for (auto &&dependency : dependencies) {
@@ -65,6 +63,11 @@ namespace xe {
 		shaderSource << source << "\n";
 
 		fullSource = shaderSource.str();
+	}
+
+	uint GLShaderFile::compile() {
+		glCall(uint id = glCreateShader(typeToGL(type)));
+
 		const char *sourcePtr = fullSource.c_str();
 
 		glCall(glShaderSource(id, 1, &sourcePtr, nullptr));
@@ -95,27 +98,28 @@ namespace xe {
 		return id;
 	}
 
-	void GLShaderFile::parse(api::ShaderUniformBufferVec &uniformBuffers,
+	void GLShaderFile::parse(api::ShaderUniformBufferVec &buffers,
 	                         api::ShaderResourceVec &resources,
 	                         api::ShaderStructVec &structs) {
 
 		const char *token;
 		const char *source;
 
-		// Vertex Shader
+		//structs
 		source = fullSource.c_str();
 		while ((token = utils::findToken(source, "struct"))) {
 			parseUniformStruct(utils::getBlock(token, &source), structs);
 		}
 
+		//uniforms
 		source = fullSource.c_str();
 		while ((token = utils::findToken(source, "uniform"))) {
-			parseUniform(utils::getStatement(token, &source), uniformBuffers, resources, structs);
+			parseUniform(utils::getStatement(token, &source), buffers, resources, structs);
 		}
 	}
 
 	void GLShaderFile::parseUniform(const std::string &statement,
-	                                api::ShaderUniformBufferVec &uniformBuffers,
+	                                api::ShaderUniformBufferVec &buffers,
 	                                api::ShaderResourceVec &resources,
 	                                api::ShaderStructVec &structs) {
 
@@ -133,12 +137,12 @@ namespace xe {
 
 		std::string n(name);
 		uint count = 1;
-		const char *namestr = n.c_str();
+		const char *nameStr = n.c_str();
 
-		if (const char *s = strstr(namestr, "[")) {
-			name = std::string(namestr, s - namestr);
+		if (const char *s = strstr(nameStr, "[")) {
+			name = std::string(nameStr, s - nameStr);
 
-			const char *end = strstr(namestr, "]");
+			const char *end = strstr(nameStr, "]");
 			std::string c(s + 1, end - s);
 			count = static_cast<uint>(atoi(c.c_str()));
 		}
@@ -146,7 +150,7 @@ namespace xe {
 		if (isTypeStringResource(typeStr)) {
 			auto *decl = new api::GLShaderResource(api::GLShaderResource::stringToType(typeStr), name, count);
 			resources.push_back(decl);
-		} else {
+		} else if (name != "{") {
 			api::GLShaderUniform::Type t = api::GLShaderUniform::stringToType(typeStr);
 			api::GLShaderUniform *uniform = nullptr;
 
@@ -160,21 +164,20 @@ namespace xe {
 					}
 				}
 
-				XE_ASSERT(s);
+				XE_ASSERT(s, "[GLShaderFile]: Could not find struct: ", typeStr, " ", name);
 				uniform = new api::GLShaderUniform(s, name, count);
 			} else {
 				uniform = new api::GLShaderUniform(t, name, count);
 			}
 
-			dynamic_cast<api::GLShaderUniformBuffer *>(uniformBuffers.front())->pushUniform(uniform);
+			dynamic_cast<api::GLShaderUniformBuffer *>(buffers.front())->pushUniform(uniform);
 		}
 	}
 
 	void GLShaderFile::parseUniformStruct(const std::string &block, api::ShaderStructVec &structs) {
 		std::vector<std::string> tokens = utils::tokenize(block);
 
-		uint index = 0;
-		index++; // struct
+		uint index = 1; // struct
 
 		std::string name = tokens[index++];
 		api::ShaderStruct *uniformStruct = new api::ShaderStruct(name);
@@ -211,10 +214,12 @@ namespace xe {
 	bool GLShaderFile::isTypeStringResource(const std::string &type) {
 		if (type == "image2D") return true;
 		if (type == "image3D") return true;
+		if (type == "sampler1D") return true;
 		if (type == "sampler2D") return true;
+		if (type == "sampler2DArray") return true;
+		if (type == "sampler3D") return true;
 		if (type == "samplerCube") return true;
-		return type == "sampler2DShadow";
+		return type == "samplerCubeArray";
 	}
-
 
 }

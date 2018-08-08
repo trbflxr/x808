@@ -10,8 +10,7 @@
 namespace xe { namespace api {
 
 	Shader::Shader(const std::string_view &name) :
-			name(name),
-			version(Context::getRenderAPIVersion()) { }
+			name(name) { }
 
 	Shader::~Shader() {
 		for (auto &&s : structs) {

@@ -116,6 +116,18 @@ namespace xe { namespace api {
 		}
 	}
 
+	template<>
+	inline void BufferLayout::push<mat4>(const char *name, uint count, bool normalized) {
+		XE_ASSERT(count <= 1, "cant push more then 1 mat4");
+
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 16, normalized);
+				break;
+
+			default: break;
+		}
+	}
+
 }}
 
 

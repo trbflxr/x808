@@ -18,7 +18,7 @@ namespace xe { namespace api {
 		uint shaders[shaderPipeline.size()];
 
 		for (uint i = 0; i < shaderPipeline.size(); ++i) {
-			shaders[i] = shaderPipeline[i]->compile(version);
+			shaders[i] = shaderPipeline[i]->compile();
 			if (!shaders[i]) {
 				glCall(glDeleteProgram(handle));
 				XE_FATAL("[GLShader]: ", name);
@@ -91,8 +91,8 @@ namespace xe { namespace api {
 	void GLShader::resolveUniforms() {
 		bind();
 
-		for (auto &&fsBuffer : uniformBuffers) {
-			GLShaderUniformBuffer *decl = (GLShaderUniformBuffer *) fsBuffer;
+		for (auto &&buffer : uniformBuffers) {
+			GLShaderUniformBuffer *decl = (GLShaderUniformBuffer *) buffer;
 
 			for (auto &&u : decl->getUniforms()) {
 				GLShaderUniform *uniform = (GLShaderUniform *) u;

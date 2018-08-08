@@ -19,6 +19,7 @@ namespace xe {
 
 	public:
 		explicit ForwardRendererShader(api::Shader *shader);
+		~ForwardRendererShader();
 
 		void bind() const;
 		void unbind() const;
@@ -46,7 +47,7 @@ namespace xe {
 		api::Shader *shader;
 
 		std::vector<api::Uniform> uniforms;
-		std::vector<api::UniformBuffer> uniformBuffers;
+		std::vector<api::UniformData> uniformData;
 
 		const api::Texture *diffuse;
 		const api::Texture *normalMap;

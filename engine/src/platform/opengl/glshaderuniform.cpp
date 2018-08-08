@@ -41,7 +41,7 @@ namespace xe { namespace api {
 	}
 
 	GLShaderUniform::Type GLShaderUniform::stringToType(const std::string_view &type) {
-		if (type == "int32") return Type::INT32;
+		if (type == "int") return Type::INT32;
 		if (type == "float") return Type::FLOAT32;
 		if (type == "vec2") return Type::VEC2;
 		if (type == "vec3") return Type::VEC3;
@@ -53,7 +53,7 @@ namespace xe { namespace api {
 
 	std::string GLShaderUniform::typeToString(GLShaderUniform::Type type) {
 		switch (type) {
-			case Type::INT32: return "int32";
+			case Type::INT32: return "int";
 			case Type::FLOAT32: return "float";
 			case Type::VEC2: return "vec2";
 			case Type::VEC3: return "vec3";

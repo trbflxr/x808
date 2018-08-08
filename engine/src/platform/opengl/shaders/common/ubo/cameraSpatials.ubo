@@ -1,0 +1,12 @@
+R"(
+// camera spatials
+layout(std140, binding = 1) uniform cameraSpatials {
+	mat4 view;
+	mat4 perspective;
+	mat4 invViewPerspective;
+	mat4 previousViewPersepctive;
+	mat4 invPreviousViewPersepctive;
+	vec3 camPosition;
+	vec3 camLook;
+};
+)"

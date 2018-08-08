@@ -45,15 +45,19 @@ namespace xe {
 		delete indexBuffer;
 		delete vertexArray;
 
-		systemUniforms.clear();
-		systemUniformBuffers.clear();
+		for (auto &&data : uniformData) {
+			delete[] data.buffer;
+		}
+		uniformData.clear();
+
+		uniforms.clear();
 	}
 
 	void Renderer2D::init() {
 		transformationStack.emplace_back(1.0f);
 		transformationBack = &transformationStack.back();
 
-		systemUniforms.resize(requiredSystemUniformsCount);
+		uniforms.resize(requiredSystemUniformsCount);
 
 		shader = GETSHADER("defaultBatchRenderer");
 
@@ -62,13 +66,13 @@ namespace xe {
 		XE_ASSERT(shaderUniforms.size());
 
 		for (auto &&ub : shaderUniforms) {
-			api::UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
-			systemUniformBuffers.push_back(buffer);
+			api::UniformData buffer(ub->getSize());
+			uniformData.push_back(buffer);
 
 			for (auto &&uniform: ub->getUniforms()) {
 				for (uint j = 0; j < requiredSystemUniformsCount; j++) {
 					if (strcmp(uniform->getName().c_str(), requiredSystemUniforms[j]) == 0) {
-						systemUniforms[j] = api::Uniform(uniform->getName().c_str(), buffer, uniform->getOffset());
+						uniforms[j] = api::Uniform(uniform->getName().c_str(), buffer, uniform->getOffset());
 					}
 				}
 			}
@@ -126,11 +130,11 @@ namespace xe {
 	void Renderer2D::setCamera(Camera *camera) {
 		Renderer2D::camera = camera;
 
-		memcpy(systemUniforms[projectionMatrixIndex].buffer.buffer +
-		       systemUniforms[projectionMatrixIndex].offset,
+		memcpy(uniforms[projectionMatrixIndex].data.buffer +
+		       uniforms[projectionMatrixIndex].offset,
 		       &camera->getProjection().elements, sizeof(mat4));
 
-		memcpy(systemUniforms[viewMatrixIndex].buffer.buffer + systemUniforms[viewMatrixIndex].offset,
+		memcpy(uniforms[viewMatrixIndex].data.buffer + uniforms[viewMatrixIndex].offset,
 		       &camera->getViewMatrix().elements, sizeof(mat4));
 	}
 
@@ -361,8 +365,8 @@ namespace xe {
 
 	void Renderer2D::flushInternal() {
 		shader->bind();
-		for (uint i = 0; i < systemUniformBuffers.size(); i++) {
-			shader->setUniformBuffer(systemUniformBuffers[i].buffer, systemUniformBuffers[i].size, i);
+		for (uint i = 0; i < uniformData.size(); i++) {
+			shader->setUniformBuffer(uniformData[i].buffer, uniformData[i].size, i);
 		}
 
 		for (uint i = 0; i < textures.size(); i++) {
@@ -372,7 +376,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->draw(indexCount);
+		vertexArray->drawElements(indexCount);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();

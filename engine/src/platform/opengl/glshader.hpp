@@ -12,12 +12,6 @@
 
 namespace xe { namespace api {
 
-	struct ShaderErrorInfo {
-		uint shader;
-		std::string message[2];
-		uint line[2];
-	};
-
 	class GLShader : public Shader {
 	public:
 		explicit GLShader(const std::string_view &name, const std::vector<ShaderFile *> &shaderPipeline);

@@ -29,14 +29,14 @@ namespace xe {
 		inline const std::vector<std::string> &getDependencies() const { return dependencies; }
 		inline const std::vector<std::string> &getExtensions() const { return extensions; }
 
-		virtual uint compile(uint version) = 0;
+		virtual uint compile() = 0;
 
-		virtual void parse(api::ShaderUniformBufferVec &uniformBuffers,
+		virtual void parse(api::ShaderUniformBufferVec &buffers,
 		                   api::ShaderResourceVec &resources,
 		                   api::ShaderStructVec &structs) = 0;
 
 		virtual void parseUniform(const std::string &statement,
-		                          api::ShaderUniformBufferVec &uniformBuffers,
+		                          api::ShaderUniformBufferVec &buffers,
 		                          api::ShaderResourceVec &resources,
 		                          api::ShaderStructVec &structs) = 0;
 

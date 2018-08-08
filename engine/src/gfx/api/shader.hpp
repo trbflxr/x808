@@ -14,25 +14,25 @@
 
 namespace xe { namespace api {
 
-	struct UniformBuffer {
+	struct UniformData {
 		byte *buffer;
 		uint size;
 
-		UniformBuffer() = default;
-		explicit UniformBuffer(byte *buffer, uint size) :
-				buffer(buffer), size(size) {
+		UniformData() = default;
+		explicit UniformData(uint size) : size(size) {
+			buffer = new byte[size];
 			memset(buffer, 0, size);
 		}
 	};
 
 	struct Uniform {
 		const char *name;
-		UniformBuffer buffer;
+		UniformData data;
 		uint offset;
 
 		Uniform() = default;
-		explicit Uniform(const char *name, const UniformBuffer &buffer, uint offset) :
-				name(name), buffer(buffer), offset(offset) { }
+		explicit Uniform(const char *name, const UniformData &data, uint offset) :
+				name(name), data(data), offset(offset) { }
 	};
 
 	class XE_API Shader {
@@ -58,7 +58,6 @@ namespace xe { namespace api {
 
 	protected:
 		std::string name;
-		uint version;
 
 		ShaderUniformBufferVec uniformBuffers;
 		ShaderResourceVec resources;

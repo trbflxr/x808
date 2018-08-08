@@ -90,8 +90,8 @@ namespace xe {
 		const mat4 *transformationBack;
 
 		api::Shader *shader;
-		std::vector<api::Uniform> systemUniforms;
-		std::vector<api::UniformBuffer> systemUniformBuffers;
+		std::vector<api::Uniform> uniforms;
+		std::vector<api::UniformData> uniformData;
 
 		api::VertexArray *vertexArray;
 		api::IndexBuffer *indexBuffer;

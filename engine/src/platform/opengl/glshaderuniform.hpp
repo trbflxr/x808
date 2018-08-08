@@ -52,17 +52,6 @@ namespace xe { namespace api {
 		mutable uint location;
 	};
 
-
-	///------------------------------///
-	struct ShaderUniformField {
-		GLShaderUniform::Type type;
-		std::string name;
-		uint count;
-		mutable uint size;
-		mutable int32 location;
-	};
-
-
 	///------------------------------///
 	class XE_API GLShaderUniformBuffer : public ShaderUniformBuffer {
 	public:

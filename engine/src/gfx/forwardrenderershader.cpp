@@ -16,11 +16,20 @@ namespace xe {
 		init();
 	}
 
+	ForwardRendererShader::~ForwardRendererShader() {
+		for (auto &&data : uniformData) {
+			delete[] data.buffer;
+		}
+		uniformData.clear();
+
+		uniforms.clear();
+	}
+
 	void ForwardRendererShader::init() {
 		const api::ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
 		for (auto &&ub : shaderUniforms) {
-			api::UniformBuffer buffer(new byte[ub->getSize()], ub->getSize());
-			uniformBuffers.push_back(buffer);
+			api::UniformData buffer(ub->getSize());
+			uniformData.push_back(buffer);
 
 			for (auto &&uniform: ub->getUniforms()) {
 				uniforms.emplace_back(uniform->getName().c_str(), buffer, uniform->getOffset());
@@ -38,19 +47,15 @@ namespace xe {
 	}
 
 	void ForwardRendererShader::updateUniforms() {
-		for (uint i = 0; i < uniformBuffers.size(); i++) {
-			shader->setUniformBuffer(uniformBuffers[i].buffer, uniformBuffers[i].size, i);
-		}
-
-		for (uint i = 0; i < uniformBuffers.size(); i++) {
-			shader->setUniformBuffer(uniformBuffers[i].buffer, uniformBuffers[i].size, i);
+		for (uint i = 0; i < uniformData.size(); i++) {
+			shader->setUniformBuffer(uniformData[i].buffer, uniformData[i].size, i);
 		}
 	}
 
 	void ForwardRendererShader::setUniform(const char *name, const void *data, size_t size) {
 		for (auto &&uniform : uniforms) {
 			if (strcmp(uniform.name, name) == 0) {
-				memcpy(uniform.buffer.buffer + uniform.offset, data, size);
+				memcpy(uniform.data.buffer + uniform.offset, data, size);
 				return;
 			}
 		}

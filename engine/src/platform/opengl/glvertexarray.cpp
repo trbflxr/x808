@@ -15,8 +15,16 @@ namespace xe { namespace api {
 		buffers.front()->unbind();
 	}
 
-	void GLVertexArray::draw(uint count) const {
+	void GLVertexArray::drawElements(uint count) const {
 		glCall(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr));
+	}
+
+	void GLVertexArray::drawArrays(uint count) const {
+		glCall(glDrawArrays(GL_TRIANGLES, 0, count));
+	}
+
+	void GLVertexArray::drawArraysInstanced(uint count, uint instanceCount) const {
+		glCall(glDrawArraysInstanced(GL_TRIANGLES, 0, count, instanceCount));
 	}
 
 	void GLVertexArray::pushBuffer(VertexBuffer *buffer) {

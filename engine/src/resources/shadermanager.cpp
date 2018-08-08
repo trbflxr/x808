@@ -50,6 +50,12 @@ namespace xe {
 	void ShaderManager::createDefaultShaders() {
 		using namespace internal;
 
+		shaders.emplace("defaultRenderTextureCube", api::Shader::create("defaultRenderTextureCube", {
+				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeFragGL, { })
+		}));
+
+
 		shaders.emplace("defaultBatchRenderer", api::Shader::create("defaultBatchRenderer", {
 				ShaderFile::fromSource(ShaderType::VERT, brVertGL, { }),
 				ShaderFile::fromSource(ShaderType::FRAG, brFragGL, { })
@@ -102,6 +108,41 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::FRAG, shadowMapFragGL, { })
 		}));
 
+		createDefaultCommonShaders();
+	}
+
+	void ShaderManager::createDefaultCommonShaders() {
+		using namespace internal;
+
+		shaders.emplace("defaultRenderTexture1D", api::Shader::create("defaultRenderTexture1D", {
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTexture1DFragGL, { })
+		}));
+
+		shaders.emplace("defaultRenderTexture2D", api::Shader::create("defaultRenderTexture2D", {
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTexture2DFragGL, { })
+		}));
+
+		shaders.emplace("defaultRenderTexture2DArray", api::Shader::create("defaultRenderTexture2DArray", {
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTexture2DArrayFragGL, { })
+		}));
+
+		shaders.emplace("defaultRenderTexture3D", api::Shader::create("defaultRenderTexture3D", {
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTexture3DFragGL, { })
+		}));
+
+		shaders.emplace("defaultRenderTextureCube", api::Shader::create("defaultRenderTextureCube", {
+				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeFragGL, { })
+		}));
+
+		shaders.emplace("defaultRenderTextureCubeArray", api::Shader::create("defaultRenderTextureCubeArray", {
+				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
+				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeArrayFragGL, { })
+		}));
 	}
 
 }

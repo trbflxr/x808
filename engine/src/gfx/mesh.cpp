@@ -71,7 +71,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->draw(indicesSize);
+		vertexArray->drawElements(indicesSize);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();

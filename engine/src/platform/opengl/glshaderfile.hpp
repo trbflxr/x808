@@ -16,14 +16,14 @@ namespace xe {
 		                      const std::vector<std::string> &dependencies,
 		                      const std::vector<std::string> &extensions);
 
-		uint compile(uint version) override;
+		uint compile() override;
 
-		void parse(api::ShaderUniformBufferVec &uniformBuffers,
+		void parse(api::ShaderUniformBufferVec &buffers,
 		           api::ShaderResourceVec &resources,
 		           api::ShaderStructVec &structs) override;
 
 		void parseUniform(const std::string &statement,
-		                  api::ShaderUniformBufferVec &uniformBuffers,
+		                  api::ShaderUniformBufferVec &buffers,
 		                  api::ShaderResourceVec &resources,
 		                  api::ShaderStructVec &structs) override;
 
