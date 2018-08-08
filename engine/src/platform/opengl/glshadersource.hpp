@@ -10,77 +10,82 @@ namespace xe {	namespace internal {
 
 		//batch renderer
 		static const char *brVertGL =
-		#include "shaders/batchrenderer.vert"
+		#include "shaders/.old/batchrenderer.vert"
 				;
 
 		static const char *brFragGL =
-		#include "shaders/batchrenderer.frag"
+		#include "shaders/.old/batchrenderer.frag"
 				;
 
 		//lights
 		static const char *forwardLightingVertGL =
-		#include "shaders/forward-lighting.vert"
+		#include "shaders/.old/forward-lighting.vert"
 				;
 
 		static const char *forwardLightingFragGL =
-		#include "shaders/forward-lighting.frag"
+		#include "shaders/.old/forward-lighting.frag"
 				;
 
 		static const char *forwardLightingFragIncludeGL =
-		#include "shaders/forward-lighting.frag.include"
+		#include "shaders/.old/forward-lighting.frag.include"
 				;
 
 		static const char *forwardDirectionalIncludeGL =
-		#include "shaders/forward-directionalLight.include"
+		#include "shaders/.old/forward-directionalLight.include"
 				;
 
 		static const char *forwardPointIncludeGL =
-		#include "shaders/forward-pointLight.include"
+		#include "shaders/.old/forward-pointLight.include"
 				;
 
 		static const char *forwardSpotIncludeGL =
-		#include "shaders/forward-spotLight.include"
+		#include "shaders/.old/forward-spotLight.include"
 				;
 
 		static const char *forwardAmbientVertGL =
-		#include "shaders/forward-ambientlight.vert"
+		#include "shaders/.old/forward-ambientlight.vert"
 				;
 
 		static const char *forwardAmbientFragGL =
-		#include "shaders/forward-ambientlight.frag"
+		#include "shaders/.old/forward-ambientlight.frag"
 				;
 
 		//fx
 		static const char *fxVertGL =
-		#include "shaders/fx/fx.vert"
+		#include "shaders/.old/fx/fx.vert"
 				;
 
 		static const char *fxNULLFragGL =
-		#include "shaders/fx/fx-null.frag"
+		#include "shaders/.old/fx/fx-null.frag"
 				;
 
 		static const char *fxGaussBlur7x1FragGL =
-		#include "shaders/fx/fx-gaussblur7x1.frag"
+		#include "shaders/.old/fx/fx-gaussblur7x1.frag"
 				;
 
 		static const char *fxFXAAFragGL =
-		#include "shaders/fx/fx-fxaa.frag"
+		#include "shaders/.old/fx/fx-fxaa.frag"
 				;
 
 		//shadow map
 		static const char *shadowMapVertGL =
-		#include "shaders/shadowmap.vert"
+		#include "shaders/.old/shadowmap.vert"
 				;
 
 		static const char *shadowMapFragGL =
-		#include "shaders/shadowmap.frag"
+		#include "shaders/.old/shadowmap.frag"
 				;
 
 		//include
 		static const char *samplingGL =
-		#include "shaders/sampling.include"
+		#include "shaders/.old/sampling.include"
 				;
 
+
+
+		/////////////////////////////
+		/// new
+		////////////////////////////
 
 		//deferred
 		//ubo
@@ -88,9 +93,14 @@ namespace xe {	namespace internal {
 		#include "shaders/common/ubo/cameraSpatials.ubo"
 				;
 
-		//common
+		//include
+		static const char *fxaaIncludeGL =
+		#include "shaders/common/include/fxaa.include"
+				;
+
+		///----- common -----///
 		//vert
-		static const char *commonGenericVertGL =
+		static const char *commonGenericFXVertGL =
 		#include "shaders/common/renderTexture2D.vert"
 				;
 
@@ -121,6 +131,12 @@ namespace xe {	namespace internal {
 
 		static const char *renderTextureCubeArrayFragGL =
 		#include "shaders/common/renderTextureCubeArray.frag"
+				;
+
+		///----- fx -----///
+		//final
+		static const char *finalSceneFragGL =
+		#include "shaders/final/finalScene.frag"
 				;
 
 }}

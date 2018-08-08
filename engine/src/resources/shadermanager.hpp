@@ -29,6 +29,7 @@ namespace xe {
 		void createDefaultShaders();
 
 		void createDefaultCommonShaders();
+		void createDefaultFinalShaders();
 
 		static ShaderManager &instance();
 

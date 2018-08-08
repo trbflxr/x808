@@ -103,28 +103,29 @@ namespace xe {
 		}));
 
 		createDefaultCommonShaders();
+		createDefaultFinalShaders();
 	}
 
 	void ShaderManager::createDefaultCommonShaders() {
 		using namespace internal;
 
 		shaders.emplace("defaultRenderTexture1D", api::Shader::create("defaultRenderTexture1D", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
 				ShaderFile::fromSource(ShaderType::FRAG, renderTexture1DFragGL, { })
 		}));
 
 		shaders.emplace("defaultRenderTexture2D", api::Shader::create("defaultRenderTexture2D", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
 				ShaderFile::fromSource(ShaderType::FRAG, renderTexture2DFragGL, { })
 		}));
 
 		shaders.emplace("defaultRenderTexture2DArray", api::Shader::create("defaultRenderTexture2DArray", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
 				ShaderFile::fromSource(ShaderType::FRAG, renderTexture2DArrayFragGL, { })
 		}));
 
 		shaders.emplace("defaultRenderTexture3D", api::Shader::create("defaultRenderTexture3D", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
 				ShaderFile::fromSource(ShaderType::FRAG, renderTexture3DFragGL, { })
 		}));
 
@@ -136,6 +137,15 @@ namespace xe {
 		shaders.emplace("defaultRenderTextureCubeArray", api::Shader::create("defaultRenderTextureCubeArray", {
 				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
 				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeArrayFragGL, { })
+		}));
+	}
+
+	void ShaderManager::createDefaultFinalShaders() {
+		using namespace internal;
+
+		shaders.emplace("defaultFinalScene", api::Shader::create("defaultFinalScene", {
+				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
+				ShaderFile::fromSource(ShaderType::FRAG, finalSceneFragGL, {fxaaIncludeGL})
 		}));
 	}
 
