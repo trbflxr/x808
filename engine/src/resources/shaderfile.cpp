@@ -2,11 +2,9 @@
 // Created by FLXR on 8/6/2018.
 //
 
-#include <utility>
 #include "shaderfile.hpp"
 #include "gfx/api/context.hpp"
 #include "utils/log.hpp"
-#include "platform/opengl/gltypes.hpp"
 #include "platform/opengl/glshaderfile.hpp"
 
 namespace xe {
@@ -64,23 +62,6 @@ namespace xe {
 		fclose(file);
 
 		return source;
-	}
-
-	uint ShaderFile::typeToGL(ShaderType type) {
-		switch (type) {
-			case ShaderType::UNDEFINED: return 0;
-			case ShaderType::VERT: return GL_VERTEX_SHADER;
-			case ShaderType::FRAG: return GL_FRAGMENT_SHADER;
-			case ShaderType::GEOM: return GL_GEOMETRY_SHADER;
-			case ShaderType::TESS_EVAL: return GL_TESS_EVALUATION_SHADER;
-			case ShaderType::TESS_CONTROL: return GL_TESS_CONTROL_SHADER;
-			case ShaderType::COMPUTE: return GL_COMPUTE_SHADER;
-		}
-	}
-
-	uint ShaderFile::typeToDX(ShaderType type) {
-		XE_ASSERT(false, "not implemented");
-		return 0;
 	}
 
 	const char *ShaderFile::typeToString(ShaderType type) {

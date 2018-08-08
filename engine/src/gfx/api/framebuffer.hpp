@@ -1,41 +1,52 @@
 //
-// Created by FLXR on 7/23/2018.
+// Created by FLXR on 8/8/2018.
 //
 
 #ifndef X808_FRAMEBUFFER_HPP
 #define X808_FRAMEBUFFER_HPP
 
 
-#include "xeint.hpp"
+#include <unordered_map>
 #include "texture.hpp"
-#include "math/vec4.hpp"
 
 namespace xe { namespace api {
 
+	enum class Attachment {
+		COLOR0, COLOR1, COLOR2, COLOR3, COLOR4, COLOR5, COLOR6, COLOR7, COLOR8,
+		COLOR9, COLOR10, COLOR11, COLOR12, COLOR13, COLOR14, COLOR15, DEPTH, STENCIL
+	};
+
 	class XE_API FrameBuffer {
 	public:
-		enum Type {
-			COLOR = 0, DEPTH, RG32F
-		};
+		inline uint getHandle() const { return handle; }
+		inline const std::string &getName() const { return name; }
 
-	public:
-		virtual void bind() = 0;
+		virtual void load(const std::unordered_map<Attachment, api::Texture *> &attachments) = 0;
+
+		virtual void bindDrawAttachment(Attachment attachment) = 0;
+		virtual void bindDrawAttachments(Attachment *attachments, uint size) = 0;
+
+		virtual void bindReadAttachment(Attachment attachment) = 0;
+
+		virtual void bindDraw(Attachment attachment) = 0;
+		virtual void bindDraw(Attachment *attachments, uint size) = 0;
+
+		virtual void bindRead(Attachment attachment) = 0;
+
 		virtual void unbind() = 0;
-		virtual void clear(uint buffer) = 0;
 
-		virtual uint getWidth() = 0;
-		virtual uint getHeight() = 0;
+		virtual void bindTexture(Attachment attachment, api::Texture *texture) = 0;
 
-		virtual const Texture *getTexture() const = 0;
-		virtual Texture *getTexture()  = 0;
-
-		virtual void setClearColor(const vec4 &color) = 0;
-
-		static FrameBuffer *create(uint width, uint height, Type type,
-		                           TextureFilter filter = TextureFilter::NEAREST);
+		static FrameBuffer *create(const std::string_view &name);
 
 	protected:
-		FrameBuffer() = default;
+		explicit FrameBuffer(const std::string_view &name);
+
+	protected:
+		uint handle;
+		std::string name;
+
+		std::unordered_map<Attachment, api::Texture *> attachments;
 	};
 
 }}

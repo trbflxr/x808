@@ -24,7 +24,7 @@ namespace xe {
 		shadowMapShader = new ForwardRendererShader(GETSHADER("defaultShadowMap"));
 		shadowMapBlurShader = new ForwardRendererShader(GETSHADER("defaultFXGaussBlur"));
 
-		screenBuffer = api::FrameBuffer::create(width, height, api::FrameBuffer::COLOR);
+		screenBuffer = api::FrameBufferOld::create(width, height, api::FrameBufferOld::COLOR);
 
 		if (useFXAA) {
 			fxaaFilter = new ForwardRendererShader(GETSHADER("defaultFXFXAA"));
@@ -47,11 +47,11 @@ namespace xe {
 
 		for (uint i = 0; i < NUM_SHADOW_MAPS; ++i) {
 			uint size = static_cast<uint>(1 << (i + 1));
-			shadowBuffers0[i] = api::FrameBuffer::create(size, size,
-			                                             api::FrameBuffer::RG32F, api::TextureFilter::BILINEAR);
+			shadowBuffers0[i] = api::FrameBufferOld::create(size, size,
+			                                             api::FrameBufferOld::RG32F, api::TextureFilter::BILINEAR);
 
-			shadowBuffers1[i] = api::FrameBuffer::create(size, size,
-			                                             api::FrameBuffer::RG32F, api::TextureFilter::BILINEAR);
+			shadowBuffers1[i] = api::FrameBufferOld::create(size, size,
+			                                             api::FrameBufferOld::RG32F, api::TextureFilter::BILINEAR);
 		}
 
 		dummyMesh = Mesh::createPlaneMesh();
@@ -240,7 +240,7 @@ namespace xe {
 	}
 
 	void
-	ForwardRenderer::applyFilter(ForwardRendererShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest) {
+	ForwardRenderer::applyFilter(ForwardRendererShader *filter, api::FrameBufferOld *src, api::FrameBufferOld *dest) {
 		XE_ASSERT(src != dest);
 
 		dummyMaterial->setTexture(src->getTexture());

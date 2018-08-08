@@ -50,8 +50,6 @@ namespace xe {
 		                            const std::vector<std::string> &dependencies,
 		                            const std::vector<std::string> &extensions = { });
 
-		static uint typeToGL(ShaderType type);
-		static uint typeToDX(ShaderType type);
 		static const char *typeToString(ShaderType type);
 
 	protected:

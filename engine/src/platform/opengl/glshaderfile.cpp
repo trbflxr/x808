@@ -12,6 +12,18 @@
 
 namespace xe {
 
+	uint shaderTypeToGL(ShaderType type) {
+		switch (type) {
+			case ShaderType::UNDEFINED: return 0;
+			case ShaderType::VERT: return GL_VERTEX_SHADER;
+			case ShaderType::FRAG: return GL_FRAGMENT_SHADER;
+			case ShaderType::GEOM: return GL_GEOMETRY_SHADER;
+			case ShaderType::TESS_EVAL: return GL_TESS_EVALUATION_SHADER;
+			case ShaderType::TESS_CONTROL: return GL_TESS_CONTROL_SHADER;
+			case ShaderType::COMPUTE: return GL_COMPUTE_SHADER;
+		}
+	}
+
 	GLShaderFile::GLShaderFile(bool fromSource, ShaderType type, const std::string_view &pathOrSource,
 	                           const std::vector<std::string> &dependencies,
 	                           const std::vector<std::string> &extensions) :
@@ -66,7 +78,7 @@ namespace xe {
 	}
 
 	uint GLShaderFile::compile() {
-		glCall(uint id = glCreateShader(typeToGL(type)));
+		glCall(uint id = glCreateShader(shaderTypeToGL(type)));
 
 		const char *sourcePtr = fullSource.c_str();
 

@@ -88,6 +88,12 @@ namespace xe { namespace fx {
 		layer = static_cast<uint>(math::clampf(layer, 0, texture->getDepth()));
 		channel = static_cast<int32>(math::clampf(channel, -1, 3));
 
+		byte pChannel[sizeof(int32)];
+		memcpy(pChannel, &channel, sizeof(int32));
+
+		byte pLayer[sizeof(uint)];
+		memcpy(pLayer, &layer, sizeof(uint));
+
 		switch (texture->getTarget()) {
 			case api::TextureTarget::TEX1D: {
 				renderTexture1D->bind();
@@ -99,7 +105,7 @@ namespace xe { namespace fx {
 
 			case api::TextureTarget::TEX2D: {
 				renderTexture2D->bind();
-				renderTexture2D->setUniform("channel", (byte *) channel);
+				renderTexture2D->setUniform("channel", pChannel);
 				texture->bind(renderTexture2D->getResources().front()->getRegister());
 				render();
 				renderTexture2D->unbind();
@@ -108,16 +114,16 @@ namespace xe { namespace fx {
 
 			case api::TextureTarget::TEX3D: {
 				renderTexture3D->bind();
-				renderTexture3D->setUniform("layer", (byte *) layer);
+				renderTexture3D->setUniform("layer", pLayer);
 				texture->bind(renderTexture3D->getResources().front()->getRegister());
 				render();
 				renderTexture3D->unbind();
 				break;
 			}
 
-			case api::TextureTarget::TEX2D_ARRAY:{
+			case api::TextureTarget::TEX2D_ARRAY: {
 				renderTexture2DArray->bind();
-				renderTexture2DArray->setUniform("layer", (byte *) layer);
+				renderTexture2DArray->setUniform("layer", pLayer);
 				texture->bind(renderTexture2DArray->getResources().front()->getRegister());
 				render();
 				renderTexture2DArray->unbind();
@@ -134,7 +140,7 @@ namespace xe { namespace fx {
 
 			case api::TextureTarget::TEX_CUBE_MAP_ARRAY: {
 				renderTextureCubeArray->bind();
-				renderTextureCubeArray->setUniform("layer", (byte *) layer);
+				renderTextureCubeArray->setUniform("layer", pLayer);
 				texture->bind(renderTextureCubeArray->getResources().front()->getRegister());
 				renderFullQuad();
 				renderTextureCubeArray->unbind();

@@ -1,103 +1,113 @@
 //
-// Created by FLXR on 7/23/2018.
+// Created by FLXR on 8/8/2018.
 //
 
-#include "glframebuffer.hpp"
 #include "glcommon.hpp"
-#include "gfx/renderer.hpp"
+#include "glframebuffer.hpp"
 
 namespace xe { namespace api {
 
-	uint rendererBufferToGL(uint buffer) {
-		uint result = 0;
-
-		if (buffer & RENDERER_BUFFER_COLOR) {
-			result |= GL_COLOR_BUFFER_BIT;
+	uint attachmentToGL(Attachment attachment) {
+		switch (attachment) {
+			case Attachment::COLOR0: return GL_COLOR_ATTACHMENT0;
+			case Attachment::COLOR1: return GL_COLOR_ATTACHMENT1;
+			case Attachment::COLOR2: return GL_COLOR_ATTACHMENT2;
+			case Attachment::COLOR3: return GL_COLOR_ATTACHMENT3;
+			case Attachment::COLOR4: return GL_COLOR_ATTACHMENT4;
+			case Attachment::COLOR5: return GL_COLOR_ATTACHMENT5;
+			case Attachment::COLOR6: return GL_COLOR_ATTACHMENT6;
+			case Attachment::COLOR7: return GL_COLOR_ATTACHMENT7;
+			case Attachment::COLOR8: return GL_COLOR_ATTACHMENT8;
+			case Attachment::COLOR9: return GL_COLOR_ATTACHMENT9;
+			case Attachment::COLOR10: return GL_COLOR_ATTACHMENT10;
+			case Attachment::COLOR11: return GL_COLOR_ATTACHMENT11;
+			case Attachment::COLOR12: return GL_COLOR_ATTACHMENT12;
+			case Attachment::COLOR13: return GL_COLOR_ATTACHMENT13;
+			case Attachment::COLOR14: return GL_COLOR_ATTACHMENT14;
+			case Attachment::COLOR15: return GL_COLOR_ATTACHMENT15;
+			case Attachment::DEPTH: return GL_DEPTH_ATTACHMENT;
+			case Attachment::STENCIL: return GL_STENCIL_ATTACHMENT;
 		}
-		if (buffer & RENDERER_BUFFER_DEPTH) {
-			result |= GL_DEPTH_BUFFER_BIT;
-		}
-		if (buffer & RENDERER_BUFFER_STENCIL) {
-			result |= GL_STENCIL_BUFFER_BIT;
-		}
-		return result;
 	}
 
-	GLFrameBuffer::GLFrameBuffer(uint width, uint height, Type type, TextureFilter filter) :
-			width(width),
-			height(height),
-			type(type),
-			frameBufferHandle(0),
-			renderBufferHandle(0) {
+	GLFrameBuffer::GLFrameBuffer(const std::string_view &name) :
+			FrameBuffer(name) {
 
-		if (type == FrameBuffer::DEPTH) {
-			glCall(glGenFramebuffers(1, &frameBufferHandle));
-			glCall(glBindFramebuffer(GL_FRAMEBUFFER, frameBufferHandle));
+		glCall(glGenFramebuffers(1, &handle));
+	}
 
-			TextureParameters params(TextureTarget::TEX2D, TextureFormat::DEPTH16, filter, TextureWrap::CLAMP);
-			texture = new GLTexture(width, height, params);
+	GLFrameBuffer::~GLFrameBuffer() {
+		glCall(glDeleteFramebuffers(1, &handle));
+	}
 
-			glCall(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getHandle(), 0));
-			glCall(glDrawBuffer(GL_NONE));
+	void GLFrameBuffer::load(const std::unordered_map<Attachment, api::Texture *> &attachments) {
+		FrameBuffer::attachments = attachments;
 
-		} else {
-			auto format = type == FrameBuffer::RG32F ? TextureFormat::RG32F : TextureFormat::RGBA;
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
 
-			TextureParameters params(TextureTarget::TEX2D, format, filter, TextureWrap::CLAMP);
-			texture = new GLTexture(width, height, params);
-
-			glCall(glGenFramebuffers(1, &frameBufferHandle));
-			glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferHandle));
-
-			glCall(glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-			                              GL_TEXTURE_2D, texture->getHandle(), 0));
-
-			glCall(glGenRenderbuffers(1, &renderBufferHandle));
-			glCall(glBindRenderbuffer(GL_RENDERBUFFER, renderBufferHandle));
-			glCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height));
-
-			glCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT,
-			                                 GL_RENDERBUFFER, renderBufferHandle));
-
-			glCall(glDrawBuffer(GL_COLOR_ATTACHMENT0));
+		for (auto &&a : attachments) {
+			glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(a.first), a.second->getHandle(), 0));
 		}
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_FATAL("[GLFrameBuffer2D]: creation fail");
+			XE_FATAL("[GLFrameBuffer]: creation fail");
 			XE_ASSERT(false);
 		}
 
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
-	GLFrameBuffer::~GLFrameBuffer() {
-		delete texture;
-
-		if (frameBufferHandle) {
-			glCall(glDeleteFramebuffers(1, &frameBufferHandle));
-		}
-
-		if (renderBufferHandle) {
-			glCall(glDeleteRenderbuffers(1, &renderBufferHandle));
-		}
+	void GLFrameBuffer::bindDrawAttachment(Attachment attachment) {
+		glCall(glDrawBuffer(attachmentToGL(attachment)));
 	}
 
-	void GLFrameBuffer::bind() {
-		glCall(glBindTexture(GL_TEXTURE_2D, 0));
-		glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferHandle));
-		glCall(glViewport(0, 0, width, height));
+	void GLFrameBuffer::bindDrawAttachments(Attachment *attachments, uint size) {
+		uint buffers[size];
+		for (uint i = 0; i < size; ++i) {
+			buffers[i] = attachmentToGL(attachments[i]);
+		}
+
+		glCall(glDrawBuffers(size, buffers));
+	}
+
+	void GLFrameBuffer::bindReadAttachment(Attachment attachment) {
+		uint mode = attachmentToGL(attachment);
+
+		if (mode == GL_DEPTH_ATTACHMENT || mode == GL_STENCIL_ATTACHMENT) {
+			XE_ERROR("[GLFrameBuffer]: Can't read depth or stencil attachments.");
+			return;
+		}
+
+		glCall(glReadBuffer(mode));
+	}
+
+	void GLFrameBuffer::bindDraw(Attachment attachment) {
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
+		bindDrawAttachment(attachment);
+	}
+
+	void GLFrameBuffer::bindDraw(Attachment *attachments, uint size) {
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
+		bindDrawAttachments(attachments, size);
+	}
+
+	void GLFrameBuffer::bindRead(Attachment attachment) {
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
+		bindReadAttachment(attachment);
 	}
 
 	void GLFrameBuffer::unbind() {
-		glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
+		glCall(glDrawBuffer(0));
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
-	void GLFrameBuffer::clear(uint buffer) {
-		glCall(glClear(rendererBufferToGL(buffer)));
-	}
+	void GLFrameBuffer::bindTexture(Attachment attachment, api::Texture *texture) {
+		glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(attachment), texture->getHandle(), 0));
 
-	void GLFrameBuffer::setClearColor(const vec4 &color) {
-		glCall(glClearColor(color.x, color.y, color.z, color.w));
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			XE_FATAL("[GLFrameBuffer]: setting texture failed");
+			XE_ASSERT(false);
+		}
 	}
 
 }}

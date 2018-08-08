@@ -7,7 +7,7 @@
 
 
 #include "irenderer3d.hpp"
-#include "gfx/api/framebuffer.hpp"
+#include "gfx/api/framebuffer_old.hpp"
 #include "gfx/lights/ambientlight.hpp"
 #include "gfx/forwardrenderershader.hpp"
 
@@ -31,7 +31,7 @@ namespace xe {
 		uint renderShadows(BaseLight *light);
 
 		void blurShadowMap(uint index, float blurAmount);
-		void applyFilter(ForwardRendererShader *filter, api::FrameBuffer *src, api::FrameBuffer *dest);
+		void applyFilter(ForwardRendererShader *filter, api::FrameBufferOld *src, api::FrameBufferOld *dest);
 
 	private:
 		std::vector<RenderTarget> targets;
@@ -44,13 +44,13 @@ namespace xe {
 		bool useFXAA;
 		ForwardRendererShader *fxaaFilter;
 
-		api::FrameBuffer *screenBuffer;
+		api::FrameBufferOld *screenBuffer;
 
 		//shadows stuff
 		static constexpr uint NUM_SHADOW_MAPS = 10;
 
-		api::FrameBuffer *shadowBuffers0[NUM_SHADOW_MAPS];
-		api::FrameBuffer *shadowBuffers1[NUM_SHADOW_MAPS];
+		api::FrameBufferOld *shadowBuffers0[NUM_SHADOW_MAPS];
+		api::FrameBufferOld *shadowBuffers1[NUM_SHADOW_MAPS];
 
 		Camera *lightCamera;
 		mat4 lightMatrix;

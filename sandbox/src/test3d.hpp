@@ -13,7 +13,7 @@
 #include <gfx/lights/directionallight.hpp>
 #include <gfx/lights/pointlight.hpp>
 #include <gfx/lights/spotlight.hpp>
-#include <gfx/api/framebuffer.hpp>
+#include <gfx/api/framebuffer_old.hpp>
 #include <ecs/systems/forwardrenderersystem.hpp>
 
 #include "dummyplayercomponent.hpp"

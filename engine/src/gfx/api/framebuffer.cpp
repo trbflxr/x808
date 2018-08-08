@@ -1,5 +1,5 @@
 //
-// Created by FLXR on 7/24/2018.
+// Created by FLXR on 8/8/2018.
 //
 
 #include "framebuffer.hpp"
@@ -8,9 +8,12 @@
 
 namespace xe { namespace api {
 
-	FrameBuffer *FrameBuffer::create(uint width, uint height, Type type, TextureFilter filter) {
+	FrameBuffer::FrameBuffer(const std::string_view &name) :
+			name(name) { }
+
+	FrameBuffer *FrameBuffer::create(const std::string_view &name) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLFrameBuffer(width, height, type, filter);
+			case RenderAPI::OPENGL : return new GLFrameBuffer(name);
 
 			default: return nullptr;
 		}
