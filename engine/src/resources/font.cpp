@@ -30,9 +30,9 @@ namespace xe {
 		ftFont->outline_thickness = 0;
 		ftFont->outline_type = 2;
 
-		TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
-		                                TextureWrap::CLAMP_TO_EDGE};
-		texture = Texture2D::create(1024, 1024, parameters);
+		TextureParameters parameters = {TextureTarget::TEX2D, TextureFormat::LUMINANCE_ALPHA,
+		                                TextureFilter::NEAREST, TextureWrap::CLAMP_TO_EDGE};
+		texture = Texture::create(1024, 1024, parameters);
 		texture->setData(ftAtlas->data);
 	}
 
@@ -48,9 +48,9 @@ namespace xe {
 		ftAtlas = ftgl::texture_atlas_new(1024, 1024, 2);
 		ftFont = ftgl::texture_font_new_from_memory(ftAtlas, size, data, dataSize);
 
-		TextureParameters parameters = {TextureFormat::LUMINANCE_ALPHA, TextureFilter::NEAREST,
-		                                TextureWrap::CLAMP_TO_EDGE};
-		texture = Texture2D::create(1024, 1024, parameters);
+		TextureParameters parameters = {TextureTarget::TEX2D, TextureFormat::LUMINANCE_ALPHA,
+		                                TextureFilter::NEAREST, TextureWrap::CLAMP_TO_EDGE};
+		texture = Texture::create(1024, 1024, parameters);
 		texture->setData(ftAtlas->data);
 
 		XE_ASSERT(ftFont, "Failed to load font from data!");
@@ -90,7 +90,7 @@ namespace xe {
 		return {x / scale, y / scale};
 	}
 
-	api::Texture2D *Font::getTexture() const {
+	api::Texture *Font::getTexture() const {
 		updateAtlas();
 		return texture;
 	}

@@ -8,7 +8,7 @@
 
 #include "gfx/api/framebuffer.hpp"
 #include "math/vec4.hpp"
-#include "gltexture2d.hpp"
+#include "gltexture.hpp"
 
 namespace xe { namespace api {
 
@@ -22,8 +22,8 @@ namespace xe { namespace api {
 
 		void clear(uint buffer) override;
 
-		inline const Texture2D *getTexture() const override { return texture; }
-		inline Texture2D *getTexture() override { return texture; }
+		inline const Texture *getTexture() const override { return texture; }
+		inline Texture *getTexture() override { return texture; }
 
 		inline uint getWidth() override { return width; }
 		inline uint getHeight() override { return height; }
@@ -33,7 +33,7 @@ namespace xe { namespace api {
 	private:
 		uint frameBufferHandle;
 		uint renderBufferHandle;
-		GLTexture2D *texture;
+		GLTexture *texture;
 
 		uint width;
 		uint height;

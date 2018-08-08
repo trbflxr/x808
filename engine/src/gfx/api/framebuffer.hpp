@@ -7,7 +7,7 @@
 
 
 #include "xeint.hpp"
-#include "texture2d.hpp"
+#include "texture.hpp"
 #include "math/vec4.hpp"
 
 namespace xe { namespace api {
@@ -26,8 +26,8 @@ namespace xe { namespace api {
 		virtual uint getWidth() = 0;
 		virtual uint getHeight() = 0;
 
-		virtual const Texture2D *getTexture() const = 0;
-		virtual Texture2D *getTexture()  = 0;
+		virtual const Texture *getTexture() const = 0;
+		virtual Texture *getTexture()  = 0;
 
 		virtual void setClearColor(const vec4 &color) = 0;
 

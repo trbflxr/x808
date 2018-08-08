@@ -6,20 +6,20 @@
 #define X808_GLTEXTURE2D_HPP
 
 
-#include "gfx/api/texture2d.hpp"
+#include "gfx/api/texture.hpp"
 
 namespace xe { namespace api {
 
-	class GLTexture2D : public Texture2D {
+	class GLTexture : public Texture {
 	public:
-		explicit GLTexture2D(uint width, uint height, TextureParameters params = { });
+		explicit GLTexture(uint width, uint height, TextureParameters params);
 
-		explicit GLTexture2D(const std::string_view &name,
+		explicit GLTexture(const std::string_view &name,
 		                     const std::string_view &path,
-		                     TextureParameters params = { },
-		                     TextureLoadOptions options = { });
+		                     TextureParameters params,
+		                     TextureLoadOptions options);
 
-		~GLTexture2D() override;
+		~GLTexture() override;
 
 		void bind(uint slot) const override;
 		void unbind(uint slot) const override;
@@ -31,6 +31,8 @@ namespace xe { namespace api {
 
 		inline uint getWidth() const override { return width; }
 		inline uint getHeight() const override { return height; }
+
+		uint getDepth() const override { return 1; }
 
 		inline uint getHandle() const override { return handle; }
 

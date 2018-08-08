@@ -205,7 +205,7 @@ namespace xe {
 		const uint outlineColor = text->outlineColor;
 		const float outlineThickness = text->outlineThickness;
 
-		const api::Texture2D *texture = font.getTexture();
+		const api::Texture *texture = font.getTexture();
 		XE_ASSERT(texture);
 
 		const float tid = submitTexture(texture);

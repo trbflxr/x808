@@ -50,12 +50,6 @@ namespace xe {
 	void ShaderManager::createDefaultShaders() {
 		using namespace internal;
 
-		shaders.emplace("defaultRenderTextureCube", api::Shader::create("defaultRenderTextureCube", {
-				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeFragGL, { })
-		}));
-
-
 		shaders.emplace("defaultBatchRenderer", api::Shader::create("defaultBatchRenderer", {
 				ShaderFile::fromSource(ShaderType::VERT, brVertGL, { }),
 				ShaderFile::fromSource(ShaderType::FRAG, brFragGL, { })

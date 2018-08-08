@@ -5,7 +5,6 @@
 #include "forwardrenderer.hpp"
 #include "renderer.hpp"
 #include "resources/shadermanager.hpp"
-#include "gfx/api/texture2d.hpp"
 
 namespace xe {
 

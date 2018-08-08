@@ -28,6 +28,8 @@ namespace xe { namespace fx {
 		void renderFullQuadBlend();
 		void render3D(uint depth);
 
+		void renderToTexture(api::Texture *texture, float scale, uint pos, uint layer = 0, int32 channel = -1);
+
 	protected:
 		void loadPrograms() override;
 		void loadBuffers() override;

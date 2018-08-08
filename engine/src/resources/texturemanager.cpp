@@ -4,7 +4,7 @@
 
 #include "texturemanager.hpp"
 #include "utils/log.hpp"
-#include "gfx/api/texture2d.hpp"
+#include "gfx/api/texture.hpp"
 #include "embedded/embedded.hpp"
 
 namespace xe {
@@ -51,22 +51,22 @@ namespace xe {
 	void TextureManager::createDefaultTextures() {
 		using namespace api;
 
-		TextureParameters params(TextureFilter::NEAREST);
+		TextureParameters params(TextureTarget::TEX2D, TextureFilter::NEAREST);
 
 		///texture
-		Texture2D *errorTexture = Texture2D::create(internal::DEFAULT_TEXTURE_W,
+		Texture *errorTexture = Texture::create(internal::DEFAULT_TEXTURE_W,
 		                                            internal::DEFAULT_TEXTURE_H, params);
 		errorTexture->setData(internal::DEFAULT_TEXTURE);
 
 
 		///normal
-		Texture2D *defaultNormal = Texture2D::create(internal::DEFAULT_NORMAL_W,
+		Texture *defaultNormal = Texture::create(internal::DEFAULT_NORMAL_W,
 		                                             internal::DEFAULT_NORMAL_H, params);
 		defaultNormal->setData(internal::DEFAULT_NORMAL);
 
 
 		///displacement map
-		Texture2D *defaultDisp = Texture2D::create(internal::DEFAULT_DISP_W,
+		Texture *defaultDisp = Texture::create(internal::DEFAULT_DISP_W,
 		                                           internal::DEFAULT_DISP_H, params);
 		defaultDisp->setData(internal::DEFAULT_DISP);
 

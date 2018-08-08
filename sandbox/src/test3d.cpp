@@ -3,7 +3,7 @@
 //
 
 #include <gfx/renderer.hpp>
-#include <gfx/api/texture2d.hpp>
+#include <gfx/api/texture.hpp>
 #include <resources/texturemanager.hpp>
 #include <resources/shadermanager.hpp>
 #include <gfx/color.hpp>
@@ -11,22 +11,24 @@
 #include <ecs/components/transformcomponent.hpp>
 #include "test3d.hpp"
 
+#include <gfx/fx/quad.hpp>
+
 Test3D::Test3D(DebugUI *ui) :
 		ui(ui) {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureFilter::AF16);
-	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
-	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
-	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("stall", "assets/textures/stall.png", params));
-	TextureManager::add(Texture2D::create("bricks", "assets/textures/bricks.jpg", params));
-	TextureManager::add(Texture2D::create("bricks2", "assets/textures/bricks2.jpg", params));
-	TextureManager::add(Texture2D::create("bricksNormal", "assets/textures/bricksNormal.jpg", params));
-	TextureManager::add(Texture2D::create("bricksNormal2", "assets/textures/bricksNormal2.png", params));
-	TextureManager::add(Texture2D::create("bricksDisp", "assets/textures/bricksDisp.png", params));
-	TextureManager::add(Texture2D::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
-	TextureManager::add(Texture2D::create("bgr", "assets/textures/bgr.jfif", params));
+	TextureParameters params(TextureTarget::TEX2D, TextureFilter::AF16);
+	TextureManager::add(Texture::create("rock", "assets/textures/rock.png", params));
+	TextureManager::add(Texture::create("2", "assets/textures/test3.png", params));
+	TextureManager::add(Texture::create("4", "assets/textures/test5.png", params));
+	TextureManager::add(Texture::create("stall", "assets/textures/stall.png", params));
+	TextureManager::add(Texture::create("bricks", "assets/textures/bricks.jpg", params));
+	TextureManager::add(Texture::create("bricks2", "assets/textures/bricks2.jpg", params));
+	TextureManager::add(Texture::create("bricksNormal", "assets/textures/bricksNormal.jpg", params));
+	TextureManager::add(Texture::create("bricksNormal2", "assets/textures/bricksNormal2.png", params));
+	TextureManager::add(Texture::create("bricksDisp", "assets/textures/bricksDisp.png", params));
+	TextureManager::add(Texture::create("bricksDisp2", "assets/textures/bricksDisp2.jpg", params));
+	TextureManager::add(Texture::create("bgr", "assets/textures/bgr.jfif", params));
 
 	//init objects
 	ModelComponent model;
@@ -142,6 +144,10 @@ Test3D::Test3D(DebugUI *ui) :
 	transform.transform.setTranslation({10, -4.5f, -5});
 	transform.transform.rotate(vec3::YAXIS, 45.0f);
 	cubeModel = ecs.makeEntity(model, transform);
+
+
+	fx::Quad *quad = new fx::Quad(800, 600);
+	quad->load();
 }
 
 Test3D::~Test3D() {

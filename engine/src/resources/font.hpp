@@ -10,7 +10,7 @@
 #include "xeint.hpp"
 #include "common.hpp"
 #include "math/vec2.hpp"
-#include "gfx/api/texture2d.hpp"
+#include "gfx/api/texture.hpp"
 
 namespace ftgl {
 	struct texture_font_t;
@@ -30,7 +30,7 @@ namespace xe {
 		inline ftgl::texture_font_t *getFTFont() const { return ftFont; }
 		inline float getSize() const { return size; }
 
-		api::Texture2D *getTexture() const;
+		api::Texture *getTexture() const;
 
 		vec2 getTextSize(const std::wstring_view &text, float fontSize, vec2 *position = nullptr) const;
 
@@ -40,7 +40,7 @@ namespace xe {
 	private:
 		ftgl::texture_font_t *ftFont;
 		ftgl::texture_atlas_t *ftAtlas;
-		mutable api::Texture2D *texture;
+		mutable api::Texture *texture;
 
 		float size;
 		std::string name;

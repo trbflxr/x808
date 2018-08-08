@@ -3,7 +3,7 @@
 //
 
 #include <resources/texturemanager.hpp>
-#include <gfx/api/texture2d.hpp>
+#include <gfx/api/texture.hpp>
 #include <ecs/components/modelcomponent.hpp>
 #include <ecs/components/transformcomponent.hpp>
 #include "test3ddeferred.hpp"
@@ -15,8 +15,8 @@ using namespace xe::api;
 
 Test3DDeferred::Test3DDeferred() {
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureFilter::AF16);
-	TextureManager::add(Texture2D::create("rock", "assets/textures/rock.png", params));
+	TextureParameters params(TextureTarget::TEX2D, TextureFilter::AF16);
+	TextureManager::add(Texture::create("rock", "assets/textures/rock.png", params));
 //	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
 //	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
 //	TextureManager::add(Texture2D::create("stall", "assets/textures/stall.png", params));

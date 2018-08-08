@@ -34,8 +34,8 @@ namespace xe { namespace api {
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_FRAMEBUFFER, frameBufferHandle));
 
-			TextureParameters params(TextureFormat::DEPTH16, filter, TextureWrap::CLAMP);
-			texture = new GLTexture2D(width, height, params);
+			TextureParameters params(TextureTarget::TEX2D, TextureFormat::DEPTH16, filter, TextureWrap::CLAMP);
+			texture = new GLTexture(width, height, params);
 
 			glCall(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getHandle(), 0));
 			glCall(glDrawBuffer(GL_NONE));
@@ -43,8 +43,8 @@ namespace xe { namespace api {
 		} else {
 			auto format = type == FrameBuffer::RG32F ? TextureFormat::RG32F : TextureFormat::RGBA;
 
-			TextureParameters params(format, filter, TextureWrap::CLAMP);
-			texture = new GLTexture2D(width, height, params);
+			TextureParameters params(TextureTarget::TEX2D, format, filter, TextureWrap::CLAMP);
+			texture = new GLTexture(width, height, params);
 
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferHandle));

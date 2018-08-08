@@ -29,4 +29,12 @@
 #include "tvec2.hpp"
 
 
+namespace xe { namespace math {
+
+	static float clampf(float n, float min, float max) {
+		return __max(__min(n, max), min);
+	}
+
+}}
+
 #endif //X808_MATH_HPP

@@ -2,7 +2,7 @@
 // Created by FLXR on 7/6/2018.
 //
 
-#include "gltexture2d.hpp"
+#include "gltexture.hpp"
 #include "glcommon.hpp"
 #include "utils/loadimage.hpp"
 #include "embedded/embedded.hpp"
@@ -61,7 +61,8 @@ namespace xe { namespace api {
 		}
 	}
 
-	GLTexture2D::GLTexture2D(uint width, uint height, TextureParameters params) :
+	GLTexture::GLTexture(uint width, uint height, TextureParameters params) :
+			Texture(params.target),
 			fileName("NULL"),
 			width(width),
 			height(height),
@@ -70,9 +71,10 @@ namespace xe { namespace api {
 		handle = load();
 	}
 
-	GLTexture2D::GLTexture2D(const std::string_view &name, const std::string_view &path,
+	GLTexture::GLTexture(const std::string_view &name, const std::string_view &path,
 	                         TextureParameters params,
 	                         TextureLoadOptions options) :
+			Texture(params.target),
 			name(name),
 			fileName(path),
 			parameters(params),
@@ -81,21 +83,21 @@ namespace xe { namespace api {
 		handle = load();
 	}
 
-	GLTexture2D::~GLTexture2D() {
+	GLTexture::~GLTexture() {
 		glCall(glDeleteTextures(1, &handle));
 	}
 
-	void GLTexture2D::bind(uint slot) const {
+	void GLTexture::bind(uint slot) const {
 		glCall(glActiveTexture(GL_TEXTURE0 + slot));
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 	}
 
-	void GLTexture2D::unbind(uint slot) const {
+	void GLTexture::unbind(uint slot) const {
 		glCall(glActiveTexture(GL_TEXTURE0 + slot));
 		glCall(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
-	void GLTexture2D::setData(const void *pixels) {
+	void GLTexture::setData(const void *pixels) {
 		if (parameters.format == TextureFormat::DEPTH24) {
 			XE_ERROR("[GLTexture2D]: 'SetData' is unavailable for depth texture!");
 			return;
@@ -106,7 +108,7 @@ namespace xe { namespace api {
 		                       textureInternalFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
 	}
 
-	uint GLTexture2D::load() {
+	uint GLTexture::load() {
 		byte *pixels = nullptr;
 		bool fail = false;
 
@@ -153,7 +155,7 @@ namespace xe { namespace api {
 		return handle;
 	}
 
-	byte *GLTexture2D::loadFromFile(bool &fail) {
+	byte *GLTexture::loadFromFile(bool &fail) {
 		byte *outPixels = nullptr;
 
 		uint bits;

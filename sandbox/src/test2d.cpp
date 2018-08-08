@@ -20,52 +20,52 @@ using namespace xe::api;
 Test2D::Test2D() {
 
 	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureFilter::NEAREST);
+	TextureParameters params(TextureTarget::TEX2D, TextureFilter::NEAREST);
 
-	TextureManager::add(Texture2D::create("0", "assets/textures/test1.png", params));
-	TextureManager::add(Texture2D::create("1", "assets/textures/test2.png", params));
-	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));
-	TextureManager::add(Texture2D::create("3", "assets/textures/test4.png", params));
-	TextureManager::add(Texture2D::create("4", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("5", "assets/textures/test6.png", params));
-	TextureManager::add(Texture2D::create("6", "assets/textures/test7.png", params));
-	TextureManager::add(Texture2D::create("7", "assets/textures/test8.png", params));
+	TextureManager::add(Texture::create("0", "assets/textures/test1.png", params));
+	TextureManager::add(Texture::create("1", "assets/textures/test2.png", params));
+	TextureManager::add(Texture::create("2", "assets/textures/test3.png", params));
+	TextureManager::add(Texture::create("3", "assets/textures/test4.png", params));
+	TextureManager::add(Texture::create("4", "assets/textures/test5.png", params));
+	TextureManager::add(Texture::create("5", "assets/textures/test6.png", params));
+	TextureManager::add(Texture::create("6", "assets/textures/test7.png", params));
+	TextureManager::add(Texture::create("7", "assets/textures/test8.png", params));
 
-	TextureManager::add(Texture2D::create("8", "assets/textures/test1.png", params));
-	TextureManager::add(Texture2D::create("9", "assets/textures/test2.png", params));
-	TextureManager::add(Texture2D::create("10", "assets/textures/test3.png", params));
-	TextureManager::add(Texture2D::create("11", "assets/textures/test4.png", params));
-	TextureManager::add(Texture2D::create("12", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("13", "assets/textures/test6.png", params));
-	TextureManager::add(Texture2D::create("14", "assets/textures/test7.png", params));
-	TextureManager::add(Texture2D::create("15", "assets/textures/test8.png", params));
+	TextureManager::add(Texture::create("8", "assets/textures/test1.png", params));
+	TextureManager::add(Texture::create("9", "assets/textures/test2.png", params));
+	TextureManager::add(Texture::create("10", "assets/textures/test3.png", params));
+	TextureManager::add(Texture::create("11", "assets/textures/test4.png", params));
+	TextureManager::add(Texture::create("12", "assets/textures/test5.png", params));
+	TextureManager::add(Texture::create("13", "assets/textures/test6.png", params));
+	TextureManager::add(Texture::create("14", "assets/textures/test7.png", params));
+	TextureManager::add(Texture::create("15", "assets/textures/test8.png", params));
 
-	TextureManager::add(Texture2D::create("16", "assets/textures/test1.png", params));
-	TextureManager::add(Texture2D::create("17", "assets/textures/test2.png", params));
-	TextureManager::add(Texture2D::create("18", "assets/textures/test3.png", params));
-	TextureManager::add(Texture2D::create("19", "assets/textures/test4.png", params));
-	TextureManager::add(Texture2D::create("20", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("21", "assets/textures/test6.png", params));
-	TextureManager::add(Texture2D::create("22", "assets/textures/test7.png", params));
-	TextureManager::add(Texture2D::create("23", "assets/textures/test8.png", params));
+	TextureManager::add(Texture::create("16", "assets/textures/test1.png", params));
+	TextureManager::add(Texture::create("17", "assets/textures/test2.png", params));
+	TextureManager::add(Texture::create("18", "assets/textures/test3.png", params));
+	TextureManager::add(Texture::create("19", "assets/textures/test4.png", params));
+	TextureManager::add(Texture::create("20", "assets/textures/test5.png", params));
+	TextureManager::add(Texture::create("21", "assets/textures/test6.png", params));
+	TextureManager::add(Texture::create("22", "assets/textures/test7.png", params));
+	TextureManager::add(Texture::create("23", "assets/textures/test8.png", params));
 
-	TextureManager::add(Texture2D::create("24", "assets/textures/test1.png", params));
-	TextureManager::add(Texture2D::create("25", "assets/textures/test2.png", params));
-	TextureManager::add(Texture2D::create("26", "assets/textures/test3.png", params));
-	TextureManager::add(Texture2D::create("27", "assets/textures/test4.png", params));
-	TextureManager::add(Texture2D::create("28", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("29", "assets/textures/test6.png", params));
-	TextureManager::add(Texture2D::create("30", "assets/textures/test7.png", params));
-	TextureManager::add(Texture2D::create("31", "assets/textures/test8.png", params));
+	TextureManager::add(Texture::create("24", "assets/textures/test1.png", params));
+	TextureManager::add(Texture::create("25", "assets/textures/test2.png", params));
+	TextureManager::add(Texture::create("26", "assets/textures/test3.png", params));
+	TextureManager::add(Texture::create("27", "assets/textures/test4.png", params));
+	TextureManager::add(Texture::create("28", "assets/textures/test5.png", params));
+	TextureManager::add(Texture::create("29", "assets/textures/test6.png", params));
+	TextureManager::add(Texture::create("30", "assets/textures/test7.png", params));
+	TextureManager::add(Texture::create("31", "assets/textures/test8.png", params));
 
-	TextureManager::add(Texture2D::create("32", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(Texture2D::create("33", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(Texture2D::create("34", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(Texture2D::create("35", "assets/textures/jdm.png", params));
-	TextureManager::add(Texture2D::create("36", "assets/textures/test5.png", params));
-	TextureManager::add(Texture2D::create("37", "assets/textures/test6.png", params));
-	TextureManager::add(Texture2D::create("38", "assets/textures/test7.png", params));
-	TextureManager::add(Texture2D::create("39", "assets/textures/test8.png", params));
+	TextureManager::add(Texture::create("32", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(Texture::create("33", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(Texture::create("34", "assets/textures/enemyspotted.png", params));
+	TextureManager::add(Texture::create("35", "assets/textures/jdm.png", params));
+	TextureManager::add(Texture::create("36", "assets/textures/test5.png", params));
+	TextureManager::add(Texture::create("37", "assets/textures/test6.png", params));
+	TextureManager::add(Texture::create("38", "assets/textures/test7.png", params));
+	TextureManager::add(Texture::create("39", "assets/textures/test8.png", params));
 
 
 	FontManager::add(new Font("sourceSans", "assets/fonts/sourcesanspro-regular.ttf", 100));
