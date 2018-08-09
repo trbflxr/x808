@@ -14,7 +14,7 @@ namespace xe { namespace api {
 
 	class GLFrameBufferOld : public FrameBufferOld {
 	public:
-		explicit GLFrameBufferOld(uint width, uint height, Type type, TextureFilter filter);
+		explicit GLFrameBufferOld(uint width, uint height, Type type, TextureMinFilter filter);
 		~GLFrameBufferOld();
 
 		void bind() override;

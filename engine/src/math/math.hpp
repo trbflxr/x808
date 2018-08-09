@@ -35,6 +35,14 @@ namespace xe { namespace math {
 		return __max(__min(n, max), min);
 	}
 
+	static float logf(float a, float newBase) {
+		if (std::isnan(a)) return a;
+		if (std::isnan(newBase)) return newBase;
+		if (newBase == 1.0f || (a != 1.0f && (newBase == 0.0f || std::isinf(newBase)))) return NAN;
+
+		return std::log(a) / std::log(newBase);
+	}
+
 }}
 
 #endif //X808_MATH_HPP

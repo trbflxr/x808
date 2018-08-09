@@ -18,9 +18,13 @@ using namespace xe::api;
 
 
 Test2D::Test2D() {
-
-	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureTarget::TEX2D, TextureFilter::NEAREST);
+	TextureParameters params(TextureTarget::Tex2D,
+	                         PixelInternalFormat::Rgba,
+	                         PixelFormat::Rgba,
+	                         PixelType::UnsignedByte,
+	                         TextureMinFilter::Linear,
+	                         TextureMagFilter::Linear,
+	                         TextureWrap::ClampToBorder);
 
 	TextureManager::add(Texture::create("0", "assets/textures/test1.png", params));
 	TextureManager::add(Texture::create("1", "assets/textures/test2.png", params));

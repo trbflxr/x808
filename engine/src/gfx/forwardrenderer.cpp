@@ -48,10 +48,10 @@ namespace xe {
 		for (uint i = 0; i < NUM_SHADOW_MAPS; ++i) {
 			uint size = static_cast<uint>(1 << (i + 1));
 			shadowBuffers0[i] = api::FrameBufferOld::create(size, size,
-			                                             api::FrameBufferOld::RG32F, api::TextureFilter::BILINEAR);
+			                                             api::FrameBufferOld::RG32F, TextureMinFilter::Linear);
 
 			shadowBuffers1[i] = api::FrameBufferOld::create(size, size,
-			                                             api::FrameBufferOld::RG32F, api::TextureFilter::BILINEAR);
+			                                             api::FrameBufferOld::RG32F, TextureMinFilter::Linear);
 		}
 
 		dummyMesh = Mesh::createPlaneMesh();

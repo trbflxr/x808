@@ -32,7 +32,7 @@ namespace xe { namespace api {
 		virtual void setClearColor(const vec4 &color) = 0;
 
 		static FrameBufferOld *create(uint width, uint height, Type type,
-		                           TextureFilter filter = TextureFilter::NEAREST);
+		                           TextureMinFilter filter = TextureMinFilter::Nearest);
 
 	protected:
 		FrameBufferOld() = default;

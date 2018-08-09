@@ -23,7 +23,7 @@ namespace xe { namespace api {
 		return result;
 	}
 
-	GLFrameBufferOld::GLFrameBufferOld(uint width, uint height, Type type, TextureFilter filter) :
+	GLFrameBufferOld::GLFrameBufferOld(uint width, uint height, Type type, TextureMinFilter filter) :
 			width(width),
 			height(height),
 			type(type),
@@ -34,17 +34,27 @@ namespace xe { namespace api {
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_FRAMEBUFFER, frameBufferHandle));
 
-			TextureParameters params(TextureTarget::TEX2D, TextureFormat::DEPTH16, filter, TextureWrap::CLAMP);
-			texture = new GLTexture(width, height, params);
+			TextureParameters params(TextureTarget::Tex2D,
+			                         PixelInternalFormat::DepthComponent16,
+			                         PixelFormat::DepthComponent,
+			                         PixelType::UnsignedByte,
+			                         filter);
+
+			texture = new GLTexture(width, height, 1, params);
 
 			glCall(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getHandle(), 0));
 			glCall(glDrawBuffer(GL_NONE));
 
 		} else {
-			auto format = type == GLFrameBufferOld::RG32F ? TextureFormat::RG32F : TextureFormat::RGBA;
+			auto intF = type == GLFrameBufferOld::RG32F ? PixelInternalFormat::Rgb32f : PixelInternalFormat::Rgba;
 
-			TextureParameters params(TextureTarget::TEX2D, format, filter, TextureWrap::CLAMP);
-			texture = new GLTexture(width, height, params);
+			TextureParameters params(TextureTarget::Tex2D,
+			                         intF,
+			                         PixelFormat::Rgba,
+			                         PixelType::UnsignedByte,
+			                         filter);
+
+			texture = new GLTexture(width, height, 1, params);
 
 			glCall(glGenFramebuffers(1, &frameBufferHandle));
 			glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBufferHandle));

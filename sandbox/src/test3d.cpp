@@ -17,8 +17,16 @@
 Test3D::Test3D(DebugUI *ui) :
 		ui(ui) {
 
-	Texture::setWrap(TextureWrap::CLAMP_TO_BORDER);
-	TextureParameters params(TextureTarget::TEX2D, TextureFilter::AF16);
+	TextureParameters params(TextureTarget::Tex2D,
+	                         PixelInternalFormat::Rgba,
+	                         PixelFormat::Rgba,
+	                         PixelType::UnsignedByte,
+	                         TextureMinFilter::LinearMipMapLinear,
+	                         TextureMagFilter::Linear,
+	                         TextureWrap::ClampToBorder,
+	                         MIP_MAP_AUTO,
+	                         true);
+
 	TextureManager::add(Texture::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture::create("2", "assets/textures/test3.png", params));
 	TextureManager::add(Texture::create("4", "assets/textures/test5.png", params));
@@ -151,9 +159,9 @@ Test3D::Test3D(DebugUI *ui) :
 	fx::Quad *quad = new fx::Quad(800, 600);
 	quad->load();
 
-	Texture *t1 = Texture::create(800, 600, params);
-	Texture *t2 = Texture::create(800, 600, params);
-	Texture *t3 = Texture::create(800, 600, params);
+	Texture *t1 = Texture::create(800, 600, 1, params);
+	Texture *t2 = Texture::create(800, 600, 1, params);
+	Texture *t3 = Texture::create(800, 600, 1, params);
 
 	FrameBuffer *buffer = FrameBuffer::create("jopa");
 	buffer->load({std::pair<Attachment, Texture *>(Attachment::COLOR0, t1),

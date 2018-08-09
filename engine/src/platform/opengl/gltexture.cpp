@@ -4,83 +4,27 @@
 
 #include "gltexture.hpp"
 #include "glcommon.hpp"
+#include "glenums.hpp"
 #include "utils/loadimage.hpp"
 #include "embedded/embedded.hpp"
 
 namespace xe { namespace api {
 
-	uint textureInternalFormatToGL(TextureFormat format) {
-		switch (format) {
-			case TextureFormat::RGBA: return GL_RGBA;
-			case TextureFormat::RGB: return GL_RGB;
-			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
-			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
-			case TextureFormat::DEPTH16: return GL_DEPTH_COMPONENT16;
-			case TextureFormat::DEPTH24: return GL_DEPTH_COMPONENT24;
-			case TextureFormat::RG32F: return GL_RG32F;
-		}
+	GLTexture::GLTexture(uint width, uint height, uint depth, const TextureParameters &params) :
+			Texture("NULL", "NULL", width, height, depth, params) {
+
+		handle = loadInternal(nullptr);
 	}
 
-	uint textureFormatToGL(TextureFormat format) {
-		switch (format) {
-			case TextureFormat::RGBA: return GL_RGBA;
-			case TextureFormat::RGB: return GL_RGB;
-			case TextureFormat::LUMINANCE: return GL_LUMINANCE;
-			case TextureFormat::LUMINANCE_ALPHA: return GL_LUMINANCE_ALPHA;
-			case TextureFormat::DEPTH16: return GL_DEPTH_COMPONENT;
-			case TextureFormat::DEPTH24: return GL_DEPTH_COMPONENT;
-			case TextureFormat::RG32F: return GL_RGBA;
-		}
-	}
+	GLTexture::GLTexture(const std::string_view &name,
+	                     const std::string_view &path,
+	                     const TextureParameters &params,
+	                     const TextureLoadOptions &options) :
+			Texture(name, path, 0, 0, 1, params) {
 
-	uint textureWrapToGL(TextureWrap wrap) {
-		switch (wrap) {
-			case TextureWrap::CLAMP: return GL_CLAMP;
-			case TextureWrap::CLAMP_TO_BORDER: return GL_CLAMP_TO_BORDER;
-			case TextureWrap::CLAMP_TO_EDGE: return GL_CLAMP_TO_EDGE;
-			case TextureWrap::REPEAT: return GL_REPEAT;
-			case TextureWrap::MIRRORED_REPEAT: return GL_MIRRORED_REPEAT;
-		}
-	}
+		//todo: handle multiple paths and depth
 
-	uint textureFilterToGL(TextureFilter filter) {
-		switch (filter) {
-			case TextureFilter::NEAREST: return GL_NEAREST;
-			case TextureFilter::BILINEAR: return GL_LINEAR;
-			default: return GL_LINEAR_MIPMAP_LINEAR;
-		}
-	}
-
-	uint textureFilterAnisotropyToGL(TextureFilter filter) {
-		switch (filter) {
-			case TextureFilter::AF2: return 2;
-			case TextureFilter::AF4: return 4;
-			case TextureFilter::AF8: return 8;
-			case TextureFilter::AF16: return 16;
-			default: return 0;
-		}
-	}
-
-	GLTexture::GLTexture(uint width, uint height, TextureParameters params) :
-			Texture(params.target),
-			fileName("NULL"),
-			width(width),
-			height(height),
-			parameters(params) {
-
-		handle = load();
-	}
-
-	GLTexture::GLTexture(const std::string_view &name, const std::string_view &path,
-	                         TextureParameters params,
-	                         TextureLoadOptions options) :
-			Texture(params.target),
-			name(name),
-			fileName(path),
-			parameters(params),
-			loadOptions(options) {
-
-		handle = load();
+		handle = loadInternal(&options);
 	}
 
 	GLTexture::~GLTexture() {
@@ -88,96 +32,184 @@ namespace xe { namespace api {
 	}
 
 	void GLTexture::bind(uint slot) const {
+		static uint target = textureTargetToGL(params.target);
+
 		glCall(glActiveTexture(GL_TEXTURE0 + slot));
-		glCall(glBindTexture(GL_TEXTURE_2D, handle));
+		glCall(glBindTexture(target, handle));
+	}
+
+	void GLTexture::bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const {
+		byte layered;
+		switch (params.target) {
+			case TextureTarget::Tex3D:
+			case TextureTarget::Tex2DArray:
+			case TextureTarget::TexCubeMap:
+			case TextureTarget::TexCubeMapArray: layered = 1;
+				break;
+			case TextureTarget::Tex1D:
+			case TextureTarget::Tex2D: layered = 0;
+				break;
+		}
+
+		uint pif = pixelInternalFormatToGL(params.internalFormat);
+
+		glCall(glActiveTexture(GL_TEXTURE0 + slot));
+		glCall(glBindImageTexture(index, handle, level, layered, layer, textureAccessToGL(access), pif));
 	}
 
 	void GLTexture::unbind(uint slot) const {
+		static uint target = textureTargetToGL(params.target);
+
 		glCall(glActiveTexture(GL_TEXTURE0 + slot));
-		glCall(glBindTexture(GL_TEXTURE_2D, 0));
+		glCall(glBindTexture(target, 0));
 	}
 
-	void GLTexture::setData(const void *pixels) {
-		if (parameters.format == TextureFormat::DEPTH24) {
-			XE_ERROR("[GLTexture2D]: 'SetData' is unavailable for depth texture!");
+	void GLTexture::setData2D(const void *pixels) {
+		if (params.format == PixelFormat::DepthComponent) {
+			XE_ERROR("[GLTexture]: 'SetData' is unavailable for depth texture!");
 			return;
 		}
 
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
-		glCall(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height,
-		                       textureInternalFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
+		glCall(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, pixelFormatToGL(params.format),
+		                       GL_UNSIGNED_BYTE, pixels));
 	}
 
-	uint GLTexture::load() {
+	void GLTexture::generateMipMaps(const TextureTarget &target) {
+		glCall(glGenerateMipmap(textureTargetToGL(target)));
+	}
+
+	uint GLTexture::loadInternal(const TextureLoadOptions *options) {
+		if (params.enableAniso) {
+			float aniso;
+			glCall(glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso));
+			maxAnisotropy = static_cast<uint>(aniso);
+		}
+
 		byte *pixels = nullptr;
 		bool fail = false;
 
-		if (fileName != "NULL") {
-			pixels = loadFromFile(fail);
+		if (options) {
+			pixels = loadFromFile(fail, options);
 		}
 
 		uint handle;
 		glCall(glGenTextures(1, &handle));
-		glCall(glBindTexture(GL_TEXTURE_2D, handle));
+		glCall(glBindTexture(textureTargetToGL(params.target), handle));
 
-		//filtering mode
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, textureFilterToGL(parameters.filter)));
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-		                       parameters.filter == TextureFilter::NEAREST ? GL_NEAREST : GL_LINEAR));
+		uint pif = pixelInternalFormatToGL(params.internalFormat);
+		uint pf = pixelFormatToGL(params.format);
+		uint pt = pixelTypeToGL(params.pixelType);
 
-		//wrap mode
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrapToGL(wrapMode)));
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrapToGL(wrapMode)));
-
-		//set data
-		glCall(glTexImage2D(GL_TEXTURE_2D, 0, textureInternalFormatToGL(parameters.format), width, height, 0,
-		                    textureFormatToGL(parameters.format), GL_UNSIGNED_BYTE, pixels));
-
-		//anisotropic filtering setup
-		if (parameters.filter != TextureFilter::NEAREST && parameters.filter != TextureFilter::BILINEAR) {
-			glCall(glGenerateMipmap(GL_TEXTURE_2D));
-
-			uint anisotropy = textureFilterAnisotropyToGL(parameters.filter);
-			if (anisotropy) {
-				glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropy));
+		switch (params.target) {
+			case TextureTarget::Tex1D: {
+				glCall(glTexImage1D(GL_TEXTURE_1D, 0, pif, width, 0, pf, pt, pixels));
+				break;
 			}
 
-		} else {
-			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0));
-			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0));
+			case TextureTarget::Tex2D: {
+				glCall(glTexImage2D(GL_TEXTURE_2D, 0, pif, width, height, 0, pf, pt, pixels));
+				break;
+			}
+
+			case TextureTarget::Tex3D: {
+				glCall(glTexImage3D(GL_TEXTURE_3D, 0, pif, width, height, depth, 0, pf, pt, pixels));
+				break;
+			}
+
+			case TextureTarget::Tex2DArray: {
+				glCall(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, pif, width, height, depth, 0, pf, pt, nullptr));
+				break;
+			}
+
+			case TextureTarget::TexCubeMap: {
+				for (uint i = 0; i < depth; ++i) {
+					glCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pif, width, height,
+					                    0, pf, pt, pixels));
+				}
+				break;
+			}
+
+			case TextureTarget::TexCubeMapArray: {
+				glCall(glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, maxMipMapLevels + 1,
+				                      pif, width, height, depth * 6));
+				break;
+			}
 		}
 
+		setTextureParams(params.target);
 
-		glCall(glBindTexture(GL_TEXTURE_2D, 0));
+		glCall(glBindTexture(textureTargetToGL(params.target), 0));
 
 		if (!fail) delete[] pixels;
 
 		return handle;
 	}
 
-	byte *GLTexture::loadFromFile(bool &fail) {
+	byte *GLTexture::loadFromFile(bool &fail, const TextureLoadOptions *options) {
 		byte *outPixels = nullptr;
 
 		uint bits;
 		// FreeImage loads bottom->top
-		outPixels = utils::loadImage(fileName.data(), &width, &height, &bits, !loadOptions.flipY);
+		outPixels = utils::loadImage(fileName.data(), &width, &height, &bits, !options->flipY);
 
 		if (!outPixels) {
 			fail = true;
-			fileName = "default";
+			name = "default";
+			fileName = "NULL";
 			width = internal::DEFAULT_TEXTURE_W;
 			height = internal::DEFAULT_TEXTURE_H;
 
 			outPixels = internal::DEFAULT_TEXTURE;
-			parameters.format = TextureFormat::RGBA;
+			params.format = PixelFormat::Rgba;
+			params.internalFormat = PixelInternalFormat::Rgba;
 		} else {
 			if (bits != 24 && bits != 32) {
-				XE_FATAL("[Texture] Unsupported image bit-depth! ('", bits, "')");
+				XE_FATAL("[GLTexture] Unsupported image bit-depth! ('", bits, "')");
 			}
-			parameters.format = bits == 24 ? TextureFormat::RGB : TextureFormat::RGBA;
+
+			if (bits == 24) {
+				params.internalFormat = PixelInternalFormat::Rgb;
+				params.format = PixelFormat::Rgb;
+			} else {
+				params.internalFormat = PixelInternalFormat::Rgba;
+				params.format = PixelFormat::Rgba;
+			}
 		}
 
 		return outPixels;
+	}
+
+	void GLTexture::setTextureParams(const TextureTarget &target) {
+		uint glTarget = textureTargetToGL(target);
+
+		//filtering mode
+		glCall(glTexParameterf(glTarget, GL_TEXTURE_MIN_FILTER, textureMinFilterToGL(params.minFilter)));
+		glCall(glTexParameterf(glTarget, GL_TEXTURE_MAG_FILTER, textureMagFilterToGL(params.magFilter)));
+
+		//wrap mode
+		glCall(glTexParameterf(glTarget, GL_TEXTURE_WRAP_S, textureWrapToGL(params.wrap)));
+		glCall(glTexParameterf(glTarget, GL_TEXTURE_WRAP_T, textureWrapToGL(params.wrap)));
+		glCall(glTexParameterf(glTarget, GL_TEXTURE_WRAP_R, textureWrapToGL(params.wrap)));
+
+		//gen mip maps
+		if (params.mipMapLevels == MIP_MAP_AUTO) {
+			maxMipMapLevels = getMaxMipMap(width, height);
+			Texture::params.minFilter = TextureMinFilter::LinearMipMapLinear;
+		} else if (params.mipMapLevels > 0) {
+			maxMipMapLevels = __min(getMaxMipMap(width, height), params.mipMapLevels);
+			Texture::params.minFilter = TextureMinFilter::LinearMipMapLinear;
+		}
+
+		if (maxMipMapLevels) {
+				glCall(glTexParameterf(glTarget, GL_TEXTURE_BASE_LEVEL, 0));
+			glCall(glTexParameterf(glTarget, GL_TEXTURE_MAX_LEVEL, maxMipMapLevels));
+			generateMipMaps(target);
+		}
+
+		if (params.enableAniso) {
+			glCall(glTexParameterf(glTarget, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy));
+		}
 	}
 
 }}

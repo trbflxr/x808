@@ -9,55 +9,68 @@
 #include <string>
 #include "common.hpp"
 #include "xeint.hpp"
+#include "enums.hpp"
 
 namespace xe { namespace api {
 
-	enum class TextureTarget {
-		TEX1D, TEX2D, TEX3D, TEX2D_ARRAY, TEX_CUBE_MAP, TEX_CUBE_MAP_ARRAY
-	};
-
-	enum class TextureWrap {
-		REPEAT = 0, CLAMP, MIRRORED_REPEAT, CLAMP_TO_EDGE, CLAMP_TO_BORDER
-	};
-
-	enum class TextureFilter {
-		NEAREST = 0, BILINEAR, TRILINEAR, AF2, AF4, AF8, AF16
-	};
-
-
-	enum class TextureFormat {
-		RGB = 0, RGBA, LUMINANCE, LUMINANCE_ALPHA, DEPTH16, DEPTH24, RG32F
-	};
+	static constexpr uint MIP_MAP_AUTO = static_cast<uint>(-1);
 
 	struct TextureParameters {
 		TextureTarget target;
-		TextureFormat format;
-		TextureFilter filter;
+		PixelInternalFormat internalFormat;
+		PixelFormat format;
+		PixelType pixelType;
+		TextureMinFilter minFilter;
+		TextureMagFilter magFilter;
 		TextureWrap wrap;
 
-		TextureParameters(TextureTarget target) :
-				target(target),
-				format(TextureFormat::RGBA),
-				filter(TextureFilter::TRILINEAR),
-				wrap(TextureWrap::CLAMP) { }
+		uint mipMapLevels;
+		bool enableAniso;
 
-		TextureParameters(TextureTarget target, TextureFormat format, TextureFilter filter, TextureWrap wrap) :
+
+		explicit TextureParameters(TextureTarget target) :
 				target(target),
+				internalFormat(PixelInternalFormat::Rgba),
+				format(PixelFormat::Rgba),
+				pixelType(PixelType::UnsignedByte),
+				minFilter(TextureMinFilter::LinearMipMapLinear),
+				magFilter(TextureMagFilter::Linear),
+				wrap(TextureWrap::Clamp),
+				mipMapLevels(MIP_MAP_AUTO),
+				enableAniso(true) { }
+
+		explicit TextureParameters(TextureTarget target = TextureTarget::Tex2D,
+		                           TextureWrap wrap = TextureWrap::Clamp,
+		                           uint mipMapLevels = MIP_MAP_AUTO,
+		                           bool useAniso = true) :
+				target(target),
+				internalFormat(PixelInternalFormat::Rgba),
+				format(PixelFormat::Rgba),
+				pixelType(PixelType::UnsignedByte),
+				minFilter(TextureMinFilter::LinearMipMapLinear),
+				magFilter(TextureMagFilter::Linear),
+				wrap(wrap),
+				mipMapLevels(mipMapLevels),
+				enableAniso(useAniso) { }
+
+		explicit TextureParameters(TextureTarget target,
+		                           PixelInternalFormat internalFormat,
+		                           PixelFormat format,
+		                           PixelType pixelType,
+		                           TextureMinFilter minFilter = TextureMinFilter::Linear,
+		                           TextureMagFilter magFilter = TextureMagFilter::Linear,
+		                           TextureWrap wrap = TextureWrap::Clamp,
+		                           uint mipMapLevels = 0,
+		                           bool useAniso = false) :
+				target(target),
+				internalFormat(internalFormat),
 				format(format),
-				filter(filter),
-				wrap(wrap) { }
-
-		TextureParameters(TextureTarget target, TextureFilter filter) :
-				target(target),
-				format(TextureFormat::RGBA),
-				filter(filter),
-				wrap(TextureWrap::CLAMP) { }
-
-		TextureParameters(TextureTarget target, TextureFilter filter, TextureWrap wrap) :
-				target(target),
-				format(TextureFormat::RGBA),
-				filter(filter),
-				wrap(wrap) { }
+				pixelType(pixelType),
+				minFilter(minFilter),
+				magFilter(magFilter),
+				wrap(wrap),
+				mipMapLevels(mipMapLevels),
+				enableAniso(useAniso) { }
 	};
 
 	struct TextureLoadOptions {
@@ -68,47 +81,58 @@ namespace xe { namespace api {
 		TextureLoadOptions(bool flipX, bool flipY) : flipX(flipX), flipY(flipY) { }
 	};
 
-	//todo: refactor texture
-
 	class XE_API Texture {
 	public:
 		virtual ~Texture() = default;
 
 		virtual void bind(uint slot) const = 0;
+		virtual void bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const = 0;
 		virtual void unbind(uint slot) const = 0;
 
-		virtual const std::string &getName() const = 0;
-		virtual const std::string &getFilePath() const = 0;
+		virtual void setData2D(const void *pixels) = 0;
 
-		virtual void setData(const void *pixels) = 0;
+		virtual void generateMipMaps(const TextureTarget &target) = 0;
 
-		virtual uint getWidth() const = 0;
-		virtual uint getHeight() const = 0;
-		virtual uint getDepth() const = 0;
+		inline const std::string &getName() const { return name; }
+		inline const std::string &getFilePath() const { return fileName; }
 
-		virtual uint getHandle() const = 0;
+		inline virtual uint getWidth() const { return width; };
+		inline virtual uint getHeight() const { return height; };
+		inline virtual uint getDepth() const { return depth; };
+		inline virtual uint getHandle() const { return handle; };
+		inline virtual TextureTarget getTarget() const { return params.target; };
 
-		virtual TextureTarget getTarget() const { return target; };
+		inline uint getMaxMipMap() const { return getMaxMipMap(width, height); }
 
-		static Texture *create(uint width, uint height, TextureParameters params);
+		static Texture *create(uint width, uint height, uint depth, const TextureParameters &params);
 
 		static Texture *create(const std::string_view &name,
 		                       const std::string_view &path,
-		                       TextureParameters params,
-		                       TextureLoadOptions options = { });
+		                       const TextureParameters &params,
+		                       const TextureLoadOptions &options = { });
 
-		static byte getStrideFromFormat(TextureFormat format);
-		inline static void setWrap(TextureWrap mode) { wrapMode = mode; }
-		inline static void setFilter(TextureFilter mode) { filterMode = mode; }
+		static uint getMaxMipMap(uint width, uint height);
 
 	protected:
-		explicit Texture(TextureTarget target);
+		explicit Texture(const std::string_view &name,
+		                 const std::string_view &path,
+		                 uint width, uint height, uint depth,
+		                 const TextureParameters &params);
 
 	protected:
-		TextureTarget target;
+		std::string name;
+		std::string fileName;
 
-		static TextureWrap wrapMode;
-		static TextureFilter filterMode;
+		uint handle;
+
+		uint width;
+		uint height;
+		uint depth;
+
+		TextureParameters params;
+
+		uint maxMipMapLevels;
+		uint maxAnisotropy;
 	};
 
 }}

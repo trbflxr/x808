@@ -51,24 +51,29 @@ namespace xe {
 	void TextureManager::createDefaultTextures() {
 		using namespace api;
 
-		TextureParameters params(TextureTarget::TEX2D, TextureFilter::NEAREST);
+		TextureParameters params(TextureTarget::Tex2D,
+		                         PixelInternalFormat::Rgba,
+		                         PixelFormat::Rgba,
+		                         PixelType::UnsignedByte,
+		                         TextureMinFilter::Nearest,
+		                         TextureMagFilter::Nearest);
 
 		///texture
 		Texture *errorTexture = Texture::create(internal::DEFAULT_TEXTURE_W,
-		                                            internal::DEFAULT_TEXTURE_H, params);
-		errorTexture->setData(internal::DEFAULT_TEXTURE);
+		                                        internal::DEFAULT_TEXTURE_H, 1, params);
+		errorTexture->setData2D(internal::DEFAULT_TEXTURE);
 
 
 		///normal
 		Texture *defaultNormal = Texture::create(internal::DEFAULT_NORMAL_W,
-		                                             internal::DEFAULT_NORMAL_H, params);
-		defaultNormal->setData(internal::DEFAULT_NORMAL);
+		                                         internal::DEFAULT_NORMAL_H, 1, params);
+		defaultNormal->setData2D(internal::DEFAULT_NORMAL);
 
 
 		///displacement map
 		Texture *defaultDisp = Texture::create(internal::DEFAULT_DISP_W,
-		                                           internal::DEFAULT_DISP_H, params);
-		defaultDisp->setData(internal::DEFAULT_DISP);
+		                                       internal::DEFAULT_DISP_H, 1, params);
+		defaultDisp->setData2D(internal::DEFAULT_DISP);
 
 
 		textures.emplace("normal", defaultNormal);

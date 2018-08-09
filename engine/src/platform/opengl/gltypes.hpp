@@ -19,12 +19,5 @@
 #define GL_4_BYTES                        0x1409
 #define GL_DOUBLE                         0x140A
 
-//shaders
-#define GL_FRAGMENT_SHADER 0x8B30
-#define GL_VERTEX_SHADER 0x8B31
-#define GL_GEOMETRY_SHADER 0x8DD9
-#define GL_TESS_EVALUATION_SHADER 0x8E87
-#define GL_TESS_CONTROL_SHADER 0x8E88
-#define GL_COMPUTE_SHADER 0x91B9
 
 #endif //X808_GLTYPES_HPP

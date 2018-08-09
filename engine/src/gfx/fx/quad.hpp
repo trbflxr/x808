@@ -8,6 +8,7 @@
 
 #include "common.hpp"
 #include "rendereffect.hpp"
+#include "gfx/api/texture.hpp"
 #include "gfx/api/shader.hpp"
 #include "gfx/api/vertexarray.hpp"
 

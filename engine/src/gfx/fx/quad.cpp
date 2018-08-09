@@ -95,7 +95,7 @@ namespace xe { namespace fx {
 		memcpy(pLayer, &layer, sizeof(uint));
 
 		switch (texture->getTarget()) {
-			case api::TextureTarget::TEX1D: {
+			case TextureTarget::Tex1D: {
 				renderTexture1D->bind();
 				texture->bind(renderTexture1D->getResources().front()->getRegister());
 				render();
@@ -103,7 +103,7 @@ namespace xe { namespace fx {
 				break;
 			}
 
-			case api::TextureTarget::TEX2D: {
+			case TextureTarget::Tex2D: {
 				renderTexture2D->bind();
 				renderTexture2D->setUniform("channel", pChannel);
 				texture->bind(renderTexture2D->getResources().front()->getRegister());
@@ -112,7 +112,7 @@ namespace xe { namespace fx {
 				break;
 			}
 
-			case api::TextureTarget::TEX3D: {
+			case TextureTarget::Tex3D: {
 				renderTexture3D->bind();
 				renderTexture3D->setUniform("layer", pLayer);
 				texture->bind(renderTexture3D->getResources().front()->getRegister());
@@ -121,7 +121,7 @@ namespace xe { namespace fx {
 				break;
 			}
 
-			case api::TextureTarget::TEX2D_ARRAY: {
+			case TextureTarget::Tex2DArray: {
 				renderTexture2DArray->bind();
 				renderTexture2DArray->setUniform("layer", pLayer);
 				texture->bind(renderTexture2DArray->getResources().front()->getRegister());
@@ -130,7 +130,7 @@ namespace xe { namespace fx {
 				break;
 			}
 
-			case api::TextureTarget::TEX_CUBE_MAP: {
+			case TextureTarget::TexCubeMap: {
 				renderTextureCube->bind();
 				texture->bind(renderTextureCube->getResources().front()->getRegister());
 				renderFullQuad();
@@ -138,7 +138,7 @@ namespace xe { namespace fx {
 				break;
 			}
 
-			case api::TextureTarget::TEX_CUBE_MAP_ARRAY: {
+			case TextureTarget::TexCubeMapArray: {
 				renderTextureCubeArray->bind();
 				renderTextureCubeArray->setUniform("layer", pLayer);
 				texture->bind(renderTextureCubeArray->getResources().front()->getRegister());

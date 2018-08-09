@@ -30,10 +30,16 @@ namespace xe {
 		ftFont->outline_thickness = 0;
 		ftFont->outline_type = 2;
 
-		TextureParameters parameters = {TextureTarget::TEX2D, TextureFormat::LUMINANCE_ALPHA,
-		                                TextureFilter::NEAREST, TextureWrap::CLAMP_TO_EDGE};
-		texture = Texture::create(1024, 1024, parameters);
-		texture->setData(ftAtlas->data);
+		TextureParameters params(TextureTarget::Tex2D,
+		                         PixelInternalFormat::LuminanceAlpha,
+		                         PixelFormat::LuminanceAlpha,
+		                         PixelType::UnsignedByte,
+		                         TextureMinFilter::Nearest,
+		                         TextureMagFilter::Nearest,
+		                         TextureWrap::ClampToEdge);
+
+		texture = Texture::create(1024, 1024, 1, params);
+		texture->setData2D(ftAtlas->data);
 	}
 
 	Font::Font(const std::string_view &name, const byte *data, uint dataSize, float size) :
@@ -48,10 +54,16 @@ namespace xe {
 		ftAtlas = ftgl::texture_atlas_new(1024, 1024, 2);
 		ftFont = ftgl::texture_font_new_from_memory(ftAtlas, size, data, dataSize);
 
-		TextureParameters parameters = {TextureTarget::TEX2D, TextureFormat::LUMINANCE_ALPHA,
-		                                TextureFilter::NEAREST, TextureWrap::CLAMP_TO_EDGE};
-		texture = Texture::create(1024, 1024, parameters);
-		texture->setData(ftAtlas->data);
+		TextureParameters params(TextureTarget::Tex2D,
+		                         PixelInternalFormat::LuminanceAlpha,
+		                         PixelFormat::LuminanceAlpha,
+		                         PixelType::UnsignedByte,
+		                         TextureMinFilter::Nearest,
+		                         TextureMagFilter::Nearest,
+		                         TextureWrap::ClampToEdge);
+
+		texture = Texture::create(1024, 1024, 1, params);
+		texture->setData2D(ftAtlas->data);
 
 		XE_ASSERT(ftFont, "Failed to load font from data!");
 	}
@@ -97,7 +109,7 @@ namespace xe {
 
 	void Font::updateAtlas() const {
 		if (ftAtlas->dirty) {
-			texture->setData(ftAtlas->data);
+			texture->setData2D(ftAtlas->data);
 			ftAtlas->dirty = false;
 		}
 	}
