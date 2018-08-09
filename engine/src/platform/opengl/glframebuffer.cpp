@@ -4,31 +4,9 @@
 
 #include "glcommon.hpp"
 #include "glframebuffer.hpp"
+#include "glenums.hpp"
 
 namespace xe { namespace api {
-
-	uint attachmentToGL(Attachment attachment) {
-		switch (attachment) {
-			case Attachment::COLOR0: return GL_COLOR_ATTACHMENT0;
-			case Attachment::COLOR1: return GL_COLOR_ATTACHMENT1;
-			case Attachment::COLOR2: return GL_COLOR_ATTACHMENT2;
-			case Attachment::COLOR3: return GL_COLOR_ATTACHMENT3;
-			case Attachment::COLOR4: return GL_COLOR_ATTACHMENT4;
-			case Attachment::COLOR5: return GL_COLOR_ATTACHMENT5;
-			case Attachment::COLOR6: return GL_COLOR_ATTACHMENT6;
-			case Attachment::COLOR7: return GL_COLOR_ATTACHMENT7;
-			case Attachment::COLOR8: return GL_COLOR_ATTACHMENT8;
-			case Attachment::COLOR9: return GL_COLOR_ATTACHMENT9;
-			case Attachment::COLOR10: return GL_COLOR_ATTACHMENT10;
-			case Attachment::COLOR11: return GL_COLOR_ATTACHMENT11;
-			case Attachment::COLOR12: return GL_COLOR_ATTACHMENT12;
-			case Attachment::COLOR13: return GL_COLOR_ATTACHMENT13;
-			case Attachment::COLOR14: return GL_COLOR_ATTACHMENT14;
-			case Attachment::COLOR15: return GL_COLOR_ATTACHMENT15;
-			case Attachment::DEPTH: return GL_DEPTH_ATTACHMENT;
-			case Attachment::STENCIL: return GL_STENCIL_ATTACHMENT;
-		}
-	}
 
 	GLFrameBuffer::GLFrameBuffer(const std::string_view &name) :
 			FrameBuffer(name) {

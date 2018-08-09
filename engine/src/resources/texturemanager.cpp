@@ -60,19 +60,19 @@ namespace xe {
 
 		///texture
 		Texture *errorTexture = Texture::create(internal::DEFAULT_TEXTURE_W,
-		                                        internal::DEFAULT_TEXTURE_H, 1, params);
+		                                        internal::DEFAULT_TEXTURE_H, 0, params);
 		errorTexture->setData2D(internal::DEFAULT_TEXTURE);
 
 
 		///normal
 		Texture *defaultNormal = Texture::create(internal::DEFAULT_NORMAL_W,
-		                                         internal::DEFAULT_NORMAL_H, 1, params);
+		                                         internal::DEFAULT_NORMAL_H, 0, params);
 		defaultNormal->setData2D(internal::DEFAULT_NORMAL);
 
 
 		///displacement map
 		Texture *defaultDisp = Texture::create(internal::DEFAULT_DISP_W,
-		                                       internal::DEFAULT_DISP_H, 1, params);
+		                                       internal::DEFAULT_DISP_H, 0, params);
 		defaultDisp->setData2D(internal::DEFAULT_DISP);
 
 

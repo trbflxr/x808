@@ -18,6 +18,7 @@ namespace xe { namespace api {
 	uint pixelInternalFormatToGL(PixelInternalFormat type);
 	uint pixelFormatToGL(PixelFormat format);
 	uint textureAccessToGL(TextureAccess textureAccess);
+	uint attachmentToGL(Attachment attachment);
 
 }}
 

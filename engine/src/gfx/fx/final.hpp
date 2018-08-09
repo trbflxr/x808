@@ -33,7 +33,7 @@ namespace xe { namespace fx {
 		void loadBuffers() override;
 
 	private:
-		api::Shader *finalScene;
+		api::Shader *finalShader;
 		api::FrameBuffer *finalFBO;
 		api::Texture *finalTexture;
 	};

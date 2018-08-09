@@ -109,4 +109,28 @@ namespace xe { namespace api {
 		}
 	}
 
+
+	uint attachmentToGL(Attachment attachment) {
+		switch (attachment) {
+			case Attachment::Color0: return GL_COLOR_ATTACHMENT0;
+			case Attachment::Color1: return GL_COLOR_ATTACHMENT1;
+			case Attachment::Color2: return GL_COLOR_ATTACHMENT2;
+			case Attachment::Color3: return GL_COLOR_ATTACHMENT3;
+			case Attachment::Color4: return GL_COLOR_ATTACHMENT4;
+			case Attachment::Color5: return GL_COLOR_ATTACHMENT5;
+			case Attachment::Color6: return GL_COLOR_ATTACHMENT6;
+			case Attachment::Color7: return GL_COLOR_ATTACHMENT7;
+			case Attachment::Color8: return GL_COLOR_ATTACHMENT8;
+			case Attachment::Color9: return GL_COLOR_ATTACHMENT9;
+			case Attachment::Color10: return GL_COLOR_ATTACHMENT10;
+			case Attachment::Color11: return GL_COLOR_ATTACHMENT11;
+			case Attachment::Color12: return GL_COLOR_ATTACHMENT12;
+			case Attachment::Color13: return GL_COLOR_ATTACHMENT13;
+			case Attachment::Color14: return GL_COLOR_ATTACHMENT14;
+			case Attachment::Color15: return GL_COLOR_ATTACHMENT15;
+			case Attachment::Depth: return GL_DEPTH_ATTACHMENT;
+			case Attachment::Stencil: return GL_STENCIL_ATTACHMENT;
+		}
+	}
+
 }}

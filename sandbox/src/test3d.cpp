@@ -151,14 +151,14 @@ Test3D::Test3D(DebugUI *ui) :
 	fx::Quad *quad = new fx::Quad(800, 600);
 	quad->load();
 
-	Texture *t1 = Texture::create(800, 600, 1, params);
-	Texture *t2 = Texture::create(800, 600, 1, params);
-	Texture *t3 = Texture::create(800, 600, 1, params);
+	Texture *t1 = Texture::create(800, 600, 0, params);
+	Texture *t2 = Texture::create(800, 600, 0, params);
+	Texture *t3 = Texture::create(800, 600, 0, params);
 
 	FrameBuffer *buffer = FrameBuffer::create("jopa");
-	buffer->load({std::pair<Attachment, Texture *>(Attachment::COLOR0, t1),
-	              std::pair<Attachment, Texture *>(Attachment::COLOR1, t2),
-	              std::pair<Attachment, Texture *>(Attachment::COLOR2, t3)});
+	buffer->load({std::pair<Attachment, Texture *>(Attachment::Color0, t1),
+	              std::pair<Attachment, Texture *>(Attachment::Color1, t2),
+	              std::pair<Attachment, Texture *>(Attachment::Color2, t3)});
 
 
 }

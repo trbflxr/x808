@@ -11,11 +11,6 @@
 
 namespace xe { namespace api {
 
-	enum class Attachment {
-		COLOR0, COLOR1, COLOR2, COLOR3, COLOR4, COLOR5, COLOR6, COLOR7, COLOR8,
-		COLOR9, COLOR10, COLOR11, COLOR12, COLOR13, COLOR14, COLOR15, DEPTH, STENCIL
-	};
-
 	class XE_API FrameBuffer {
 	public:
 		inline uint getHandle() const { return handle; }
