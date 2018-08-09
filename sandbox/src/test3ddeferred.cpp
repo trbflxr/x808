@@ -15,13 +15,7 @@ using namespace xe::api;
 
 Test3DDeferred::Test3DDeferred() {
 
-	TextureParameters params(TextureTarget::Tex2D,
-	                         PixelInternalFormat::Rgba,
-	                         PixelFormat::Rgba,
-	                         PixelType::UnsignedByte,
-	                         TextureMinFilter::Nearest,
-	                         TextureMagFilter::Nearest,
-	                         TextureWrap::ClampToBorder);
+	TextureParameters params;
 
 	TextureManager::add(Texture::create("rock", "assets/textures/rock.png", params));
 //	TextureManager::add(Texture2D::create("2", "assets/textures/test3.png", params));

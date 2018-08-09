@@ -13,7 +13,8 @@
 
 namespace xe { namespace api {
 
-	static constexpr uint MIP_MAP_AUTO = static_cast<uint>(-1);
+#define MIP_MAP_AUTO static_cast<uint>(-1)
+#define ANISOTROPY_AUTO static_cast<uint>(-1)
 
 	struct TextureParameters {
 		TextureTarget target;
@@ -25,7 +26,7 @@ namespace xe { namespace api {
 		TextureWrap wrap;
 
 		uint mipMapLevels;
-		bool enableAniso;
+		uint anisotropy;
 
 
 		explicit TextureParameters(TextureTarget target) :
@@ -37,12 +38,12 @@ namespace xe { namespace api {
 				magFilter(TextureMagFilter::Linear),
 				wrap(TextureWrap::Clamp),
 				mipMapLevels(MIP_MAP_AUTO),
-				enableAniso(true) { }
+				anisotropy(ANISOTROPY_AUTO) { }
 
 		explicit TextureParameters(TextureTarget target = TextureTarget::Tex2D,
 		                           TextureWrap wrap = TextureWrap::Clamp,
 		                           uint mipMapLevels = MIP_MAP_AUTO,
-		                           bool useAniso = true) :
+		                           uint anisotropy = ANISOTROPY_AUTO) :
 				target(target),
 				internalFormat(PixelInternalFormat::Rgba),
 				format(PixelFormat::Rgba),
@@ -51,7 +52,7 @@ namespace xe { namespace api {
 				magFilter(TextureMagFilter::Linear),
 				wrap(wrap),
 				mipMapLevels(mipMapLevels),
-				enableAniso(useAniso) { }
+				anisotropy(anisotropy) { }
 
 		explicit TextureParameters(TextureTarget target,
 		                           PixelInternalFormat internalFormat,
@@ -61,7 +62,7 @@ namespace xe { namespace api {
 		                           TextureMagFilter magFilter = TextureMagFilter::Linear,
 		                           TextureWrap wrap = TextureWrap::Clamp,
 		                           uint mipMapLevels = 0,
-		                           bool useAniso = false) :
+		                           uint anisotropy = 0) :
 				target(target),
 				internalFormat(internalFormat),
 				format(format),
@@ -70,7 +71,7 @@ namespace xe { namespace api {
 				magFilter(magFilter),
 				wrap(wrap),
 				mipMapLevels(mipMapLevels),
-				enableAniso(useAniso) { }
+				anisotropy(anisotropy) { }
 	};
 
 	struct TextureLoadOptions {

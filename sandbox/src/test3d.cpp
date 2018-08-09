@@ -17,15 +17,7 @@
 Test3D::Test3D(DebugUI *ui) :
 		ui(ui) {
 
-	TextureParameters params(TextureTarget::Tex2D,
-	                         PixelInternalFormat::Rgba,
-	                         PixelFormat::Rgba,
-	                         PixelType::UnsignedByte,
-	                         TextureMinFilter::LinearMipMapLinear,
-	                         TextureMagFilter::Linear,
-	                         TextureWrap::ClampToBorder,
-	                         MIP_MAP_AUTO,
-	                         true);
+	TextureParameters params;
 
 	TextureManager::add(Texture::create("rock", "assets/textures/rock.png", params));
 	TextureManager::add(Texture::create("2", "assets/textures/test3.png", params));

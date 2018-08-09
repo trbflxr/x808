@@ -80,12 +80,6 @@ namespace xe { namespace api {
 	}
 
 	uint GLTexture::loadInternal(const TextureLoadOptions *options) {
-		if (params.enableAniso) {
-			float aniso;
-			glCall(glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso));
-			maxAnisotropy = static_cast<uint>(aniso);
-		}
-
 		byte *pixels = nullptr;
 		bool fail = false;
 
@@ -201,13 +195,26 @@ namespace xe { namespace api {
 			Texture::params.minFilter = TextureMinFilter::LinearMipMapLinear;
 		}
 
+		//set mip maps
 		if (maxMipMapLevels) {
-				glCall(glTexParameterf(glTarget, GL_TEXTURE_BASE_LEVEL, 0));
+			glCall(glTexParameterf(glTarget, GL_TEXTURE_BASE_LEVEL, 0));
 			glCall(glTexParameterf(glTarget, GL_TEXTURE_MAX_LEVEL, maxMipMapLevels));
 			generateMipMaps(target);
 		}
 
-		if (params.enableAniso) {
+		//get max anisotropic filtering
+		static float aniso = 0;
+		if (!aniso) {
+			glCall(glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso));
+		}
+		if (params.anisotropy == ANISOTROPY_AUTO) {
+			maxAnisotropy = static_cast<uint>(aniso);
+		} else if (params.anisotropy > 0) {
+			maxAnisotropy = __min(static_cast<uint>(aniso), params.anisotropy);
+		}
+
+		//set anisotropic filtering
+		if (params.anisotropy) {
 			glCall(glTexParameterf(glTarget, GL_TEXTURE_MAX_ANISOTROPY_EXT, maxAnisotropy));
 		}
 	}
