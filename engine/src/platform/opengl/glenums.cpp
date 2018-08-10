@@ -79,6 +79,7 @@ namespace xe { namespace api {
 			case PixelInternalFormat::Rgb32f: return GL_RGB32F;
 			case PixelInternalFormat::Rgba16f: return GL_RGBA16F;
 			case PixelInternalFormat::Rgb16f: return GL_RGB16F;
+			case PixelInternalFormat::Rg32f: return GL_RG32F;
 		}
 	}
 
@@ -130,6 +131,52 @@ namespace xe { namespace api {
 			case Attachment::Color15: return GL_COLOR_ATTACHMENT15;
 			case Attachment::Depth: return GL_DEPTH_ATTACHMENT;
 			case Attachment::Stencil: return GL_STENCIL_ATTACHMENT;
+		}
+	}
+
+	uint rendererBufferToGL(uint buffer) {
+		uint result = 0;
+
+		if (buffer & RendererBufferColor) {
+			result |= GL_COLOR_BUFFER_BIT;
+		}
+		if (buffer & RendererBufferDepth) {
+			result |= GL_DEPTH_BUFFER_BIT;
+		}
+		if (buffer & RendererBufferStencil) {
+			result |= GL_STENCIL_BUFFER_BIT;
+		}
+		return result;
+	}
+
+	uint blendFunctionToGL(BlendFunction function) {
+		switch (function) {
+			case BlendFunction::Zero: return GL_ZERO;
+			case BlendFunction::One: return GL_ONE;
+			case BlendFunction::SourceAlpha: return GL_SRC_ALPHA;
+			case BlendFunction::DestinationAlpha: return GL_DST_ALPHA;
+			case BlendFunction::OneMinusSourceAlpha: return GL_ONE_MINUS_SRC_ALPHA;
+		}
+	}
+
+	uint blendEquationToGL(BlendEquation equation){
+		switch (equation){
+			case BlendEquation::Add: return GL_ADD;
+			case BlendEquation::Subtract: return GL_SUBTRACT;
+		}
+	}
+
+	uint depthFunctionToGL(DepthFunction function) {
+		switch (function) {
+			case DepthFunction::Equal: return GL_EQUAL;
+			case DepthFunction::Less: return GL_LESS;
+		}
+	}
+
+	uint cullFaceToGL(CullFace cullFace) {
+		switch (cullFace) {
+			case CullFace::Front: return GL_FRONT;
+			case CullFace::Back: return GL_BACK;
 		}
 	}
 

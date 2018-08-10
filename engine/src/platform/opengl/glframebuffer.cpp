@@ -75,7 +75,6 @@ namespace xe { namespace api {
 	}
 
 	void GLFrameBuffer::unbind() {
-		glCall(glDrawBuffer(0));
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
@@ -86,6 +85,10 @@ namespace xe { namespace api {
 			XE_FATAL("[GLFrameBuffer]: setting texture failed");
 			XE_ASSERT(false);
 		}
+	}
+
+	Texture *GLFrameBuffer::getTexture(Attachment attachment) {
+		return attachments[attachment];
 	}
 
 }}

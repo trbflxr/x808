@@ -60,7 +60,7 @@ DebugUI::~DebugUI() {
 }
 
 void DebugUI::render() {
-	Renderer::clear(RENDERER_BUFFER_DEPTH);
+	Renderer::clear(RendererBufferDepth);
 
 	renderer->begin();
 

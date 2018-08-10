@@ -3,25 +3,11 @@
 //
 
 #include "glframebuffer_old.hpp"
-#include "glcommon.hpp"
 #include "gfx/renderer.hpp"
+#include "glcommon.hpp"
+#include "glenums.hpp"
 
 namespace xe { namespace api {
-
-	uint rendererBufferToGL(uint buffer) {
-		uint result = 0;
-
-		if (buffer & RENDERER_BUFFER_COLOR) {
-			result |= GL_COLOR_BUFFER_BIT;
-		}
-		if (buffer & RENDERER_BUFFER_DEPTH) {
-			result |= GL_DEPTH_BUFFER_BIT;
-		}
-		if (buffer & RENDERER_BUFFER_STENCIL) {
-			result |= GL_STENCIL_BUFFER_BIT;
-		}
-		return result;
-	}
 
 	GLFrameBufferOld::GLFrameBufferOld(uint width, uint height, Type type, TextureMinFilter filter) :
 			width(width),

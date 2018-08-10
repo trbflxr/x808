@@ -46,8 +46,8 @@ namespace xe { namespace fx {
 
 	void Quad::renderBlendBlend() {
 		Renderer::enableBlend(true);
-		Renderer::setBlendEquation(BlendEquation::ADD);
-		Renderer::setBlendFunction(BlendFunction::ONE, BlendFunction::ONE);
+		Renderer::setBlendEquation(BlendEquation::Add);
+		Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
 
 		render();
 
@@ -62,8 +62,8 @@ namespace xe { namespace fx {
 
 	void Quad::renderFullQuadBlend() {
 		Renderer::enableBlend(true);
-		Renderer::setBlendEquation(BlendEquation::ADD);
-		Renderer::setBlendFunction(BlendFunction::ONE, BlendFunction::ONE);
+		Renderer::setBlendEquation(BlendEquation::Add);
+		Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
 
 		renderFullQuad();
 

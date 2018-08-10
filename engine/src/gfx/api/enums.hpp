@@ -68,7 +68,8 @@ namespace xe {
 		Rgba32f,
 		Rgb32f,
 		Rgba16f,
-		Rgb16f
+		Rgb16f,
+		Rg32f
 	};
 
 	enum class PixelFormat {
@@ -113,6 +114,35 @@ namespace xe {
 		Color15,
 		Depth,
 		Stencil
+	};
+
+	enum RendererBufferType {
+		RendererBufferColor = BIT(0),
+		RendererBufferDepth = BIT(1),
+		RendererBufferStencil = BIT(2)
+	};
+
+	enum class BlendFunction {
+		Zero,
+		One,
+		SourceAlpha,
+		DestinationAlpha,
+		OneMinusSourceAlpha
+	};
+
+	enum class BlendEquation {
+		Add,
+		Subtract
+	};
+
+	enum class DepthFunction {
+		Equal,
+		Less
+	};
+
+	enum class CullFace {
+		Front,
+		Back
 	};
 
 }

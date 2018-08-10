@@ -39,7 +39,7 @@ namespace xe { namespace fx {
 
 	void Final::render(Quad *quad) {
 		Renderer::setViewport(0, 0, width, height);
-		Renderer::clear(RENDERER_BUFFER_DEPTH);
+		Renderer::clear(RendererBufferDepth);
 
 		finalShader->bind();
 

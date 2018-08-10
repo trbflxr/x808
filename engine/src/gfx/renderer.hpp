@@ -9,31 +9,10 @@
 #include "common.hpp"
 #include "xeint.hpp"
 #include "color.hpp"
+#include "gfx/api/enums.hpp"
 #include "math/vec4.hpp"
 
 namespace xe {
-
-	enum RendererBufferType {
-		RENDERER_BUFFER_COLOR = BIT(0),
-		RENDERER_BUFFER_DEPTH = BIT(1),
-		RENDERER_BUFFER_STENCIL = BIT(2)
-	};
-
-	enum class BlendFunction {
-		NONE, ZERO, ONE, SOURCE_ALPHA, DESTINATION_ALPHA, ONE_MINUS_SOURCE_ALPHA
-	};
-
-	enum class BlendEquation {
-		NONE, ADD, SUBTRACT
-	};
-
-	enum class DepthFunction {
-		NONE, EQUAL, LESS
-	};
-
-	enum class CullFace {
-		NONE, FRONT, BACK
-	};
 
 	class XE_API Renderer {
 	public:

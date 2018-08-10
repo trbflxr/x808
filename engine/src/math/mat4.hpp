@@ -31,14 +31,15 @@ namespace xe {
 		vec4 getColumn(int index) const;
 		void setColumn(int index, const vec4 &column);
 
-		inline vec3 getPosition() const { return vec3(getColumn(3)); }
-		inline void setPosition(const vec3 &position) { setColumn(3, vec4(position, 1.0f)); }
-
 		vec3 transform(const vec3 &r) const;
 
 		mat4 &invert();
 
 		void rotate(float angleDeg, const vec3 &axis);
+
+		inline vec3 getTranslation() const { return vec3(getColumn(3)); }
+		vec3 getScale() const;
+		quat getRotation() const;
 
 		static vec3 translateVec(const mat4 &m, const vec2 &vec);
 		static vec3 translateVec(const mat4 &m, const vec3 &vec);

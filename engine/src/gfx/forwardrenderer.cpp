@@ -17,7 +17,7 @@ namespace xe {
 		Renderer::enableDepthTesting(true);
 		Renderer::enableDepthClamp(true);
 
-		Renderer::setCullFace(CullFace::BACK);
+		Renderer::setCullFace(CullFace::Back);
 
 		//default shaders
 		ambientLight = new AmbientLight(GETSHADER("defaultForwardAmbient"), 0.1f, color::WHITE);
@@ -94,7 +94,7 @@ namespace xe {
 
 		screenBuffer->bind();
 		screenBuffer->setClearColor({0.0f, 0.0f, 0.0f, 0.0f});
-		screenBuffer->clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
+		screenBuffer->clear(RendererBufferColor | RendererBufferDepth);
 
 		ambientLight->bind();
 
@@ -117,12 +117,12 @@ namespace xe {
 
 			//render to screen
 			Renderer::enableBlend(true);
-			Renderer::setBlendFunction(BlendFunction::ONE, BlendFunction::ONE);
+			Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
 			Renderer::enableDepthMask(false);
-			Renderer::setDepthFunction(DepthFunction::EQUAL);
+			Renderer::setDepthFunction(DepthFunction::Equal);
 
 			screenBuffer->bind();
-			screenBuffer->clear(RENDERER_BUFFER_DEPTH);
+			screenBuffer->clear(RendererBufferDepth);
 
 			light->bind();
 
@@ -150,7 +150,7 @@ namespace xe {
 
 			light->unbind();
 
-			Renderer::setDepthFunction(DepthFunction::LESS);
+			Renderer::setDepthFunction(DepthFunction::Less);
 			Renderer::enableDepthMask(true);
 			Renderer::enableBlend(false);
 
@@ -174,7 +174,7 @@ namespace xe {
 
 		shadowBuffers0[shadowMapIndex]->bind();
 		shadowBuffers0[shadowMapIndex]->setClearColor({1.0f, 1.0f, 0.0f, 0.0f});
-		shadowBuffers0[shadowMapIndex]->clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
+		shadowBuffers0[shadowMapIndex]->clear(RendererBufferColor | RendererBufferDepth);
 
 		if (shadowInfo) {
 			lightCamera->setProjection(shadowInfo->projection);
@@ -191,11 +191,11 @@ namespace xe {
 				shadowMapShader->setUniforms(nullptr, target.transform, lightCamera);
 				shadowMapShader->updateUniforms();
 
-				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::FRONT);
+				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::Front);
 
 				target.mesh->render();
 
-				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::BACK);
+				if (shadowInfo->flipFaces) Renderer::setCullFace(CullFace::Back);
 			}
 
 			shadowMapShader->unbind();
@@ -247,10 +247,10 @@ namespace xe {
 
 		if (dest) {
 			dest->bind();
-			dest->clear(RENDERER_BUFFER_DEPTH);
+			dest->clear(RendererBufferDepth);
 		} else {
 			Renderer::setViewport(0, 0, width, height);
-			Renderer::clear(RENDERER_BUFFER_DEPTH);
+			Renderer::clear(RendererBufferDepth);
 		}
 
 		filter->setUniforms(dummyMaterial, dummyTransform, lightCamera);

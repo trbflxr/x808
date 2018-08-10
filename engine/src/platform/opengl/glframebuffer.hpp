@@ -30,6 +30,8 @@ namespace xe { namespace api {
 		void unbind() override;
 
 		void bindTexture(Attachment attachment, api::Texture *texture) override;
+
+		Texture *getTexture(Attachment attachment) override;
 	};
 
 }}

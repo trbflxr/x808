@@ -140,7 +140,7 @@ namespace xe {
 
 	void Renderer2D::begin() {
 		Renderer::enableBlend(true);
-		Renderer::setBlendFunction(BlendFunction::SOURCE_ALPHA, BlendFunction::ONE_MINUS_SOURCE_ALPHA);
+		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 
 		Renderer::setViewport(0, 0, screenSize.x, screenSize.y);
 

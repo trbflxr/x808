@@ -4,50 +4,9 @@
 
 #include "glcommon.hpp"
 #include "glrenderer.hpp"
+#include "glenums.hpp"
 
 namespace xe {
-
-	uint rendererBufferToGL(uint buffer) {
-		uint result = 0;
-
-		if (buffer & RENDERER_BUFFER_COLOR) {
-			result |= GL_COLOR_BUFFER_BIT;
-		}
-		if (buffer & RENDERER_BUFFER_DEPTH) {
-			result |= GL_DEPTH_BUFFER_BIT;
-		}
-		if (buffer & RENDERER_BUFFER_STENCIL) {
-			result |= GL_STENCIL_BUFFER_BIT;
-		}
-		return result;
-	}
-
-	uint rendererBlendFunctionToGL(BlendFunction function) {
-		switch (function) {
-			case BlendFunction::ZERO: return GL_ZERO;
-			case BlendFunction::ONE: return GL_ONE;
-			case BlendFunction::SOURCE_ALPHA: return GL_SRC_ALPHA;
-			case BlendFunction::DESTINATION_ALPHA: return GL_DST_ALPHA;
-			case BlendFunction::ONE_MINUS_SOURCE_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
-			default:return 0;
-		}
-	}
-
-	uint rendererDepthFunctionToGL(DepthFunction function) {
-		switch (function) {
-			case DepthFunction::EQUAL: return GL_EQUAL;
-			case DepthFunction::LESS: return GL_LESS;
-			default:return 0;
-		}
-	}
-
-	uint rendererCullFaceToGL(CullFace cullFace) {
-		switch (cullFace) {
-			case CullFace::FRONT: return GL_FRONT;
-			case CullFace::BACK: return GL_BACK;
-			default:return 0;
-		}
-	}
 
 	GLRenderer::GLRenderer() {
 		context = api::GLContext::get();
@@ -56,7 +15,7 @@ namespace xe {
 	void GLRenderer::initInternal() {
 		enableDepthTesting(true);
 		enableBlend(true);
-		setBlendFunction(BlendFunction::SOURCE_ALPHA, BlendFunction::ONE_MINUS_SOURCE_ALPHA);
+		setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 
 		glCall(glEnable(GL_CULL_FACE));
 		glCall(glFrontFace(GL_CCW));
@@ -64,7 +23,7 @@ namespace xe {
 	}
 
 	void GLRenderer::clearInternal(uint buffer) {
-		glCall(glClear(rendererBufferToGL(buffer)));
+		glCall(glClear(api::rendererBufferToGL(buffer)));
 	}
 
 	void GLRenderer::flushInternal() {
@@ -124,18 +83,18 @@ namespace xe {
 	}
 
 	void GLRenderer::setBlendFunctionInternal(BlendFunction source, BlendFunction destination) {
-		glCall(glBlendFunc(rendererBlendFunctionToGL(source), rendererBlendFunctionToGL(destination)));
+		glCall(glBlendFunc(api::blendFunctionToGL(source), api::blendFunctionToGL(destination)));
 	}
 
 	void GLRenderer::setBlendEquationInternal(BlendEquation equation) {
-		XE_ASSERT(false, "Not implemented");
+		glCall(glBlendEquation(api::blendEquationToGL(equation)));
 	}
 
 	void GLRenderer::setDepthFunctionInternal(DepthFunction function) {
-		glCall(glDepthFunc(rendererDepthFunctionToGL(function)));
+		glCall(glDepthFunc(api::depthFunctionToGL(function)));
 	}
 	void GLRenderer::setCullFaceInternal(CullFace cullFace) {
-		glCall(glCullFace(rendererCullFaceToGL(cullFace)));
+		glCall(glCullFace(api::cullFaceToGL(cullFace)));
 	}
 
 }

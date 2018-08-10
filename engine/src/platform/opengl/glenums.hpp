@@ -20,6 +20,12 @@ namespace xe { namespace api {
 	uint textureAccessToGL(TextureAccess textureAccess);
 	uint attachmentToGL(Attachment attachment);
 
+	uint rendererBufferToGL(uint buffer);
+	uint blendFunctionToGL(BlendFunction function);
+	uint blendEquationToGL(BlendEquation equation);
+	uint depthFunctionToGL(DepthFunction function);
+	uint cullFaceToGL(CullFace cullFace);
+
 }}
 
 #endif //X808_GLENUMS_HPP

@@ -197,6 +197,24 @@ namespace xe {
 		elements[2 + 2 * 4] = z * z * omc + c;
 	}
 
+	vec3 mat4::getScale() const {
+		vec3 temp = vec3(rows[0]);
+		float s0 = vec3::length(temp);
+
+		temp = vec3(rows[1]);
+		float s1 = vec3::length(temp);
+
+		temp = vec3(rows[2]);
+		float s2 = vec3::length(temp);
+
+		return vec3(s0, s1, s2);
+	}
+
+	quat mat4::getRotation() const {
+		return xe::quat();
+	}
+
+
 	vec3 mat4::transform(const vec3 &r) const {
 		return vec3(rows[0].x * r.x + rows[0].y * r.y + rows[0].z * r.z + rows[0].w,
 		            rows[1].x * r.x + rows[1].y * r.y + rows[1].z * r.z + rows[1].w,

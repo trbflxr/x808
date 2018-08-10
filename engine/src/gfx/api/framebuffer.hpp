@@ -32,6 +32,8 @@ namespace xe { namespace api {
 
 		virtual void bindTexture(Attachment attachment, api::Texture *texture) = 0;
 
+		virtual Texture *getTexture(Attachment attachment) = 0;
+
 		static FrameBuffer *create(const std::string_view &name);
 
 	protected:

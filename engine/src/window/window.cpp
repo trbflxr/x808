@@ -175,7 +175,7 @@ namespace xe {
 	}
 
 	void Window::clear() const {
-		Renderer::clear(RENDERER_BUFFER_COLOR | RENDERER_BUFFER_DEPTH);
+		Renderer::clear(RendererBufferColor | RendererBufferDepth);
 	}
 
 	void Window::update() {

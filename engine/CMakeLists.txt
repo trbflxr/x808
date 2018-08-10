@@ -67,6 +67,7 @@ file(GLOB ENGINE_SRC
         src/resources/*.cpp
         src/utils/*.cpp
         src/window/*.cpp
+        src/world/*.cpp
         src/*.cpp)
 
 
