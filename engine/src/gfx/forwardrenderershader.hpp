@@ -7,7 +7,7 @@
 
 
 #include "math/transform.hpp"
-#include "gfx/api/shader.hpp"
+#include "gfx/api/baseshader.hpp"
 #include "camera.hpp"
 #include "material.hpp"
 
@@ -18,7 +18,7 @@ namespace xe {
 		friend class ForwardRenderer;
 
 	public:
-		explicit ForwardRendererShader(api::Shader *shader);
+		explicit ForwardRendererShader(api::BaseShader *shader);
 		~ForwardRendererShader();
 
 		void bind() const;
@@ -27,6 +27,8 @@ namespace xe {
 		void updateUniforms();
 
 		virtual void setUniforms(const Material *material, const Transform &transform, Camera *camera);
+
+		inline api::BaseShader *getShader() { return shader; }
 
 	protected:
 		void init();
@@ -41,10 +43,7 @@ namespace xe {
 		virtual void setUserUniforms() { }
 
 	private:
-		uint getSamplerLocation(const char *name);
-
-	private:
-		api::Shader *shader;
+		api::BaseShader *shader;
 
 		std::vector<api::Uniform> uniforms;
 		std::vector<api::UniformData> uniformData;

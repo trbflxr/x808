@@ -57,8 +57,8 @@ file(GLOB ENGINE_SRC
         src/ecs/systems/*.cpp
         src/embedded/*.cpp
         src/gfx/api/*.cpp
-        src/gfx/fx/*.cpp
         src/gfx/camera/*.cpp
+        src/gfx/fx/*.cpp
         src/gfx/layers/*.cpp
         src/gfx/lights/*.cpp
         src/gfx/*.cpp
@@ -67,7 +67,6 @@ file(GLOB ENGINE_SRC
         src/resources/*.cpp
         src/utils/*.cpp
         src/window/*.cpp
-        src/world/*.cpp
         src/*.cpp)
 
 

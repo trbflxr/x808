@@ -9,46 +9,39 @@
 namespace xe { namespace fx {
 
 	Final::Final(uint width, uint height) :
-			RenderEffect(width, height) { }
+			RenderEffect(width, height) {
+
+		finalShader = new Shader("defaultFinalFX");
+
+		float fxaaSpanMax = 8.0f;
+		float fxaaReduceMul = 1.0f / fxaaSpanMax;
+		float fxaaReduceMin = 1.0f / (fxaaSpanMax * 16.0f);
+
+		finalShader->setUniform("fxaaSpanMax", &fxaaSpanMax, sizeof(float));
+		finalShader->setUniform("fxaaReduceMin", &fxaaReduceMin, sizeof(float));
+		finalShader->setUniform("fxaaReduceMul", &fxaaReduceMul, sizeof(float));
+	}
 
 	Final::~Final() {
-		delete finalTexture;
-		delete finalFBO;
+		delete finalShader;
 	}
 
-	void Final::load() {
-		loadPrograms();
-		loadBuffers();
-	}
-
-	void Final::loadPrograms() {
-		finalShader = GETSHADER("defaultFinalScene");
-	}
-
-	void Final::loadBuffers() {
-		static api::TextureParameters params(TextureTarget::Tex2D,
-		                                     PixelInternalFormat::Rgba16f,
-		                                     PixelFormat::Rgba,
-		                                     PixelType::Float);
-
-		finalTexture = api::Texture::create(width, height, 0, params);
-
-		finalFBO = api::FrameBuffer::create("FinalScene");
-		finalFBO->load({std::pair<Attachment, api::Texture *>(Attachment::Color0, finalTexture)});
-	}
-
-	void Final::render(Quad *quad) {
+	void Final::render(Quad *quad, api::Texture *srcTexture, bool useFXAA) const {
 		Renderer::setViewport(0, 0, width, height);
 		Renderer::clear(RendererBufferDepth);
 
+		int32 fxaa = useFXAA;
+
 		finalShader->bind();
+		finalShader->setUniform("useFXAA", &fxaa, sizeof(int32));
+		finalShader->updateUniforms();
 
 		//bind to sampler0
-		static uint slot = finalShader->getResources()[0]->getRegister();
+		static uint slot = finalShader->getResource("sampler0");
 
-		finalTexture->bind(slot);
+		srcTexture->bind(slot);
 		quad->render();
-		finalTexture->unbind(slot);
+		srcTexture->unbind(slot);
 
 		finalShader->unbind();
 	}

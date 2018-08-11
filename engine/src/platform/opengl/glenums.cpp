@@ -180,4 +180,15 @@ namespace xe { namespace api {
 		}
 	}
 
+	uint shaderTypeToGL(ShaderType type) {
+		switch (type) {
+			case ShaderType::Vert: return GL_VERTEX_SHADER;
+			case ShaderType::Frag: return GL_FRAGMENT_SHADER;
+			case ShaderType::Geom: return GL_GEOMETRY_SHADER;
+			case ShaderType::TessEval: return GL_TESS_EVALUATION_SHADER;
+			case ShaderType::TessControl: return GL_TESS_CONTROL_SHADER;
+			case ShaderType::Compute: return GL_COMPUTE_SHADER;
+		}
+	}
+
 }}

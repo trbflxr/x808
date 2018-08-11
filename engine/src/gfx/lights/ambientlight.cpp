@@ -6,7 +6,7 @@
 
 namespace xe {
 
-	AmbientLight::AmbientLight(api::Shader *shader, float intensity, uint color) :
+	AmbientLight::AmbientLight(api::BaseShader *shader, float intensity, uint color) :
 			BaseLight(shader, intensity, color) {
 
 		setUniformsInternal();

@@ -7,10 +7,13 @@
 
 namespace xe {
 
-	BaseLight::BaseLight(api::Shader *shader, float intensity, uint color) :
-			ForwardRendererShader(shader),
+	BaseLight::BaseLight(api::BaseShader *shader, float intensity, uint color) :
+			Shader(shader),
 			enabled(true),
-			shadowInfo(nullptr) {
+			shadowInfo(nullptr),
+			diffuse(nullptr),
+			normalMap(nullptr),
+			dispMap(nullptr) {
 
 		light.color = color::decode(color);
 		light.intensity = intensity;
@@ -18,6 +21,11 @@ namespace xe {
 
 	BaseLight::~BaseLight() {
 		delete shadowInfo;
+	}
+
+	void BaseLight::unbind() const {
+		Shader::unbind();
+		unbindSamplers();
 	}
 
 	void BaseLight::setUniforms(const Material *material, const Transform &transform, Camera *camera) {
@@ -68,6 +76,37 @@ namespace xe {
 		lightCamera->unhookEntity();
 		lightCamera->transform.setRotation(transform.getRotation());
 		lightCamera->transform.setTranslation(transform.getTranslation());
+	}
+
+	void BaseLight::bindSamplers(const Material *material) {
+		for (auto &&sampler : shader->getResources()) {
+			if (sampler->getName() == "diffuse") {
+				diffuse = material->getTexture();
+				diffuse->bind(sampler->getRegister());
+
+			} else if (sampler->getName() == "normalMap") {
+				normalMap = material->getNormalMap();
+				normalMap->bind(sampler->getRegister());
+
+			} else if (sampler->getName() == "dispMap") {
+				dispMap = material->getDispMap();
+				dispMap->bind(sampler->getRegister());
+			}
+		}
+	}
+
+	void BaseLight::unbindSamplers() const {
+		for (auto &&sampler : shader->getResources()) {
+			if (sampler->getName() == "diffuse") {
+				diffuse->unbind(sampler->getRegister());
+
+			} else if (sampler->getName() == "normalMap") {
+				normalMap->unbind(sampler->getRegister());
+
+			} else if (sampler->getName() == "dispMap") {
+				dispMap->unbind(sampler->getRegister());
+			}
+		}
 	}
 
 }

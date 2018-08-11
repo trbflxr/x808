@@ -11,7 +11,6 @@
 #include <ecs/components/transformcomponent.hpp>
 #include "test3d.hpp"
 
-#include <gfx/fx/quad.hpp>
 #include <gfx/api/framebuffer.hpp>
 
 Test3D::Test3D(DebugUI *ui) :
@@ -147,20 +146,6 @@ Test3D::Test3D(DebugUI *ui) :
 	cubeModel = ecs.makeEntity(model, transform);
 
 
-	//test
-	fx::Quad *quad = new fx::Quad(800, 600);
-	quad->load();
-
-	Texture *t1 = Texture::create(800, 600, 0, params);
-	Texture *t2 = Texture::create(800, 600, 0, params);
-	Texture *t3 = Texture::create(800, 600, 0, params);
-
-	FrameBuffer *buffer = FrameBuffer::create("jopa");
-	buffer->load({std::pair<Attachment, Texture *>(Attachment::Color0, t1),
-	              std::pair<Attachment, Texture *>(Attachment::Color1, t2),
-	              std::pair<Attachment, Texture *>(Attachment::Color2, t3)});
-
-
 }
 
 Test3D::~Test3D() {
@@ -251,6 +236,8 @@ void Test3D::fixedUpdate(float delta) {
 
 void Test3D::input(Event &event) {
 	ecs.inputSystems(mainSystems, event);
+
+	renderer->input(event);
 
 	if (event.type == Event::KeyPressed) {
 		if (event.key.code == Keyboard::Key::Num1) {

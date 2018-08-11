@@ -6,13 +6,13 @@
 #define X808_GLSHADER_HPP
 
 
-#include "gfx/api/shader.hpp"
+#include "gfx/api/baseshader.hpp"
 #include "glshaderuniform.hpp"
 #include "glshaderresource.hpp"
 
 namespace xe { namespace api {
 
-	class GLShader : public Shader {
+	class GLShader : public BaseShader {
 	public:
 		explicit GLShader(const std::string_view &name, const std::vector<ShaderFile *> &shaderPipeline);
 		~GLShader() override;
@@ -21,9 +21,6 @@ namespace xe { namespace api {
 		void unbind() const override;
 
 		void setUniformBuffer(byte *data, uint size, uint slot) override;
-
-		void setUniform(const std::string_view &name, byte *data) override;
-		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset);
 
 	private:
 		void resolveUniforms();
@@ -34,6 +31,8 @@ namespace xe { namespace api {
 
 		void resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size);
 		void resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size);
+
+		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset);
 
 		void setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset);
 

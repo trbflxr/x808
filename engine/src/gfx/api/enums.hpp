@@ -145,6 +145,10 @@ namespace xe {
 		Back
 	};
 
+	enum class ShaderType {
+		Vert, Frag, Geom, TessEval, TessControl, Compute
+	};
+
 }
 
 

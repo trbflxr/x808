@@ -12,7 +12,7 @@ namespace xe {
 
 	class XE_API AmbientLight : public BaseLight {
 	public:
-		explicit AmbientLight(api::Shader *shader, float intensity, uint color = color::WHITE);
+		explicit AmbientLight(api::BaseShader *shader, float intensity, uint color = color::WHITE);
 
 		void setUniforms(const Material *material, const Transform &transform, Camera *camera) override;
 

@@ -8,7 +8,7 @@
 
 #include <unordered_map>
 #include <string>
-#include <gfx/api/shader.hpp>
+#include <gfx/api/baseshader.hpp>
 #include "common.hpp"
 #include "utils/noncopyable.hpp"
 
@@ -18,8 +18,8 @@ namespace xe {
 	public:
 		~ShaderManager() override;
 
-		static void add(api::Shader *shader);
-		static api::Shader *get(const std::string_view &name);
+		static void add(api::BaseShader *shader);
+		static api::BaseShader *get(const std::string_view &name);
 
 		static void clean();
 
@@ -28,13 +28,10 @@ namespace xe {
 
 		void createDefaultShaders();
 
-		void createDefaultCommonShaders();
-		void createDefaultFinalShaders();
-
 		static ShaderManager &instance();
 
 	private:
-		std::unordered_map<std::string, api::Shader *> shaders;
+		std::unordered_map<std::string, api::BaseShader *> shaders;
 	};
 
 }

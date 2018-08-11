@@ -12,7 +12,7 @@
 #include "camera.hpp"
 #include "gfx/api/vertexarray.hpp"
 #include "gfx/api/indexbuffer.hpp"
-#include "gfx/api/shader.hpp"
+#include "gfx/api/baseshader.hpp"
 #include "ecs/components/spritecomponent.hpp"
 #include "ecs/components/transform2dcomponent.hpp"
 #include "ecs/components/textcomponent.hpp"
@@ -89,7 +89,7 @@ namespace xe {
 		std::vector<mat4> transformationStack;
 		const mat4 *transformationBack;
 
-		api::Shader *shader;
+		api::BaseShader *shader;
 		std::vector<api::Uniform> uniforms;
 		std::vector<api::UniformData> uniformData;
 

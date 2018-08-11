@@ -6,7 +6,7 @@
 
 namespace xe {
 
-	SpotLight::SpotLight(api::Shader *shader, const PointLight::Attenuation &attenuation, float intensity,
+	SpotLight::SpotLight(api::BaseShader *shader, const PointLight::Attenuation &attenuation, float intensity,
 	                     uint color, float fovDeg, uint shadowMapSizePower2, float shadowSoftness,
 	                     float lightBleedReduction, float minVariance) :
 			PointLight(shader, attenuation, intensity, color) {

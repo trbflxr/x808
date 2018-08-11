@@ -2,17 +2,17 @@
 // Created by FLXR on 7/4/2018.
 //
 
-#include "shader.hpp"
+#include "baseshader.hpp"
 #include "context.hpp"
 #include "utils/log.hpp"
 #include "platform/opengl/glshader.hpp"
 
 namespace xe { namespace api {
 
-	Shader::Shader(const std::string_view &name) :
+	BaseShader::BaseShader(const std::string_view &name) :
 			name(name) { }
 
-	Shader::~Shader() {
+	BaseShader::~BaseShader() {
 		for (auto &&s : structs) {
 			delete s;
 		}
@@ -26,7 +26,7 @@ namespace xe { namespace api {
 		}
 	}
 
-	Shader *Shader::create(const std::string_view &name,
+	BaseShader *BaseShader::create(const std::string_view &name,
 	                       const std::vector<ShaderFile *> &shaderPipeline,
 	                       void *address) {
 

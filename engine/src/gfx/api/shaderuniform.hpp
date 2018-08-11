@@ -15,7 +15,7 @@ namespace xe { namespace api {
 
 	class XE_API ShaderUniform {
 	private:
-		friend class Shader;
+		friend class BaseShader;
 		friend class GLShader;
 		friend class ShaderStruct;
 
@@ -47,7 +47,7 @@ namespace xe { namespace api {
 	///---------------------------///
 	class ShaderStruct {
 	private:
-		friend class Shader;
+		friend class BaseShader;
 
 	public:
 		explicit ShaderStruct(const std::string_view &name) : name(name), size(0), offset(0) { }

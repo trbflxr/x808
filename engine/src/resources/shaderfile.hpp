@@ -10,14 +10,11 @@
 #include <string>
 #include "xeint.hpp"
 #include "common.hpp"
+#include "gfx/api/enums.hpp"
 #include "gfx/api/shaderuniform.hpp"
 #include "gfx/api/shaderresource.hpp"
 
 namespace xe {
-
-	enum class ShaderType {
-		UNDEFINED = 0, VERT, FRAG, GEOM, TESS_EVAL, TESS_CONTROL, COMPUTE
-	};
 
 	class XE_API ShaderFile {
 	public:

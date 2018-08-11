@@ -1,15 +1,15 @@
 R"(
+uniform float fxaaSpanMax;
+uniform float fxaaReduceMin;
+uniform float fxaaReduceMul;
+
 vec3 fxaa(sampler2D sampler, vec2 uv) {
-  float FXAA_SPAN_MAX = 8.0;
-  float FXAA_REDUCE_MUL = 1.0 / FXAA_SPAN_MAX;
-  float FXAA_REDUCE_MIN = 1.0 / (FXAA_SPAN_MAX * 16.0);
+  vec2 textureSize = textureSize(sampler, 0).xy;
 
-  vec2 texture_size = textureSize(sampler, 0).xy;
-
-  vec3 rgbNW = texture(sampler, uv + (vec2(-1.0, -1.0) / texture_size)).xyz;
-  vec3 rgbNE = texture(sampler, uv + (vec2(1.0, -1.0) / texture_size)).xyz;
-  vec3 rgbSW = texture(sampler, uv + (vec2(-1.0, 1.0) / texture_size)).xyz;
-  vec3 rgbSE = texture(sampler, uv + (vec2(1.0, 1.0) / texture_size)).xyz;
+  vec3 rgbNW = texture(sampler, uv + (vec2(-1.0, -1.0) / textureSize)).xyz;
+  vec3 rgbNE = texture(sampler, uv + (vec2(1.0, -1.0) / textureSize)).xyz;
+  vec3 rgbSW = texture(sampler, uv + (vec2(-1.0, 1.0) / textureSize)).xyz;
+  vec3 rgbSE = texture(sampler, uv + (vec2(1.0, 1.0) / textureSize)).xyz;
   vec3 rgbM = texture(sampler, uv).xyz;
 
   vec3 luma = vec3(0.299, 0.587, 0.114);
@@ -26,12 +26,11 @@ vec3 fxaa(sampler2D sampler, vec2 uv) {
   dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));
   dir.y = ((lumaNW + lumaSW) - (lumaNE + lumaSE));
 
-  float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);
+  float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * (0.25 * fxaaReduceMul), fxaaReduceMin);
 
   float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);
 
-  dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX), max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * rcpDirMin)) /
-        texture_size;
+  dir = min(vec2(fxaaSpanMax, fxaaSpanMax), max(vec2(-fxaaSpanMax, -fxaaSpanMax), dir * rcpDirMin)) / textureSize;
 
   vec3 rgbA = (0.5) * (texture(sampler, uv.xy + dir * (1.0 / 3.0 - 0.5)).xyz +
                        texture(sampler, uv.xy + dir * (2.0 / 3.0 - 0.5)).xyz);

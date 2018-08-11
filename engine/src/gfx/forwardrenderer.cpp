@@ -2,6 +2,7 @@
 // Created by FLXR on 7/12/2018.
 //
 
+#include <window/event.hpp>
 #include "forwardrenderer.hpp"
 #include "renderer.hpp"
 #include "resources/shadermanager.hpp"
@@ -22,25 +23,8 @@ namespace xe {
 		//default shaders
 		ambientLight = new AmbientLight(GETSHADER("defaultForwardAmbient"), 0.1f, color::WHITE);
 		shadowMapShader = new ForwardRendererShader(GETSHADER("defaultShadowMap"));
-		shadowMapBlurShader = new ForwardRendererShader(GETSHADER("defaultFXGaussBlur"));
 
 		screenBuffer = api::FrameBufferOld::create(width, height, api::FrameBufferOld::COLOR);
-
-		if (useFXAA) {
-			fxaaFilter = new ForwardRendererShader(GETSHADER("defaultFXFXAA"));
-
-			float a = 8.0f;
-			float b = 1.0f / 128.0f;
-			float c = 1.0f / 8.0f;
-			vec2 textureSize = vec2(1.0f / width, 1.0f / height);
-
-			fxaaFilter->setUniform("fxaaSpanMax", &a, sizeof(float));
-			fxaaFilter->setUniform("fxaaReduceMin", &b, sizeof(float));
-			fxaaFilter->setUniform("fxaaReduceMul", &c, sizeof(float));
-			fxaaFilter->setUniform("inverseFilterTextureSize", &textureSize, sizeof(vec2));
-		} else {
-			fxaaFilter = new ForwardRendererShader(GETSHADER("defaultFXNULL"));
-		}
 
 		//shadows stuff
 		lightCamera = new Camera(mat4(1.0f));
@@ -48,19 +32,16 @@ namespace xe {
 		for (uint i = 0; i < NUM_SHADOW_MAPS; ++i) {
 			uint size = static_cast<uint>(1 << (i + 1));
 			shadowBuffers0[i] = api::FrameBufferOld::create(size, size,
-			                                             api::FrameBufferOld::RG32F, TextureMinFilter::Linear);
+			                                                api::FrameBufferOld::RG32F, TextureMinFilter::Linear);
 
 			shadowBuffers1[i] = api::FrameBufferOld::create(size, size,
-			                                             api::FrameBufferOld::RG32F, TextureMinFilter::Linear);
+			                                                api::FrameBufferOld::RG32F, TextureMinFilter::Linear);
 		}
 
-		dummyMesh = Mesh::createPlaneMesh();
-		dummyMaterial = new Material(nullptr, 1.0f, 8.0f);
-		dummyTransform.rotate(quat(vec3::XAXIS, -90.0f));
-		dummyTransform.rotate(quat(vec3::ZAXIS, 180.0f));
-
-		dummyGameObject.transform.setTranslation({0.0f, 0.0f, 0.0f});
-		dummyGameObject.transform.setRotation(quat(vec3::YAXIS, 180.0f));
+		//fx
+		quad = new fx::Quad(width, height);
+		finalFx = new fx::Final(width, height);
+		blurFx = new fx::GaussBlur7x1(width, height);
 	}
 
 	ForwardRenderer::~ForwardRenderer() {
@@ -73,10 +54,10 @@ namespace xe {
 
 		delete ambientLight;
 		delete shadowMapShader;
-		delete shadowMapBlurShader;
 
-		delete dummyMesh;
-		delete dummyMaterial;
+		delete quad;
+		delete finalFx;
+		delete blurFx;
 	}
 
 	void ForwardRenderer::begin() {
@@ -126,7 +107,7 @@ namespace xe {
 
 			light->bind();
 
-			uint shadowMapLoc = light->getSamplerLocation("shadowMap");
+			uint shadowMapLoc = light->getResource("shadowMap");
 			if (shadowMapLoc) {
 				shadowBuffers0[index]->getTexture()->bind(shadowMapLoc);
 			}
@@ -157,7 +138,7 @@ namespace xe {
 			screenBuffer->unbind();
 		}
 
-		applyFilter(fxaaFilter, screenBuffer, nullptr);
+		finalFx->render(quad, screenBuffer->getTexture(), useFXAA);
 
 		targets.clear();
 	}
@@ -218,48 +199,23 @@ namespace xe {
 	}
 
 	void ForwardRenderer::blurShadowMap(uint index, float blurAmount) {
-		//set camera
-		lightCamera->setProjection(mat4(1.0f));
-		lightCamera->hookEntity(&dummyGameObject);
-
-		shadowMapBlurShader->bind();
-
 		//x blur
 		vec2 scale(blurAmount / shadowBuffers0[index]->getWidth(), 0.0f);
-		shadowMapBlurShader->setUniform("blurScale", &scale, sizeof(vec2));
-		applyFilter(shadowMapBlurShader, shadowBuffers0[index], shadowBuffers1[index]);
+		blurFx->render(quad, shadowBuffers0[index]->getTexture(), shadowBuffers1[index], scale);
 
 		//y blur
 		scale = vec2(0.0f, blurAmount / shadowBuffers0[index]->getWidth());
-		shadowMapBlurShader->setUniform("blurScale", &scale, sizeof(vec2));
-		applyFilter(shadowMapBlurShader, shadowBuffers1[index], shadowBuffers0[index]);
-
-		shadowMapBlurShader->unbind();
-
-		lightCamera->unhookEntity();
+		blurFx->render(quad, shadowBuffers1[index]->getTexture(), shadowBuffers0[index], scale);
 	}
 
-	void
-	ForwardRenderer::applyFilter(ForwardRendererShader *filter, api::FrameBufferOld *src, api::FrameBufferOld *dest) {
-		XE_ASSERT(src != dest);
-
-		dummyMaterial->setTexture(src->getTexture());
-
-		if (dest) {
-			dest->bind();
-			dest->clear(RendererBufferDepth);
-		} else {
-			Renderer::setViewport(0, 0, width, height);
-			Renderer::clear(RendererBufferDepth);
-		}
-
-		filter->setUniforms(dummyMaterial, dummyTransform, lightCamera);
-		filter->updateUniforms();
-
-		dummyMesh->render();
-
-		if (dest) {
-			dest->unbind();
+	void ForwardRenderer::input(Event &event) {
+		if (event.type == Event::KeyPressed) {
+			if (event.key.code == Keyboard::Key::F1) {
+				useFXAA = !useFXAA;
+			}
+			if (event.key.code == Keyboard::Key::F2) {
+				blurFx->toggle();
+			}
 		}
 	}
 

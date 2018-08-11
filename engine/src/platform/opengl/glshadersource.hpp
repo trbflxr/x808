@@ -10,133 +10,81 @@ namespace xe {	namespace internal {
 
 		//batch renderer
 		static const char *brVertGL =
-		#include "shaders/.old/batchrenderer.vert"
+		#include "shaders/batchRenderer.vert"
 				;
 
 		static const char *brFragGL =
-		#include "shaders/.old/batchrenderer.frag"
+		#include "shaders/batchRenderer.frag"
 				;
 
 		//lights
 		static const char *forwardLightingVertGL =
-		#include "shaders/.old/forward-lighting.vert"
+		#include "shaders/forwardLighting.vert"
 				;
 
 		static const char *forwardLightingFragGL =
-		#include "shaders/.old/forward-lighting.frag"
+		#include "shaders/forwardLighting.frag"
 				;
 
 		static const char *forwardLightingFragIncludeGL =
-		#include "shaders/.old/forward-lighting.frag.include"
+		#include "shaders/include/forwardLighting.frag.include"
 				;
 
 		static const char *forwardDirectionalIncludeGL =
-		#include "shaders/.old/forward-directionalLight.include"
+		#include "shaders/include/forwardDirectionalLight.include"
 				;
 
 		static const char *forwardPointIncludeGL =
-		#include "shaders/.old/forward-pointLight.include"
+		#include "shaders/include/forwardPointLight.include"
 				;
 
 		static const char *forwardSpotIncludeGL =
-		#include "shaders/.old/forward-spotLight.include"
+		#include "shaders/include/forwardSpotLight.include"
 				;
 
 		static const char *forwardAmbientVertGL =
-		#include "shaders/.old/forward-ambientlight.vert"
+		#include "shaders/forwardAmbientlight.vert"
 				;
 
 		static const char *forwardAmbientFragGL =
-		#include "shaders/.old/forward-ambientlight.frag"
-				;
-
-		//fx
-		static const char *fxVertGL =
-		#include "shaders/.old/fx/fx.vert"
-				;
-
-		static const char *fxNULLFragGL =
-		#include "shaders/.old/fx/fx-null.frag"
-				;
-
-		static const char *fxGaussBlur7x1FragGL =
-		#include "shaders/.old/fx/fx-gaussblur7x1.frag"
-				;
-
-		static const char *fxFXAAFragGL =
-		#include "shaders/.old/fx/fx-fxaa.frag"
+		#include "shaders/forwardAmbientlight.frag"
 				;
 
 		//shadow map
 		static const char *shadowMapVertGL =
-		#include "shaders/.old/shadowmap.vert"
+		#include "shaders/shadowMap.vert"
 				;
 
 		static const char *shadowMapFragGL =
-		#include "shaders/.old/shadowmap.frag"
+		#include "shaders/shadowMap.frag"
 				;
 
 		//include
 		static const char *samplingGL =
-		#include "shaders/.old/sampling.include"
+		#include "shaders/include/sampling.include"
 				;
 
 
-
-		/////////////////////////////
-		/// new
-		////////////////////////////
-
-		//deferred
-		//ubo
-		static const char *cameraSpatialsGL =
-		#include "shaders/common/ubo/cameraSpatials.ubo"
-				;
-
-		//include
-		static const char *fxaaIncludeGL =
-		#include "shaders/common/include/fxaa.include"
-				;
 
 		///----- common -----///
-		//vert
-		static const char *commonGenericFXVertGL =
-		#include "shaders/common/renderTexture2D.vert"
+		static const char *commonGenericVertGL =
+		#include "shaders/common/commonGeneric.vert"
 				;
 
-		static const char *renderTextureCubeVertGL =
-		#include "shaders/common/renderTextureCube.vert"
-				;
-
-		//frag
-		static const char *renderTexture1DFragGL =
-		#include "shaders/common/renderTexture1D.frag"
-				;
-
-		static const char *renderTexture2DFragGL =
-		#include "shaders/common/renderTexture2D.frag"
-				;
-
-		static const char *renderTexture2DArrayFragGL =
-		#include "shaders/common/renderTexture2DArray.frag"
-				;
-
-		static const char *renderTexture3DFragGL =
-		#include "shaders/common/renderTexture3D.frag"
-				;
-
-		static const char *renderTextureCubeFragGL =
-		#include "shaders/common/renderTextureCube.frag"
-				;
-
-		static const char *renderTextureCubeArrayFragGL =
-		#include "shaders/common/renderTextureCubeArray.frag"
+		///----- include -----///
+		static const char *fxaaIncludeGL =
+		#include "shaders/include/fxaa.include"
 				;
 
 		///----- fx -----///
 		//final
 		static const char *finalSceneFragGL =
 		#include "shaders/final/finalScene.frag"
+				;
+
+		//blur
+		static const char *fxGaussBlur7x1FragGL =
+		#include "shaders/fx/gaussBlur7x1.frag"
 				;
 
 }}

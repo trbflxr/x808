@@ -18,7 +18,7 @@ namespace xe {
 		};
 
 	public:
-		explicit SpotLight(api::Shader *shader, const Attenuation &attenuation, float intensity,
+		explicit SpotLight(api::BaseShader *shader, const Attenuation &attenuation, float intensity,
 		                   uint color = color::WHITE,
 		                   float fovDeg = 170.0f,
 		                   uint shadowMapSizePower2 = 0,

@@ -7,7 +7,7 @@
 
 namespace xe {
 
-	ForwardRendererShader::ForwardRendererShader(api::Shader *shader) :
+	ForwardRendererShader::ForwardRendererShader(api::BaseShader *shader) :
 			shader(shader),
 			diffuse(nullptr),
 			normalMap(nullptr),
@@ -92,15 +92,6 @@ namespace xe {
 				dispMap->unbind(sampler->getRegister());
 			}
 		}
-	}
-
-	uint ForwardRendererShader::getSamplerLocation(const char *name) {
-		for (auto &&sampler : shader->getResources()) {
-			if (sampler->getName() == name) {
-				return sampler->getRegister();
-			}
-		}
-		return 0;
 	}
 
 	void ForwardRendererShader::setUniforms(const Material *material, const Transform &transform, Camera *camera) {

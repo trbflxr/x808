@@ -9,7 +9,7 @@
 namespace xe { namespace api {
 
 	GLShader::GLShader(const std::string_view &name, const std::vector<ShaderFile *> &shaderPipeline) :
-			Shader(name) {
+			BaseShader(name) {
 
 		uniformBuffers.push_back(new api::GLShaderUniformBuffer("GLOBAL"));
 
@@ -59,15 +59,6 @@ namespace xe { namespace api {
 		bind();
 		XE_ASSERT(uniformBuffers.size() > slot);
 		resolveAndSetUniforms(uniformBuffers[slot], data, size);
-	}
-
-	void GLShader::setUniform(const std::string_view &name, byte *data) {
-		ShaderUniform *uniform = findUniform(name);
-		if (!uniform) {
-			XE_ERROR("Cannot find uniform in ", name, " shader with shaderName '", GLShader::name, "'");
-			return;
-		}
-		resolveAndSetUniform((GLShaderUniform *) uniform, data, 0);
 	}
 
 	void GLShader::resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) {

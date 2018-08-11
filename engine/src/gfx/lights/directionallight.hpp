@@ -18,7 +18,7 @@ namespace xe {
 		};
 
 	public:
-		explicit DirectionalLight(api::Shader *shader, float intensity,
+		explicit DirectionalLight(api::BaseShader *shader, float intensity,
 		                          uint color = color::WHITE,
 		                          uint shadowMapSizePower2 = 0,
 		                          float shadowArea = 80.0f,

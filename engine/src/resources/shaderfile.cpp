@@ -66,13 +66,12 @@ namespace xe {
 
 	const char *ShaderFile::typeToString(ShaderType type) {
 		switch (type) {
-			case ShaderType::UNDEFINED: return "UNDEFINED";
-			case ShaderType::VERT: return "VERT";
-			case ShaderType::FRAG: return "FRAG";
-			case ShaderType::GEOM: return "GEOM";
-			case ShaderType::TESS_EVAL: return "TESS_EVAL";
-			case ShaderType::TESS_CONTROL: return "TESS_CONTROL";
-			case ShaderType::COMPUTE: return "COMPUTE";
+			case ShaderType::Vert: return "VERT";
+			case ShaderType::Frag: return "FRAG";
+			case ShaderType::Geom: return "GEOM";
+			case ShaderType::TessEval: return "TESS_EVAL";
+			case ShaderType::TessControl: return "TESS_CONTROL";
+			case ShaderType::Compute: return "COMPUTE";
 		}
 	}
 

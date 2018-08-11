@@ -21,7 +21,7 @@ namespace xe {
 		return sm;
 	}
 
-	void ShaderManager::add(api::Shader *shader) {
+	void ShaderManager::add(api::BaseShader *shader) {
 		auto &&it = instance().shaders.find(shader->getName());
 
 		if (it != instance().shaders.end()) {
@@ -32,7 +32,7 @@ namespace xe {
 		instance().shaders.emplace(shader->getName(), shader);
 	}
 
-	api::Shader *ShaderManager::get(const std::string_view &name) {
+	api::BaseShader *ShaderManager::get(const std::string_view &name) {
 		auto &&it = instance().shaders.find(name.data());
 		if (it == instance().shaders.end()) {
 			XE_FATAL("Shader '", name, "' not found!");
@@ -50,103 +50,53 @@ namespace xe {
 	void ShaderManager::createDefaultShaders() {
 		using namespace internal;
 
-		shaders.emplace("defaultBatchRenderer", api::Shader::create("defaultBatchRenderer", {
-				ShaderFile::fromSource(ShaderType::VERT, brVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, brFragGL, { })
+		shaders.emplace("defaultBatchRenderer", api::BaseShader::create("defaultBatchRenderer", {
+				ShaderFile::fromSource(ShaderType::Vert, brVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, brFragGL, { })
 		}));
-
 
 		//lights
-		shaders.emplace("defaultForwardAmbient", api::Shader::create("defaultForwardAmbient", {
-				ShaderFile::fromSource(ShaderType::VERT, forwardAmbientVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, forwardAmbientFragGL, {samplingGL})
+		shaders.emplace("defaultForwardAmbient", api::BaseShader::create("defaultForwardAmbient", {
+				ShaderFile::fromSource(ShaderType::Vert, forwardAmbientVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, forwardAmbientFragGL, {samplingGL})
 		}));
 
-		shaders.emplace("defaultForwardDirectional", api::Shader::create("defaultForwardDirectional", {
-				ShaderFile::fromSource(ShaderType::VERT, forwardLightingVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, forwardLightingFragGL,
+		shaders.emplace("defaultForwardDirectional", api::BaseShader::create("defaultForwardDirectional", {
+				ShaderFile::fromSource(ShaderType::Vert, forwardLightingVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, forwardLightingFragGL,
 				                       {forwardLightingFragIncludeGL, forwardDirectionalIncludeGL, samplingGL})
 		}));
 
-		shaders.emplace("defaultForwardPoint", api::Shader::create("defaultForwardPoint", {
-				ShaderFile::fromSource(ShaderType::VERT, forwardLightingVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, forwardLightingFragGL,
+		shaders.emplace("defaultForwardPoint", api::BaseShader::create("defaultForwardPoint", {
+				ShaderFile::fromSource(ShaderType::Vert, forwardLightingVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, forwardLightingFragGL,
 				                       {forwardLightingFragIncludeGL, forwardPointIncludeGL, samplingGL})
 		}));
 
-		shaders.emplace("defaultForwardSpot", api::Shader::create("defaultForwardSpot", {
-				ShaderFile::fromSource(ShaderType::VERT, forwardLightingVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, forwardLightingFragGL,
+		shaders.emplace("defaultForwardSpot", api::BaseShader::create("defaultForwardSpot", {
+				ShaderFile::fromSource(ShaderType::Vert, forwardLightingVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, forwardLightingFragGL,
 				                       {forwardLightingFragIncludeGL, forwardSpotIncludeGL, samplingGL})
 		}));
 
-		//fx
-		shaders.emplace("defaultFXNULL", api::Shader::create("defaultFXNULL", {
-				ShaderFile::fromSource(ShaderType::VERT, fxVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, fxNULLFragGL, { })
-		}));
-
-		shaders.emplace("defaultFXGaussBlur", api::Shader::create("defaultFXGaussBlur", {
-				ShaderFile::fromSource(ShaderType::VERT, fxVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, fxGaussBlur7x1FragGL, { })
-		}));
-
-		shaders.emplace("defaultFXFXAA", api::Shader::create("defaultFXFXAA", {
-				ShaderFile::fromSource(ShaderType::VERT, fxVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, fxFXAAFragGL, { })
-		}));
-
 		//shadow map
-		shaders.emplace("defaultShadowMap", api::Shader::create("defaultShadowMap", {
-				ShaderFile::fromSource(ShaderType::VERT, shadowMapVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, shadowMapFragGL, { })
+		shaders.emplace("defaultShadowMap", api::BaseShader::create("defaultShadowMap", {
+				ShaderFile::fromSource(ShaderType::Vert, shadowMapVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, shadowMapFragGL, { })
 		}));
 
-		createDefaultCommonShaders();
-		createDefaultFinalShaders();
-	}
 
-	void ShaderManager::createDefaultCommonShaders() {
-		using namespace internal;
-
-		shaders.emplace("defaultRenderTexture1D", api::Shader::create("defaultRenderTexture1D", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTexture1DFragGL, { })
+		//fx
+		shaders.emplace("defaultFinalFX", api::BaseShader::create("defaultFinalFX", {
+				ShaderFile::fromSource(ShaderType::Vert, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, finalSceneFragGL, {fxaaIncludeGL})
 		}));
 
-		shaders.emplace("defaultRenderTexture2D", api::Shader::create("defaultRenderTexture2D", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTexture2DFragGL, { })
-		}));
-
-		shaders.emplace("defaultRenderTexture2DArray", api::Shader::create("defaultRenderTexture2DArray", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTexture2DArrayFragGL, { })
-		}));
-
-		shaders.emplace("defaultRenderTexture3D", api::Shader::create("defaultRenderTexture3D", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTexture3DFragGL, { })
-		}));
-
-		shaders.emplace("defaultRenderTextureCube", api::Shader::create("defaultRenderTextureCube", {
-				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeFragGL, { })
-		}));
-
-		shaders.emplace("defaultRenderTextureCubeArray", api::Shader::create("defaultRenderTextureCubeArray", {
-				ShaderFile::fromSource(ShaderType::VERT, renderTextureCubeVertGL, {cameraSpatialsGL}),
-				ShaderFile::fromSource(ShaderType::FRAG, renderTextureCubeArrayFragGL, { })
+		shaders.emplace("defaultGaussBlur7x1FX", api::BaseShader::create("defaultGaussBlur7x1FX", {
+				ShaderFile::fromSource(ShaderType::Vert, commonGenericVertGL, { }),
+				ShaderFile::fromSource(ShaderType::Frag, fxGaussBlur7x1FragGL, { })
 		}));
 	}
 
-	void ShaderManager::createDefaultFinalShaders() {
-		using namespace internal;
-
-		shaders.emplace("defaultFinalScene", api::Shader::create("defaultFinalScene", {
-				ShaderFile::fromSource(ShaderType::VERT, commonGenericFXVertGL, { }),
-				ShaderFile::fromSource(ShaderType::FRAG, finalSceneFragGL, {fxaaIncludeGL})
-		}));
-	}
 
 }

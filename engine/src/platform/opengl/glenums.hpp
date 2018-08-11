@@ -26,6 +26,8 @@ namespace xe { namespace api {
 	uint depthFunctionToGL(DepthFunction function);
 	uint cullFaceToGL(CullFace cullFace);
 
+	uint shaderTypeToGL(ShaderType type);
+
 }}
 
 #endif //X808_GLENUMS_HPP

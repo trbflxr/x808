@@ -10,6 +10,9 @@
 #include "gfx/api/framebuffer_old.hpp"
 #include "gfx/lights/ambientlight.hpp"
 #include "gfx/forwardrenderershader.hpp"
+#include "gfx/fx/quad.hpp"
+#include "gfx/fx/final.hpp"
+#include "gfx/fx/gaussblur7x1.hpp"
 
 namespace xe {
 
@@ -27,11 +30,13 @@ namespace xe {
 		inline AmbientLight *getAmbientLight() { return ambientLight; }
 		inline const AmbientLight *getAmbientLight() const { return ambientLight; }
 
+		//todo: temp. remove
+		void input(Event &event);
+
 	private:
 		uint renderShadows(BaseLight *light);
 
 		void blurShadowMap(uint index, float blurAmount);
-		void applyFilter(ForwardRendererShader *filter, api::FrameBufferOld *src, api::FrameBufferOld *dest);
 
 	private:
 		std::vector<RenderTarget> targets;
@@ -39,10 +44,8 @@ namespace xe {
 
 		AmbientLight *ambientLight;
 		ForwardRendererShader *shadowMapShader;
-		ForwardRendererShader *shadowMapBlurShader;
 
 		bool useFXAA;
-		ForwardRendererShader *fxaaFilter;
 
 		api::FrameBufferOld *screenBuffer;
 
@@ -57,10 +60,10 @@ namespace xe {
 		float shadowVarianceMin;
 		float shadowLightBleedingReduction;
 
-		Mesh *dummyMesh;
-		Material *dummyMaterial;
-		Transform dummyTransform;
-		GameObject dummyGameObject;
+		//fx
+		fx::Quad *quad;
+		fx::Final *finalFx;
+		fx::GaussBlur7x1 *blurFx;
 	};
 
 }

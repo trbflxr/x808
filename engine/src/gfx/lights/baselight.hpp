@@ -6,8 +6,11 @@
 #define X808_BASELIGHT_HPP
 
 
-#include "gfx/forwardrenderershader.hpp"
+#include "gfx/shader.hpp"
 #include "gfx/color.hpp"
+#include "gfx/material.hpp"
+#include "gfx/camera.hpp"
+#include "gameobject.hpp"
 
 namespace xe {
 
@@ -31,7 +34,7 @@ namespace xe {
 				minVariance(minVariance) { }
 	};
 
-	class XE_API BaseLight : public GameObject, public ForwardRendererShader {
+	class XE_API BaseLight : public GameObject, public Shader {
 	protected:
 		struct BaseLightStruct {
 			vec4 color;
@@ -39,9 +42,11 @@ namespace xe {
 		};
 
 	public:
-		~BaseLight();
+		~BaseLight() override;
 
-		void setUniforms(const Material *material, const Transform &transform, Camera *camera) override;
+		void unbind() const override;
+
+		virtual void setUniforms(const Material *material, const Transform &transform, Camera *camera);
 
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enable) { BaseLight::enabled = enable; }
@@ -57,15 +62,23 @@ namespace xe {
 		virtual void updateLightCamera(Camera *lightCamera, Camera *mainCamera);
 
 	protected:
-		explicit BaseLight(api::Shader *shader, float intensity, uint color = color::WHITE);
+		explicit BaseLight(api::BaseShader *shader, float intensity, uint color = color::WHITE);
 
 		void setShadowInfo(ShadowInfo *shadowInfo);
+
+		void bindSamplers(const Material *material);
+		void unbindSamplers() const;
 
 	protected:
 		bool enabled;
 		BaseLightStruct light;
 
 		ShadowInfo *shadowInfo;
+
+	private:
+		const api::Texture *diffuse;
+		const api::Texture *normalMap;
+		const api::Texture *dispMap;
 	};
 
 }

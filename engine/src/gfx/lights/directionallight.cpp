@@ -6,7 +6,7 @@
 
 namespace xe {
 
-	DirectionalLight::DirectionalLight(api::Shader *shader, float intensity, uint color,
+	DirectionalLight::DirectionalLight(api::BaseShader *shader, float intensity, uint color,
 	                                   uint shadowMapSizePower2, float shadowArea, float shadowSoftness,
 	                                   float lightBleedReduction, float minVariance) :
 			BaseLight(shader, intensity, color),

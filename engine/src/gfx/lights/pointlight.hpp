@@ -27,7 +27,7 @@ namespace xe {
 		};
 
 	public:
-		explicit PointLight(api::Shader *shader, const Attenuation &attenuation, float intensity,
+		explicit PointLight(api::BaseShader *shader, const Attenuation &attenuation, float intensity,
 		                    uint color = color::WHITE);
 
 		inline const Attenuation &getAttenuation() const { return pointLight.attenuation; }

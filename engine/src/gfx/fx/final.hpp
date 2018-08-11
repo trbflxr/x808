@@ -9,7 +9,7 @@
 #include "common.hpp"
 #include "rendereffect.hpp"
 #include "quad.hpp"
-#include "gfx/api/shader.hpp"
+#include "gfx/shader.hpp"
 #include "gfx/api/framebuffer.hpp"
 
 namespace xe { namespace fx {
@@ -19,23 +19,10 @@ namespace xe { namespace fx {
 		explicit Final(uint width, uint height);
 		~Final();
 
-		void load() override;
-		void unload() override { }
-		void reload() override { }
-
-		void render(Quad *quad);
-
-		api::Texture *getTexture() { return finalTexture; }
-		api::FrameBuffer *getFrameBuffer() { return finalFBO; }
-
-	protected:
-		void loadPrograms() override;
-		void loadBuffers() override;
+		void render(Quad *quad, api::Texture *srcTexture, bool useFXAA = false) const;
 
 	private:
-		api::Shader *finalShader;
-		api::FrameBuffer *finalFBO;
-		api::Texture *finalTexture;
+		Shader *finalShader;
 	};
 
 }}

@@ -8,9 +8,9 @@
 
 #include "common.hpp"
 #include "rendereffect.hpp"
-#include "gfx/api/texture.hpp"
-#include "gfx/api/shader.hpp"
 #include "gfx/api/vertexarray.hpp"
+#include "gfx/api/indexbuffer.hpp"
+#include "gfx/api/enums.hpp"
 
 namespace xe { namespace fx {
 
@@ -19,31 +19,13 @@ namespace xe { namespace fx {
 		explicit Quad(uint width, uint height);
 		~Quad();
 
-		void load() override;
-		void unload() override;
-		void reload() override;
-
-		void render();
-		void renderBlendBlend();
-		void renderFullQuad();
-		void renderFullQuadBlend();
-		void render3D(uint depth);
-
-		void renderToTexture(api::Texture *texture, float scale, uint pos, uint layer = 0, int32 channel = -1);
-
-	protected:
-		void loadPrograms() override;
-		void loadBuffers() override;
+		void render() const;
+		void render(BlendFunction src, BlendFunction dest, BlendEquation eq = BlendEquation::Add) const;
 
 	private:
 		api::VertexArray *vao;
-
-		api::Shader *renderTexture1D;
-		api::Shader *renderTexture2D;
-		api::Shader *renderTexture2DArray;
-		api::Shader *renderTexture3D;
-		api::Shader *renderTextureCube;
-		api::Shader *renderTextureCubeArray;
+		api::IndexBuffer *ibo;
+		uint indicesCount;
 	};
 
 }}

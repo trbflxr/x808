@@ -8,7 +8,7 @@
 
 #include <gfx/layers/layer.hpp>
 #include <gfx/mesh.hpp>
-#include <gfx/api/shader.hpp>
+#include <gfx/api/baseshader.hpp>
 #include <gfx/forwardrenderer.hpp>
 #include <gfx/lights/directionallight.hpp>
 #include <gfx/lights/pointlight.hpp>

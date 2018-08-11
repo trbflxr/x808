@@ -1,11 +1,13 @@
 R"(
 out vec4 color;
 
-in vec2 uv;
+in vec2 uv0;
+
+uniform int useFXAA;
 
 uniform sampler2D sampler0;
 
-vec3 UnchartedToTonemap(vec3 x) {
+vec3 unchartedToTonemap(vec3 x) {
   x = max(x, 0.0);
 
   /* DEFAULT
@@ -30,16 +32,21 @@ vec3 UnchartedToTonemap(vec3 x) {
 }
 
 void main() {
-  // vec3 scene = texture(sampler0, uv).xyz;
-  vec3 scene = fxaa(sampler0, uv);
+  vec3 scene;
 
-  vec3 final = UnchartedToTonemap(2.0 * scene);
+  if (useFXAA > 0) {
+    scene = fxaa(sampler0, uv0);
+  } else {
+    scene = texture(sampler0, uv0).xyz;
+  }
+
+  vec3 final = unchartedToTonemap(2.0 * scene);
 
   float W = 11.2;
-  vec3 whiteScale = 1.0f / UnchartedToTonemap(vec3(W));
+  vec3 whiteScale = 1.0 / unchartedToTonemap(vec3(W));
   final *= whiteScale;
 
-  float gamma = 1.8;
+  float gamma = 1.3;
   vec3 gammaCorrection = vec3(1.0 / gamma);
   final = pow(final.xyz, gammaCorrection);
 

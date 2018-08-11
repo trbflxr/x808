@@ -8,7 +8,7 @@ namespace xe {
 
 	static constexpr short COLOR_DEPTH = 256;
 
-	PointLight::PointLight(api::Shader *shader, const Attenuation &attenuation, float intensity, uint color) :
+	PointLight::PointLight(api::BaseShader *shader, const Attenuation &attenuation, float intensity, uint color) :
 			BaseLight(shader, intensity, color) {
 
 		pointLight.base = light;
