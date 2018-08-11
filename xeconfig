@@ -4,5 +4,7 @@ title=sandbox2d title
 fullScreen=0
 vSync=0
 
-ups=60
+ups=30
 fps=145
+
+srgb=1

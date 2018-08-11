@@ -3,13 +3,17 @@
 //
 
 #undef NOGDI
+
 #include <windows.h>
+
 #define NOGDI
 
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
+#include "glcommon.hpp"
 #include "glcontext.hpp"
+#include "config.hpp"
 #include "utils/log.hpp"
 
 namespace xe { namespace api {
@@ -31,6 +35,12 @@ namespace xe { namespace api {
 		if (glewInit() != GLEW_OK) {
 			XE_FATAL("Could not initialize GLEW!");
 		}
+
+		if (gConfig.useSRGB) {
+			glCall(glEnable(GL_FRAMEBUFFER_SRGB));
+		} else {
+			glCall(glDisable(GL_FRAMEBUFFER_SRGB));
+		}
 	}
 
 	void GLContext::swapBuffers() {
@@ -38,7 +48,7 @@ namespace xe { namespace api {
 	}
 
 	void GLContext::enableVsync(bool enabled) {
-		wglSwapIntervalEXT(enabled);
+		glCall(wglSwapIntervalEXT(enabled));
 	}
 
 }}

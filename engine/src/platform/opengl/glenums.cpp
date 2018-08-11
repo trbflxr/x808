@@ -3,6 +3,7 @@
 //
 
 #include "glcommon.hpp"
+#include "config.hpp"
 #include "glenums.hpp"
 
 namespace xe { namespace api {
@@ -63,8 +64,8 @@ namespace xe { namespace api {
 		switch (type) {
 			case PixelInternalFormat::DepthComponent: return GL_DEPTH_COMPONENT;
 			case PixelInternalFormat::Alpha: return GL_ALPHA;
-			case PixelInternalFormat::Rgb: return GL_RGB;
-			case PixelInternalFormat::Rgba: return GL_RGBA;
+			case PixelInternalFormat::Rgb: return gConfig.useSRGB ? GL_SRGB : GL_RGB;
+			case PixelInternalFormat::Rgba: return gConfig.useSRGB ? GL_SRGB_ALPHA : GL_RGBA;
 			case PixelInternalFormat::Luminance: return GL_LUMINANCE;
 			case PixelInternalFormat::LuminanceAlpha: return GL_LUMINANCE_ALPHA;
 			case PixelInternalFormat::Rgb8: return GL_RGB8;
@@ -159,8 +160,8 @@ namespace xe { namespace api {
 		}
 	}
 
-	uint blendEquationToGL(BlendEquation equation){
-		switch (equation){
+	uint blendEquationToGL(BlendEquation equation) {
+		switch (equation) {
 			case BlendEquation::Add: return GL_ADD;
 			case BlendEquation::Subtract: return GL_SUBTRACT;
 		}

@@ -6,7 +6,8 @@
 #define X808_CONTEXT_HPP
 
 
-#include "config.hpp"
+#include "xeint.hpp"
+#include "common.hpp"
 
 namespace xe { namespace api {
 

@@ -1,4 +1,3 @@
-R"(
 out vec4 color;
 
 in vec2 uv0;
@@ -22,12 +21,12 @@ vec3 acesFilm(const vec3 x) {
 }
 
 vec3 uncharted2Tonemap(const vec3 x) {
-  const float A = 0.20;  // Sholder Strength
-  const float B = 0.10;  // Linear Strength
-  const float C = 0.10;  // Linear Angle
-  const float D = 0.60;  // Toe Strength (default: 0.2)
+  const float A = 0.20;   // Sholder Strength
+  const float B = 0.10;   // Linear Strength
+  const float C = 0.10;   // Linear Angle
+  const float D = 0.60;   // Toe Strength (default: 0.2)
   const float E = 0.02;  // Toe Numerator
-  const float F = 0.20;  // Toe Denominator
+  const float F = 0.20;   // Toe Denominator
   return ((x * (A * x + C * B) + D * E) / (x * (A * x + B) + D * F)) - E / F;
 }
 
@@ -62,4 +61,3 @@ void main() {
   color = vec4(tonemapUncharted2(scene), 1.0);
   // color = vec4(scene, 1.0);
 }
-)"

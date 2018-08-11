@@ -3,6 +3,7 @@
 //
 
 #include <window/event.hpp>
+#include <GL/glew.h>
 #include "forwardrenderer.hpp"
 #include "renderer.hpp"
 #include "resources/shadermanager.hpp"

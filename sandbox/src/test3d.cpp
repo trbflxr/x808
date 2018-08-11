@@ -34,7 +34,7 @@ Test3D::Test3D(DebugUI *ui) :
 	ModelComponent model;
 	TransformComponent transform;
 
-	camera = new Camera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
+	camera = new Camera(mat4::perspective(90.0f, 8.0f / 6.0f, 0.1f, 1000));
 
 	DummyPlayerComponent playerComponent(camera);
 	player = ecs.makeEntity(playerComponent, transform);
@@ -46,7 +46,7 @@ Test3D::Test3D(DebugUI *ui) :
 	rendererSystem = new ForwardRendererSystem(renderer);
 	renderingPipeline.addSystem(*rendererSystem);
 
-	directionalLight = new DirectionalLight(GETSHADER("defaultForwardDirectional"), 0.4f, color::WHITE, 10);
+	directionalLight = new DirectionalLight(GETSHADER("defaultForwardDirectional"), 0.25f, color::WHITE, 10);
 	directionalLight->transform.setRotation(quat(vec3::XAXIS, -45.0f));
 	renderer->addLight(directionalLight);
 
@@ -67,8 +67,7 @@ Test3D::Test3D(DebugUI *ui) :
 //	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.025f, color::WHITE, 90.0f,
-	                          7);
+	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.02f, color::PINK, 90.0f, 7);
 	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
 	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
 	renderer->addLight(spotLight);
@@ -82,13 +81,13 @@ Test3D::Test3D(DebugUI *ui) :
 	planeMaterial0 = new Material(GETTEXTURE("bgr"), 3, 0.1f);
 
 	planeMaterial1 = new Material(GETTEXTURE("bricks"), 4, 0.5f,
-	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.03f, -0.5f);
+	                              GETTEXTURE("bricksNormal"), GETTEXTURE("bricksDisp"), 0.025f, -0.5f);
 
 	planeMaterial2 = new Material(GETTEXTURE("bricks2"), 2, 0.5f,
 	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
-	monkeyMesh = new Mesh("assets/models/monkey3.obj");
+	monkeyMesh = new Mesh("assets/models/icosphere.obj");
 	stallMesh = new Mesh("assets/models/stall.obj");
 	planeMesh0 = new Mesh("assets/models/plane0.obj");
 	planeMesh1 = new Mesh("assets/models/plane1.obj");

@@ -7,7 +7,9 @@
 #include <cstdio>
 #include "config.hpp"
 
-namespace xe{
+namespace xe {
+
+	Config gConfig;
 
 	void writeKeyValue(Config &config, const char *key, const char *value) {
 		if (strcmp(key, "width") == 0) {
@@ -24,6 +26,8 @@ namespace xe{
 			config.ups = (uint) atoi(value);
 		} else if (strcmp(key, "fps") == 0) {
 			config.fps = (uint) atoi(value);
+		} else if (strcmp(key, "srgb") == 0) {
+			config.useSRGB = (bool) atoi(value);
 		}
 	}
 
@@ -48,6 +52,8 @@ namespace xe{
 		}
 
 		fclose(cfgFile);
+
+		gConfig = config;
 
 		return true;
 	}

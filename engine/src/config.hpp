@@ -21,11 +21,12 @@ namespace xe {
 		uint ups;
 		uint fps;
 
-		//engine stuff
-		float scale = 10.0f;
+		bool useSRGB;
 
 		static bool load(Config &config, const char *path = "xeconfig");
 	};
+
+	extern Config gConfig;
 
 }
 
