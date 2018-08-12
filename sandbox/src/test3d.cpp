@@ -67,7 +67,7 @@ Test3D::Test3D(DebugUI *ui) :
 //	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.02f, color::PINK, 90.0f, 7);
+	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.02f, color::WHITE, 90.0f, 7);
 	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
 	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
 	renderer->addLight(spotLight);
@@ -87,7 +87,7 @@ Test3D::Test3D(DebugUI *ui) :
 	                              GETTEXTURE("bricksNormal2"), GETTEXTURE("bricksDisp2"), 0.02f, -0.5f);
 
 	rockMesh = new Mesh("assets/models/rock.obj");
-	monkeyMesh = new Mesh("assets/models/icosphere.obj");
+	monkeyMesh = new Mesh("assets/models/sphere.obj");
 	stallMesh = new Mesh("assets/models/stall.obj");
 	planeMesh0 = new Mesh("assets/models/plane0.obj");
 	planeMesh1 = new Mesh("assets/models/plane1.obj");
