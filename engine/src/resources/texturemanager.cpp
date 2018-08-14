@@ -22,11 +22,13 @@ namespace xe {
 		return tm;
 	}
 
-	void TextureManager::add(api::Texture *texture) {
+	void TextureManager::add(api::Texture *texture, bool showWarn) {
 		auto &&it = instance().textures.find(texture->getName());
 
 		if (it != instance().textures.end()) {
-			XE_ERROR(texture->getName(), " already exist!");
+			if (showWarn) {
+				XE_ERROR(texture->getName(), " already exist!");
+			}
 			return;
 		}
 

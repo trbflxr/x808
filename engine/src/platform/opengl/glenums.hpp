@@ -28,6 +28,11 @@ namespace xe { namespace api {
 
 	uint shaderTypeToGL(ShaderType type);
 
+	uint beginModeToGL(BeginMode mode);
+
+	uint bufferUsageToGL(BufferUsage usage);
+	uint bufferStorageToGL(BufferStorage storage);
+
 }}
 
 #endif //X808_GLENUMS_HPP

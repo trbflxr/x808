@@ -1,5 +1,4 @@
 todo: refactor math
-todo: refactor light shaders
 
 {
     todo: strings
@@ -7,4 +6,4 @@ todo: refactor light shaders
 }
 
 todo: skybox
-todo: framebuffer
+todo: batch renderer 3d

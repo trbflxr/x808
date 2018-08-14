@@ -15,9 +15,9 @@ namespace xe { namespace api {
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
 
-		virtual void drawElements(uint count) const = 0;
-		virtual void drawArrays(uint count) const = 0;
-		virtual void drawArraysInstanced(uint count, uint instanceCount) const = 0;
+		virtual void drawElements(uint count, BeginMode mode) const = 0;
+		virtual void drawArrays(uint count, BeginMode mode) const = 0;
+		virtual void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const = 0;
 
 		virtual VertexBuffer *getBuffer(uint index) = 0;
 		virtual void pushBuffer(VertexBuffer *buffer) = 0;

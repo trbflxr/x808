@@ -22,7 +22,7 @@ namespace xe {
 		Renderer::setCullFace(CullFace::Back);
 
 		//default shaders
-		ambientLight = new AmbientLight(GETSHADER("defaultForwardAmbient"), 0.1f, color::WHITE);
+		ambientLight = new AmbientLight(GETSHADER("defaultForwardAmbient"), 0.3f, color::WHITE);
 		shadowMapShader = new ForwardRendererShader(GETSHADER("defaultShadowMap"));
 
 		screenBuffer = api::FrameBufferOld::create(width, height, api::FrameBufferOld::COLOR);

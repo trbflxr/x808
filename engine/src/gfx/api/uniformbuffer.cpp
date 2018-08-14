@@ -7,9 +7,9 @@
 
 namespace xe { namespace api {
 
-	UniformBuffer *UniformBuffer::create(Storage storage, uint bindIndex, const BufferLayout &layout, uint size) {
+	UniformBuffer *UniformBuffer::create(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLUniformBuffer(storage, bindIndex, layout, size);
+			case RenderAPI::OPENGL : return new GLUniformBuffer(storage, bind, layout, size);
 
 			default: return nullptr;
 		}

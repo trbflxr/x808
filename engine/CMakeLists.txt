@@ -9,6 +9,8 @@ option(XE_PLATFORM_GL "OpenGL" ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D XE_DEBUG")
+
 add_definitions(
         -D NOGDI
         -D UNICODE
@@ -16,41 +18,32 @@ add_definitions(
         -D FREEIMAGE_LIB
         -D GLEW_STATIC)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D XE_DEBUG")
 
-include_directories(src)
+#directories
+set(XE_INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        CACHE STRING "XE include dirs" FORCE)
 
-#opengl
-find_package(OpenGL REQUIRED)
-link_libraries(${OPENGL_LIBRARIES})
+set(XE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/lib
+        CACHE STRING "XE library dirs" FORCE)
 
-#glew
-include_directories(external/glew/include)
+set(XE_EXTERNAL_INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/glew/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include)
 
-#freeimage
-include_directories(external/freeimage/include)
-link_directories(external/freeimage/lib)
-link_libraries(freeimage)
-
-#assimp
-include_directories(external/assimp/include)
-link_directories(external/assimp/lib)
-link_libraries(assimp)
-
-#freetype-gl
-include_directories(external/freetype-gl/include)
-link_directories(external/freetype-gl/lib)
-link_libraries(freetype-gl freetype bz2)
-
-#gorilla-audio
-include_directories(external/gorilla-audio/include)
-link_directories(external/gorilla-audio/lib)
-link_libraries(gorilla openal32)
+link_directories(${XE_DIRS})
+include_directories(${XE_INCLUDE_DIRS})
+include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
 
 #engine
 file(GLOB ENGINE_SRC
-        external/glew/src/glew.c
-
         src/application/*.cpp
         src/ecs/*.cpp
         src/ecs/components/*.cpp
@@ -67,14 +60,20 @@ file(GLOB ENGINE_SRC
         src/resources/*.cpp
         src/utils/*.cpp
         src/window/*.cpp
+        src/world/*.cpp
+        src/world/lights/*.cpp
+        src/world/model/*.cpp
         src/*.cpp)
 
 
 #win32
-file(GLOB ENGINE_WIN32_SRC src/platform/win32/*.cpp)
+file(GLOB ENGINE_WIN32_SRC
+        src/platform/win32/*.cpp)
 
 #opengl
-file(GLOB ENGINE_GL_SRC src/platform/opengl/*.cpp)
+file(GLOB ENGINE_GL_SRC
+        src/platform/opengl/*.cpp
+        src/platform/opengl/*.c)
 
 
 #total platform files
@@ -85,10 +84,23 @@ if (XE_PLATFORM_WIN32)
 endif ()
 
 if (XE_PLATFORM_GL)
+    find_package(OpenGL REQUIRED)
     list(APPEND PLATFORM_SRC ${ENGINE_GL_SRC})
 endif ()
 
+#xe lib
 add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
+
+target_link_libraries(xe
+        freeimage
+        assimp irrxml
+        freetype-gl freetype bz2
+        gorilla openal32)
+
+#link opengl libs
+if (XE_PLATFORM_GL)
+    target_link_libraries(xe ${OPENGL_LIBRARIES})
+endif ()
 
 #link win32 libs
 if (XE_PLATFORM_WIN32)

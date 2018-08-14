@@ -6,12 +6,8 @@ set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D S2D_DEBUG -D XE_DEBUG")
 
-
-link_directories(../engine/external/freeimage/lib)
-link_directories(../engine/external/gorilla-audio/lib)
-
-
-include_directories(../engine/src)
+link_directories(${XE_DIRS})
+include_directories(${XE_INCLUDE_DIRS})
 
 #sandbox
 set(S2D_SRC

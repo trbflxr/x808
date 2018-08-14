@@ -21,6 +21,7 @@ namespace xe {
 		float z;
 
 		vec3();
+		explicit vec3(float val);
 		vec3(float x, float y, float z);
 		explicit vec3(float x, float y);
 		vec3(const vec3 &other);
@@ -37,6 +38,8 @@ namespace xe {
 		static vec3 normalize(const vec3 &v);
 		static vec3 rotate(const vec3 &v, const vec3 &axis, float angle);
 		static vec3 lerp(const vec3 &v, const vec3 &dest, float lerpFactor);
+
+		static vec3 transformPerspective(const vec3 &vec, const mat4 &mat);
 
 		static const vec3 XAXIS;
 		static const vec3 YAXIS;

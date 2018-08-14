@@ -11,8 +11,6 @@
 #include <ecs/components/transformcomponent.hpp>
 #include "test3d.hpp"
 
-#include <gfx/api/framebuffer.hpp>
-
 Test3D::Test3D(DebugUI *ui) :
 		ui(ui) {
 
@@ -67,7 +65,8 @@ Test3D::Test3D(DebugUI *ui) :
 //	renderer->addLight(pointLight4);
 
 	hookSpotLight = false;
-	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.02f, color::WHITE, 90.0f, 7);
+	spotLight = new SpotLight(GETSHADER("defaultForwardSpot"), {0.0f, 0.00f, 0.02f}, 0.02f, color::WHITE, 90.0f,
+	                          7);
 	spotLight->transform.setTranslation({8.142f, -3.811f, -5.968f});
 	spotLight->transform.setRotation(quat(vec3::YAXIS, -90.0f));
 	renderer->addLight(spotLight);
@@ -136,15 +135,12 @@ Test3D::Test3D(DebugUI *ui) :
 	transform.transform.setScale({0.4f, 0.4f, 0.4f});
 	planeModel2 = ecs.makeEntity(model, transform);
 
-
 	//cube
 	model.mesh = cubeMesh;
 	model.material = planeMaterial2;
 	transform.transform.setTranslation({10, -4.5f, -5});
 	transform.transform.rotate(vec3::YAXIS, 45.0f);
 	cubeModel = ecs.makeEntity(model, transform);
-
-
 }
 
 Test3D::~Test3D() {

@@ -16,7 +16,8 @@ namespace xe {
 
 	Mesh::Mesh(const std::string_view &path) {
 		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(path.data(), aiProcess_JoinIdenticalVertices |
+		const aiScene *scene = importer.ReadFile(path.data(), aiProcessPreset_TargetRealtime_MaxQuality |
+		                                                      aiProcess_JoinIdenticalVertices |
 		                                                      aiProcess_Triangulate |
 		                                                      aiProcess_GenSmoothNormals |
 		                                                      aiProcess_CalcTangentSpace |
@@ -39,7 +40,7 @@ namespace xe {
 	void Mesh::initMesh(const IndexedModel &model) {
 		indicesSize = static_cast<uint>(model.indices.size());
 
-		api::VertexBuffer *buffer = api::VertexBuffer::create(api::VertexBuffer::Type::STATIC);
+		api::VertexBuffer *buffer = api::VertexBuffer::create(BufferUsage::StaticDraw);
 
 		api::BufferLayout layout;
 		layout.push<vec3>("POSITION"); // Position
@@ -71,7 +72,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->drawElements(indicesSize);
+		vertexArray->drawElements(indicesSize, BeginMode::Triangles);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();

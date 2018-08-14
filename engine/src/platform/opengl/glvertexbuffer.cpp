@@ -4,18 +4,12 @@
 
 #include "glvertexbuffer.hpp"
 #include "glcommon.hpp"
+#include "glenums.hpp"
 
 namespace xe { namespace api {
 
-	static uint bufferTypeToOpenGL(VertexBuffer::Type type) {
-		switch (type) {
-			case VertexBuffer::Type::STATIC: return GL_STATIC_DRAW;
-			case VertexBuffer::Type::DYNAMIC: return GL_DYNAMIC_DRAW;
-		}
-	}
-
-	GLVertexBuffer::GLVertexBuffer(Type type) :
-			type(type) {
+	GLVertexBuffer::GLVertexBuffer(BufferUsage usage) :
+			usage(usage) {
 
 		glCall(glGenBuffers(1, &handle));
 	}
@@ -28,7 +22,7 @@ namespace xe { namespace api {
 		GLVertexBuffer::size = size;
 
 		glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
-		glCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, bufferTypeToOpenGL(type)));
+		glCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, bufferUsageToGL(usage)));
 	}
 
 	void GLVertexBuffer::setLayout(const BufferLayout &layout) {
@@ -46,7 +40,7 @@ namespace xe { namespace api {
 
 	void GLVertexBuffer::setData(uint size, const void *data) {
 		glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
-		glCall(glBufferData(GL_ARRAY_BUFFER, size, data, bufferTypeToOpenGL(type)));
+		glCall(glBufferData(GL_ARRAY_BUFFER, size, data, bufferUsageToGL(usage)));
 	}
 
 	void GLVertexBuffer::releasePointer() {

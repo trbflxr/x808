@@ -48,6 +48,7 @@ namespace xe {
 
 		static quat rotation(const vec3 &unitVec0, const vec3 &unitVec1);
 		static quat rotation(float angleDeg, const vec3 &unitVec);
+		static quat rotation(const vec3 &anglesDeg);
 		static quat rotationX(float angleDeg);
 		static quat rotationY(float angleDeg);
 		static quat rotationZ(float angleDeg);

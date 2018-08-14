@@ -18,9 +18,9 @@ namespace xe { namespace api {
 		void bind() const override;
 		void unbind() const override;
 
-		void drawElements(uint count) const override;
-		void drawArrays(uint count) const override;
-		void drawArraysInstanced(uint count, uint instanceCount) const override;
+		void drawElements(uint count, BeginMode mode) const override;
+		void drawArrays(uint count, BeginMode mode) const override;
+		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const override;
 
 		inline VertexBuffer *getBuffer(uint index) override { return buffers[index]; }
 		void pushBuffer(VertexBuffer *buffer) override;

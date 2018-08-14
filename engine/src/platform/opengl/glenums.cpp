@@ -192,4 +192,45 @@ namespace xe { namespace api {
 		}
 	}
 
+	uint beginModeToGL(BeginMode mode) {
+		switch (mode) {
+			case BeginMode::Points: return GL_POINTS;
+			case BeginMode::Lines: return GL_LINES;
+			case BeginMode::LineLoop: return GL_LINE_LOOP;
+			case BeginMode::LineStrip: return GL_LINE_STRIP;
+			case BeginMode::Triangles: return GL_TRIANGLES;
+			case BeginMode::TriangleStrip: return GL_TRIANGLE_STRIP;
+			case BeginMode::TriangleFan: return GL_TRIANGLE_FAN;
+			case BeginMode::Quads: return GL_QUADS;
+			case BeginMode::QuadStrip: return GL_QUAD_STRIP;
+			case BeginMode::Polygon: return GL_POLYGON;
+			case BeginMode::Patches: return GL_PATCHES;
+		}
+	}
+
+	uint bufferUsageToGL(BufferUsage usage){
+		switch (usage) {
+			case BufferUsage::StreamDraw: return GL_STREAM_DRAW;
+			case BufferUsage::StreamRead: return GL_STREAM_READ;
+			case BufferUsage::StreamCopy: return GL_STREAM_COPY;
+			case BufferUsage::StaticDraw: return GL_STATIC_DRAW;
+			case BufferUsage::StaticRead: return GL_STATIC_READ;
+			case BufferUsage::StaticCopy: return GL_STATIC_COPY;
+			case BufferUsage::DynamicDraw: return GL_DYNAMIC_DRAW;
+			case BufferUsage::DynamicRead: return GL_DYNAMIC_READ;
+			case BufferUsage::DynamicCopy: return GL_DYNAMIC_COPY;
+		}
+	}
+
+	uint bufferStorageToGL(BufferStorage storage){
+		switch (storage) {
+			case BufferStorage::MapRead: return GL_MAP_READ_BIT;
+			case BufferStorage::MapWrite: return GL_MAP_WRITE_BIT;
+			case BufferStorage::MapPersistent: return GL_MAP_PERSISTENT_BIT;
+			case BufferStorage::MapCoherent: return GL_MAP_COHERENT_BIT;
+			case BufferStorage::Dynamic: return GL_DYNAMIC_STORAGE_BIT;
+			case BufferStorage::Client: return GL_CLIENT_STORAGE_BIT;
+		}
+	}
+
 }}

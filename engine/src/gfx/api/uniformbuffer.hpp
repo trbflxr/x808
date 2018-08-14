@@ -7,24 +7,20 @@
 
 #include "common.hpp"
 #include "bufferlayout.hpp"
+#include "enums.hpp"
 
 namespace xe { namespace api {
 
 	class XE_API UniformBuffer {
 	public:
-		enum Storage {
-			DYNAMIC, CLIENT
-		};
-
-	public:
 		virtual void bind() = 0;
 		virtual void unbind() = 0;
 
-		virtual void update(const void *data, uint index, uint layoutIndex = 0) = 0;
+		virtual void update(const void *data, uint index, uint layoutIndex) = 0;
 
 		virtual uint getHandle() const = 0;
 
-		static UniformBuffer *create(Storage storage, uint bindIndex, const BufferLayout &layout, uint size = 1);
+		static UniformBuffer *create(BufferStorage storage, uint bind, const BufferLayout &layout, uint size = 1);
 	};
 
 }}

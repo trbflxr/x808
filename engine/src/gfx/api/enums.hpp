@@ -146,9 +146,48 @@ namespace xe {
 	};
 
 	enum class ShaderType {
-		Vert, Frag, Geom, TessEval, TessControl, Compute
+		Vert,
+		Frag,
+		Geom,
+		TessEval,
+		TessControl,
+		Compute
 	};
 
+	enum class BeginMode {
+		Points,
+		Lines,
+		LineLoop,
+		LineStrip,
+		Triangles,
+		TriangleStrip,
+		TriangleFan,
+		Quads,
+		QuadStrip,
+		Polygon,
+		Patches
+	};
+
+	enum class BufferUsage {
+		StreamDraw,
+		StreamRead,
+		StreamCopy,
+		StaticDraw,
+		StaticRead,
+		StaticCopy,
+		DynamicDraw,
+		DynamicRead,
+		DynamicCopy
+	};
+
+	enum class BufferStorage {
+		MapRead,
+		MapWrite,
+		MapPersistent,
+		MapCoherent,
+		Dynamic,
+		Client
+	};
 }
 
 

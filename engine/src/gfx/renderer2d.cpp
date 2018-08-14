@@ -83,7 +83,7 @@ namespace xe {
 
 		shader->bind();
 
-		api::VertexBuffer *buffer = api::VertexBuffer::create(api::VertexBuffer::Type::DYNAMIC);
+		api::VertexBuffer *buffer = api::VertexBuffer::create(BufferUsage::DynamicDraw);
 		buffer->resize(RENDERER_BUFFER_SIZE);
 
 		api::BufferLayout layout;
@@ -376,7 +376,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->drawElements(indexCount);
+		vertexArray->drawElements(indexCount, BeginMode::Triangles);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();

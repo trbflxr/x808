@@ -3,6 +3,7 @@
 //
 
 #include <cstring>
+#include <libgen.h>
 #include "string.hpp"
 
 namespace xe { namespace utils {
@@ -37,6 +38,28 @@ namespace xe { namespace utils {
 	std::string getBlock(const std::string_view &str, uint offset) {
 		const char *s = str.data() + offset;
 		return getBlock(s);
+	}
+
+	std::string getFileName(const std::string_view &str, bool includeExt) {
+		char *s = basename(const_cast<char *>(str.data()));
+
+		size_t size = strlen(s);
+
+		if (!includeExt) {
+			int lastDot = -1;
+
+			for (size_t i = 0; i < size; ++i) {
+				if (s[i] == '.') {
+					lastDot = static_cast<int>(i);
+				}
+			}
+
+			if (lastDot != -1) {
+				s[lastDot] = '\0';
+			}
+		}
+
+		return s;
 	}
 
 	std::string getStatement(const char *str, const char **outPosition) {

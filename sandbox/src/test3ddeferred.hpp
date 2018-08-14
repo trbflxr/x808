@@ -7,11 +7,13 @@
 
 
 #include <gfx/layers/layer.hpp>
+#include <gfx/scene.hpp>
+#include "debugui.hpp"
 #include "dummyplayercontrolsystem.hpp"
 
 class Test3DDeferred : public xe::Layer {
 public:
-	explicit Test3DDeferred();
+	explicit Test3DDeferred(DebugUI* ui);
 	~Test3DDeferred();
 
 	void render() override;
@@ -22,6 +24,8 @@ public:
 	void input(xe::Event &event) override;
 
 private:
+	DebugUI *ui;
+
 	xe::ECS ecs;
 	xe::ECSSystemList mainSystems;
 	xe::ECSSystemList renderingPipeline;
@@ -31,32 +35,9 @@ private:
 	DummyPlayerControlSystem *playerControlSystem;
 	xe::EntityHandle player;
 
-	//models
-	xe::EntityHandle rockModel;
-	xe::EntityHandle monkeyModel;
-	xe::EntityHandle monkeyModel2;
-	xe::EntityHandle stallModel;
-	xe::EntityHandle planeModel0;
-	xe::EntityHandle planeModel1;
-	xe::EntityHandle planeModel2;
-	xe::EntityHandle cubeModel;
+	xe::Scene *scene;
 
-	//meshes
-	xe::Mesh *rockMesh;
-	xe::Mesh *monkeyMesh;
-	xe::Mesh *stallMesh;
-	xe::Mesh *planeMesh0;
-	xe::Mesh *planeMesh1;
-	xe::Mesh *cubeMesh;
-
-	//materials
-	xe::Material *rockMaterial;
-	xe::Material *monkeyMaterial;
-	xe::Material *monkeyMaterial2;
-	xe::Material *stallMaterial;
-	xe::Material *planeMaterial0;
-	xe::Material *planeMaterial1;
-	xe::Material *planeMaterial2;
+	xe::Shader* dummyShader;
 };
 
 

@@ -174,7 +174,7 @@ namespace xe {
 		return *this;
 	}
 
-	void mat4::rotate(float angleDeg, const vec3 &axis) {
+	void mat4::rotateVec(float angleDeg, const vec3 &axis) {
 		const float r = to_rad(angleDeg);
 		const float c = cosf(r);
 		const float s = sinf(r);
@@ -214,6 +214,30 @@ namespace xe {
 		return xe::quat();
 	}
 
+	mat4 mat4::clearScale() const {
+		mat4 m = *this;
+
+		float r0w = m.rows[0].w;
+		m.rows[0] = vec4(vec3::normalize(vec3(m.rows[0])), r0w);
+
+		float r1w = m.rows[1].w;
+		m.rows[1] = vec4(vec3::normalize(vec3(m.rows[1])), r1w);
+
+		float r2w = m.rows[2].w;
+		m.rows[2] = vec4(vec3::normalize(vec3(m.rows[2])), r2w);
+
+		return m;
+	}
+
+	mat4 mat4::clearTranslation() const {
+		mat4 m = *this;
+
+		m.rows[3].x = 0;
+		m.rows[3].y = 0;
+		m.rows[3].z = 0;
+
+		return m;
+	}
 
 	vec3 mat4::transform(const vec3 &r) const {
 		return vec3(rows[0].x * r.x + rows[0].y * r.y + rows[0].z * r.z + rows[0].w,
@@ -296,6 +320,10 @@ namespace xe {
 		return m;
 	}
 
+	mat4 mat4::ortho(float width, float height, float near, float far) {
+		return ortho(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f, near, far);
+	}
+
 	mat4 mat4::perspective(float fovDeg, float aspectRatio, float near, float far) {
 		mat4 m(1.0f);
 
@@ -316,23 +344,29 @@ namespace xe {
 
 	mat4 mat4::lookAt(const vec3 &camera, const vec3 &object, const vec3 &up) {
 		mat4 m(1.0f);
-		vec3 f = vec3::normalize((object - camera));
-		vec3 s = vec3::cross(f, vec3::normalize(up));;
-		vec3 u = vec3::cross(s, f);
 
-		m.elements[0 + 0 * 4] = s.x;
-		m.elements[0 + 1 * 4] = s.y;
-		m.elements[0 + 2 * 4] = s.z;
+		vec3 vec31 = vec3::normalize(camera - object);
+		vec3 right = vec3::normalize(vec3::cross(up, vec31));
+		vec3 vec32 = vec3::normalize(vec3::cross(vec31, right));
 
-		m.elements[1 + 0 * 4] = u.x;
-		m.elements[1 + 1 * 4] = u.y;
-		m.elements[1 + 2 * 4] = u.z;
+		m.rows[0].x = right.x;
+		m.rows[0].y = vec32.x;
+		m.rows[0].z = vec31.x;
+		m.rows[0].w = 0.0f;
+		m.rows[1].x = right.y;
+		m.rows[1].y = vec32.y;
+		m.rows[1].z = vec31.y;
+		m.rows[1].w = 0.0f;
+		m.rows[2].x = right.z;
+		m.rows[2].y = vec32.z;
+		m.rows[2].z = vec31.z;
+		m.rows[2].w = 0.0f;
+		m.rows[3].x = -(right.x * camera.x + right.y * camera.y + right.z * camera.z);
+		m.rows[3].y = -(vec32.x * camera.x + vec32.y * camera.y + vec32.z * camera.z);
+		m.rows[3].z = -(vec31.x * camera.x + vec31.y * camera.y + vec31.z * camera.z);
+		m.rows[3].w = 1.0f;
 
-		m.elements[2 + 0 * 4] = -f.x;
-		m.elements[2 + 1 * 4] = -f.y;
-		m.elements[2 + 2 * 4] = -f.z;
-
-		return m * translation(vec3(-camera.x, -camera.y, -camera.z));
+		return m;
 	}
 
 	mat4 mat4::translation(const vec3 &translation) {

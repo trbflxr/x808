@@ -44,7 +44,7 @@ namespace xe { namespace fx {
 		vao->bind();
 		ibo->bind();
 
-		vao->drawElements(indicesCount);
+		vao->drawElements(indicesCount, BeginMode::Triangles);
 
 		ibo->unbind();
 		vao->unbind();

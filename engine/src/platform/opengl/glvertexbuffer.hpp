@@ -12,7 +12,7 @@ namespace xe { namespace api {
 
 	class XE_API GLVertexBuffer : public VertexBuffer {
 	public:
-		explicit GLVertexBuffer(Type type);
+		explicit GLVertexBuffer(BufferUsage usage);
 		~GLVertexBuffer() override;
 
 		void resize(uint size) override;
@@ -30,7 +30,7 @@ namespace xe { namespace api {
 	private:
 		uint handle;
 		uint size;
-		Type type;
+		BufferUsage usage;
 		BufferLayout layout;
 	};
 

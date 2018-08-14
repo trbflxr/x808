@@ -17,7 +17,7 @@ namespace xe {
 	public:
 		~TextureManager() override;
 
-		static void add(api::Texture *texture);
+		static void add(api::Texture *texture, bool showWarn = true);
 		static const api::Texture *get(const std::string_view &name);
 
 		static void clean();

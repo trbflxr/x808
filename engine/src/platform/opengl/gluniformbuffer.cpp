@@ -4,17 +4,11 @@
 
 #include "glcommon.hpp"
 #include "gluniformbuffer.hpp"
+#include "glenums.hpp"
 
 namespace xe { namespace api {
 
-	uint storageToGL(UniformBuffer::Storage storage) {
-		switch (storage) {
-			case UniformBuffer::DYNAMIC: return GL_DYNAMIC_STORAGE_BIT;
-			case UniformBuffer::CLIENT: return GL_CLIENT_STORAGE_BIT;
-		}
-	}
-
-	GLUniformBuffer::GLUniformBuffer(Storage storage, uint bindIndex, const BufferLayout &layout, uint size) {
+	GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) {
 		layouts.reserve(size);
 		for (int i = 0; i < size; ++i) {
 			layouts.push_back(layout);
@@ -22,11 +16,11 @@ namespace xe { namespace api {
 
 		glCall(glGenBuffers(1, &handle));
 
-		bind();
-		glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride(), nullptr, storageToGL(storage)));
+		GLUniformBuffer::bind();
+		glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride(), nullptr, bufferStorageToGL(storage)));
 		unbind();
 
-		glCall(glBindBufferBase(GL_UNIFORM_BUFFER, bindIndex, handle));
+		glCall(glBindBufferBase(GL_UNIFORM_BUFFER, bind, handle));
 	}
 
 	GLUniformBuffer::~GLUniformBuffer() {

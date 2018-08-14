@@ -4,6 +4,7 @@
 
 #include "glvertexarray.hpp"
 #include "glcommon.hpp"
+#include "glenums.hpp"
 
 namespace xe { namespace api {
 
@@ -15,16 +16,16 @@ namespace xe { namespace api {
 		buffers.front()->unbind();
 	}
 
-	void GLVertexArray::drawElements(uint count) const {
-		glCall(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr));
+	void GLVertexArray::drawElements(uint count, BeginMode mode) const {
+		glCall(glDrawElements(beginModeToGL(mode), count, GL_UNSIGNED_INT, nullptr));
 	}
 
-	void GLVertexArray::drawArrays(uint count) const {
-		glCall(glDrawArrays(GL_TRIANGLES, 0, count));
+	void GLVertexArray::drawArrays(uint count, BeginMode mode) const {
+		glCall(glDrawArrays(beginModeToGL(mode), 0, count));
 	}
 
-	void GLVertexArray::drawArraysInstanced(uint count, uint instanceCount) const {
-		glCall(glDrawArraysInstanced(GL_TRIANGLES, 0, count, instanceCount));
+	void GLVertexArray::drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const {
+		glCall(glDrawArraysInstanced(beginModeToGL(mode), 0, count, instanceCount));
 	}
 
 	void GLVertexArray::pushBuffer(VertexBuffer *buffer) {

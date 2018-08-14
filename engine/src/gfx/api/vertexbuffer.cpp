@@ -7,9 +7,9 @@
 
 namespace xe { namespace api {
 
-	VertexBuffer *VertexBuffer::create(Type type) {
+	VertexBuffer *VertexBuffer::create(BufferUsage usage) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new GLVertexBuffer(type);
+			case RenderAPI::OPENGL : return new GLVertexBuffer(usage);
 
 			default: return nullptr;
 		}

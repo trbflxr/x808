@@ -18,6 +18,8 @@ namespace xe { namespace utils {
 	std::string getBlock(const char *str, const char **outPosition = nullptr);
 	std::string getBlock(const std::string_view &str, uint offset = 0);
 
+	std::string getFileName(const std::string_view &str, bool includeExt = true);
+
 	std::string getStatement(const char *str, const char **outPosition = nullptr);
 
 	std::vector<std::string> tokenize(const std::string &string);

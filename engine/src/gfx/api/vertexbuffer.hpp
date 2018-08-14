@@ -7,16 +7,12 @@
 
 
 #include "common.hpp"
+#include "enums.hpp"
 #include "bufferlayout.hpp"
 
 namespace xe { namespace api {
 
 	class XE_API VertexBuffer {
-	public:
-		enum Type {
-			STATIC, DYNAMIC
-		};
-
 	public:
 		virtual ~VertexBuffer() = default;
 
@@ -32,7 +28,7 @@ namespace xe { namespace api {
 		template<typename T>
 		T *getPointer() { return (T *) getPointerInternal(); }
 
-		static VertexBuffer *create(Type type = Type::STATIC);
+		static VertexBuffer *create(BufferUsage usage = BufferUsage::StaticDraw);
 
 	protected:
 		VertexBuffer() = default;

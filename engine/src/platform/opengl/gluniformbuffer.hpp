@@ -12,7 +12,7 @@ namespace xe { namespace api {
 
 	class GLUniformBuffer : public UniformBuffer {
 	public:
-		explicit GLUniformBuffer(Storage storage, uint bindIndex, const BufferLayout &layout, uint size);
+		explicit GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size);
 		~GLUniformBuffer();
 
 		void bind() override;

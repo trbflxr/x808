@@ -162,6 +162,15 @@ namespace xe {
 		return quat((unitVec * sinf(angle)), cosf(angle));
 	}
 
+	quat quat::rotation(const vec3 &anglesDeg) {
+		quat r;
+		if (anglesDeg.x) r *= quat(vec3::XAXIS, anglesDeg.x);
+		if (anglesDeg.y) r *= quat(vec3::YAXIS, anglesDeg.y);
+		if (anglesDeg.z) r *= quat(vec3::ZAXIS, anglesDeg.z);
+
+		return quat::normalize(r);
+	}
+
 	quat quat::rotationX(float angleDeg) {
 		const float angle = to_rad(angleDeg) * 0.5f;
 		return quat(sinf(angle), 0.0f, 0.0f, cosf(angle));

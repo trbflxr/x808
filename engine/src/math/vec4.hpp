@@ -26,6 +26,8 @@ namespace xe {
 		vec4(const vec4 &vec);
 
 		static float dot(const vec4 &v1, const vec4 &v2);
+
+		static vec4 transform(const vec4 &vec, const mat4 &m);
 	};
 
 	typedef vec4 vec4;

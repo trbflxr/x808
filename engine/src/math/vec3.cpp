@@ -12,6 +12,7 @@ namespace xe {
 	const vec3 vec3::ZAXIS(0.0f, 0.0f, 1.0f);
 
 	vec3::vec3() : x(0), y(0), z(0) { }
+	vec3::vec3(float val) : x(val), y(val), z(val) { }
 	vec3::vec3(float x, float y, float z) : x(x), y(y), z(z) { }
 	vec3::vec3(float x, float y) : x(x), y(y), z(0) { }
 	vec3::vec3(const vec3 &vec) : x(vec.x), y(vec.y), z(vec.z) { }
@@ -59,6 +60,19 @@ namespace xe {
 
 	vec3 vec3::lerp(const vec3 &v, const vec3 &dest, float lerpFactor) {
 		return (dest - v) * lerpFactor + v;
+	}
+
+	vec3 vec3::transformPerspective(const vec3 &vec, const mat4 &mat) {
+		vec3 res;
+
+		vec4 r1(0.0f, 0.0f, 0.0f, 1.0f);
+		r1 = vec4::transform(r1, mat);
+
+		res.x = r1.x / r1.w;
+		res.y = r1.y / r1.w;
+		res.z = r1.z / r1.w;
+
+		return res;
 	}
 
 

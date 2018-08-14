@@ -15,8 +15,8 @@ public:
 		ui = new DebugUI();
 
 //		pushLayer(new Test2D());
-		pushLayer(new Test3D(ui));
-//		pushLayer(new Test3DDeferred());
+//		pushLayer(new Test3D(ui));
+		pushLayer(new Test3DDeferred(ui));
 		pushLayer(ui);
 	}
 

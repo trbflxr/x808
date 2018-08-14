@@ -35,11 +35,14 @@ namespace xe {
 
 		mat4 &invert();
 
-		void rotate(float angleDeg, const vec3 &axis);
+		void rotateVec(float angleDeg, const vec3 &axis);
 
 		inline vec3 getTranslation() const { return vec3(getColumn(3)); }
 		vec3 getScale() const;
 		quat getRotation() const;
+
+		mat4 clearScale() const;
+		mat4 clearTranslation() const;
 
 		static vec3 translateVec(const mat4 &m, const vec2 &vec);
 		static vec3 translateVec(const mat4 &m, const vec3 &vec);
@@ -50,6 +53,7 @@ namespace xe {
 		static mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 
 		static mat4 ortho(float left, float right, float bottom, float top, float near, float far);
+		static mat4 ortho(float width, float height, float near, float far);
 		static mat4 perspective(float fovDeg, float aspectRatio, float near, float far);
 		static mat4 lookAt(const vec3 &camera, const vec3 &object, const vec3 &up);
 
