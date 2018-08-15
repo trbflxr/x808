@@ -33,12 +33,13 @@ namespace xe {
 				shaderExtensions << extension << "\n";
 			}
 		}
+		++addedLines;
 
 		shaderAdditions << "#version " << api::Context::getRenderAPIVersion() << "\n";
 		shaderAdditions << shaderExtensions.str() << "\n";
 		shaderAdditions << MATH_PI << "\n";
 		shaderAdditions << MATH_HALF_PI << "\n";
-		shaderAdditions << MATH_2_PI << "\n";
+		shaderAdditions << MATH_2_PI << "\n ";
 
 		std::string source;
 		if (createFromSource) {
@@ -46,8 +47,9 @@ namespace xe {
 
 			if (!dependencies.empty()) {
 				for (auto &&dependency : dependencies) {
-					shaderAdditions << dependency << "\n";
+					shaderAdditions << "\n" << dependency;
 				}
+				++addedLines;
 			}
 
 		} else {
@@ -55,13 +57,17 @@ namespace xe {
 
 			if (!dependencies.empty()) {
 				for (auto &&dependency : dependencies) {
-					shaderAdditions << loadFromFile(dependency.c_str()) << "\n";
+					shaderAdditions << "\n" << loadFromFile(dependency.c_str());
 				}
+				++addedLines;
 			}
 		}
 
 		shaderSource << shaderAdditions.str() << "\n";
-		shaderSource << source << "\n";
+		shaderSource << source;
+
+		auto vec = utils::splitString(shaderAdditions.str(), '\n');
+		addedLines += vec.size();
 
 		fullSource = shaderSource.str();
 	}
@@ -84,9 +90,14 @@ namespace xe {
 			glCall(glGetShaderInfoLog(id, length, &length, &error[0]));
 
 			std::string errorMessage(&error[0]);
+			std::string line;
 
-			uint lineNumber;
-			sscanf(&error[0], "%*s %*d:%d", &lineNumber);
+			//get error line
+			for (int i = 2; i < error.size(); ++i) {
+				if(error[i]==')') break;
+				line+=error[i];
+			}
+			uint lineNumber = std::stoul(line) - addedLines;
 
 			XE_FATAL("[GLShaderFile]: Failed to compile ", typeToString(type), " shader.");
 			XE_FATAL("[GLShaderFile]: Line: ", lineNumber);

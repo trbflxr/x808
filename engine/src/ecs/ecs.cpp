@@ -44,6 +44,8 @@ namespace xe {
 	}
 
 	void ECS::removeEntity(EntityHandle handle) {
+		if (!handle) return;
+
 		std::vector<std::pair<uint, uint> > &entity = handleToEntity(handle);
 
 		for (auto &&component : entity) {

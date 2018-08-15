@@ -16,7 +16,8 @@ namespace xe {
 			type(type),
 			pathOrSource(pathOrSource),
 			dependencies(dependencies),
-			extensions(extensions) { }
+			extensions(extensions),
+			addedLines(0) { }
 
 	ShaderFile *ShaderFile::fromSource(ShaderType type, const std::string_view &source,
 	                                   const std::vector<std::string> &dependenciesSource,

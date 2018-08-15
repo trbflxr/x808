@@ -39,6 +39,9 @@ namespace xe {
 		api::IndexBuffer *getIndexBuffer() const { return indexBuffer; }
 		Material1 *getMaterial() const { return material; }
 
+		static Mesh1* spotLightMesh();
+		static Mesh1* pointLightMesh();
+
 	private:
 		void initMesh(const IndexedModel &model);
 
@@ -50,7 +53,6 @@ namespace xe {
 
 		Material1 *material;
 	};
-
 
 }
 

@@ -66,6 +66,8 @@ namespace xe {
 		std::vector<std::string> extensions;
 
 		std::string fullSource;
+
+		uint addedLines;
 	};
 
 }

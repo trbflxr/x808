@@ -8,26 +8,27 @@
 
 #include <string>
 #include <vector>
+#include "common.hpp"
 #include "xeint.hpp"
 
 namespace xe { namespace utils {
 
-	const char *findToken(const char *str, const std::string_view &token);
-	const char *findToken(const std::string_view &str, const std::string_view &token);
+	const char XE_API *findToken(const char *str, const std::string_view &token);
+	const char XE_API *findToken(const std::string_view &str, const std::string_view &token);
 
-	std::string getBlock(const char *str, const char **outPosition = nullptr);
-	std::string getBlock(const std::string_view &str, uint offset = 0);
+	std::string XE_API getBlock(const char *str, const char **outPosition = nullptr);
+	std::string XE_API getBlock(const std::string_view &str, uint offset = 0);
 
-	std::string getFileName(const std::string_view &str, bool includeExt = true);
+	std::string XE_API getFileName(const std::string_view &str, bool includeExt = true);
 
-	std::string getStatement(const char *str, const char **outPosition = nullptr);
+	std::string XE_API getStatement(const char *str, const char **outPosition = nullptr);
 
-	std::vector<std::string> tokenize(const std::string &string);
-	std::vector<std::string> splitString(const std::string &string, const std::string &delimiters);
-	std::vector<std::string> splitString(const std::string &string, char delimiter);
-	std::vector<std::string> getLines(const std::string &string);
+	std::vector<std::string> XE_API tokenize(const std::string &string);
+	std::vector<std::string> XE_API splitString(const std::string &string, const std::string &delimiters);
+	std::vector<std::string> XE_API splitString(const std::string &string, char delimiter);
+	std::vector<std::string> XE_API getLines(const std::string &string);
 
-	bool startsWith(const std::string_view &string, const std::string_view &start);
+	bool XE_API startsWith(const std::string_view &string, const std::string_view &start);
 
 }}
 

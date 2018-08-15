@@ -4,6 +4,7 @@
 
 #include <assimp/mesh.h>
 #include "indexedmodel.hpp"
+#include "math/geometry.hpp"
 
 namespace xe {
 
@@ -20,7 +21,7 @@ namespace xe {
 		if (mesh->HasTextureCoords(0)) {
 			for (uint i = 0; i < mesh->mNumVertices; ++i) {
 				uvs.emplace_back(mesh->mTextureCoords[0][i].x,
-				                       mesh->mTextureCoords[0][i].y);
+				                 mesh->mTextureCoords[0][i].y);
 			}
 		}
 
@@ -35,8 +36,8 @@ namespace xe {
 		if (mesh->HasTangentsAndBitangents()) {
 			for (uint i = 0; i < mesh->mNumVertices; ++i) {
 				tangents.emplace_back(mesh->mTangents[i].x,
-				                     mesh->mTangents[i].y,
-				                     mesh->mTangents[i].z);
+				                      mesh->mTangents[i].y,
+				                      mesh->mTangents[i].z);
 			}
 		}
 
@@ -47,6 +48,46 @@ namespace xe {
 				}
 			}
 		}
+	}
+
+	IndexedModel IndexedModel::getConeModel() {
+		IndexedModel model;
+
+		auto im = geometry::makeCone(2.0f, 4.0f, 15);
+
+		model.positions = im.first;
+		model.indices = im.second;
+
+		model.uvs.reserve(model.positions.size());
+		model.normals.reserve(model.positions.size());
+		model.tangents.reserve(model.positions.size());
+		for (uint i = 0; i < model.positions.size(); ++i) {
+			model.normals.emplace_back(0.0f, 1.0f, 0.0f);
+			model.tangents.emplace_back(0.0f, 1.0f, 0.0f);
+			model.uvs.emplace_back(0.0f, 0.0f);
+		}
+
+		return model;
+	}
+
+	IndexedModel IndexedModel::getIcosphereModel() {
+		IndexedModel model;
+
+		auto im = geometry::makeIcosphere(2);
+
+		model.positions = im.first;
+		model.indices = im.second;
+
+		model.uvs.reserve(model.positions.size());
+		model.normals.reserve(model.positions.size());
+		model.tangents.reserve(model.positions.size());
+		for (uint i = 0; i < model.positions.size(); ++i) {
+			model.normals.emplace_back(0.0f, 1.0f, 0.0f);
+			model.tangents.emplace_back(0.0f, 1.0f, 0.0f);
+			model.uvs.emplace_back(0.0f, 0.0f);
+		}
+
+		return model;
 	}
 
 }

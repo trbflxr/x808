@@ -52,4 +52,14 @@ namespace xe {
 		indexBuffer = api::IndexBuffer::create(&model.indices[0], indicesSize);
 	}
 
+	Mesh1 *Mesh1::spotLightMesh() {
+		static Mesh1 m("SpotLight", IndexedModel::getConeModel(), new Material1("dummy"));
+		return &m;
+	}
+
+	Mesh1 *Mesh1::pointLightMesh() {
+		static Mesh1 m("PointLight", IndexedModel::getIcosphereModel(), new Material1("dummy"));
+		return &m;
+	}
+
 }

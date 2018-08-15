@@ -11,6 +11,8 @@
 #include "common.hpp"
 #include "math/math.hpp"
 
+#include <unordered_map>
+
 struct aiMesh;
 
 namespace xe {
@@ -24,6 +26,9 @@ namespace xe {
 
 		IndexedModel() = default;
 		explicit IndexedModel(const aiMesh *mesh);
+
+		static IndexedModel getConeModel();
+		static IndexedModel getIcosphereModel();
 	};
 
 }

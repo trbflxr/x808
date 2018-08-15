@@ -16,12 +16,14 @@ struct DummyPlayerComponent : public xe::ECSComponent<DummyPlayerComponent> {
 	float speed;
 	float sprintSpeed;
 
-	explicit DummyPlayerComponent(xe::Camera *camera, float mouseSensitivity = 0.15f,
-	                              float speed = 4.0f, float sprintSpeed = 4.0f) :
+	explicit DummyPlayerComponent(xe::Camera *camera,
+	                              float speed = 4.0f,
+	                              float sprint = 4.0f,
+	                              float sensitivity = 0.15f) :
 			camera(camera),
-			mouseSensitivity(mouseSensitivity),
+			mouseSensitivity(sensitivity),
 			speed(speed),
-			sprintSpeed(speed * sprintSpeed) { }
+			sprintSpeed(speed * sprint) { }
 
 };
 

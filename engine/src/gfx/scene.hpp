@@ -18,17 +18,18 @@ namespace xe {
 	public:
 		explicit Scene(const std::string_view &folder, const std::string_view &name);
 		~Scene();
-		
+
+		const std::vector<UniqueMesh *> &getMeshes() const { return meshes; }
+		const std::vector<Light *> &getLights() const { return lightManager->getLights(); }
+
 	private:
-		bool loadLights(const std::string_view &path);
-		bool loadMeshes(const std::string_view &path);
+		bool load(const std::array<std::string, 2> &paths);
+		bool loadLights(const std::string &path, const aiScene* scene);
 		api::Texture *loadTexture(const char *file);
 
-		void recursiveLoad(const aiScene* scene, const aiNode* node);
+		void recursiveLoad(const aiScene *scene, const aiNode *node);
 
 	private:
-		//todo: remove
-	public:
 		std::string folder;
 
 		LightManager *lightManager;
