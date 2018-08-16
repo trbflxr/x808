@@ -7,18 +7,23 @@
 
 namespace xe {
 
-	Mesh1::Mesh1(const std::string_view &id) : id(id) { }
+	Mesh1::Mesh1(const std::string_view &id) :
+			id(id),
+			indexBuffer(nullptr),
+			vertexArray(nullptr) { }
 
 	Mesh1::Mesh1(const std::string_view &id, const IndexedModel &model, Material1 *material) :
 			id(id),
-			material(material) {
+			material(material),
+			indexBuffer(nullptr),
+			vertexArray(nullptr) {
 
 		initMesh(model);
 	}
 
 	Mesh1::~Mesh1() {
-		delete vertexArray;
 		delete indexBuffer;
+		delete vertexArray;
 	}
 
 	void Mesh1::initMesh(const IndexedModel &model) {

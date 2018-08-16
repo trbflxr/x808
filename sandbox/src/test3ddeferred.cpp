@@ -12,8 +12,6 @@
 #include <gfx/renderer.hpp>
 #include <utils/string.hpp>
 
-#include <GL/glew.h>
-
 using namespace xe;
 using namespace xe::api;
 
@@ -54,7 +52,6 @@ Test3DDeferred::Test3DDeferred(DebugUI *ui) :
 			ShaderFile::fromFile(ShaderType::Vert, "dummy.vert", { }),
 			ShaderFile::fromFile(ShaderType::Frag, "dummy.frag", { })
 	}));
-
 }
 
 Test3DDeferred::~Test3DDeferred() {

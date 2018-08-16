@@ -28,8 +28,4 @@ namespace xe { namespace api {
 		glCall(glDrawArraysInstanced(beginModeToGL(mode), 0, count, instanceCount));
 	}
 
-	void GLVertexArray::pushBuffer(VertexBuffer *buffer) {
-		buffers.push_back(buffer);
-	}
-
 }}

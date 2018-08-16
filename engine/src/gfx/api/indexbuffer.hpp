@@ -13,13 +13,19 @@ namespace xe { namespace api {
 
 	class XE_API IndexBuffer {
 	public:
+		virtual ~IndexBuffer() = default;
+
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
 
-		virtual uint getCount() const = 0;
+		inline uint getCount() const { return count; }
 
 		static IndexBuffer *create(const uint16 *data, uint count);
 		static IndexBuffer *create(const uint *data, uint count);
+
+	protected:
+		uint handle;
+		uint count;
 	};
 
 }}

@@ -14,18 +14,11 @@ namespace xe { namespace api {
 	public:
 		explicit GLIndexBuffer(const uint16 *data, uint count);
 		explicit GLIndexBuffer(const uint *data, uint count);
-		~GLIndexBuffer();
+		~GLIndexBuffer() override;
 
 		void bind() const override;
 		void unbind() const override;
-
-		inline uint getCount() const override { return count;}
-
-	private:
-		uint handle;
-		uint count;
 	};
-
 
 }}
 

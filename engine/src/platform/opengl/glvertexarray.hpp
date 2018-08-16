@@ -12,22 +12,12 @@ namespace xe { namespace api {
 
 	class GLVertexArray : public VertexArray {
 	public:
-		explicit GLVertexArray() = default;
-		~GLVertexArray() = default;
-
 		void bind() const override;
 		void unbind() const override;
 
 		void drawElements(uint count, BeginMode mode) const override;
 		void drawArrays(uint count, BeginMode mode) const override;
 		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const override;
-
-		inline VertexBuffer *getBuffer(uint index) override { return buffers[index]; }
-		void pushBuffer(VertexBuffer *buffer) override;
-
-	private:
-		uint handle;
-		std::vector<api::VertexBuffer *> buffers;
 	};
 
 }}

@@ -76,6 +76,9 @@ file(GLOB ENGINE_GL_SRC
         src/platform/opengl/*.cpp
         src/platform/opengl/*.c)
 
+#sse
+file(GLOB ENGINE_SSE_SRC
+        src/platform/sse/*.cpp)
 
 #total platform files
 file(GLOB PLATFORM_SRC)
@@ -88,6 +91,10 @@ if (XE_PLATFORM_GL)
     find_package(OpenGL REQUIRED)
     list(APPEND PLATFORM_SRC ${ENGINE_GL_SRC})
 endif ()
+
+#append sse platform
+list(APPEND PLATFORM_SRC ${ENGINE_SSE_SRC})
+
 
 #xe lib
 add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
