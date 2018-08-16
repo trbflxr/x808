@@ -61,7 +61,6 @@ namespace xe {
 		const mat4 &getBoundsMatrix() const { return boundsMatrix; }
 
 	protected:
-	public: //todo: remove
 		UniqueMesh *mesh;
 		UniqueMesh *boundingMesh;
 		mat4 boundsMatrix;

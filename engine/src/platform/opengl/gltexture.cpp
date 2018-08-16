@@ -5,7 +5,7 @@
 #include "gltexture.hpp"
 #include "glcommon.hpp"
 #include "glenums.hpp"
-#include "utils/loadimage.hpp"
+#include "loaders/imageloader.hpp"
 #include "embedded/embedded.hpp"
 
 namespace xe { namespace api {
@@ -145,7 +145,7 @@ namespace xe { namespace api {
 
 		uint bits;
 		// FreeImage loads bottom->top
-		outPixels = utils::loadImage(fileName.data(), &width, &height, &bits, !options->flipY);
+		outPixels = ImageLoader::load(fileName.c_str(), &width, &height, &bits, !options->flipY);
 
 		if (!outPixels) {
 			fail = true;

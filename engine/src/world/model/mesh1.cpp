@@ -53,12 +53,12 @@ namespace xe {
 	}
 
 	Mesh1 *Mesh1::spotLightMesh() {
-		static Mesh1 m("SpotLight", IndexedModel::getConeModel(), new Material1("dummy"));
+		static Mesh1 m("SpotLight", IndexedModel::getConeModel(), nullptr);
 		return &m;
 	}
 
 	Mesh1 *Mesh1::pointLightMesh() {
-		static Mesh1 m("PointLight", IndexedModel::getIcosphereModel(), new Material1("dummy"));
+		static Mesh1 m("PointLight", IndexedModel::getIcosphereModel(), nullptr);
 		return &m;
 	}
 

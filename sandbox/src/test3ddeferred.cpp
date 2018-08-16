@@ -71,6 +71,8 @@ void Test3DDeferred::render() {
 
 	Renderer::enableDepthTesting(true);
 	Renderer::enableBlend(true);
+	Renderer::setCullFace(CullFace::Back);
+
 
 	dummyShader->bind();
 
@@ -112,10 +114,11 @@ void Test3DDeferred::render() {
 		Renderer::incDC();
 	}
 
-	for (auto &&light :scene->getLights()) {
-		Mesh1* mesh = light->mesh->mesh;
+	Renderer::setCullFace(CullFace::Front);
+	for (auto &&light : scene->getLights()) {
+		Mesh1 *mesh = light->getMesh()->mesh;
 
-		mat4 mvp = camera->getViewProjection() * light->mesh->transformation;
+		mat4 mvp = camera->getViewProjection() * light->getMesh()->transformation;
 		int32 useDiffuse = 0;
 
 		dummyShader->setUniform("MVP", &mvp.elements, sizeof(mat4));
@@ -138,6 +141,7 @@ void Test3DDeferred::render() {
 	}
 
 	dummyShader->unbind();
+
 
 	Renderer::enableBlend(false);
 }

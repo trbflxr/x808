@@ -29,6 +29,7 @@ namespace xe {
 		void update(const vec3 &cameraPos, float delta);
 
 		const std::vector<Light *> &getLights() const { return lights; }
+		std::vector<Light *> &getLights() { return lights; }
 
 	private:
 		void updateShadowSpotUBO(SpotLight1 *light, int32 shadowId);

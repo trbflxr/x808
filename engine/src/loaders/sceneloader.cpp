@@ -1,0 +1,260 @@
+//
+// Created by FLXR on 8/16/2018.
+//
+
+
+#include <fstream>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+#include "sceneloader.hpp"
+#include "world/lights/spotlight1.hpp"
+#include "world/lights/pointlight1.hpp"
+#include "utils/string.hpp"
+#include "resources/texturemanager.hpp"
+
+namespace xe {
+
+	bool SceneLoader::load(const char *folder, const char *name,
+	                       std::vector<Material1 *> &outMaterials,
+	                       std::vector<UniqueMesh *> &outMeshes,
+	                       std::vector<Light *> &outLights) {
+
+		char paths[2][1024];
+
+		//collada path
+		strcpy(paths[0], folder);
+		strcat(paths[0], "/");
+		strcat(paths[0], name);
+		strcat(paths[0], ".dae");
+
+		//lights path
+		strcpy(paths[1], folder);
+		strcat(paths[1], "/");
+		strcat(paths[1], name);
+		strcat(paths[1], ".lights");
+
+
+		//load assimp scene
+		Assimp::Importer importer;
+		const aiScene *scene = importer.ReadFile(paths[0],
+		                                         aiProcessPreset_TargetRealtime_MaxQuality |
+		                                         aiProcess_JoinIdenticalVertices |
+		                                         aiProcess_Triangulate |
+		                                         aiProcess_GenSmoothNormals |
+		                                         aiProcess_CalcTangentSpace |
+		                                         aiProcess_FlipUVs);
+		if (!scene) {
+			XE_FATAL("[SceneLoader]: unable to load scene '", paths[0], "'");
+			XE_ASSERT(false);
+			return false;
+		}
+
+		//load xe scene
+		loadMaterials(folder, scene, outMaterials);
+		loadMeshes(scene, scene->mRootNode, outMeshes, outMaterials);
+		loadLights(paths[1], scene, outLights);
+
+		return true;
+	}
+
+	void SceneLoader::loadMaterials(const char *folder, const aiScene *scene,
+	                                std::vector<Material1 *> &materials) {
+
+		for (uint i = 0; i < scene->mNumMaterials; ++i) {
+			aiMaterial *material = scene->mMaterials[i];
+
+			//load material data
+			aiString temp;
+			aiColor4D diffuse;
+			aiColor4D emission;
+			aiColor4D specular;
+			float shininess;
+
+			material->Get(AI_MATKEY_NAME, temp);
+			material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+			material->Get(AI_MATKEY_COLOR_EMISSIVE, emission);
+			material->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+			material->Get(AI_MATKEY_SHININESS, shininess);
+
+			Material1 *m = new Material1(temp.C_Str());
+			m->diffuseColor = vec3(diffuse.r, diffuse.g, diffuse.b);
+			m->specularColor = vec3(specular.r, specular.g, specular.b);
+			m->emission = emission.a * 5.0f;
+			m->specularShininess = shininess;
+
+			//load textures
+			aiReturn texFound;
+
+			texFound = material->GetTexture(aiTextureType_DIFFUSE, 0, &temp);
+			if (texFound == AI_SUCCESS) {
+				m->diffuse = loadTexture(folder, temp.C_Str());
+			}
+
+			texFound = material->GetTexture(aiTextureType_SPECULAR, 0, &temp);
+			if (texFound == AI_SUCCESS) {
+				m->specular = loadTexture(folder, temp.C_Str());
+			}
+
+			texFound = material->GetTexture(aiTextureType_NORMALS, 0, &temp);
+			if (texFound == AI_SUCCESS) {
+				m->normal = loadTexture(folder, temp.C_Str());
+			}
+
+			texFound = material->GetTexture(aiTextureType_DISPLACEMENT, 0, &temp);
+			if (texFound == AI_SUCCESS) {
+				m->displacement = loadTexture(folder, temp.C_Str());
+			}
+
+			texFound = material->GetTexture(aiTextureType_REFLECTION, 0, &temp);
+			if (texFound == AI_SUCCESS) {
+				m->parallax = loadTexture(folder, temp.C_Str());
+			}
+
+			materials.push_back(m);
+		}
+	}
+
+	void SceneLoader::loadMeshes(const aiScene *scene, const aiNode *node,
+	                             std::vector<UniqueMesh *> &meshes,
+	                             std::vector<Material1 *> &materials) {
+
+		for (uint i = 0; i < node->mNumMeshes; ++i) {
+			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+			Material1 *material = materials[mesh->mMaterialIndex];
+
+			IndexedModel indexedModel(mesh);
+			const char *id = mesh->mName.C_Str();
+
+			mat4 t;
+			aiMatrix4x4 ait = scene->mRootNode->mTransformation * node->mTransformation;
+			memcpy(&t, &ait, sizeof(mat4));
+
+			meshes.push_back(new UniqueMesh(id, new Mesh1(id, indexedModel, material), t));
+		}
+
+		for (uint n = 0; n < node->mNumChildren; ++n) {
+			loadMeshes(scene, node->mChildren[n], meshes, materials);
+		}
+	}
+
+	void SceneLoader::loadLights(const char *path, const aiScene *scene, std::vector<Light *> &lights) {
+		//info
+		std::vector<std::string> ids;
+		std::vector<std::string> types;
+		std::vector<float> intensities;
+		std::vector<vec3> colors;
+		std::vector<float> falloffs;
+		std::vector<float> spotAngles;
+		std::vector<float> spotBlurs;
+		std::vector<bool> shadows;
+
+		//read light file
+		std::ifstream file(path);
+		if (!file.good()) {
+			file.close();
+			XE_WARN("[SceneLoader]: .lights file '", path, "' not found");
+			return;
+		}
+
+		std::string line;
+		while (std::getline(file, line)) {
+			if (line.empty()) continue;
+
+			std::string key = line.substr(0, 4);
+			std::vector<std::string> values = utils::splitString(line.substr(4), ' ');
+
+			if (key == "nam ") {
+				std::replace(values[0].begin(), values[0].end(), '.', '_');
+				ids.push_back(values[0]);
+
+			} else if (key == "typ ") {
+				types.push_back(values[0]);
+
+			} else if (key == "ity ") {
+				intensities.push_back(std::stof(values[0]));
+
+			} else if (key == "col ") {
+				colors.emplace_back(std::stof(values[0]), std::stof(values[1]), std::stof(values[2]));
+
+			} else if (key == "fal ") {
+				falloffs.emplace_back(std::stof(values[0]));
+
+			} else if (key == "ang ") {
+				spotAngles.emplace_back(std::stof(values[0]));
+
+			} else if (key == "blr ") {
+				spotBlurs.emplace_back(std::stof(values[0]));
+
+			} else if (key == "sha ") {
+				shadows.push_back(static_cast<bool>(std::stoi(values[0])));
+
+			}
+		}
+
+		file.close();
+
+		//load lights
+		for (uint i = 0; i < scene->mNumLights; ++i) {
+			const aiNode *lightNode = scene->mRootNode->FindNode(scene->mLights[i]->mName);
+			if (!lightNode) continue;
+
+			const char *lightName = scene->mLights[i]->mName.C_Str();
+
+			float scale = scene->mLights[i]->mAngleOuterCone;
+
+			mat4 t;
+			aiMatrix4x4 ait = scene->mRootNode->mTransformation * lightNode->mTransformation;
+			memcpy(&t, &ait, sizeof(mat4));
+
+			t *= mat4::scale({scale, scale, scale});
+
+			uint id = 0;
+			for (uint j = 0; j < ids.size(); ++j) {
+				if (ids[j] == lightName) {
+					id = j;
+					break;
+				}
+			}
+
+			if (types[id] == "SPOT") {
+				static mat4 yup = mat4::rotation(90.0f, vec3::XAXIS);
+				t *= yup;
+
+				lights.push_back(new SpotLight1(ids[id], colors[id], intensities[id], falloffs[id],
+				                                spotAngles[id], spotBlurs[id], shadows[id],
+				                                Mesh1::spotLightMesh(), t));
+
+			} else if (types[id] == "POINT") {
+				lights.push_back(new PointLight1(ids[id], colors[id], intensities[id], falloffs[id],
+				                                 shadows[id], Mesh1::pointLightMesh(), t));
+			}
+		}
+	}
+
+	api::Texture *SceneLoader::loadTexture(const char *folder, const char *file) {
+		static api::TextureParameters params(TextureTarget::Tex2D,
+		                                     PixelInternalFormat::Rgba,
+		                                     PixelFormat::Rgba,
+		                                     PixelType::UnsignedByte,
+		                                     TextureMinFilter::LinearMipMapLinear,
+		                                     TextureMagFilter::Linear,
+		                                     TextureWrap::Repeat,
+		                                     MIP_MAP_AUTO,
+		                                     ANISOTROPY_AUTO);
+
+		char path[1024];
+		strcpy(path, folder);
+		strcat(path, "/");
+		strcat(path, file);
+
+		std::string textureName = utils::getFileName(file, false);
+
+		api::Texture *texture = api::Texture::create(textureName, path, params);
+		TextureManager::add(texture, false);
+
+		return texture;
+	}
+
+}

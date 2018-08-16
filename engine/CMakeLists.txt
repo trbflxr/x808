@@ -55,6 +55,7 @@ file(GLOB ENGINE_SRC
         src/gfx/layers/*.cpp
         src/gfx/lights/*.cpp
         src/gfx/*.cpp
+        src/loaders/*.cpp
         src/math/*.cpp
         src/objects/*.cpp
         src/resources/*.cpp

@@ -124,8 +124,7 @@ namespace xe {
 		return {vertices, indices};
 	}
 
-	std::pair<std::vector<vec3>, std::vector<uint>>
-	geometry::makeCone(float radius, float height, uint subdivisions) {
+	std::pair<std::vector<vec3>, std::vector<uint>> geometry::makeCone(float radius, float height, uint subdivisions) {
 		std::vector<vec3> vertices(subdivisions + 2);
 		std::vector<uint> indices(subdivisions * 2 * 3);
 

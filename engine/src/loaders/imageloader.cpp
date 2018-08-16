@@ -1,17 +1,16 @@
 //
-// Created by FLXR on 6/30/2018.
+// Created by FLXR on 8/16/2018.
 //
 
 #include <FreeImage/FreeImage.h>
 #include <FreeImage/FreeImageUtilities.h>
 
-#include "loadimage.hpp"
+#include "imageloader.hpp"
 #include "utils/log.hpp"
-#include "gfx/color.hpp"
 
-namespace xe { namespace utils {
+namespace xe {
 
-	byte *loadImage(const char *path, uint *width, uint *height, uint *bits, bool flipY) {
+	byte *ImageLoader::load(const char *path, uint *width, uint *height, uint *bits, bool flipY) {
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		FIBITMAP *dib = nullptr;
 		fif = FreeImage_GetFileType(path, 0);
@@ -65,8 +64,8 @@ namespace xe { namespace utils {
 		return result;
 	}
 
-	byte *loadImage(const std::string_view &path, uint *width, uint *height, uint *bits, bool flipY) {
-		return loadImage(path.data(), width, height, bits, flipY);
+	byte *ImageLoader::load(const std::string_view &path, uint *width, uint *height, uint *bits, bool flipY) {
+		return load(path.data(), width, height, bits, flipY);
 	}
 
-}}
+}
