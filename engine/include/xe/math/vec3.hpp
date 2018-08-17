@@ -41,9 +41,10 @@ namespace xe {
 
 		static vec3 transformPerspective(const vec3 &vec, const mat4 &mat);
 
-		static const vec3 XAXIS;
-		static const vec3 YAXIS;
-		static const vec3 ZAXIS;
+		static const vec3 UnitX;
+		static const vec3 UnitY;
+		static const vec3 UnitZ;
+		static const vec3 Zero;
 	};
 
 	typedef vec3 vec3;

@@ -56,6 +56,14 @@ namespace xe {
 		indexBuffer = new IndexBuffer(&model.indices[0], indicesSize);
 	}
 
+	void Mesh::render(BeginMode mode) const {
+		vertexArray->bind();
+		indexBuffer->bind();
+		vertexArray->drawElements(indexBuffer->getCount(), mode);
+		indexBuffer->unbind();
+		vertexArray->unbind();
+	}
+
 	Mesh *Mesh::spotLightMesh() {
 		return new Mesh("SpotLight", IndexedModel::getConeModel(), nullptr);
 	}

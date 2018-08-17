@@ -199,13 +199,9 @@ namespace xe {
 
 			const char *lightName = scene->mLights[i]->mName.C_Str();
 
-			float scale = scene->mLights[i]->mAngleOuterCone;
-
 			mat4 t;
 			aiMatrix4x4 ait = scene->mRootNode->mTransformation * lightNode->mTransformation;
 			memcpy(&t, &ait, sizeof(mat4));
-
-			t *= mat4::scale({scale, scale, scale});
 
 			uint id = 0;
 			for (uint j = 0; j < ids.size(); ++j) {
@@ -216,7 +212,7 @@ namespace xe {
 			}
 
 			if (types[id] == "SPOT") {
-				static mat4 yup = mat4::rotation(90.0f, vec3::XAXIS);
+				static mat4 yup = mat4::rotation(90.0f, vec3::UnitX);
 				t *= yup;
 
 				lights.push_back(new SpotLight(ids[id], colors[id], intensities[id], falloffs[id],

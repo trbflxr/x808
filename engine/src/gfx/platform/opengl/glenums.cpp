@@ -208,7 +208,7 @@ namespace xe { namespace internal {
 		}
 	}
 
-	uint bufferUsageToGL(BufferUsage usage){
+	uint bufferUsageToGL(BufferUsage usage) {
 		switch (usage) {
 			case BufferUsage::StreamDraw: return GL_STREAM_DRAW;
 			case BufferUsage::StreamRead: return GL_STREAM_READ;
@@ -222,7 +222,7 @@ namespace xe { namespace internal {
 		}
 	}
 
-	uint bufferStorageToGL(BufferStorage storage){
+	uint bufferStorageToGL(BufferStorage storage) {
 		switch (storage) {
 			case BufferStorage::MapRead: return GL_MAP_READ_BIT;
 			case BufferStorage::MapWrite: return GL_MAP_WRITE_BIT;
@@ -230,6 +230,22 @@ namespace xe { namespace internal {
 			case BufferStorage::MapCoherent: return GL_MAP_COHERENT_BIT;
 			case BufferStorage::Dynamic: return GL_DYNAMIC_STORAGE_BIT;
 			case BufferStorage::Client: return GL_CLIENT_STORAGE_BIT;
+		}
+	}
+
+	uint materialFaceToGL(MaterialFace face) {
+		switch (face) {
+			case MaterialFace::Front: return GL_FRONT;
+			case MaterialFace::Back: return GL_BACK;
+			case MaterialFace::FrontAndBack: return GL_FRONT_AND_BACK;
+		}
+	}
+
+	uint polygonModeToGL(PolygonMode mode) {
+		switch (mode) {
+			case PolygonMode::Point: return GL_POINT;
+			case PolygonMode::Line: return GL_LINE;
+			case PolygonMode::Fill: return GL_FILL;
 		}
 	}
 

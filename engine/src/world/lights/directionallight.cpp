@@ -81,7 +81,7 @@ namespace xe {
 
 			//matrices
 			vec3 eye = frustumCenter + (direction * (radius / 2.0f * cascadeBackupDistance));
-			tempView[cascade] = mat4::lookAt(eye, frustumCenter, vec3::YAXIS);
+			tempView[cascade] = mat4::lookAt(eye, frustumCenter, vec3::UnitY);
 			tempOrtho[cascade] = mat4::ortho(radius, radius, cascadeSplits[0], radius * cascadeBackupDistance);
 		}
 

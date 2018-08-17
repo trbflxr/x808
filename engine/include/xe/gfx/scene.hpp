@@ -8,6 +8,7 @@
 
 #include <xe/world/lights/lightmanager.hpp>
 #include <xe/world/model/mesh.hpp>
+#include <xe/gfx/shader.hpp>
 
 namespace xe {
 
@@ -15,6 +16,14 @@ namespace xe {
 	public:
 		explicit Scene(const string &folder, const string &name);
 		~Scene();
+
+		void update(const SpatialData &cameraSpatial, float delta);
+
+		void render(BeginMode mode, Shader *shader);
+		void renderMeshes(BeginMode mode, Shader *shader);
+		void renderMeshesWithMaterials(BeginMode mode, Shader *shader);
+		void renderMeshesBasic(BeginMode mode, Shader *shader);
+		void renderLightObjects(BeginMode mode, Shader *shader);
 
 		void addMesh(UniqueMesh *mesh) { meshes.push_back(mesh); }
 		void addLight(Light *light) { lightManager->addLight(light); }

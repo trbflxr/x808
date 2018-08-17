@@ -32,8 +32,9 @@ namespace xe {
 		explicit Mesh(const string &id, const IndexedModel &model, Material *material);
 		~Mesh();
 
-		const string &getId() const { return id; }
+		void render(BeginMode mode) const;
 
+		const string &getId() const { return id; }
 		VertexArray *getVertexArray() const { return vertexArray; }
 		IndexBuffer *getIndexBuffer() const { return indexBuffer; }
 		Material *getMaterial() const { return material; }

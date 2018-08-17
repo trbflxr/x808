@@ -46,7 +46,7 @@ public:
 
 
 			//rotate
-			transform.rotate(-xe::vec3::YAXIS, mouseChange.x * player->mouseSensitivity);
+			transform.rotate(-xe::vec3::UnitY, mouseChange.x * player->mouseSensitivity);
 			transform.rotate(transform.getRotation().getLeft(), mouseChange.y * player->mouseSensitivity);
 
 			xe::Mouse::setPosition(windowCenter, window);
@@ -70,10 +70,10 @@ public:
 			}
 
 			if (xe::Keyboard::isKeyPressed(xe::Keyboard::Space)) {
-				move(transform, xe::vec3::YAXIS, speed * delta);
+				move(transform, xe::vec3::UnitY, speed * delta);
 			}
 			if (xe::Keyboard::isKeyPressed(xe::Keyboard::LShift)) {
-				move(transform, -xe::vec3::YAXIS, speed * delta);
+				move(transform, -xe::vec3::UnitY, speed * delta);
 			}
 
 			memcpy(&player->camera->transform, &transform, sizeof(xe::Transform));

@@ -190,6 +190,18 @@ namespace xe {
 		Dynamic,
 		Client
 	};
+
+	enum class PolygonMode {
+		Point,
+		Line,
+		Fill
+	};
+
+	enum class MaterialFace {
+		Front,
+		Back,
+		FrontAndBack
+	};
 }
 
 

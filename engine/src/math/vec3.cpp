@@ -7,9 +7,10 @@
 
 namespace xe {
 
-	const vec3 vec3::XAXIS(1.0f, 0.0f, 0.0f);
-	const vec3 vec3::YAXIS(0.0f, 1.0f, 0.0f);
-	const vec3 vec3::ZAXIS(0.0f, 0.0f, 1.0f);
+	const vec3 vec3::UnitX(1.0f, 0.0f, 0.0f);
+	const vec3 vec3::UnitY(0.0f, 1.0f, 0.0f);
+	const vec3 vec3::UnitZ(0.0f, 0.0f, 1.0f);
+	const vec3 vec3::Zero(0.0f, 0.0f, 0.0f);
 
 	vec3::vec3() : x(0), y(0), z(0) { }
 	vec3::vec3(float val) : x(val), y(val), z(val) { }

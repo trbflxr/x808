@@ -51,6 +51,10 @@ namespace xe {
 			instance->setCullFaceInternal(cullFace);
 		}
 
+		static void setPolygonMode(MaterialFace face, PolygonMode mode) {
+			instance->setPolygonModeInternal(face, mode);
+		}
+
 		static uint getDC() { return dc; }
 		static uint resetDC() { dc = 0; }
 		static uint incDC() { ++dc; }
@@ -79,6 +83,7 @@ namespace xe {
 		virtual void setBlendEquationInternal(BlendEquation equation) = 0;
 		virtual void setDepthFunctionInternal(DepthFunction function) = 0;
 		virtual void setCullFaceInternal(CullFace cullFace) = 0;
+		virtual void setPolygonModeInternal(MaterialFace face, PolygonMode mode) = 0;
 
 	private:
 		static Renderer *instance;

@@ -93,8 +93,13 @@ namespace xe { namespace internal {
 	void GLRenderer::setDepthFunctionInternal(DepthFunction function) {
 		glCall(glDepthFunc(depthFunctionToGL(function)));
 	}
+
 	void GLRenderer::setCullFaceInternal(CullFace cullFace) {
 		glCall(glCullFace(cullFaceToGL(cullFace)));
+	}
+
+	void GLRenderer::setPolygonModeInternal(MaterialFace face, PolygonMode mode) {
+		glCall(glPolygonMode(materialFaceToGL(face), polygonModeToGL(mode)));
 	}
 
 }}

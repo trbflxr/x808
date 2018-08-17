@@ -75,7 +75,7 @@ namespace xe {
 
 	xe::vec3 quat::getAxis() const {
 		float x = 1.0f - w * w;
-		if (x < 0.0000001f) return vec3::XAXIS;
+		if (x < 0.0000001f) return vec3::UnitX;
 
 		float x2 = x * x;
 		return vec3(x, y, z) / x2;
@@ -164,9 +164,9 @@ namespace xe {
 
 	quat quat::rotation(const vec3 &anglesDeg) {
 		quat r;
-		if (anglesDeg.x) r *= quat(vec3::XAXIS, anglesDeg.x);
-		if (anglesDeg.y) r *= quat(vec3::YAXIS, anglesDeg.y);
-		if (anglesDeg.z) r *= quat(vec3::ZAXIS, anglesDeg.z);
+		if (anglesDeg.x) r *= quat(vec3::UnitX, anglesDeg.x);
+		if (anglesDeg.y) r *= quat(vec3::UnitY, anglesDeg.y);
+		if (anglesDeg.z) r *= quat(vec3::UnitZ, anglesDeg.z);
 
 		return quat::normalize(r);
 	}

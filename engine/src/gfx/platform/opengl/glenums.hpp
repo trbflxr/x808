@@ -33,6 +33,9 @@ namespace xe { namespace internal {
 	uint bufferUsageToGL(BufferUsage usage);
 	uint bufferStorageToGL(BufferStorage storage);
 
+	uint materialFaceToGL(MaterialFace face);
+	uint polygonModeToGL(PolygonMode mode);
+
 }}
 
 #endif //X808_GLENUMS_HPP

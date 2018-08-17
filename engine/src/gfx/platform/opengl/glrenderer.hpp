@@ -36,6 +36,7 @@ namespace xe { namespace internal {
 		void setBlendEquationInternal(BlendEquation equation) override;
 		void setDepthFunctionInternal(DepthFunction function) override;
 		void setCullFaceInternal(CullFace cullFace) override;
+		void setPolygonModeInternal(MaterialFace face, PolygonMode mode) override;
 
 	private:
 		GLContext *context;
