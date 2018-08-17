@@ -3,8 +3,8 @@
 //
 
 #include <cstring>
-#include "mat4.hpp"
-#include "math.hpp"
+#include <xe/math/mat4.hpp>
+#include <xe/math/math.hpp>
 
 namespace xe {
 

@@ -6,11 +6,12 @@
 #define X808_DUMMYPLAYERCONTROLSYSTEM_HPP
 
 
-#include <ecs/ecssystem.hpp>
-#include <application/application.hpp>
-#include <window/window.hpp>
-#include <window/keyboard.hpp>
-#include <window/mouse.hpp>
+#include <xe/ecs/ecssystem.hpp>
+#include <xe/ecs/components/transformcomponent.hpp>
+#include <xe/app/application.hpp>
+#include <xe/window/window.hpp>
+#include <xe/window/keyboard.hpp>
+#include <xe/window/mouse.hpp>
 #include "dummyplayercomponent.hpp"
 
 class DummyPlayerControlSystem : public xe::BaseECSSystem {

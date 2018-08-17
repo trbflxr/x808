@@ -2,7 +2,7 @@
 // Created by FLXR on 7/7/2018.
 //
 
-#include "ecscomponent.hpp"
+#include "xe/ecs/ecscomponent.hpp"
 
 namespace xe {
 

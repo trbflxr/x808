@@ -3,18 +3,16 @@
 //
 
 #include <freetype-gl/freetype-gl.h>
-#include "font.hpp"
-#include "utils/log.hpp"
+#include "xe/resources/font.hpp"
+#include "xe/utils/log.hpp"
 #include "embedded/embedded.hpp"
 
 namespace xe {
 
-	Font::Font(const std::string_view &name, const std::string_view &path, float size) :
+	Font::Font(const string &name, const string &path, float size) :
 			name(name),
 			size(size),
 			texture(nullptr) {
-
-		using namespace api;
 
 		XE_ASSERT(size <= 150, "Max font size is 150");
 
@@ -38,16 +36,14 @@ namespace xe {
 		                         TextureMagFilter::Nearest,
 		                         TextureWrap::ClampToEdge);
 
-		texture = Texture::create(1024, 1024, 0, params);
+		texture = new Texture(1024, 1024, 0, params);
 		texture->setData2D(ftAtlas->data);
 	}
 
-	Font::Font(const std::string_view &name, const byte *data, uint dataSize, float size) :
+	Font::Font(const string &name, const byte *data, uint dataSize, float size) :
 			name(name),
 			size(size),
 			texture(nullptr) {
-
-		using namespace api;
 
 		XE_ASSERT(size <= 150, "Max font size is 150");
 
@@ -62,7 +58,7 @@ namespace xe {
 		                         TextureMagFilter::Nearest,
 		                         TextureWrap::ClampToEdge);
 
-		texture = Texture::create(1024, 1024, 0, params);
+		texture = new Texture(1024, 1024, 0, params);
 		texture->setData2D(ftAtlas->data);
 
 		XE_ASSERT(ftFont, "Failed to load font from data!");
@@ -102,7 +98,7 @@ namespace xe {
 		return {x / scale, y / scale};
 	}
 
-	api::Texture *Font::getTexture() const {
+	Texture *Font::getTexture() const {
 		updateAtlas();
 		return texture;
 	}

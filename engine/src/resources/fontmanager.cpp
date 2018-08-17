@@ -2,9 +2,9 @@
 // Created by FLXR on 7/3/2018.
 //
 
-#include "fontmanager.hpp"
-#include "utils/log.hpp"
-#include "embedded/embedded.hpp"
+#include <xe/resources/fontmanager.hpp>
+#include <xe/utils/log.hpp>
+#include <embedded/embedded.hpp>
 
 namespace xe {
 
@@ -32,8 +32,8 @@ namespace xe {
 		instance().fonts.emplace(font->getName(), font);
 	}
 
-	const Font *FontManager::get(const std::string_view &name) {
-		auto &&it = instance().fonts.find(name.data());
+	const Font *FontManager::get(const string &name) {
+		auto &&it = instance().fonts.find(name);
 		if (it == instance().fonts.end()) {
 			XE_ERROR("[FontManager]: font '", name, "' not found! Default font loaded instead.");
 
@@ -44,7 +44,9 @@ namespace xe {
 	}
 
 	void FontManager::clean() {
-		instance().fonts.clear();
+		for (auto &&font : instance().fonts) {
+			delete font.second;
+		}
 	}
 
 }

@@ -5,9 +5,9 @@
 #include <freetype-gl/freetype-gl.h>
 #include <algorithm>
 
-#include "renderer2d.hpp"
-#include "renderer.hpp"
-#include "resources/shadermanager.hpp"
+#include "xe/gfx/renderer2d.hpp"
+#include "xe/gfx/renderer.hpp"
+#include "xe/resources/shadermanager.hpp"
 
 namespace xe {
 
@@ -61,18 +61,18 @@ namespace xe {
 
 		shader = GETSHADER("defaultBatchRenderer");
 
-		const api::ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
+		const ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
 
 		XE_ASSERT(shaderUniforms.size());
 
 		for (auto &&ub : shaderUniforms) {
-			api::UniformData buffer(ub->getSize());
+			UniformData buffer(ub->getSize());
 			uniformData.push_back(buffer);
 
 			for (auto &&uniform: ub->getUniforms()) {
 				for (uint j = 0; j < requiredSystemUniformsCount; j++) {
 					if (strcmp(uniform->getName().c_str(), requiredSystemUniforms[j]) == 0) {
-						uniforms[j] = api::Uniform(uniform->getName().c_str(), buffer, uniform->getOffset());
+						uniforms[j] = Uniform(uniform->getName().c_str(), buffer, uniform->getOffset());
 					}
 				}
 			}
@@ -83,17 +83,17 @@ namespace xe {
 
 		shader->bind();
 
-		api::VertexBuffer *buffer = api::VertexBuffer::create(BufferUsage::DynamicDraw);
+		VertexBuffer *buffer = new VertexBuffer(BufferUsage::DynamicDraw);
 		buffer->resize(RENDERER_BUFFER_SIZE);
 
-		api::BufferLayout layout;
+		BufferLayout layout;
 		layout.push<vec3>("POSITION"); // Position
 		layout.push<vec2>("TEXCOORD"); // UV
 		layout.push<float>("ID"); // Texture Index
 		layout.push<byte>("COLOR", 4, true); // Color
 		buffer->setLayout(layout);
 
-		vertexArray = api::VertexArray::create();
+		vertexArray = new VertexArray();
 		vertexArray->pushBuffer(buffer);
 
 		uint *indices = new uint[RENDERER_INDICES_SIZE];
@@ -111,7 +111,7 @@ namespace xe {
 			offset += 4;
 		}
 
-		indexBuffer = api::IndexBuffer::create(indices, RENDERER_INDICES_SIZE);
+		indexBuffer = new IndexBuffer(indices, RENDERER_INDICES_SIZE);
 		vertexArray->unbind();
 	}
 
@@ -145,7 +145,7 @@ namespace xe {
 		Renderer::setViewport(0, 0, screenSize.x, screenSize.y);
 
 		vertexArray->bind();
-		buffer = vertexArray->getBuffer(0)->getPointer<VertexData>();
+		buffer = static_cast<VertexData *>(vertexArray->getBuffer(0)->getPointer());
 	}
 
 	void
@@ -157,7 +157,7 @@ namespace xe {
 		const std::array<vec2, 4> &vertices = target.transform->bounds.getVertices();
 		const uint color = target.sprite->color;
 		const std::vector<vec2> &uv = target.sprite->UVs;
-		const api::Texture *texture = target.sprite->texture;
+		const Texture *texture = target.sprite->texture;
 
 		float textureSlot = 0.0f;
 		if (texture) {
@@ -205,7 +205,7 @@ namespace xe {
 		const uint outlineColor = text->outlineColor;
 		const float outlineThickness = text->outlineThickness;
 
-		const api::Texture *texture = font.getTexture();
+		const Texture *texture = font.getTexture();
 		XE_ASSERT(texture);
 
 		const float tid = submitTexture(texture);
@@ -491,7 +491,7 @@ namespace xe {
 		fillRect(rectangle.getMinBound(), rectangle.size * 2.0f, z, color);
 	}
 
-	float Renderer2D::submitTexture(const api::Texture *texture) {
+	float Renderer2D::submitTexture(const Texture *texture) {
 		float result = 0.0f;
 		bool found = false;
 

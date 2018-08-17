@@ -2,8 +2,8 @@
 // Created by FLXR on 8/15/2018.
 //
 
-#include "geometry.hpp"
-#include "math.hpp"
+#include <xe/math/geometry.hpp>
+#include <xe/math/math.hpp>
 
 namespace xe {
 

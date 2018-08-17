@@ -5,21 +5,21 @@
 #include <gorilla/ga.h>
 #include <gorilla/gau.h>
 #include <vector>
-#include "sound.hpp"
-#include "soundmanager.hpp"
-#include "utils/string.hpp"
-#include "utils/log.hpp"
+#include <xe/resources/sound.hpp>
+#include <xe/utils/string.hpp>
+#include <xe/utils/log.hpp>
+#include <xe/resources/soundmanager.hpp>
 
 namespace xe {
 
-	Sound::Sound(const std::string_view &name, const std::string_view &path) :
+	Sound::Sound(const string &name, const string &path) :
 			name(name),
 			path(path),
 			playing(false),
 			count(0),
 			gain(1.0f) {
 
-		std::vector<std::string> split = utils::splitString(path.data(), '.');
+		std::vector<string> split = utils::splitString(path, '.');
 		if (split.size() < 2) {
 			XE_ERROR("[Sound] Invalid filename ", path);
 			return;

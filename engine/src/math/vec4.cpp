@@ -2,8 +2,8 @@
 // Created by FLXR on 6/28/2018.
 //
 
-#include "vec4.hpp"
-#include "math.hpp"
+#include <xe/math/vec4.hpp>
+#include <xe/math/math.hpp>
 
 namespace xe {
 

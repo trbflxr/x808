@@ -4,13 +4,13 @@
 
 #include <Freeimage/FreeImage.h>
 
-#include "window.hpp"
-#include "utils/log.hpp"
-#include "utils/sleep.hpp"
-#include "platformwindow.hpp"
-#include "gfx/renderer.hpp"
-#include "gfx/api/context.hpp"
-#include "resources/soundmanager.hpp"
+#include <xe/window/window.hpp>
+#include <xe/gfx/renderer.hpp>
+#include <xe/gfx/context.hpp>
+#include <xe/utils/sleep.hpp>
+#include <xe/utils/log.hpp>
+#include <xe/resources/soundmanager.hpp>
+#include <window/platformwindow.hpp>
 
 namespace {
 	const xe::Window *fullscreenWindow = nullptr;
@@ -23,7 +23,7 @@ namespace xe {
 			frameTimeLimit(0.0f),
 			size(0, 0) { }
 
-	Window::Window(VideoMode mode, const std::string_view &title, uint style) :
+	Window::Window(VideoMode mode, const string &title, uint style) :
 			window(nullptr),
 			frameTimeLimit(0.0f),
 			size(0, 0) {
@@ -35,7 +35,7 @@ namespace xe {
 		close();
 	}
 
-	void Window::create(VideoMode mode, const std::string_view &title, uint style) {
+	void Window::create(VideoMode mode, const string &title, uint style) {
 		close();
 
 		if (style & WindowStyle::Fullscreen) {
@@ -86,7 +86,7 @@ namespace xe {
 		}
 	}
 
-	void Window::setTitle(const std::string_view &title) {
+	void Window::setTitle(const string &title) {
 		if (window) {
 			window->setTitle(title);
 		}
@@ -193,7 +193,7 @@ namespace xe {
 	void Window::init() {
 		FreeImage_Initialise();
 
-		api::Context::create(getHandle());
+		Context::create(getHandle());
 		Renderer::init();
 
 		SoundManager::init();

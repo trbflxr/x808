@@ -2,9 +2,9 @@
 // Created by FLXR on 7/22/2018.
 //
 
-#include "shadermanager.hpp"
-#include "utils/log.hpp"
-#include "platform/opengl/glshadersource.hpp"
+#include <xe/resources/shadermanager.hpp>
+#include <xe/utils/log.hpp>
+#include <gfx/platform/opengl/glshadersource.hpp>
 
 namespace xe {
 
@@ -21,7 +21,7 @@ namespace xe {
 		return sm;
 	}
 
-	void ShaderManager::add(api::BaseShader *shader) {
+	void ShaderManager::add(BaseShader *shader) {
 		auto &&it = instance().shaders.find(shader->getName());
 
 		if (it != instance().shaders.end()) {
@@ -32,8 +32,8 @@ namespace xe {
 		instance().shaders.emplace(shader->getName(), shader);
 	}
 
-	api::BaseShader *ShaderManager::get(const std::string_view &name) {
-		auto &&it = instance().shaders.find(name.data());
+	BaseShader *ShaderManager::get(const string &name) {
+		auto &&it = instance().shaders.find(name);
 		if (it == instance().shaders.end()) {
 			XE_FATAL("Shader '", name, "' not found!");
 
@@ -44,57 +44,17 @@ namespace xe {
 	}
 
 	void ShaderManager::clean() {
-		instance().shaders.clear();
+		for (auto &&shader : instance().shaders) {
+			delete shader.second;
+		}
 	}
 
 	void ShaderManager::createDefaultShaders() {
 		using namespace internal;
 
-		shaders.emplace("defaultBatchRenderer", api::BaseShader::create("defaultBatchRenderer", {
+		shaders.emplace("defaultBatchRenderer", new BaseShader("defaultBatchRenderer", {
 				ShaderFile::fromSource(ShaderType::Vert, brVertGL, { }),
 				ShaderFile::fromSource(ShaderType::Frag, brFragGL, { })
-		}));
-
-		//lights
-		shaders.emplace("defaultForwardAmbient", api::BaseShader::create("defaultForwardAmbient", {
-				ShaderFile::fromSource(ShaderType::Vert, forwardAmbientVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, forwardAmbientFragGL, {samplingGL})
-		}));
-
-		shaders.emplace("defaultForwardDirectional", api::BaseShader::create("defaultForwardDirectional", {
-				ShaderFile::fromSource(ShaderType::Vert, forwardLightingVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, forwardLightingFragGL,
-				                       {forwardLightingFragIncludeGL, forwardDirectionalIncludeGL, samplingGL})
-		}));
-
-		shaders.emplace("defaultForwardPoint", api::BaseShader::create("defaultForwardPoint", {
-				ShaderFile::fromSource(ShaderType::Vert, forwardLightingVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, forwardLightingFragGL,
-				                       {forwardLightingFragIncludeGL, forwardPointIncludeGL, samplingGL})
-		}));
-
-		shaders.emplace("defaultForwardSpot", api::BaseShader::create("defaultForwardSpot", {
-				ShaderFile::fromSource(ShaderType::Vert, forwardLightingVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, forwardLightingFragGL,
-				                       {forwardLightingFragIncludeGL, forwardSpotIncludeGL, samplingGL})
-		}));
-
-		//shadow map
-		shaders.emplace("defaultShadowMap", api::BaseShader::create("defaultShadowMap", {
-				ShaderFile::fromSource(ShaderType::Vert, shadowMapVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, shadowMapFragGL, { })
-		}));
-
-
-		//fx
-		shaders.emplace("defaultFinalFX", api::BaseShader::create("defaultFinalFX", {
-				ShaderFile::fromSource(ShaderType::Vert, commonGenericVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, finalSceneFragGL, {fxaaIncludeGL})
-		}));
-
-		shaders.emplace("defaultGaussBlur7x1FX", api::BaseShader::create("defaultGaussBlur7x1FX", {
-				ShaderFile::fromSource(ShaderType::Vert, commonGenericVertGL, { }),
-				ShaderFile::fromSource(ShaderType::Frag, fxGaussBlur7x1FragGL, { })
 		}));
 	}
 

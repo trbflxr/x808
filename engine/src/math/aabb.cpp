@@ -2,8 +2,8 @@
 // Created by FLXR on 6/28/2018.
 //
 
-#include "aabb.hpp"
-#include "math.hpp"
+#include <xe/math/aabb.hpp>
+#include <xe/math/math.hpp>
 
 namespace xe {
 

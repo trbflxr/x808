@@ -2,8 +2,8 @@
 // Created by FLXR on 7/2/2018.
 //
 
-#include "layer2d.hpp"
-#include "application/application.hpp"
+#include <xe/gfx/layers/layer2d.hpp>
+#include <xe/app/application.hpp>
 
 namespace xe {
 

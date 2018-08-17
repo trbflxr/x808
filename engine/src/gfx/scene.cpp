@@ -3,12 +3,12 @@
 //
 
 
-#include "scene.hpp"
-#include "loaders/sceneloader.hpp"
+#include <xe/gfx/scene.hpp>
+#include <xe/loaders/sceneloader.hpp>
 
 namespace xe {
 
-	Scene::Scene(const std::string_view &folder, const std::string_view &name) :
+	Scene::Scene(const string &folder, const string &name) :
 			folder(folder),
 			name(name) {
 
@@ -19,8 +19,14 @@ namespace xe {
 
 	Scene::~Scene() {
 		delete lightManager;
-		materials.clear();
-		meshes.clear();
+
+		for (auto &&material : materials) {
+			delete material;
+		}
+
+		for (auto &&mesh : meshes) {
+			delete mesh;
+		}
 	}
 
 }

@@ -3,7 +3,7 @@
 //
 
 #include <algorithm>
-#include "videomode.hpp"
+#include <xe/window/videomode.hpp>
 
 namespace xe {
 

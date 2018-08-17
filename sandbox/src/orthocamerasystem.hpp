@@ -6,8 +6,8 @@
 #define X808_CAMERASYSTEM_HPP
 
 
-#include <gfx/renderer2d.hpp>
-#include <ecs/ecssystem.hpp>
+#include <xe/gfx/renderer2d.hpp>
+#include <xe/ecs/ecssystem.hpp>
 #include "orthocameracomponent.hpp"
 
 class OrthoCameraSystem : public xe::BaseECSSystem {

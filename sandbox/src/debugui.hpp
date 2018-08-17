@@ -6,10 +6,11 @@
 #define X808_TESTUI_HPP
 
 
-#include <gfx/layers/layer2d.hpp>
-#include <ecs/components/transform2dcomponent.hpp>
-#include <ecs/systems/spriterenderersystem.hpp>
-#include <ecs/systems/textrenderersystem.hpp>
+#include <xe/ecs/ecs.hpp>
+#include <xe/ecs/components/transform2dcomponent.hpp>
+#include <xe/ecs/systems/spriterenderersystem.hpp>
+#include <xe/ecs/systems/textrenderersystem.hpp>
+#include <xe/gfx/layers/layer2d.hpp>
 #include "orthocamerasystem.hpp"
 
 class DebugUI : public xe::Layer2D {

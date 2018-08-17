@@ -2,7 +2,7 @@
 // Created by FLXR on 8/13/2018.
 //
 
-#include "worldobject.hpp"
+#include <xe/world/worldobject.hpp>
 
 namespace xe {
 

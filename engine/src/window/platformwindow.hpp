@@ -6,18 +6,18 @@
 #define X808_PLATFORMWINDOW_HPP
 
 
-#include <string>
 #include <queue>
-#include "videomode.hpp"
-#include "cursor.hpp"
-#include "event.hpp"
-#include "utils/noncopyable.hpp"
+#include <xe/utils/string.hpp>
+#include <xe/window/videomode.hpp>
+#include <xe/window/cursor.hpp>
+#include <xe/window/event.hpp>
+#include <xe/utils/noncopyable.hpp>
 
 namespace xe { namespace internal {
 
 	class PlatformWindow : NonCopyable {
 	public:
-		static PlatformWindow *create(VideoMode mode, const std::string_view &title, uint style);
+		static PlatformWindow *create(VideoMode mode, const string &title, uint style);
 
 		bool popEvent(Event &event, bool block);
 
@@ -29,7 +29,7 @@ namespace xe { namespace internal {
 		virtual vec2u getSize() const = 0;
 		virtual void setSize(const vec2u &size) = 0;
 
-		virtual void setTitle(const std::string_view &title) = 0;
+		virtual void setTitle(const string &title) = 0;
 
 		virtual void setIcon(uint width, uint height, const byte *pixels) = 0;
 

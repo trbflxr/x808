@@ -2,18 +2,19 @@
 // Created by FLXR on 8/13/2018.
 //
 
-#include "lightmanager.hpp"
+#include <xe/gfx/uniformbuffer.hpp>
+#include <xe/world/lights/lightmanager.hpp>
 
 namespace xe {
 
 	LightManager::LightManager() :
 			lightCount(0) {
 
-		api::BufferLayout shadowLayout;
+		BufferLayout shadowLayout;
 		shadowLayout.push<vec4>("info");
-		shadowManifest = api::UniformBuffer::create(BufferStorage::Dynamic, 3, shadowLayout, 32);
+		shadowManifest = new UniformBuffer(BufferStorage::Dynamic, 3, shadowLayout, 32);
 
-		api::BufferLayout shadowSpotLayout;
+		BufferLayout shadowSpotLayout;
 		shadowSpotLayout.push<mat4>("view");
 		shadowSpotLayout.push<mat4>("perspective");
 		shadowSpotLayout.push<mat4>("viewray");
@@ -21,9 +22,9 @@ namespace xe {
 		shadowSpotLayout.push<vec4>("color-intensity");
 		shadowSpotLayout.push<vec4>("direction");
 		shadowSpotLayout.push<vec4>("spotAngle-spotBlur");
-		shadowSpot = api::UniformBuffer::create(BufferStorage::Dynamic, 4, shadowSpotLayout, 32);
+		shadowSpot = new UniformBuffer(BufferStorage::Dynamic, 4, shadowSpotLayout, 32);
 
-		api::BufferLayout shadowPointLayout;
+		BufferLayout shadowPointLayout;
 		shadowPointLayout.push<mat4>("view0");
 		shadowPointLayout.push<mat4>("view1");
 		shadowPointLayout.push<mat4>("view2");
@@ -39,9 +40,9 @@ namespace xe {
 		shadowPointLayout.push<mat4>("viewray5");
 		shadowPointLayout.push<vec4>("pos-falloff");
 		shadowPointLayout.push<vec4>("color-intensity");
-		shadowPoint = api::UniformBuffer::create(BufferStorage::Dynamic, 5, shadowPointLayout, 32);
+		shadowPoint = new UniformBuffer(BufferStorage::Dynamic, 5, shadowPointLayout, 32);
 
-		api::BufferLayout shadowDirectionalLayout;
+		BufferLayout shadowDirectionalLayout;
 		shadowDirectionalLayout.push<mat4>("view0");
 		shadowDirectionalLayout.push<mat4>("view1");
 		shadowDirectionalLayout.push<mat4>("view2");
@@ -51,7 +52,7 @@ namespace xe {
 		shadowDirectionalLayout.push<mat4>("perspective2");
 		shadowDirectionalLayout.push<mat4>("perspective3");
 		shadowDirectionalLayout.push<vec4>("lightPos");
-		shadowPoint = api::UniformBuffer::create(BufferStorage::Dynamic, 6, shadowDirectionalLayout, 1);
+		shadowDirectional = new UniformBuffer(BufferStorage::Dynamic, 6, shadowDirectionalLayout, 1);
 	}
 
 	LightManager::~LightManager() {
@@ -59,6 +60,10 @@ namespace xe {
 		delete shadowSpot;
 		delete shadowPoint;
 		delete shadowDirectional;
+
+		for (auto &&light : lights) {
+			delete light;
+		}
 	}
 
 	void LightManager::addLight(Light *light) {
@@ -80,7 +85,7 @@ namespace xe {
 		updateShadowUBO();
 	}
 
-	void LightManager::updateShadowSpotUBO(SpotLight1 *light, int32 shadowId) {
+	void LightManager::updateShadowSpotUBO(SpotLight *light, int32 shadowId) {
 		mat4 svm = light->getShadowViewMatrix();
 		mat4 spm = light->getShadowPerspectiveMatrix();
 		mat4 vrm = light->getViewRayMatrix();
@@ -101,7 +106,7 @@ namespace xe {
 		light->shadowId = shadowId;
 	}
 
-	void LightManager::updateShadowPointUBO(PointLight1 *light, int32 shadowId) {
+	void LightManager::updateShadowPointUBO(PointLight *light, int32 shadowId) {
 		for (uint i = 0; i < 6; ++i) {
 			shadowPoint->update(&light->getShadowViewMatrices()[i], i, 0);
 			shadowPoint->update(&light->getViewRayMatrices()[i], i + 7, 0);
@@ -137,7 +142,7 @@ namespace xe {
 			switch (light->type) {
 				case Light::Type::Spot: {
 					if (numShadowsSpot >= MAX_SPOT_SHADOWS) break;
-					updateShadowSpotUBO(dynamic_cast<SpotLight1 *>(light), numShadowsSpot);
+					updateShadowSpotUBO(dynamic_cast<SpotLight *>(light), numShadowsSpot);
 					lightsShadowedManifest.emplace_back(0, numShadowsSpot, 0, 0);
 					++numShadowsSpot;
 					break;
@@ -145,7 +150,7 @@ namespace xe {
 
 				case Light::Type::Point: {
 					if (numShadowsPoint >= MAX_POINT_SHADOWS) break;
-					updateShadowPointUBO(dynamic_cast<PointLight1 *>(light), numShadowsPoint);
+					updateShadowPointUBO(dynamic_cast<PointLight *>(light), numShadowsPoint);
 					lightsShadowedManifest.emplace_back(1, numShadowsPoint, 0, 0);
 					lightsShadowedManifest.emplace_back(1, numShadowsPoint, 1, 0);
 					lightsShadowedManifest.emplace_back(1, numShadowsPoint, 2, 0);

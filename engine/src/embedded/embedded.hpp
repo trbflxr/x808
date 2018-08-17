@@ -6,7 +6,7 @@
 #define X808_EMBEDDED_HPP
 
 
-#include "xeint.hpp"
+#include "../../include/xe/xeint.hpp"
 
 namespace xe { namespace internal {
 

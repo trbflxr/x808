@@ -7,17 +7,16 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-
-#include "sceneloader.hpp"
-#include "world/lights/spotlight1.hpp"
-#include "world/lights/pointlight1.hpp"
-#include "utils/string.hpp"
-#include "resources/texturemanager.hpp"
+#include <xe/utils/string.hpp>
+#include <xe/resources/texturemanager.hpp>
+#include <xe/loaders/sceneloader.hpp>
+#include <xe/world/lights/spotlight.hpp>
+#include <xe/world/lights/pointlight.hpp>
 
 namespace xe {
 
 	bool SceneLoader::load(const char *folder, const char *name,
-	                       std::vector<Material1 *> &outMaterials,
+	                       std::vector<Material *> &outMaterials,
 	                       std::vector<UniqueMesh *> &outMeshes,
 	                       std::vector<Light *> &outLights) {
 
@@ -59,9 +58,7 @@ namespace xe {
 		return true;
 	}
 
-	void SceneLoader::loadMaterials(const char *folder, const aiScene *scene,
-	                                std::vector<Material1 *> &materials) {
-
+	void SceneLoader::loadMaterials(const char *folder, const aiScene *scene, std::vector<Material *> &materials) {
 		for (uint i = 0; i < scene->mNumMaterials; ++i) {
 			aiMaterial *material = scene->mMaterials[i];
 
@@ -78,7 +75,7 @@ namespace xe {
 			material->Get(AI_MATKEY_COLOR_SPECULAR, specular);
 			material->Get(AI_MATKEY_SHININESS, shininess);
 
-			Material1 *m = new Material1(temp.C_Str());
+			Material *m = new Material(temp.C_Str());
 			m->diffuseColor = vec3(diffuse.r, diffuse.g, diffuse.b);
 			m->specularColor = vec3(specular.r, specular.g, specular.b);
 			m->emission = emission.a * 5.0f;
@@ -118,11 +115,11 @@ namespace xe {
 
 	void SceneLoader::loadMeshes(const aiScene *scene, const aiNode *node,
 	                             std::vector<UniqueMesh *> &meshes,
-	                             std::vector<Material1 *> &materials) {
+	                             std::vector<Material *> &materials) {
 
 		for (uint i = 0; i < node->mNumMeshes; ++i) {
 			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-			Material1 *material = materials[mesh->mMaterialIndex];
+			Material *material = materials[mesh->mMaterialIndex];
 
 			IndexedModel indexedModel(mesh);
 			const char *id = mesh->mName.C_Str();
@@ -131,7 +128,7 @@ namespace xe {
 			aiMatrix4x4 ait = scene->mRootNode->mTransformation * node->mTransformation;
 			memcpy(&t, &ait, sizeof(mat4));
 
-			meshes.push_back(new UniqueMesh(id, new Mesh1(id, indexedModel, material), t));
+			meshes.push_back(new UniqueMesh(id, new Mesh(id, indexedModel, material), t));
 		}
 
 		for (uint n = 0; n < node->mNumChildren; ++n) {
@@ -141,8 +138,8 @@ namespace xe {
 
 	void SceneLoader::loadLights(const char *path, const aiScene *scene, std::vector<Light *> &lights) {
 		//info
-		std::vector<std::string> ids;
-		std::vector<std::string> types;
+		std::vector<string> ids;
+		std::vector<string> types;
 		std::vector<float> intensities;
 		std::vector<vec3> colors;
 		std::vector<float> falloffs;
@@ -158,12 +155,12 @@ namespace xe {
 			return;
 		}
 
-		std::string line;
+		string line;
 		while (std::getline(file, line)) {
 			if (line.empty()) continue;
 
-			std::string key = line.substr(0, 4);
-			std::vector<std::string> values = utils::splitString(line.substr(4), ' ');
+			string key = line.substr(0, 4);
+			std::vector<string> values = utils::splitString(line.substr(4), ' ');
 
 			if (key == "nam ") {
 				std::replace(values[0].begin(), values[0].end(), '.', '_');
@@ -222,36 +219,36 @@ namespace xe {
 				static mat4 yup = mat4::rotation(90.0f, vec3::XAXIS);
 				t *= yup;
 
-				lights.push_back(new SpotLight1(ids[id], colors[id], intensities[id], falloffs[id],
-				                                spotAngles[id], spotBlurs[id], shadows[id],
-				                                Mesh1::spotLightMesh(), t));
+				lights.push_back(new SpotLight(ids[id], colors[id], intensities[id], falloffs[id],
+				                               spotAngles[id], spotBlurs[id], shadows[id],
+				                               Mesh::spotLightMesh(), t));
 
 			} else if (types[id] == "POINT") {
-				lights.push_back(new PointLight1(ids[id], colors[id], intensities[id], falloffs[id],
-				                                 shadows[id], Mesh1::pointLightMesh(), t));
+				lights.push_back(new PointLight(ids[id], colors[id], intensities[id], falloffs[id],
+				                                shadows[id], Mesh::pointLightMesh(), t));
 			}
 		}
 	}
 
-	api::Texture *SceneLoader::loadTexture(const char *folder, const char *file) {
-		static api::TextureParameters params(TextureTarget::Tex2D,
-		                                     PixelInternalFormat::Rgba,
-		                                     PixelFormat::Rgba,
-		                                     PixelType::UnsignedByte,
-		                                     TextureMinFilter::LinearMipMapLinear,
-		                                     TextureMagFilter::Linear,
-		                                     TextureWrap::Repeat,
-		                                     MIP_MAP_AUTO,
-		                                     ANISOTROPY_AUTO);
+	Texture *SceneLoader::loadTexture(const char *folder, const char *file) {
+		static TextureParameters params(TextureTarget::Tex2D,
+		                                PixelInternalFormat::Rgba,
+		                                PixelFormat::Rgba,
+		                                PixelType::UnsignedByte,
+		                                TextureMinFilter::LinearMipMapLinear,
+		                                TextureMagFilter::Linear,
+		                                TextureWrap::Repeat,
+		                                MIP_MAP_AUTO,
+		                                ANISOTROPY_AUTO);
 
 		char path[1024];
 		strcpy(path, folder);
 		strcat(path, "/");
 		strcat(path, file);
 
-		std::string textureName = utils::getFileName(file, false);
+		string textureName = utils::getFileName(file, false);
 
-		api::Texture *texture = api::Texture::create(textureName, path, params);
+		Texture *texture = new Texture(textureName, path, params);
 		TextureManager::add(texture, false);
 
 		return texture;

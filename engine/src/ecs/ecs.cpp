@@ -2,8 +2,8 @@
 // Created by FLXR on 7/7/2018.
 //
 
-#include "ecs.hpp"
-#include "utils/log.hpp"
+#include "xe/ecs/ecs.hpp"
+#include "xe/utils/log.hpp"
 
 namespace xe {
 

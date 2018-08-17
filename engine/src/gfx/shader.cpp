@@ -2,19 +2,19 @@
 // Created by FLXR on 8/11/2018.
 //
 
-#include "shader.hpp"
-#include "resources/shadermanager.hpp"
-#include "utils/log.hpp"
+#include "xe/gfx/shader.hpp"
+#include "xe/resources/shadermanager.hpp"
+#include "xe/utils/log.hpp"
 
 namespace xe {
 
-	Shader::Shader(api::BaseShader *shader) :
+	Shader::Shader(BaseShader *shader) :
 			shader(shader) {
 
 		init();
 	}
 
-	Shader::Shader(const std::string_view &nameInShaderManager) :
+	Shader::Shader(const string &nameInShaderManager) :
 			shader(GETSHADER(nameInShaderManager)) {
 
 		init();
@@ -24,14 +24,12 @@ namespace xe {
 		for (auto &&data : uniformData) {
 			delete[] data.buffer;
 		}
-		uniformData.clear();
-		uniforms.clear();
 	}
 
 	void Shader::init() {
-		const api::ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
+		const ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
 		for (auto &&ub : shaderUniforms) {
-			api::UniformData buffer(ub->getSize());
+			UniformData buffer(ub->getSize());
 			uniformData.push_back(buffer);
 
 			for (auto &&uniform: ub->getUniforms()) {
@@ -54,7 +52,7 @@ namespace xe {
 		}
 	}
 
-	void Shader::setUniform(const std::string_view &name, const void *data, size_t size) {
+	void Shader::setUniform(const string &name, const void *data, size_t size) {
 		for (auto &&uniform : uniforms) {
 			if (uniform.name == name) {
 				memcpy(uniform.data.buffer + uniform.offset, data, size);
@@ -65,10 +63,10 @@ namespace xe {
 		XE_FATAL("[Shader]: Uniform '", name, "' not found!");
 	}
 
-	uint Shader::getResource(const std::string_view &name) {
-		for (auto &&resource : shader->getResources()) {
+	uint Shader::getSampler(const string &name) {
+		for (auto &&resource : shader->getSamplers()) {
 			if (resource->getName() == name) {
-				return resource->getRegister();
+				return resource->getLocation();
 			}
 		}
 

@@ -1,8 +1,7 @@
-#include <application/application.hpp>
-#include <utils/log.hpp>
+#include <xe/app/application.hpp>
+#include <xe/utils/log.hpp>
 #include "test2d.hpp"
 #include "test3d.hpp"
-#include "test3ddeferred.hpp"
 #include "debugui.hpp"
 
 using namespace xe;
@@ -10,22 +9,30 @@ using namespace xe;
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, api::RenderAPI::OPENGL, 450) {
+			Application(config, RenderAPI::OPENGL, 450),
+			ui(nullptr),
+			t2d(nullptr),
+			t3d(nullptr) {
 
 		ui = new DebugUI();
-
-//		pushLayer(new Test2D());
-//		pushLayer(new Test3D(ui));
-		pushLayer(new Test3DDeferred(ui));
+//		t2d = new Test2D();
+		t3d = new Test3D(ui);
+		
+//		pushLayer(t2d);
+		pushLayer(t3d);
 		pushLayer(ui);
 	}
 
 	~Test() override {
 		delete ui;
+		delete t2d;
+		delete t3d;
 	}
 
 private:
 	DebugUI *ui;
+	Test2D *t2d;
+	Test3D *t3d;
 };
 
 int main() {

@@ -3,14 +3,20 @@
 //
 
 #include <assimp/mesh.h>
-#include "indexedmodel.hpp"
-#include "math/geometry.hpp"
+#include <xe/gfx/indexedmodel.hpp>
+#include <xe/math/math.hpp>
+#include <xe/math/geometry.hpp>
 
 namespace xe {
 
 	IndexedModel::IndexedModel(const aiMesh *mesh) {
 
+		bool hasUvs = false;
+		bool hasNormals = false;
+		bool hasTangents = false;
+
 		if (mesh->HasPositions()) {
+			positions.reserve(mesh->mNumVertices);
 			for (uint i = 0; i < mesh->mNumVertices; ++i) {
 				positions.emplace_back(mesh->mVertices[i].x,
 				                       mesh->mVertices[i].y,
@@ -19,6 +25,8 @@ namespace xe {
 		}
 
 		if (mesh->HasTextureCoords(0)) {
+			hasUvs = true;
+			uvs.reserve(mesh->mNumVertices);
 			for (uint i = 0; i < mesh->mNumVertices; ++i) {
 				uvs.emplace_back(mesh->mTextureCoords[0][i].x,
 				                 mesh->mTextureCoords[0][i].y);
@@ -26,6 +34,8 @@ namespace xe {
 		}
 
 		if (mesh->HasNormals()) {
+			hasNormals = true;
+			normals.reserve(mesh->mNumVertices);
 			for (uint i = 0; i < mesh->mNumVertices; ++i) {
 				normals.emplace_back(mesh->mNormals[i].x,
 				                     mesh->mNormals[i].y,
@@ -34,6 +44,8 @@ namespace xe {
 		}
 
 		if (mesh->HasTangentsAndBitangents()) {
+			hasTangents = true;
+			tangents.reserve(mesh->mNumVertices);
 			for (uint i = 0; i < mesh->mNumVertices; ++i) {
 				tangents.emplace_back(mesh->mTangents[i].x,
 				                      mesh->mTangents[i].y,
@@ -42,16 +54,31 @@ namespace xe {
 		}
 
 		if (mesh->HasFaces()) {
+			indices.reserve(mesh->mNumFaces);
 			for (uint i = 0; i < mesh->mNumFaces; ++i) {
 				for (uint j = 0; j < mesh->mFaces[i].mNumIndices; ++j) {
 					indices.push_back(mesh->mFaces[i].mIndices[j]);
 				}
 			}
 		}
+
+		if (hasUvs && hasNormals && hasTangents) return;
+
+		uvs.reserve(mesh->mNumVertices);
+		normals.reserve(mesh->mNumVertices);
+		tangents.reserve(mesh->mNumVertices);
+		for (uint i = 0; i < mesh->mNumVertices; ++i) {
+			if (!hasUvs) uvs.emplace_back(0.0f, 0.0f);
+			if (!hasNormals) normals.emplace_back(0.0f, 1.0f, 0.0f);
+			if (!hasTangents) tangents.emplace_back(0.0f, 1.0f, 0.0f);
+		}
+
 	}
 
-	IndexedModel IndexedModel::getConeModel() {
-		IndexedModel model;
+	IndexedModel &IndexedModel::getConeModel() {
+		static IndexedModel model;
+		static bool initialized = false;
+		if (initialized) return model;
 
 		auto im = geometry::makeCone(2.0f, 4.0f, 15);
 
@@ -67,11 +94,14 @@ namespace xe {
 			model.uvs.emplace_back(0.0f, 0.0f);
 		}
 
+		initialized = true;
 		return model;
 	}
 
-	IndexedModel IndexedModel::getIcosphereModel() {
-		IndexedModel model;
+	IndexedModel &IndexedModel::getIcosphereModel() {
+		static IndexedModel model;
+		static bool initialized = false;
+		if (initialized) return model;
 
 		auto im = geometry::makeIcosphere(2);
 
@@ -87,6 +117,7 @@ namespace xe {
 			model.uvs.emplace_back(0.0f, 0.0f);
 		}
 
+		initialized = true;
 		return model;
 	}
 

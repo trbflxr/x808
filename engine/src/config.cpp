@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
-#include "config.hpp"
+#include <xe/config.hpp>
 
 namespace xe {
 

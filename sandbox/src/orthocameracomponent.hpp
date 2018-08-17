@@ -6,9 +6,8 @@
 #define X808_ORTHOCAMERACOMPONENT_HPP
 
 
-#include <gfx/camera.hpp>
-#include <ecs/ecscomponent.hpp>
-
+#include <xe/gfx/camera.hpp>
+#include <xe/ecs/ecscomponent.hpp>
 
 struct CameraComponent : public xe::ECSComponent<CameraComponent> {
 	xe::Camera camera;

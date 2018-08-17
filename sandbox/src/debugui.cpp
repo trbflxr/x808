@@ -3,13 +3,11 @@
 //
 
 #include <sstream>
-#include <gfx/renderer.hpp>
-#include <resources/texturemanager.hpp>
-#include <ecs/components/transformcomponent.hpp>
+#include <xe/gfx/renderer.hpp>
+#include <xe/resources/texturemanager.hpp>
 #include "debugui.hpp"
 
 using namespace xe;
-using namespace xe::api;
 
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {

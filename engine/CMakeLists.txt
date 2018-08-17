@@ -21,7 +21,7 @@ add_definitions(
 
 #directories
 set(XE_INCLUDE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
         CACHE STRING "XE include dirs" FORCE)
 
 set(XE_DIRS
@@ -38,22 +38,22 @@ set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include)
 
+include_directories(src)
 link_directories(${XE_DIRS})
 include_directories(${XE_INCLUDE_DIRS})
 include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
 
 #engine
 file(GLOB ENGINE_SRC
-        src/application/*.cpp
+        src/app/*.cpp
         src/ecs/*.cpp
         src/ecs/components/*.cpp
         src/ecs/systems/*.cpp
         src/embedded/*.cpp
-        src/gfx/api/*.cpp
+        src/gfx/platform/*.cpp
         src/gfx/camera/*.cpp
         src/gfx/fx/*.cpp
         src/gfx/layers/*.cpp
-        src/gfx/lights/*.cpp
         src/gfx/*.cpp
         src/loaders/*.cpp
         src/math/*.cpp
@@ -69,16 +69,13 @@ file(GLOB ENGINE_SRC
 
 #win32
 file(GLOB ENGINE_WIN32_SRC
-        src/platform/win32/*.cpp)
+        src/utils/platform/win32/*.cpp
+        src/window/platform/win32/*.cpp)
 
 #opengl
 file(GLOB ENGINE_GL_SRC
-        src/platform/opengl/*.cpp
-        src/platform/opengl/*.c)
-
-#sse
-file(GLOB ENGINE_SSE_SRC
-        src/platform/sse/*.cpp)
+        src/gfx/platform/opengl/*.c
+        src/gfx/platform/opengl/*.cpp)
 
 #total platform files
 file(GLOB PLATFORM_SRC)
@@ -91,9 +88,6 @@ if (XE_PLATFORM_GL)
     find_package(OpenGL REQUIRED)
     list(APPEND PLATFORM_SRC ${ENGINE_GL_SRC})
 endif ()
-
-#append sse platform
-list(APPEND PLATFORM_SRC ${ENGINE_SSE_SRC})
 
 
 #xe lib

@@ -2,7 +2,7 @@
 // Created by FLXR on 8/13/2018.
 //
 
-#include "spatialdata.hpp"
+#include <xe/world/spatialdata.hpp>
 
 namespace xe {
 

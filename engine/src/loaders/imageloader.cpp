@@ -4,9 +4,8 @@
 
 #include <FreeImage/FreeImage.h>
 #include <FreeImage/FreeImageUtilities.h>
-
-#include "imageloader.hpp"
-#include "utils/log.hpp"
+#include <xe/utils/log.hpp>
+#include <xe/loaders/imageloader.hpp>
 
 namespace xe {
 
@@ -64,8 +63,8 @@ namespace xe {
 		return result;
 	}
 
-	byte *ImageLoader::load(const std::string_view &path, uint *width, uint *height, uint *bits, bool flipY) {
-		return load(path.data(), width, height, bits, flipY);
+	byte *ImageLoader::load(const string &path, uint *width, uint *height, uint *bits, bool flipY) {
+		return load(path.c_str(), width, height, bits, flipY);
 	}
 
 }

@@ -6,8 +6,8 @@
 #define X808_DUMMYPLAYERCOMPONENT_HPP
 
 
-#include <ecs/ecscomponent.hpp>
-#include <gfx/camera.hpp>
+#include <xe/ecs/ecscomponent.hpp>
+#include <xe/gfx/camera.hpp>
 
 struct DummyPlayerComponent : public xe::ECSComponent<DummyPlayerComponent> {
 	xe::Camera *camera;

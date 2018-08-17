@@ -6,9 +6,9 @@
 #define X808_ORTHOCAMERAMOVESYSTEM_HPP
 
 
-#include <gfx/renderer2d.hpp>
-#include <ecs/ecssystem.hpp>
-#include <window/keyboard.hpp>
+#include <xe/gfx/renderer2d.hpp>
+#include <xe/ecs/ecssystem.hpp>
+#include <xe/window/keyboard.hpp>
 #include "orthocameracomponent.hpp"
 
 class OrthoCameraMoveSystem : public xe::BaseECSSystem {

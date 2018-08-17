@@ -1,31 +1,20 @@
 //
-// Created by FLXR on 7/12/2018.
+// Created by FLXR on 8/4/2018.
 //
 
-#ifndef X808_TEST3D_HPP
-#define X808_TEST3D_HPP
+#ifndef X808_TEST3DDEFERRED_HPP
+#define X808_TEST3DDEFERRED_HPP
 
 
-#include <gfx/layers/layer.hpp>
-#include <gfx/mesh.hpp>
-#include <gfx/api/baseshader.hpp>
-#include <gfx/forwardrenderer.hpp>
-#include <gfx/lights/directionallight.hpp>
-#include <gfx/lights/pointlight.hpp>
-#include <gfx/lights/spotlight.hpp>
-#include <gfx/api/framebuffer_old.hpp>
-#include <ecs/systems/forwardrenderersystem.hpp>
-
-#include "dummyplayercomponent.hpp"
+#include <xe/gfx/layers/layer.hpp>
+#include <xe/gfx/scene.hpp>
+#include <xe/gfx/shader.hpp>
 #include "debugui.hpp"
 #include "dummyplayercontrolsystem.hpp"
 
-using namespace xe;
-using namespace xe::api;
-
-class Test3D : public Layer {
+class Test3D : public xe::Layer {
 public:
-	explicit Test3D(DebugUI *ui);
+	explicit Test3D(DebugUI* ui);
 	~Test3D();
 
 	void render() override;
@@ -33,55 +22,24 @@ public:
 	void update(float delta) override;
 	void fixedUpdate(float delta) override;
 
-	void input(Event &event) override;
+	void input(xe::Event &event) override;
 
 private:
-	ECS ecs;
-	ECSSystemList mainSystems;
-	ECSSystemList renderingPipeline;
-
 	DebugUI *ui;
 
-	Camera *camera;
+	xe::ECS ecs;
+	xe::ECSSystemList mainSystems;
+	xe::ECSSystemList renderingPipeline;
 
-	ForwardRenderer *renderer;
-	ForwardRendererSystem *rendererSystem;
+	xe::Camera *camera;
 
 	DummyPlayerControlSystem *playerControlSystem;
-	EntityHandle player;
+	xe::EntityHandle player;
 
-	Material *rockMaterial;
-	Material *monkeyMaterial;
-	Material *monkeyMaterial2;
-	Material *stallMaterial;
-	Material *planeMaterial0;
-	Material *planeMaterial1;
-	Material *planeMaterial2;
+	xe::Scene *scene;
 
-	Mesh *rockMesh;
-	Mesh *monkeyMesh;
-	Mesh *stallMesh;
-	Mesh *planeMesh0;
-	Mesh *planeMesh1;
-	Mesh *cubeMesh;
-
-	EntityHandle rockModel;
-	EntityHandle monkeyModel;
-	EntityHandle monkeyModel2;
-	EntityHandle stallModel;
-	EntityHandle planeModel0;
-	EntityHandle planeModel1;
-	EntityHandle planeModel2;
-	EntityHandle cubeModel;
-
-	DirectionalLight *directionalLight;
-	PointLight *pointLight;
-	PointLight *pointLight2;
-	PointLight *pointLight3;
-	PointLight *pointLight4;
-	bool hookSpotLight;
-	SpotLight *spotLight;
+	xe::Shader* dummyShader;
 };
 
 
-#endif //X808_TEST3D_HPP
+#endif //X808_TEST3DDEFERRED_HPP

@@ -2,18 +2,19 @@
 // Created by FLXR on 7/15/2018.
 //
 
-#include "platformwindow.hpp"
-#include "utils/sleep.hpp"
-#include "common.hpp"
+#include <xe/common.hpp>
+#include <xe/utils/sleep.hpp>
 
 #ifdef XE_PLATFORM_WINDOWS
-#include "platform/win32/win32window.hpp"
+#include "window/platform/win32/win32window.hpp"
 typedef xe::internal::PlatformWindowWin32 PlatformWindowType;
 #endif
 
+#include "platformwindow.hpp"
+
 namespace xe { namespace internal {
 
-	PlatformWindow *PlatformWindow::create(VideoMode mode, const std::string_view &title, uint style) {
+	PlatformWindow *PlatformWindow::create(VideoMode mode, const string &title, uint style) {
 		return new PlatformWindowType(mode, title, style);
 	}
 
