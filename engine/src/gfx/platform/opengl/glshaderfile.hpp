@@ -16,6 +16,8 @@ namespace xe { namespace internal {
 		                      const std::vector<string> &dependencies,
 		                      const std::vector<string> &extensions);
 
+		~GLShaderFile() override = default;
+
 		uint compile() override;
 
 		void parse(ShaderUniformBufferVec &buffers,

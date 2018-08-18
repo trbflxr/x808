@@ -41,7 +41,8 @@ namespace xe { namespace utils {
 	}
 
 	string getFileName(const string &str, bool includeExt) {
-		char *s = basename(const_cast<char *>(str.data()));
+		std::string temp = str;
+		char *s = basename(temp.data());
 
 		size_t size = strlen(s);
 

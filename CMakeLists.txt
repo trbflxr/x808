@@ -7,7 +7,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-file(COPY assets xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+file(COPY
+        assets
+        xeconfig
+        pack001.pak
+
+        DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 add_subdirectory(engine)
 add_subdirectory(sandbox)

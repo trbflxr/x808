@@ -36,8 +36,9 @@ namespace xe { namespace internal {
 			case Type::Sampler3D: return "sampler3D";
 			case Type::SamplerCube: return "samplerCube";
 			case Type::SamplerCubeArray: return "samplerCubeArray";
-			case Type::None: return "invalid";
+			case Type::None: break;
 		}
+		return "invalid";
 	}
 
 	bool GLShaderSampler::isTypeStrSampler(const string &type) {

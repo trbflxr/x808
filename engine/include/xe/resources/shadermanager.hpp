@@ -19,6 +19,7 @@ namespace xe {
 
 		static void add(BaseShader *shader);
 		static BaseShader *get(const string &name);
+		static const string &getSource(const string &name);
 
 		static void clean();
 
@@ -31,6 +32,7 @@ namespace xe {
 
 	private:
 		std::unordered_map<string, BaseShader *> shaders;
+		std::unordered_map<string, string> sources;
 	};
 
 }

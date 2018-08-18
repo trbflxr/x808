@@ -19,6 +19,7 @@ namespace xe {
 		friend class ShaderStruct;
 
 	public:
+		virtual ~ShaderUniform() = default;
 		virtual const string &getName() const = 0;
 		virtual uint getSize() const = 0;
 		virtual uint getCount() const = 0;
@@ -33,6 +34,7 @@ namespace xe {
 	///---------------------------///
 	class XE_API ShaderUniformBuffer {
 	public:
+		virtual ~ShaderUniformBuffer() = default;
 		virtual const string &getName() const = 0;
 		virtual uint getRegister() const = 0;
 		virtual uint getSize() const = 0;
@@ -50,6 +52,7 @@ namespace xe {
 
 	public:
 		explicit ShaderStruct(const string &name) : name(name), size(0), offset(0) { }
+		virtual ~ShaderStruct() = default;
 
 		void addField(ShaderUniform *field) {
 			size += field->getSize();

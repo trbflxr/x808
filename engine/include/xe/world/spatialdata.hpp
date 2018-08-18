@@ -24,7 +24,7 @@ namespace xe {
 		explicit SpatialData(const vec3 &position, const vec3 &look, const vec3 &up);
 		explicit SpatialData(const mat4 &transformation);
 
-		inline const mat4 &getPositionMatrix() const { mat4::translation(position); }
+		inline mat4 getPositionMatrix() const { return mat4::translation(position); }
 
 		inline const mat4 &getRotationMatrix() const { return rotationMatrix; };
 		void setRotationMatrix(const mat4 &matrix);

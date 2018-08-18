@@ -1,4 +1,3 @@
-R"(
 layout (location = 0) out vec4 color;
 
 in DATA {
@@ -20,4 +19,3 @@ void main() {
 
 	color = texColor;
 }
-)"

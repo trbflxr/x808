@@ -15,11 +15,12 @@ namespace xe { namespace fx {
 		explicit RenderEffect(uint width, uint height) :
 				enabled(true),
 				width(width),
-				height(height){ }
+				height(height) { }
+
+		virtual ~RenderEffect() = default;
 
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enabled) { RenderEffect::enabled = enabled; }
-
 		inline void toggle() { enabled = !enabled; }
 
 	protected:

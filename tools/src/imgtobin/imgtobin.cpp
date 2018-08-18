@@ -4,8 +4,8 @@
 
 #include <cstdio>
 #include <cstring>
-#include <FreeImage/FreeImage.h>
-#include <FreeImage/FreeImageUtilities.h>
+#include <Freeimage/FreeImage.h>
+#include <Freeimage/FreeImageUtilities.h>
 
 
 int imgToBin(const char *in, const char *out, bool flipY, bool swapRB) {

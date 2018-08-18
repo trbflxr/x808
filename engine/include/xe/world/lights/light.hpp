@@ -41,7 +41,7 @@ namespace xe {
 				color(color),
 				intensity(intensity),
 				falloff(falloff),
-				shadowed(shadowed),
+				shadowed(shadow),
 				boundsMatrix(mat4(1.0f)),
 				objectEmission(intensity),
 				mesh(nullptr),

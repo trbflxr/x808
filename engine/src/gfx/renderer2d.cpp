@@ -48,9 +48,6 @@ namespace xe {
 		for (auto &&data : uniformData) {
 			delete[] data.buffer;
 		}
-		uniformData.clear();
-
-		uniforms.clear();
 	}
 
 	void Renderer2D::init() {
@@ -59,7 +56,7 @@ namespace xe {
 
 		uniforms.resize(requiredSystemUniformsCount);
 
-		shader = GETSHADER("defaultBatchRenderer");
+		shader = GETSHADER("dBatchRenderer");
 
 		const ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
 

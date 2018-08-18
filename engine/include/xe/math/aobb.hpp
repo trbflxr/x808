@@ -19,7 +19,7 @@ namespace xe {
 		aobb(const aobb &other);
 
 		bool contains(const vec2 &point) const;
-		bool intersects(const aobb &other) const { }
+		bool intersects(const aobb &other) const { return false; }
 
 		void move(const vec2 &direction);
 		void rotate(float deg);

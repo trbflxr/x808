@@ -31,7 +31,7 @@ namespace xe {
 	}
 
 	float vec3::max(const vec3 &v) {
-		__max(v.x, __max(v.y, v.z));
+		return __max(v.x, __max(v.y, v.z));
 	}
 
 	float vec3::dot(const vec3 &v1, const vec3 &v2) {

@@ -17,6 +17,7 @@ namespace xe { namespace internal {
 			case TextureTarget::TexCubeMap: return GL_TEXTURE_CUBE_MAP;
 			case TextureTarget::TexCubeMapArray: return GL_TEXTURE_CUBE_MAP_ARRAY;
 		}
+		return 0;
 	}
 
 	uint textureWrapToGL(TextureWrap wrap) {
@@ -27,6 +28,7 @@ namespace xe { namespace internal {
 			case TextureWrap::ClampToEdge: return GL_CLAMP_TO_EDGE;
 			case TextureWrap::ClampToBorder: return GL_CLAMP_TO_BORDER;
 		}
+		return 0;
 	}
 
 	uint textureMinFilterToGL(TextureMinFilter filter) {
@@ -38,6 +40,7 @@ namespace xe { namespace internal {
 			case TextureMinFilter::NearestMipMapLinear: return GL_NEAREST_MIPMAP_LINEAR;
 			case TextureMinFilter::LinearMipMapLinear: return GL_LINEAR_MIPMAP_LINEAR;
 		}
+		return 0;
 	}
 
 	uint textureMagFilterToGL(TextureMagFilter filter) {
@@ -45,6 +48,7 @@ namespace xe { namespace internal {
 			case TextureMagFilter::Nearest: return GL_NEAREST;
 			case TextureMagFilter::Linear: return GL_LINEAR;
 		}
+		return 0;
 	}
 
 	uint pixelTypeToGL(PixelType type) {
@@ -58,6 +62,7 @@ namespace xe { namespace internal {
 			case PixelType::Float: return GL_FLOAT;
 			case PixelType::HalfFloat: return GL_HALF_FLOAT;
 		}
+		return 0;
 	}
 
 	uint pixelInternalFormatToGL(PixelInternalFormat type) {
@@ -82,6 +87,7 @@ namespace xe { namespace internal {
 			case PixelInternalFormat::Rgb16f: return GL_RGB16F;
 			case PixelInternalFormat::Rg32f: return GL_RG32F;
 		}
+		return 0;
 	}
 
 	uint pixelFormatToGL(PixelFormat format) {
@@ -101,6 +107,7 @@ namespace xe { namespace internal {
 			case PixelFormat::Rg: return GL_RG;
 			case PixelFormat::DepthStencil: return GL_DEPTH_STENCIL;
 		}
+		return 0;
 	}
 
 	uint textureAccessToGL(TextureAccess textureAccess) {
@@ -109,6 +116,7 @@ namespace xe { namespace internal {
 			case TextureAccess::WriteOnly: return GL_WRITE_ONLY;
 			case TextureAccess::ReadWrite: return GL_READ_WRITE;
 		}
+		return 0;
 	}
 
 
@@ -133,6 +141,7 @@ namespace xe { namespace internal {
 			case Attachment::Depth: return GL_DEPTH_ATTACHMENT;
 			case Attachment::Stencil: return GL_STENCIL_ATTACHMENT;
 		}
+		return 0;
 	}
 
 	uint rendererBufferToGL(uint buffer) {
@@ -158,6 +167,7 @@ namespace xe { namespace internal {
 			case BlendFunction::DestinationAlpha: return GL_DST_ALPHA;
 			case BlendFunction::OneMinusSourceAlpha: return GL_ONE_MINUS_SRC_ALPHA;
 		}
+		return 0;
 	}
 
 	uint blendEquationToGL(BlendEquation equation) {
@@ -165,6 +175,7 @@ namespace xe { namespace internal {
 			case BlendEquation::Add: return GL_ADD;
 			case BlendEquation::Subtract: return GL_SUBTRACT;
 		}
+		return 0;
 	}
 
 	uint depthFunctionToGL(DepthFunction function) {
@@ -172,6 +183,7 @@ namespace xe { namespace internal {
 			case DepthFunction::Equal: return GL_EQUAL;
 			case DepthFunction::Less: return GL_LESS;
 		}
+		return 0;
 	}
 
 	uint cullFaceToGL(CullFace cullFace) {
@@ -179,6 +191,7 @@ namespace xe { namespace internal {
 			case CullFace::Front: return GL_FRONT;
 			case CullFace::Back: return GL_BACK;
 		}
+		return 0;
 	}
 
 	uint shaderTypeToGL(ShaderType type) {
@@ -190,6 +203,7 @@ namespace xe { namespace internal {
 			case ShaderType::TessControl: return GL_TESS_CONTROL_SHADER;
 			case ShaderType::Compute: return GL_COMPUTE_SHADER;
 		}
+		return 0;
 	}
 
 	uint beginModeToGL(BeginMode mode) {
@@ -206,6 +220,7 @@ namespace xe { namespace internal {
 			case BeginMode::Polygon: return GL_POLYGON;
 			case BeginMode::Patches: return GL_PATCHES;
 		}
+		return 0;
 	}
 
 	uint bufferUsageToGL(BufferUsage usage) {
@@ -220,6 +235,7 @@ namespace xe { namespace internal {
 			case BufferUsage::DynamicRead: return GL_DYNAMIC_READ;
 			case BufferUsage::DynamicCopy: return GL_DYNAMIC_COPY;
 		}
+		return 0;
 	}
 
 	uint bufferStorageToGL(BufferStorage storage) {
@@ -231,6 +247,7 @@ namespace xe { namespace internal {
 			case BufferStorage::Dynamic: return GL_DYNAMIC_STORAGE_BIT;
 			case BufferStorage::Client: return GL_CLIENT_STORAGE_BIT;
 		}
+		return 0;
 	}
 
 	uint materialFaceToGL(MaterialFace face) {
@@ -239,6 +256,7 @@ namespace xe { namespace internal {
 			case MaterialFace::Back: return GL_BACK;
 			case MaterialFace::FrontAndBack: return GL_FRONT_AND_BACK;
 		}
+		return 0;
 	}
 
 	uint polygonModeToGL(PolygonMode mode) {
@@ -247,6 +265,7 @@ namespace xe { namespace internal {
 			case PolygonMode::Line: return GL_LINE;
 			case PolygonMode::Fill: return GL_FILL;
 		}
+		return 0;
 	}
 
 }}

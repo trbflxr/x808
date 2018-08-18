@@ -34,7 +34,7 @@ namespace xe {
 				window(app.getWindow()),
 				visible(true) { }
 
-		virtual bool resize(uint width, uint height) { }
+		virtual bool resize(uint width, uint height) { return false; }
 
 	protected:
 		Application &app;

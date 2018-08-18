@@ -56,8 +56,8 @@ namespace xe {
 		}
 
 		static uint getDC() { return dc; }
-		static uint resetDC() { dc = 0; }
-		static uint incDC() { ++dc; }
+		static void resetDC() { dc = 0; }
+		static void incDC() { ++dc; }
 
 	protected:
 		Renderer() = default;

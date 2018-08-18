@@ -32,11 +32,13 @@ set(XE_DIRS
         CACHE STRING "XE library dirs" FORCE)
 
 set(XE_EXTERNAL_INCLUDE_DIRS
+        ${CMAKE_SOURCE_DIR}/tools/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/glew/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include)
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include
+        CACHE STRING "XE external include dirs" FORCE)
 
 include_directories(src)
 link_directories(${XE_DIRS})
@@ -94,6 +96,7 @@ endif ()
 add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
 
 target_link_libraries(xe
+        spak
         freeimage
         assimp irrxml
         freetype-gl freetype bz2

@@ -120,6 +120,7 @@ namespace xe {
 		if (window) {
 			return window->isMouseCursorGrabbed();
 		}
+		return false;
 	}
 
 	void Window::setMouseCursor(const Cursor &cursor) {

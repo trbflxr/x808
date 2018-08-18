@@ -75,6 +75,7 @@ namespace xe {
 			case ShaderType::TessControl: return "TessControl";
 			case ShaderType::Compute: return "Compute";
 		}
+		return "Invalid";
 	}
 
 }

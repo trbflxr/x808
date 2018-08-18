@@ -44,7 +44,7 @@ namespace xe {
 	}
 
 	void *VertexBuffer::getPointer() {
-		buffer->getPointer();
+		return buffer->getPointer();
 	}
 
 	void VertexBuffer::bind() {

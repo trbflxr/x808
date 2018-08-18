@@ -18,9 +18,8 @@ namespace xe {
 
 	class XE_API ShaderFile {
 	public:
-		friend class GLShader;
+		virtual ~ShaderFile() = default;
 
-	public:
 		inline ShaderType getType() const { return type; }
 		inline const string &getPathOrSource() const { return pathOrSource; }
 		inline const std::vector<string> &getDependencies() const { return dependencies; }

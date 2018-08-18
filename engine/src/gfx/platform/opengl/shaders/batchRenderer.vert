@@ -1,4 +1,3 @@
-R"(
 layout (location = 0) in vec4 position;
 layout (location = 1) in vec2 uv;
 layout (location = 2) in float tid;
@@ -22,4 +21,3 @@ void main() {
 	vs_out.tid = tid;
 	vs_out.color = color;
 }
-)"
