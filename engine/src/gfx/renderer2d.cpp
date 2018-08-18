@@ -192,24 +192,26 @@ namespace xe {
 		Renderer2D::text.push_back(text);
 	}
 
-	void Renderer2D::submitTextInternal(const TextComponent *text) {
+	void Renderer2D::submitTextInternal(const TextComponent *component) {
 		using namespace ftgl;
 
-		const Font &font = *text->font;
+		const Font &font = *component->text->font;
 		ftgl::texture_font_t *ftFont = font.getFTFont();
-		const std::wstring &string = text->string;
-		const uint color = text->textColor;
-		const uint outlineColor = text->outlineColor;
-		const float outlineThickness = text->outlineThickness;
+		const wstring &string = component->text->string;
+		const uint color = component->text->textColor;
+		const uint outlineColor = component->text->outlineColor;
+		const float outlineThickness = component->text->outlineThickness;
+		const vec2& position = component->text->position;
+		const float size = component->text->size;
 
 		const Texture *texture = font.getTexture();
 		XE_ASSERT(texture);
 
 		const float tid = submitTexture(texture);
-		const float scale = font.getSize() / text->size;
+		const float scale = font.getSize() / size;
 
-		float x = text->position.x;
-		const float y = -text->position.y;
+		float x = position.x;
+		const float y = -position.y;
 
 
 		if (outlineThickness > 0) {
@@ -263,7 +265,7 @@ namespace xe {
 					x += glyph->advance_x / scale;
 				}
 			}
-			x = text->position.x;
+			x = position.x;
 			ftFont->outline_type = 0;
 			ftFont->outline_thickness = 0;
 		}

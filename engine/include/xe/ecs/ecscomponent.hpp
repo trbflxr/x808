@@ -77,18 +77,18 @@ namespace xe {
 	}
 
 	template<typename T>
-	const uint xe::ECSComponent<T>::ID(xe::BaseECSComponent::registerComponentType(xe::ECSComponentCreate<T>,
-	                                                                               xe::ECSComponentFree<T>,
-	                                                                               sizeof(T)));
+	const uint ECSComponent<T>::ID(BaseECSComponent::registerComponentType(ECSComponentCreate<T>,
+	                                                                       ECSComponentFree<T>,
+	                                                                       sizeof(T)));
 
 	template<typename T>
 	const size_t ECSComponent<T>::SIZE(sizeof(T));
 
 	template<typename T>
-	const xe::ECSComponentCreateFn ECSComponent<T>::CREATE_FUNCTION(xe::ECSComponentCreate<T>);
+	const ECSComponentCreateFn ECSComponent<T>::CREATE_FUNCTION(ECSComponentCreate<T>);
 
 	template<typename T>
-	const xe::ECSComponentFreeFn ECSComponent<T>::FREE_FUNCTION(xe::ECSComponentFree<T>);
+	const ECSComponentFreeFn ECSComponent<T>::FREE_FUNCTION(ECSComponentFree<T>);
 
 
 }

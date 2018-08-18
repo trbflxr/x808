@@ -6,7 +6,7 @@
 #define X808_ECS_HPP
 
 
-#include <map>
+#include <unordered_map>
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/utils/noncopyable.hpp>
@@ -27,71 +27,71 @@ namespace xe {
 		void removeEntity(EntityHandle handle);
 
 		template<class A>
-		EntityHandle makeEntity(A &c0) {
-			BaseECSComponent *components[] = {&c0};
+		EntityHandle makeEntity(A *c0) {
+			BaseECSComponent *components[] = {c0};
 			uint componentIDs[] = {A::ID};
 			return makeEntity(components, componentIDs, 1);
 		}
 
 		template<class A, class B>
-		EntityHandle makeEntity(A &c0, B &c1) {
-			BaseECSComponent *components[] = {&c0, &c1};
+		EntityHandle makeEntity(A *c0, B *c1) {
+			BaseECSComponent *components[] = {c0, c1};
 			uint componentIDs[] = {A::ID, B::ID};
 			return makeEntity(components, componentIDs, 2);
 		}
 
 		template<class A, class B, class C>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2) {
+			BaseECSComponent *components[] = {c0, c1, c2};
 			uint componentIDs[] = {A::ID, B::ID, C::ID};
 			return makeEntity(components, componentIDs, 3);
 		}
 
 		template<class A, class B, class C, class D>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID};
 			return makeEntity(components, componentIDs, 4);
 		}
 
 		template<class A, class B, class C, class D, class E>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3, E &c4) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3, &c4};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3, E *c4) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3, c4};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID, E::ID};
 			return makeEntity(components, componentIDs, 5);
 		}
 
 		template<class A, class B, class C, class D, class E, class F>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3, E &c4, F &c5) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3, &c4, &c5};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3, E *c4, F *c5) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3, c4, c5};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID, E::ID, F::ID};
 			return makeEntity(components, componentIDs, 6);
 		}
 
 		template<class A, class B, class C, class D, class E, class F, class G>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3, E &c4, F &c5, G &c6) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3, &c4, &c5, &c6};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3, E *c4, F *c5, G *c6) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3, c4, c5, c6};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID, E::ID, F::ID, G::ID};
 			return makeEntity(components, componentIDs, 7);
 		}
 
 		template<class A, class B, class C, class D, class E, class F, class G, class H>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3, E &c4, F &c5, G &c6, H &c7) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3, &c4, &c5, &c6, &c7};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3, E *c4, F *c5, G *c6, H *c7) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3, c4, c5, c6, c7};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID, E::ID, F::ID, G::ID, H::ID};
 			return makeEntity(components, componentIDs, 8);
 		}
 
 		template<class A, class B, class C, class D, class E, class F, class G, class H, class I>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3, E &c4, F &c5, G &c6, H &c7, I &c8) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3, &c4, &c5, &c6, &c7, &c8};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3, E *c4, F *c5, G *c6, H *c7, I *c8) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3, c4, c5, c6, c7, c8};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID, E::ID, F::ID, G::ID, H::ID, I::ID};
 			return makeEntity(components, componentIDs, 9);
 		}
 
 		template<class A, class B, class C, class D, class E, class F, class G, class H, class I, class J>
-		EntityHandle makeEntity(A &c0, B &c1, C &c2, D &c3, E &c4, F &c5, G &c6, H &c7, I &c8, J &c9) {
-			BaseECSComponent *components[] = {&c0, &c1, &c2, &c3, &c4, &c5, &c6, &c7, &c8, &c9};
+		EntityHandle makeEntity(A *c0, B *c1, C *c2, D *c3, E *c4, F *c5, G *c6, H *c7, I *c8, J *c9) {
+			BaseECSComponent *components[] = {c0, c1, c2, c3, c4, c5, c6, c7, c8, c9};
 			uint componentIDs[] = {A::ID, B::ID, C::ID, D::ID, E::ID, F::ID, G::ID, H::ID, I::ID, J::ID};
 			return makeEntity(components, componentIDs, 10);
 		}
@@ -114,9 +114,7 @@ namespace xe {
 		template<class Component>
 		Component *getComponent(EntityHandle entity) {
 			XE_ASSERT(entity, "[ECS->getComponent]: Entity is nullptr");
-			return (Component *) getComponentInternal(handleToEntity(entity),
-			                                          components[Component::ID],
-			                                          Component::ID);
+			return (Component *) getComponentInternal(handleToEntity(entity), components[Component::ID], Component::ID);
 		}
 
 		///system methods
@@ -165,7 +163,7 @@ namespace xe {
 
 	private:
 		std::vector<BaseECSSystem *> systems;
-		std::map<uint, std::vector<byte>> components;
+		std::unordered_map<uint, std::vector<byte>> components;
 		std::vector<std::pair<uint, std::vector<std::pair<uint, uint>>> *> entities;
 	};
 

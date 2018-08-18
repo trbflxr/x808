@@ -23,5 +23,5 @@ set(SPAK_SRC src/spak/spak.cpp)
 add_library(spak SHARED ${SPAK_SRC})
 target_link_libraries(spak libstdc++fs.a)
 
-add_executable(spak_exec src/spak/main.cpp ${SPAK_SRC})
+add_executable(spak_exec src/spak/spakmain.cpp ${SPAK_SRC})
 target_link_libraries(spak_exec libstdc++fs.a)

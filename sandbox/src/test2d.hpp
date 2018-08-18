@@ -42,8 +42,6 @@ private:
 	xe::EntityHandle text;
 	xe::EntityHandle inputText;
 	xe::EntityHandle a;
-
-	std::wstring inputString;
 };
 
 

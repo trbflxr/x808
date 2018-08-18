@@ -95,12 +95,8 @@ Test2D::Test2D() {
 
 
 	//create camera
-	CameraComponent camera(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
-	cameraEntity = ecs.makeEntity(camera);
+	cameraEntity = ecs.makeEntity(new CameraComponent(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000)));
 
-	//sprite components
-	SpriteComponent sprite;
-	Transform2DComponent transform;
 
 	uint sprites = 0;
 
@@ -113,13 +109,10 @@ Test2D::Test2D() {
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {
 		for (float y = -60; y < 60; y += 0.57f) {
-			sprite.texture = GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(0.49f), 0.0f);
 
-			transform.zIndex = 0;
-			transform.bounds.setPosition(x, y);
-			transform.bounds.setSize(0.49f, 0.49f);
-
-			a = ecs.makeEntity(sprite, transform);
+			a = ecs.makeEntity(s, t);
 
 			++sprites;
 		}
@@ -127,13 +120,10 @@ Test2D::Test2D() {
 #elif sp_size == 2
 	for (float x = -80; x < 80; x += 1.3f) {
 		for (float y = -60; y < 60; y += 1.3f) {
-			sprite.texture = GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(0.9f), 0.0f);
 
-			transform.zIndex = 0;
-			transform.bounds.setPosition(x, y);
-			transform.bounds.setSize(0.9f, 0.9f);
-
-			a = ecs.makeEntity(sprite, transform);
+			a = ecs.makeEntity(s, t);
 
 			++sprites;
 		}
@@ -141,61 +131,42 @@ Test2D::Test2D() {
 #elif sp_size == 1
 	for (int32 x = -80; x < 80; x += 4) {
 		for (int32 y = -60; y < 60; y += 4) {
-			sprite.texture = GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(3.0f), 0.0f);
 
-			transform.zIndex = 0;
-			transform.bounds.setPosition(x, y);
-			transform.bounds.setSize(3, 3);
-
-			a = ecs.makeEntity(sprite, transform);
+			a = ecs.makeEntity(s, t);
 
 			++sprites;
 		}
 	}
 #elif sp_size == 0
-	sprite.texture = &GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1)));
+	SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+	Transform2DComponent *t = new Transform2DComponent(vec2(0, 0), vec2(3.0f), 0.0f);
 
-	transform.zIndex = 0;
-	transform.bounds.setPosition(0, 0);
-	transform.bounds.setSize(3, 3);
-
-	a = ecs.makeEntity(sprite, transform);
+	a = ecs.makeEntity(s, t);
 
 	++sprites;
 #endif
 
 	XE_INFO("size: ", sprites);
 
-	TextComponent t;
-	t.size = 20;
-	t.font = GETFONT("consolata");
-	t.outlineThickness = 3;
+	text = ecs.makeEntity(new TextComponent(new Text(L"i:", 20, {-70, 30},
+	                                                 GETFONT("default"), color::LIGHTGRAY, color::GRAY, 3)));
 
-	t.string = L"слава ukraine";
-	t.position = {-70, 30};
-	t.textColor = color::WHITE;
-	t.outlineColor = color::BLACK;
-	text = ecs.makeEntity(t);
+	inputText = ecs.makeEntity(new TextComponent(new Text(L"слава ukraine", 20, {-70, 10},
+	                                                      GETFONT("consolata"), color::PINK, color::CYAN, 3)));
 
-	t.string = L"Input:";
-	t.position = {-70, -20};
-	t.textColor = color::PINK;
-	t.outlineColor = color::CYAN;
-	inputText = ecs.makeEntity(t);
+	ecs.makeEntity(new TextComponent(new Text(L"0", 20, {-20, -10},
+	                                          GETFONT("consolata"), color::RED, color::GREEN, 3)));
 
-	sprite.texture = GETTEXTURE("35");
-	transform.zIndex = 1;
-	transform.bounds.setPosition(-10, -10);
-	transform.bounds.setSize(20, 20);
+	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("35"));
+	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("35"));
 
-	ecs.makeEntity(sprite, transform);
+	Transform2DComponent *t0 = new Transform2DComponent(vec2(-10.0f, -10.0f), vec2(20.0f), 1.0f);
+	Transform2DComponent *t1 = new Transform2DComponent(vec2(-4.0f, -4.0f), vec2(20.0f), 1.0f);
 
-	sprite.texture = GETTEXTURE("35");
-	transform.zIndex = 2;
-	transform.bounds.setPosition(-4, -4);
-	transform.bounds.setSize(20, 20);
-
-	a = ecs.makeEntity(sprite, transform);
+	ecs.makeEntity(s0, t0);
+	a = ecs.makeEntity(s1, t1);
 }
 
 Test2D::~Test2D() {
@@ -263,14 +234,12 @@ void Test2D::input(xe::Event &event) {
 			static TextComponent *t = ecs.getComponent<TextComponent>(inputText);
 
 			if (event.text.unicode == 8) {
-				if (!inputString.empty()) {
-					inputString.erase(inputString.end() - 1);
+				if (!t->text->getString().empty()) {
+					t->text->getString().erase(t->text->getString().end() - 1);
 				}
 			} else {
-				inputString += event.text.unicode;
+				t->text->getString() += event.text.unicode;
 			}
-
-			t->string = inputString.c_str();
 
 			break;
 		}

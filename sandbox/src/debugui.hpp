@@ -28,7 +28,7 @@ public:
 
 	void input(xe::Event &event) override;
 
-	void trackEntity(const std::wstring_view &name, xe::Transform *entityTransform);
+	void trackEntity(const std::wstring &name, xe::Transform *entityTransform);
 	void untrackEntity();
 	void displayEntityInfo();
 
@@ -44,14 +44,11 @@ private:
 	xe::ECSSystemList mainSystems;
 	xe::ECSSystemList renderingPipeline;
 
-	xe::TextComponent defaultTC;
-
 	xe::EntityHandle fpsText;
 	xe::EntityHandle upsText;
 	xe::EntityHandle frameTimeText;
 	xe::EntityHandle dcText;
 
-	std::wstring trackedEntityName;
 	xe::Transform *trackedTransform;
 	xe::EntityHandle teNameText;
 	xe::EntityHandle tePosText;

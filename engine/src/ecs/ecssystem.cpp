@@ -9,7 +9,7 @@ namespace xe {
 	///-------- BaseECSSystem --------///
 	bool BaseECSSystem::isValid() {
 		for (uint componentFlag : componentFlags) {
-			if((componentFlag & BaseECSSystem::FLAG_OPTIONAL) == 0) {
+			if((componentFlag & BaseECSSystem::FlagOptional) == 0) {
 				return true;
 			}
 		}

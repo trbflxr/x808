@@ -80,7 +80,7 @@ namespace xe {
 		float submitTexture(const Texture *texture);
 
 		void submitInternal(RenderTarget target);
-		void submitTextInternal(const TextComponent *text);
+		void submitTextInternal(const TextComponent *component);
 
 		void end();
 		void flushInternal();

@@ -14,7 +14,7 @@ namespace xe {
 	class XE_API BaseECSSystem {
 	public:
 		enum {
-			FLAG_OPTIONAL = 1,
+			FlagOptional = 1,
 		};
 
 	public:

@@ -27,30 +27,20 @@ DebugUI::DebugUI() :
 	mainSystems.addSystem(*cameraSystem);
 
 	//create camera
-	CameraComponent camera(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000));
-	cameraEntity = ecs.makeEntity(camera);
+	cameraEntity = ecs.makeEntity(new CameraComponent(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000)));
 
-	defaultTC.size = 3;
-	defaultTC.font = GETFONT("consolata");
-	defaultTC.textColor = color::WHITE;
-	defaultTC.outlineColor = color::BLACK;
-	defaultTC.outlineThickness = 2;
+	//text
+	fpsText = ecs.makeEntity(new TextComponent(
+			new Text(L"fps: ", 3, {-78, 55}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
-	defaultTC.string = L"fps: ";
-	defaultTC.position = {-78, 55};
-	fpsText = ecs.makeEntity(defaultTC);
+	upsText = ecs.makeEntity(new TextComponent(
+			new Text(L"ups: ", 3, {-78, 50}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
-	defaultTC.string = L"ups: ";
-	defaultTC.position = {-78, 50};
-	upsText = ecs.makeEntity(defaultTC);
+	frameTimeText = ecs.makeEntity(new TextComponent(
+			new Text(L"frame time: ", 3, {-78, 45}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
-	defaultTC.string = L"frame time: ";
-	defaultTC.position = {-78, 45};
-	frameTimeText = ecs.makeEntity(defaultTC);
-
-	defaultTC.string = L"dc: ";
-	defaultTC.position = {-78, 40};
-	dcText = ecs.makeEntity(defaultTC);
+	dcText = ecs.makeEntity(new TextComponent(
+			new Text(L"dc: ", 3, {-78, 40}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 }
 
 DebugUI::~DebugUI() {
@@ -84,25 +74,15 @@ void DebugUI::lateUpdate(float delta) {
 	static TextComponent *frameTime = ecs.getComponent<TextComponent>(frameTimeText);
 	static TextComponent *dc = ecs.getComponent<TextComponent>(dcText);
 
-	static std::wstring fpsStr;
-	static std::wstring upsStr;
-	static std::wstring frameTimeStr;
-	static std::wstring dcStr;
-
 	static float s = 0.0f;
 	s += delta;
 
 	if (s >= 0.1f) {
 		s = 0;
-		fpsStr = L"fps: " + std::to_wstring(app.getFPS());
-		upsStr = L"ups: " + std::to_wstring(app.getUPS());
-		frameTimeStr = L"frame time: " + std::to_wstring(app.getFrameTime());
-		dcStr = L"dc: " + std::to_wstring(Renderer::getDC());
-
-		fps->string = fpsStr.c_str();
-		ups->string = upsStr.c_str();
-		frameTime->string = frameTimeStr.c_str();
-		dc->string = dcStr.c_str();
+		fps->text->setString(L"fps: " + std::to_wstring(app.getFPS()));
+		ups->text->setString(L"ups: " + std::to_wstring(app.getUPS()));
+		frameTime->text->setString(L"frame time: " + std::to_wstring(app.getFrameTime()));
+		dc->text->setString(L"dc: " + std::to_wstring(Renderer::getDC()));
 
 		displayEntityInfo();
 	}
@@ -112,18 +92,16 @@ void DebugUI::input(Event &event) {
 	ecs.inputSystems(mainSystems, event);
 }
 
-void DebugUI::trackEntity(const std::wstring_view &name, xe::Transform *entityTransform) {
-	defaultTC.string = name.data();
-	defaultTC.position = {-78, 30};
-	teNameText = ecs.makeEntity(defaultTC);
+void DebugUI::trackEntity(const std::wstring &name, xe::Transform *entityTransform) {
+	teNameText = ecs.makeEntity(new TextComponent(
+			new Text(L"name: " + name, 3, {-78, 30}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
-	defaultTC.string = L"position: ";
-	defaultTC.position = {-78, 25};
-	tePosText = ecs.makeEntity(defaultTC);
+	tePosText = ecs.makeEntity(new TextComponent(
+			new Text(L"position: ", 3, {-78, 25}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
-	defaultTC.string = L"direction: ";
-	defaultTC.position = {-78, 20};
-	teDirText = ecs.makeEntity(defaultTC);
+	teDirText = ecs.makeEntity(new TextComponent(
+			new Text(L"direction: ", 3, {-78, 20}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
+
 
 	trackedTransform = entityTransform;
 }
@@ -145,23 +123,17 @@ void DebugUI::displayEntityInfo() {
 	static TextComponent *tePos = ecs.getComponent<TextComponent>(tePosText);
 	static TextComponent *teDir = ecs.getComponent<TextComponent>(teDirText);
 
-	static std::wstringstream ss;
-	static std::wstring pos;
-	static std::wstring dir;
-
+	std::wstringstream ss;
 	ss.precision(2);
 
 	vec3 p = trackedTransform->getTranslation();
 	vec3 d = trackedTransform->getRotation().getForward();
 
 	ss << std::fixed << L"pos: (" << p.x << ", " << p.y << ", " << p.z << ")";
-	pos = ss.str();
+	tePos->text->setString(ss.str());
 	ss.str(L"");
 
 	ss << std::fixed << L"dir: (" << d.x << ", " << d.y << ", " << d.z << ")";
-	dir = ss.str();
+	teDir->text->setString(ss.str());
 	ss.str(L"");
-
-	tePos->string = pos.c_str();
-	teDir->string = dir.c_str();
 }

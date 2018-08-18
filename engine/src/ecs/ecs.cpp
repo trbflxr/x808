@@ -28,7 +28,7 @@ namespace xe {
 
 		for (uint i = 0; i < numComponents; i++) {
 			if (!BaseECSComponent::isTypeValid(componentIDs[i])) {
-				XE_FATAL("[ECS] ", componentIDs[i], " is not a valid component type");
+				XE_FATAL("[ECS]: ", componentIDs[i], " is not a valid component type");
 
 				delete newEntity;
 				return nullptr;
@@ -215,7 +215,7 @@ namespace xe {
 
 				componentParam[j] = getComponentInternal(entityComponents, *componentArrays[j], componentTypes[j]);
 
-				if (componentParam[j] == nullptr && (componentFlags[j] & BaseECSSystem::FLAG_OPTIONAL) == 0) {
+				if (componentParam[j] == nullptr && (componentFlags[j] & BaseECSSystem::FlagOptional) == 0) {
 					isValid = false;
 					break;
 				}
@@ -244,6 +244,7 @@ namespace xe {
 		for (uint i = 0; i < componentTypes.size(); i++) {
 			componentArrays[i] = &components[componentTypes[i]];
 		}
+
 		uint minSizeIndex = findLeastCommonComponent(componentTypes, componentFlags);
 
 		size_t typeSize = BaseECSComponent::getTypeSize(componentTypes[minSizeIndex]);
@@ -255,13 +256,11 @@ namespace xe {
 
 			bool isValid = true;
 			for (uint j = 0; j < componentTypes.size(); j++) {
-				if (j == minSizeIndex) {
-					continue;
-				}
+				if (j == minSizeIndex) continue;
 
 				componentParam[j] = getComponentInternal(entityComponents, *componentArrays[j], componentTypes[j]);
 
-				if (componentParam[j] == nullptr && (componentFlags[j] & BaseECSSystem::FLAG_OPTIONAL) == 0) {
+				if (componentParam[j] == nullptr && (componentFlags[j] & BaseECSSystem::FlagOptional) == 0) {
 					isValid = false;
 					break;
 				}
@@ -280,9 +279,7 @@ namespace xe {
 		uint minIndex = static_cast<uint>(-1);
 
 		for (uint i = 0; i < componentTypes.size(); i++) {
-			if ((componentFlags[i] & BaseECSSystem::FLAG_OPTIONAL) != 0) {
-				continue;
-			}
+			if ((componentFlags[i] & BaseECSSystem::FlagOptional) != 0) continue;
 
 			size_t typeSize = BaseECSComponent::getTypeSize(componentTypes[i]);
 			uint size = static_cast<uint>(components[componentTypes[i]].size() / typeSize);
