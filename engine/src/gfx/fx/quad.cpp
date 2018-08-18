@@ -5,7 +5,6 @@
 
 #include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/renderer.hpp>
-#include <xe/resources/shadermanager.hpp>
 
 namespace xe { namespace fx {
 
@@ -34,12 +33,12 @@ namespace xe { namespace fx {
 		ibo = new IndexBuffer(indices, 6);
 
 		//shaders
-		renderTexture1D = new Shader(GETSHADER("dRenderTexture1D"));
-		renderTexture2D = new Shader(GETSHADER("dRenderTexture2D"));
-		renderTexture2DArray = new Shader(GETSHADER("dRenderTexture2DArray"));
-		renderTexture3D = new Shader(GETSHADER("dRenderTexture3D"));
-		renderTextureCube = new Shader(GETSHADER("dRenderTextureCube"));
-		renderTextureCubeArray = new Shader(GETSHADER("dRenderTextureCubeArray"));
+		renderTexture1D = new Shader("dRenderTexture1D");
+		renderTexture2D = new Shader("dRenderTexture2D");
+		renderTexture2DArray = new Shader("dRenderTexture2DArray");
+		renderTexture3D = new Shader("dRenderTexture3D");
+		renderTextureCube = new Shader("dRenderTextureCube");
+		renderTextureCubeArray = new Shader("dRenderTextureCubeArray");
 	}
 
 	Quad::~Quad() {

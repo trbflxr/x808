@@ -107,6 +107,12 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["renderTextureCubeArray_frag"], { })
 		}));
 
+		//fx final
+		shaders.emplace("dFinalFX", new BaseShader("dFinalFX", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"], { }),
+				ShaderFile::fromSource(ShaderType::Frag, sources["finalScene_frag"], {sources["fxaa_include"]})
+		}));
+
 	}
 
 
