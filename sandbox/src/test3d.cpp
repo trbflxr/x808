@@ -17,16 +17,16 @@ Test3D::Test3D(DebugUI *ui) :
 	TextureManager::add(new Texture("bgr", "assets/textures/bgr.jfif", params));
 
 	//init objects
-	TransformComponent transform;
+	TransformComponent *tc = new TransformComponent();
 
 	//move player up
-	transform.transform.setTranslation({0.0f, 5.0f, -100.0f});
+	tc->transform.setTranslation({0.0f, 5.0f, -100.0f});
 
 	camera = new Camera(mat4::perspective(80.0f, 8.0f / 6.0f, 0.1f, 1000));
-	camera->transform = transform.transform;
+	camera->transform = tc->transform;
 
 	DummyPlayerComponent playerComponent(camera, 6.0f);
-	player = ecs.makeEntity(playerComponent, transform);
+	player = ecs.makeEntity(new DummyPlayerComponent(camera, 6.0f), tc);
 
 	playerControlSystem = new DummyPlayerControlSystem();
 	mainSystems.addSystem(*playerControlSystem);

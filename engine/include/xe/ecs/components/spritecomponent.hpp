@@ -19,15 +19,7 @@ namespace xe {
 		std::vector<vec2> UVs;
 		bool visible;
 
-		SpriteComponent() noexcept :
-				texture(nullptr),
-				color(color::WHITE),
-				visible(true) {
-
-			UVs = getDefaultUVs();
-		}
-
-		explicit SpriteComponent(const Texture *texture, uint color, bool visible = true) noexcept :
+		explicit SpriteComponent(const Texture *texture, uint color = color::WHITE, bool visible = true) noexcept :
 				texture(texture),
 				color(color),
 				visible(visible) {

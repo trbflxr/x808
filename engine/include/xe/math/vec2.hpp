@@ -17,6 +17,7 @@ namespace xe {
 		float y;
 
 		vec2();
+		explicit vec2(float val);
 		vec2(float x, float y);
 		vec2(const vec2 &other);
 		explicit vec2(const vec3 &other);

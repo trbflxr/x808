@@ -14,6 +14,10 @@ namespace xe {
 	struct Transform2DComponent : public ECSComponent<Transform2DComponent> {
 		aobb bounds;
 		float zIndex;
+
+		explicit Transform2DComponent(const vec2 &position, const vec2 &size, float zIndex, float rotation = 0.0f) :
+				bounds(position, size, rotation),
+				zIndex(zIndex) { }
 	};
 
 }

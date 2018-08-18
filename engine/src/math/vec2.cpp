@@ -8,6 +8,7 @@
 namespace xe {
 
 	vec2::vec2() : x(0), y(0) { }
+	vec2::vec2(float val) : x(val), y(val) { }
 	vec2::vec2(float x, float y) : x(x), y(y) { }
 	vec2::vec2(const vec2 &other) : x(other.x), y(other.y) { }
 	vec2::vec2(const vec3 &other) : x(other.x), y(other.y) { }
