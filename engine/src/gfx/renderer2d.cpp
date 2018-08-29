@@ -15,7 +15,7 @@ namespace xe {
 #define RENDERER_SPRITE_SIZE     (RENDERER_VERTEX_SIZE * 4)
 #define RENDERER_BUFFER_SIZE     (RENDERER_SPRITE_SIZE * RENDERER_MAX_SPRITES)
 #define RENDERER_INDICES_SIZE    (RENDERER_MAX_SPRITES * 6)
-#define RENDERER_MAX_TEXTURES    (32 - 1)
+#define RENDERER_MAX_TEXTURES    32
 
 
 	const uint requiredSystemUniformsCount = 2;
@@ -145,15 +145,15 @@ namespace xe {
 		buffer = static_cast<VertexData *>(vertexArray->getBuffer(0)->getPointer());
 	}
 
-	void
-	Renderer2D::submit(const SpriteComponent *sprite, const Transform2DComponent *transform) {
+	void Renderer2D::submit(const SpriteComponent *sprite, const Transform2DComponent *transform) {
+		if (!sprite->visible) return;
 		targets.emplace_back(sprite, transform);
 	}
 
 	void Renderer2D::submitInternal(RenderTarget target) {
 		const std::array<vec2, 4> &vertices = target.transform->bounds.getVertices();
 		const uint color = target.sprite->color;
-		const std::vector<vec2> &uv = target.sprite->UVs;
+		const std::array<vec2, 4> &uv = target.sprite->UVs;
 		const Texture *texture = target.sprite->texture;
 
 		float textureSlot = 0.0f;
@@ -201,7 +201,7 @@ namespace xe {
 		const uint color = component->text->textColor;
 		const uint outlineColor = component->text->outlineColor;
 		const float outlineThickness = component->text->outlineThickness;
-		const vec2& position = component->text->position;
+		const vec2 &position = component->text->position;
 		const float size = component->text->size;
 
 		const Texture *texture = font.getTexture();
@@ -393,7 +393,7 @@ namespace xe {
 
 	void
 	Renderer2D::drawLine(float x0, float y0, float x1, float y1, float z, uint color, float thickness) {
-		const std::vector<vec2> &uv = SpriteComponent::getDefaultUVs();
+		const std::array<vec2, 4> &uv = SpriteComponent::getDefaultUVs();
 		const float ts = 0.0f;
 
 		const vec2 normal = vec2::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
@@ -447,7 +447,7 @@ namespace xe {
 	void Renderer2D::fillRect(float x, float y, float width, float height, float z, uint color) {
 		vec3 position(x, y, z);
 		vec2 size(width, height);
-		const std::vector<vec2> &uv = SpriteComponent::getDefaultUVs();
+		const std::array<vec2, 4> &uv = SpriteComponent::getDefaultUVs();
 
 		float ts = 0.0f;
 

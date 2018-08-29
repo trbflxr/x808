@@ -30,6 +30,8 @@ namespace xe {
 		static void enableDepthMask(bool enabled) { instance->enableDepthMaskInternal(enabled); }
 		static void enableCullFace(bool enabled) { instance->enableCullFaceInternal(enabled); }
 		static void enableDepthClamp(bool enabled) { instance->enableDepthClampInternal(enabled); }
+		static void enableStencilTest(bool enabled) { instance->enableStencilTestInternal(enabled); }
+
 
 		static void setViewport(uint x, uint y, uint width, uint height) {
 			instance->setViewportInternal(x, y, width, height);
@@ -55,6 +57,14 @@ namespace xe {
 			instance->setPolygonModeInternal(face, mode);
 		}
 
+		static void setStencilFunc(StencilFunction func, uint ref = 0, uint mask = 0) {
+			instance->setStencilFuncInternal(func, ref, mask);
+		}
+
+		static void setStencilOpSeparate(StencilFace face, StencilOp sFail, StencilOp dpFail, StencilOp dpPass) {
+			instance->setStencilOpSeparateInternal(face, sFail, dpFail, dpPass);
+		}
+
 		static uint getDC() { return dc; }
 		static void resetDC() { dc = 0; }
 		static void incDC() { ++dc; }
@@ -76,6 +86,7 @@ namespace xe {
 		virtual void enableDepthMaskInternal(bool enabled) = 0;
 		virtual void enableCullFaceInternal(bool enabled) = 0;
 		virtual void enableDepthClampInternal(bool enabled) = 0;
+		virtual void enableStencilTestInternal(bool enabled) = 0;
 
 		virtual void setViewportInternal(uint x, uint y, uint width, uint height) = 0;
 
@@ -84,6 +95,8 @@ namespace xe {
 		virtual void setDepthFunctionInternal(DepthFunction function) = 0;
 		virtual void setCullFaceInternal(CullFace cullFace) = 0;
 		virtual void setPolygonModeInternal(MaterialFace face, PolygonMode mode) = 0;
+		virtual void setStencilFuncInternal(StencilFunction func, uint ref, uint mask) = 0;
+		virtual void setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) = 0;
 
 	private:
 		static Renderer *instance;

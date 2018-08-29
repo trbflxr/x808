@@ -27,9 +27,6 @@ namespace xe {
 
 		inline BaseShader *getBaseShader() { return shader; }
 
-		virtual void setUniformsInternal() { };
-		virtual void setUserUniforms() { }
-
 	private:
 		void init();
 

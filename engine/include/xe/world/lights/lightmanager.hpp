@@ -14,10 +14,6 @@
 
 namespace xe {
 
-#define MAX_SPOT_SHADOWS 4
-#define MAX_POINT_SHADOWS 2
-#define MAX_DIRECTIONAL_SHADOWS 1
-
 	class XE_API LightManager {
 	public:
 		explicit LightManager();
@@ -32,20 +28,7 @@ namespace xe {
 		std::vector<Light *> &getLights() { return lights; }
 
 	private:
-		void updateShadowSpotUBO(SpotLight *light, int32 shadowId);
-		void updateShadowPointUBO(PointLight *light, int32 shadowId);
-		void updateShadowDirectionalUBO(DirectionalLight1 *light, int32 shadowId);
-		void updateShadowUBO();
-
-	private:
 		int32 lightCount;
-
-		UniformBuffer *shadowManifest;
-		UniformBuffer *shadowSpot;
-		UniformBuffer *shadowPoint;
-		UniformBuffer *shadowDirectional;
-
-		std::vector<vec4> lightsShadowedManifest;
 
 		std::vector<Light *> lights;
 	};

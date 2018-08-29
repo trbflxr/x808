@@ -18,6 +18,8 @@ namespace xe { namespace internal {
 		uint shaders[shaderPipeline.size()];
 
 		for (uint i = 0; i < shaderPipeline.size(); ++i) {
+			sources.emplace(shaderTypeToString(shaderPipeline[i]->getType()), shaderPipeline[i]->getFullSource());
+
 			shaders[i] = shaderPipeline[i]->compile();
 			if (!shaders[i]) {
 				glCall(glDeleteProgram(handle));
@@ -103,10 +105,10 @@ namespace xe { namespace internal {
 
 					for (auto &&f : s.getFields()) {
 						GLShaderUniform *field = (GLShaderUniform *) f;
-						field->location = getUniformLocation(uniform->name + "." + field->name);
+						field->location = getUniformLocation(uniform->name + "." + field->name, false);
 					}
 				} else {
-					uniform->location = getUniformLocation(uniform->name);
+					uniform->location = getUniformLocation(uniform->name, false);
 				}
 			}
 		}
@@ -115,7 +117,7 @@ namespace xe { namespace internal {
 		for (auto &smpl : samplers) {
 			GLShaderSampler *resource = (GLShaderSampler *) smpl;
 
-			uint location = getUniformLocation(resource->name);
+			uint location = getUniformLocation(resource->name, false);
 			if (resource->count == 1) {
 				resource->location = sampler;
 				setUniform1i(location, sampler++);
@@ -138,17 +140,20 @@ namespace xe { namespace internal {
 		unbind();
 	}
 
-	uint GLBaseShader::getUniformLocation(const string &name) {
+	uint GLBaseShader::getUniformLocation(const string &name, bool runTime) {
 		glCall(GLint result = glGetUniformLocation(handle, name.c_str()));
 		if (result == -1) {
-			XE_ERROR("[GLBaseShader]: name: '", GLBaseShader::name, "' could not find uniform '", name, "'");
+			if (runTime) {
+				XE_ERROR("[GLBaseShader]: '", GLBaseShader::name, "' could not get uniform location '", name, "'");
+			}else {
+				XE_WARN("[GLBaseShader]: '", GLBaseShader::name, "' uniform '", name, "' optimized out");
+			}
 		}
 
 		return static_cast<uint>(result);
 	}
 
-	ShaderUniform *GLBaseShader::findUniform(const string &name,
-	                                         const ShaderUniformBuffer *buff) {
+	ShaderUniform *GLBaseShader::findUniform(const string &name, const ShaderUniformBuffer *buff) {
 		for (auto &&uniform : buff->getUniforms()) {
 			if (uniform->getName() == name) return uniform;
 		}

@@ -36,7 +36,7 @@ namespace xe {
 		                         TextureMagFilter::Nearest,
 		                         TextureWrap::ClampToEdge);
 
-		texture = new Texture(1024, 1024, 0, params);
+		texture = new Texture(name + "_FontTexture", 1024, 1024, 0, params);
 		texture->setData2D(ftAtlas->data);
 	}
 
@@ -58,7 +58,7 @@ namespace xe {
 		                         TextureMagFilter::Nearest,
 		                         TextureWrap::ClampToEdge);
 
-		texture = new Texture(1024, 1024, 0, params);
+		texture = new Texture(name + "_FontTexture", 1024, 1024, 0, params);
 		texture->setData2D(ftAtlas->data);
 
 		XE_ASSERT(ftFont, "Failed to load font from data!");

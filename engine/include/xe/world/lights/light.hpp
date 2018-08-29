@@ -6,12 +6,13 @@
 #define X808_LIGHT_HPP
 
 
-#include <xe/world/worldobject.hpp>
+#include <xe/gameobject.hpp>
+#include <xe/math/transform.hpp>
 #include <xe/world/model/uniquemesh.hpp>
 
 namespace xe {
 
-	class Light : public WorldObject {
+	class Light : public GameObject {
 	public:
 		friend class LightManager;
 
@@ -32,48 +33,41 @@ namespace xe {
 		float falloff;
 
 	public:
-		explicit Light(const string &id, Light::Type type, const vec3 &color,
-		               float intensity, float falloff, bool shadow, const mat4 &transformation) :
-				WorldObject(SpatialData(transformation)),
-				id(shadowId - 1),
+		explicit Light(const string &id, Type type, const vec3 &color, float intensity, float falloff, bool shadow,
+		               const mat4 &transformation, Mesh *mesh) :
+				GameObject(transformation),
+				name(id),
+				id(-1),
+				shadowId(-1),
 				enabled(false),
 				type(type),
 				color(color),
 				intensity(intensity),
 				falloff(falloff),
 				shadowed(shadow),
-				boundsMatrix(mat4(1.0f)),
+				boundsMatrix(mat4::identity()),
 				objectEmission(intensity),
-				mesh(nullptr),
-				boundingMesh(nullptr) { }
+				mesh(mesh) { }
 
 		virtual ~Light() {
-			//todo: fix this
-			if (boundingMesh->mesh == mesh->mesh) {
-				delete mesh;
-				boundingMesh->mesh = nullptr;
-			} else {
-				delete mesh;
-			}
-			delete boundingMesh;
+			delete mesh;
 		}
 
+		inline const string &getName() const { return name; }
+		inline int32 getLightId() const { return id; }
+		inline int32 getShadowId() const { return shadowId; }
+		inline Type getType() const { return type; }
 
-		int32 getLightId() const { return id; }
-		int32 getShadowId() const { return shadowId; }
-		Type getType() const { return type; }
+		inline Mesh *getMesh() const { return mesh; }
 
-		UniqueMesh *getMesh() const { return mesh; }
-		UniqueMesh *getBoundingMesh() const { return boundingMesh; }
-
-		const mat4 &getBoundsMatrix() const { return boundsMatrix; }
+		inline const mat4 &getBoundsMatrix() const { return boundsMatrix; }
 
 	protected:
-		UniqueMesh *mesh;
-		UniqueMesh *boundingMesh;
+		Mesh *mesh;
 		mat4 boundsMatrix;
 
 	private:
+		string name;
 		int32 id;
 		int32 shadowId;
 		Type type;

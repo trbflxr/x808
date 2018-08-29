@@ -3,7 +3,9 @@
 //
 
 #undef NOGDI
+
 #include <windows.h>
+
 #define NOGDI
 
 #include <GL/glew.h>
@@ -40,6 +42,10 @@ namespace xe { namespace internal {
 		} else {
 			glCall(glDisable(GL_FRAMEBUFFER_SRGB));
 		}
+
+		glCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+
+		glCall(glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS));
 	}
 
 	void GLContext::swapBuffers() {

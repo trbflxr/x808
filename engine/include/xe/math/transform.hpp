@@ -13,47 +13,58 @@ namespace xe {
 	class Transform {
 	public:
 		inline Transform() :
-				translation(0.0f, 0.0f, 0.0f),
+				transformation(mat4::identity()),
+				position(0.0f, 0.0f, 0.0f),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
 				scale(1.0f, 1.0f, 1.0f),
 				dirty(false) { }
 
-		inline Transform(const vec3 &translation) :
-				translation(translation),
+		inline explicit Transform(const mat4 &transformation) :
+				transformation(transformation),
+				position(transformation.getTranslation()),
+				scale(transformation.getScale()),
+				rotation(transformation.getRotation()),
+				dirty(true) { }
+
+		inline explicit Transform(const vec3 &translation) :
+				transformation(mat4::identity()),
+				position(translation),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
 				scale(1.0f, 1.0f, 1.0f),
 				dirty(false) { }
 
-		inline Transform(const quat &rotation) :
-				translation(0.0f, 0.0f, 0.0f),
+		inline explicit Transform(const quat &rotation) :
+				transformation(mat4::identity()),
+				position(0.0f, 0.0f, 0.0f),
 				rotation(rotation),
 				scale(1.0f, 1.0f, 1.0f),
 				dirty(false) { }
 
-		inline Transform(const vec3 &translation, const quat &rotation, const vec3 &scale) :
-				translation(translation),
+		inline explicit Transform(const vec3 &translation, const quat &rotation, const vec3 &scale) :
+				transformation(mat4::identity()),
+				position(translation),
 				rotation(rotation),
 				scale(scale),
 				dirty(false) { }
 
-		inline mat4 toMatrix() const;
+		inline const mat4 &toMatrix() const;
 
 		inline bool isDirty() const { return dirty; }
 		inline void setDirty(bool isDirty) { dirty = isDirty; }
 
-		inline vec3 getTranslation() const { return translation; }
+		inline vec3 getPosition() const { return position; }
 		inline quat getRotation() const { return rotation; }
 		inline vec3 getScale() const { return scale; }
 
-		inline void set(const vec3 &translation, const quat &rotation, const vec3 &scale) {
-			Transform::translation = translation;
+		inline void set(const vec3 &position, const quat &rotation, const vec3 &scale) {
+			Transform::position = position;
 			Transform::rotation = rotation;
 			Transform::scale = scale;
 			dirty = true;
 		}
 
-		inline void setTranslation(const vec3 &translation) {
-			Transform::translation = translation;
+		inline void setPosition(const vec3 &position) {
+			Transform::position = position;
 			dirty = true;
 		}
 
@@ -69,7 +80,7 @@ namespace xe {
 
 		inline void rotate(const vec3 &axis, float angleDeg);
 		inline void rotate(const quat &rotation);
-		inline void translate(const vec3 &dir);
+		inline void move(const vec3 &dir);
 
 		inline Transform operator+(const Transform &other) const;
 		inline Transform operator+=(const Transform &other);
@@ -79,15 +90,21 @@ namespace xe {
 		inline Transform operator*=(float other);
 
 	private:
-		vec3 translation;
-		quat rotation;
-		vec3 scale;
+		mutable mat4 transformation;
+		mutable bool dirty;
 
-		bool dirty;
+		vec3 position;
+		quat rotation;
+
+		vec3 scale;
 	};
 
-	inline mat4 Transform::toMatrix() const {
-		return mat4::transform(translation, rotation, scale);
+	inline const mat4 &Transform::toMatrix() const {
+		if (dirty) {
+			transformation = mat4::transform(position, rotation, scale);
+			dirty = false;
+		}
+		return transformation;
 	}
 
 	inline void Transform::rotate(const vec3 &axis, float angleDeg) {
@@ -99,17 +116,17 @@ namespace xe {
 		dirty = true;
 	}
 
-	inline void Transform::translate(const vec3 &dir) {
-		translation += dir;
+	inline void Transform::move(const vec3 &dir) {
+		position += dir;
 		dirty = true;
 	}
 
 	Transform Transform::operator+(const Transform &other) const {
-		return Transform(translation + other.translation, rotation + other.rotation, scale + other.scale);
+		return Transform(position + other.position, rotation + other.rotation, scale + other.scale);
 	}
 
 	Transform Transform::operator+=(const Transform &other) {
-		translation += other.translation;
+		position += other.position;
 		rotation += other.rotation;
 		scale += other.scale;
 		dirty = true;
@@ -117,11 +134,11 @@ namespace xe {
 	}
 
 	Transform Transform::operator*(const Transform &other) const {
-		return Transform(translation * other.translation, rotation * other.rotation, scale * other.scale);
+		return Transform(position * other.position, rotation * other.rotation, scale * other.scale);
 	}
 
 	Transform Transform::operator*=(const Transform &other) {
-		translation *= other.translation;
+		position *= other.position;
 		rotation *= other.rotation;
 		scale *= other.scale;
 		dirty = true;
@@ -129,11 +146,11 @@ namespace xe {
 	}
 
 	Transform Transform::operator*(float other) const {
-		return Transform(translation * other, rotation * other, scale * other);
+		return Transform(position * other, rotation * other, scale * other);
 	}
 
 	Transform Transform::operator*=(float other) {
-		translation *= other;
+		position *= other;
 		rotation *= other;
 		scale *= other;
 		dirty = true;

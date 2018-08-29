@@ -8,7 +8,7 @@
 
 namespace xe { namespace internal {
 
-	uint textureTargetToGL(TextureTarget target) {
+	uint textureTargetToGL(TextureTarget target) noexcept {
 		switch (target) {
 			case TextureTarget::Tex1D: return GL_TEXTURE_1D;
 			case TextureTarget::Tex2D: return GL_TEXTURE_2D;
@@ -20,7 +20,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint textureWrapToGL(TextureWrap wrap) {
+	uint textureWrapToGL(TextureWrap wrap) noexcept {
 		switch (wrap) {
 			case TextureWrap::Repeat: return GL_REPEAT;
 			case TextureWrap::Clamp: return GL_CLAMP;
@@ -31,7 +31,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint textureMinFilterToGL(TextureMinFilter filter) {
+	uint textureMinFilterToGL(TextureMinFilter filter) noexcept {
 		switch (filter) {
 			case TextureMinFilter::Nearest: return GL_NEAREST;
 			case TextureMinFilter::Linear: return GL_LINEAR;
@@ -43,7 +43,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint textureMagFilterToGL(TextureMagFilter filter) {
+	uint textureMagFilterToGL(TextureMagFilter filter) noexcept {
 		switch (filter) {
 			case TextureMagFilter::Nearest: return GL_NEAREST;
 			case TextureMagFilter::Linear: return GL_LINEAR;
@@ -51,7 +51,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint pixelTypeToGL(PixelType type) {
+	uint pixelTypeToGL(PixelType type) noexcept {
 		switch (type) {
 			case PixelType::Byte: return GL_BYTE;
 			case PixelType::UnsignedByte: return GL_UNSIGNED_BYTE;
@@ -65,7 +65,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint pixelInternalFormatToGL(PixelInternalFormat type) {
+	uint pixelInternalFormatToGL(PixelInternalFormat type) noexcept {
 		switch (type) {
 			case PixelInternalFormat::DepthComponent: return GL_DEPTH_COMPONENT;
 			case PixelInternalFormat::Alpha: return GL_ALPHA;
@@ -80,7 +80,10 @@ namespace xe { namespace internal {
 			case PixelInternalFormat::DepthComponent16: return GL_DEPTH_COMPONENT16;
 			case PixelInternalFormat::DepthComponent24: return GL_DEPTH_COMPONENT24;
 			case PixelInternalFormat::DepthComponent32: return GL_DEPTH_COMPONENT32;
+			case PixelInternalFormat::Depth32fStencil8: return GL_DEPTH32F_STENCIL8;
+			case PixelInternalFormat::DepthComponent32f: return GL_DEPTH_COMPONENT32F;
 			case PixelInternalFormat::R32f: return GL_R32F;
+			case PixelInternalFormat::Rg16f: return GL_RG16F;
 			case PixelInternalFormat::Rgba32f: return GL_RGBA32F;
 			case PixelInternalFormat::Rgb32f: return GL_RGB32F;
 			case PixelInternalFormat::Rgba16f: return GL_RGBA16F;
@@ -90,7 +93,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint pixelFormatToGL(PixelFormat format) {
+	uint pixelFormatToGL(PixelFormat format) noexcept {
 		switch (format) {
 			case PixelFormat::UnsignedShort: return GL_UNSIGNED_SHORT;
 			case PixelFormat::UnsignedInt: return GL_UNSIGNED_INT;
@@ -110,7 +113,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint textureAccessToGL(TextureAccess textureAccess) {
+	uint textureAccessToGL(TextureAccess textureAccess) noexcept {
 		switch (textureAccess) {
 			case TextureAccess::ReadOnly: return GL_READ_ONLY;
 			case TextureAccess::WriteOnly: return GL_WRITE_ONLY;
@@ -120,8 +123,9 @@ namespace xe { namespace internal {
 	}
 
 
-	uint attachmentToGL(Attachment attachment) {
+	uint attachmentToGL(Attachment attachment) noexcept {
 		switch (attachment) {
+			case Attachment::None:return GL_NONE;
 			case Attachment::Color0: return GL_COLOR_ATTACHMENT0;
 			case Attachment::Color1: return GL_COLOR_ATTACHMENT1;
 			case Attachment::Color2: return GL_COLOR_ATTACHMENT2;
@@ -140,11 +144,12 @@ namespace xe { namespace internal {
 			case Attachment::Color15: return GL_COLOR_ATTACHMENT15;
 			case Attachment::Depth: return GL_DEPTH_ATTACHMENT;
 			case Attachment::Stencil: return GL_STENCIL_ATTACHMENT;
+			case Attachment::DepthStencil: return GL_DEPTH_STENCIL_ATTACHMENT;
 		}
 		return 0;
 	}
 
-	uint rendererBufferToGL(uint buffer) {
+	uint rendererBufferToGL(uint buffer) noexcept {
 		uint result = 0;
 
 		if (buffer & RendererBufferColor) {
@@ -159,7 +164,7 @@ namespace xe { namespace internal {
 		return result;
 	}
 
-	uint blendFunctionToGL(BlendFunction function) {
+	uint blendFunctionToGL(BlendFunction function) noexcept {
 		switch (function) {
 			case BlendFunction::Zero: return GL_ZERO;
 			case BlendFunction::One: return GL_ONE;
@@ -170,15 +175,15 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint blendEquationToGL(BlendEquation equation) {
+	uint blendEquationToGL(BlendEquation equation) noexcept {
 		switch (equation) {
-			case BlendEquation::Add: return GL_ADD;
-			case BlendEquation::Subtract: return GL_SUBTRACT;
+			case BlendEquation::Add: return GL_FUNC_ADD;
+			case BlendEquation::Subtract: return GL_FUNC_SUBTRACT;
 		}
 		return 0;
 	}
 
-	uint depthFunctionToGL(DepthFunction function) {
+	uint depthFunctionToGL(DepthFunction function) noexcept {
 		switch (function) {
 			case DepthFunction::Equal: return GL_EQUAL;
 			case DepthFunction::Less: return GL_LESS;
@@ -186,7 +191,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint cullFaceToGL(CullFace cullFace) {
+	uint cullFaceToGL(CullFace cullFace) noexcept {
 		switch (cullFace) {
 			case CullFace::Front: return GL_FRONT;
 			case CullFace::Back: return GL_BACK;
@@ -194,7 +199,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint shaderTypeToGL(ShaderType type) {
+	uint shaderTypeToGL(ShaderType type) noexcept {
 		switch (type) {
 			case ShaderType::Vert: return GL_VERTEX_SHADER;
 			case ShaderType::Frag: return GL_FRAGMENT_SHADER;
@@ -206,7 +211,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint beginModeToGL(BeginMode mode) {
+	uint beginModeToGL(BeginMode mode) noexcept {
 		switch (mode) {
 			case BeginMode::Points: return GL_POINTS;
 			case BeginMode::Lines: return GL_LINES;
@@ -223,7 +228,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint bufferUsageToGL(BufferUsage usage) {
+	uint bufferUsageToGL(BufferUsage usage) noexcept {
 		switch (usage) {
 			case BufferUsage::StreamDraw: return GL_STREAM_DRAW;
 			case BufferUsage::StreamRead: return GL_STREAM_READ;
@@ -238,7 +243,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint bufferStorageToGL(BufferStorage storage) {
+	uint bufferStorageToGL(BufferStorage storage) noexcept {
 		switch (storage) {
 			case BufferStorage::MapRead: return GL_MAP_READ_BIT;
 			case BufferStorage::MapWrite: return GL_MAP_WRITE_BIT;
@@ -250,7 +255,7 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint materialFaceToGL(MaterialFace face) {
+	uint materialFaceToGL(MaterialFace face) noexcept {
 		switch (face) {
 			case MaterialFace::Front: return GL_FRONT;
 			case MaterialFace::Back: return GL_BACK;
@@ -259,11 +264,48 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint polygonModeToGL(PolygonMode mode) {
+	uint polygonModeToGL(PolygonMode mode) noexcept {
 		switch (mode) {
 			case PolygonMode::Point: return GL_POINT;
 			case PolygonMode::Line: return GL_LINE;
 			case PolygonMode::Fill: return GL_FILL;
+		}
+		return 0;
+	}
+
+	uint stencilOpToGL(StencilOp op) noexcept {
+		switch (op) {
+			case StencilOp::Zero: return GL_ZERO;
+			case StencilOp::Invert: return GL_INVERT;
+			case StencilOp::Keep: return GL_KEEP;
+			case StencilOp::Replace: return GL_REPLACE;
+			case StencilOp::Incr: return GL_INCR;
+			case StencilOp::Decr: return GL_DECR;
+			case StencilOp::IncrWrap: return GL_INCR_WRAP;
+			case StencilOp::DecrWrap: return GL_DECR_WRAP;
+		}
+		return 0;
+	}
+
+	uint stencilFuncToGL(StencilFunction func) noexcept {
+		switch (func) {
+			case StencilFunction::Never: return GL_NEVER;
+			case StencilFunction::Less: return GL_LESS;
+			case StencilFunction::Equal: return GL_EQUAL;
+			case StencilFunction::Lequal: return GL_LEQUAL;
+			case StencilFunction::Greater: return GL_GREATER;
+			case StencilFunction::Notequal: return GL_NOTEQUAL;
+			case StencilFunction::Gequal: return GL_GEQUAL;
+			case StencilFunction::Always: return GL_ALWAYS;
+		}
+		return 0;
+	}
+
+	uint stencilFaceToGL(StencilFace face) noexcept {
+		switch (face) {
+			case StencilFace::Front: return GL_FRONT;
+			case StencilFace::Back: return GL_BACK;
+			case StencilFace::FrontAndBack: return GL_FRONT_AND_BACK;
 		}
 		return 0;
 	}

@@ -28,18 +28,18 @@ namespace xe { namespace internal {
 		}
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_FATAL("[GLFrameBuffer]: creation fail");
+			XE_FATAL("[GLFrameBuffer]: '", name, "' creation fail");
 			XE_ASSERT(false);
 		}
 
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
-	void GLFrameBuffer::bindDrawAttachment(Attachment attachment) {
+	void GLFrameBuffer::bindDrawAttachment(Attachment attachment) const {
 		glCall(glDrawBuffer(attachmentToGL(attachment)));
 	}
 
-	void GLFrameBuffer::bindDrawAttachments(Attachment *attachments, uint size) {
+	void GLFrameBuffer::bindDrawAttachments(Attachment *attachments, uint size) const {
 		uint buffers[size];
 		for (uint i = 0; i < size; ++i) {
 			buffers[i] = attachmentToGL(attachments[i]);
@@ -48,7 +48,7 @@ namespace xe { namespace internal {
 		glCall(glDrawBuffers(size, buffers));
 	}
 
-	void GLFrameBuffer::bindReadAttachment(Attachment attachment) {
+	void GLFrameBuffer::bindReadAttachment(Attachment attachment) const {
 		uint mode = attachmentToGL(attachment);
 
 		if (mode == GL_DEPTH_ATTACHMENT || mode == GL_STENCIL_ATTACHMENT) {
@@ -59,17 +59,17 @@ namespace xe { namespace internal {
 		glCall(glReadBuffer(mode));
 	}
 
-	void GLFrameBuffer::bindDraw(Attachment attachment) {
+	void GLFrameBuffer::bindDraw(Attachment attachment) const {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
 		bindDrawAttachment(attachment);
 	}
 
-	void GLFrameBuffer::bindDraw(Attachment *attachments, uint size) {
+	void GLFrameBuffer::bindDraw(Attachment *attachments, uint size) const {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
 		bindDrawAttachments(attachments, size);
 	}
 
-	void GLFrameBuffer::bindRead(Attachment attachment) {
+	void GLFrameBuffer::bindRead(Attachment attachment) const {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
 		bindReadAttachment(attachment);
 	}
@@ -78,7 +78,7 @@ namespace xe { namespace internal {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
-	void GLFrameBuffer::bindTexture(Attachment attachment, Texture *texture) {
+	void GLFrameBuffer::bindTexture(Attachment attachment, Texture *texture) const {
 		glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(attachment), texture->getHandle(), 0));
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

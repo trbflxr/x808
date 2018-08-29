@@ -17,13 +17,13 @@ namespace xe {
 		explicit Scene(const string &folder, const string &name);
 		~Scene();
 
-		void update(const SpatialData &cameraSpatial, float delta);
+		void update(const Transform &cameraTransform, float delta);
 
-		void render(BeginMode mode, Shader *shader);
-		void renderMeshes(BeginMode mode, Shader *shader);
-		void renderMeshesWithMaterials(BeginMode mode, Shader *shader);
-		void renderMeshesBasic(BeginMode mode, Shader *shader);
-		void renderLightObjects(BeginMode mode, Shader *shader);
+		void render(BeginMode mode, Shader *shader, bool drawLightObjects, bool drawLightBounds) const;
+		void renderMeshes(BeginMode mode, Shader *shader) const;
+		void renderMeshesWithMaterials(BeginMode mode, Shader *shader) const;
+		void renderMeshesBasic(BeginMode mode, Shader *shader) const;
+		void renderLightObjects(BeginMode mode, Shader *shader, bool drawLightBounds) const;
 
 		void addMesh(UniqueMesh *mesh) { meshes.push_back(mesh); }
 		void addLight(Light *light) { lightManager->addLight(light); }

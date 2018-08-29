@@ -10,7 +10,6 @@ namespace xe {
 	struct uniform {
 		static constexpr const char *model = "model";
 		static constexpr const char *modelNormal = "modelNormal";
-		static constexpr const char *modelPrevious = "modelPrevious";
 
 		static constexpr const char *enableDiffuseTexture = "enableDiffuseTexture";
 		static constexpr const char *diffuseTexture = "diffuseTexture";
@@ -43,6 +42,9 @@ namespace xe {
 
 		// samplers
 		static constexpr const char *samplerBase = "sampler";
+
+		//utils
+		static constexpr const char *cullTest = "cullTest";
 	};
 
 }

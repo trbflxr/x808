@@ -16,7 +16,7 @@ namespace xe { namespace fx {
 
 	class XE_API Final : public RenderEffect {
 	public:
-		explicit Final(uint width, uint height);
+		explicit Final(uint width, uint height, bool useFXAA = true);
 		~Final() override;
 
 		void useFXAA(bool enabled);
@@ -27,6 +27,8 @@ namespace xe { namespace fx {
 		inline const Texture *getFinalTexture() const { return finalTexture; }
 
 	private:
+		uint sampler0;
+
 		Shader *finalShader;
 		FrameBuffer *finalFBO;
 		Texture *finalTexture;

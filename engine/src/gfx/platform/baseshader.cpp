@@ -52,4 +52,8 @@ namespace xe {
 		return shader->getName();
 	}
 
+	const std::unordered_map<string, string> &BaseShader::getSources() const {
+		return shader->getSources();
+	}
+
 }

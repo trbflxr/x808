@@ -12,6 +12,11 @@ namespace xe {
 
 	struct GameObject {
 		Transform transform;
+
+		GameObject() = default;
+
+		explicit GameObject(const mat4 &transformation) :
+				transform(transformation) { }
 	};
 
 }

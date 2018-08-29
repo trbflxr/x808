@@ -19,6 +19,7 @@ namespace xe {
 		};
 
 	public:
+		virtual ~ShaderSampler() = default;
 		virtual const string &getName() const = 0;
 		virtual uint getLocation() const = 0;
 		virtual uint getCount() const = 0;

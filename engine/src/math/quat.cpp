@@ -20,7 +20,7 @@ namespace xe {
 	}
 
 	quat::quat() : x(0), y(0), z(0), w(1) { }
-	quat::quat(const xe::quat &q) : x(q.x), y(q.y), z(q.z), w(q.w) { }
+	quat::quat(const quat &q) : x(q.x), y(q.y), z(q.z), w(q.w) { }
 	quat::quat(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) { }
 	quat::quat(const vec4 &vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) { }
 	quat::quat(float scalar) : x(scalar), y(scalar), z(scalar), w(scalar) { }
@@ -35,7 +35,7 @@ namespace xe {
 		w = cosHalfAngle;
 	}
 
-	quat::quat(const xe::mat4 &rot) {
+	quat::quat(const mat4 &rot) {
 		float trace = rot.rows[0].x + rot.rows[1].y + rot.rows[2].z;
 
 		if (trace > 0) {
@@ -73,7 +73,7 @@ namespace xe {
 		w /= length;
 	}
 
-	xe::vec3 quat::getAxis() const {
+	vec3 quat::getAxis() const {
 		float x = 1.0f - w * w;
 		if (x < 0.0000001f) return vec3::UnitX;
 
@@ -81,13 +81,13 @@ namespace xe {
 		return vec3(x, y, z) / x2;
 	}
 
-	xe::vec3 quat::toEulerAngles() const {
+	vec3 quat::toEulerAngles() const {
 		return vec3(atan2f(2 * x * w - 2 * y * z, 1 - 2 * x * x - 2 * z * z),
 		            atan2f(2 * y * w - 2 * x * z, 1 - 2 * y * y - 2 * z * z),
 		            asinf(2 * x * y + 2 * z * w));
 	}
 
-	xe::mat4 quat::toRotationMatrix() const {
+	mat4 quat::toMatrix() const {
 		vec3 forward(2.0f * (x * z - w * y), 2.0f * (y * z + w * x), 1.0f - 2.0f * (x * x + y * y));
 		vec3 up(2.0f * (x * y + w * z), 1.0f - 2.0f * (x * x + z * z), 2.0f * (y * z - w * x));
 		vec3 right(1.0f - 2.0f * (y * y + z * z), 2.0f * (x * y - w * z), 2.0f * (x * z + w * y));
@@ -123,6 +123,10 @@ namespace xe {
 		return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 	}
 
+	float quat::lengthSquared(const quat &q) {
+		return q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
+	}
+
 	quat quat::normalize(const quat &q) {
 		float l = length(q);
 		return quat(q.x / l, q.y / l, q.z / l, q.w / l);
@@ -134,6 +138,50 @@ namespace xe {
 		result = (result + (left.z * right.z));
 		result = (result + (left.w * right.w));
 		return result;
+	}
+
+	quat quat::slerp(const quat &q1, const quat &q2, float blend) {
+		if (lengthSquared(q1) == 0.0f) {
+			if (lengthSquared(q2) == 0.0f) {
+				return quat();
+			}
+		}
+
+		if (lengthSquared(q2) == 0.0f) {
+			return q1;
+		}
+
+		vec3 v1(q1.x, q1.y, q1.z);
+		vec3 v2(q2.x, q2.y, q2.z);
+
+		float n1 = q1.w * q2.w + vec3::dot(v1, v2);
+		if (n1 >= 1.0f || n1 <= -1.0f) {
+			return q1;
+		}
+
+		quat mq2 = q2;
+		if (n1 < 0.0f) {
+			mq2 = -q2;
+			n1 = -n1;
+		}
+
+		float n2;
+		float n3;
+		if (n1 < 0.990000009536743) {
+			float n4 = acosf(n1);
+			float n5 = sinf(n4);
+
+			n2 = sinf(n4 * (1.0f - blend) * n5);
+			n3 = sinf(n4 * blend) * n5;
+		} else {
+
+			n2 = 1.0f - blend;
+			n3 = blend;
+		}
+
+		quat q((v1 * n2) * (v2 * n3), n2 * q1.w + n3 * q2.w);
+
+		return lengthSquared(q) > 0.0f ? quat::normalize(q) : quat();
 	}
 
 	quat quat::conjugate(const quat &q) {
@@ -158,15 +206,14 @@ namespace xe {
 	}
 
 	quat quat::rotation(float angleDeg, const vec3 &unitVec) {
-		const float angle = to_rad(angleDeg) * 0.5f;
-		return quat((unitVec * sinf(angle)), cosf(angle));
+		return quat(unitVec, angleDeg);
 	}
 
-	quat quat::rotation(const vec3 &anglesDeg) {
+	quat quat::rotation(float degX, float degY, float degZ) {
 		quat r;
-		if (anglesDeg.x) r *= quat(vec3::UnitX, anglesDeg.x);
-		if (anglesDeg.y) r *= quat(vec3::UnitY, anglesDeg.y);
-		if (anglesDeg.z) r *= quat(vec3::UnitZ, anglesDeg.z);
+		if (degX != 0.0f) r *= quat(vec3::UnitX, degX);
+		if (degY != 0.0f) r *= quat(vec3::UnitY, degY);
+		if (degZ != 0.0f) r *= quat(vec3::UnitZ, degZ);
 
 		return quat::normalize(r);
 	}
@@ -188,6 +235,10 @@ namespace xe {
 
 
 	///operators
+	quat operator-(const quat &q) {
+		return quat(-q.x, -q.y, -q.z, -q.w);
+	}
+
 	quat operator+(const quat &left, const quat &right) {
 		return quat(left.x + right.x, left.y + right.y, left.z + right.z, left.w + right.w);
 	}

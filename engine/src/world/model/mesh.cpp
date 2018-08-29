@@ -3,6 +3,7 @@
 //
 
 #include <xe/world/model/mesh.hpp>
+#include <xe/gfx/renderer.hpp>
 
 namespace xe {
 
@@ -62,6 +63,8 @@ namespace xe {
 		vertexArray->drawElements(indexBuffer->getCount(), mode);
 		indexBuffer->unbind();
 		vertexArray->unbind();
+
+		Renderer::incDC();
 	}
 
 	Mesh *Mesh::spotLightMesh() {

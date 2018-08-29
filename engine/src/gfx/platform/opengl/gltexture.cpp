@@ -5,7 +5,6 @@
 
 #include <xe/utils/log.hpp>
 #include <xe/loaders/imageloader.hpp>
-
 #include "embedded/embedded.hpp"
 #include "gltexture.hpp"
 #include "glcommon.hpp"
@@ -13,12 +12,12 @@
 
 namespace xe { namespace internal {
 
-	GLTexture::GLTexture(uint width, uint height, uint depth, const TextureParameters &params) :
-			name("NULL"),
+	GLTexture::GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) :
+			name(name),
 			fileName("NULL"),
 			width(width),
 			height(height),
-			depth(depth),
+			depth(params.target == TextureTarget::TexCubeMap ? 6 : depth),
 			params(params) {
 
 		handle = loadInternal(nullptr);
@@ -35,8 +34,6 @@ namespace xe { namespace internal {
 			depth(1),
 			params(params) {
 
-		//todo: handle multiple paths and depth
-
 		handle = loadInternal(&options);
 	}
 
@@ -45,7 +42,7 @@ namespace xe { namespace internal {
 	}
 
 	void GLTexture::bind(uint slot) const {
-		static uint target = textureTargetToGL(params.target);
+		uint target = textureTargetToGL(params.target);
 
 		glCall(glActiveTexture(GL_TEXTURE0 + slot));
 		glCall(glBindTexture(target, handle));
@@ -79,7 +76,7 @@ namespace xe { namespace internal {
 
 	void GLTexture::setData2D(const void *pixels) {
 		if (params.format == PixelFormat::DepthComponent) {
-			XE_ERROR("[GLTexture]: 'SetData' is unavailable for depth texture!");
+			XE_ERROR("[GLTexture]: ", name, " 'SetData' is unavailable for depth texture!");
 			return;
 		}
 
@@ -125,25 +122,23 @@ namespace xe { namespace internal {
 			}
 
 			case TextureTarget::Tex2DArray: {
-				glCall(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, pif, width, height, depth, 0, pf, pt, nullptr));
+				glCall(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, pif, width, height, depth, 0, pf, pt, pixels));
 				break;
 			}
 
 			case TextureTarget::TexCubeMap: {
 				for (uint i = 0; i < depth; ++i) {
-					glCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pif, width, height,
-					                    0, pf, pt, pixels));
+					glCall(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, pif, width, height, 0, pf, pt, pixels));
 				}
 				break;
 			}
 
 			case TextureTarget::TexCubeMapArray: {
-				glCall(glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, maxMipMapLevels + 1,
+				glCall(glTexStorage3D(GL_TEXTURE_CUBE_MAP_ARRAY, params.mipMapLevels + 1,
 				                      pif, width, height, depth * 6));
 				break;
 			}
 		}
-
 		setTextureParams(params.target);
 
 		glCall(glBindTexture(textureTargetToGL(params.target), 0));
@@ -172,7 +167,7 @@ namespace xe { namespace internal {
 			params.internalFormat = PixelInternalFormat::Rgba;
 		} else {
 			if (bits != 24 && bits != 32) {
-				XE_FATAL("[GLTexture] Unsupported image bit-depth! ('", bits, "')");
+				XE_FATAL("[GLTexture]: ", name, " Unsupported image bit-depth! ('", bits, "')");
 			}
 
 			if (bits == 24) {
@@ -216,8 +211,8 @@ namespace xe { namespace internal {
 		}
 
 		//get max anisotropic filtering
-		static float aniso = 0;
-		if (!aniso) {
+		static float aniso = 0.0f;
+		if (aniso == 0.0f) {
 			glCall(glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &aniso));
 		}
 		if (params.anisotropy == ANISOTROPY_AUTO) {

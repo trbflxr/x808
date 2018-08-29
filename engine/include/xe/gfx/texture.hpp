@@ -33,17 +33,6 @@ namespace xe {
 		uint anisotropy;
 
 
-		explicit TextureParameters(TextureTarget target) :
-				target(target),
-				internalFormat(PixelInternalFormat::Rgba),
-				format(PixelFormat::Rgba),
-				pixelType(PixelType::UnsignedByte),
-				minFilter(TextureMinFilter::LinearMipMapLinear),
-				magFilter(TextureMagFilter::Linear),
-				wrap(TextureWrap::Clamp),
-				mipMapLevels(MIP_MAP_AUTO),
-				anisotropy(ANISOTROPY_AUTO) { }
-
 		explicit TextureParameters(TextureTarget target = TextureTarget::Tex2D,
 		                           TextureWrap wrap = TextureWrap::Clamp,
 		                           uint mipMapLevels = MIP_MAP_AUTO,
@@ -88,7 +77,7 @@ namespace xe {
 
 	class XE_API Texture {
 	public:
-		explicit Texture(uint width, uint height, uint depth, const TextureParameters &params);
+		explicit Texture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
 
 		explicit Texture(const string &name,
 		                 const string &path,

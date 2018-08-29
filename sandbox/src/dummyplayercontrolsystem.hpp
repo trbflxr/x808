@@ -103,7 +103,7 @@ public:
 
 private:
 	void move(xe::Transform &transform, const xe::vec3 &dir, float amt) {
-		transform.setTranslation(transform.getTranslation() + (dir * amt));
+		transform.setPosition(transform.getPosition() + (dir * amt));
 	}
 
 private:

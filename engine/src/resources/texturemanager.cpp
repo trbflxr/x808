@@ -60,19 +60,20 @@ namespace xe {
 		                         TextureMagFilter::Nearest);
 
 		///texture
-		Texture *errorTexture = new Texture(internal::DEFAULT_TEXTURE_W,
+		Texture *errorTexture = new Texture("default", internal::DEFAULT_TEXTURE_W,
 		                                    internal::DEFAULT_TEXTURE_H, 0, params);
 		errorTexture->setData2D(internal::DEFAULT_TEXTURE);
 
+		//todo: remove
 
 		///normal
-		Texture *defaultNormal = new Texture(internal::DEFAULT_NORMAL_W,
+		Texture *defaultNormal = new Texture("defaultNormal", internal::DEFAULT_NORMAL_W,
 		                                     internal::DEFAULT_NORMAL_H, 0, params);
 		defaultNormal->setData2D(internal::DEFAULT_NORMAL);
 
 
 		///displacement map
-		Texture *defaultDisp = new Texture(internal::DEFAULT_DISP_W,
+		Texture *defaultDisp = new Texture("defaultDispMap", internal::DEFAULT_DISP_W,
 		                                   internal::DEFAULT_DISP_H, 0, params);
 		defaultDisp->setData2D(internal::DEFAULT_DISP);
 

@@ -211,11 +211,10 @@ namespace xe { namespace internal {
 			uint count = 1;
 			const char *namestr = name.c_str();
 			if (const char *s = strstr(namestr, "[")) {
-				name = string(namestr, s - namestr);
-
 				const char *end = strstr(namestr, "]");
 				string c(s + 1, end - s);
 				count = static_cast<uint>(atoi(c.c_str()));
+				name = string(namestr, s - namestr);
 			}
 
 			auto *field = new GLShaderUniform(GLShaderUniform::stringToType(type), name, count);

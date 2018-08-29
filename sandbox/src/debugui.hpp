@@ -32,6 +32,12 @@ public:
 	void untrackEntity();
 	void displayEntityInfo();
 
+public:
+	xe::SpriteComponent *sp0;
+	xe::SpriteComponent *sp1;
+	xe::SpriteComponent *sp2;
+	xe::SpriteComponent *sp3;
+
 private:
 	xe::ECS ecs;
 

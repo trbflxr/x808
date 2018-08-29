@@ -12,7 +12,7 @@ namespace xe { namespace internal {
 
 	class GLTexture : public PlatformTexture {
 	public:
-		explicit GLTexture(uint width, uint height, uint depth, const TextureParameters &params);
+		explicit GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
 
 		explicit GLTexture(const string &name,
 		                   const string &path,

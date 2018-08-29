@@ -36,8 +36,7 @@ namespace xe {
 	}
 
 	vec4 mat4::getColumn(int index) const {
-		return vec4(elements[index + 0 * 4], elements[index + 1 * 4], elements[index + 2 * 4],
-		            elements[index + 3 * 4]);
+		return vec4(elements[index + 0 * 4], elements[index + 1 * 4], elements[index + 2 * 4], elements[index + 3 * 4]);
 	}
 
 	void mat4::setColumn(int index, const vec4 &column) {
@@ -211,7 +210,7 @@ namespace xe {
 	}
 
 	quat mat4::getRotation() const {
-		return xe::quat();
+		return quat(*this);
 	}
 
 	mat4 mat4::clearScale() const {
@@ -232,9 +231,31 @@ namespace xe {
 	mat4 mat4::clearTranslation() const {
 		mat4 m = *this;
 
-		m.rows[3].x = 0;
-		m.rows[3].y = 0;
-		m.rows[3].z = 0;
+		m.rows[0].w = 0;
+		m.rows[1].w = 0;
+		m.rows[2].w = 0;
+
+		return m;
+	}
+
+	mat4 mat4::clearRotation() const {
+		mat4 m = *this;
+
+		const float x = vec3::length(vec3(m.rows[0]));
+		const float y = vec3::length(vec3(m.rows[1]));
+		const float z = vec3::length(vec3(m.rows[2]));
+
+		m.rows[0].x = x;
+		m.rows[0].y = 0;
+		m.rows[0].z = 0;
+
+		m.rows[1].x = 0;
+		m.rows[1].y = y;
+		m.rows[1].z = 0;
+
+		m.rows[2].x = 0;
+		m.rows[2].y = 0;
+		m.rows[2].z = z;
 
 		return m;
 	}
@@ -263,7 +284,7 @@ namespace xe {
 	}
 
 	mat4 mat4::rotateMatZ(float rad) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		const float s = sinf(rad);
 		const float c = cosf(rad);
@@ -307,7 +328,7 @@ namespace xe {
 	}
 
 	mat4 mat4::ortho(float left, float right, float bottom, float top, float near, float far) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		m.elements[0 + 0 * 4] = 2.0f / (right - left);
 		m.elements[1 + 1 * 4] = 2.0f / (top - bottom);
@@ -320,12 +341,17 @@ namespace xe {
 		return m;
 	}
 
+	const mat4 &mat4::identity() {
+		static mat4 m(1.0f);
+		return m;
+	}
+
 	mat4 mat4::ortho(float width, float height, float near, float far) {
 		return ortho(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f, near, far);
 	}
 
 	mat4 mat4::perspective(float fovDeg, float aspectRatio, float near, float far) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		float q = 1.0f / tanf(to_rad(0.5f * fovDeg));
 		float a = q / aspectRatio;
@@ -343,7 +369,7 @@ namespace xe {
 	}
 
 	mat4 mat4::lookAt(const vec3 &camera, const vec3 &object, const vec3 &up) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		vec3 vec31 = vec3::normalize(camera - object);
 		vec3 right = vec3::normalize(vec3::cross(up, vec31));
@@ -370,17 +396,17 @@ namespace xe {
 	}
 
 	mat4 mat4::translation(const vec3 &translation) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
-		m.elements[3 + 0 * 4] = translation.x;
-		m.elements[3 + 1 * 4] = translation.y;
-		m.elements[3 + 2 * 4] = translation.z;
+		m.rows[0].w = translation.x;
+		m.rows[1].w = translation.y;
+		m.rows[2].w = translation.z;
 
 		return m;
 	}
 
 	mat4 mat4::rotation(float angleDeg, const vec3 &axis) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		const float r = to_rad(angleDeg);
 		const float c = cosf(r);
@@ -407,7 +433,7 @@ namespace xe {
 	}
 
 	mat4 mat4::rotation(const quat &q) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		float qx, qy, qz, qw, qx2, qy2, qz2, qxqx2, qyqy2, qzqz2, qxqy2, qyqz2, qzqw2, qxqz2, qyqw2, qxqw2;
 		qx = q.x;
@@ -435,7 +461,7 @@ namespace xe {
 	}
 
 	mat4 mat4::scale(const vec3 &scale) {
-		mat4 m(1.0f);
+		mat4 m = mat4::identity();
 
 		m.elements[0 + 0 * 4] = scale.x;
 		m.elements[1 + 1 * 4] = scale.y;

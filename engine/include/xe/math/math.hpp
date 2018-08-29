@@ -41,6 +41,11 @@ namespace xe { namespace math {
 		return std::log(a) / std::log(newBase);
 	}
 
+	static float slerp(float src0, float src1, float t) {
+		src0 = __max(src0, 0.000001f);
+		return powf(src1 / src0, t) * src0;
+	}
+
 }}
 
 

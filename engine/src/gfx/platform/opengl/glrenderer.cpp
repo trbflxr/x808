@@ -78,6 +78,14 @@ namespace xe { namespace internal {
 		}
 	}
 
+	void GLRenderer::enableStencilTestInternal(bool enabled) {
+		if (enabled) {
+			glCall(glEnable(GL_STENCIL_TEST));
+		} else {
+			glCall(glDisable(GL_STENCIL_TEST));
+		}
+	}
+
 	void GLRenderer::setViewportInternal(uint x, uint y, uint width, uint height) {
 		glCall(glViewport(x, y, width, height));
 	}
@@ -100,6 +108,14 @@ namespace xe { namespace internal {
 
 	void GLRenderer::setPolygonModeInternal(MaterialFace face, PolygonMode mode) {
 		glCall(glPolygonMode(materialFaceToGL(face), polygonModeToGL(mode)));
+	}
+
+	void GLRenderer::setStencilFuncInternal(StencilFunction func, uint ref, uint mask) {
+		glCall(glStencilFunc(stencilFuncToGL(func), ref, mask));
+	}
+
+	void GLRenderer::setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) {
+		glCall(glStencilOpSeparate(stencilFaceToGL(face), stencilOpToGL(sf), stencilOpToGL(dpf), stencilOpToGL(dpp)));
 	}
 
 }}

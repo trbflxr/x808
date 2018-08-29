@@ -14,10 +14,10 @@
 
 namespace xe {
 
-	Texture::Texture(uint width, uint height, uint depth, const TextureParameters &params) {
+	Texture::Texture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) {
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OPENGL: {
-				texture = new internal::GLTexture(width, height, depth, params);
+				texture = new internal::GLTexture(name, width, height, depth, params);
 				break;
 			}
 

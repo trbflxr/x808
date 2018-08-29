@@ -17,16 +17,16 @@ namespace xe { namespace internal {
 
 		virtual void load(const std::unordered_map<Attachment, Texture *> &attachments) = 0;
 
-		virtual void bindDrawAttachment(Attachment attachment) = 0;
-		virtual void bindDrawAttachments(Attachment *attachments, uint size) = 0;
-		virtual void bindReadAttachment(Attachment attachment) = 0;
+		virtual void bindDrawAttachment(Attachment attachment) const = 0;
+		virtual void bindDrawAttachments(Attachment *attachments, uint size) const = 0;
+		virtual void bindReadAttachment(Attachment attachment) const = 0;
 
-		virtual void bindDraw(Attachment attachment) = 0;
-		virtual void bindDraw(Attachment *attachments, uint size) = 0;
-		virtual void bindRead(Attachment attachment) = 0;
+		virtual void bindDraw(Attachment attachment) const = 0;
+		virtual void bindDraw(Attachment *attachments, uint size) const = 0;
+		virtual void bindRead(Attachment attachment) const = 0;
 		virtual void unbind() = 0;
 
-		virtual void bindTexture(Attachment attachment, Texture *texture) = 0;
+		virtual void bindTexture(Attachment attachment, Texture *texture) const = 0;
 
 		virtual uint getHandle() const = 0;
 		virtual const string &getName() const = 0;

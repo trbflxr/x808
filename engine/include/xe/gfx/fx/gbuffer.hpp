@@ -16,15 +16,43 @@
 
 namespace xe { namespace fx {
 
-	class XE_API GBuffer : public RenderEffect{
+	class XE_API GBuffer : public RenderEffect {
 	public:
 		explicit GBuffer(uint width, uint height);
 		~GBuffer() override;
 
-	private:
-		bool enableWireframe;
+		inline void enableWireframe(bool enabled) { drawWireframe = enabled; }
+		inline void enableLightObjects(bool enabled) { drawLightObjects = enabled; }
+		inline void enableLightBounds(bool enabled) { drawLightBounds = enabled; }
 
-		FrameBuffer* gBuffer;
+		//todo: pass shadow
+		void passDeferredShading(const Scene *scene) const;
+
+		void passLightAccumulation(Quad *quad, const Texture *atmosphere,
+		                           const Texture *indirectTexture, const FrameBuffer *finalScene) const;
+
+		inline const Texture *getDepthStencilTexture() const { return depthStencilTexture; }
+		inline const Texture *getDiffuseTexture() const { return diffuseTexture; }
+		inline const Texture *getNormalDepthTexture() const { return normalDepthTexture; }
+		inline const Texture *getSpecularTexture() const { return specularTexture; }
+		inline const Texture *getLightDiffuseTexture() const { return lightDiffuseTexture; }
+		inline const Texture *getLightSpecularTexture() const { return lightSpecularTexture; }
+
+	private:
+		void createTextures();
+		void createShaders();
+
+		void passGeometry(const Scene *scene) const;
+		void passStencil(const Light *light) const;
+		void passSpotLight(const SpotLight *light, const Texture *shadowDepthTexture) const;
+		void passPointLight(const PointLight *light, const Texture *shadowDepthTexture) const;
+
+	private:
+		bool drawWireframe;
+		bool drawLightObjects;
+		bool drawLightBounds;
+
+		FrameBuffer *gBuffer;
 
 		Shader *geometryShader;
 		Shader *stencilShader;
@@ -32,13 +60,12 @@ namespace xe { namespace fx {
 		Shader *pointShader;
 		Shader *accumulationShader;
 
-		Texture* depthStencilTexture;
-		Texture* diffuseTexture;
-		Texture* normalDepthTexture;
-		Texture* specularTexture;
-		Texture* velocityTexture;
-		Texture* lightDiffuseTexture;
-		Texture* lightSpecularTexture;
+		Texture *depthStencilTexture;
+		Texture *diffuseTexture;
+		Texture *normalDepthTexture;
+		Texture *specularTexture;
+		Texture *lightDiffuseTexture;
+		Texture *lightSpecularTexture;
 	};
 
 

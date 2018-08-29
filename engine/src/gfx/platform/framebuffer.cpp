@@ -34,35 +34,35 @@ namespace xe {
 		buffer->load(attachments);
 	}
 
-	void FrameBuffer::bindDrawAttachment(Attachment attachment) {
+	void FrameBuffer::bindDrawAttachment(Attachment attachment) const {
 		buffer->bindDrawAttachment(attachment);
 	}
 
-	void FrameBuffer::bindDrawAttachments(Attachment *attachments, uint size) {
+	void FrameBuffer::bindDrawAttachments(Attachment *attachments, uint size) const {
 		buffer->bindDrawAttachments(attachments, size);
 	}
 
-	void FrameBuffer::bindReadAttachment(Attachment attachment) {
+	void FrameBuffer::bindReadAttachment(Attachment attachment) const {
 		buffer->bindReadAttachment(attachment);
 	}
 
-	void FrameBuffer::bindDraw(Attachment attachment) {
+	void FrameBuffer::bindDraw(Attachment attachment) const {
 		buffer->bindDraw(attachment);
 	}
 
-	void FrameBuffer::bindDraw(Attachment *attachments, uint size) {
+	void FrameBuffer::bindDraw(Attachment *attachments, uint size) const {
 		buffer->bindDraw(attachments, size);
 	}
 
-	void FrameBuffer::bindRead(Attachment attachment) {
+	void FrameBuffer::bindRead(Attachment attachment) const {
 		buffer->bindRead(attachment);
 	}
 
-	void FrameBuffer::unbind() {
+	void FrameBuffer::unbind() const {
 		buffer->unbind();
 	}
 
-	void FrameBuffer::bindTexture(Attachment attachment, Texture *texture) {
+	void FrameBuffer::bindTexture(Attachment attachment, Texture *texture) const {
 		buffer->bindTexture(attachment, texture);
 	}
 
@@ -70,11 +70,11 @@ namespace xe {
 		return buffer->getHandle();
 	}
 
-	const string &FrameBuffer::getName() {
+	const string &FrameBuffer::getName() const {
 		return buffer->getName();
 	}
 
-	Texture *FrameBuffer::getTexture(Attachment attachment) {
+	Texture *FrameBuffer::getTexture(Attachment attachment) const {
 		return buffer->getTexture(attachment);
 	}
 

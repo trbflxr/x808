@@ -117,6 +117,19 @@ namespace xe { namespace internal {
 		return buffer;
 	}
 
+	template<>
+	inline const char *to_string<mat4>(const mat4 &t) {
+		sprintf(buffer, "mat4({%.3f, %.3f, %.3f, %.3f},\n"
+		                "\t   {%.3f, %.3f, %.3f, %.3f},\n"
+		                "\t   {%.3f, %.3f, %.3f, %.3f},\n"
+		                "\t   {%.3f, %.3f, %.3f, %.3f})",
+		        t.elements[0], t.elements[1], t.elements[2], t.elements[3],
+		        t.elements[4], t.elements[5], t.elements[6], t.elements[7],
+		        t.elements[8], t.elements[9], t.elements[10], t.elements[11],
+		        t.elements[12], t.elements[13], t.elements[14], t.elements[15]);
+		return buffer;
+	}
+
 
 	template<typename First>
 	static void print_log_internal(char *buffer, uint &position, First &&first) {

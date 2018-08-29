@@ -42,6 +42,7 @@ namespace xe {
 
 		mat4 clearScale() const;
 		mat4 clearTranslation() const;
+		mat4 clearRotation() const;
 
 		static vec3 translateVec(const mat4 &m, const vec2 &vec);
 		static vec3 translateVec(const mat4 &m, const vec3 &vec);
@@ -51,6 +52,7 @@ namespace xe {
 		static mat4 initRotation(const vec3 &forward, const vec3 &up);
 		static mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 
+		static const mat4 &identity();
 		static mat4 ortho(float left, float right, float bottom, float top, float near, float far);
 		static mat4 ortho(float width, float height, float near, float far);
 		static mat4 perspective(float fovDeg, float aspectRatio, float near, float far);

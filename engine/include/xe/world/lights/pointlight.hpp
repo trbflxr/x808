@@ -13,16 +13,19 @@ namespace xe {
 
 	class XE_API PointLight : public Light {
 	public:
-		PointLight(const string &id, const vec3 &color, float intensity, float falloff,
+		explicit PointLight(const string &id, const vec3 &color, float intensity, float falloff,
 		           bool shadow, Mesh *mesh, const mat4 &transformation);
 		~PointLight() override = default;
 
-		mat4 getShadowPerspectiveMatrix() const;
+		inline const mat4 &getPerspective() const { return perspective; }
+
 		std::array<mat4, 6> getShadowViewMatrices() const;
 		std::array<mat4, 6> getViewRayMatrices() const;
 
 	private:
 		static mat4 *rotationMatrices;
+
+		mat4 perspective;
 	};
 
 }

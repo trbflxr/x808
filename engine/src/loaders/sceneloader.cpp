@@ -78,7 +78,7 @@ namespace xe {
 			Material *m = new Material(temp.C_Str());
 			m->diffuseColor = vec3(diffuse.r, diffuse.g, diffuse.b);
 			m->specularColor = vec3(specular.r, specular.g, specular.b);
-			m->emission = emission.a * 5.0f;
+			m->emission = emission.a;
 			m->specularShininess = shininess;
 
 			//load textures
@@ -212,12 +212,11 @@ namespace xe {
 			}
 
 			if (types[id] == "SPOT") {
-				static mat4 yup = mat4::rotation(90.0f, vec3::UnitX);
+				static const mat4 yup = mat4::rotation(90.0f, vec3::UnitZ);
 				t *= yup;
 
 				lights.push_back(new SpotLight(ids[id], colors[id], intensities[id], falloffs[id],
-				                               spotAngles[id], spotBlurs[id], shadows[id],
-				                               Mesh::spotLightMesh(), t));
+				                               spotAngles[id], spotBlurs[id], shadows[id], Mesh::spotLightMesh(), t));
 
 			} else if (types[id] == "POINT") {
 				lights.push_back(new PointLight(ids[id], colors[id], intensities[id], falloffs[id],

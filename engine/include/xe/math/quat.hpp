@@ -30,7 +30,7 @@ namespace xe {
 
 		vec3 getAxis() const;
 		vec3 toEulerAngles() const;
-		mat4 toRotationMatrix() const;
+		mat4 toMatrix() const;
 
 		vec3 getForward() const;
 		vec3 getBackward() const;
@@ -40,15 +40,17 @@ namespace xe {
 		vec3 getLeft() const;
 
 		static float length(const quat &q);
+		static float lengthSquared(const quat &q);
 		static quat normalize(const quat &q);
 
+		static quat slerp(const quat &q1, const quat &q2, float blend);
 		static float dot(const quat &left, const quat &right);
 		static quat conjugate(const quat &q);
 		static vec3 rotate(const quat &q, const vec3 &vec);
 
 		static quat rotation(const vec3 &unitVec0, const vec3 &unitVec1);
 		static quat rotation(float angleDeg, const vec3 &unitVec);
-		static quat rotation(const vec3 &anglesDeg);
+		static quat rotation(float degX, float degY, float degZ);
 		static quat rotationX(float angleDeg);
 		static quat rotationY(float angleDeg);
 		static quat rotationZ(float angleDeg);
@@ -57,6 +59,7 @@ namespace xe {
 	typedef quat quat;
 
 	///----- operators -----///
+	quat XE_API operator-(const quat &q);
 	quat XE_API operator+(const quat &left, const quat &right);
 	quat XE_API operator-(const quat &left, const quat &right);
 	quat XE_API operator*(const quat &left, const quat &right);

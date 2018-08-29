@@ -26,10 +26,11 @@ namespace xe { namespace internal {
 		inline const ShaderUniformBufferVec &getUniforms() override { return uniformBuffers; }
 		inline const ShaderSamplerVec &getSamplers() const override { return samplers; }
 		inline const string &getName() const override { return name; }
+		inline const std::unordered_map<string, string> &getSources() const override { return sources; }
 
 	private:
 		void resolveUniforms();
-		uint getUniformLocation(const string &name);
+		uint getUniformLocation(const string &name, bool runTime = true);
 
 		ShaderUniform *findUniform(const string &name, const ShaderUniformBuffer *buff);
 		ShaderUniform *findUniform(const string &name);
@@ -62,6 +63,7 @@ namespace xe { namespace internal {
 	private:
 		string name;
 		uint handle;
+		std::unordered_map<string, string> sources;
 
 		ShaderUniformBufferVec uniformBuffers;
 		ShaderSamplerVec samplers;

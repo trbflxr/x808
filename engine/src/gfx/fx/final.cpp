@@ -4,29 +4,42 @@
 
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/fx/final.hpp>
+#include <xe/resources/shadermanager.hpp>
 
 namespace xe { namespace fx {
 
-	Final::Final(uint width, uint height) :
-			RenderEffect(width, height),
-			useFXAA_(true) {
+	Final::Final(uint width, uint height, bool useFXAA) :
+			RenderEffect(width, height) {
 
-		finalShader = new Shader("dFinalFX");
+		//fx final
+		BaseShader *finalFX = new BaseShader("dFinalFX", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("finalScene_frag"),
+				                       {ShaderManager::getSource("fxaa_include")})
+		});
+		ShaderManager::add(finalFX);
 
-		static TextureParameters params;
+		finalShader = new Shader(finalFX);
+		sampler0 = finalShader->getSampler("sampler0");
+
+		//texture
+		TextureParameters params(TextureTarget::Tex2D);
 		params.internalFormat = PixelInternalFormat::Rgba16f;
 		params.format = PixelFormat::Rgba;
 		params.pixelType = PixelType::Float;
-		params.minFilter = TextureMinFilter::Linear;
-		params.magFilter = TextureMagFilter::Linear;
+		params.minFilter = TextureMinFilter::Nearest;
+		params.magFilter = TextureMagFilter::Nearest;
 		params.wrap = TextureWrap::Clamp;
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;
 
-		finalTexture = new Texture(width, height, 0, params);
+		finalTexture = new Texture("FinalTexture", width, height, 0, params);
 
 		finalFBO = new FrameBuffer("FinalSceneFBO");
 		finalFBO->load({std::make_pair(Attachment::Color0, finalTexture)});
+
+		//send fxaa flag to shader
+		Final::useFXAA(useFXAA);
 	}
 
 	Final::~Final() {
@@ -37,25 +50,23 @@ namespace xe { namespace fx {
 
 	void Final::useFXAA(bool enabled) {
 		useFXAA_ = enabled;
+		int32 use = useFXAA_ ? 1 : 0;
 
-		int32 fxaa = useFXAA_;
-		finalShader->setUniform("useFXAA", &fxaa, sizeof(int32));
+		finalShader->setUniform("useFXAA", &use, sizeof(int32));
 	}
 
 	void Final::render(Quad *quad) const {
-//		Renderer::clear(RendererBufferColor);
+		Renderer::clear(RendererBufferColor);
 		Renderer::setViewport(0, 0, width, height);
-
 
 		finalShader->bind();
 		finalShader->updateUniforms();
 
-		uint slot = finalShader->getSampler("sampler0");
-		finalTexture->bind(slot);
+		finalTexture->bind(sampler0);
 
 		quad->render();
 
-		finalTexture->unbind(slot);
+		finalTexture->unbind(sampler0);
 		finalShader->unbind();
 	}
 

@@ -17,16 +17,16 @@ namespace xe { namespace internal {
 
 		void load(const std::unordered_map<Attachment, Texture *> &attachments) override;
 
-		void bindDrawAttachment(Attachment attachment) override;
-		void bindDrawAttachments(Attachment *attachments, uint size) override;
-		void bindReadAttachment(Attachment attachment) override;
+		void bindDrawAttachment(Attachment attachment) const override;
+		void bindDrawAttachments(Attachment *attachments, uint size) const override;
+		void bindReadAttachment(Attachment attachment) const override;
 
-		void bindDraw(Attachment attachment) override;
-		void bindDraw(Attachment *attachments, uint size) override;
-		void bindRead(Attachment attachment) override;
+		void bindDraw(Attachment attachment) const override;
+		void bindDraw(Attachment *attachments, uint size) const override;
+		void bindRead(Attachment attachment) const override;
 		void unbind() override;
 
-		void bindTexture(Attachment attachment, Texture *texture) override;
+		void bindTexture(Attachment attachment, Texture *texture) const override;
 
 		inline uint getHandle() const override { return handle; }
 		inline const string &getName() const override { return name; }

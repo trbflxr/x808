@@ -6,25 +6,20 @@
 #define X808_UNIQUEMESH_HPP
 
 
+#include <xe/gameobject.hpp>
 #include <xe/world/model/mesh.hpp>
 
 namespace xe {
 
-	class UniqueMesh {
+	class UniqueMesh : public GameObject {
 	public:
-		mat4 baseTransformation;
-		mat4 transformation;
-		mat4 prevTransformation;
-
 		Mesh *mesh;
 
 	public:
 		explicit UniqueMesh(const string &id, Mesh *mesh, const mat4 &transformation) :
+				GameObject(transformation),
 				id(id),
-				mesh(mesh),
-				baseTransformation(transformation),
-				transformation(transformation),
-				prevTransformation(transformation) { }
+				mesh(mesh) { }
 
 		~UniqueMesh() {
 			delete mesh;

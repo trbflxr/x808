@@ -5,6 +5,7 @@
 
 #include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/renderer.hpp>
+#include <xe/resources/shadermanager.hpp>
 
 namespace xe { namespace fx {
 
@@ -32,13 +33,53 @@ namespace xe { namespace fx {
 
 		ibo = new IndexBuffer(indices, 6);
 
-		//shaders
-		renderTexture1D = new Shader("dRenderTexture1D");
-		renderTexture2D = new Shader("dRenderTexture2D");
-		renderTexture2DArray = new Shader("dRenderTexture2DArray");
-		renderTexture3D = new Shader("dRenderTexture3D");
-		renderTextureCube = new Shader("dRenderTextureCube");
-		renderTextureCubeArray = new Shader("dRenderTextureCubeArray");
+
+		//texture shaders
+		BaseShader *rt1 = new BaseShader("dRenderTexture1D", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture1D_frag"))
+		});
+		ShaderManager::add(rt1);
+
+		BaseShader *rt2 = new BaseShader("dRenderTexture2D", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture2D_frag"))
+		});
+		ShaderManager::add(rt2);
+
+		BaseShader *rt2a = new BaseShader("dRenderTexture2DArray", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture2DArray_frag"))
+		});
+		ShaderManager::add(rt2a);
+
+		BaseShader *rt3 = new BaseShader("dRenderTexture3D", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture3D_frag"))
+		});
+		ShaderManager::add(rt3);
+
+		BaseShader *rtc = new BaseShader("dRenderTextureCube", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("renderTextureCube_vert"),
+				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTextureCube_frag"))
+		});
+		ShaderManager::add(rtc);
+
+		BaseShader *rtca = new BaseShader("dRenderTextureCubeArray", {
+				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("renderTextureCube_vert"),
+				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
+				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTextureCubeArray_frag"))
+		});
+		ShaderManager::add(rtca);
+
+
+		renderTexture1D = new Shader(rt1);
+		renderTexture2D = new Shader(rt2);
+		renderTexture2DArray = new Shader(rt2a);
+		renderTexture3D = new Shader(rt3);
+		renderTextureCube = new Shader(rtc);
+		renderTextureCubeArray = new Shader(rtca);
 	}
 
 	Quad::~Quad() {
@@ -109,17 +150,17 @@ namespace xe { namespace fx {
 		Renderer::incDC();
 	}
 
-	void Quad::renderTexture(Texture *texture, uint size, int32 pos, int32 layer, int32 channel) {
-		const uint sizeX = width * size;
-		const uint sizeY = height * size;
+	void Quad::renderTexture(const Texture *texture, float size, int32 pos, int32 layer, int32 channel) {
+		const float sizeX = width * size;
+		const float sizeY = height * size;
 
-		const uint posX = width - sizeX;
-		const uint posY = sizeY * pos;
+		const float posX = width - sizeX;
+		const float posY = sizeY * pos;
 
 		const int32 l = static_cast<const int32>(math::clampf(layer, 0, texture->getDepth()));
 		const int32 c = static_cast<const int32>(math::clampf(channel, -1, 3));
 
-		Renderer::setViewport(posX, posY, sizeX, sizeY);
+		Renderer::setViewport((uint) posX, (uint) posY, (uint) sizeX, (uint) sizeY);
 
 		switch (texture->getTarget()) {
 			case TextureTarget::Tex1D: {
@@ -154,7 +195,7 @@ namespace xe { namespace fx {
 		}
 	}
 
-	void Quad::renderTexture(Shader *shader, Texture *texture, int32 data, const char *uniform, bool fullQuad) {
+	void Quad::renderTexture(Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad) {
 		shader->bind();
 
 		if (strlen(uniform) > 0) {

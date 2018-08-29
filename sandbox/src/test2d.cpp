@@ -79,7 +79,10 @@ Test2D::Test2D() {
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	uint texCount = 10;
+	const float width = app.getConfig().width;
+	const float height = app.getConfig().height;
+
+	uint texCount = 35;
 
 	//render system
 	spriteRenderer = new SpriteRendererSystem(renderer);
@@ -95,7 +98,8 @@ Test2D::Test2D() {
 
 
 	//create camera
-	cameraEntity = ecs.makeEntity(new CameraComponent(mat4::ortho(-80.0f, 80.0f, -60.0f, 60.0f, -1, 1000)));
+	cameraEntity = ecs.makeEntity(
+			new CameraComponent(mat4::ortho(-width / 10.0f, width / 10.0f, -height / 10.0f, height / 10.0f, -1, 1000)));
 
 
 	uint sprites = 0;
@@ -104,7 +108,7 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 1
+#define sp_size 2
 
 #if sp_size == 3
 	for (float x = -80; x < 80; x += 0.57f) {

@@ -6,8 +6,9 @@
 #define X808_BASESHADER_HPP
 
 
-#include <string>
 #include <cstring>
+#include <string>
+#include <unordered_map>
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/resources/shaderfile.hpp>
@@ -54,6 +55,7 @@ namespace xe {
 		const ShaderUniformBufferVec &getUniforms() const;
 		const ShaderSamplerVec &getSamplers() const;
 		const string &getName() const;
+		const std::unordered_map<string, string> &getSources() const;
 
 	private:
 		internal::PlatformBaseShader *shader;

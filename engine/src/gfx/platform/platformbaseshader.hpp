@@ -6,6 +6,7 @@
 #define X808_PLATFORMBASESHADER_HPP
 
 
+#include <unordered_map>
 #include <xe/xeint.hpp>
 #include <xe/gfx/shadersampler.hpp>
 #include <xe/gfx/shaderuniform.hpp>
@@ -21,9 +22,10 @@ namespace xe { namespace internal {
 
 		virtual void setUniformBuffer(byte *data, uint size, uint slot) = 0;
 
-		virtual const ShaderUniformBufferVec &getUniforms()  = 0;
+		virtual const ShaderUniformBufferVec &getUniforms() = 0;
 		virtual const ShaderSamplerVec &getSamplers() const = 0;
 		virtual const string &getName() const = 0;
+		virtual const std::unordered_map<string, string> &getSources() const = 0;
 	};
 
 }}

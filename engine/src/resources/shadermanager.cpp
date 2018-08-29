@@ -70,50 +70,9 @@ namespace xe {
 	void ShaderManager::createDefaultShaders() {
 		//2d renderer
 		shaders.emplace("dBatchRenderer", new BaseShader("dBatchRenderer", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["batchRenderer_vert"], { }),
-				ShaderFile::fromSource(ShaderType::Frag, sources["batchRenderer_frag"], { })
+				ShaderFile::fromSource(ShaderType::Vert, sources["batchRenderer_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["batchRenderer_frag"])
 		}));
-
-		//textures
-		shaders.emplace("dRenderTexture1D", new BaseShader("dRenderTexture1D", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"], { }),
-				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture1D_frag"], { })
-		}));
-
-		shaders.emplace("dRenderTexture2D", new BaseShader("dRenderTexture2D", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"], { }),
-				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2D_frag"], { })
-		}));
-
-		shaders.emplace("dRenderTexture2DArray", new BaseShader("dRenderTexture2DArray", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"], { }),
-				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2DArray_frag"], { })
-		}));
-
-		shaders.emplace("dRenderTexture3D", new BaseShader("dRenderTexture3D", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"], { }),
-				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture3D_frag"], { })
-		}));
-
-		shaders.emplace("dRenderTextureCube", new BaseShader("dRenderTextureCube", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["renderTextureCube_vert"],
-				                       {sources["1_cameraSpatials_ubo"]}),
-				ShaderFile::fromSource(ShaderType::Frag, sources["renderTextureCube_frag"], { })
-		}));
-
-		shaders.emplace("dRenderTextureCubeArray", new BaseShader("dRenderTextureCubeArray", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["renderTextureCube_vert"],
-				                       {sources["1_cameraSpatials_ubo"]}),
-				ShaderFile::fromSource(ShaderType::Frag, sources["renderTextureCubeArray_frag"], { })
-		}));
-
-		//fx final
-		shaders.emplace("dFinalFX", new BaseShader("dFinalFX", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"], { }),
-				ShaderFile::fromSource(ShaderType::Frag, sources["finalScene_frag"], {sources["fxaa_include"]})
-		}));
-
 	}
-
 
 }

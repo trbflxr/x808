@@ -20,11 +20,11 @@ namespace xe {
 	}
 
 	enum WindowStyle {
-		None = 0,      // no border / title bar
-		Titlebar = 1 << 0, // title bar, fixed border
-		Resize = 1 << 1, // title bar, resizable border, maximize button
-		Close = 1 << 2, // title bar, close button
-		Fullscreen = 1 << 3, // fullscreen mode
+		None = 0,            // no border / title bar
+		Titlebar = BIT(0),   // title bar, fixed border
+		Resize = BIT(1),     // title bar, resizable border, maximize button
+		Close = BIT(2),      // title bar, close button
+		Fullscreen = BIT(3), // fullscreen mode
 
 		Default = Titlebar | Resize | Close
 	};

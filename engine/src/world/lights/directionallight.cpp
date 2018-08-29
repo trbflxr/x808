@@ -6,13 +6,13 @@
 
 namespace xe {
 
-	DirectionalLight1::DirectionalLight1(const string &id, bool shadow, const vec3 &position,
-	                                     const std::array<float, CASCADES + 1> &cascadeSplits) :
-			Light(id, Type::Directional, vec3(1.0f), 1.0, 0.0, shadow, mat4(1.0f)) {
+	DirectionalLight::DirectionalLight(const string &id, bool shadow, const vec3 &position,
+	                                   const std::array<float, CASCADES + 1> &cascadeSplits) :
+			Light(id, Type::Directional, vec3(1.0f), 1.0, 0.0, shadow, mat4::identity(), nullptr) {
 
-		spatial.position = position;
+		transform.setPosition(position);
 
-		DirectionalLight1::cascadeSplits = cascadeSplits;
+		DirectionalLight::cascadeSplits = cascadeSplits;
 
 		float defaultFov = 90.0f;
 		float defaultAspect = 1.0f;
@@ -25,7 +25,7 @@ namespace xe {
 		}
 	}
 
-	void DirectionalLight1::updateCascades(const SpatialData &cameraSpatial, const vec3 &direction) {
+	void DirectionalLight::updateCascades(const Transform &cameraTransform, const vec3 &direction) {
 		std::array<mat4, CASCADES> tempView;
 		std::array<mat4, CASCADES> tempOrtho;
 
@@ -33,12 +33,12 @@ namespace xe {
 		float shadowTextureWidth = 840.0f;
 
 		for (uint cascade = 0; cascade < CASCADES; ++cascade) {
-			float near = cascadeSplits[cascade];
-			float far = cascadeSplits[cascade + 1];
+			const float near = cascadeSplits[cascade];
+			const float far = cascadeSplits[cascade + 1];
 
 			//create frustum
-			float frustumNear = -1.0f;
-			float frustumFar = 1.0f;
+			const float frustumNear = -1.0f;
+			const float frustumFar = 1.0f;
 
 			std::array<vec3, 8> frustumCorners;
 			//near
@@ -54,7 +54,7 @@ namespace xe {
 
 			for (auto &&c : frustumCorners) {
 				c = vec3::transformPerspective(c, mat4::invert(
-						cameraSpatial.getModelView() * cascadePerspective[cascade]));
+						cameraTransform.toMatrix() * cascadePerspective[cascade]));
 			}
 			//frustum corner and radius
 			vec3 frustumCenter(0.0f);

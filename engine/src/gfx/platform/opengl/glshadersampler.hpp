@@ -17,6 +17,7 @@ namespace xe { namespace internal {
 
 	public:
 		explicit GLShaderSampler(Type type, const string &name, uint count);
+		~GLShaderSampler() override = default;
 
 		inline const string &getName() const override { return name; }
 		inline uint getLocation() const override { return location; }

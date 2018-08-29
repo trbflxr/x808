@@ -16,25 +16,37 @@ namespace xe {
 	struct SpriteComponent : public ECSComponent<SpriteComponent> {
 		const Texture *texture;
 		uint color;
-		std::vector<vec2> UVs;
+		std::array<vec2, 4> UVs;
 		bool visible;
 
-		explicit SpriteComponent(const Texture *texture, uint color = color::WHITE, bool visible = true) noexcept :
+		explicit SpriteComponent(const Texture *texture,
+		                         uint color = color::WHITE,
+		                         bool flipUVs = false,
+		                         bool visible = true) noexcept :
 				texture(texture),
 				color(color),
 				visible(visible) {
 
-			UVs = getDefaultUVs();
+			UVs = flipUVs ? getFlippedUVs() : getDefaultUVs();
 		}
 
-		static const std::vector<vec2> &getDefaultUVs() {
-			static std::vector<vec2> UVs;
-			if (UVs.empty()) {
-				UVs.emplace_back(0, 1);
-				UVs.emplace_back(1, 1);
-				UVs.emplace_back(1, 0);
-				UVs.emplace_back(0, 0);
-			}
+		static inline const std::array<vec2, 4> &getDefaultUVs() {
+			static std::array<vec2, 4> UVs{
+					vec2(0, 1),
+					vec2(1, 1),
+					vec2(1, 0),
+					vec2(0, 0)
+			};
+			return UVs;
+		}
+
+		static inline const std::array<vec2, 4> &getFlippedUVs() {
+			static std::array<vec2, 4> UVs{
+					vec2(0, 0),
+					vec2(1, 0),
+					vec2(1, 1),
+					vec2(0, 1)
+			};
 			return UVs;
 		}
 	};

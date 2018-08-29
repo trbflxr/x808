@@ -22,20 +22,20 @@ namespace xe {
 
 		void load(const std::unordered_map<Attachment, Texture *> &attachments);
 
-		void bindDrawAttachment(Attachment attachment);
-		void bindDrawAttachments(Attachment *attachments, uint size);
-		void bindReadAttachment(Attachment attachment);
+		void bindDrawAttachment(Attachment attachment) const;
+		void bindDrawAttachments(Attachment *attachments, uint size) const;
+		void bindReadAttachment(Attachment attachment) const;
 
-		void bindDraw(Attachment attachment);
-		void bindDraw(Attachment *attachments, uint size);
-		void bindRead(Attachment attachment);
-		void unbind();
+		void bindDraw(Attachment attachment) const;
+		void bindDraw(Attachment *attachments, uint size) const;
+		void bindRead(Attachment attachment) const;
+		void unbind() const;
 
-		void bindTexture(Attachment attachment, Texture *texture);
+		void bindTexture(Attachment attachment, Texture *texture) const;
 
 		uint getHandle() const;
-		const string &getName();
-		Texture *getTexture(Attachment attachment);
+		const string &getName() const;
+		Texture *getTexture(Attachment attachment) const;
 
 	private:
 		internal::PlatformFrameBuffer *buffer;

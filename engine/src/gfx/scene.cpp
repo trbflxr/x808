@@ -6,6 +6,7 @@
 #include <xe/gfx/scene.hpp>
 #include <xe/loaders/sceneloader.hpp>
 #include <xe/gfx/scenerenderer.hpp>
+#include <xe/gfx/defaultuniforms.hpp>
 
 namespace xe {
 
@@ -30,29 +31,38 @@ namespace xe {
 		}
 	}
 
-	void Scene::update(const SpatialData &cameraSpatial, float delta) {
-		lightManager->update(-cameraSpatial.position, delta);
+	void Scene::update(const Transform &cameraTransform, float delta) {
+		lightManager->update(-cameraTransform.getPosition(), delta);
 	}
 
-	void Scene::render(BeginMode mode, Shader *shader) {
+	void Scene::render(BeginMode mode, Shader *shader, bool drawLightObjects, bool drawLightBounds) const {
+		static constexpr int32 enabled = 1;
+		static constexpr int32 disabled = 0;
+
+		shader->setUniform(uniform::cullTest, &enabled, sizeof(int32));
 		renderMeshes(mode, shader);
-		renderLightObjects(mode, shader);
+
+		//draw light objects
+		if (drawLightObjects) {
+			shader->setUniform(uniform::cullTest, &disabled, sizeof(int32));
+			renderLightObjects(mode, shader, drawLightBounds);
+		}
 	}
 
-	void Scene::renderMeshes(BeginMode mode, Shader *shader) {
-		SceneRenderer::drawMeshes(mode, meshes, shader, mat4(1.0f), 0.0f, 10);
+	void Scene::renderMeshes(BeginMode mode, Shader *shader) const {
+		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, true);
 	}
 
-	void Scene::renderMeshesWithMaterials(BeginMode mode, Shader *shader) {
-		SceneRenderer::drawMeshes(mode, meshes, shader, mat4(1.0f), 0.0f, 1);
+	void Scene::renderMeshesWithMaterials(BeginMode mode, Shader *shader) const {
+		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, true);
 	}
 
-	void Scene::renderMeshesBasic(BeginMode mode, Shader *shader) {
-		SceneRenderer::drawMeshes(mode, meshes, shader, mat4(1.0f), 0.0f, 0);
+	void Scene::renderMeshesBasic(BeginMode mode, Shader *shader) const {
+		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, false);
 	}
 
-	void Scene::renderLightObjects(BeginMode mode, Shader *shader) {
-		SceneRenderer::drawLights(mode, lightManager->getLights(), shader, mat4(1.0f), 0.0f, false);
+	void Scene::renderLightObjects(BeginMode mode, Shader *shader, bool drawLightBounds) const {
+		SceneRenderer::drawLights(mode, lightManager->getLights(), shader, mat4::identity(), 0.0f, drawLightBounds);
 	}
 
 }

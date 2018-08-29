@@ -23,6 +23,9 @@ namespace xe {
 
 		static void clean();
 
+		static const std::unordered_map<string, BaseShader *> &getShaders() { return instance().shaders; }
+		static const std::unordered_map<string, string> &getSources() { return instance().sources; }
+
 	private:
 		ShaderManager();
 

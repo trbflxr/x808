@@ -66,7 +66,10 @@ namespace xe {
 		DepthComponent16,
 		DepthComponent24,
 		DepthComponent32,
+		Depth32fStencil8,
+		DepthComponent32f,
 		R32f,
+		Rg16f,
 		Rgba32f,
 		Rgb32f,
 		Rgba16f,
@@ -98,6 +101,7 @@ namespace xe {
 	};
 
 	enum class Attachment {
+		None,
 		Color0,
 		Color1,
 		Color2,
@@ -115,7 +119,8 @@ namespace xe {
 		Color14,
 		Color15,
 		Depth,
-		Stencil
+		Stencil,
+		DepthStencil
 	};
 
 	enum RendererBufferType {
@@ -155,6 +160,7 @@ namespace xe {
 		TessControl,
 		Compute
 	};
+	const char* XE_API shaderTypeToString(ShaderType type);
 
 	enum class BeginMode {
 		Points,
@@ -198,6 +204,34 @@ namespace xe {
 	};
 
 	enum class MaterialFace {
+		Front,
+		Back,
+		FrontAndBack
+	};
+
+	enum class StencilFunction {
+		Never,
+		Less,
+		Equal,
+		Lequal,
+		Greater,
+		Notequal,
+		Gequal,
+		Always
+	};
+
+	enum class StencilOp {
+		Zero,
+		Invert,
+		Keep,
+		Replace,
+		Incr,
+		Decr,
+		IncrWrap,
+		DecrWrap
+	};
+
+	enum class StencilFace {
 		Front,
 		Back,
 		FrontAndBack

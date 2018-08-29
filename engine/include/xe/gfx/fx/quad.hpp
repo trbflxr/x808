@@ -28,10 +28,10 @@ namespace xe { namespace fx {
 		void renderFullQuadBlend() const;
 		void render3D(uint depth) const;
 
-		void renderTexture(Texture *texture, uint size, int32 pos, int32 layer = 0, int32 channel = -1);
+		void renderTexture(const Texture *texture, float size, int32 pos, int32 layer = 0, int32 channel = -1);
 
 	private:
-		void renderTexture(Shader* shader, Texture *texture, int32 data, const char *uniform, bool fullQuad);
+		void renderTexture(Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad);
 
 	private:
 		VertexArray *vao;

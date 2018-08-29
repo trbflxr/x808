@@ -76,6 +76,8 @@ namespace xe {
 	}
 
 	IndexedModel &IndexedModel::getConeModel() {
+		static const quat r = quat::rotation(90.0f, vec3::UnitX);
+
 		static IndexedModel model;
 		static bool initialized = false;
 		if (initialized) return model;
@@ -89,6 +91,7 @@ namespace xe {
 		model.normals.reserve(model.positions.size());
 		model.tangents.reserve(model.positions.size());
 		for (uint i = 0; i < model.positions.size(); ++i) {
+			model.positions[i] = model.positions[i].rotate(r);
 			model.normals.emplace_back(0.0f, 1.0f, 0.0f);
 			model.tangents.emplace_back(0.0f, 1.0f, 0.0f);
 			model.uvs.emplace_back(0.0f, 0.0f);
@@ -99,6 +102,8 @@ namespace xe {
 	}
 
 	IndexedModel &IndexedModel::getIcosphereModel() {
+		static const quat r = quat::rotation(90.0f, vec3::UnitX);
+
 		static IndexedModel model;
 		static bool initialized = false;
 		if (initialized) return model;
@@ -112,6 +117,7 @@ namespace xe {
 		model.normals.reserve(model.positions.size());
 		model.tangents.reserve(model.positions.size());
 		for (uint i = 0; i < model.positions.size(); ++i) {
+			model.positions[i] = model.positions[i].rotate(r);
 			model.normals.emplace_back(0.0f, 1.0f, 0.0f);
 			model.tangents.emplace_back(0.0f, 1.0f, 0.0f);
 			model.uvs.emplace_back(0.0f, 0.0f);

@@ -10,31 +10,35 @@
 
 namespace xe { namespace internal {
 
-	uint textureTargetToGL(TextureTarget target);
-	uint textureWrapToGL(TextureWrap wrap);
-	uint textureMinFilterToGL(TextureMinFilter filter);
-	uint textureMagFilterToGL(TextureMagFilter filter);
-	uint pixelTypeToGL(PixelType type);
-	uint pixelInternalFormatToGL(PixelInternalFormat type);
-	uint pixelFormatToGL(PixelFormat format);
-	uint textureAccessToGL(TextureAccess textureAccess);
-	uint attachmentToGL(Attachment attachment);
+	uint textureTargetToGL(TextureTarget target) noexcept;
+	uint textureWrapToGL(TextureWrap wrap) noexcept;
+	uint textureMinFilterToGL(TextureMinFilter filter) noexcept;
+	uint textureMagFilterToGL(TextureMagFilter filter) noexcept;
+	uint pixelTypeToGL(PixelType type) noexcept;
+	uint pixelInternalFormatToGL(PixelInternalFormat type) noexcept;
+	uint pixelFormatToGL(PixelFormat format) noexcept;
+	uint textureAccessToGL(TextureAccess textureAccess) noexcept;
+	uint attachmentToGL(Attachment attachment) noexcept;
 
-	uint rendererBufferToGL(uint buffer);
-	uint blendFunctionToGL(BlendFunction function);
-	uint blendEquationToGL(BlendEquation equation);
-	uint depthFunctionToGL(DepthFunction function);
-	uint cullFaceToGL(CullFace cullFace);
+	uint rendererBufferToGL(uint buffer) noexcept;
+	uint blendFunctionToGL(BlendFunction function) noexcept;
+	uint blendEquationToGL(BlendEquation equation) noexcept;
+	uint depthFunctionToGL(DepthFunction function) noexcept;
+	uint cullFaceToGL(CullFace cullFace) noexcept;
 
-	uint shaderTypeToGL(ShaderType type);
+	uint shaderTypeToGL(ShaderType type) noexcept;
 
-	uint beginModeToGL(BeginMode mode);
+	uint beginModeToGL(BeginMode mode) noexcept;
 
-	uint bufferUsageToGL(BufferUsage usage);
-	uint bufferStorageToGL(BufferStorage storage);
+	uint bufferUsageToGL(BufferUsage usage) noexcept;
+	uint bufferStorageToGL(BufferStorage storage) noexcept;
 
-	uint materialFaceToGL(MaterialFace face);
-	uint polygonModeToGL(PolygonMode mode);
+	uint materialFaceToGL(MaterialFace face) noexcept;
+	uint polygonModeToGL(PolygonMode mode) noexcept;
+
+	uint stencilOpToGL(StencilOp op) noexcept;
+	uint stencilFuncToGL(StencilFunction func) noexcept;
+	uint stencilFaceToGL(StencilFace face) noexcept;
 
 }}
 

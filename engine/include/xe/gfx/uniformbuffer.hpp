@@ -23,7 +23,7 @@ namespace xe {
 		virtual void bind();
 		virtual void unbind();
 
-		virtual void update(const void *data, uint index, uint layoutIndex);
+		virtual void update(const void *data, uint index, uint layoutIndex = 0);
 
 		uint getHandle() const;
 
