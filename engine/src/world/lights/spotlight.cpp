@@ -19,8 +19,6 @@ namespace xe {
 		const vec3 shifter(0.0f, 0.0f, -falloff);
 
 		boundsMatrix = mat4::translation(shifter) * mat4::scale(scaler);
-
-		perspective = mat4::perspective(to_deg(spotAngle * 2.0f), 1.0f, 0.01f, 100.0f);
 	}
 
 }

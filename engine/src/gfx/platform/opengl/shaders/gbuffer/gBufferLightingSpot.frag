@@ -3,9 +3,8 @@ layout(location = 1) out vec4 specular;
 
 in vec3 vViewRay0;
 
-uniform sampler2D sampler0;       // Normal & Depth
-uniform sampler2D sampler1;       // Specular
-uniform sampler2DArray sampler2;  // Shadow Depth
+uniform sampler2D sampler0;  // Normal & Depth
+uniform sampler2D sampler1;  // Specular
 
 uniform vec3 lightPosition;
 uniform vec3 lightDirection;
@@ -15,33 +14,26 @@ uniform float lightFalloff;
 uniform float lightSpotAngle;
 uniform float lightSpotBlur;
 
-uniform int shadowId;
-
 void main() {
   // Calculate Texture Coordinates
-  const vec2 resolution = textureSize(sampler0, 0);
-  const vec2 uv = gl_FragCoord.xy / resolution;
+  vec2 resolution = textureSize(sampler0, 0);
+  vec2 uv = gl_FragCoord.xy / resolution;
 
-  const vec4 normalDepth = texture(sampler0, uv);
-  const float depth = normalDepth.a;
+  vec4 normalDepth = texture(sampler0, uv);
+  float depth = normalDepth.a;
 
-  const vec3 worldPosition = calcWorldPosition(depth, vViewRay0, camPosition);
+  vec3 worldPosition = calcWorldPosition(depth, vViewRay0, camPosition);
 
-  const vec4 specularProperties = texture(sampler1, uv);
+  vec4 specularProperties = texture(sampler1, uv);
 
   vec3 L;
   vec4 tempDiffuse;
   vec4 tempSpecular;
 
-  float visibility = 1.0;
-  if (shadowId != -1) {
-    // todo: calc shadow
-  }
-
   calcLighting(uv, worldPosition, normalDepth.xyz, camPosition, lightPosition, lightColor, lightIntensity, lightFalloff,
                specularProperties, L, tempDiffuse, tempSpecular);
 
-  visibility *= calcSpotLightCone(L, lightDirection, lightSpotAngle, lightSpotBlur);
+  const float visibility = calcSpotLightCone(L, lightDirection, lightSpotAngle, lightSpotBlur);
 
   diffuse = tempDiffuse * visibility;
   specular = tempSpecular * visibility;

@@ -8,7 +8,7 @@
 namespace xe {
 
 	LightManager::LightManager() :
-			lightCount(0) { }
+			lightCount(0) {}
 
 	LightManager::~LightManager() {
 		for (auto &&light : lights) {
@@ -29,10 +29,5 @@ namespace xe {
 			addLight(light);
 		}
 	}
-
-	void LightManager::update(const vec3 &cameraPos, float delta) {
-		//todo: update shadow ubo's
-	}
-
 
 }

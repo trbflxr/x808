@@ -9,9 +9,9 @@ uniform mat4 model;
 
 void main() {
   // Position
-  const vec4 worldPosition = model * vec4(position, 1.0);
-  const vec4 viewPosition = view * worldPosition;
-  const vec4 clipPosition = perspective * viewPosition;
+  vec4 worldPosition = model * vec4(position, 1.0);
+  vec4 viewPosition = view * worldPosition;
+  vec4 clipPosition = perspective * viewPosition;
   gl_Position = clipPosition;
 
   vViewRay0 = worldPosition.xyz + camPosition;

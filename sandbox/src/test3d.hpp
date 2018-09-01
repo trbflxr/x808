@@ -12,6 +12,7 @@
 #include <xe/gfx/fx/gbuffer.hpp>
 #include <xe/gfx/fx/final.hpp>
 #include <xe/gfx/fx/quad.hpp>
+#include <xe/gfx/uniformbuffer.hpp>
 #include "debugui.hpp"
 #include "dummyplayercontrolsystem.hpp"
 
@@ -26,7 +27,6 @@ public:
 
 	void input(xe::Event &event) override;
 
-private:
 	void updateUBO(const xe::mat4 &view, const xe::mat4 &perspective, const xe::vec3 &pos, const xe::vec3 &look);
 
 private:

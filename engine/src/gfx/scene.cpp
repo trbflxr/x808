@@ -53,10 +53,6 @@ namespace xe {
 		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, true);
 	}
 
-	void Scene::renderMeshesWithMaterials(BeginMode mode, Shader *shader) const {
-		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, true);
-	}
-
 	void Scene::renderMeshesBasic(BeginMode mode, Shader *shader) const {
 		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, false);
 	}

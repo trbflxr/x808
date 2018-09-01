@@ -21,7 +21,6 @@ namespace xe {
 
 		void render(BeginMode mode, Shader *shader, bool drawLightObjects, bool drawLightBounds) const;
 		void renderMeshes(BeginMode mode, Shader *shader) const;
-		void renderMeshesWithMaterials(BeginMode mode, Shader *shader) const;
 		void renderMeshesBasic(BeginMode mode, Shader *shader) const;
 		void renderLightObjects(BeginMode mode, Shader *shader, bool drawLightBounds) const;
 

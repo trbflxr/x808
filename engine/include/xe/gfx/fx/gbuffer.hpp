@@ -13,6 +13,8 @@
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/scene.hpp>
+#include <xe/world/lights/spotlight.hpp>
+#include <xe/world/lights/pointlight.hpp>
 
 namespace xe { namespace fx {
 
@@ -25,11 +27,9 @@ namespace xe { namespace fx {
 		inline void enableLightObjects(bool enabled) { drawLightObjects = enabled; }
 		inline void enableLightBounds(bool enabled) { drawLightBounds = enabled; }
 
-		//todo: pass shadow
 		void passDeferredShading(const Scene *scene) const;
 
-		void passLightAccumulation(Quad *quad, const Texture *atmosphere,
-		                           const Texture *indirectTexture, const FrameBuffer *finalScene) const;
+		void passLightAccumulation(Quad *quad, const FrameBuffer *finalScene) const;
 
 		inline const Texture *getDepthStencilTexture() const { return depthStencilTexture; }
 		inline const Texture *getDiffuseTexture() const { return diffuseTexture; }
@@ -44,8 +44,8 @@ namespace xe { namespace fx {
 
 		void passGeometry(const Scene *scene) const;
 		void passStencil(const Light *light) const;
-		void passSpotLight(const SpotLight *light, const Texture *shadowDepthTexture) const;
-		void passPointLight(const PointLight *light, const Texture *shadowDepthTexture) const;
+		void passSpotLight(const SpotLight *light) const;
+		void passPointLight(const PointLight *light) const;
 
 	private:
 		bool drawWireframe;

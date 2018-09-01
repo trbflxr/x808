@@ -12,9 +12,9 @@ const vec2 data[6] = vec2[](
 );
 
 void main() {
-  const vec4 pos = vec4(data[gl_VertexID], 0, 1.0);
-  //todo: deal with inverse VP
-  const vec4 finalPosition = inverse(perspective * view) * pos;
+  vec4 pos = vec4(data[gl_VertexID], 0, 1.0);
+  // vec4 finalPosition = invViewPerspective * pos;
+  vec4 finalPosition = inverse(perspective * view) * pos;
   ray = finalPosition.xyz;
 
   gl_Position = pos;

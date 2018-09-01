@@ -17,12 +17,6 @@ namespace xe {
 			//world matrix
 			shader->setUniform(uniform::model, &model, sizeof(mat4));
 
-			//todo: check
-//			tempMat = mat4::invert(tempMat);
-//			tempMat = mat4::transpose(tempMat);
-
-//			shader->setUniform(uniform::modelNormal, &tempMat, sizeof(mat4));
-
 			//sampler slots
 			int32 dfs = -1;
 			int32 sps = -1;
@@ -69,15 +63,9 @@ namespace xe {
 			const mat4 model = light->transform.toMatrix();
 			shader->setUniform(uniform::model, &model, sizeof(mat4));
 
-			//todo: check
-//			tempMat = mat4::invert(tempMat);
-//			tempMat = mat4::transpose(tempMat);
-
-//			shader->setUniform(uniform::modelNormal, &tempMat, sizeof(mat4));
-
 			//values
 			shader->setUniform(uniform::diffuseColor, &light->color, sizeof(vec3));
-			shader->setUniform(uniform::emission, &light->objectEmission, sizeof(float));
+			shader->setUniform(uniform::emission, &disabled, sizeof(float));
 			shader->setUniform(uniform::specularColor, &vec3::Zero, sizeof(vec3));
 			shader->setUniform(uniform::specularShininess, &disabled, sizeof(float));
 			shader->setUniform(uniform::displacementStrength, &disabled, sizeof(float));

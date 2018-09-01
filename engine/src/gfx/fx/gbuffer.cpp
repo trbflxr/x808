@@ -93,9 +93,6 @@ namespace xe { namespace fx {
 		                                    ShaderManager::getSource("positionFromDepth_include"),
 		                                    ShaderManager::getSource("linearDepth_include")};
 
-		std::vector<string> spotLightingInclude;
-		spotLightingInclude.insert(spotLightingInclude.end(), lightingInclude.begin(), lightingInclude.end());
-
 
 		//shaders
 		BaseShader *geomBase = new BaseShader("dGeomShader", {
@@ -130,7 +127,7 @@ namespace xe { namespace fx {
 				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
 
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferLightingSpot_frag"),
-				                       {spotLightingInclude})
+				                       {lightingInclude})
 		});
 		ShaderManager::add(spotLightBase);
 		spotShader = new Shader(spotLightBase);
@@ -173,18 +170,17 @@ namespace xe { namespace fx {
 		Renderer::setBlendEquation(BlendEquation::Add);
 		Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
 
-		//todo: pass shadow textures instead nullptr
 		for (const auto &light : scene->getLights()) {
 			switch (light->getType()) {
 				case Light::Type::Spot: {
 					passStencil(light);
-					passSpotLight((SpotLight *) light, nullptr);
+					passSpotLight((SpotLight *) light);
 					break;
 				}
 
 				case Light::Type::Point: {
 					passStencil(light);
-					passPointLight((PointLight *) light, nullptr);
+					passPointLight((PointLight *) light);
 					break;
 				}
 
@@ -200,8 +196,7 @@ namespace xe { namespace fx {
 		gBuffer->unbind();
 	}
 
-	void GBuffer::passLightAccumulation(Quad *quad, const Texture *atmosphere,
-	                                    const Texture *indirectTexture, const FrameBuffer *finalScene) const {
+	void GBuffer::passLightAccumulation(Quad *quad, const FrameBuffer *finalScene) const {
 
 		finalScene->bindDraw(Attachment::Color0);
 
@@ -213,20 +208,14 @@ namespace xe { namespace fx {
 		const uint dSlot = accumulationShader->getSampler("sampler0");
 		const uint ldSlot = accumulationShader->getSampler("sampler1");
 		const uint slSlot = accumulationShader->getSampler("sampler2");
-//		const uint alSlot = accumulationShader->getSampler("sampler3");
-//		const uint ilSlot = accumulationShader->getSampler("sampler4");
 
 		diffuseTexture->bind(dSlot);
 		lightDiffuseTexture->bind(ldSlot);
 		lightSpecularTexture->bind(slSlot);
-//		atmosphere->bind(alSlot);
-//		indirectTexture->bind(ilSlot);
 
 		accumulationShader->updateUniforms();
 		quad->render();
 
-//		indirectTexture->unbind(ilSlot);
-//		atmosphere->unbind(alSlot);
 		lightSpecularTexture->unbind(slSlot);
 		lightDiffuseTexture->unbind(ldSlot);
 		diffuseTexture->unbind(dSlot);
@@ -278,7 +267,7 @@ namespace xe { namespace fx {
 		stencilShader->unbind();
 	}
 
-	void GBuffer::passSpotLight(const SpotLight *light, const Texture *shadowDepthTexture) const {
+	void GBuffer::passSpotLight(const SpotLight *light) const {
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -290,16 +279,12 @@ namespace xe { namespace fx {
 		Renderer::enableCullFace(true);
 		Renderer::setCullFace(CullFace::Front);
 
-		//todo: bind shadow texture
-
 		spotShader->bind();
 		const uint ndSlot = spotShader->getSampler("sampler0");
 		const uint sSlot = spotShader->getSampler("sampler1");
-//		const uint sdSlot = spotShader->getSampler("sampler2");
 
 		normalDepthTexture->bind(ndSlot);
 		specularTexture->bind(sSlot);
-//		shadowDepthTexture->bind(sdSlot);
 
 		const vec3 &pos = light->transform.getPosition();
 		const vec3 &look = light->transform.getRotation().getForward();
@@ -315,19 +300,15 @@ namespace xe { namespace fx {
 		spotShader->setUniform(uniform::lightSpotAngle, &light->spotAngle, sizeof(float));
 		spotShader->setUniform(uniform::lightSpotBlur, &light->spotBlur, sizeof(float));
 
-		const int32 id = light->getShadowId();
-		spotShader->setUniform("shadowId", &id, sizeof(int32));
-
 		SceneRenderer::drawLightBounds(light, spotShader);
 
-//		shadowDepthTexture->unbind(sdSlot);
 		specularTexture->unbind(sSlot);
 		normalDepthTexture->unbind(ndSlot);
 
 		spotShader->unbind();
 	}
 
-	void GBuffer::passPointLight(const PointLight *light, const Texture *shadowDepthTexture) const {
+	void GBuffer::passPointLight(const PointLight *light) const {
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -337,18 +318,14 @@ namespace xe { namespace fx {
 
 		Renderer::enableDepthTesting(false);
 		Renderer::enableCullFace(true);
-		Renderer::setCullFace(CullFace::Front);
-
-		//todo: bind shadow texture
+		Renderer::setCullFace(CullFace::Back);
 
 		pointShader->bind();
 		const uint ndSlot = pointShader->getSampler("sampler0");
 		const uint sSlot = pointShader->getSampler("sampler1");
-//		const uint sdSlot = pointShader->getSampler("sampler2");
 
 		normalDepthTexture->bind(ndSlot);
 		specularTexture->bind(sSlot);
-//		shadowDepthTexture->bind(sdSlot);
 
 		const vec3 &pos = light->transform.getPosition();
 
@@ -358,12 +335,8 @@ namespace xe { namespace fx {
 		pointShader->setUniform(uniform::lightIntensity, &light->intensity, sizeof(float));
 		pointShader->setUniform(uniform::lightFalloff, &light->falloff, sizeof(float));
 
-		const int32 id = light->getShadowId();
-		pointShader->setUniform("shadowId", &id, sizeof(int32));
-
 		SceneRenderer::drawLightBounds(light, pointShader);
 
-//		shadowDepthTexture->unbind(sdSlot);
 		specularTexture->unbind(sSlot);
 		normalDepthTexture->unbind(ndSlot);
 

@@ -74,7 +74,7 @@ void main() {
 
   // Specular Mapping
   vec3 specularColorFinal = specularColor;
-  float specularShininessFinal = max(0.05, 0.9 - (log2(specularShininess) / 9.0));
+  const float specularShininessFinal = max(0.05, 0.9 - (log2(specularShininess) / 9.0));
   if (enableSpecularTexture > 0) {
     specularColorFinal = texture(specularTexture, uv).xyz;
   }

@@ -7,10 +7,7 @@
 
 
 #include <xe/common.hpp>
-#include <xe/gfx/uniformbuffer.hpp>
-#include <xe/world/lights/spotlight.hpp>
-#include <xe/world/lights/pointlight.hpp>
-#include <xe/world/lights/directionallight.hpp>
+#include <xe/world/lights/light.hpp>
 
 namespace xe {
 
@@ -22,7 +19,7 @@ namespace xe {
 		void addLight(Light *light);
 		void addLights(std::vector<Light *> lights);
 
-		void update(const vec3 &cameraPos, float delta);
+		void update(const vec3 &cameraPos, float delta) { }
 
 		const std::vector<Light *> &getLights() const { return lights; }
 		std::vector<Light *> &getLights() { return lights; }

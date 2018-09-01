@@ -27,11 +27,11 @@ vec4 interpolate3DTriangle(const vec4 v0, const vec4 v1, const vec4 v2) {
 }
 
 vec2 interpolate2DQuad(const vec2 v0, const vec2 v1, const vec2 v2, const vec2 v3) {
-  const float u = gl_TessCoord.x;
-  const float v = gl_TessCoord.y;
+  float u = gl_TessCoord.x;
+  float v = gl_TessCoord.y;
 
-  const vec2 a = mix(v0, v1, u);
-  const vec2 b = mix(v2, v3, u);
+  vec2 a = mix(v0, v1, u);
+  vec2 b = mix(v2, v3, u);
   return mix(a, b, v);
 }
 

@@ -10,8 +10,8 @@ const vec2 data[3] = vec2[](
 );
 
 void main() {
-  const float x = -1.0 + float((gl_VertexID & 1) << 2);
-  const float y = -1.0 + float((gl_VertexID & 2) << 1);
+  float x = -1.0 + float((gl_VertexID & 1) << 2);
+  float y = -1.0 + float((gl_VertexID & 2) << 1);
 
   uv0.x = (x + 1.0) * 0.5;
   uv0.y = (y + 1.0) * 0.5;

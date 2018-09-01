@@ -22,8 +22,8 @@ namespace xe {
 				memcpy(&transform, &entity->transform, sizeof(Transform));
 			}
 
-			mat4 rotation = quat::conjugate(transform.getRotation()).toMatrix();
-			mat4 translation = mat4::translation(-transform.getPosition());
+			const mat4 rotation = quat::conjugate(transform.getRotation()).toMatrix();
+			const mat4 translation = mat4::translation(-transform.getPosition());
 			view = rotation * translation;
 
 			transform.setDirty(false);

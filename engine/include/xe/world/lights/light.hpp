@@ -29,7 +29,6 @@ namespace xe {
 
 		vec3 color;
 		float intensity;
-		float objectEmission;
 		float falloff;
 
 	public:
@@ -46,7 +45,6 @@ namespace xe {
 				falloff(falloff),
 				shadowed(shadow),
 				boundsMatrix(mat4::identity()),
-				objectEmission(intensity),
 				mesh(mesh) { }
 
 		virtual ~Light() {

@@ -77,7 +77,6 @@ Test3D::~Test3D() {
 void Test3D::render() {
 	ecs.updateSystems(renderingPipeline, 0.0f);
 
-
 	//test draw
 	scene->update(camera->transform, 0.0f);
 
@@ -97,7 +96,7 @@ void Test3D::render() {
 	gBuffer->passDeferredShading(scene);
 
 	Renderer::enableDepthTesting(true);
-	gBuffer->passLightAccumulation(quad, nullptr, nullptr, final->getFinalFBO());
+	gBuffer->passLightAccumulation(quad, final->getFinalFBO());
 
 	Renderer::enableCullFace(false);
 	final->render(quad);

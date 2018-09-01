@@ -53,6 +53,8 @@ vec2 calcParallaxMapping(sampler2D parallaxTexture, vec2 uv, mat3 TBN, vec3 came
     currentLayerDepth += layerDepth;
   }
 
+  // -- parallax occlusion mapping interpolation from here on
+  // get texture coordinates before collision (reverse operations)
   vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
 
   // get depth after and before collision for linear interpolation
