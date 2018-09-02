@@ -29,20 +29,21 @@ namespace xe {
 		gc_initialize(nullptr);
 	}
 
-	void SoundManager::add(Sound *sound, bool showWarn) {
+	bool SoundManager::add(Sound *sound) {
 		auto &&it = instance().sounds.find(sound->getName());
 
 		if (it != instance().sounds.end()) {
-			if (showWarn) {
-				XE_ERROR(sound->getName(), " already exist!");
-			}
-			return;
+			XE_ERROR("[SoundManager]: sound '", sound->getName(), "' already exist and be deleted");
+
+			delete sound;
+			return false;
 		}
 
 		instance().sounds.emplace(sound->getName(), sound);
+		return true;
 	}
 
-	Sound *SoundManager::get(const string &name) {
+	const Sound *SoundManager::get(const string &name) {
 		auto &&it = instance().sounds.find(name);
 		if (it == instance().sounds.end()) {
 			return nullptr;

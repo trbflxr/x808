@@ -89,7 +89,7 @@ namespace xe {
 		std::vector<mat4> transformationStack;
 		const mat4 *transformationBack;
 
-		BaseShader *shader;
+		const BaseShader *shader;
 		std::vector<Uniform> uniforms;
 		std::vector<UniformData> uniformData;
 

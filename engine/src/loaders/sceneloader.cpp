@@ -225,7 +225,7 @@ namespace xe {
 		}
 	}
 
-	Texture *SceneLoader::loadTexture(const char *folder, const char *file) {
+	const Texture *SceneLoader::loadTexture(const char *folder, const char *file) {
 		static TextureParameters params(TextureTarget::Tex2D,
 		                                PixelInternalFormat::Rgba,
 		                                PixelFormat::Rgba,
@@ -244,7 +244,9 @@ namespace xe {
 		string textureName = utils::getFileName(file, false);
 
 		Texture *texture = new Texture(textureName, path, params);
-		TextureManager::add(texture, false);
+		if (!TextureManager::add(texture)) {
+			return GETTEXTURE(textureName);
+		}
 
 		return texture;
 	}

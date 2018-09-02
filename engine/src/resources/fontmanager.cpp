@@ -2,6 +2,7 @@
 // Created by FLXR on 7/3/2018.
 //
 
+#include <new>
 #include <xe/resources/fontmanager.hpp>
 #include <xe/utils/log.hpp>
 #include <embedded/embedded.hpp>
@@ -21,15 +22,18 @@ namespace xe {
 		return fm;
 	}
 
-	void FontManager::add(Font *font) {
+	bool FontManager::add(Font *font) {
 		auto &&it = instance().fonts.find(font->getName());
 
 		if (it != instance().fonts.end()) {
-			XE_ERROR("[FontManager]: font '", font->getName(), "' already exist!");
-			return;
+			XE_ERROR("[FontManager]: font '", font->getName(), "' already exist and be deleted");
+
+			delete font;
+			return false;
 		}
 
 		instance().fonts.emplace(font->getName(), font);
+		return true;
 	}
 
 	const Font *FontManager::get(const string &name) {

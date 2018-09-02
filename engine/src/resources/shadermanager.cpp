@@ -27,21 +27,21 @@ namespace xe {
 		return sm;
 	}
 
-	void ShaderManager::add(BaseShader *shader) {
+	bool ShaderManager::add(BaseShader *shader) {
 		auto &&it = instance().shaders.find(shader->getName());
 
 		if (it != instance().shaders.end()) {
-			XE_ERROR(shader->getName(), " already exist!");
+			XE_ERROR("[ShaderManager]: shader '", shader->getName(), "' already exist and be deleted");
 
 			delete shader;
-			shader = it->second;
-			return;
+			return false;
 		}
 
 		instance().shaders.emplace(shader->getName(), shader);
+		return true;
 	}
 
-	BaseShader *ShaderManager::get(const string &name) {
+	const BaseShader *ShaderManager::get(const string &name) {
 		auto &&it = instance().shaders.find(name);
 		if (it == instance().shaders.end()) {
 			XE_FATAL("Shader '", name, "' not found!");

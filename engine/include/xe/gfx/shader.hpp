@@ -19,19 +19,19 @@ namespace xe {
 		virtual void bind() const;
 		virtual void unbind() const;
 
-		void updateUniforms();
+		void updateUniforms() const;
 
 		void setUniform(const string &name, const void *data, size_t size);
 
 		uint getSampler(const string &name);
 
-		inline BaseShader *getBaseShader() { return shader; }
+		inline const BaseShader *getBaseShader() const { return shader; }
 
 	private:
 		void init();
 
 	protected:
-		BaseShader *shader;
+		const BaseShader *shader;
 
 		std::vector<Uniform> uniforms;
 		std::vector<UniformData> uniformData;

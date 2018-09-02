@@ -3,9 +3,9 @@
 //
 
 #include <freetype-gl/freetype-gl.h>
-#include "xe/resources/font.hpp"
-#include "xe/utils/log.hpp"
-#include "embedded/embedded.hpp"
+#include <xe/resources/font.hpp>
+#include <xe/utils/log.hpp>
+#include <embedded/embedded.hpp>
 
 namespace xe {
 

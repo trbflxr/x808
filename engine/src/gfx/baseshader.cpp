@@ -36,7 +36,7 @@ namespace xe {
 		shader->unbind();
 	}
 
-	void BaseShader::setUniformBuffer(byte *data, uint size, uint slot) {
+	void BaseShader::setUniformBuffer(byte *data, uint size, uint slot) const {
 		shader->setUniformBuffer(data, size, slot);
 	}
 

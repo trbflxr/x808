@@ -19,7 +19,7 @@ namespace xe {
 	public:
 		~FontManager() override;
 
-		static void add(Font *font);
+		static bool add(Font *font);
 		static const Font *get(const string &name);
 
 		static void clean();
@@ -30,7 +30,7 @@ namespace xe {
 		static FontManager &instance();
 
 	private:
-		std::unordered_map<string, Font *> fonts;
+		std::unordered_map<string, const Font *> fonts;
 	};
 
 }

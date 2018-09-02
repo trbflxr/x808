@@ -35,26 +35,26 @@ namespace xe {
 		ga_sound_release(sound);
 	}
 
-	void Sound::play() {
+	void Sound::play() const {
 		playing = true;
 
 		gc_int32 quit = 0;
 		handle = gau_create_handle_sound(SoundManager::instance().mixer, sound, &destroyOnFinish, &quit, nullptr);
-		handle->sound = this;
+		handle->sound = (void *) this;
 		ga_handle_play(handle);
 		count++;
 	}
 
-	void Sound::loop() {
+	void Sound::loop() const {
 		playing = true;
 
 		gc_int32 quit = 0;
 		handle = gau_create_handle_sound(SoundManager::instance().mixer, sound, &loopOnFinish, &quit, nullptr);
-		handle->sound = this;
+		handle->sound = (void *) this;
 		ga_handle_play(handle);
 	}
 
-	void Sound::pause() {
+	void Sound::pause() const {
 		if (!playing) return;
 
 		playing = false;
@@ -62,21 +62,21 @@ namespace xe {
 
 	}
 
-	void Sound::resume() {
+	void Sound::resume() const {
 		if (playing) return;
 
 		playing = true;
 		ga_handle_play(handle);
 	}
 
-	void Sound::stop() {
+	void Sound::stop() const {
 		if (!playing) return;
 
 		ga_handle_stop(handle);
 		playing = false;
 	}
 
-	void Sound::setGain(float gain) {
+	void Sound::setGain(float gain) const {
 		if (!playing) {
 			XE_ERROR("[Sound] Cannot set gain! Sound is not currently playing!");
 			return;

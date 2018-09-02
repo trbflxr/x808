@@ -18,7 +18,7 @@ namespace xe {
 	public:
 		~TextureManager() override;
 
-		static void add(Texture *texture, bool showWarn = true);
+		static bool add(Texture *texture);
 		static const Texture *get(const string &name);
 
 		static void clean();
@@ -31,7 +31,7 @@ namespace xe {
 		static TextureManager &instance();
 
 	private:
-		std::unordered_map<string, Texture *> textures;
+		std::unordered_map<string, const Texture *> textures;
 	};
 
 }

@@ -46,7 +46,7 @@ namespace xe {
 		shader->unbind();
 	}
 
-	void Shader::updateUniforms() {
+	void Shader::updateUniforms() const {
 		for (uint i = 0; i < uniformData.size(); i++) {
 			shader->setUniformBuffer(uniformData[i].buffer, uniformData[i].size, i);
 		}

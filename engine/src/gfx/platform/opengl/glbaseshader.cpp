@@ -67,13 +67,13 @@ namespace xe { namespace internal {
 		glCall(glUseProgram(0));
 	}
 
-	void GLBaseShader::setUniformBuffer(byte *data, uint size, uint slot) {
+	void GLBaseShader::setUniformBuffer(byte *data, uint size, uint slot) const {
 		bind();
 		XE_ASSERT(uniformBuffers.size() > slot);
 		resolveAndSetUniforms(uniformBuffers[slot], data, size);
 	}
 
-	void GLBaseShader::resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) {
+	void GLBaseShader::resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) const {
 		switch (field.getType()) {
 			case GLShaderUniform::Type::Float32: setUniform1f(field.getLocation(), *(float *) &data[offset]);
 				break;
@@ -144,7 +144,7 @@ namespace xe { namespace internal {
 		unbind();
 	}
 
-	uint GLBaseShader::getUniformLocation(const string &name, bool runTime) {
+	uint GLBaseShader::getUniformLocation(const string &name, bool runTime) const {
 		glCall(GLint result = glGetUniformLocation(handle, name.c_str()));
 		if (result == -1) {
 			if (runTime) {
@@ -175,7 +175,7 @@ namespace xe { namespace internal {
 		return result;
 	}
 
-	void GLBaseShader::resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size) {
+	void GLBaseShader::resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size) const {
 		const ShaderUniformVec &uniforms = buffer->getUniforms();
 		for (auto &&uniform : uniforms) {
 			resolveAndSetUniform((GLShaderUniform *) uniform, data, size);
@@ -183,7 +183,7 @@ namespace xe { namespace internal {
 	}
 
 	void
-	GLBaseShader::resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size) {
+	GLBaseShader::resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size) const {
 		if (uniform->getLocation() == -1) return;
 
 		uint offset = uniform->getOffset();
@@ -211,7 +211,7 @@ namespace xe { namespace internal {
 	}
 
 	void
-	GLBaseShader::setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset) {
+	GLBaseShader::setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset) const {
 		const ShaderStruct &s = uniform->getShaderUniformStruct();
 		const auto &fields = s.getFields();
 
@@ -223,67 +223,67 @@ namespace xe { namespace internal {
 		}
 	}
 
-	void GLBaseShader::setUniform1f(const string &name, float value) {
+	void GLBaseShader::setUniform1f(const string &name, float value) const {
 		setUniform1f(getUniformLocation(name), value);
 	}
 
-	void GLBaseShader::setUniform1fv(const string &name, float *value, int32 count) {
+	void GLBaseShader::setUniform1fv(const string &name, float *value, int32 count) const {
 		setUniform1fv(getUniformLocation(name), value, count);
 	}
 
-	void GLBaseShader::setUniform1i(const string &name, int32 value) {
+	void GLBaseShader::setUniform1i(const string &name, int32 value) const {
 		setUniform1i(getUniformLocation(name), value);
 	}
 
-	void GLBaseShader::setUniform1iv(const string &name, int32 *value, int32 count) {
+	void GLBaseShader::setUniform1iv(const string &name, int32 *value, int32 count) const {
 		setUniform1iv(getUniformLocation(name), value, count);
 	}
 
-	void GLBaseShader::setUniform2f(const string &name, const vec2 &vector) {
+	void GLBaseShader::setUniform2f(const string &name, const vec2 &vector) const {
 		setUniform2f(getUniformLocation(name), vector);
 	}
 
-	void GLBaseShader::setUniform3f(const string &name, const vec3 &vector) {
+	void GLBaseShader::setUniform3f(const string &name, const vec3 &vector) const {
 		setUniform3f(getUniformLocation(name), vector);
 	}
 
-	void GLBaseShader::setUniform4f(const string &name, const vec4 &vector) {
+	void GLBaseShader::setUniform4f(const string &name, const vec4 &vector) const {
 		setUniform4f(getUniformLocation(name), vector);
 	}
 
-	void GLBaseShader::setUniformMat4(const string &name, const mat4 &matrix) {
+	void GLBaseShader::setUniformMat4(const string &name, const mat4 &matrix) const {
 		setUniformMat4(getUniformLocation(name), matrix);
 	}
 
-	void GLBaseShader::setUniform1f(uint location, float value) {
+	void GLBaseShader::setUniform1f(uint location, float value) const {
 		glCall(glUniform1f(location, value));
 	}
 
-	void GLBaseShader::setUniform1fv(uint location, float *value, int32 count) {
+	void GLBaseShader::setUniform1fv(uint location, float *value, int32 count) const {
 		glCall(glUniform1fv(location, count, value));
 	}
 
-	void GLBaseShader::setUniform1i(uint location, int32 value) {
+	void GLBaseShader::setUniform1i(uint location, int32 value) const {
 		glCall(glUniform1i(location, value));
 	}
 
-	void GLBaseShader::setUniform1iv(uint location, int32 *value, int32 count) {
+	void GLBaseShader::setUniform1iv(uint location, int32 *value, int32 count) const {
 		glCall(glUniform1iv(location, count, value));
 	}
 
-	void GLBaseShader::setUniform2f(uint location, const vec2 &vector) {
+	void GLBaseShader::setUniform2f(uint location, const vec2 &vector) const {
 		glCall(glUniform2f(location, vector.x, vector.y));
 	}
 
-	void GLBaseShader::setUniform3f(uint location, const vec3 &vector) {
+	void GLBaseShader::setUniform3f(uint location, const vec3 &vector) const {
 		glCall(glUniform3f(location, vector.x, vector.y, vector.z));
 	}
 
-	void GLBaseShader::setUniform4f(uint location, const vec4 &vector) {
+	void GLBaseShader::setUniform4f(uint location, const vec4 &vector) const {
 		glCall(glUniform4f(location, vector.x, vector.y, vector.z, vector.w));
 	}
 
-	void GLBaseShader::setUniformMat4(uint location, const mat4 &matrix) {
+	void GLBaseShader::setUniformMat4(uint location, const mat4 &matrix) const {
 		glCall(glUniformMatrix4fv(location, 1, GL_TRUE, matrix.elements));
 	}
 

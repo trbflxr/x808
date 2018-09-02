@@ -20,7 +20,7 @@ namespace xe { namespace internal {
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
 
-		virtual void setUniformBuffer(byte *data, uint size, uint slot) = 0;
+		virtual void setUniformBuffer(byte *data, uint size, uint slot) const = 0;
 
 		virtual const ShaderUniformBufferVec &getUniforms() = 0;
 		virtual const ShaderSamplerVec &getSamplers() const = 0;

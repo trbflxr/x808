@@ -17,7 +17,6 @@ namespace ftgl {
 	struct texture_atlas_t;
 }
 
-
 namespace xe {
 
 	class XE_API Font {

@@ -21,7 +21,7 @@ namespace xe { namespace internal {
 		void bind() const override;
 		void unbind() const override;
 
-		void setUniformBuffer(byte *data, uint size, uint slot) override;
+		void setUniformBuffer(byte *data, uint size, uint slot) const override;
 
 		inline const ShaderUniformBufferVec &getUniforms() override { return uniformBuffers; }
 		inline const ShaderSamplerVec &getSamplers() const override { return samplers; }
@@ -30,35 +30,35 @@ namespace xe { namespace internal {
 
 	private:
 		void resolveUniforms();
-		uint getUniformLocation(const string &name, bool runTime = true);
+		uint getUniformLocation(const string &name, bool runTime = true) const;
 
 		ShaderUniform *findUniform(const string &name, const ShaderUniformBuffer *buff);
 		ShaderUniform *findUniform(const string &name);
 
-		void resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size);
-		void resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size);
+		void resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size) const;
+		void resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size) const;
 
-		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset);
+		void resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) const;
 
-		void setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset);
+		void setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset) const;
 
-		void setUniform1f(const string &name, float value);
-		void setUniform1fv(const string &name, float *value, int32 count);
-		void setUniform1i(const string &name, int32 value);
-		void setUniform1iv(const string &name, int32 *value, int32 count);
-		void setUniform2f(const string &name, const vec2 &vector);
-		void setUniform3f(const string &name, const vec3 &vector);
-		void setUniform4f(const string &name, const vec4 &vector);
-		void setUniformMat4(const string &name, const mat4 &matrix);
+		void setUniform1f(const string &name, float value) const;
+		void setUniform1fv(const string &name, float *value, int32 count) const;
+		void setUniform1i(const string &name, int32 value) const;
+		void setUniform1iv(const string &name, int32 *value, int32 count) const;
+		void setUniform2f(const string &name, const vec2 &vector) const;
+		void setUniform3f(const string &name, const vec3 &vector) const;
+		void setUniform4f(const string &name, const vec4 &vector) const;
+		void setUniformMat4(const string &name, const mat4 &matrix) const;
 
-		void setUniform1f(uint location, float value);
-		void setUniform1fv(uint location, float *value, int32 count);
-		void setUniform1i(uint location, int32 value);
-		void setUniform1iv(uint location, int32 *value, int32 count);
-		void setUniform2f(uint location, const vec2 &vector);
-		void setUniform3f(uint location, const vec3 &vector);
-		void setUniform4f(uint location, const vec4 &vector);
-		void setUniformMat4(uint location, const mat4 &matrix);
+		void setUniform1f(uint location, float value) const;
+		void setUniform1fv(uint location, float *value, int32 count) const;
+		void setUniform1i(uint location, int32 value) const;
+		void setUniform1iv(uint location, int32 *value, int32 count) const;
+		void setUniform2f(uint location, const vec2 &vector) const;
+		void setUniform3f(uint location, const vec3 &vector) const;
+		void setUniform4f(uint location, const vec4 &vector) const;
+		void setUniformMat4(uint location, const mat4 &matrix) const;
 
 	private:
 		string name;

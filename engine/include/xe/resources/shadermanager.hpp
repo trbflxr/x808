@@ -17,13 +17,13 @@ namespace xe {
 	public:
 		~ShaderManager() override;
 
-		static void add(BaseShader *shader);
-		static BaseShader *get(const string &name);
+		static bool add(BaseShader *shader);
+		static const BaseShader *get(const string &name);
 		static const string &getSource(const string &name);
 
 		static void clean();
 
-		static const std::unordered_map<string, BaseShader *> &getShaders() { return instance().shaders; }
+		static const std::unordered_map<string, const BaseShader *> &getShaders() { return instance().shaders; }
 		static const std::unordered_map<string, string> &getSources() { return instance().sources; }
 
 	private:
@@ -34,7 +34,7 @@ namespace xe {
 		static ShaderManager &instance();
 
 	private:
-		std::unordered_map<string, BaseShader *> shaders;
+		std::unordered_map<string, const BaseShader *> shaders;
 		std::unordered_map<string, string> sources;
 	};
 

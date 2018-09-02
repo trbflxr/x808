@@ -119,21 +119,25 @@ void DebugUI::input(Event &event) {
 			static bool visible = false;
 			visible = !visible;
 			sp0->visible = visible;
+			event.handled = true;
 		}
 		if (event.key.code == Keyboard::Num2) {
 			static bool visible = false;
 			visible = !visible;
 			sp1->visible = visible;
+			event.handled = true;
 		}
 		if (event.key.code == Keyboard::Num3) {
 			static bool visible = false;
 			visible = !visible;
 			sp2->visible = visible;
+			event.handled = true;
 		}
 		if (event.key.code == Keyboard::Num4) {
 			static bool visible = false;
 			visible = !visible;
 			sp3->visible = visible;
+			event.handled = true;
 		}
 	}
 }

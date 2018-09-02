@@ -15,11 +15,11 @@ public:
 			t3d(nullptr) {
 
 		ui = new DebugUI();
-//		t2d = new Test2D();
-		t3d = new Test3D(ui);
+		t2d = new Test2D();
+//		t3d = new Test3D(ui);
 
-//		pushLayer(t2d);
-		pushLayer(t3d);
+		pushLayer(t2d);
+//		pushLayer(t3d);
 		pushLayer(ui);
 	}
 

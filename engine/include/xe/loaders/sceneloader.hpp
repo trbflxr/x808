@@ -35,7 +35,7 @@ namespace xe {
 
 		static void loadLights(const char *path, const aiScene *scene, std::vector<Light *> &lights);
 
-		static Texture *loadTexture(const char *folder, const char *file);
+		static const Texture *loadTexture(const char *folder, const char *file);
 	};
 
 }

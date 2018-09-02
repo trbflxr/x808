@@ -50,7 +50,7 @@ namespace xe {
 		void bind() const;
 		void unbind() const;
 
-		void setUniformBuffer(byte *data, uint size, uint slot);
+		void setUniformBuffer(byte *data, uint size, uint slot) const;
 
 		const ShaderUniformBufferVec &getUniforms() const;
 		const ShaderSamplerVec &getSamplers() const;

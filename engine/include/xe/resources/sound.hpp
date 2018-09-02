@@ -24,13 +24,13 @@ namespace xe {
 		explicit Sound(const string &name, const string &path);
 		~Sound();
 
-		void play();
-		void loop();
-		void pause();
-		void resume();
-		void stop();
+		void play() const;
+		void loop() const;
+		void pause() const;
+		void resume() const;
+		void stop() const;
 
-		void setGain(float gain);
+		void setGain(float gain) const;
 
 		inline const string &getName() const { return name; }
 		inline const string &getPath() const { return path; }
@@ -40,14 +40,14 @@ namespace xe {
 	private:
 		string name;
 		string path;
-		uint count;
-
-		ga_Sound *sound;
-		ga_Handle *handle;
 		int32 position;
 
-		bool playing;
-		float gain;
+		ga_Sound *sound;
+
+		mutable ga_Handle *handle;
+		mutable uint count;
+		mutable bool playing;
+		mutable float gain;
 	};
 
 

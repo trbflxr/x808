@@ -25,8 +25,8 @@ namespace xe {
 
 		static void init();
 
-		static void add(Sound *sound, bool showWarn = true);
-		static Sound *get(const string &name);
+		static bool add(Sound *sound);
+		static const Sound *get(const string &name);
 
 		static void update();
 		static void clean();
@@ -37,7 +37,7 @@ namespace xe {
 		static SoundManager &instance();
 
 	private:
-		std::unordered_map<string, Sound *> sounds;
+		std::unordered_map<string, const Sound *> sounds;
 
 		gau_Manager *manager;
 		ga_Mixer *mixer;

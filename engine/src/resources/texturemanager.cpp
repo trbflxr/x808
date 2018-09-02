@@ -21,17 +21,19 @@ namespace xe {
 		return tm;
 	}
 
-	void TextureManager::add(Texture *texture, bool showWarn) {
+	bool TextureManager::add(Texture *texture) {
 		auto &&it = instance().textures.find(texture->getName());
 
 		if (it != instance().textures.end()) {
-			if (showWarn) {
-				XE_ERROR(texture->getName(), " already exist!");
-			}
-			return;
+			XE_ERROR("[TextureManager]: texture '", texture->getName(), "' already exist and be deleted");
+
+			delete texture;
+			return false;
 		}
 
 		instance().textures.emplace(texture->getName(), texture);
+
+		return true;
 	}
 
 	const Texture *TextureManager::get(const string &name) {
