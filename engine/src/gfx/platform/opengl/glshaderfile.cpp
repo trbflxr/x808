@@ -164,7 +164,7 @@ namespace xe { namespace internal {
 		if (GLShaderSampler::isTypeStrSampler(typeStr)) {
 			auto *decl = new GLShaderSampler(GLShaderSampler::stringToType(typeStr), name, count);
 			samplers.push_back(decl);
-		} else if (name != "{") {
+		} else if (name != "{" && name != "{\n" && name != "{\r") {
 			GLShaderUniform::Type t = GLShaderUniform::stringToType(typeStr);
 			GLShaderUniform *uniform = nullptr;
 
