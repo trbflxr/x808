@@ -8,7 +8,7 @@
 
 #include <xe/gameobject.hpp>
 #include <xe/math/transform.hpp>
-#include <xe/world/model/uniquemesh.hpp>
+#include <xe/gfx/uniquemesh.hpp>
 
 namespace xe {
 

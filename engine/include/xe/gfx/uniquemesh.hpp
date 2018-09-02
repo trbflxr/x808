@@ -7,7 +7,7 @@
 
 
 #include <xe/gameobject.hpp>
-#include <xe/world/model/mesh.hpp>
+#include <xe/gfx/mesh.hpp>
 
 namespace xe {
 

@@ -2,7 +2,7 @@
 // Created by FLXR on 8/13/2018.
 //
 
-#include <xe/world/model/mesh.hpp>
+#include <xe/gfx/mesh.hpp>
 #include <xe/gfx/renderer.hpp>
 
 namespace xe {

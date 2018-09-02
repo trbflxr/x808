@@ -6,7 +6,7 @@
 #define X808_POINTLIGHT1_HPP
 
 
-#include <xe/world/lights/light.hpp>
+#include <xe/gfx/lights/light.hpp>
 
 namespace xe {
 

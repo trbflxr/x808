@@ -14,6 +14,7 @@
 #include <xe/gfx/fx/hdr.hpp>
 #include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/uniformbuffer.hpp>
+#include <xe/gfx/deferredrenderer.hpp>
 #include "debugui.hpp"
 #include "dummyplayercontrolsystem.hpp"
 
@@ -28,14 +29,7 @@ public:
 
 	void input(xe::Event &event) override;
 
-	void updateUBO(const xe::mat4 &view, const xe::mat4 &perspective, const xe::vec3 &pos, const xe::vec3 &look);
-
 private:
-	xe::fx::GBuffer *gBuffer;
-	xe::fx::Quad *quad;
-	xe::fx::Final *final;
-	xe::fx::HDR *hdr;
-
 	DebugUI *ui;
 
 	xe::ECS ecs;
@@ -44,12 +38,12 @@ private:
 
 	xe::Camera *camera;
 
-	xe::UniformBuffer *cameraUBO;
-
 	DummyPlayerControlSystem *playerControlSystem;
 	xe::EntityHandle playerEntity;
 
 	xe::Scene *scene;
+
+	xe::DeferredRenderer *renderer;
 
 	bool light = false;
 };

@@ -6,8 +6,8 @@
 #define X808_SCENE_HPP
 
 
-#include <xe/world/lights/lightmanager.hpp>
-#include <xe/world/model/mesh.hpp>
+#include <xe/gfx/lights/lightmanager.hpp>
+#include <xe/gfx/mesh.hpp>
 #include <xe/gfx/shader.hpp>
 
 namespace xe {

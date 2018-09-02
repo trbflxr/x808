@@ -10,8 +10,8 @@
 #include <xe/utils/string.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/loaders/sceneloader.hpp>
-#include <xe/world/lights/spotlight.hpp>
-#include <xe/world/lights/pointlight.hpp>
+#include <xe/gfx/lights/spotlight.hpp>
+#include <xe/gfx/lights/pointlight.hpp>
 
 namespace xe {
 

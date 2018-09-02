@@ -8,8 +8,8 @@
 
 #include <xe/common.hpp>
 #include <xe/gfx/shader.hpp>
-#include <xe/world/model/uniquemesh.hpp>
-#include <xe/world/lights/light.hpp>
+#include <xe/gfx/uniquemesh.hpp>
+#include <xe/gfx/lights/light.hpp>
 
 namespace xe {
 

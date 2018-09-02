@@ -47,7 +47,7 @@ namespace xe { namespace fx {
 		delete finalTexture;
 	}
 
-	void Final::useFXAA(bool enabled) {
+	void Final::useFXAA(bool enabled) const {
 		useFXAA_ = enabled;
 		int32 use = useFXAA_ ? 1 : 0;
 

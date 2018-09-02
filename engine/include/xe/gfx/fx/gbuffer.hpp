@@ -13,8 +13,8 @@
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/scene.hpp>
-#include <xe/world/lights/spotlight.hpp>
-#include <xe/world/lights/pointlight.hpp>
+#include <xe/gfx/lights/spotlight.hpp>
+#include <xe/gfx/lights/pointlight.hpp>
 
 namespace xe { namespace fx {
 
@@ -23,9 +23,9 @@ namespace xe { namespace fx {
 		explicit GBuffer(uint width, uint height);
 		~GBuffer() override;
 
-		inline void enableWireframe(bool enabled) { drawWireframe = enabled; }
-		inline void enableLightObjects(bool enabled) { drawLightObjects = enabled; }
-		inline void enableLightBounds(bool enabled) { drawLightBounds = enabled; }
+		inline void enableWireframe(bool enabled) const { drawWireframe = enabled; }
+		inline void enableLightObjects(bool enabled) const { drawLightObjects = enabled; }
+		inline void enableLightBounds(bool enabled) const { drawLightBounds = enabled; }
 
 		void passDeferredShading(const Scene *scene) const;
 
@@ -48,9 +48,9 @@ namespace xe { namespace fx {
 		void passPointLight(const PointLight *light) const;
 
 	private:
-		bool drawWireframe;
-		bool drawLightObjects;
-		bool drawLightBounds;
+		mutable bool drawWireframe;
+		mutable bool drawLightObjects;
+		mutable bool drawLightBounds;
 
 		FrameBuffer *gBuffer;
 

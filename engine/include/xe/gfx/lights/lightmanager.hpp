@@ -7,7 +7,7 @@
 
 
 #include <xe/common.hpp>
-#include <xe/world/lights/light.hpp>
+#include <xe/gfx/lights/light.hpp>
 
 namespace xe {
 

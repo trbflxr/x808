@@ -14,7 +14,7 @@
 #include <xe/gfx/indexbuffer.hpp>
 #include <xe/gfx/vertexbuffer.hpp>
 #include <xe/gfx/vertexarray.hpp>
-#include <xe/world/model/material.hpp>
+#include <xe/gfx/material.hpp>
 
 namespace xe {
 

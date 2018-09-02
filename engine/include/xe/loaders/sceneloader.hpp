@@ -12,8 +12,8 @@
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/utils/noncopyable.hpp>
-#include <xe/world/model/uniquemesh.hpp>
-#include <xe/world/lights/light.hpp>
+#include <xe/gfx/uniquemesh.hpp>
+#include <xe/gfx/lights/light.hpp>
 
 struct aiScene;
 struct aiNode;

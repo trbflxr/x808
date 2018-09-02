@@ -56,6 +56,7 @@ file(GLOB ENGINE_SRC
         src/gfx/camera/*.cpp
         src/gfx/fx/*.cpp
         src/gfx/layers/*.cpp
+        src/gfx/lights/*.cpp
         src/gfx/*.cpp
         src/loaders/*.cpp
         src/math/*.cpp
@@ -63,9 +64,6 @@ file(GLOB ENGINE_SRC
         src/resources/*.cpp
         src/utils/*.cpp
         src/window/*.cpp
-        src/world/*.cpp
-        src/world/lights/*.cpp
-        src/world/model/*.cpp
         src/*.cpp)
 
 

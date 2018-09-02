@@ -5,7 +5,7 @@
 #ifndef X808_DIRECTIONALLIGHT_HPP
 #define X808_DIRECTIONALLIGHT_HPP
 
-#include <xe/world/lights/light.hpp>
+#include <xe/gfx/lights/light.hpp>
 
 namespace xe {
 

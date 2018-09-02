@@ -19,7 +19,7 @@ namespace xe { namespace fx {
 		explicit Final(uint width, uint height, bool useFXAA = true);
 		~Final() override;
 
-		void useFXAA(bool enabled);
+		void useFXAA(bool enabled) const;
 
 		void render(Quad *quad) const;
 
@@ -33,7 +33,7 @@ namespace xe { namespace fx {
 		FrameBuffer *finalFBO;
 		Texture *finalTexture;
 
-		bool useFXAA_;
+		mutable bool useFXAA_;
 	};
 
 }}

@@ -3,7 +3,7 @@
 //
 
 #include <xe/gfx/uniformbuffer.hpp>
-#include <xe/world/lights/lightmanager.hpp>
+#include <xe/gfx/lights/lightmanager.hpp>
 
 namespace xe {
 

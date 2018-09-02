@@ -2,7 +2,7 @@
 // Created by FLXR on 8/13/2018.
 //
 
-#include <xe/world/lights/spotlight.hpp>
+#include <xe/gfx/lights/spotlight.hpp>
 
 namespace xe {
 
