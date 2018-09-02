@@ -36,6 +36,8 @@ namespace xe { namespace internal {
 			case Type::Vec3: return 4 * 3;
 			case Type::Vec4: return 4 * 4;
 			case Type::Mat4: return 4 * 4 * 4;
+			case Type::Image2D: return 4;
+			case Type::Image3D: return 4;
 			default: return 0;
 		}
 	}
@@ -47,6 +49,8 @@ namespace xe { namespace internal {
 		if (type == "vec3") return Type::Vec3;
 		if (type == "vec4") return Type::Vec4;
 		if (type == "mat4") return Type::Mat4;
+		if (type == "image2D") return Type::Image2D;
+		if (type == "image3D") return Type::Image3D;
 
 		return Type::None;
 	}
@@ -59,6 +63,8 @@ namespace xe { namespace internal {
 			case Type::Vec3: return "vec3";
 			case Type::Vec4: return "vec4";
 			case Type::Mat4: return "mat4";
+			case Type::Image2D: return "image2D";
+			case Type::Image3D: return "image3D";
 			default: return "invalid";
 		}
 	}

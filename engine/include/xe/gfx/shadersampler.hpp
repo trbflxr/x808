@@ -15,7 +15,7 @@ namespace xe {
 	class ShaderSampler {
 	public:
 		enum class Type {
-			None, Image2D, Image3D, Sampler1D, Sampler2D, Sampler2DArray, Sampler3D, SamplerCube, SamplerCubeArray
+			None, Sampler1D, Sampler2D, Sampler2DArray, Sampler3D, SamplerCube, SamplerCubeArray
 		};
 
 	public:

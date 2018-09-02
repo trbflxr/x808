@@ -32,6 +32,9 @@ namespace xe {
 		static void enableDepthClamp(bool enabled) { instance->enableDepthClampInternal(enabled); }
 		static void enableStencilTest(bool enabled) { instance->enableStencilTestInternal(enabled); }
 
+		static void dispatchCompute(uint numX, uint numY, uint numZ) {
+			instance->dispatchComputeInternal(numX, numY, numZ);
+		}
 
 		static void setViewport(uint x, uint y, uint width, uint height) {
 			instance->setViewportInternal(x, y, width, height);
@@ -65,6 +68,10 @@ namespace xe {
 			instance->setStencilOpSeparateInternal(face, sFail, dpFail, dpPass);
 		}
 
+		static void setMemoryBarrier(MemoryBarrier barrier) {
+			instance->setMemoryBarrierInternal(barrier);
+		}
+
 		static uint getDC() { return dc; }
 		static void resetDC() { dc = 0; }
 		static void incDC() { ++dc; }
@@ -88,6 +95,8 @@ namespace xe {
 		virtual void enableDepthClampInternal(bool enabled) = 0;
 		virtual void enableStencilTestInternal(bool enabled) = 0;
 
+		virtual void dispatchComputeInternal(uint numX, uint numY, uint numZ) = 0;
+
 		virtual void setViewportInternal(uint x, uint y, uint width, uint height) = 0;
 
 		virtual void setBlendFunctionInternal(BlendFunction source, BlendFunction destination) = 0;
@@ -97,6 +106,7 @@ namespace xe {
 		virtual void setPolygonModeInternal(MaterialFace face, PolygonMode mode) = 0;
 		virtual void setStencilFuncInternal(StencilFunction func, uint ref, uint mask) = 0;
 		virtual void setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) = 0;
+		virtual void setMemoryBarrierInternal(MemoryBarrier barrier) = 0;
 
 	private:
 		static Renderer *instance;

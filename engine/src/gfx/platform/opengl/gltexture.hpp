@@ -22,12 +22,14 @@ namespace xe { namespace internal {
 		~GLTexture() override;
 
 		void bind(uint slot) const override;
-		void bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const override;
+		void bindImageUnit(uint index, TextureAccess access, uint level, uint layer) const override;
 		void unbind(uint slot) const override;
 
 		void setData2D(const void *pixels) override;
 
 		void generateMipMaps(const TextureTarget &target) override;
+
+		void copyTo(const Texture *texture) const override;
 
 		inline uint getHandle() const override { return handle; }
 		inline const string &getName() const override { return name; }

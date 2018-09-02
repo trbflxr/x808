@@ -5,7 +5,7 @@
 #ifndef X808_PLATFORMUNIFORMBUFFER_HPP
 #define X808_PLATFORMUNIFORMBUFFER_HPP
 
-#include <xe/gfx/bufferlayout.hpp>
+#include <xe/xeint.hpp>
 #include <xe/gfx/enums.hpp>
 
 namespace xe { namespace internal {

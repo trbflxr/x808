@@ -31,6 +31,8 @@ namespace xe { namespace internal {
 		void enableDepthClampInternal(bool enabled) override;
 		void enableStencilTestInternal(bool enabled) override;
 
+		void dispatchComputeInternal(uint numX, uint numY, uint numZ) override;
+
 		void setViewportInternal(uint x, uint y, uint width, uint height) override;
 
 		void setBlendFunctionInternal(BlendFunction source, BlendFunction destination) override;
@@ -40,6 +42,7 @@ namespace xe { namespace internal {
 		void setPolygonModeInternal(MaterialFace face, PolygonMode mode) override;
 		void setStencilFuncInternal(StencilFunction func, uint ref, uint mask) override;
 		void setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) override;
+		void setMemoryBarrierInternal(MemoryBarrier barrier) override;
 
 	private:
 		GLContext *context;

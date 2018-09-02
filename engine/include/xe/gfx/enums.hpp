@@ -69,6 +69,7 @@ namespace xe {
 		Depth32fStencil8,
 		DepthComponent32f,
 		R32f,
+		R16f,
 		Rg16f,
 		Rgba32f,
 		Rgb32f,
@@ -91,6 +92,7 @@ namespace xe {
 		Bgr,
 		Bgra,
 		Rg,
+		Red,
 		DepthStencil
 	};
 
@@ -160,7 +162,7 @@ namespace xe {
 		TessControl,
 		Compute
 	};
-	const char* XE_API shaderTypeToString(ShaderType type);
+	const char *XE_API shaderTypeToString(ShaderType type);
 
 	enum class BeginMode {
 		Points,
@@ -235,6 +237,12 @@ namespace xe {
 		Front,
 		Back,
 		FrontAndBack
+	};
+
+	enum class MemoryBarrier {
+		ShaderImageAccess,
+		ShaderStorage,
+		All
 	};
 }
 

@@ -7,6 +7,7 @@
 
 
 #include <gfx/platform/platformuniformbuffer.hpp>
+#include <xe/gfx/bufferlayout.hpp>
 
 namespace xe { namespace internal {
 

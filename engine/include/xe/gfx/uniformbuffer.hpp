@@ -20,10 +20,10 @@ namespace xe {
 		explicit UniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size = 1);
 		~UniformBuffer();
 
-		virtual void bind();
-		virtual void unbind();
+		void bind();
+		void unbind();
 
-		virtual void update(const void *data, uint index, uint layoutIndex = 0);
+		void update(const void *data, uint index, uint layoutIndex = 0);
 
 		uint getHandle() const;
 

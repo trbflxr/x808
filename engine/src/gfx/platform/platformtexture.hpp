@@ -17,12 +17,14 @@ namespace xe { namespace internal {
 		virtual ~PlatformTexture() = default;
 
 		virtual void bind(uint slot) const = 0;
-		virtual void bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const = 0;
+		virtual void bindImageUnit(uint index, TextureAccess access, uint level, uint layer) const = 0;
 		virtual void unbind(uint slot) const = 0;
 
 		virtual void setData2D(const void *pixels) = 0;
 
 		virtual void generateMipMaps(const TextureTarget &target) = 0;
+
+		virtual void copyTo(const Texture *texture) const = 0;
 
 		virtual uint getHandle() const = 0;
 		virtual const string &getName() const = 0;

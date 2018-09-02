@@ -48,7 +48,7 @@ namespace xe { namespace internal {
 		glCall(glBindTexture(target, handle));
 	}
 
-	void GLTexture::bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const {
+	void GLTexture::bindImageUnit(uint index, TextureAccess access, uint level, uint layer) const {
 		byte layered;
 		switch (params.target) {
 			case TextureTarget::Tex3D:
@@ -63,7 +63,7 @@ namespace xe { namespace internal {
 
 		uint pif = pixelInternalFormatToGL(params.internalFormat);
 
-		glCall(glActiveTexture(GL_TEXTURE0 + slot));
+		glCall(glActiveTexture(GL_TEXTURE0 + index));
 		glCall(glBindImageTexture(index, handle, level, layered, layer, textureAccessToGL(access), pif));
 	}
 
@@ -87,6 +87,12 @@ namespace xe { namespace internal {
 
 	void GLTexture::generateMipMaps(const TextureTarget &target) {
 		glCall(glGenerateMipmap(textureTargetToGL(target)));
+	}
+
+	void GLTexture::copyTo(const Texture *texture) const {
+		glCall(glCopyImageSubData(handle, textureTargetToGL(params.target), 0, 0, 0, 0,
+		                          texture->getHandle(), textureTargetToGL(texture->getTarget()), 0, 0, 0, 0,
+		                          width, height, 1));
 	}
 
 	uint GLTexture::loadInternal(const TextureLoadOptions *options) {

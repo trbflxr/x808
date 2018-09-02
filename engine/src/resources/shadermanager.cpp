@@ -32,6 +32,9 @@ namespace xe {
 
 		if (it != instance().shaders.end()) {
 			XE_ERROR(shader->getName(), " already exist!");
+
+			delete shader;
+			shader = it->second;
 			return;
 		}
 

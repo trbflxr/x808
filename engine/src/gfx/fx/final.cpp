@@ -18,7 +18,6 @@ namespace xe { namespace fx {
 				                       {ShaderManager::getSource("fxaa_include")})
 		});
 		ShaderManager::add(finalFX);
-
 		finalShader = new Shader(finalFX);
 		sampler0 = finalShader->getSampler("sampler0");
 

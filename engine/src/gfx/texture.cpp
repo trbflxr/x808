@@ -9,8 +9,8 @@
 #include <xe/math/math.hpp>
 #include <xe/utils/log.hpp>
 
-#include "platformtexture.hpp"
-#include "opengl/gltexture.hpp"
+#include "gfx/platform/platformtexture.hpp"
+#include "gfx/platform/opengl/gltexture.hpp"
 
 namespace xe {
 
@@ -55,8 +55,8 @@ namespace xe {
 		texture->bind(slot);
 	}
 
-	void Texture::bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const {
-		texture->bindImageUnit(slot, index, access, level, layer);
+	void Texture::bindImageUnit(uint index, TextureAccess access, uint level, uint layer) const {
+		texture->bindImageUnit(index, access, level, layer);
 	}
 
 	void Texture::unbind(uint slot) const {
@@ -69,6 +69,10 @@ namespace xe {
 
 	void Texture::generateMipMaps(const TextureTarget &target) {
 		texture->generateMipMaps(target);
+	}
+
+	void Texture::copyTo(const Texture *texture) const {
+		Texture::texture->copyTo(texture);
 	}
 
 	const string &Texture::getName() const {
@@ -97,6 +101,10 @@ namespace xe {
 
 	TextureTarget Texture::getTarget() const {
 		return texture->getTarget();
+	}
+
+	uint Texture::getMaxMipMap() const {
+		return getMaxMipMap(texture->getWidth(), texture->getHeight());
 	}
 
 	uint Texture::getMaxMipMap(uint width, uint height) {

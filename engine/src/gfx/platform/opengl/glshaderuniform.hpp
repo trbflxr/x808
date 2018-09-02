@@ -18,7 +18,7 @@ namespace xe { namespace internal {
 
 	public:
 		enum class Type {
-			None, Int32, Float32, Vec2, Vec3, Vec4, Mat4, Struct
+			None, Int32, Float32, Vec2, Vec3, Vec4, Mat4, Image2D, Image3D, Struct
 		};
 
 	public:

@@ -52,6 +52,7 @@ Test3D::Test3D(DebugUI *ui) :
 	quad = new fx::Quad(width, height);
 	final = new fx::Final(width, height, false);
 	gBuffer = new fx::GBuffer(width, height);
+	hdr = new fx::HDR(width, height);
 
 	ui->sp0->texture = gBuffer->getDiffuseTexture();
 	ui->sp1->texture = gBuffer->getNormalDepthTexture();
@@ -72,6 +73,7 @@ Test3D::~Test3D() {
 	delete quad;
 	delete final;
 	delete gBuffer;
+	delete hdr;
 }
 
 void Test3D::render() {
@@ -87,6 +89,10 @@ void Test3D::render() {
 
 	updateUBO(view, persp, pos, look);
 
+	Renderer::enableDepthTesting(false);
+
+//	hdr->calcExposure(final->getFinalTexture());
+
 	//render
 	Renderer::enableDepthMask(true);
 	Renderer::enableDepthTesting(true);
@@ -95,10 +101,11 @@ void Test3D::render() {
 
 	gBuffer->passDeferredShading(scene);
 
-	Renderer::enableDepthTesting(true);
+	Renderer::enableDepthTesting(false);
 	gBuffer->passLightAccumulation(quad, final->getFinalFBO());
 
-	Renderer::enableCullFace(false);
+//	hdr->scaleScene(quad, final->getFinalFBO(), final->getFinalTexture());
+
 	final->render(quad);
 }
 

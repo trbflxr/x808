@@ -53,9 +53,9 @@ void main() {
     scene = texture(sampler0, uv0).xyz;
   }
 
-  color = vec4(simpleHDR(scene), 1.0);
+  // color = vec4(simpleHDR(scene), 1.0);
   // color = vec4(tonemapFilmic(scene), 1.0);
   // color = vec4(acesFilm(scene), 1.0);
-  // color = vec4(tonemapUncharted2(scene), 1.0);
+  color = vec4(tonemapUncharted2(scene), 1.0);
   // color = vec4(scene, 1.0);
 }

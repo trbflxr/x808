@@ -40,6 +40,8 @@ namespace xe { namespace internal {
 	uint stencilFuncToGL(StencilFunction func) noexcept;
 	uint stencilFaceToGL(StencilFace face) noexcept;
 
+	uint memoryBarrierToGL(MemoryBarrier barrier) noexcept;
+
 }}
 
 #endif //X808_GLENUMS_HPP

@@ -11,6 +11,7 @@
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/fx/gbuffer.hpp>
 #include <xe/gfx/fx/final.hpp>
+#include <xe/gfx/fx/hdr.hpp>
 #include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/uniformbuffer.hpp>
 #include "debugui.hpp"
@@ -33,6 +34,7 @@ private:
 	xe::fx::GBuffer *gBuffer;
 	xe::fx::Quad *quad;
 	xe::fx::Final *final;
+	xe::fx::HDR *hdr;
 
 	DebugUI *ui;
 

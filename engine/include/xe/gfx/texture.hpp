@@ -87,12 +87,14 @@ namespace xe {
 		~Texture();
 
 		void bind(uint slot) const;
-		void bindImageUnit(uint slot, uint index, TextureAccess access, uint level, uint layer) const;
+		void bindImageUnit(uint index, TextureAccess access, uint level = 0, uint layer = 0) const;
 		void unbind(uint slot) const;
 
 		void setData2D(const void *pixels);
 
 		void generateMipMaps(const TextureTarget &target);
+
+		void copyTo(const Texture *texture) const;
 
 		const string &getName() const;
 		const string &getFilePath() const;
@@ -102,6 +104,8 @@ namespace xe {
 		uint getDepth() const;
 		uint getHandle() const;
 		TextureTarget getTarget() const;
+
+		uint getMaxMipMap() const;
 
 		static uint getMaxMipMap(uint width, uint height);
 

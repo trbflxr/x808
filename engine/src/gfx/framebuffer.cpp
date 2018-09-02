@@ -2,7 +2,7 @@
 // Created by FLXR on 8/8/2018.
 //
 
-#include <string_view>
+#include <string>
 #include <xe/xeint.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/utils/log.hpp>

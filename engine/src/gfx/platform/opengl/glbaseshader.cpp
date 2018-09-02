@@ -87,6 +87,10 @@ namespace xe { namespace internal {
 				break;
 			case GLShaderUniform::Type::Mat4: setUniformMat4(field.getLocation(), *(mat4 *) &data[offset]);
 				break;
+			case GLShaderUniform::Type::Image2D: setUniform1i(field.getLocation(), *(int32 *) &data[offset]);
+				break;
+			case GLShaderUniform::Type::Image3D: setUniform1i(field.getLocation(), *(int32 *) &data[offset]);
+				break;
 			default: XE_ASSERT(false, "Unknown type!");
 		}
 	}
@@ -145,7 +149,7 @@ namespace xe { namespace internal {
 		if (result == -1) {
 			if (runTime) {
 				XE_ERROR("[GLBaseShader]: '", GLBaseShader::name, "' could not get uniform location '", name, "'");
-			}else {
+			} else {
 				XE_WARN("[GLBaseShader]: '", GLBaseShader::name, "' uniform '", name, "' optimized out");
 			}
 		}
@@ -195,6 +199,10 @@ namespace xe { namespace internal {
 			case GLShaderUniform::Type::Vec4: setUniform4f(uniform->getLocation(), *(vec4 *) &data[offset]);
 				break;
 			case GLShaderUniform::Type::Mat4: setUniformMat4(uniform->getLocation(), *(mat4 *) &data[offset]);
+				break;
+			case GLShaderUniform::Type::Image2D: setUniform1i(uniform->getLocation(), *(int32 *) &data[offset]);
+				break;
+			case GLShaderUniform::Type::Image3D: setUniform1i(uniform->getLocation(), *(int32 *) &data[offset]);
 				break;
 			case GLShaderUniform::Type::Struct: setUniformStruct(uniform, data, offset);
 				break;

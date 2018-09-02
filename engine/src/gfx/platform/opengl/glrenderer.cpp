@@ -86,6 +86,10 @@ namespace xe { namespace internal {
 		}
 	}
 
+	void GLRenderer::dispatchComputeInternal(uint numX, uint numY, uint numZ) {
+		glCall(glDispatchCompute(numX, numY, numZ));
+	}
+
 	void GLRenderer::setViewportInternal(uint x, uint y, uint width, uint height) {
 		glCall(glViewport(x, y, width, height));
 	}
@@ -116,6 +120,10 @@ namespace xe { namespace internal {
 
 	void GLRenderer::setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) {
 		glCall(glStencilOpSeparate(stencilFaceToGL(face), stencilOpToGL(sf), stencilOpToGL(dpf), stencilOpToGL(dpp)));
+	}
+
+	void GLRenderer::setMemoryBarrierInternal(MemoryBarrier barrier) {
+		glCall(glMemoryBarrier(memoryBarrierToGL(barrier)));
 	}
 
 }}

@@ -82,6 +82,7 @@ namespace xe { namespace internal {
 			case PixelInternalFormat::DepthComponent32: return GL_DEPTH_COMPONENT32;
 			case PixelInternalFormat::Depth32fStencil8: return GL_DEPTH32F_STENCIL8;
 			case PixelInternalFormat::DepthComponent32f: return GL_DEPTH_COMPONENT32F;
+			case PixelInternalFormat::R16f: return GL_R16F;
 			case PixelInternalFormat::R32f: return GL_R32F;
 			case PixelInternalFormat::Rg16f: return GL_RG16F;
 			case PixelInternalFormat::Rgba32f: return GL_RGBA32F;
@@ -108,6 +109,7 @@ namespace xe { namespace internal {
 			case PixelFormat::Bgr: return GL_BGR;
 			case PixelFormat::Bgra: return GL_BGRA;
 			case PixelFormat::Rg: return GL_RG;
+			case PixelFormat::Red: return GL_RED;
 			case PixelFormat::DepthStencil: return GL_DEPTH_STENCIL;
 		}
 		return 0;
@@ -306,6 +308,15 @@ namespace xe { namespace internal {
 			case StencilFace::Front: return GL_FRONT;
 			case StencilFace::Back: return GL_BACK;
 			case StencilFace::FrontAndBack: return GL_FRONT_AND_BACK;
+		}
+		return 0;
+	}
+
+	uint memoryBarrierToGL(MemoryBarrier barrier) noexcept {
+		switch (barrier) {
+			case MemoryBarrier::ShaderImageAccess: return GL_SHADER_IMAGE_ACCESS_BARRIER_BIT;
+			case MemoryBarrier::ShaderStorage: return GL_SHADER_STORAGE_BARRIER_BIT;
+			case MemoryBarrier::All: return GL_ALL_BARRIER_BITS;
 		}
 		return 0;
 	}
