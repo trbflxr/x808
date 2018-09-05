@@ -11,7 +11,7 @@
 
 namespace xe {
 
-	Cursor::Cursor(const byte *pixels, vec2u size, vec2u hotspot) :
+	Cursor::Cursor(const byte *pixels, vec2i size, vec2i hotspot) :
 			cursor(nullptr) {
 
 		release();

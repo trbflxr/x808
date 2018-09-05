@@ -9,7 +9,7 @@ using namespace xe;
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, RenderAPI::OPENGL, 420),
+			Application(config, RenderAPI::OPENGL, 330),
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr) {

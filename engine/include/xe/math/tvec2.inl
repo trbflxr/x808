@@ -38,6 +38,11 @@ inline tvec2 <T> operator*(const tvec2 <T> &left, const tvec2 <T> &right) {
 }
 
 template<class T>
+inline tvec2 <T> operator/(const tvec2 <T> &left, T right) {
+	return tvec2<T>(left.x / right, left.y / right);
+}
+
+template<class T>
 inline tvec2 <T> operator/(const tvec2 <T> &left, const tvec2 <T> &right) {
 	return tvec2<T>(left.x / right.x, left.y / right.y);
 }

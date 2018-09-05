@@ -26,7 +26,7 @@ public:
 
 	void updateComponents(float delta, xe::BaseECSComponent **components) override {
 		static xe::Window &window = xe::Application::get().getWindow();
-		static xe::vec2u windowSize = window.getSize();
+		static xe::vec2i windowSize = window.getSize();
 		static xe::vec2i windowCenter = xe::vec2i(windowSize.x / 2, windowSize.y / 2);
 		static xe::vec2i lastMousePosition = xe::Mouse::getPosition();
 

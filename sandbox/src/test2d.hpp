@@ -12,11 +12,11 @@
 #include <xe/ecs/components/textcomponent.hpp>
 #include <xe/ecs/systems/spriterenderersystem.hpp>
 #include <xe/ecs/systems/textrenderersystem.hpp>
-#include <xe/gfx/layers/layer2d.hpp>
+#include <xe/gfx/layer.hpp>
 
 #include "orthocameramovesystem.hpp"
 
-class Test2D : public xe::Layer2D {
+class Test2D : public xe::Layer {
 public:
 	explicit Test2D();
 	~Test2D() override;
@@ -28,6 +28,8 @@ public:
 	void input(xe::Event &event) override;
 
 private:
+	xe::Renderer2D *renderer;
+
 	xe::ECS ecs;
 
 	OrthoCameraMoveSystem *cameraSystem;

@@ -34,7 +34,7 @@ namespace xe {
 		};
 
 	public:
-		explicit Cursor(const byte *pixels, vec2u size, vec2u hotspot);
+		explicit Cursor(const byte *pixels, vec2i size, vec2i hotspot);
 		explicit Cursor(Type type);
 		~Cursor() override;
 

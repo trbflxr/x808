@@ -10,12 +10,12 @@ in DATA {
 uniform sampler2D textures[32];
 
 void main() {
-  vec4 texColor = fs_in.color;
+  vec4 final = fs_in.color;
 
   if (fs_in.tid > 0.0) {
-    const int tid = int(fs_in.tid - 0.5);
-    texColor = fs_in.color * texture(textures[tid], fs_in.uv);
+    int tid = int(fs_in.tid - 0.5);
+    final = fs_in.color * texture(textures[tid], fs_in.uv);
   }
 
-  color = texColor;
+  color = final;
 }

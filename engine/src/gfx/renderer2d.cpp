@@ -4,6 +4,8 @@
 
 #include <freetype-gl/freetype-gl.h>
 #include <algorithm>
+#include <xe/gfx/renderer2d.hpp>
+
 
 #include "xe/gfx/renderer2d.hpp"
 #include "xe/gfx/renderer.hpp"
@@ -18,14 +20,7 @@ namespace xe {
 #define RENDERER_MAX_TEXTURES    32
 
 
-	const uint requiredSystemUniformsCount = 2;
-	const char *requiredSystemUniforms[requiredSystemUniformsCount] = {"projectionMatrix", "viewMatrix"};
-
-	const uint projectionMatrixIndex = 0;
-	const uint viewMatrixIndex = 1;
-
-
-	Renderer2D::Renderer2D(uint width, uint height) :
+	Renderer2D::Renderer2D(int32 width, int32 height) :
 			indexCount(0),
 			screenSize(width, height),
 			viewportSize(width, height) {
@@ -33,7 +28,7 @@ namespace xe {
 		init();
 	}
 
-	Renderer2D::Renderer2D(const vec2u &screenSize) :
+	Renderer2D::Renderer2D(const vec2i &screenSize) :
 			indexCount(0),
 			screenSize(screenSize),
 			viewportSize(screenSize) {
@@ -42,52 +37,29 @@ namespace xe {
 	}
 
 	Renderer2D::~Renderer2D() {
+		delete shader;
 		delete indexBuffer;
 		delete vertexArray;
-
-		for (auto &&data : uniformData) {
-			delete[] data.buffer;
-		}
 	}
 
 	void Renderer2D::init() {
 		transformationStack.emplace_back(1.0f);
 		transformationBack = &transformationStack.back();
 
-		uniforms.resize(requiredSystemUniformsCount);
-
-		shader = GETSHADER("dBatchRenderer");
-
-		const ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
-
-		XE_ASSERT(shaderUniforms.size());
-
-		for (auto &&ub : shaderUniforms) {
-			UniformData buffer(ub->getSize());
-			uniformData.push_back(buffer);
-
-			for (auto &&uniform: ub->getUniforms()) {
-				for (uint j = 0; j < requiredSystemUniformsCount; j++) {
-					if (strcmp(uniform->getName().c_str(), requiredSystemUniforms[j]) == 0) {
-						uniforms[j] = Uniform(uniform->getName().c_str(), buffer, uniform->getOffset());
-					}
-				}
-			}
-		}
+		shader = new Shader("dBatchRenderer");
 
 		//default camera
 		setCamera(new Camera(mat4::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1, 1000)));
-
-		shader->bind();
 
 		VertexBuffer *buffer = new VertexBuffer(BufferUsage::DynamicDraw);
 		buffer->resize(RENDERER_BUFFER_SIZE);
 
 		BufferLayout layout;
-		layout.push<vec3>("POSITION"); // Position
-		layout.push<vec2>("TEXCOORD"); // UV
-		layout.push<float>("ID"); // Texture Index
-		layout.push<byte>("COLOR", 4, true); // Color
+		layout.push<vec3>("pos");
+		layout.push<vec2>("uv");
+		layout.push<float>("texId");
+		layout.push<byte>("color", 4, true);
+
 		buffer->setLayout(layout);
 
 		vertexArray = new VertexArray();
@@ -127,19 +99,15 @@ namespace xe {
 	void Renderer2D::setCamera(Camera *camera) {
 		Renderer2D::camera = camera;
 
-		memcpy(uniforms[projectionMatrixIndex].data.buffer +
-		       uniforms[projectionMatrixIndex].offset,
-		       &camera->getProjection().elements, sizeof(mat4));
-
-		memcpy(uniforms[viewMatrixIndex].data.buffer + uniforms[viewMatrixIndex].offset,
-		       &camera->getViewMatrix().elements, sizeof(mat4));
+		shader->setUniform("projectionMatrix", camera->getProjection().elements, sizeof(mat4));
+		shader->setUniform("viewMatrix", camera->getView().elements, sizeof(mat4));
 	}
 
 	void Renderer2D::begin() {
 		Renderer::enableBlend(true);
 		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 
-		Renderer::setViewport(0, 0, screenSize.x, screenSize.y);
+		Renderer::setViewport(0, 0, static_cast<uint>(screenSize.x), static_cast<uint>(screenSize.y));
 
 		vertexArray->bind();
 		buffer = static_cast<VertexData *>(vertexArray->getBuffer(0)->getPointer());
@@ -364,9 +332,7 @@ namespace xe {
 
 	void Renderer2D::flushInternal() {
 		shader->bind();
-		for (uint i = 0; i < uniformData.size(); i++) {
-			shader->setUniformBuffer(uniformData[i].buffer, uniformData[i].size, i);
-		}
+		shader->updateUniforms();
 
 		for (uint i = 0; i < textures.size(); i++) {
 			textures[i]->bind(i);
@@ -514,6 +480,5 @@ namespace xe {
 
 		return result;
 	}
-
 
 }

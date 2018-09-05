@@ -6,7 +6,7 @@
 #define X808_TEST3DDEFERRED_HPP
 
 
-#include <xe/gfx/layers/layer.hpp>
+#include <xe/gfx/layer.hpp>
 #include <xe/gfx/scene.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/fx/gbuffer.hpp>

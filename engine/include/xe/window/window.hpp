@@ -46,8 +46,8 @@ namespace xe {
 		vec2i getPosition() const;
 		void setPosition(const vec2i &position);
 
-		inline vec2u getSize() const { return size; };
-		void setSize(const vec2u &size);
+		inline vec2i getSize() const { return size; };
+		void setSize(const vec2i &size);
 
 		void setTitle(const string &title);
 
@@ -86,7 +86,7 @@ namespace xe {
 	private:
 		internal::PlatformWindow *window;
 
-		vec2u size;
+		vec2i size;
 		Timer timer;
 		float frameTimeLimit;
 

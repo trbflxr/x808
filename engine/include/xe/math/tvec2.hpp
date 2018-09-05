@@ -25,7 +25,6 @@ namespace xe {
 
 #include "tvec2.inl"
 
-	typedef xe::tvec2<uint> vec2u;
 	typedef xe::tvec2<int32> vec2i;
 	typedef xe::tvec2<float> vec2f;
 }

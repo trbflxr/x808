@@ -39,7 +39,7 @@ namespace xe {
 
 		inline const Config &getConfig() const { return config; }
 
-		inline vec2u getWindowSize() const { return window.getSize(); }
+		inline vec2i getWindowSize() const { return window.getSize(); }
 
 		inline static Application &get() { return *instance; }
 

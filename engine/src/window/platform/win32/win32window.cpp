@@ -102,7 +102,7 @@ namespace xe { namespace internal {
 		}
 		ReleaseDC(handle, screenDC);
 
-		setSize(vec2u(mode.width, mode.height));
+		setSize(vec2i(mode.width, mode.height));
 
 		if (fullscreen) {
 			switchToFullscreen(mode);
@@ -161,15 +161,15 @@ namespace xe { namespace internal {
 		}
 	}
 
-	vec2u PlatformWindowWin32::getSize() const {
+	vec2i PlatformWindowWin32::getSize() const {
 		RECT rect;
 		GetClientRect(handle, &rect);
 
-		return vec2u(static_cast<uint>(rect.right - rect.left),
-		             static_cast<uint>(rect.bottom - rect.top));
+		return vec2i(static_cast<int32>(rect.right - rect.left),
+		             static_cast<int32>(rect.bottom - rect.top));
 	}
 
-	void PlatformWindowWin32::setSize(const vec2u &size) {
+	void PlatformWindowWin32::setSize(const vec2i &size) {
 		RECT rectangle = {0, 0, static_cast<LONG>(size.x), static_cast<LONG>(size.y)};
 		AdjustWindowRect(&rectangle, static_cast<DWORD>(GetWindowLong(handle, GWL_STYLE)), false);
 

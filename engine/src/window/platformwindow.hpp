@@ -26,8 +26,8 @@ namespace xe { namespace internal {
 		virtual vec2i getPosition() const = 0;
 		virtual void setPosition(const vec2i &position) = 0;
 
-		virtual vec2u getSize() const = 0;
-		virtual void setSize(const vec2u &size) = 0;
+		virtual vec2i getSize() const = 0;
+		virtual void setSize(const vec2i &size) = 0;
 
 		virtual void setTitle(const string &title) = 0;
 

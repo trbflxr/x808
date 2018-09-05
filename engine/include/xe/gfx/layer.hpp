@@ -13,6 +13,8 @@ namespace xe {
 
 	class Layer {
 	public:
+		virtual ~Layer() = default;
+
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { Layer::visible = visible; }
 
@@ -34,7 +36,7 @@ namespace xe {
 				window(app.getWindow()),
 				visible(true) { }
 
-		virtual bool resize(uint width, uint height) { return false; }
+		virtual bool resize(int32 width, int32 height) { return false; }
 
 	protected:
 		Application &app;

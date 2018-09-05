@@ -75,7 +75,7 @@ namespace xe {
 		}
 	}
 
-	void Window::setSize(const vec2u &size) {
+	void Window::setSize(const vec2i &size) {
 		if (window) {
 			window->setSize(size);
 

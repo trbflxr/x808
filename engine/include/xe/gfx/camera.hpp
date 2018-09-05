@@ -41,7 +41,7 @@ namespace xe {
 		inline const mat4 &getProjection() const { return projection; }
 		inline void setProjection(const mat4 &matrix) { Camera::projection = matrix; }
 
-		inline const mat4 &getViewMatrix() {
+		inline const mat4 &getView() {
 			if (transform.isDirty()) {
 				update();
 			}

@@ -12,6 +12,8 @@ using namespace xe;
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
+	renderer = new Renderer2D(window.getSize());
+
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 
 	//render system
@@ -53,6 +55,8 @@ DebugUI::DebugUI() :
 }
 
 DebugUI::~DebugUI() {
+	delete renderer;
+
 	delete spriteRenderer;
 	delete textRenderer;
 	delete cameraSystem;

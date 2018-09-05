@@ -10,10 +10,10 @@
 #include <xe/ecs/components/transform2dcomponent.hpp>
 #include <xe/ecs/systems/spriterenderersystem.hpp>
 #include <xe/ecs/systems/textrenderersystem.hpp>
-#include <xe/gfx/layers/layer2d.hpp>
+#include <xe/gfx/layer.hpp>
 #include "orthocamerasystem.hpp"
 
-class DebugUI : public xe::Layer2D {
+class DebugUI : public xe::Layer {
 private:
 	friend class Test3D;
 
@@ -39,6 +39,8 @@ public:
 	xe::SpriteComponent *sp3;
 
 private:
+	xe::Renderer2D *renderer;
+
 	xe::ECS ecs;
 
 	OrthoCameraSystem *cameraSystem;

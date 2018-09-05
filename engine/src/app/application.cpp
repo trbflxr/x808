@@ -4,7 +4,7 @@
 
 #include <xe/utils/random.hpp>
 #include <xe/gfx/renderer.hpp>
-#include <xe/gfx/layers/layer.hpp>
+#include <xe/gfx/layer.hpp>
 #include <embedded/embedded.hpp>
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>

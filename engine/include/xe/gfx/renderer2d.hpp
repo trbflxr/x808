@@ -10,7 +10,7 @@
 #include <xe/xeint.hpp>
 #include <xe/math/math.hpp>
 #include <xe/gfx/camera.hpp>
-#include <xe/gfx/baseshader.hpp>
+#include <xe/gfx/shader.hpp>
 #include <xe/gfx/vertexarray.hpp>
 #include <xe/gfx/indexbuffer.hpp>
 #include <xe/ecs/components/spritecomponent.hpp>
@@ -40,8 +40,8 @@ namespace xe {
 		};
 
 	public:
-		explicit Renderer2D(uint width, uint height);
-		explicit Renderer2D(const vec2u &screenSize);
+		explicit Renderer2D(int32 width, int32 height);
+		explicit Renderer2D(const vec2i &screenSize);
 		~Renderer2D();
 
 		void push(const mat4 &matrix, bool override = false);
@@ -69,11 +69,11 @@ namespace xe {
 		void fillRect(const vec2 &position, const vec2 &size, float z, uint color = color::WHITE);
 		void fillRect(const rect &rectangle, float z, uint color = color::WHITE);
 
-		inline const vec2u &getScreenSize() const { return screenSize; }
-		inline void setScreenSize(const vec2u &size) { screenSize = size; }
+		inline const vec2i &getScreenSize() const { return screenSize; }
+		inline void setScreenSize(const vec2i &size) { screenSize = size; }
 
-		inline const vec2u &getViewportSize() const { return viewportSize; }
-		inline void setViewportSize(const vec2u &size) { viewportSize = size; }
+		inline const vec2i &getViewportSize() const { return viewportSize; }
+		inline void setViewportSize(const vec2i &size) { viewportSize = size; }
 
 	private:
 		void init();
@@ -89,9 +89,7 @@ namespace xe {
 		std::vector<mat4> transformationStack;
 		const mat4 *transformationBack;
 
-		const BaseShader *shader;
-		std::vector<Uniform> uniforms;
-		std::vector<UniformData> uniformData;
+		Shader *shader;
 
 		VertexArray *vertexArray;
 		IndexBuffer *indexBuffer;
@@ -100,8 +98,8 @@ namespace xe {
 
 		std::vector<const Texture *> textures;
 
-		vec2u screenSize;
-		vec2u viewportSize;
+		vec2i screenSize;
+		vec2i viewportSize;
 
 		Camera *camera;
 

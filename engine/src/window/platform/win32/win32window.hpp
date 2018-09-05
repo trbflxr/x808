@@ -20,8 +20,8 @@ namespace xe { namespace internal {
 		vec2i getPosition() const override;
 		void setPosition(const vec2i &position) override;
 
-		vec2u getSize() const override;
-		void setSize(const vec2u &size) override;
+		vec2i getSize() const override;
+		void setSize(const vec2i &size) override;
 
 		void setTitle(const string &title) override;
 
@@ -66,7 +66,7 @@ namespace xe { namespace internal {
 		HCURSOR lastCursor;
 		HICON icon;
 		bool keyRepeatEnabled;
-		vec2u lastSize;
+		vec2i lastSize;
 		bool resizing;
 		uint16 surrogate;
 		bool mouseInside;

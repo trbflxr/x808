@@ -40,7 +40,7 @@ namespace xe {
 	void DeferredRenderer::render(const Scene *scene, Camera *camera) const {
 		const vec3 look = camera->transform.getRotation().getForward();
 		const vec3 pos = -camera->transform.getPosition();
-		const mat4 view = camera->getViewMatrix();
+		const mat4 view = camera->getView();
 		const mat4 proj = camera->getProjection();
 
 		updateUBO(view, proj, pos, look);
