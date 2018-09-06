@@ -147,12 +147,12 @@ namespace xe {
 		                                       std::vector<byte> &array,
 		                                       uint componentID);
 
-		void updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, float delta,
+		void updateSystemWithMultipleComponents(BaseECSSystem *system, float delta,
 		                                        const std::vector<uint> &componentTypes,
 		                                        std::vector<BaseECSComponent *> &componentParam,
 		                                        std::vector<std::vector<byte> *> &componentArrays);
 
-		void inputSystemWithMultipleComponents(uint index, ECSSystemList &systems, Event &event,
+		void inputSystemWithMultipleComponents(BaseECSSystem *system,Event &event,
 		                                       const std::vector<uint> &componentTypes,
 		                                       std::vector<BaseECSComponent *> &componentParam,
 		                                       std::vector<std::vector<byte> *> &componentArrays);

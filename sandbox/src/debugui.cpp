@@ -12,27 +12,31 @@ using namespace xe;
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
-	renderer = new Renderer2D(window.getSize());
+	primitiveRenderer = new PrimitiveRenderer(window.getSize().x, window.getSize().y);
+	textRenderer = new TextRenderer(window.getSize().x, window.getSize().y);
+	spriteRenderer = new SpriteRenderer(window.getSize().x, window.getSize().y);
 
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
 
 	//render system
-	spriteRenderer = new SpriteRendererSystem(renderer);
-	textRenderer = new TextRendererSystem(renderer);
+	spriteRendererSystem = new SpriteRendererSystem(spriteRenderer);
+	textRendererSystem = new TextRendererSystem(textRenderer);
 
-	renderingPipeline.addSystem(*spriteRenderer);
-	renderingPipeline.addSystem(*textRenderer);
+	spriteRenderingPipeline.addSystem(*spriteRendererSystem);
+	textRenderingPipeline.addSystem(*textRendererSystem);
 
 	//main systems
-	cameraSystem = new OrthoCameraSystem(renderer);
-
-	mainSystems.addSystem(*cameraSystem);
+	//mainSystems.addSystem();
 
 	//create camera
 	float w = app.getConfig().width / 10.0f;
 	float h = app.getConfig().height / 10.0f;
 
-	cameraEntity = ecs.makeEntity(new CameraComponent(mat4::ortho(-w, w, -h, h, -1, 1000)));
+	camera = new Camera(mat4::ortho(-w, w, -h, h, -1, 1000));
+
+	spriteRenderer->setCamera(camera);
+	primitiveRenderer->setCamera(camera);
+	textRenderer->setCamera(camera);
 
 	//text
 	fpsText = ecs.makeEntity(new TextComponent(
@@ -48,18 +52,21 @@ DebugUI::DebugUI() :
 			new Text(L"dc: ", 3, {-122, 50}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
 
-	sp0 = new SpriteComponent(nullptr, color::WHITE, true, false);
-	sp1 = new SpriteComponent(nullptr, color::WHITE, true, false);
-	sp2 = new SpriteComponent(nullptr, color::WHITE, true, false);
-	sp3 = new SpriteComponent(nullptr, color::WHITE, true, false);
+	sp0 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
+	sp1 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
+	sp2 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
+	sp3 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
 }
 
 DebugUI::~DebugUI() {
-	delete renderer;
+	delete camera;
 
 	delete spriteRenderer;
 	delete textRenderer;
-	delete cameraSystem;
+	delete primitiveRenderer;
+
+	delete spriteRendererSystem;
+	delete textRendererSystem;
 
 	delete sp0;
 	delete sp1;
@@ -70,25 +77,42 @@ DebugUI::~DebugUI() {
 void DebugUI::render() {
 	Renderer::clear(RendererBufferDepth);
 
-	renderer->begin();
+	//render primitives
+	primitiveRenderer->begin();
 
-	renderer->fillRect(-125, 47, 45, 23, 2, color::rgba(0, 0, 0, 0.5f));
+	primitiveRenderer->fillRect(-125, 47, 45, 23, 2, color::rgba(0, 0, 0, 0.5f));
 	if (trackedTransform) {
-		renderer->fillRect(-125, 27, 55, 17, 2, color::rgba(0, 0, 0, 0.5f));
+		primitiveRenderer->fillRect(-125, 27, 55, 17, 2, color::rgba(0, 0, 0, 0.5f));
 	}
 
-	ecs.updateSystems(renderingPipeline, 0.0f);
+	primitiveRenderer->end();
+	primitiveRenderer->flush();
+
+
+	//render sprites
+	spriteRenderer->begin();
+
+	ecs.updateSystems(spriteRenderingPipeline, 0.0f);
 
 	static Transform2DComponent *t0 = new Transform2DComponent(vec2(-125, -69), vec2(50, 30), 0.0f);
 	static Transform2DComponent *t1 = new Transform2DComponent(vec2(-72, -69), vec2(50, 30), 0.0f);
 	static Transform2DComponent *t2 = new Transform2DComponent(vec2(-19, -69), vec2(50, 30), 0.0f);
 	static Transform2DComponent *t3 = new Transform2DComponent(vec2(34, -69), vec2(50, 30), 0.0f);
-	renderer->submit(sp0, t0);
-	renderer->submit(sp1, t1);
-	renderer->submit(sp2, t2);
-	renderer->submit(sp3, t3);
+	spriteRenderer->submit(sp0, t0);
+	spriteRenderer->submit(sp1, t1);
+	spriteRenderer->submit(sp2, t2);
+	spriteRenderer->submit(sp3, t3);
 
-	renderer->flush();
+	spriteRenderer->end();
+	spriteRenderer->flush();
+
+	//render text
+	textRenderer->begin();
+
+	ecs.updateSystems(textRenderingPipeline, 0.0f);
+
+	textRenderer->end();
+	textRenderer->flush();
 }
 
 void DebugUI::update(float delta) {

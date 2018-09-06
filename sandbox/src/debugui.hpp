@@ -11,7 +11,7 @@
 #include <xe/ecs/systems/spriterenderersystem.hpp>
 #include <xe/ecs/systems/textrenderersystem.hpp>
 #include <xe/gfx/layer.hpp>
-#include "orthocamerasystem.hpp"
+#include <xe/gfx/2d/primitiverenderer.hpp>
 
 class DebugUI : public xe::Layer {
 private:
@@ -39,18 +39,20 @@ public:
 	xe::SpriteComponent *sp3;
 
 private:
-	xe::Renderer2D *renderer;
+	xe::Camera *camera;
+
+	xe::SpriteRenderer *spriteRenderer;
+	xe::PrimitiveRenderer *primitiveRenderer;
+	xe::TextRenderer *textRenderer;
 
 	xe::ECS ecs;
 
-	OrthoCameraSystem *cameraSystem;
-	xe::EntityHandle cameraEntity;
-
-	xe::SpriteRendererSystem *spriteRenderer;
-	xe::TextRendererSystem *textRenderer;
+	xe::SpriteRendererSystem *spriteRendererSystem;
+	xe::TextRendererSystem *textRendererSystem;
 
 	xe::ECSSystemList mainSystems;
-	xe::ECSSystemList renderingPipeline;
+	xe::ECSSystemList spriteRenderingPipeline;
+	xe::ECSSystemList textRenderingPipeline;
 
 	xe::EntityHandle fpsText;
 	xe::EntityHandle upsText;

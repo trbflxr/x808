@@ -17,7 +17,12 @@
 using namespace xe;
 
 Test2D::Test2D() {
-	renderer = new Renderer2D(window.getSize());
+	const float width = app.getConfig().width;
+	const float height = app.getConfig().height;
+
+	textRenderer = new TextRenderer(width, height);
+	spriteRenderer = new SpriteRenderer(width, height);
+	primitiveRenderer = new PrimitiveRenderer(width, height);
 
 	TextureParameters params(TextureTarget::Tex2D,
 	                         PixelInternalFormat::Rgba,
@@ -67,8 +72,8 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("33", "assets/textures/enemyspotted.png", params));
 	TextureManager::add(new Texture("34", "assets/textures/enemyspotted.png", params));
 	TextureManager::add(new Texture("35", "assets/textures/jdm.png", params));
-	TextureManager::add(new Texture("36", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture("37", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture("36", "assets/textures/star.png", params));
+	TextureManager::add(new Texture("37", "assets/textures/cosmic.png", params));
 	TextureManager::add(new Texture("38", "assets/textures/test7.png", params));
 	TextureManager::add(new Texture("39", "assets/textures/test8.png", params));
 
@@ -81,27 +86,22 @@ Test2D::Test2D() {
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	const float width = app.getConfig().width;
-	const float height = app.getConfig().height;
-
-	uint texCount = 35;
+	uint texCount = 39;
 
 	//render system
-	spriteRenderer = new SpriteRendererSystem(renderer);
-	textRenderer = new TextRendererSystem(renderer);
+	spriteRendererSystem = new SpriteRendererSystem(spriteRenderer);
+	textRendererSystem = new TextRendererSystem(textRenderer);
 
-	renderingPipeline.addSystem(*spriteRenderer);
-	renderingPipeline.addSystem(*textRenderer);
+	spriteRenderingPipeline.addSystem(*spriteRendererSystem);
+	textRenderingPipeline.addSystem(*textRendererSystem);
 
 	//main systems
-	cameraSystem = new OrthoCameraMoveSystem(renderer);
+	cameraSystem = new OrthoCameraMoveSystem();
 
 	mainSystems.addSystem(*cameraSystem);
 
-
 	//create camera
-	cameraEntity = ecs.makeEntity(
-			new CameraComponent(mat4::ortho(-width, width, -height, height, -1, 1000)));
+	cameraEntity = ecs.makeEntity(new CameraComponent(mat4::ortho(-width, width, -height, height, -1, 1000)));
 
 
 	uint sprites = 0;
@@ -110,7 +110,7 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 3
+#define sp_size 1
 
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
@@ -165,32 +165,64 @@ Test2D::Test2D() {
 	ecs.makeEntity(new TextComponent(new Text(L"0", 200, {-200, -100},
 	                                          GETFONT("consolata"), color::RED, color::GREEN, 3)));
 
-	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("35"));
-	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("35"));
+	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("35"), true, color::WHITE);
+	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("36"), true, color::WHITE);
+	SpriteComponent *s2 = new SpriteComponent(GETTEXTURE("37"), true, color::WHITE);
 
 	Transform2DComponent *t0 = new Transform2DComponent(vec2(-100.0f, -100.0f), vec2(200.0f), 1.0f);
-	Transform2DComponent *t1 = new Transform2DComponent(vec2(-40.0f, -40.0f), vec2(200.0f), 1.0f);
+	Transform2DComponent *t1 = new Transform2DComponent(vec2(-40.0f, -40.0f), vec2(200.0f), 2.0f);
+	Transform2DComponent *t2 = new Transform2DComponent(vec2(-40.0f, -40.0f), vec2(200.0f), 3.0f);
 
 	ecs.makeEntity(s0, t0);
 	a = ecs.makeEntity(s1, t1);
+
+	ecs.makeEntity(s2, t2);
 }
 
 Test2D::~Test2D() {
-	delete renderer;
 	delete spriteRenderer;
 	delete textRenderer;
+	delete primitiveRenderer;
+
+	delete spriteRendererSystem;
+	delete textRendererSystem;
 	delete cameraSystem;
 }
 
 void Test2D::render() {
-	renderer->begin();
+	//render sprites
+	spriteRenderer->begin();
 
-	ecs.updateSystems(renderingPipeline, 0.0f);
+	ecs.updateSystems(spriteRenderingPipeline, 0.0f);
 
-	renderer->flush();
+	spriteRenderer->end();
+	spriteRenderer->flush();
+
+
+	//render text
+	textRenderer->begin();
+
+	ecs.updateSystems(textRenderingPipeline, 0.0f);
+
+	textRenderer->end();
+	textRenderer->flush();
+
+
+	//render primitives
+	primitiveRenderer->begin();
+
+//	primitiveRenderer->drawLine(0, 0, 400, 400, 3, color::GREEN, 20.0f);
+
+	primitiveRenderer->end();
+	primitiveRenderer->flush();
 }
 
 void Test2D::update(float delta) {
+	static CameraComponent *cam = ecs.getComponent<CameraComponent>(cameraEntity);
+	spriteRenderer->setCamera(&cam->camera);
+	primitiveRenderer->setCamera(&cam->camera);
+	textRenderer->setCamera(&cam->camera);
+
 	static Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
 
 	static const vec2i halfSize = window.getSize() / 2;

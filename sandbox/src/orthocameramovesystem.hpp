@@ -6,14 +6,15 @@
 #define X808_ORTHOCAMERAMOVESYSTEM_HPP
 
 
-#include <xe/gfx/renderer2d.hpp>
 #include <xe/ecs/ecssystem.hpp>
 #include <xe/window/keyboard.hpp>
 #include "orthocameracomponent.hpp"
 
 class OrthoCameraMoveSystem : public xe::BaseECSSystem {
 public:
-	explicit OrthoCameraMoveSystem(xe::Renderer2D *renderer) : BaseECSSystem(), renderer(renderer) {
+	explicit OrthoCameraMoveSystem() :
+			BaseECSSystem() {
+
 		addComponentType(CameraComponent::ID);
 	}
 
@@ -37,12 +38,7 @@ public:
 		camera->camera.transform.setPosition(pos);
 
 		camera->camera.update();
-
-		renderer->setCamera(&camera->camera);
 	}
-
-private:
-	xe::Renderer2D *renderer;
 };
 
 #endif //X808_ORTHOCAMERAMOVESYSTEM_HPP

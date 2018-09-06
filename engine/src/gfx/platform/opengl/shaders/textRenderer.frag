@@ -5,7 +5,7 @@ in DATA {
   vec2 uv;
   float tid;
   vec4 color;
-}fs_in;
+} fs_in;
 
 uniform sampler2D textures[32];
 

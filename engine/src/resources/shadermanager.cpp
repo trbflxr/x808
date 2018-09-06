@@ -72,9 +72,19 @@ namespace xe {
 
 	void ShaderManager::createDefaultShaders() {
 		//2d renderer
-		shaders.emplace("dBatchRenderer", new BaseShader("dBatchRenderer", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["batchRenderer_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["batchRenderer_frag"])
+		shaders.emplace("dSpriteRenderer", new BaseShader("dSpriteRenderer", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["spriteRenderer_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["spriteRenderer_frag"])
+		}));
+
+		shaders.emplace("dPrimitiveRenderer", new BaseShader("dPrimitiveRenderer", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["primitiveRenderer_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["primitiveRenderer_frag"])
+		}));
+
+		shaders.emplace("dTextRenderer", new BaseShader("dTextRenderer", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["textRenderer_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["textRenderer_frag"])
 		}));
 	}
 

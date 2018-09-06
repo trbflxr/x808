@@ -52,6 +52,7 @@ file(GLOB ENGINE_SRC
         src/ecs/components/*.cpp
         src/ecs/systems/*.cpp
         src/embedded/*.cpp
+        src/gfx/2d/*.cpp
         src/gfx/platform/*.cpp
         src/gfx/camera/*.cpp
         src/gfx/fx/*.cpp

@@ -15,15 +15,18 @@ namespace xe {
 
 	struct SpriteComponent : public ECSComponent<SpriteComponent> {
 		const Texture *texture;
+		bool hasTransparency;
 		uint color;
-		std::array<vec2, 4> UVs;
 		bool visible;
+		std::array<vec2, 4> UVs;
 
 		explicit SpriteComponent(const Texture *texture,
+		                         bool hasTransparency = false,
 		                         uint color = color::WHITE,
 		                         bool flipUVs = false,
 		                         bool visible = true) noexcept :
 				texture(texture),
+				hasTransparency(hasTransparency),
 				color(color),
 				visible(visible) {
 

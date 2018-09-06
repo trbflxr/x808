@@ -2,8 +2,8 @@
 // Created by FLXR on 7/8/2018.
 //
 
-#ifndef X808_TESTECS_HPP
-#define X808_TESTECS_HPP
+#ifndef X808_TEST2D_HPP
+#define X808_TEST2D_HPP
 
 
 #include <xe/ecs/ecs.hpp>
@@ -13,6 +13,7 @@
 #include <xe/ecs/systems/spriterenderersystem.hpp>
 #include <xe/ecs/systems/textrenderersystem.hpp>
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/2d/primitiverenderer.hpp>
 
 #include "orthocameramovesystem.hpp"
 
@@ -28,18 +29,21 @@ public:
 	void input(xe::Event &event) override;
 
 private:
-	xe::Renderer2D *renderer;
+	xe::SpriteRenderer *spriteRenderer;
+	xe::PrimitiveRenderer *primitiveRenderer;
+	xe::TextRenderer* textRenderer;
 
 	xe::ECS ecs;
 
 	OrthoCameraMoveSystem *cameraSystem;
 	xe::EntityHandle cameraEntity;
 
-	xe::SpriteRendererSystem *spriteRenderer;
-	xe::TextRendererSystem *textRenderer;
+	xe::SpriteRendererSystem *spriteRendererSystem;
+	xe::TextRendererSystem *textRendererSystem;
 
 	xe::ECSSystemList mainSystems;
-	xe::ECSSystemList renderingPipeline;
+	xe::ECSSystemList spriteRenderingPipeline;
+	xe::ECSSystemList textRenderingPipeline;
 
 	xe::EntityHandle text;
 	xe::EntityHandle inputText;
@@ -47,4 +51,4 @@ private:
 };
 
 
-#endif //X808_TESTECS_HPP
+#endif //X808_TEST2D_HPP

@@ -15,7 +15,7 @@ namespace xe {
 
 	class Text {
 	private:
-		friend class Renderer2D;
+		friend class TextRenderer;
 
 	public:
 		explicit Text(const wstring &string, float size, const vec2 &position,

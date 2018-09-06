@@ -2,6 +2,8 @@
 // Created by FLXR on 7/7/2018.
 //
 
+#include <xe/ecs/ecs.hpp>
+
 #include "xe/ecs/ecs.hpp"
 #include "xe/utils/log.hpp"
 
@@ -79,7 +81,7 @@ namespace xe {
 					systems[i]->lateUpdateComponents(delta, &component);
 				}
 			} else {
-				updateSystemWithMultipleComponents(i, systems, delta, componentTypes,
+				updateSystemWithMultipleComponents(systems[i], delta, componentTypes,
 				                                   componentParam, componentArrays);
 			}
 		}
@@ -103,7 +105,7 @@ namespace xe {
 					systems[i]->inputComponents(event, &component);
 				}
 			} else {
-				inputSystemWithMultipleComponents(i, systems, event, componentTypes,
+				inputSystemWithMultipleComponents(systems[i], event, componentTypes,
 				                                  componentParam, componentArrays);
 			}
 		}
@@ -146,7 +148,6 @@ namespace xe {
 				uint srcIndex = static_cast<uint>(entityComponents.size() - 1);
 				uint destIndex = i;
 
-//				entityComponents[destIndex] = entityComponents[srcIndex];
 				memcpy(&entityComponents[destIndex],
 				       &entityComponents[srcIndex],
 				       sizeof(entityComponents[srcIndex]));
@@ -185,12 +186,12 @@ namespace xe {
 		return nullptr;
 	}
 
-	void ECS::updateSystemWithMultipleComponents(uint index, ECSSystemList &systems, float delta,
+	void ECS::updateSystemWithMultipleComponents(BaseECSSystem *system, float delta,
 	                                             const std::vector<uint> &componentTypes,
 	                                             std::vector<BaseECSComponent *> &componentParam,
 	                                             std::vector<std::vector<byte> *> &componentArrays) {
 
-		const std::vector<uint> &componentFlags = systems[index]->getComponentFlags();
+		const std::vector<uint> &componentFlags = system->getComponentFlags();
 
 		componentParam.resize(__max(componentParam.size(), componentTypes.size()));
 		componentArrays.resize(__max(componentArrays.size(), componentTypes.size()));
@@ -222,21 +223,22 @@ namespace xe {
 			}
 
 			if (isValid) {
-				systems[index]->preUpdateComponents(delta, &componentParam[0]);
-				systems[index]->updateComponents(delta, &componentParam[0]);
-				systems[index]->lateUpdateComponents(delta, &componentParam[0]);
+				system->preUpdateComponents(delta, &componentParam[0]);
+				system->updateComponents(delta, &componentParam[0]);
+				system->lateUpdateComponents(delta, &componentParam[0]);
 			}
 		}
 	}
 
-	void ECS::inputSystemWithMultipleComponents(uint index, ECSSystemList &systems, Event &event,
+
+	void ECS::inputSystemWithMultipleComponents(BaseECSSystem *system, Event &event,
 	                                            const std::vector<uint> &componentTypes,
 	                                            std::vector<BaseECSComponent *> &componentParam,
 	                                            std::vector<std::vector<byte> *> &componentArrays) {
 
 		if (event.handled) return;
 
-		const std::vector<uint> &componentFlags = systems[index]->getComponentFlags();
+		const std::vector<uint> &componentFlags = system->getComponentFlags();
 
 		componentParam.resize(__max(componentParam.size(), componentTypes.size()));
 		componentArrays.resize(__max(componentArrays.size(), componentTypes.size()));
@@ -267,7 +269,7 @@ namespace xe {
 			}
 
 			if (isValid) {
-				systems[index]->inputComponents(event, &componentParam[0]);
+				system->inputComponents(event, &componentParam[0]);
 			}
 		}
 	}
@@ -292,4 +294,5 @@ namespace xe {
 
 		return minIndex;
 	}
+
 }
