@@ -18,6 +18,8 @@ namespace xe {
 	public:
 		~TextureManager() override;
 
+		static void init();
+
 		static bool add(Texture *texture);
 		static const Texture *get(const string &name);
 

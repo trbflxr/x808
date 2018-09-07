@@ -197,8 +197,6 @@ namespace xe {
 		Context::create(getHandle());
 		Renderer::init();
 
-		SoundManager::init();
-
 		setVisible(true);
 		setMouseCursorVisible(true);
 		setVerticalSyncEnabled(false);

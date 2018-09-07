@@ -241,17 +241,17 @@ void Test2D::input(xe::Event &event) {
 		default: break;
 
 		case Event::KeyPressed: {
-			if (event.key.code == Keyboard::Num1) {
+			if (event.key.code == Keyboard::Num0) {
 				GETSOUND("orunec")->play();
 				GETSOUND("orunec")->setGain(0.2f);
 				event.handled = true;
 			}
-			if (event.key.code == Keyboard::Num2) {
+			if (event.key.code == Keyboard::Num9) {
 				GETSOUND("test")->play();
 				GETSOUND("test")->setGain(0.2f);
 				event.handled = true;
 			}
-			if (event.key.code == Keyboard::Num3) {
+			if (event.key.code == Keyboard::Num8) {
 				if (!GETSOUND("orunec")->isPlaying()) {
 					GETSOUND("orunec")->loop();
 					GETSOUND("orunec")->setGain(0.2f);

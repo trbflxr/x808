@@ -24,16 +24,16 @@ public:
 		xe::vec3 pos = camera->camera.transform.getPosition();
 
 		if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
-			pos.x += 100 * delta;
+			pos.x += 1000 * delta;
 		}
 		if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::A)) {
-			pos.x -= 100 * delta;
+			pos.x -= 1000 * delta;
 		}
 		if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::W)) {
-			pos.y += 100 * delta;
+			pos.y += 1000 * delta;
 		}
 		if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
-			pos.y -= 100 * delta;
+			pos.y -= 1000 * delta;
 		}
 		camera->camera.transform.setPosition(pos);
 

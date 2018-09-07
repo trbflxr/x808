@@ -19,6 +19,8 @@ namespace xe {
 	public:
 		~FontManager() override;
 
+		static void init();
+
 		static bool add(Font *font);
 		static const Font *get(const string &name);
 

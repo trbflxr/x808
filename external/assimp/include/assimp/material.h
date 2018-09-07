@@ -447,7 +447,7 @@ enum aiBlendMode
 };
 
 
-#include "./Compiler/pushpack1.h"
+#include "assimp/Compiler/pushpack1.h"
 
 // ---------------------------------------------------------------------------
 /** @brief Defines how an UV channel is transformed.
@@ -494,7 +494,7 @@ struct aiUVTransform
 
 };
 
-#include "./Compiler/poppack1.h"
+#include "assimp/Compiler/poppack1.h"
 
 //! @cond AI_DOX_INCLUDE_INTERNAL
 // ---------------------------------------------------------------------------

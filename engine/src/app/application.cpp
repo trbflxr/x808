@@ -9,6 +9,7 @@
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/resources/shadermanager.hpp>
+#include <xe/resources/soundmanager.hpp>
 #include "xe/app/application.hpp"
 
 namespace xe {
@@ -28,9 +29,7 @@ namespace xe {
 		init();
 	}
 
-	Application::~Application() { }
-
-	void Application::platformInit() {
+	void Application::init() {
 		if (config.fullScreen) {
 			window.create(VideoMode::getDesktopMode(), config.title, WindowStyle::Fullscreen);
 
@@ -41,6 +40,11 @@ namespace xe {
 
 		window.setFramerateLimit(config.fps);
 		window.setVerticalSyncEnabled(config.vSync);
+
+		ShaderManager::init();
+		SoundManager::init();
+		FontManager::init();
+		TextureManager::init();
 	}
 
 	void Application::start() {
@@ -122,10 +126,6 @@ namespace xe {
 		FontManager::clean();
 		TextureManager::clean();
 		ShaderManager::clean();
-	}
-
-	void Application::init() {
-		platformInit();
 	}
 
 	void Application::tick() {

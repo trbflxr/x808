@@ -17,6 +17,10 @@ namespace xe {
 		clean();
 	}
 
+	void FontManager::init() {
+		instance();
+	}
+
 	FontManager &FontManager::instance() {
 		static FontManager fm;
 		return fm;

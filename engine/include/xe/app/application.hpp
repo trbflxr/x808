@@ -19,7 +19,7 @@ namespace xe {
 	class XE_API Application {
 	public:
 		explicit Application(const Config &config, RenderAPI api, uint apiVersion);
-		virtual ~Application();
+		virtual ~Application() = default;
 
 		void pushLayer(Layer *layer);
 		Layer *popLayer();
@@ -46,7 +46,6 @@ namespace xe {
 	private:
 		void init();
 
-		void platformInit();
 		void run();
 
 		void tick();

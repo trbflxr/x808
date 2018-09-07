@@ -17,6 +17,8 @@ namespace xe {
 	public:
 		~ShaderManager() override;
 
+		static void init();
+
 		static bool add(BaseShader *shader);
 		static const BaseShader *get(const string &name);
 		static const string &getSource(const string &name);

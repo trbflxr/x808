@@ -22,6 +22,10 @@ namespace xe {
 		clean();
 	}
 
+	void ShaderManager::init() {
+		instance();
+	}
+
 	ShaderManager &ShaderManager::instance() {
 		static ShaderManager sm;
 		return sm;

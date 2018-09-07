@@ -16,6 +16,10 @@ namespace xe {
 		clean();
 	}
 
+	void TextureManager::init() {
+		instance();
+	}
+
 	TextureManager &TextureManager::instance() {
 		static TextureManager tm;
 		return tm;
