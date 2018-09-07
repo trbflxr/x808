@@ -21,7 +21,7 @@ Test2D::Test2D() {
 	const float height = app.getConfig().height;
 
 	textRenderer = new TextRenderer(width, height);
-	spriteRenderer = new SpriteRenderer(width, height);
+	spriteRenderer = new SpriteRenderer(width, height, true);
 	primitiveRenderer = new PrimitiveRenderer(width, height);
 
 	TextureParameters params(TextureTarget::Tex2D,
@@ -177,6 +177,14 @@ Test2D::Test2D() {
 	a = ecs.makeEntity(s1, t1);
 
 	ecs.makeEntity(s2, t2);
+
+	light0 = new Light2D("tl0", {10, 10}, {1, 1, 1}, 50.0f);
+
+	spriteRenderer->addLight(light0);
+	spriteRenderer->addLight(new Light2D("tl1", {-200, -200}, {1, 0, 1}, 20.0f));
+	spriteRenderer->addLight(new Light2D("tl2", {0, -200}, {1, 1, 0}, 20.0f));
+	spriteRenderer->addLight(new Light2D("tl3", {200, -200}, {0, 0, 1}, 20.0f));
+	spriteRenderer->addLight(new Light2D("tl4", {-400, -200}, {0, 1, 0}, 20.0f));
 }
 
 Test2D::~Test2D() {
@@ -187,6 +195,9 @@ Test2D::~Test2D() {
 	delete spriteRendererSystem;
 	delete textRendererSystem;
 	delete cameraSystem;
+
+
+	delete light0;
 }
 
 void Test2D::render() {
@@ -270,6 +281,11 @@ void Test2D::input(xe::Event &event) {
 
 		case Event::MouseMoved: {
 //			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
+
+			static const vec2i halfSize = window.getSize() / 2;
+
+			light0->setPosition(vec2((event.mouseMove.x - halfSize.x) * 2.0f,
+			                         -(event.mouseMove.y - halfSize.y) * 2.0f));
 
 			break;
 		}

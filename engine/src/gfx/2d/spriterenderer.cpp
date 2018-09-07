@@ -7,15 +7,52 @@
 
 namespace xe {
 
-	SpriteRenderer::SpriteRenderer(uint width, uint height) :
-			IRenderer2D(width, height) {
+	SpriteRenderer::SpriteRenderer(uint width, uint height, bool useLights) :
+			IRenderer2D(width, height),
+			useLights(useLights) {
 
-		shader = new Shader("dSpriteRenderer");
+		shader = new Shader(useLights ? "dSpriteRendererLighting" : "dSpriteRenderer");
+
+		if (useLights) {
+			static constexpr uint lightBlockLocation = 0;
+
+			//bind uniform
+			shader->bindUniformBlock("LightBlock", lightBlockLocation);
+
+			BufferLayout l;
+			l.push<vec2>("position");
+			l.push<float>("offset01", 2);
+			l.push<vec4>("color-intensity");
+
+			lightBuffer = new UniformBuffer(BufferStorage::Dynamic, lightBlockLocation, l, MAX_LIGHTS);
+		}
+	}
+
+	SpriteRenderer::~SpriteRenderer() {
+		if (useLights) {
+			delete lightBuffer;
+		}
+	}
+
+	void SpriteRenderer::addLight(Light2D *light) {
+		if (lights.size() == MAX_LIGHTS) {
+			XE_ERROR("[SpriteRenderer]: can't add light '", light->getName(), "'. Max lights: ", MAX_LIGHTS);
+			return;
+		}
+
+		lights.push_back(light);
+	}
+
+	void SpriteRenderer::updateLightsUBO() {
+		for (uint i = 0; i < lights.size(); ++i) {
+			lightBuffer->update(&lights[i]->getPosition(), 0, i);
+
+			const vec4 ci(lights[i]->getColor(), lights[i]->getIntensity());
+			lightBuffer->update(&ci, 2, i);
+		}
 	}
 
 	void SpriteRenderer::begin() {
-		Renderer::enableBlend(true);
-		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 		Renderer::setViewport(0, 0, width, height);
 
 		vertexArray->bind();
@@ -36,22 +73,34 @@ namespace xe {
 		targets.clear();
 
 		//draw transparent
-		//todo: there must be a better solution
-		std::sort(transparentTargets.begin(), transparentTargets.end(),
-		          [](const RenderTarget a, const RenderTarget b) {
-			          return a.transform->zIndex < b.transform->zIndex;
-		          });
+		if (!transparentTargets.empty()) {
+			//todo: there must be a better solution
+			std::sort(transparentTargets.begin(), transparentTargets.end(),
+			          [](const RenderTarget a, const RenderTarget b) {
+				          return a.transform->zIndex < b.transform->zIndex;
+			          });
 
-		for (auto &&target : transparentTargets) {
-			submitInternal(target);
+			Renderer::enableBlend(true);
+			Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
+
+			for (auto &&target : transparentTargets) {
+				submitInternal(target);
+			}
+			transparentTargets.clear();
 		}
-		transparentTargets.clear();
 
 		releaseBuffer();
 	}
 
 	void SpriteRenderer::flush() {
 		shader->bind();
+
+		if (useLights) {
+			updateLightsUBO();
+			int32 size = static_cast<int32>(lights.size());
+			shader->setUniform("lightCount", &size, sizeof(int32));
+		}
+
 		shader->updateUniforms();
 
 		for (uint i = 0; i < textures.size(); i++) {

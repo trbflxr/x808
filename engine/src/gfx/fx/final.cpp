@@ -17,7 +17,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("finalScene_frag"),
 				                       {ShaderManager::getSource("fxaa_include")})
 		});
-		ShaderManager::add(finalFX);
 		finalShader = new Shader(finalFX);
 		sampler0 = finalShader->getSampler("sampler0");
 

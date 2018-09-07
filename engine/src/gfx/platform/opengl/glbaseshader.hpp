@@ -23,9 +23,12 @@ namespace xe { namespace internal {
 
 		void setUniformBuffer(byte *data, uint size, uint slot) const override;
 
+		void bindUniformBlock(const char *blockName, uint location) const override;
+
 		inline const ShaderUniformBufferVec &getUniforms() override { return uniformBuffers; }
 		inline const ShaderSamplerVec &getSamplers() const override { return samplers; }
 		inline const string &getName() const override { return name; }
+		inline uint getHandle() const override { return handle; }
 		inline const std::unordered_map<string, string> &getSources() const override { return sources; }
 
 	private:

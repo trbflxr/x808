@@ -29,11 +29,11 @@ void main() {
     wireframePoints[i] = vec2(1200) * clipPositions[i].xy / clipPositions[i].w;
   }
 
-  const vec2 v[3] = vec2[3](wireframePoints[2] - wireframePoints[1], wireframePoints[2] - wireframePoints[0],
+  vec2 v[3] = vec2[3](wireframePoints[2] - wireframePoints[1], wireframePoints[2] - wireframePoints[0],
                       wireframePoints[1] - wireframePoints[0]);
-  const float area = abs(v[1].x * v[2].y - v[1].y * v[2].x);
+  float area = abs(v[1].x * v[2].y - v[1].y * v[2].x);
 
-  const vec3 chooser[3] = vec3[3](vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0));
+  vec3 chooser[3] = vec3[3](vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0));
 
   // Output triangle
   for (int i = 0; i < 3; i++) {

@@ -33,7 +33,7 @@ void main() {
   calcLighting(uv, worldPosition, normalDepth.xyz, camPosition, lightPosition, lightColor, lightIntensity, lightFalloff,
                specularProperties, L, tempDiffuse, tempSpecular);
 
-  const float visibility = calcSpotLightCone(L, lightDirection, lightSpotAngle, lightSpotBlur);
+  float visibility = calcSpotLightCone(L, lightDirection, lightSpotAngle, lightSpotBlur);
 
   diffuse = tempDiffuse * visibility;
   specular = tempSpecular * visibility;

@@ -75,8 +75,6 @@ DebugUI::~DebugUI() {
 }
 
 void DebugUI::render() {
-	Renderer::clear(RendererBufferDepth);
-
 	//render primitives
 	primitiveRenderer->begin();
 

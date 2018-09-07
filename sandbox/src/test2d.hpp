@@ -31,7 +31,7 @@ public:
 private:
 	xe::SpriteRenderer *spriteRenderer;
 	xe::PrimitiveRenderer *primitiveRenderer;
-	xe::TextRenderer* textRenderer;
+	xe::TextRenderer *textRenderer;
 
 	xe::ECS ecs;
 
@@ -48,6 +48,8 @@ private:
 	xe::EntityHandle text;
 	xe::EntityHandle inputText;
 	xe::EntityHandle a;
+
+	xe::Light2D *light0;
 };
 
 

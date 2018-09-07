@@ -14,19 +14,19 @@ uniform sampler2D dispTexture;
 uniform int enableDispTexture;
 uniform float displacementStrength = 0.1;
 
-vec2 interpolate2DTriangle(const vec2 v0, const vec2 v1, const vec2 v2) {
+vec2 interpolate2DTriangle(vec2 v0, vec2 v1, vec2 v2) {
   return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;
 }
 
-vec3 interpolate3DTriangle(const vec3 v0, const vec3 v1, const vec3 v2) {
+vec3 interpolate3DTriangle(vec3 v0, vec3 v1, vec3 v2) {
   return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2;
 }
 
-vec4 interpolate3DTriangle(const vec4 v0, const vec4 v1, const vec4 v2) {
+vec4 interpolate3DTriangle(vec4 v0, vec4 v1, vec4 v2) {
   return vec4(gl_TessCoord.x) * v0 + vec4(gl_TessCoord.y) * v1 + vec4(gl_TessCoord.z) * v2;
 }
 
-vec2 interpolate2DQuad(const vec2 v0, const vec2 v1, const vec2 v2, const vec2 v3) {
+vec2 interpolate2DQuad(vec2 v0, vec2 v1, vec2 v2, vec2 v3) {
   float u = gl_TessCoord.x;
   float v = gl_TessCoord.y;
 
@@ -35,12 +35,12 @@ vec2 interpolate2DQuad(const vec2 v0, const vec2 v1, const vec2 v2, const vec2 v
   return mix(a, b, v);
 }
 
-vec3 interpolate3DQuad(const vec3 v0, const vec3 v1, const vec3 v2, const vec3 v3) {
-  const float u = gl_TessCoord.x;
-  const float v = gl_TessCoord.y;
+vec3 interpolate3DQuad(vec3 v0, vec3 v1, vec3 v2, vec3 v3) {
+  float u = gl_TessCoord.x;
+  float v = gl_TessCoord.y;
 
-  const vec3 a = mix(v0, v1, u);
-  const vec3 b = mix(v2, v3, u);
+  vec3 a = mix(v0, v1, u);
+  vec3 b = mix(v2, v3, u);
   return mix(a, b, v);
 }
 
@@ -51,8 +51,8 @@ void main() {
   teTangent0 = normalize(interpolate3DTriangle(tcTangent0[0], tcTangent0[1], tcTangent0[2]));
 
   if (enableDispTexture > 0) {
-    const float displacement = texture(dispTexture, teUV0).r * displacementStrength;
-    const vec3 displacementMod = teNormal0 * displacement;
+    float displacement = texture(dispTexture, teUV0).r * displacementStrength;
+    vec3 displacementMod = teNormal0 * displacement;
     teWorldPosition0 += displacementMod;
   }
 

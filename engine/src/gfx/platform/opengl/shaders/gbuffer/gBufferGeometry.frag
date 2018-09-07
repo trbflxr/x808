@@ -31,7 +31,7 @@ uniform int enableParallaxTexture;
 uniform sampler2D parallaxTexture;
 
 void main() {
-  const mat3 TBN = calcTBN(gNormal0, gTangent0);
+  mat3 TBN = calcTBN(gNormal0, gTangent0);
 
   // Parallax Mapping
   vec2 uv = gUV0;
@@ -53,28 +53,28 @@ void main() {
   diffuse = vec4(diffuseColorFinal.xyz, material);
 
   if (enableWireframe > 0) {
-    const float nearDistance = min(min(gWireframeDistance0[0], gWireframeDistance0[1]), gWireframeDistance0[2]);
+    float nearDistance = min(min(gWireframeDistance0[0], gWireframeDistance0[1]), gWireframeDistance0[2]);
 
-    const float edgeIntensity1 = exp2(-(1.0 / 1.0) * nearDistance * nearDistance);
-    const float edgeIntensity2 = exp2(-(1.0 / 20.0) * nearDistance * nearDistance);
+    float edgeIntensity1 = exp2(-(1.0 / 1.0) * nearDistance * nearDistance);
+    float edgeIntensity2 = exp2(-(1.0 / 20.0) * nearDistance * nearDistance);
 
-    const vec3 lineColorInner = (edgeIntensity1 * vec3(1.0)) + ((1.0 - edgeIntensity1) * vec3(0.0));
-    const vec3 lineColorOuter = (edgeIntensity2 * vec3(0.0)) + ((1.0 - edgeIntensity2) * diffuse.xyz);
+    vec3 lineColorInner = (edgeIntensity1 * vec3(1.0)) + ((1.0 - edgeIntensity1) * vec3(0.0));
+    vec3 lineColorOuter = (edgeIntensity2 * vec3(0.0)) + ((1.0 - edgeIntensity2) * diffuse.xyz);
 
     diffuse.xyz = lineColorInner + lineColorOuter;
   }
 
   // Normal Mapping + Linear Depth
-  const float depth = length(gViewPosition0);
+  float depth = length(gViewPosition0);
   normalDepth = vec4(gNormal0, depth);
   if (enableNormalTexture > 0) {
-    const vec3 normalMap = calcNormalMapping(normalTexture, uv, TBN);
+    vec3 normalMap = calcNormalMapping(normalTexture, uv, TBN);
     normalDepth = vec4(normalMap, depth);
   }
 
   // Specular Mapping
   vec3 specularColorFinal = specularColor;
-  const float specularShininessFinal = max(0.05, 0.9 - (log2(specularShininess) / 9.0));
+  float specularShininessFinal = max(0.05, 0.9 - (log2(specularShininess) / 9.0));
   if (enableSpecularTexture > 0) {
     specularColorFinal = texture(specularTexture, uv).xyz;
   }

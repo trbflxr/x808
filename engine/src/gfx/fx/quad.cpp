@@ -39,46 +39,43 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture1D_frag"))
 		});
-		ShaderManager::add(rt1);
+		renderTexture1D = new Shader(rt1);
+
 
 		BaseShader *rt2 = new BaseShader("dRenderTexture2D", {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture2D_frag"))
 		});
-		ShaderManager::add(rt2);
+		renderTexture2D = new Shader(rt2);
+
 
 		BaseShader *rt2a = new BaseShader("dRenderTexture2DArray", {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture2DArray_frag"))
 		});
-		ShaderManager::add(rt2a);
+		renderTexture2DArray = new Shader(rt2a);
+
 
 		BaseShader *rt3 = new BaseShader("dRenderTexture3D", {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture3D_frag"))
 		});
-		ShaderManager::add(rt3);
+		renderTexture3D = new Shader(rt3);
+
 
 		BaseShader *rtc = new BaseShader("dRenderTextureCube", {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("renderTextureCube_vert"),
 				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTextureCube_frag"))
 		});
-		ShaderManager::add(rtc);
+		renderTextureCube = new Shader(rtc);
+
 
 		BaseShader *rtca = new BaseShader("dRenderTextureCubeArray", {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("renderTextureCube_vert"),
 				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTextureCubeArray_frag"))
 		});
-		ShaderManager::add(rtca);
-
-
-		renderTexture1D = new Shader(rt1);
-		renderTexture2D = new Shader(rt2);
-		renderTexture2DArray = new Shader(rt2a);
-		renderTexture3D = new Shader(rt3);
-		renderTextureCube = new Shader(rtc);
 		renderTextureCubeArray = new Shader(rtca);
 	}
 

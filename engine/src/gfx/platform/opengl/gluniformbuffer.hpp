@@ -24,7 +24,7 @@ namespace xe { namespace internal {
 		inline uint getHandle() const override { return handle; }
 
 	private:
-		std::vector<BufferLayout> layouts;
+		BufferLayout layout;
 		uint handle;
 	};
 

@@ -6,7 +6,7 @@ uniform sampler2D sampler0;  // Scene
 layout(std430, binding = 0) buffer ex { vec2 exposure[]; };
 
 void main() {
-  const vec4 scene = texture(sampler0, uv0);
+  vec4 scene = texture(sampler0, uv0);
 
   float lumAvg = 0.05 / exposure[0].y;
   lumAvg = exp2(log2(lumAvg));

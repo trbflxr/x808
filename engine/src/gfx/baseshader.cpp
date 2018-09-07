@@ -40,6 +40,10 @@ namespace xe {
 		shader->setUniformBuffer(data, size, slot);
 	}
 
+	void BaseShader::bindUniformBlock(const char *blockName, uint location) const {
+		shader->bindUniformBlock(blockName, location);
+	}
+
 	const ShaderUniformBufferVec &BaseShader::getUniforms() const {
 		return shader->getUniforms();
 	}
@@ -50,6 +54,10 @@ namespace xe {
 
 	const string &BaseShader::getName() const {
 		return shader->getName();
+	}
+
+	const uint BaseShader::getHandle() const {
+		return shader->getHandle();
 	}
 
 	const std::unordered_map<string, string> &BaseShader::getSources() const {

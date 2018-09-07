@@ -11,9 +11,9 @@ out vec3 vTangent0;
 uniform mat4 model;
 
 void main() {
-  const vec4 vPos = vec4(position, 1.0);
-  const vec4 vNormal = vec4(normal, 0.0);
-  const vec4 vTangent = vec4(tangent, 0.0);
+  vec4 vPos = vec4(position, 1.0);
+  vec4 vNormal = vec4(normal, 0.0);
+  vec4 vTangent = vec4(tangent, 0.0);
 
   vWorldPosition0 = (model * vPos).xyz;
   vUV0 = uv;

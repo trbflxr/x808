@@ -52,9 +52,12 @@ namespace xe {
 
 		void setUniformBuffer(byte *data, uint size, uint slot) const;
 
+		void bindUniformBlock(const char *blockName, uint location) const;
+
 		const ShaderUniformBufferVec &getUniforms() const;
 		const ShaderSamplerVec &getSamplers() const;
 		const string &getName() const;
+		const uint getHandle() const;
 		const std::unordered_map<string, string> &getSources() const;
 
 	private:

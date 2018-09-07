@@ -45,6 +45,7 @@ namespace xe {
 
 		updateUBO(view, proj, pos, look);
 
+		Renderer::enableBlend(false);
 		Renderer::enableDepthTesting(false);
 
 

@@ -2,20 +2,24 @@
 // Created by FLXR on 8/11/2018.
 //
 
+#include <xe/gfx/shader.hpp>
+
 #include "xe/gfx/shader.hpp"
 #include "xe/resources/shadermanager.hpp"
 #include "xe/utils/log.hpp"
 
 namespace xe {
 
-	Shader::Shader(BaseShader *shader) :
-			shader(shader) {
+	Shader::Shader(BaseShader *shader, bool deleteBase) :
+			shader(shader),
+			deleteBase(deleteBase) {
 
 		init();
 	}
 
 	Shader::Shader(const string &nameInShaderManager) :
-			shader(GETSHADER(nameInShaderManager)) {
+			shader(GETSHADER(nameInShaderManager)),
+			deleteBase(false) {
 
 		init();
 	}
@@ -23,6 +27,10 @@ namespace xe {
 	Shader::~Shader() {
 		for (auto &&data : uniformData) {
 			delete[] data.buffer;
+		}
+
+		if (deleteBase) {
+			delete shader;
 		}
 	}
 
@@ -71,6 +79,10 @@ namespace xe {
 		}
 
 		return 0;
+	}
+
+	void Shader::bindUniformBlock(const char *blockName, uint location) const {
+		shader->bindUniformBlock(blockName, location);
 	}
 
 }

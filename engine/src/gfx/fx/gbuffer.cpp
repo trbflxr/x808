@@ -110,7 +110,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferGeometry_frag"),
 				                       {geomInclude})
 		});
-		ShaderManager::add(geomBase);
 		geometryShader = new Shader(geomBase);
 
 
@@ -118,7 +117,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("gBufferStencil_vert"),
 				                       {ShaderManager::getSource("1_cameraSpatials_ubo")})
 		});
-		ShaderManager::add(stencilBase);
 		stencilShader = new Shader(stencilBase);
 
 
@@ -129,7 +127,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferLightingSpot_frag"),
 				                       {lightingInclude})
 		});
-		ShaderManager::add(spotLightBase);
 		spotShader = new Shader(spotLightBase);
 
 
@@ -140,7 +137,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferLightingPoint_frag"),
 				                       {lightingInclude})
 		});
-		ShaderManager::add(pointLightBase);
 		pointShader = new Shader(pointLightBase);
 
 
@@ -148,7 +144,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferAccumulation_frag"))
 		});
-		ShaderManager::add(accumulationBase);
 		accumulationShader = new Shader(accumulationBase);
 
 	}

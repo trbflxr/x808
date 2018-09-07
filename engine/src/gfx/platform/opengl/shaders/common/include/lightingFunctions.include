@@ -89,18 +89,18 @@ vec3 calcRimLighting(vec3 N, vec3 E, float lightIntensity) {
 }
 
 // Lighting Calculation
-float calcSpotLightCone(const vec3 L, const vec3 lightDirection, const float outerAngle, const float blurAmount) {
+float calcSpotLightCone(vec3 L, vec3 lightDirection, float outerAngle, float blurAmount) {
   // Add tiny bit to outer angle so it's rounded
-  const float spotAngleOuter = outerAngle - 0.35;
+  float spotAngleOuter = outerAngle - 0.35;
 
   // Amount to blur the edge of the cone
-  const float spotBlur = blurAmount * (spotAngleOuter / MATH_HALF_PI);
+  float spotBlur = blurAmount * (spotAngleOuter / MATH_HALF_PI);
 
-  const float spotAngleInner = spotAngleOuter + spotBlur;
-  const float spotAngle = acos(dot(lightDirection, -L));
+  float spotAngleInner = spotAngleOuter + spotBlur;
+  float spotAngle = acos(dot(lightDirection, -L));
 
-  const float spotAngleDifference = spotAngleInner - spotAngleOuter;
-  const float spotLightBlur = (-spotAngle + spotAngleOuter) / spotAngleDifference;
+  float spotAngleDifference = spotAngleInner - spotAngleOuter;
+  float spotLightBlur = (-spotAngle + spotAngleOuter) / spotAngleDifference;
 
   return clamp(spotLightBlur, 0.0, 1.0);
 }
@@ -127,22 +127,22 @@ float calcAttenuation(float lightIntensity, float lightFalloff, vec3 lightPositi
   return attenuation;
 }
 
-void calcLighting(const vec2 uv, const vec3 worldPosition, const vec3 worldNormal, const vec3 camPosition,
-                  const vec3 lightPosition, const vec3 lightColor, const float lightIntensity, const float lightFalloff,
-                  const vec4 specularProperties, out vec3 L, out vec4 diffuseOut, out vec4 specularOut) {
+void calcLighting(vec2 uv, vec3 worldPosition, vec3 worldNormal, vec3 camPosition,
+                  vec3 lightPosition, vec3 lightColor, float lightIntensity, float lightFalloff,
+                  vec4 specularProperties, out vec3 L, out vec4 diffuseOut, out vec4 specularOut) {
   // Normal
-  const vec3 N = normalize(worldNormal);
+  vec3 N = normalize(worldNormal);
   // View Direction
-  const vec3 E = normalize(-camPosition - worldPosition);
+  vec3 E = normalize(-camPosition - worldPosition);
   // Light to Object Direction
   L = vec3(0.0);
 
   // Attenuation
-  const float attenuation = calcAttenuation(lightIntensity, lightFalloff, lightPosition, worldPosition, L);
+  float attenuation = calcAttenuation(lightIntensity, lightFalloff, lightPosition, worldPosition, L);
 
   // Angle of Inclination
-  const float angleOfInc = dot(L, N);
-  const float maxInc = max(angleOfInc, 1.0);
+  float angleOfInc = dot(L, N);
+  float maxInc = max(angleOfInc, 1.0);
 
   // Diffuse
   vec4 diffuse = vec4(lightColor * maxInc, 1.0);
@@ -150,14 +150,14 @@ void calcLighting(const vec2 uv, const vec3 worldPosition, const vec3 worldNorma
   // diffuse.xyz += calcRimLighting(N, E, lightIntensity) * max(dot(L, N)+0.3, 0.0);
 
   // Specular
-  const float specularShininess = specularProperties.a;
-  const vec3 specularColor = specularProperties.xyz;
+  float specularShininess = specularProperties.a;
+  vec3 specularColor = specularProperties.xyz;
 
-  // const vec2 slope = vec2(specularShininess);
-  // const float gaussianTerm = wardSpecular(L, E, N, slope);
-  const float gaussianTerm = cookTorranceSpecular(L, E, N, specularShininess, 0.9);
+  // vec2 slope = vec2(specularShininess);
+  // float gaussianTerm = wardSpecular(L, E, N, slope);
+  float gaussianTerm = cookTorranceSpecular(L, E, N, specularShininess, 0.9);
 
-  const vec4 specular = vec4(lightColor * (lightIntensity / 10.0) * (gaussianTerm * maxInc) * specularColor, 1.0);
+  vec4 specular = vec4(lightColor * (lightIntensity / 10.0) * (gaussianTerm * maxInc) * specularColor, 1.0);
 
   diffuseOut = diffuse * attenuation;
   specularOut = specular * attenuation;

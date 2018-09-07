@@ -8,16 +8,13 @@
 
 namespace xe { namespace internal {
 
-	GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) {
-		layouts.reserve(size);
-		for (int i = 0; i < size; ++i) {
-			layouts.push_back(layout);
-		}
+	GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) :
+			layout(layout) {
 
 		glCall(glGenBuffers(1, &handle));
 
 		GLUniformBuffer::bind();
-		glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride(), nullptr, bufferStorageToGL(storage)));
+		glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride() * size, nullptr, bufferStorageToGL(storage)));
 		unbind();
 
 		glCall(glBindBufferBase(GL_UNIFORM_BUFFER, bind, handle));
@@ -36,9 +33,10 @@ namespace xe { namespace internal {
 	}
 
 	void GLUniformBuffer::update(const void *data, uint index, uint layoutIndex) {
-		auto &l = layouts[layoutIndex].getLayout();
+		auto &l = layout.getLayout();
+		uint layoutOffset = layout.getStride() * layoutIndex;
 
-		uint offset = l[index].offset;
+		uint offset = l[index].offset + layoutOffset;
 		uint size = l[index].size * l[index].count;
 
 		glCall(glNamedBufferSubData(handle, offset, size, data));

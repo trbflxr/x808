@@ -61,7 +61,6 @@ namespace xe { namespace fx {
 		BaseShader *baseLuminosity = new BaseShader("dLuminosity", {
 				ShaderFile::fromSource(ShaderType::Compute, ShaderManager::getSource("hdrLuminosity_comp"))
 		});
-		ShaderManager::add(baseLuminosity);
 		luminosityShader = new Shader(baseLuminosity);
 
 		//autoExposure
@@ -69,7 +68,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Compute, ShaderManager::getSource("hdrAutoExposure_comp"),
 				                       {ShaderManager::getSource("interpolation_include")})
 		});
-		ShaderManager::add(baseAutoExposure);
 		autoExposureShader = new Shader(baseAutoExposure);
 
 		//Luminosity
@@ -77,7 +75,6 @@ namespace xe { namespace fx {
 				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
 				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("hdrScaleScene_frag"))
 		});
-		ShaderManager::add(baseScaleScene);
 		scaleSceneShader = new Shader(baseScaleScene);
 
 		//get samplers

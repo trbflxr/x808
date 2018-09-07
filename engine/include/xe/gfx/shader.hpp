@@ -12,7 +12,7 @@ namespace xe {
 
 	class XE_API Shader {
 	public:
-		explicit Shader(BaseShader *shader);
+		explicit Shader(BaseShader *shader, bool deleteBase = true);
 		explicit Shader(const string &nameInShaderManager);
 		virtual ~Shader();
 
@@ -25,12 +25,15 @@ namespace xe {
 
 		uint getSampler(const string &name);
 
+		void bindUniformBlock(const char *blockName, uint location) const;
+
 		inline const BaseShader *getBaseShader() const { return shader; }
 
 	private:
 		void init();
 
 	protected:
+		bool deleteBase;
 		const BaseShader *shader;
 
 		std::vector<Uniform> uniforms;

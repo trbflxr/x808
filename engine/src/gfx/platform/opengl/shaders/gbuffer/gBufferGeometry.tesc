@@ -14,7 +14,7 @@ uniform int enableDispTexture;
 uniform vec2 renderSize;
 uniform int cullTest;
 
-float screenSphereSize(const vec4 e1, const vec4 e2) {
+float screenSphereSize(vec4 e1, vec4 e2) {
   vec4 p1 = (e1 + e2) * 0.5;
   vec4 p2 = p1;
   p2.y += distance(e1, e2);
@@ -22,12 +22,12 @@ float screenSphereSize(const vec4 e1, const vec4 e2) {
   p1 = p1 / p1.w;
   p2 = p2 / p2.w;
 
-  const float l = length((p1.xy - p2.xy) * renderSize * 0.5);
+  float l = length((p1.xy - p2.xy) * renderSize * 0.5);
 
   return (clamp(l / 15.0, 1.0, 64.0));
 }
 
-void controlTessellation(const mat4 vp, const vec3[gl_MaxPatchVertices] worldPosition, const vec3 normal) {
+void controlTessellation(mat4 vp, vec3[gl_MaxPatchVertices] worldPosition, vec3 normal) {
   vec4 vertexPosition[3];
 
   for (int i = 0; i < 3; i++) {

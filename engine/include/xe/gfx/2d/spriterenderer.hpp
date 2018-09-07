@@ -9,8 +9,13 @@
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/gfx/2d/irenderer2d.hpp>
+#include <xe/gfx/2d/light2d.hpp>
 #include <xe/ecs/components/spritecomponent.hpp>
 #include <xe/ecs/components/transform2dcomponent.hpp>
+#include <xe/gfx/framebuffer.hpp>
+#include <xe/gfx/fx/quad.hpp>
+#include <xe/gfx/fx/final.hpp>
+#include <xe/gfx/uniformbuffer.hpp>
 
 namespace xe {
 
@@ -26,8 +31,8 @@ namespace xe {
 		};
 
 	public:
-		explicit SpriteRenderer(uint width, uint height);
-		~SpriteRenderer() override = default;
+		explicit SpriteRenderer(uint width, uint height, bool useLights = false);
+		~SpriteRenderer() override ;
 
 		void submit(const SpriteComponent *sprite, const Transform2DComponent *transform);
 
@@ -35,12 +40,21 @@ namespace xe {
 		void end() override;
 		void flush() override;
 
+		void addLight(Light2D *light);
+
 	private:
 		void submitInternal(const RenderTarget &target);
+
+		void updateLightsUBO();
 
 	private:
 		std::vector<RenderTarget> targets;
 		std::vector<RenderTarget> transparentTargets;
+
+		static constexpr uint MAX_LIGHTS = 64;
+		bool useLights;
+		std::vector<Light2D *> lights;
+		UniformBuffer* lightBuffer;
 	};
 }
 

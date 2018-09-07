@@ -3,7 +3,7 @@ layout(location = 0) in vec3 position;
 out vec2 uv0;
 flat out int instanceID;
 
-const vec2 data[3] = vec2[](
+vec2 data[3] = vec2[](
   vec2(-1.0, -1.0),
   vec2(3.0, -1.0),
   vec2(-1.0, 3.0)

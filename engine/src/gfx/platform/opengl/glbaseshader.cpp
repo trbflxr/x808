@@ -73,6 +73,11 @@ namespace xe { namespace internal {
 		resolveAndSetUniforms(uniformBuffers[slot], data, size);
 	}
 
+	void GLBaseShader::bindUniformBlock(const char *blockName, uint location) const {
+		glCall(uint index = glGetUniformBlockIndex(handle, blockName));
+		glCall(glUniformBlockBinding(handle, index, location));
+	}
+
 	void GLBaseShader::resolveAndSetUniformField(const GLShaderUniform &field, byte *data, int32 offset) const {
 		switch (field.getType()) {
 			case GLShaderUniform::Type::Float32: setUniform1f(field.getLocation(), *(float *) &data[offset]);
