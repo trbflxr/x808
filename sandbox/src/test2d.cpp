@@ -251,7 +251,7 @@ void Test2D::input(xe::Event &event) {
 		}
 
 		case Event::MouseMoved: {
-			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
+//			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
 			break;
 		}
 

@@ -8,19 +8,19 @@
 namespace xe {
 
 	rect::rect() : position(vec2()), size(vec2()) { }
-	rect::rect(const xe::aabb &aabb) : position(vec2(aabb.min)), size(vec2(aabb.getSize())) { }
-	rect::rect(const xe::vec2 &position, const xe::vec2 &size) : position(position), size(size) { }
+	rect::rect(const aabb &aabb) : position(vec2(aabb.min)), size(vec2(aabb.getSize())) { }
+	rect::rect(const vec2 &position, const vec2 &size) : position(position), size(size) { }
 	rect::rect(float x, float y, float width, float height) : position(x, y), size(width, height) { }
 
-	bool rect::intersects(const xe::rect &other) {
+	bool rect::intersects(const rect &other) {
 		return (size > other.position && position < other.size) || (position > other.size && size < other.position);
 	}
 
-	bool rect::contains(const xe::vec2 &point) {
+	bool rect::contains(const vec2 &point) {
 		return point > getMinBound() && point < getMaxBound();
 	}
 
-	bool rect::contains(const xe::vec3 &point) {
+	bool rect::contains(const vec3 &point) {
 		return contains(vec2(point));
 	}
 

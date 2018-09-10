@@ -18,6 +18,11 @@ add_definitions(
         -D FREEIMAGE_LIB
         -D GLEW_STATIC)
 
+#external libs
+add_subdirectory(external/box2d)
+include_directories(external/box2d)
+
+#includes and libs
 include_directories(src)
 link_directories(${XE_DIRS})
 include_directories(${XE_INCLUDE_DIRS})
@@ -77,7 +82,8 @@ target_link_libraries(xe
         freeimage
         assimp irrxml
         freetype-gl freetype bz2
-        gorilla openal32)
+        gorilla openal32
+        box2d)
 
 #link opengl libs
 if (XE_PLATFORM_GL)

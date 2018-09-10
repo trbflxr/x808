@@ -17,7 +17,7 @@ namespace xe {
 	aobb::aobb(const aobb &other) :
 			transformed(true), position(other.position), size(other.size), rotation(other.rotation) { }
 
-	bool aobb::contains(const xe::vec2 &point) const {
+	bool aobb::contains(const vec2 &point) const {
 		bool result = false;
 		for (char i = 0, j = 3; i < 4; j = i++) {
 			if (((vertices[i].y > point.y) != (vertices[j].y > point.y)) &&
@@ -29,7 +29,7 @@ namespace xe {
 		return result;
 	}
 
-	void aobb::move(const xe::vec2 &direction) {
+	void aobb::move(const vec2 &direction) {
 		setPosition(position + direction);
 	}
 
@@ -37,7 +37,7 @@ namespace xe {
 		setRotation(rotation + deg);
 	}
 
-	void aobb::setPosition(const xe::vec2 &position) {
+	void aobb::setPosition(const vec2 &position) {
 		aobb::position = position;
 		transformed = true;
 	}
@@ -48,7 +48,7 @@ namespace xe {
 		transformed = true;
 	}
 
-	void aobb::setSize(const xe::vec2 &size) {
+	void aobb::setSize(const vec2 &size) {
 		aobb::size = size;
 		transformed = true;
 	}
@@ -67,7 +67,7 @@ namespace xe {
 		transformed = true;
 	}
 
-	const std::array<xe::vec2, 4> &aobb::getVertices() const {
+	const std::array<vec2, 4> &aobb::getVertices() const {
 		if (transformed) {
 			transformed = false;
 
