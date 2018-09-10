@@ -18,29 +18,6 @@ add_definitions(
         -D FREEIMAGE_LIB
         -D GLEW_STATIC)
 
-
-#directories
-set(XE_INCLUDE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        CACHE STRING "XE include dirs" FORCE)
-
-set(XE_DIRS
-        ${CMAKE_SOURCE_DIR}/external/assimp/lib
-        ${CMAKE_SOURCE_DIR}/external/freeimage/lib
-        ${CMAKE_SOURCE_DIR}/external/freetype-gl/lib
-        ${CMAKE_SOURCE_DIR}/external/gorilla-audio/lib
-        CACHE STRING "XE library dirs" FORCE)
-
-set(XE_EXTERNAL_INCLUDE_DIRS
-        ${CMAKE_SOURCE_DIR}/tools/include
-        ${CMAKE_SOURCE_DIR}/external/glew/include
-        ${CMAKE_SOURCE_DIR}/external/assimp/include
-        ${CMAKE_SOURCE_DIR}/external/freeimage/include
-        ${CMAKE_SOURCE_DIR}/external/freetype-gl/include
-        ${CMAKE_SOURCE_DIR}/external/gorilla-audio/include
-        ${CMAKE_SOURCE_DIR}/external/json/include
-        CACHE STRING "XE external include dirs" FORCE)
-
 include_directories(src)
 link_directories(${XE_DIRS})
 include_directories(${XE_INCLUDE_DIRS})

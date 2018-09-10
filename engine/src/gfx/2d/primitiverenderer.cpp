@@ -8,8 +8,8 @@
 
 namespace xe {
 
-	PrimitiveRenderer::PrimitiveRenderer(uint width, uint height) :
-			IRenderer2D(width, height) {
+	PrimitiveRenderer::PrimitiveRenderer(uint width, uint height, Camera *camera) :
+			IRenderer2D(width, height, camera) {
 
 		shader = new Shader("dPrimitiveRenderer");
 	}
@@ -24,6 +24,7 @@ namespace xe {
 	}
 
 	void PrimitiveRenderer::end() {
+		updateCamera();
 		releaseBuffer();
 	}
 

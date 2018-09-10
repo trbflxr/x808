@@ -8,8 +8,8 @@
 
 namespace xe {
 
-	TextRenderer::TextRenderer(uint width, uint height) :
-			IRenderer2D(width, height) {
+	TextRenderer::TextRenderer(uint width, uint height, Camera *camera) :
+			IRenderer2D(width, height, camera) {
 
 		shader = new Shader("dTextRenderer");
 	}
@@ -24,6 +24,8 @@ namespace xe {
 	}
 
 	void TextRenderer::end() {
+		updateCamera();
+
 		Renderer::enableDepthTesting(false);
 
 		if (!text.empty()) {
@@ -66,21 +68,32 @@ namespace xe {
 		Renderer::incDC();
 	}
 
-	void TextRenderer::submit(const TextComponent *text) {
+	void TextRenderer::submit(const Text *text) {
 		TextRenderer::text.push_back(text);
 	}
 
-	void TextRenderer::submitInternal(const TextComponent *component) {
+	void TextRenderer::render(std::vector<const Text *> &targets) {
+		begin();
+
+		for (const auto &t : targets) {
+			submitInternal(t);
+		}
+
+		releaseBuffer();
+		flush();
+	}
+
+	void TextRenderer::submitInternal(const Text *t) {
 		using namespace ftgl;
 
-		const Font &font = *component->text->font;
+		const Font &font = *t->font;
 		ftgl::texture_font_t *ftFont = font.getFTFont();
-		const wstring &string = component->text->string;
-		const uint color = component->text->textColor;
-		const uint outlineColor = component->text->outlineColor;
-		const float outlineThickness = component->text->outlineThickness;
-		const vec2 &position = component->text->position;
-		const float size = component->text->size;
+		const wstring &string = t->string;
+		const uint color = t->textColor;
+		const uint outlineColor = t->outlineColor;
+		const float outlineThickness = t->outlineThickness;
+		const vec2 &position = t->position;
+		const float size = t->size;
 
 		const Texture *texture = font.getTexture();
 		XE_ASSERT(texture);

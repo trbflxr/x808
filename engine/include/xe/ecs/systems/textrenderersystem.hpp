@@ -5,7 +5,7 @@
 #ifndef X808_TEXTRENDERERSYSTEM_HPP
 #define X808_TEXTRENDERERSYSTEM_HPP
 
-#include <xe/gfx/2d/textrenderer.hpp>
+#include <xe/gfx/2d/batchrenderer2d.hpp>
 #include <xe/ecs/ecssystem.hpp>
 #include <xe/ecs/components/textcomponent.hpp>
 
@@ -13,7 +13,7 @@ namespace xe {
 
 	class TextRendererSystem : public BaseECSSystem {
 	public:
-		explicit TextRendererSystem(TextRenderer *renderer)
+		explicit TextRendererSystem(BatchRenderer2D *renderer)
 				: BaseECSSystem(),
 				  renderer(renderer) {
 			
@@ -23,11 +23,11 @@ namespace xe {
 		void updateComponents(float delta, BaseECSComponent **components) override {
 			TextComponent *text = (TextComponent *) components[0];
 
-			renderer->submit(text);
+			renderer->submit(text->text);
 		}
 
 	private:
-		TextRenderer *renderer;
+		BatchRenderer2D *renderer;
 	};
 
 }

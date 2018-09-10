@@ -1,9 +1,5 @@
+todo: flip win32 mouse pos
 todo: refactor math
-
-{
-    todo: strings
-    todo: unicode
-}
 
 todo: skybox
 todo: batch renderer 3d

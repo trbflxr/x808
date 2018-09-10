@@ -12,21 +12,7 @@ using namespace xe;
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
-	primitiveRenderer = new PrimitiveRenderer(window.getSize().x, window.getSize().y);
-	textRenderer = new TextRenderer(window.getSize().x, window.getSize().y);
-	spriteRenderer = new SpriteRenderer(window.getSize().x, window.getSize().y);
-
 	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
-
-	//render system
-	spriteRendererSystem = new SpriteRendererSystem(spriteRenderer);
-	textRendererSystem = new TextRendererSystem(textRenderer);
-
-	spriteRenderingPipeline.addSystem(*spriteRendererSystem);
-	textRenderingPipeline.addSystem(*textRendererSystem);
-
-	//main systems
-	//mainSystems.addSystem();
 
 	//create camera
 	float w = app.getConfig().width / 10.0f;
@@ -34,9 +20,18 @@ DebugUI::DebugUI() :
 
 	camera = new Camera(mat4::ortho(-w, w, -h, h, -1, 1000));
 
-	spriteRenderer->setCamera(camera);
-	primitiveRenderer->setCamera(camera);
-	textRenderer->setCamera(camera);
+	renderer = new BatchRenderer2D(window.getSize().x, window.getSize().y, camera);
+	primitiveRenderer = new PrimitiveRenderer(window.getSize().x, window.getSize().y, camera);
+
+	//render system
+	spriteRendererSystem = new SpriteRendererSystem(renderer);
+	textRendererSystem = new TextRendererSystem(renderer);
+
+	renderingPipeline.addSystem(*spriteRendererSystem);
+	renderingPipeline.addSystem(*textRendererSystem);
+
+	//main systems
+	//mainSystems.addSystem();
 
 	//text
 	fpsText = ecs.makeEntity(new TextComponent(
@@ -61,8 +56,7 @@ DebugUI::DebugUI() :
 DebugUI::~DebugUI() {
 	delete camera;
 
-	delete spriteRenderer;
-	delete textRenderer;
+	delete renderer;
 	delete primitiveRenderer;
 
 	delete spriteRendererSystem;
@@ -87,30 +81,22 @@ void DebugUI::render() {
 	primitiveRenderer->flush();
 
 
-	//render sprites
-	spriteRenderer->begin();
-
-	ecs.updateSystems(spriteRenderingPipeline, 0.0f);
-
+	//render sprites and text
 	static Transform2DComponent *t0 = new Transform2DComponent(vec2(-125, -69), vec2(50, 30), 0.0f);
 	static Transform2DComponent *t1 = new Transform2DComponent(vec2(-72, -69), vec2(50, 30), 0.0f);
 	static Transform2DComponent *t2 = new Transform2DComponent(vec2(-19, -69), vec2(50, 30), 0.0f);
 	static Transform2DComponent *t3 = new Transform2DComponent(vec2(34, -69), vec2(50, 30), 0.0f);
-	spriteRenderer->submit(sp0, t0);
-	spriteRenderer->submit(sp1, t1);
-	spriteRenderer->submit(sp2, t2);
-	spriteRenderer->submit(sp3, t3);
+	renderer->submit(sp0, t0);
+	renderer->submit(sp1, t1);
+	renderer->submit(sp2, t2);
+	renderer->submit(sp3, t3);
 
-	spriteRenderer->end();
-	spriteRenderer->flush();
+	ecs.updateSystems(renderingPipeline, 0.0f);
 
-	//render text
-	textRenderer->begin();
+	renderer->renderSprites();
+	renderer->renderText();
 
-	ecs.updateSystems(textRenderingPipeline, 0.0f);
-
-	textRenderer->end();
-	textRenderer->flush();
+	renderer->clear();
 }
 
 void DebugUI::update(float delta) {

@@ -32,8 +32,8 @@ namespace xe {
 		                         PixelInternalFormat::LuminanceAlpha,
 		                         PixelFormat::LuminanceAlpha,
 		                         PixelType::UnsignedByte,
-		                         TextureMinFilter::Nearest,
-		                         TextureMagFilter::Nearest,
+		                         TextureMinFilter::Linear,
+		                         TextureMagFilter::Linear,
 		                         TextureWrap::ClampToEdge);
 
 		texture = new Texture(name + "_FontTexture", 1024, 1024, 0, params);
@@ -54,8 +54,8 @@ namespace xe {
 		                         PixelInternalFormat::LuminanceAlpha,
 		                         PixelFormat::LuminanceAlpha,
 		                         PixelType::UnsignedByte,
-		                         TextureMinFilter::Nearest,
-		                         TextureMagFilter::Nearest,
+		                         TextureMinFilter::Linear,
+		                         TextureMagFilter::Linear,
 		                         TextureWrap::ClampToEdge);
 
 		texture = new Texture(name + "_FontTexture", 1024, 1024, 0, params);

@@ -8,28 +8,29 @@
 
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
+#include <xe/gfx/text.hpp>
 #include <xe/gfx/2d/irenderer2d.hpp>
-#include <xe/ecs/components/textcomponent.hpp>
 
 namespace xe {
 
 
 	class XE_API TextRenderer : public IRenderer2D {
 	public:
-		explicit TextRenderer(uint width, uint height);
-		~TextRenderer() override = default;
+		explicit TextRenderer(uint width, uint height, Camera *camera);
 
-		void submit(const TextComponent *text);
+		void submit(const Text *text);
+
+		void render(std::vector<const Text *> &targets);
 
 		void begin() override;
 		void end() override;
 		void flush() override;
 
 	private:
-		void submitInternal(const TextComponent *component);
+		void submitInternal(const Text *t);
 
 	private:
-		std::vector<const TextComponent *> text;
+		std::vector<const Text *> text;
 	};
 
 }

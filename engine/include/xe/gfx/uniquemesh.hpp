@@ -21,7 +21,7 @@ namespace xe {
 				id(id),
 				mesh(mesh) { }
 
-		~UniqueMesh() {
+		~UniqueMesh() override {
 			delete mesh;
 		}
 

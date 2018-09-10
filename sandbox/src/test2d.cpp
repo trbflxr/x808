@@ -20,17 +20,7 @@ Test2D::Test2D() {
 	const float width = app.getConfig().width;
 	const float height = app.getConfig().height;
 
-	textRenderer = new TextRenderer(width, height);
-	spriteRenderer = new SpriteRenderer(width, height, true);
-	primitiveRenderer = new PrimitiveRenderer(width, height);
-
-	TextureParameters params(TextureTarget::Tex2D,
-	                         PixelInternalFormat::Rgba,
-	                         PixelFormat::Rgba,
-	                         PixelType::UnsignedByte,
-	                         TextureMinFilter::Linear,
-	                         TextureMagFilter::Linear,
-	                         TextureWrap::ClampToBorder);
+	TextureParameters params;
 
 	TextureManager::add(new Texture("0", "assets/textures/test1.png", params));
 	TextureManager::add(new Texture("1", "assets/textures/test2.png", params));
@@ -88,21 +78,18 @@ Test2D::Test2D() {
 
 	uint texCount = 39;
 
-	//render system
-	spriteRendererSystem = new SpriteRendererSystem(spriteRenderer);
-	textRendererSystem = new TextRendererSystem(textRenderer);
-
-	spriteRenderingPipeline.addSystem(*spriteRendererSystem);
-	textRenderingPipeline.addSystem(*textRendererSystem);
-
-	//main systems
-	cameraSystem = new OrthoCameraMoveSystem();
-
-	mainSystems.addSystem(*cameraSystem);
 
 	//create camera
-	cameraEntity = ecs.makeEntity(new CameraComponent(mat4::ortho(-width, width, -height, height, -1, 1000)));
+	camera = new Camera(mat4::ortho(-width, width, -height, height, -1, 1000));
 
+	renderer = new BatchRenderer2D(width, height, camera);
+
+	//render system
+	spriteRendererSystem = new SpriteRendererSystem(renderer);
+	textRendererSystem = new TextRendererSystem(renderer);
+
+	renderingPipeline.addSystem(*spriteRendererSystem);
+	renderingPipeline.addSystem(*textRendererSystem);
 
 	uint sprites = 0;
 
@@ -110,7 +97,7 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 1
+#define sp_size 2
 
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
@@ -118,7 +105,7 @@ Test2D::Test2D() {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
 			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(4.9f), 0.0f);
 
-			a = ecs.makeEntity(s, t);
+			ecs.makeEntity(s, t);
 
 			++sprites;
 		}
@@ -129,7 +116,7 @@ Test2D::Test2D() {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
 			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(9.0f), 0.0f);
 
-			a = ecs.makeEntity(s, t);
+			ecs.makeEntity(s, t);
 
 			++sprites;
 		}
@@ -140,7 +127,7 @@ Test2D::Test2D() {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
 			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(30.0f), 0.0f);
 
-			a = ecs.makeEntity(s, t);
+			ecs.makeEntity(s, t);
 
 			++sprites;
 		}
@@ -149,7 +136,7 @@ Test2D::Test2D() {
 	SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
 	Transform2DComponent *t = new Transform2DComponent(vec2(0, 0), vec2(30.0f), 0.0f);
 
-	a = ecs.makeEntity(s, t);
+	ecs.makeEntity(s, t);
 
 	++sprites;
 #endif
@@ -177,63 +164,27 @@ Test2D::Test2D() {
 	a = ecs.makeEntity(s1, t1);
 
 	ecs.makeEntity(s2, t2);
-
-	light0 = new Light2D("tl0", {10, 10}, {1, 1, 1}, 50.0f);
-
-	spriteRenderer->addLight(light0);
-	spriteRenderer->addLight(new Light2D("tl1", {-200, -200}, {1, 0, 1}, 20.0f));
-	spriteRenderer->addLight(new Light2D("tl2", {0, -200}, {1, 1, 0}, 20.0f));
-	spriteRenderer->addLight(new Light2D("tl3", {200, -200}, {0, 0, 1}, 20.0f));
-	spriteRenderer->addLight(new Light2D("tl4", {-400, -200}, {0, 1, 0}, 20.0f));
 }
 
 Test2D::~Test2D() {
-	delete spriteRenderer;
-	delete textRenderer;
-	delete primitiveRenderer;
+	delete camera;
+
+	delete renderer;
 
 	delete spriteRendererSystem;
 	delete textRendererSystem;
-	delete cameraSystem;
-
-
-	delete light0;
 }
 
 void Test2D::render() {
-	//render sprites
-	spriteRenderer->begin();
+	ecs.updateSystems(renderingPipeline, 0.0f);
 
-	ecs.updateSystems(spriteRenderingPipeline, 0.0f);
+	renderer->renderSprites();
+	renderer->renderText();
 
-	spriteRenderer->end();
-	spriteRenderer->flush();
-
-
-	//render text
-	textRenderer->begin();
-
-	ecs.updateSystems(textRenderingPipeline, 0.0f);
-
-	textRenderer->end();
-	textRenderer->flush();
-
-
-	//render primitives
-	primitiveRenderer->begin();
-
-//	primitiveRenderer->drawLine(0, 0, 400, 400, 3, color::GREEN, 20.0f);
-
-	primitiveRenderer->end();
-	primitiveRenderer->flush();
+	renderer->clear();
 }
 
 void Test2D::update(float delta) {
-	static CameraComponent *cam = ecs.getComponent<CameraComponent>(cameraEntity);
-	spriteRenderer->setCamera(&cam->camera);
-	primitiveRenderer->setCamera(&cam->camera);
-	textRenderer->setCamera(&cam->camera);
-
 	static Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
 
 	static const vec2i halfSize = window.getSize() / 2;
@@ -245,6 +196,26 @@ void Test2D::update(float delta) {
 	t->bounds.setPosition(pos);
 
 	ecs.updateSystems(mainSystems, delta);
+
+
+	///update camera
+	vec3 camPos = camera->transform.getPosition();
+
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
+		camPos.x += 1000 * delta;
+	}
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::A)) {
+		camPos.x -= 1000 * delta;
+	}
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::W)) {
+		camPos.y += 1000 * delta;
+	}
+	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
+		camPos.y -= 1000 * delta;
+	}
+	camera->transform.setPosition(camPos);
+
+	camera->update();
 }
 
 void Test2D::input(xe::Event &event) {
@@ -281,12 +252,6 @@ void Test2D::input(xe::Event &event) {
 
 		case Event::MouseMoved: {
 //			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
-
-			static const vec2i halfSize = window.getSize() / 2;
-
-			light0->setPosition(vec2((event.mouseMove.x - halfSize.x) * 2.0f,
-			                         -(event.mouseMove.y - halfSize.y) * 2.0f));
-
 			break;
 		}
 

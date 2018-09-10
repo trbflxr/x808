@@ -6,7 +6,7 @@
 #define X808_SPRITERENDERERSYSTEM_HPP
 
 
-#include <xe/gfx/2d/spriterenderer.hpp>
+#include <xe/gfx/2d/batchrenderer2d.hpp>
 #include <xe/ecs/ecssystem.hpp>
 #include <xe/ecs/components/spritecomponent.hpp>
 #include <xe/ecs/components/transform2dcomponent.hpp>
@@ -15,7 +15,7 @@ namespace xe {
 
 	class SpriteRendererSystem : public BaseECSSystem {
 	public:
-		explicit SpriteRendererSystem(SpriteRenderer *renderer) :
+		explicit SpriteRendererSystem(BatchRenderer2D *renderer) :
 				BaseECSSystem(),
 				renderer(renderer) {
 
@@ -31,7 +31,7 @@ namespace xe {
 		}
 
 	private:
-		SpriteRenderer *renderer;
+		BatchRenderer2D *renderer;
 	};
 
 }

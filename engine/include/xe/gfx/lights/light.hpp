@@ -47,7 +47,7 @@ namespace xe {
 				boundsMatrix(mat4::identity()),
 				mesh(mesh) { }
 
-		virtual ~Light() {
+		~Light() override {
 			delete mesh;
 		}
 

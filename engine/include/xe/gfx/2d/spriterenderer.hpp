@@ -19,20 +19,18 @@
 
 namespace xe {
 
+	struct RenderTarget2D {
+		const SpriteComponent *sprite;
+		const Transform2DComponent *transform;
+
+		RenderTarget2D(const SpriteComponent *sprite,
+		               const Transform2DComponent *transform) noexcept :
+				sprite(sprite), transform(transform) { }
+	};
+
 	class XE_API SpriteRenderer : public IRenderer2D {
-	private:
-		struct RenderTarget {
-			const SpriteComponent *sprite;
-			const Transform2DComponent *transform;
-
-			RenderTarget(const SpriteComponent *sprite,
-			             const Transform2DComponent *transform) noexcept :
-					sprite(sprite), transform(transform) { }
-		};
-
 	public:
-		explicit SpriteRenderer(uint width, uint height, bool useLights = false);
-		~SpriteRenderer() override ;
+		explicit SpriteRenderer(uint width, uint height, Camera *camera);
 
 		void submit(const SpriteComponent *sprite, const Transform2DComponent *transform);
 
@@ -40,21 +38,14 @@ namespace xe {
 		void end() override;
 		void flush() override;
 
-		void addLight(Light2D *light);
+		void render(const std::vector<RenderTarget2D> &targets);
 
 	private:
-		void submitInternal(const RenderTarget &target);
-
-		void updateLightsUBO();
+		void submitInternal(const RenderTarget2D &target);
 
 	private:
-		std::vector<RenderTarget> targets;
-		std::vector<RenderTarget> transparentTargets;
-
-		static constexpr uint MAX_LIGHTS = 64;
-		bool useLights;
-		std::vector<Light2D *> lights;
-		UniformBuffer* lightBuffer;
+		std::vector<RenderTarget2D> targets;
+		std::vector<RenderTarget2D> transparentTargets;
 	};
 }
 

@@ -6,9 +6,18 @@
 
 namespace xe {
 
-	IRenderer2D::IRenderer2D(uint width, uint height) :
+#define RENDERER2D_VERTEX_SIZE sizeof(VertexData)
+
+#define RENDERER2D_MAX_SPRITES     60000
+#define RENDERER2D_SPRITE_SIZE     (RENDERER2D_VERTEX_SIZE * 4)
+#define RENDERER2D_BUFFER_SIZE     (RENDERER2D_SPRITE_SIZE * RENDERER2D_MAX_SPRITES)
+#define RENDERER2D_INDICES_SIZE    (RENDERER2D_MAX_SPRITES * 6)
+#define RENDERER2D_MAX_TEXTURES    32
+
+	IRenderer2D::IRenderer2D(uint width, uint height, Camera *camera) :
 			width(width),
 			height(height),
+			camera(camera),
 			indexCount(0) {
 
 		transformationStack.emplace_back(1.0f);
@@ -53,9 +62,7 @@ namespace xe {
 		delete vertexArray;
 	}
 
-	void IRenderer2D::setCamera(Camera *camera) {
-		IRenderer2D::camera = camera;
-
+	void IRenderer2D::updateCamera() {
 		shader->setUniform("projection", camera->getProjection().elements, sizeof(mat4));
 		shader->setUniform("view", camera->getView().elements, sizeof(mat4));
 	}

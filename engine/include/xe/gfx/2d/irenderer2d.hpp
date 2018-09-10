@@ -26,24 +26,14 @@ namespace xe {
 			uint color;
 		};
 
-#define RENDERER2D_VERTEX_SIZE sizeof(VertexData)
-
-#define RENDERER2D_MAX_SPRITES     60000
-#define RENDERER2D_SPRITE_SIZE     (RENDERER2D_VERTEX_SIZE * 4)
-#define RENDERER2D_BUFFER_SIZE     (RENDERER2D_SPRITE_SIZE * RENDERER2D_MAX_SPRITES)
-#define RENDERER2D_INDICES_SIZE    (RENDERER2D_MAX_SPRITES * 6)
-#define RENDERER2D_MAX_TEXTURES    32
-
 	public:
-		explicit IRenderer2D(uint width, uint height);
+		explicit IRenderer2D(uint width, uint height, Camera *camera);
 		virtual ~IRenderer2D();
 
 		virtual void begin() = 0;
 		virtual void end() = 0;
 
 		virtual void flush() = 0;
-
-		virtual void setCamera(Camera *camera);
 
 		inline uint getWidth() const { return width; }
 		inline void setWidth(uint width) { IRenderer2D::width = width; }
@@ -52,6 +42,8 @@ namespace xe {
 		inline void setHeight(uint height) { IRenderer2D::height = height; }
 
 	protected:
+		void updateCamera();
+
 		void push(const mat4 &matrix, bool override = false);
 		void pop();
 
@@ -60,6 +52,8 @@ namespace xe {
 		void releaseBuffer();
 
 	protected:
+		friend class BatchRenderer2D;
+
 		Camera *camera;
 		Shader *shader;
 

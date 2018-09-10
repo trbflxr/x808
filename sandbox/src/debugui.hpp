@@ -11,6 +11,7 @@
 #include <xe/ecs/systems/spriterenderersystem.hpp>
 #include <xe/ecs/systems/textrenderersystem.hpp>
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/2d/batchrenderer2d.hpp>
 #include <xe/gfx/2d/primitiverenderer.hpp>
 
 class DebugUI : public xe::Layer {
@@ -41,18 +42,16 @@ public:
 private:
 	xe::Camera *camera;
 
-	xe::SpriteRenderer *spriteRenderer;
-	xe::PrimitiveRenderer *primitiveRenderer;
-	xe::TextRenderer *textRenderer;
+	xe::BatchRenderer2D *renderer;
+	xe::PrimitiveRenderer* primitiveRenderer;
 
 	xe::ECS ecs;
 
 	xe::SpriteRendererSystem *spriteRendererSystem;
 	xe::TextRendererSystem *textRendererSystem;
 
+	xe::ECSSystemList renderingPipeline;
 	xe::ECSSystemList mainSystems;
-	xe::ECSSystemList spriteRenderingPipeline;
-	xe::ECSSystemList textRenderingPipeline;
 
 	xe::EntityHandle fpsText;
 	xe::EntityHandle upsText;
