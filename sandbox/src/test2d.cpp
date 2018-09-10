@@ -191,7 +191,7 @@ void Test2D::update(float delta) {
 	static constexpr float spriteHalfSize = 50.0f;
 
 	const vec2i p = Mouse::getPosition(window);
-	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, -(p.y - halfSize.y + spriteHalfSize) * 2.0f);
+	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, (p.y - halfSize.y - spriteHalfSize) * 2.0f);
 
 	t->bounds.setPosition(pos);
 
@@ -251,7 +251,7 @@ void Test2D::input(xe::Event &event) {
 		}
 
 		case Event::MouseMoved: {
-//			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
+			XE_INFO("mouse(x: ", event.mouseMove.x, ", y:", event.mouseMove.y, ")");
 			break;
 		}
 

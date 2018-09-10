@@ -254,7 +254,7 @@ namespace xe {
 			POINT point;
 			GetCursorPos(&point);
 			ScreenToClient(static_cast<HWND>(handle), &point);
-			return vec2i(point.x, point.y);
+			return vec2i(point.x, relativeTo.getSize().y - point.y);
 		} else {
 			return vec2i();
 		}

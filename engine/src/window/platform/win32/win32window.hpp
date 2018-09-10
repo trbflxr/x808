@@ -60,6 +60,7 @@ namespace xe { namespace internal {
 		static LRESULT CALLBACK globalOnEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 
 	private:
+		mutable RECT rect;
 		HWND handle;
 		LONG_PTR callback;
 		bool cursorVisible;

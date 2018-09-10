@@ -3,7 +3,9 @@
 //
 
 #undef NOGDI
+
 #include <windows.h>
+
 #define NOGDI
 
 #include <dbt.h>
@@ -162,7 +164,6 @@ namespace xe { namespace internal {
 	}
 
 	vec2i PlatformWindowWin32::getSize() const {
-		RECT rect;
 		GetClientRect(handle, &rect);
 
 		return vec2i(static_cast<int32>(rect.right - rect.left),
@@ -625,7 +626,7 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseMoved;
 				event.mouseMove.x = x;
-				event.mouseMove.y = y;
+				event.mouseMove.y = (rect.bottom - rect.top) - y;
 				pushEvent(event);
 				break;
 			}
