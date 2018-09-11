@@ -67,6 +67,7 @@ namespace xe {
 		static mat4 transpose(const mat4 &m);
 
 		static mat4 transform(const vec3 &translation, const quat &rotation, const vec3 &scale);
+		static mat4 transform(const vec3 &translation, float rotationDeg);
 	};
 
 	typedef mat4 mat4;

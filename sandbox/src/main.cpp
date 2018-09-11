@@ -3,6 +3,7 @@
 #include "test2d.hpp"
 #include "test3d.hpp"
 #include "debugui.hpp"
+#include "testb2d.hpp"
 
 using namespace xe;
 
@@ -15,11 +16,13 @@ public:
 			t3d(nullptr) {
 
 		ui = new DebugUI();
-		t2d = new Test2D();
+//		t2d = new Test2D();
 //		t3d = new Test3D(ui);
+		tb2d = new TestB2D();
 
+		pushLayer(tb2d);
 //		pushLayer(t3d);
-		pushLayer(t2d);
+//		pushLayer(t2d);
 		pushLayer(ui);
 	}
 
@@ -27,12 +30,14 @@ public:
 		delete ui;
 		delete t2d;
 		delete t3d;
+		delete tb2d;
 	}
 
 private:
 	DebugUI *ui;
 	Test2D *t2d;
 	Test3D *t3d;
+	TestB2D *tb2d;
 };
 
 int main() {

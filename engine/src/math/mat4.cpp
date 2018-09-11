@@ -491,6 +491,13 @@ namespace xe {
 		return t * r * s;
 	}
 
+	mat4 mat4::transform(const vec3 &translation, float rotationDeg) {
+		mat4 t = mat4::translation(translation);
+		mat4 r = mat4::rotation(rotationDeg, vec3::UnitZ);
+
+		return t * r;
+	}
+
 	///----- operators -----///
 	mat4 &operator*=(mat4 &left, const mat4 &right) {
 		float data[16];

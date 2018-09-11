@@ -8,6 +8,8 @@
 
 #include <xe/common.hpp>
 
+struct b2Vec2;
+
 namespace xe {
 
 	struct vec3;
@@ -21,6 +23,7 @@ namespace xe {
 		vec2(float x, float y);
 		vec2(const vec2 &other);
 		explicit vec2(const vec3 &other);
+		vec2(const b2Vec2 &vec, bool scale = true);
 
 		vec2 normalize();
 
@@ -32,6 +35,8 @@ namespace xe {
 		static float cross(const vec2 &v1, const vec2 &v2);
 		static vec2 lerp(const vec2 &v, const vec2 &dest, float lerpFactor);
 		static vec2 rotate(const vec2 &v, float angle);
+
+		vec2 &operator=(const b2Vec2 &vec);
 	};
 
 	//just in case

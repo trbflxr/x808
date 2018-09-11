@@ -4,6 +4,7 @@
 
 #include <xe/math/vec2.hpp>
 #include <xe/math/math.hpp>
+#include <Box2D/Common/b2Math.h>
 
 namespace xe {
 
@@ -12,6 +13,15 @@ namespace xe {
 	vec2::vec2(float x, float y) : x(x), y(y) { }
 	vec2::vec2(const vec2 &other) : x(other.x), y(other.y) { }
 	vec2::vec2(const vec3 &other) : x(other.x), y(other.y) { }
+	vec2::vec2(const b2Vec2 &vec, bool scale) {
+		if (scale) {
+			x = b2xe(vec.x);
+			y = b2xe(vec.y);
+		} else {
+			x = vec.x;
+			y = vec.y;
+		}
+	}
 
 	vec2 vec2::normalize() {
 		const float l = length(*this);
@@ -52,6 +62,13 @@ namespace xe {
 		const float sin = sinf(rad);
 
 		return vec2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
+	}
+
+	///----- operators -----///
+	vec2 &vec2::operator=(const b2Vec2 &vec) {
+		x = b2xe(vec.x);
+		y = b2xe(vec.y);
+		return *this;
 	}
 
 }

@@ -44,6 +44,7 @@ file(GLOB ENGINE_SRC
         src/gfx/*.cpp
         src/loaders/*.cpp
         src/math/*.cpp
+        src/physics/2d/*.cpp
         src/objects/*.cpp
         src/resources/*.cpp
         src/utils/*.cpp
