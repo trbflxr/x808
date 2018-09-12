@@ -36,8 +36,8 @@ namespace xe {
 
 		const std::array<vec2, 4> &getUVs() const { return UVs; }
 
-		static inline const std::array<vec2, 4> &getDefaultUVs();
-		static inline const std::array<vec2, 4> &getFlippedUVs();
+		static const std::array<vec2, 4> &getDefaultUVs();
+		static const std::array<vec2, 4> &getFlippedUVs();
 
 	private:
 		const Texture *texture;

@@ -88,9 +88,6 @@ void TestB2D::update(float delta) {
 	}
 
 	world->update(1.0f / 60.0f, 8, 3);
-
-//	groundCollider->update();
-//	boxCollider->update();
 }
 
 void TestB2D::input(xe::Event &event) {
