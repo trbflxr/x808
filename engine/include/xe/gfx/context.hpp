@@ -8,11 +8,7 @@
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
 
-namespace xe { 
-
-	enum class RenderAPI {
-		NONE, OPENGL, DIRECT3D
-	};
+namespace xe {
 
 	class XE_API Context {
 	public:

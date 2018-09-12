@@ -16,7 +16,7 @@ namespace xe {
 
 	Texture::Texture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: {
+			case RenderAPI::OpenGL: {
 				texture = new internal::GLTexture(name, width, height, depth, params);
 				break;
 			}
@@ -34,7 +34,7 @@ namespace xe {
 	                 const TextureLoadOptions &options) {
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: {
+			case RenderAPI::OpenGL: {
 				texture = new internal::GLTexture(name, path, params, options);
 				break;
 			}

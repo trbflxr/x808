@@ -11,7 +11,7 @@ namespace xe {
 
 	IndexBuffer::IndexBuffer(const uint16 *data, uint count) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				buffer = new internal::GLIndexBuffer(data, count);
 				break;
 			}
@@ -26,7 +26,7 @@ namespace xe {
 
 	IndexBuffer::IndexBuffer(const uint *data, uint count) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				buffer = new internal::GLIndexBuffer(data, count);
 				break;
 			}

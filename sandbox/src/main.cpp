@@ -5,12 +5,10 @@
 #include "debugui.hpp"
 #include "testb2d.hpp"
 
-using namespace xe;
-
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, RenderAPI::OPENGL, 330),
+			Application(config),
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr),

@@ -10,7 +10,7 @@ namespace xe {
 
 	VertexBuffer::VertexBuffer(BufferUsage usage) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				buffer = new internal::GLVertexBuffer(usage);
 				break;
 			}

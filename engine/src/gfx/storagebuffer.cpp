@@ -9,7 +9,7 @@ namespace xe {
 
 	StorageBuffer::StorageBuffer(uint size) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				buffer = new internal::GLStorageBuffer(size);
 				break;
 			}

@@ -23,6 +23,9 @@ namespace xe {
 
 		bool useSRGB;
 
+		RenderAPI renderApi;
+		uint apiVersion;
+
 		static bool load(Config &config, const char *path = "xeconfig");
 	};
 

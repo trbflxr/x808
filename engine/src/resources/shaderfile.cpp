@@ -25,7 +25,7 @@ namespace xe {
 	                                   const std::vector<string> &extensions) {
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL :
+			case RenderAPI::OpenGL :
 				return new internal::GLShaderFile(true, type, source, dependenciesSource, extensions);
 
 			default: return nullptr;
@@ -37,7 +37,7 @@ namespace xe {
 	                                 const std::vector<string> &extensions) {
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : return new internal::GLShaderFile(false, type, path, dependencies, extensions);
+			case RenderAPI::OpenGL : return new internal::GLShaderFile(false, type, path, dependencies, extensions);
 
 			default: return nullptr;
 		}

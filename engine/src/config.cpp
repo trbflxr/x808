@@ -28,6 +28,10 @@ namespace xe {
 			config.fps = (uint) atoi(value);
 		} else if (strcmp(key, "srgb") == 0) {
 			config.useSRGB = (bool) atoi(value);
+		} else if (strcmp(key, "renderApi") == 0) {
+			config.renderApi = stringToRenderApi(value);
+		} else if (strcmp(key, "apiVersion") == 0) {
+			config.apiVersion = (uint) atoi(value);
 		}
 	}
 
@@ -47,6 +51,9 @@ namespace xe {
 		while (fgets(line, sizeof(line), cfgFile) != nullptr) {
 			key = strtok(line, search);
 			value = strtok(nullptr, search);
+
+			if (!value) continue;
+			value[strcspn(value, "\r\n")] = 0;
 
 			writeKeyValue(config, key, value);
 		}

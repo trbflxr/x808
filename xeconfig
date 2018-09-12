@@ -8,3 +8,6 @@ ups=30
 fps=0
 
 srgb=1
+
+renderApi=ogl
+apiVersion=330

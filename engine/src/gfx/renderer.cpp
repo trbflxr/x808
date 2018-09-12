@@ -14,7 +14,7 @@ namespace xe {
 	void Renderer::init() {
 		dc = 0;
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : instance = new internal::GLRenderer();
+			case RenderAPI::OpenGL : instance = new internal::GLRenderer();
 				break;
 
 			default:break;

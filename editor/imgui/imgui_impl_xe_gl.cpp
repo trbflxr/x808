@@ -114,7 +114,7 @@ namespace ImGui { namespace xe {
 		}
 	}
 
-	void update(const ::xe::vec2i &mousePos, const ::xe::vec2i &windowSize, float delta) {
+	void update(const ::xe::vec2 &mousePos, const ::xe::vec2i &windowSize, float delta) {
 		ImGuiIO &io = ImGui::GetIO();
 		io.DisplaySize.x = windowSize.x;
 		io.DisplaySize.y = windowSize.y;
@@ -122,7 +122,7 @@ namespace ImGui { namespace xe {
 
 		if (s_windowHasFocus) {
 			if (io.WantSetMousePos) {
-				::xe::vec2i pos((int32) io.MousePos.x, (int32) io.MousePos.y);
+				::xe::vec2 pos((int32) io.MousePos.x, (int32) io.MousePos.y);
 				::xe::Mouse::setPosition(pos);
 			} else {
 				io.MousePos.x = mousePos.x;

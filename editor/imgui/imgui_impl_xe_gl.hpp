@@ -19,7 +19,7 @@ namespace ImGui { namespace xe {
 	void processEvent(const ::xe::Event &event);
 
 	void update(::xe::Window &window, float delta);
-	void update(const ::xe::vec2i &mousePos, const ::xe::vec2i &windowSize, float delta);
+	void update(const ::xe::vec2 &mousePos, const ::xe::vec2i &windowSize, float delta);
 
 	void render();
 

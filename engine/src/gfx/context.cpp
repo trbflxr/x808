@@ -8,12 +8,12 @@
 namespace xe {
 
 	Context *Context::context = nullptr;
-	RenderAPI Context::api = RenderAPI::NONE;
+	RenderAPI Context::api = RenderAPI::Invalid;
 	uint Context::apiVersion = 0;
 
 	void Context::create(void *deviceContext) {
 		switch (getRenderAPI()) {
-			case RenderAPI::OPENGL: context = new internal::GLContext(deviceContext);
+			case RenderAPI::OpenGL: context = new internal::GLContext(deviceContext);
 				break;
 			default: break;
 		}

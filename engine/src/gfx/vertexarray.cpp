@@ -10,7 +10,7 @@ namespace xe {
 
 	VertexArray::VertexArray() {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				array = new internal::GLVertexArray();
 				break;
 			}

@@ -53,7 +53,7 @@ namespace xe {
 	template<>
 	inline void BufferLayout::push<float>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), count, normalized);
+			case RenderAPI::OpenGL: push(name, GL_FLOAT, sizeof(float), count, normalized);
 				break;
 
 			default: break;
@@ -63,7 +63,7 @@ namespace xe {
 	template<>
 	inline void BufferLayout::push<uint>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_UNSIGNED_INT, sizeof(uint), count, normalized);
+			case RenderAPI::OpenGL: push(name, GL_UNSIGNED_INT, sizeof(uint), count, normalized);
 				break;
 
 			default: break;
@@ -73,7 +73,7 @@ namespace xe {
 	template<>
 	inline void BufferLayout::push<byte>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);
+			case RenderAPI::OpenGL: push(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);
 				break;
 
 			default: break;
@@ -85,7 +85,7 @@ namespace xe {
 		XE_ASSERT(count <= 1, "cant push more then 1 vec2");
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 2, normalized);
+			case RenderAPI::OpenGL: push(name, GL_FLOAT, sizeof(float), 2, normalized);
 				break;
 
 			default: break;
@@ -97,7 +97,7 @@ namespace xe {
 		XE_ASSERT(count <= 1, "cant push more then 1 vec3");
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 3, normalized);
+			case RenderAPI::OpenGL: push(name, GL_FLOAT, sizeof(float), 3, normalized);
 				break;
 
 			default: break;
@@ -109,7 +109,7 @@ namespace xe {
 		XE_ASSERT(count <= 1, "cant push more then 1 vec4");
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 4, normalized);
+			case RenderAPI::OpenGL: push(name, GL_FLOAT, sizeof(float), 4, normalized);
 				break;
 
 			default: break;
@@ -121,7 +121,7 @@ namespace xe {
 		XE_ASSERT(count <= 1, "cant push more then 1 mat4");
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL: push(name, GL_FLOAT, sizeof(float), 16, normalized);
+			case RenderAPI::OpenGL: push(name, GL_FLOAT, sizeof(float), 16, normalized);
 				break;
 
 			default: break;

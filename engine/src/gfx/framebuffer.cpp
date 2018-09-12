@@ -13,7 +13,7 @@ namespace xe {
 
 	FrameBuffer::FrameBuffer(const string &name) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				buffer = new internal::GLFrameBuffer(name);
 				break;
 			}

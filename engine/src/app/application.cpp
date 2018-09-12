@@ -16,14 +16,14 @@ namespace xe {
 
 	Application *Application::instance = nullptr;
 
-	Application::Application(const Config &config, RenderAPI api, uint apiVersion) :
+	Application::Application(const Config &config) :
 			config(config),
 			frameTime(0.0f) {
 
 		//init random
 		random::nextInt32(0, 1);
 
-		Context::setRenderAPI(api, apiVersion);
+		Context::setRenderAPI(config.renderApi, config.apiVersion);
 		instance = this;
 
 		init();

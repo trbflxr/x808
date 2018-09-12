@@ -10,7 +10,7 @@ namespace xe {
 
 	UniformBuffer::UniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				buffer = new internal::GLUniformBuffer(storage, bind, layout, size);
 				break;
 			}

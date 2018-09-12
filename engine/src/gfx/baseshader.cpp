@@ -11,7 +11,7 @@ namespace xe {
 
 	BaseShader::BaseShader(const string &name, const std::vector<ShaderFile *> &shaderPipeline) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OPENGL : {
+			case RenderAPI::OpenGL : {
 				shader = new internal::GLBaseShader(name, shaderPipeline);
 				break;
 			}

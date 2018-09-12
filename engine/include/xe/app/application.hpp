@@ -18,7 +18,7 @@ namespace xe {
 
 	class XE_API Application {
 	public:
-		explicit Application(const Config &config, RenderAPI api, uint apiVersion);
+		explicit Application(const Config &config);
 		virtual ~Application() = default;
 
 		void pushLayer(Layer *layer);
