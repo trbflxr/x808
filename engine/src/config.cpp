@@ -49,6 +49,8 @@ namespace xe {
 
 		char line[128];
 		while (fgets(line, sizeof(line), cfgFile) != nullptr) {
+			if (line[0] == '#' || line[0] == '\n') continue;
+
 			key = strtok(line, search);
 			value = strtok(nullptr, search);
 

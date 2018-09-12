@@ -5,8 +5,6 @@
 #ifndef X808_COMMON_HPP
 #define X808_COMMON_HPP
 
-#include <cstring>
-
 #ifdef _WIN32
 	#define XE_PLATFORM_WINDOWS
 #endif
@@ -28,18 +26,7 @@ enum class RenderAPI {
 	OpenGL, Direct3D, Invalid
 };
 
-static const char *renderApiToString(RenderAPI api) {
-	switch (api) {
-		case RenderAPI::OpenGL: return "ogl";
-		case RenderAPI::Direct3D: return "d3d";
-		default: return "Invalid";
-	}
-}
-
-static RenderAPI stringToRenderApi(const char *api) {
-	if (strcmp(api, "ogl") == 0) return RenderAPI::OpenGL;
-	if (strcmp(api, "d3d") == 0) return RenderAPI::Direct3D;
-	return RenderAPI::Invalid;
-}
+XE_API const char *renderApiToString(RenderAPI api);
+XE_API RenderAPI stringToRenderApi(const char *api);
 
 #endif //X808_COMMON_HPP
