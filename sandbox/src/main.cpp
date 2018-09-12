@@ -13,7 +13,8 @@ public:
 			Application(config, RenderAPI::OPENGL, 330),
 			ui(nullptr),
 			t2d(nullptr),
-			t3d(nullptr) {
+			t3d(nullptr),
+			tb2d(nullptr){
 
 		ui = new DebugUI();
 //		t2d = new Test2D();

@@ -242,32 +242,32 @@ namespace xe {
 		return (GetAsyncKeyState(vkey) & 0x8000) != 0;
 	}
 
-	vec2i Mouse::getPosition() {
+	vec2 Mouse::getPosition() {
 		POINT point;
 		GetCursorPos(&point);
-		return vec2i(point.x, point.y);
+		return vec2(point.x, point.y);
 	}
 
-	vec2i Mouse::getPosition(const Window &relativeTo) {
+	vec2 Mouse::getPosition(const Window &relativeTo) {
 		void *handle = relativeTo.getHandle();
 		if (handle) {
 			POINT point;
 			GetCursorPos(&point);
 			ScreenToClient(static_cast<HWND>(handle), &point);
-			return vec2i(point.x, relativeTo.getSize().y - point.y);
+			return vec2(point.x, relativeTo.getSize().y - point.y);
 		} else {
-			return vec2i();
+			return vec2();
 		}
 	}
 
-	void Mouse::setPosition(const vec2i &position) {
-		SetCursorPos(position.x, position.y);
+	void Mouse::setPosition(const vec2 &position) {
+		SetCursorPos((int32) position.x, (int32) position.y);
 	}
 
-	void Mouse::setPosition(const vec2i &position, const Window &relativeTo) {
+	void Mouse::setPosition(const vec2 &position, const Window &relativeTo) {
 		void *handle = relativeTo.getHandle();
 		if (handle) {
-			POINT point = {position.x, position.y};
+			POINT point = {(LONG) position.x, (LONG) position.y};
 			ClientToScreen(static_cast<HWND>(handle), &point);
 			SetCursorPos(point.x, point.y);
 		}

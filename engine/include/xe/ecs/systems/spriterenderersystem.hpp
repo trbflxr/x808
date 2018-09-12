@@ -27,7 +27,7 @@ namespace xe {
 			SpriteComponent *sprite = (SpriteComponent *) components[0];
 			Transform2DComponent *transform = (Transform2DComponent *) components[1];
 
-			renderer->submit(sprite, transform);
+			renderer->submit(&sprite->sprite, &transform->transform);
 		}
 
 	private:

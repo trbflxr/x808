@@ -114,7 +114,7 @@ Test2D::Test2D() {
 	for (float x = -800; x < 800; x += 10.3f) {
 		for (float y = -600; y < 600; y += 10.3f) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(9.0f), 0.0f);
+			Transform2DComponent *t = new Transform2DComponent({x, y, 0.0f}, vec2(9.0f));
 
 			ecs.makeEntity(s, t);
 
@@ -125,7 +125,7 @@ Test2D::Test2D() {
 	for (int32 x = -800; x < 800; x += 40) {
 		for (int32 y = -600; y < 600; y += 40) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(30.0f), 0.0f);
+			Transform2DComponent *t = new Transform2DComponent(vec3(x, y, 0.0f), vec2(30.0f));
 
 			ecs.makeEntity(s, t);
 
@@ -156,9 +156,9 @@ Test2D::Test2D() {
 	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("36"), true, color::WHITE);
 	SpriteComponent *s2 = new SpriteComponent(GETTEXTURE("37"), true, color::WHITE);
 
-	Transform2DComponent *t0 = new Transform2DComponent(vec2(-100.0f, -100.0f), vec2(200.0f), 1.0f);
-	Transform2DComponent *t1 = new Transform2DComponent(vec2(-40.0f, -40.0f), vec2(200.0f), 2.0f);
-	Transform2DComponent *t2 = new Transform2DComponent(vec2(-40.0f, -40.0f), vec2(200.0f), 3.0f);
+	Transform2DComponent *t0 = new Transform2DComponent({-100.0f, -100.0f, 1.0f}, vec2(200.0f));
+	Transform2DComponent *t1 = new Transform2DComponent({-40.0f, -40.0f, 2.0f}, vec2(200.0f));
+	Transform2DComponent *t2 = new Transform2DComponent({-40.0f, -40.0f, 3.0f}, vec2(200.0f));
 
 	ecs.makeEntity(s0, t0);
 	a = ecs.makeEntity(s1, t1);
@@ -190,10 +190,10 @@ void Test2D::update(float delta) {
 	static const vec2i halfSize = window.getSize() / 2;
 	static constexpr float spriteHalfSize = 50.0f;
 
-	const vec2i p = Mouse::getPosition(window);
+	const vec2 p = Mouse::getPosition(window);
 	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, (p.y - halfSize.y - spriteHalfSize) * 2.0f);
 
-	t->bounds.setPosition(pos);
+	t->transform.setPosition(pos);
 
 	ecs.updateSystems(mainSystems, delta);
 

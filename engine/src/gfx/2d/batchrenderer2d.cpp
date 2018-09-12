@@ -2,6 +2,7 @@
 // Created by FLXR on 9/10/2018.
 //
 
+#include <algorithm>
 #include <xe/gfx/2d/batchrenderer2d.hpp>
 #include <xe/gfx/renderer.hpp>
 
@@ -19,10 +20,10 @@ namespace xe {
 		delete textRenderer;
 	}
 
-	void BatchRenderer2D::submit(const SpriteComponent *sprite, const Transform2DComponent *transform) {
-		if (!sprite->visible) return;
+	void BatchRenderer2D::submit(const Sprite *sprite, const Transform2D *transform) {
+		if (!sprite->isVisible()) return;
 
-		if (sprite->hasTransparency) {
+		if (sprite->hasTransparency()) {
 			transparentSprites.emplace_back(sprite, transform);
 		} else {
 			sprites.emplace_back(sprite, transform);
@@ -40,7 +41,7 @@ namespace xe {
 
 		std::sort(sprites.begin(), sprites.end(),
 		          [](const RenderTarget2D a, const RenderTarget2D b) {
-			          return a.sprite->texture > b.sprite->texture;
+			          return a.sprite->getTexture() > b.sprite->getTexture();
 		          });
 
 		spriteRenderer->render(sprites);
@@ -51,7 +52,7 @@ namespace xe {
 			//todo: there must be a better solution
 			std::sort(transparentSprites.begin(), transparentSprites.end(),
 			          [](const RenderTarget2D a, const RenderTarget2D b) {
-				          return a.transform->zIndex < b.transform->zIndex;
+				          return a.transform->getPosition().z < b.transform->getPosition().z;
 			          });
 
 			spriteRenderer->render(transparentSprites);

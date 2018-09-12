@@ -47,10 +47,10 @@ DebugUI::DebugUI() :
 			new Text(L"dc: ", 3, {-122, 50}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
 
 
-	sp0 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
-	sp1 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
-	sp2 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
-	sp3 = new SpriteComponent(nullptr, false, color::WHITE, true, false);
+	sp0 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp1 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp2 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp3 = new Sprite(nullptr, false, color::WHITE, true, false);
 }
 
 DebugUI::~DebugUI() {
@@ -82,10 +82,10 @@ void DebugUI::render() {
 
 
 	//render sprites and text
-	static Transform2DComponent *t0 = new Transform2DComponent(vec2(-125, -69), vec2(50, 30), 0.0f);
-	static Transform2DComponent *t1 = new Transform2DComponent(vec2(-72, -69), vec2(50, 30), 0.0f);
-	static Transform2DComponent *t2 = new Transform2DComponent(vec2(-19, -69), vec2(50, 30), 0.0f);
-	static Transform2DComponent *t3 = new Transform2DComponent(vec2(34, -69), vec2(50, 30), 0.0f);
+	static Transform2D *t0 = new Transform2D({-125, -69, 0.0f}, vec2(50, 30));
+	static Transform2D *t1 = new Transform2D({-72, -69, 0.0f}, vec2(50, 30));
+	static Transform2D *t2 = new Transform2D({-19, -69, 0.0f}, vec2(50, 30));
+	static Transform2D *t3 = new Transform2D({34, -69, 0.0f}, vec2(50, 30));
 	renderer->submit(sp0, t0);
 	renderer->submit(sp1, t1);
 	renderer->submit(sp2, t2);
@@ -130,25 +130,25 @@ void DebugUI::input(Event &event) {
 		if (event.key.code == Keyboard::Num1) {
 			static bool visible = false;
 			visible = !visible;
-			sp0->visible = visible;
+			sp0->setVisible(visible);
 			event.handled = true;
 		}
 		if (event.key.code == Keyboard::Num2) {
 			static bool visible = false;
 			visible = !visible;
-			sp1->visible = visible;
+			sp1->setVisible(visible);
 			event.handled = true;
 		}
 		if (event.key.code == Keyboard::Num3) {
 			static bool visible = false;
 			visible = !visible;
-			sp2->visible = visible;
+			sp2->setVisible(visible);
 			event.handled = true;
 		}
 		if (event.key.code == Keyboard::Num4) {
 			static bool visible = false;
 			visible = !visible;
-			sp3->visible = visible;
+			sp3->setVisible(visible);
 			event.handled = true;
 		}
 	}

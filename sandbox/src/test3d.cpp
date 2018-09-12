@@ -41,10 +41,10 @@ Test3D::Test3D(DebugUI *ui) :
 
 	renderer = new DeferredRenderer(width, height);
 
-	ui->sp0->texture = renderer->getGBuffer()->getDiffuseTexture();
-	ui->sp1->texture = renderer->getGBuffer()->getNormalDepthTexture();
-	ui->sp2->texture = renderer->getGBuffer()->getSpecularTexture();
-	ui->sp3->texture = renderer->getGBuffer()->getDepthStencilTexture();
+	ui->sp0->setTexture(renderer->getGBuffer()->getDiffuseTexture());
+	ui->sp1->setTexture(renderer->getGBuffer()->getNormalDepthTexture());
+	ui->sp2->setTexture(renderer->getGBuffer()->getSpecularTexture());
+	ui->sp3->setTexture(renderer->getGBuffer()->getDepthStencilTexture());
 
 	renderer->getGBuffer()->enableLightObjects(true);
 }

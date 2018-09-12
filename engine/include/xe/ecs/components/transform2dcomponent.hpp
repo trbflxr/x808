@@ -7,17 +7,15 @@
 
 
 #include <xe/ecs/ecscomponent.hpp>
-#include <xe/math/aobb.hpp>
+#include <xe/math/transform2d.hpp>
 
 namespace xe {
 
 	struct Transform2DComponent : public ECSComponent<Transform2DComponent> {
-		aobb bounds;
-		float zIndex;
+		Transform2D transform;
 
-		explicit Transform2DComponent(const vec2 &position, const vec2 &size, float zIndex, float rotation = 0.0f) :
-				bounds(position, size, rotation),
-				zIndex(zIndex) { }
+		explicit Transform2DComponent(const vec3 &position, const vec2 &size, float rotation = 0.0f) :
+				transform(position, size, rotation) { }
 	};
 
 }

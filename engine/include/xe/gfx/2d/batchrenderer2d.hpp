@@ -16,7 +16,7 @@ namespace xe {
 		explicit BatchRenderer2D(uint width, uint height, Camera *camera);
 		~BatchRenderer2D();
 
-		void submit(const SpriteComponent *sprite, const Transform2DComponent *transform);
+		void submit(const Sprite *sprite, const Transform2D *transform);
 		void submit(const Text *text);
 
 		void renderSprites();

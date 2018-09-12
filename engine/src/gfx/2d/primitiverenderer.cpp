@@ -2,7 +2,7 @@
 // Created by FLXR on 9/6/2018.
 //
 
-#include <xe/ecs/components/spritecomponent.hpp>
+#include <xe/gfx/sprite.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/2d/primitiverenderer.hpp>
 
@@ -58,7 +58,7 @@ namespace xe {
 	}
 
 	void PrimitiveRenderer::drawLine(float x0, float y0, float x1, float y1, float z, uint color, float thickness) {
-		static const std::array<vec2, 4> &uv = SpriteComponent::getDefaultUVs();
+		static const std::array<vec2, 4> &uv = Sprite::getDefaultUVs();
 
 		const vec2 normal = vec2::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
 
@@ -105,7 +105,7 @@ namespace xe {
 	}
 
 	void PrimitiveRenderer::fillRect(float x, float y, float width, float height, float z, uint color) {
-		static const std::array<vec2, 4> &uv = SpriteComponent::getDefaultUVs();
+		static const std::array<vec2, 4> &uv = Sprite::getDefaultUVs();
 
 		const vec3 position(x, y, z);
 		const vec2 size(width, height);

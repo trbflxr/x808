@@ -22,17 +22,10 @@ namespace xe {
 
 		void update(float timeStep, uint velocityIterations, uint positionIterations);
 
-		void test(const vec2 &pos, const vec2 &size, bool f);
-
-		vec2 getPos(bool f);
-		float getRot(bool f);
-
 	private:
 		friend class Collider2D;
 
 		b2World *world;
-		b2Body *body;
-		b2Body *floor;
 	};
 
 }

@@ -7,7 +7,7 @@
 
 
 #include <xe/common.hpp>
-#include <xe/math/tvec2.hpp>
+#include <xe/math/vec2.hpp>
 
 namespace xe {
 
@@ -26,11 +26,11 @@ namespace xe {
 
 		static bool isButtonPressed(Button button);
 
-		static vec2i getPosition();
-		static vec2i getPosition(const Window &relativeTo);
+		static vec2 getPosition();
+		static vec2 getPosition(const Window &relativeTo);
 
-		static void setPosition(const vec2i &position);
-		static void setPosition(const vec2i &position, const Window &relativeTo);
+		static void setPosition(const vec2 &position);
+		static void setPosition(const vec2 &position, const Window &relativeTo);
 	};
 
 }

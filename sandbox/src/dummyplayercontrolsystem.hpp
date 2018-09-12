@@ -27,8 +27,8 @@ public:
 	void updateComponents(float delta, xe::BaseECSComponent **components) override {
 		static xe::Window &window = xe::Application::get().getWindow();
 		static xe::vec2i windowSize = window.getSize();
-		static xe::vec2i windowCenter = xe::vec2i(windowSize.x / 2, windowSize.y / 2);
-		static xe::vec2i lastMousePosition = xe::Mouse::getPosition();
+		static xe::vec2 windowCenter = xe::vec2(windowSize.x / 2.0f, windowSize.y / 2.0f);
+		static xe::vec2 lastMousePosition = xe::Mouse::getPosition();
 
 		DummyPlayerComponent *player = (DummyPlayerComponent *) components[0];
 		xe::Transform &transform = ((xe::TransformComponent *) components[1])->transform;
@@ -42,7 +42,7 @@ public:
 		}
 
 		if (window.isMouseCursorGrabbed()) {
-			xe::vec2i mouseChange = xe::Mouse::getPosition() - lastMousePosition;
+			xe::vec2 mouseChange = xe::Mouse::getPosition() - lastMousePosition;
 
 
 			//rotate

@@ -2,6 +2,7 @@
 // Created by FLXR on 9/6/2018.
 //
 
+#include <algorithm>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/2d/spriterenderer.hpp>
 
@@ -29,7 +30,7 @@ namespace xe {
 
 		std::sort(targets.begin(), targets.end(),
 		          [](const RenderTarget2D a, const RenderTarget2D b) {
-			          return a.sprite->texture > b.sprite->texture;
+			          return a.sprite->getTexture() > b.sprite->getTexture();
 		          });
 
 		for (auto &&target : targets) {
@@ -42,7 +43,7 @@ namespace xe {
 			//todo: there must be a better solution
 			std::sort(transparentTargets.begin(), transparentTargets.end(),
 			          [](const RenderTarget2D a, const RenderTarget2D b) {
-				          return a.transform->zIndex < b.transform->zIndex;
+				          return a.transform->getPosition().z < b.transform->getPosition().z;
 			          });
 
 			for (auto &&target : transparentTargets) {
@@ -94,10 +95,10 @@ namespace xe {
 		flush();
 	}
 
-	void SpriteRenderer::submit(const SpriteComponent *sprite, const Transform2DComponent *transform) {
-		if (!sprite->visible) return;
+	void SpriteRenderer::submit(const Sprite *sprite, const Transform2D *transform) {
+		if (!sprite->isVisible()) return;
 
-		if (sprite->hasTransparency) {
+		if (sprite->hasTransparency()) {
 			transparentTargets.emplace_back(sprite, transform);
 		} else {
 			targets.emplace_back(sprite, transform);
@@ -105,35 +106,35 @@ namespace xe {
 	}
 
 	void SpriteRenderer::submitInternal(const RenderTarget2D &target) {
-		const std::array<vec2, 4> &vertices = target.transform->bounds.getVertices();
-		const uint color = target.sprite->color;
-		const std::array<vec2, 4> &uv = target.sprite->UVs;
-		const Texture *texture = target.sprite->texture;
+		const std::array<vec3, 4> &vertices = target.transform->getVertices();
+		const uint color = target.sprite->getColor();
+		const std::array<vec2, 4> &uv = target.sprite->getUVs();
+		const Texture *texture = target.sprite->getTexture();
 
 		float textureSlot = 0.0f;
 		if (texture) {
 			textureSlot = submitTexture(texture);
 		}
 
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[0], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[0]);
 		buffer->uv = uv[0];
 		buffer->tid = textureSlot;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[3], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[3]);
 		buffer->uv = uv[1];
 		buffer->tid = textureSlot;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[2], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[2]);
 		buffer->uv = uv[2];
 		buffer->tid = textureSlot;
 		buffer->color = color;
 		buffer++;
 
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[1], target.transform->zIndex);
+		buffer->vertex = mat4::translateVec(*transformationBack, vertices[1]);
 		buffer->uv = uv[3];
 		buffer->tid = textureSlot;
 		buffer->color = color;

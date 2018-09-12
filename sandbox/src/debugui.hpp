@@ -34,16 +34,16 @@ public:
 	void displayEntityInfo();
 
 public:
-	xe::SpriteComponent *sp0;
-	xe::SpriteComponent *sp1;
-	xe::SpriteComponent *sp2;
-	xe::SpriteComponent *sp3;
+	xe::Sprite *sp0;
+	xe::Sprite *sp1;
+	xe::Sprite *sp2;
+	xe::Sprite *sp3;
 
 private:
 	xe::Camera *camera;
 
 	xe::BatchRenderer2D *renderer;
-	xe::PrimitiveRenderer* primitiveRenderer;
+	xe::PrimitiveRenderer *primitiveRenderer;
 
 	xe::ECS ecs;
 

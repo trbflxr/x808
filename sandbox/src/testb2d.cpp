@@ -26,49 +26,51 @@ TestB2D::TestB2D() {
 
 
 	//create camera
-	camera = new Camera(mat4::ortho(-width, width, -height, height, -1, 1000));
+	camera = new Camera(mat4::ortho(0, width, 0, height, -1, 1000));
 
 	renderer = new BatchRenderer2D(width, height, camera);
 
-	//render system
-	spriteRendererSystem = new SpriteRendererSystem(renderer);
-	textRendererSystem = new TextRendererSystem(renderer);
 
-	renderingPipeline.addSystem(*spriteRendererSystem);
-	renderingPipeline.addSystem(*textRendererSystem);
+	box = new Sprite(GETTEXTURE("1"), true, color::WHITE);
+	ground = new Sprite(GETTEXTURE("2"), true, color::WHITE);
+	sprite = new Sprite(GETTEXTURE("3"), true, color::WHITE);
 
+	boxTransform = new Transform2D({400.0f, 400.0f, 1.0f}, {50.0f, 50.0f});
+	groundTransform = new Transform2D({400.0f, 50.0f, 2.0f}, {500.0f, 5.0f}, 20.0f);
+	spriteTransform = new Transform2D({400.0f, 400.0f, 3.0f}, {50.0f, 50.0f});
 
-	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("1"), true, color::WHITE);
-	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("2"), true, color::WHITE);
-	SpriteComponent *s2 = new SpriteComponent(GETTEXTURE("3"), true, color::WHITE);
+	world = new PhysicsWorld2D({0.0f, -9.8f});
 
-	Transform2DComponent *t0 = new Transform2DComponent(vec2(-20, -200), vec2(500, 5), 1.0f);
-	Transform2DComponent *t1 = new Transform2DComponent(vec2(-10.0f, -10.0f), vec2(50.0f), 2.0f);
-	Transform2DComponent *t2 = new Transform2DComponent(vec2(-10.0f, -10.0f), vec2(50.0f), 3.0f);
+	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, boxTransform);
+	boxCollider->setDensity(20.5f);
+	boxCollider->setFriction(0.2f);
+	boxCollider->setRestitution(0.5f);
 
-	sprite1 = ecs.makeEntity(s0, t0);
-	sprite = ecs.makeEntity(s1, t1);
-	ecs.makeEntity(s2, t2);
-
-	world = new PhysicsWorld2D(vec2(0.0f, -9.8f));
-
-	world->test({20, 20}, {50, 50}, false);
-
-	world->test({-20, -200}, {500, 5}, true);
+	groundCollider = new BoxCollider2D(world, ColliderType::Static, groundTransform);
 }
 
 TestB2D::~TestB2D() {
 	delete camera;
 	delete renderer;
 
-	delete spriteRendererSystem;
-	delete textRendererSystem;
-
 	delete world;
+
+	delete boxCollider;
+	delete groundCollider;
+
+	delete box;
+	delete ground;
+	delete sprite;
+
+	delete boxTransform;
+	delete groundTransform;
+	delete spriteTransform;
 }
 
 void TestB2D::render() {
-	ecs.updateSystems(renderingPipeline, 0.0f);
+	renderer->submit(box, boxTransform);
+	renderer->submit(ground, groundTransform);
+	renderer->submit(sprite, spriteTransform);
 
 	renderer->renderSprites();
 	renderer->renderText();
@@ -77,22 +79,28 @@ void TestB2D::render() {
 }
 
 void TestB2D::update(float delta) {
-	static Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(sprite);
-	static Transform2DComponent *t1 = ecs.getComponent<Transform2DComponent>(sprite1);
+	if (Mouse::isButtonPressed(Mouse::Left)) {
+		const vec2 p = Mouse::getPosition(window);
+		boxCollider->set(p, boxCollider->getRotation());
+		boxCollider->setLinearVelocity({0, 0});
+		boxCollider->setAngularVelocity(0);
+		boxCollider->setAwake(true);
+	}
 
 	world->update(1.0f / 60.0f, 8, 3);
 
-
-	t->bounds.setPosition(world->getPos(false) - t->bounds.getSize() / 2.0f);
-	t->bounds.setRotation(world->getRot(false));
-
-	t1->bounds.setPosition(world->getPos(true) - t1->bounds.getSize() / 2.0f);
-	t1->bounds.setRotation(world->getRot(true));
-
-
-	ecs.updateSystems(mainSystems, delta);
+//	groundCollider->update();
+//	boxCollider->update();
 }
 
 void TestB2D::input(xe::Event &event) {
+	if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Right) {
+		static bool wake = false;
+		boxCollider->setAwake(wake);
+		wake = !wake;
+	}
+}
+
+void TestB2D::tick() {
 
 }
