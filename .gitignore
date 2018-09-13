@@ -4,5 +4,6 @@ cmake-build-release
 .idea
 
 #xe files
+xeconfig
 pack001.pak
 imgui.ini

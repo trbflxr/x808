@@ -30,12 +30,35 @@ set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/json/include
         CACHE STRING "XE external include dirs" FORCE)
 
+#copy files
 file(COPY
         assets
-        xeconfig
         pack001.pak
 
         DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+#copy/gen config
+if (EXISTS "xeconfig")
+    file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+else ()
+    file(WRITE xeconfig
+            "width=1280\n"
+            "height=720\n"
+            "title=sandbox title\n"
+            "fullScreen=0\n"
+            "vSync=0\n"
+            "\n"
+            "ups=30\n"
+            "fps=0\n"
+            "\n"
+            "srgb=1\n"
+            "\n"
+            "#must be 'ogl'. v330 for 2d and v450 for 3d\n"
+            "renderApi=ogl\n"
+            "apiVersion=330\n")
+
+    file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+endif ()
 
 add_subdirectory(engine)
 add_subdirectory(sandbox)
