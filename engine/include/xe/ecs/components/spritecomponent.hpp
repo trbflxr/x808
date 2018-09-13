@@ -12,14 +12,20 @@
 namespace xe {
 
 	struct SpriteComponent : public ECSComponent<SpriteComponent> {
-		Sprite sprite;
+		Sprite *sprite;
 
 		explicit SpriteComponent(const Texture *texture,
 		                         bool hasTransparency = false,
 		                         uint color = color::WHITE,
 		                         bool flipUVs = false,
-		                         bool visible = true) noexcept :
-				sprite(texture, hasTransparency, color, flipUVs, visible) { }
+		                         bool visible = true) noexcept {
+
+			sprite = new Sprite(texture, hasTransparency, color, flipUVs, visible);
+		}
+
+		~SpriteComponent() {
+			delete sprite;
+		}
 
 	};
 

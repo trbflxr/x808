@@ -27,6 +27,8 @@ namespace xe {
 
 		inline const std::array<vec3, 4> &getVertices() const;
 
+		inline void set(const vec3 &position, const vec2 &size, float angleDeg = 0.0f);
+
 		inline bool isDirty() const { return dirty; }
 		inline void setDirty(bool isDirty) { dirty = isDirty; }
 
@@ -67,6 +69,13 @@ namespace xe {
 		vec2 size;
 	};
 
+
+	void Transform2D::set(const vec3 &position, const vec2 &size, float angleDeg) {
+		Transform2D::position = position;
+		Transform2D::size = size;
+		rotation = angleDeg;
+		dirty = true;
+	}
 
 	const std::array<vec3, 4> &Transform2D::getVertices() const {
 		if (dirty) {

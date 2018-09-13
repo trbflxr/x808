@@ -37,10 +37,6 @@ private:
 	xe::Sprite *box;
 	xe::Sprite *ground;
 	xe::Sprite *sprite;
-
-	xe::Transform2D *boxTransform;
-	xe::Transform2D *groundTransform;
-	xe::Transform2D *spriteTransform;
 };
 
 #endif //X808_TESTB2D_HPP

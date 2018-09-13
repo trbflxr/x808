@@ -32,21 +32,22 @@ TestB2D::TestB2D() {
 
 
 	box = new Sprite(GETTEXTURE("1"), true, color::WHITE);
-	ground = new Sprite(GETTEXTURE("2"), true, color::WHITE);
-	sprite = new Sprite(GETTEXTURE("3"), true, color::WHITE);
+	box->transform.set({400.0f, 400.0f, 1.0f}, {50.0f, 50.0f});
 
-	boxTransform = new Transform2D({400.0f, 400.0f, 1.0f}, {50.0f, 50.0f});
-	groundTransform = new Transform2D({400.0f, 50.0f, 2.0f}, {500.0f, 5.0f}, 20.0f);
-	spriteTransform = new Transform2D({400.0f, 400.0f, 3.0f}, {50.0f, 50.0f});
+	ground = new Sprite(GETTEXTURE("2"), true, color::WHITE);
+	ground->transform.set({400.0f, 50.0f, 2.0f}, {500.0f, 5.0f}, 20.0f);
+
+	sprite = new Sprite(GETTEXTURE("3"), true, color::WHITE);
+	sprite->transform.set({400.0f, 400.0f, 3.0f}, {50.0f, 50.0f});
 
 	world = new PhysicsWorld2D({0.0f, -9.8f});
 
-	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, boxTransform);
+	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, &box->transform);
 	boxCollider->setDensity(20.5f);
 	boxCollider->setFriction(0.2f);
 	boxCollider->setRestitution(0.5f);
 
-	groundCollider = new BoxCollider2D(world, ColliderType::Static, groundTransform);
+	groundCollider = new BoxCollider2D(world, ColliderType::Static, &ground->transform);
 }
 
 TestB2D::~TestB2D() {
@@ -61,16 +62,12 @@ TestB2D::~TestB2D() {
 	delete box;
 	delete ground;
 	delete sprite;
-
-	delete boxTransform;
-	delete groundTransform;
-	delete spriteTransform;
 }
 
 void TestB2D::render() {
-	renderer->submit(box, boxTransform);
-	renderer->submit(ground, groundTransform);
-	renderer->submit(sprite, spriteTransform);
+	renderer->submit(box);
+	renderer->submit(ground);
+	renderer->submit(sprite);
 
 	renderer->renderSprites();
 	renderer->renderText();

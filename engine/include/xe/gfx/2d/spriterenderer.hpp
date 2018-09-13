@@ -15,33 +15,24 @@
 
 namespace xe {
 
-	struct RenderTarget2D {
-		const Sprite *sprite;
-		const Transform2D *transform;
-
-		RenderTarget2D(const Sprite *sprite,
-		               const Transform2D *transform) noexcept :
-				sprite(sprite), transform(transform) { }
-	};
-
 	class XE_API SpriteRenderer : public IRenderer2D {
 	public:
 		explicit SpriteRenderer(uint width, uint height, Camera *camera);
 
-		void submit(const Sprite *sprite, const Transform2D *transform);
+		void submit(const IRenderable2D *renderable);
 
 		void begin() override;
 		void end() override;
 		void flush() override;
 
-		void render(const std::vector<RenderTarget2D> &targets);
+		void render(const std::vector<const IRenderable2D *> &targets);
 
 	private:
-		void submitInternal(const RenderTarget2D &target);
+		void submitInternal(const IRenderable2D *target);
 
 	private:
-		std::vector<RenderTarget2D> targets;
-		std::vector<RenderTarget2D> transparentTargets;
+		std::vector<const IRenderable2D *> targets;
+		std::vector<const IRenderable2D *> transparentTargets;
 	};
 }
 

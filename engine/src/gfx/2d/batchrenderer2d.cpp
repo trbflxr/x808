@@ -20,13 +20,13 @@ namespace xe {
 		delete textRenderer;
 	}
 
-	void BatchRenderer2D::submit(const Sprite *sprite, const Transform2D *transform) {
-		if (!sprite->isVisible()) return;
+	void BatchRenderer2D::submit(const IRenderable2D *renderable) {
+		if (!renderable->isVisible()) return;
 
-		if (sprite->hasTransparency()) {
-			transparentSprites.emplace_back(sprite, transform);
+		if (renderable->hasTransparency()) {
+			transparentSprites.push_back(renderable);
 		} else {
-			sprites.emplace_back(sprite, transform);
+			sprites.push_back(renderable);
 		}
 	}
 
@@ -40,8 +40,8 @@ namespace xe {
 		Renderer::enableDepthTesting(true);
 
 		std::sort(sprites.begin(), sprites.end(),
-		          [](const RenderTarget2D a, const RenderTarget2D b) {
-			          return a.sprite->getTexture() > b.sprite->getTexture();
+		          [](const IRenderable2D *a, const IRenderable2D *b) {
+			          return a->getTexture() > b->getTexture();
 		          });
 
 		spriteRenderer->render(sprites);
@@ -51,8 +51,8 @@ namespace xe {
 		if (!transparentSprites.empty()) {
 			//todo: there must be a better solution
 			std::sort(transparentSprites.begin(), transparentSprites.end(),
-			          [](const RenderTarget2D a, const RenderTarget2D b) {
-				          return a.transform->getPosition().z < b.transform->getPosition().z;
+			          [](const IRenderable2D *a, const IRenderable2D *b) {
+				          return a->getPosition().z < b->getPosition().z;
 			          });
 
 			spriteRenderer->render(transparentSprites);

@@ -48,9 +48,16 @@ DebugUI::DebugUI() :
 
 
 	sp0 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp0->transform.set({-125, -69, 0.0f}, {50, 30});
+
 	sp1 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp1->transform.set({-72, -69, 0.0f}, {50, 30});
+
 	sp2 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp2->transform.set({-19, -69, 0.0f}, {50, 30});
+
 	sp3 = new Sprite(nullptr, false, color::WHITE, true, false);
+	sp3->transform.set({34, -69, 0.0f}, {50, 30});
 }
 
 DebugUI::~DebugUI() {
@@ -82,14 +89,10 @@ void DebugUI::render() {
 
 
 	//render sprites and text
-	static Transform2D *t0 = new Transform2D({-125, -69, 0.0f}, vec2(50, 30));
-	static Transform2D *t1 = new Transform2D({-72, -69, 0.0f}, vec2(50, 30));
-	static Transform2D *t2 = new Transform2D({-19, -69, 0.0f}, vec2(50, 30));
-	static Transform2D *t3 = new Transform2D({34, -69, 0.0f}, vec2(50, 30));
-	renderer->submit(sp0, t0);
-	renderer->submit(sp1, t1);
-	renderer->submit(sp2, t2);
-	renderer->submit(sp3, t3);
+	renderer->submit(sp0);
+	renderer->submit(sp1);
+	renderer->submit(sp2);
+	renderer->submit(sp3);
 
 	ecs.updateSystems(renderingPipeline, 0.0f);
 

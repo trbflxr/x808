@@ -103,9 +103,9 @@ Test2D::Test2D() {
 	for (float x = -800; x < 800; x += 5.7f) {
 		for (float y = -600; y < 600; y += 5.7f) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			Transform2DComponent *t = new Transform2DComponent(vec2(x, y), vec2(4.9f), 0.0f);
+			s->sprite.transform.set({x, y, 0.0f}, vec2(9.0f));
 
-			ecs.makeEntity(s, t);
+			ecs.makeEntity(s);
 
 			++sprites;
 		}
@@ -114,9 +114,9 @@ Test2D::Test2D() {
 	for (float x = -800; x < 800; x += 10.3f) {
 		for (float y = -600; y < 600; y += 10.3f) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			Transform2DComponent *t = new Transform2DComponent({x, y, 0.0f}, vec2(9.0f));
+			s->sprite->transform.set({x, y, 0.0f}, vec2(9.0f));
 
-			ecs.makeEntity(s, t);
+			ecs.makeEntity(s);
 
 			++sprites;
 		}
@@ -125,18 +125,18 @@ Test2D::Test2D() {
 	for (int32 x = -800; x < 800; x += 40) {
 		for (int32 y = -600; y < 600; y += 40) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			Transform2DComponent *t = new Transform2DComponent(vec3(x, y, 0.0f), vec2(30.0f));
+			s->sprite.transform.set({x, y, 0.0f}, vec2(9.0f));
 
-			ecs.makeEntity(s, t);
+			ecs.makeEntity(s);
 
 			++sprites;
 		}
 	}
 #elif sp_size == 0
 	SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-	Transform2DComponent *t = new Transform2DComponent(vec2(0, 0), vec2(30.0f), 0.0f);
+	s->sprite.transform.set({0.0f, 0.0f, 0.0f}, vec2(9.0f));
 
-	ecs.makeEntity(s, t);
+	ecs.makeEntity(s);
 
 	++sprites;
 #endif
@@ -153,17 +153,18 @@ Test2D::Test2D() {
 	                                          GETFONT("consolata"), color::RED, color::GREEN, 3)));
 
 	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("35"), true, color::WHITE);
+	s0->sprite->transform.set({-100.0f, -100.0f, 1.0f}, vec2(200.0f));
+
 	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("36"), true, color::WHITE);
+	s1->sprite->transform.set({-40.0f, -40.0f, 2.0f}, vec2(200.0f));
+
 	SpriteComponent *s2 = new SpriteComponent(GETTEXTURE("37"), true, color::WHITE);
+	s2->sprite->transform.set({-40.0f, -40.0f, 3.0f}, vec2(200.0f));
 
-	Transform2DComponent *t0 = new Transform2DComponent({-100.0f, -100.0f, 1.0f}, vec2(200.0f));
-	Transform2DComponent *t1 = new Transform2DComponent({-40.0f, -40.0f, 2.0f}, vec2(200.0f));
-	Transform2DComponent *t2 = new Transform2DComponent({-40.0f, -40.0f, 3.0f}, vec2(200.0f));
 
-	ecs.makeEntity(s0, t0);
-	a = ecs.makeEntity(s1, t1);
-
-	ecs.makeEntity(s2, t2);
+	ecs.makeEntity(s0);
+	a = ecs.makeEntity(s1);
+	ecs.makeEntity(s2);
 }
 
 Test2D::~Test2D() {
@@ -185,7 +186,7 @@ void Test2D::render() {
 }
 
 void Test2D::update(float delta) {
-	static Transform2DComponent *t = ecs.getComponent<Transform2DComponent>(a);
+	static SpriteComponent *s = ecs.getComponent<SpriteComponent>(a);
 
 	static const vec2i halfSize = window.getSize() / 2;
 	static constexpr float spriteHalfSize = 50.0f;
@@ -193,7 +194,7 @@ void Test2D::update(float delta) {
 	const vec2 p = Mouse::getPosition(window);
 	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, (p.y - halfSize.y - spriteHalfSize) * 2.0f);
 
-	t->transform.setPosition(pos);
+	s->sprite->transform.setPosition(pos);
 
 	ecs.updateSystems(mainSystems, delta);
 

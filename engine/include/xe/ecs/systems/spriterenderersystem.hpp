@@ -20,14 +20,12 @@ namespace xe {
 				renderer(renderer) {
 
 			addComponentType(SpriteComponent::ID);
-			addComponentType(Transform2DComponent::ID);
 		}
 
 		void updateComponents(float delta, BaseECSComponent **components) override {
 			SpriteComponent *sprite = (SpriteComponent *) components[0];
-			Transform2DComponent *transform = (Transform2DComponent *) components[1];
 
-			renderer->submit(&sprite->sprite, &transform->transform);
+			renderer->submit(sprite->sprite);
 		}
 
 	private:

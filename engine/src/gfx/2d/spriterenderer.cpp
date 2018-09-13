@@ -29,8 +29,8 @@ namespace xe {
 		Renderer::enableDepthTesting(true);
 
 		std::sort(targets.begin(), targets.end(),
-		          [](const RenderTarget2D a, const RenderTarget2D b) {
-			          return a.sprite->getTexture() > b.sprite->getTexture();
+		          [](const IRenderable2D *a, const IRenderable2D *b) {
+			          return a->getTexture() > b->getTexture();
 		          });
 
 		for (auto &&target : targets) {
@@ -42,8 +42,8 @@ namespace xe {
 		if (!transparentTargets.empty()) {
 			//todo: there must be a better solution
 			std::sort(transparentTargets.begin(), transparentTargets.end(),
-			          [](const RenderTarget2D a, const RenderTarget2D b) {
-				          return a.transform->getPosition().z < b.transform->getPosition().z;
+			          [](const IRenderable2D *a, const IRenderable2D *b) {
+				          return a->getPosition().z < b->getPosition().z;
 			          });
 
 			for (auto &&target : transparentTargets) {
@@ -84,7 +84,7 @@ namespace xe {
 		Renderer::incDC();
 	}
 
-	void SpriteRenderer::render(const std::vector<RenderTarget2D> &targets) {
+	void SpriteRenderer::render(const std::vector<const IRenderable2D *> &targets) {
 		begin();
 
 		for (const auto &t : targets) {
@@ -95,21 +95,21 @@ namespace xe {
 		flush();
 	}
 
-	void SpriteRenderer::submit(const Sprite *sprite, const Transform2D *transform) {
-		if (!sprite->isVisible()) return;
+	void SpriteRenderer::submit(const IRenderable2D *renderable) {
+		if (!renderable->isVisible()) return;
 
-		if (sprite->hasTransparency()) {
-			transparentTargets.emplace_back(sprite, transform);
+		if (renderable->hasTransparency()) {
+			transparentTargets.push_back(renderable);
 		} else {
-			targets.emplace_back(sprite, transform);
+			targets.push_back(renderable);
 		}
 	}
 
-	void SpriteRenderer::submitInternal(const RenderTarget2D &target) {
-		const std::array<vec3, 4> &vertices = target.transform->getVertices();
-		const uint color = target.sprite->getColor();
-		const std::array<vec2, 4> &uv = target.sprite->getUVs();
-		const Texture *texture = target.sprite->getTexture();
+	void SpriteRenderer::submitInternal(const IRenderable2D *renderable) {
+		const std::array<vec3, 4> &vertices = renderable->getVertices();
+		const uint color = renderable->getColor();
+		const std::array<vec2, 4> &uv = renderable->getUVs();
+		const Texture *texture = renderable->getTexture();
 
 		float textureSlot = 0.0f;
 		if (texture) {
