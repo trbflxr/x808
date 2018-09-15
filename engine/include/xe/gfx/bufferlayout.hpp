@@ -71,6 +71,16 @@ namespace xe {
 	}
 
 	template<>
+	inline void BufferLayout::push<int32>(const char *name, uint count, bool normalized) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OpenGL: push(name, GL_INT, sizeof(int32), count, normalized);
+				break;
+
+			default: break;
+		}
+	}
+
+	template<>
 	inline void BufferLayout::push<byte>(const char *name, uint count, bool normalized) {
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OpenGL: push(name, GL_UNSIGNED_BYTE, sizeof(byte), count, normalized);

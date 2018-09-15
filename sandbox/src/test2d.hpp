@@ -8,7 +8,6 @@
 
 #include <xe/ecs/ecs.hpp>
 #include <xe/ecs/components/spritecomponent.hpp>
-#include <xe/ecs/components/transform2dcomponent.hpp>
 #include <xe/ecs/components/textcomponent.hpp>
 #include <xe/ecs/systems/spriterenderersystem.hpp>
 #include <xe/ecs/systems/textrenderersystem.hpp>

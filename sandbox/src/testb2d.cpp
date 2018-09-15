@@ -32,22 +32,22 @@ TestB2D::TestB2D() {
 
 
 	box = new Sprite(GETTEXTURE("1"), true, color::WHITE);
-	box->transform.set({400.0f, 400.0f, 1.0f}, {50.0f, 50.0f});
+	box->set({400.0f, 400.0f, 1.0f}, {50.0f, 50.0f});
 
 	ground = new Sprite(GETTEXTURE("2"), true, color::WHITE);
-	ground->transform.set({400.0f, 50.0f, 2.0f}, {500.0f, 5.0f}, 20.0f);
+	ground->set({400.0f, 50.0f, 2.0f}, {500.0f, 5.0f}, 20.0f);
 
 	sprite = new Sprite(GETTEXTURE("3"), true, color::WHITE);
-	sprite->transform.set({400.0f, 400.0f, 3.0f}, {50.0f, 50.0f});
+	sprite->set({400.0f, 400.0f, 3.0f}, {50.0f, 50.0f});
 
 	world = new PhysicsWorld2D({0.0f, -9.8f});
 
-	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, &box->transform);
+	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, box);
 	boxCollider->setDensity(20.5f);
 	boxCollider->setFriction(0.2f);
 	boxCollider->setRestitution(0.5f);
 
-	groundCollider = new BoxCollider2D(world, ColliderType::Static, &ground->transform);
+	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
 }
 
 TestB2D::~TestB2D() {

@@ -8,7 +8,7 @@
 
 #include <xe/common.hpp>
 #include <xe/math/vec2.hpp>
-#include <xe/math/transform2d.hpp>
+#include <xe/gfx/2d/itransformable2d.hpp>
 
 class b2Body;
 
@@ -83,14 +83,14 @@ namespace xe {
 		void setDensity(float density);
 
 	protected:
-		explicit Collider2D(PhysicsWorld2D *world, ColliderType type, Transform2D *transform);
+		explicit Collider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable);
 
 		virtual void update();
 
 	protected:
 		friend class PhysicsWorld2D;
 
-		Transform2D *transform;
+		ITransformable2D *transformable;
 		ColliderType type;
 		b2Body *body;
 	};

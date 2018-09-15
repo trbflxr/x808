@@ -20,13 +20,13 @@ namespace xe {
 		delete textRenderer;
 	}
 
-	void BatchRenderer2D::submit(const IRenderable2D *renderable) {
-		if (!renderable->isVisible()) return;
+	void BatchRenderer2D::submit(const Sprite *sprite) {
+		if (!sprite->isVisible()) return;
 
-		if (renderable->hasTransparency()) {
-			transparentSprites.push_back(renderable);
+		if (sprite->hasTransparency()) {
+			transparentSprites.push_back(sprite);
 		} else {
-			sprites.push_back(renderable);
+			sprites.push_back(sprite);
 		}
 	}
 
@@ -51,7 +51,7 @@ namespace xe {
 		if (!transparentSprites.empty()) {
 			//todo: there must be a better solution
 			std::sort(transparentSprites.begin(), transparentSprites.end(),
-			          [](const IRenderable2D *a, const IRenderable2D *b) {
+			          [](const Sprite *a, const Sprite *b) {
 				          return a->getPosition().z < b->getPosition().z;
 			          });
 

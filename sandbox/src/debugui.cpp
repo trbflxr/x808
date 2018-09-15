@@ -48,16 +48,16 @@ DebugUI::DebugUI() :
 
 
 	sp0 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp0->transform.set({-125, -69, 0.0f}, {50, 30});
+	sp0->set({-125, -69, 0.0f}, {50, 30});
 
 	sp1 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp1->transform.set({-72, -69, 0.0f}, {50, 30});
+	sp1->set({-72, -69, 0.0f}, {50, 30});
 
 	sp2 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp2->transform.set({-19, -69, 0.0f}, {50, 30});
+	sp2->set({-19, -69, 0.0f}, {50, 30});
 
 	sp3 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp3->transform.set({34, -69, 0.0f}, {50, 30});
+	sp3->set({34, -69, 0.0f}, {50, 30});
 }
 
 DebugUI::~DebugUI() {

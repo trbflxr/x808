@@ -18,13 +18,13 @@ namespace xe {
 		}
 	}
 
-	Collider2D::Collider2D(PhysicsWorld2D *world, ColliderType type, Transform2D *transform) :
-			transform(transform),
+	Collider2D::Collider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable) :
+			transformable(transformable),
 			type(type) {
 
 		b2BodyDef bodyDef;
-		bodyDef.position = transform->getPosition();
-		bodyDef.angle = to_rad(transform->getRotation());
+		bodyDef.position = transformable->getPosition();
+		bodyDef.angle = to_rad(transformable->getRotation());
 		bodyDef.type = xeToBox2DBody(type);
 
 		body = world->world->CreateBody(&bodyDef);
@@ -32,8 +32,8 @@ namespace xe {
 	}
 
 	void Collider2D::update() {
-		transform->setPosition(getPosition());
-		transform->setRotation(getRotation());
+		transformable->setPosition(getPosition());
+		transformable->setRotation(getRotation());
 	}
 
 	void Collider2D::set(const vec2 &position, float angle) {

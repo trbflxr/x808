@@ -7,11 +7,11 @@
 
 namespace xe {
 
-	BoxCollider2D::BoxCollider2D(PhysicsWorld2D *world, ColliderType type, Transform2D *transform) :
-			Collider2D(world, type, transform) {
+	BoxCollider2D::BoxCollider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable) :
+			Collider2D(world, type, transformable) {
 
 		b2PolygonShape shape;
-		b2Vec2 s(transform->getSize() / 2.0f);
+		b2Vec2 s(transformable->getSize() / 2.0f);
 		shape.SetAsBox(s.x, s.y);
 
 		b2FixtureDef fixtureDef;
@@ -21,8 +21,8 @@ namespace xe {
 	}
 
 	void BoxCollider2D::update() {
-		transform->setPosition(getPosition() - transform->getSize() / 2.0f);
-		transform->setRotation(getRotation());
+		transformable->setPosition(getPosition() - transformable->getSize() / 2.0f);
+		transformable->setRotation(getRotation());
 	}
 
 }

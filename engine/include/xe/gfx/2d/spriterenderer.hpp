@@ -11,7 +11,6 @@
 #include <xe/gfx/2d/irenderer2d.hpp>
 #include <xe/gfx/uniformbuffer.hpp>
 #include <xe/gfx/sprite.hpp>
-#include <xe/math/transform2d.hpp>
 
 namespace xe {
 
@@ -19,20 +18,20 @@ namespace xe {
 	public:
 		explicit SpriteRenderer(uint width, uint height, Camera *camera);
 
-		void submit(const IRenderable2D *renderable);
+		void submit(const Sprite *sprite);
 
 		void begin() override;
 		void end() override;
 		void flush() override;
 
-		void render(const std::vector<const IRenderable2D *> &targets);
+		void render(const std::vector<const Sprite *> &sprites);
 
 	private:
-		void submitInternal(const IRenderable2D *target);
+		void submitInternal(const Sprite *sprite);
 
 	private:
-		std::vector<const IRenderable2D *> targets;
-		std::vector<const IRenderable2D *> transparentTargets;
+		std::vector<const Sprite *> targets;
+		std::vector<const Sprite *> transparentTargets;
 	};
 }
 

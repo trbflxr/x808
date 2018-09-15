@@ -9,7 +9,6 @@
 #include <xe/gfx/2d/batchrenderer2d.hpp>
 #include <xe/ecs/ecssystem.hpp>
 #include <xe/ecs/components/spritecomponent.hpp>
-#include <xe/ecs/components/transform2dcomponent.hpp>
 
 namespace xe {
 

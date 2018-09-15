@@ -12,7 +12,7 @@ namespace xe {
 
 	class XE_API BoxCollider2D : public Collider2D {
 	public:
-		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, Transform2D *transform);
+		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable);
 
 	protected:
 		void update() override;

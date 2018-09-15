@@ -6,7 +6,6 @@
 #define X808_SPRITE_HPP
 
 
-#include <array>
 #include <xe/gfx/texture.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/2d/irenderable2d.hpp>
@@ -22,31 +21,23 @@ namespace xe {
 		                       bool flipUVs = false,
 		                       bool visible = true) noexcept;
 
-		const Texture *getTexture() const override { return texture; }
-		void setTexture(const Texture *texture) { Sprite::texture = texture; }
-
-		bool hasTransparency() const override { return hasTransparency_; }
+		inline const Texture *getTexture() const override { return texture; }
+		inline void setTexture(const Texture *texture) { Sprite::texture = texture; }
 
 		uint getColor() const override { return color; }
 		void setColor(uint color) { Sprite::color = color; }
 
-		bool isVisible() const override { return visible; }
-		void setVisible(bool visible) { Sprite::visible = visible; }
+		inline uint getVerticesSize() const override { return 4; }
+		const std::vector<Vertex2D> &getVertices() const override;
 
-		const std::array<vec2, 4> &getUVs() const override { return UVs; }
-
-		const std::array<vec3, 4> &getVertices() const override { return transform.getVertices(); }
-		const vec3 &getPosition() const override { return transform.getPosition(); }
-
-		static const std::array<vec2, 4> &getDefaultUVs();
-		static const std::array<vec2, 4> &getFlippedUVs();
+		static const std::vector<vec2> &getDefaultUVs();
+		static const std::vector<vec2> &getFlippedUVs();
 
 	private:
 		const Texture *texture;
-		bool hasTransparency_;
 		uint color;
-		bool visible;
-		std::array<vec2, 4> UVs;
+
+		mutable std::vector<Vertex2D> vertices;
 	};
 
 }

@@ -16,7 +16,7 @@ namespace xe {
 		explicit BatchRenderer2D(uint width, uint height, Camera *camera);
 		~BatchRenderer2D();
 
-		void submit(const IRenderable2D *renderable);
+		void submit(const Sprite *sprite);
 		void submit(const Text *text);
 
 		void renderSprites();
@@ -30,8 +30,8 @@ namespace xe {
 		SpriteRenderer *spriteRenderer;
 		TextRenderer *textRenderer;
 
-		std::vector<const IRenderable2D *> sprites;
-		std::vector<const IRenderable2D *> transparentSprites;
+		std::vector<const Sprite *> sprites;
+		std::vector<const Sprite *> transparentSprites;
 
 		std::vector<const Text *> text;
 	};

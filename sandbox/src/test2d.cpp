@@ -76,7 +76,7 @@ Test2D::Test2D() {
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	uint texCount = 39;
+	uint texCount = 38;
 
 
 	//create camera
@@ -97,13 +97,13 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 2
+#define sp_size 1
 
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
 		for (float y = -600; y < 600; y += 5.7f) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite.transform.set({x, y, 0.0f}, vec2(9.0f));
+			s->sprite.transform.set({x, y, 0.0f}, vec2(4.9f));
 
 			ecs.makeEntity(s);
 
@@ -125,7 +125,7 @@ Test2D::Test2D() {
 	for (int32 x = -800; x < 800; x += 40) {
 		for (int32 y = -600; y < 600; y += 40) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite.transform.set({x, y, 0.0f}, vec2(9.0f));
+			s->sprite->set(vec3(x, y, 0.0f), vec2(30.0f));
 
 			ecs.makeEntity(s);
 
@@ -153,13 +153,13 @@ Test2D::Test2D() {
 	                                          GETFONT("consolata"), color::RED, color::GREEN, 3)));
 
 	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("35"), true, color::WHITE);
-	s0->sprite->transform.set({-100.0f, -100.0f, 1.0f}, vec2(200.0f));
+	s0->sprite->set({-100.0f, -100.0f, 1.0f}, vec2(200.0f));
 
 	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("36"), true, color::WHITE);
-	s1->sprite->transform.set({-40.0f, -40.0f, 2.0f}, vec2(200.0f));
+	s1->sprite->set({-40.0f, -40.0f, 2.0f}, vec2(200.0f));
 
 	SpriteComponent *s2 = new SpriteComponent(GETTEXTURE("37"), true, color::WHITE);
-	s2->sprite->transform.set({-40.0f, -40.0f, 3.0f}, vec2(200.0f));
+	s2->sprite->set({-40.0f, -40.0f, 3.0f}, vec2(200.0f));
 
 
 	ecs.makeEntity(s0);
@@ -194,7 +194,7 @@ void Test2D::update(float delta) {
 	const vec2 p = Mouse::getPosition(window);
 	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, (p.y - halfSize.y - spriteHalfSize) * 2.0f);
 
-	s->sprite->transform.setPosition(pos);
+	s->sprite->setPosition(pos);
 
 	ecs.updateSystems(mainSystems, delta);
 

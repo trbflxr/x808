@@ -29,7 +29,7 @@ namespace xe {
 		Renderer::enableDepthTesting(true);
 
 		std::sort(targets.begin(), targets.end(),
-		          [](const IRenderable2D *a, const IRenderable2D *b) {
+		          [](const Sprite *a, const Sprite *b) {
 			          return a->getTexture() > b->getTexture();
 		          });
 
@@ -42,7 +42,7 @@ namespace xe {
 		if (!transparentTargets.empty()) {
 			//todo: there must be a better solution
 			std::sort(transparentTargets.begin(), transparentTargets.end(),
-			          [](const IRenderable2D *a, const IRenderable2D *b) {
+			          [](const Sprite *a, const Sprite *b) {
 				          return a->getPosition().z < b->getPosition().z;
 			          });
 
@@ -84,61 +84,44 @@ namespace xe {
 		Renderer::incDC();
 	}
 
-	void SpriteRenderer::render(const std::vector<const IRenderable2D *> &targets) {
+	void SpriteRenderer::render(const std::vector<const Sprite *> &sprites) {
 		begin();
 
-		for (const auto &t : targets) {
-			submitInternal(t);
+		for (const auto &s: sprites) {
+			submitInternal(s);
 		}
 
 		releaseBuffer();
 		flush();
 	}
 
-	void SpriteRenderer::submit(const IRenderable2D *renderable) {
-		if (!renderable->isVisible()) return;
+	void SpriteRenderer::submit(const Sprite *sprite) {
+		if (!sprite->isVisible()) return;
 
-		if (renderable->hasTransparency()) {
-			transparentTargets.push_back(renderable);
+		if (sprite->hasTransparency()) {
+			transparentTargets.push_back(sprite);
 		} else {
-			targets.push_back(renderable);
+			targets.push_back(sprite);
 		}
 	}
 
-	void SpriteRenderer::submitInternal(const IRenderable2D *renderable) {
-		const std::array<vec3, 4> &vertices = renderable->getVertices();
-		const uint color = renderable->getColor();
-		const std::array<vec2, 4> &uv = renderable->getUVs();
-		const Texture *texture = renderable->getTexture();
+	void SpriteRenderer::submitInternal(const Sprite *sprite) {
+		const std::vector<Vertex2D> &vertices = sprite->getVertices();
+		const uint color = sprite->getColor();
+		const Texture *texture = sprite->getTexture();
 
 		float textureSlot = 0.0f;
 		if (texture) {
 			textureSlot = submitTexture(texture);
 		}
 
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[0]);
-		buffer->uv = uv[0];
-		buffer->tid = textureSlot;
-		buffer->color = color;
-		buffer++;
-
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[3]);
-		buffer->uv = uv[1];
-		buffer->tid = textureSlot;
-		buffer->color = color;
-		buffer++;
-
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[2]);
-		buffer->uv = uv[2];
-		buffer->tid = textureSlot;
-		buffer->color = color;
-		buffer++;
-
-		buffer->vertex = mat4::translateVec(*transformationBack, vertices[1]);
-		buffer->uv = uv[3];
-		buffer->tid = textureSlot;
-		buffer->color = color;
-		buffer++;
+		for (uint i = 0; i < sprite->getVerticesSize(); ++i) {
+			buffer->vertex = mat4::translateVec(*transformationBack, vertices[i].pos);
+			buffer->uv = vertices[i].uv;
+			buffer->tid = textureSlot;
+			buffer->color = color;
+			buffer++;
+		}
 
 		indexCount += 6;
 	}
