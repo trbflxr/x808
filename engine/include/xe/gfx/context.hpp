@@ -14,18 +14,26 @@ namespace xe {
 	public:
 		static void create(void *deviceContext);
 
-		static RenderAPI getRenderAPI() { return api; }
-		static uint getRenderAPIVersion() { return apiVersion; };
+		static inline RenderAPI getRenderAPI() { return api; }
+		static inline uint getRenderAPIVersion() { return apiVersion; };
 
-		static void setRenderAPI(RenderAPI api, uint version) {
+		static inline void setRenderAPI(RenderAPI api, uint version) {
 			Context::api = api;
 			Context::apiVersion = version;
 		}
+
+		static inline uint getMaxTextureUnits() { return maxTextureUnits; }
+		static void setMaxTextureUnits(uint size);
+
+	protected:
+		virtual uint getMaxTexUnits() = 0;
 
 	protected:
 		static Context *context;
 		static RenderAPI api;
 		static uint apiVersion;
+
+		static uint maxTextureUnits;
 	};
 
 }

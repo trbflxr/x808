@@ -56,4 +56,11 @@ namespace xe { namespace internal {
 		glCall(wglSwapIntervalEXT(enabled));
 	}
 
+	uint GLContext::getMaxTexUnits() {
+		int32 size;
+		glCall(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &size));
+
+		return static_cast<uint>(size);
+	}
+
 }}

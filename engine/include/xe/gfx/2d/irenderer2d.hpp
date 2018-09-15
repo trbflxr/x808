@@ -75,6 +75,9 @@ namespace xe {
 		const mat4 *transformationBack;
 
 		std::vector<const Texture *> textures;
+
+		//constants
+		const uint maxTextureUnits;
 	};
 
 }

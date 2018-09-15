@@ -12,9 +12,9 @@ namespace xe {
 #define RENDERER2D_SPRITE_SIZE     (RENDERER2D_VERTEX_SIZE * 4)
 #define RENDERER2D_BUFFER_SIZE     (RENDERER2D_SPRITE_SIZE * RENDERER2D_MAX_SPRITES)
 #define RENDERER2D_INDICES_SIZE    (RENDERER2D_MAX_SPRITES * 6)
-#define RENDERER2D_MAX_TEXTURES    32
 
 	IRenderer2D::IRenderer2D(uint width, uint height, Camera *camera) :
+			maxTextureUnits(Context::getMaxTextureUnits()),
 			width(width),
 			height(height),
 			camera(camera),
@@ -80,7 +80,7 @@ namespace xe {
 		}
 
 		if (!found) {
-			if (textures.size() >= RENDERER2D_MAX_TEXTURES) {
+			if (textures.size() >= maxTextureUnits) {
 				releaseBuffer();
 				flush();
 				begin();

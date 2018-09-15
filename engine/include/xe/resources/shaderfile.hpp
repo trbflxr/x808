@@ -56,6 +56,8 @@ namespace xe {
 
 		string loadFromFile(const char *path);
 
+		virtual void setConstants(string &source) { }
+
 	protected:
 		bool createFromSource;
 

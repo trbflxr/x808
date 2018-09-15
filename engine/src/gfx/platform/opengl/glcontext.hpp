@@ -19,6 +19,10 @@ namespace xe { namespace internal {
 		void enableVsync(bool enabled);
 
 		inline static GLContext *get() { return (GLContext *) context; }
+
+	protected:
+		uint getMaxTexUnits() override;
+
 	};
 
 }}

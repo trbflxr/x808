@@ -24,6 +24,7 @@ namespace xe {
 		random::nextInt32(0, 1);
 
 		Context::setRenderAPI(config.renderApi, config.apiVersion);
+
 		instance = this;
 
 		init();
@@ -40,6 +41,8 @@ namespace xe {
 
 		window.setFramerateLimit(config.fps);
 		window.setVerticalSyncEnabled(config.vSync);
+
+		Context::setMaxTextureUnits(config.maxTextureUnits);
 
 		ShaderManager::init();
 		SoundManager::init();
@@ -105,6 +108,8 @@ namespace xe {
 			frameTime = frameTimer.elapsedMillis();
 
 			window.update();
+
+			SoundManager::update();
 
 			processEvents();
 

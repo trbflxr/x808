@@ -4,7 +4,7 @@ in vec2 uv0;
 in vec4 color0;
 in float tid0;
 
-uniform sampler2D textures[32];
+uniform sampler2D textures[@MAX_TEXTURES];
 
 void main() {
   vec4 final = color0;

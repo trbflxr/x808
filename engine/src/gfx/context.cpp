@@ -10,6 +10,7 @@ namespace xe {
 	Context *Context::context = nullptr;
 	RenderAPI Context::api = RenderAPI::Invalid;
 	uint Context::apiVersion = 0;
+	uint Context::maxTextureUnits = 1;
 
 	void Context::create(void *deviceContext) {
 		switch (getRenderAPI()) {
@@ -17,6 +18,14 @@ namespace xe {
 				break;
 			default: break;
 		}
+	}
+
+	void Context::setMaxTextureUnits(uint size) {
+		if (size == 0) {
+			size = context->getMaxTexUnits();
+		}
+
+		maxTextureUnits = size;
 	}
 
 }

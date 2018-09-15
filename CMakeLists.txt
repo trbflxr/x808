@@ -55,7 +55,10 @@ else ()
             "\n"
             "#must be 'ogl'. v330 for 2d and v450 for 3d\n"
             "renderApi=ogl\n"
-            "apiVersion=330\n")
+            "apiVersion=330\n"
+            "\n"
+            "#0 - auto\n"
+            "maxTextureUnits=0\n")
 
     file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif ()

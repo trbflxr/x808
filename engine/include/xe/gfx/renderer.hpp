@@ -72,9 +72,9 @@ namespace xe {
 			instance->setMemoryBarrierInternal(barrier);
 		}
 
-		static uint getDC() { return dc; }
-		static void resetDC() { dc = 0; }
-		static void incDC() { ++dc; }
+		static inline uint getDC() { return dc; }
+		static inline void resetDC() { dc = 0; }
+		static inline void incDC() { ++dc; }
 
 	protected:
 		Renderer() = default;

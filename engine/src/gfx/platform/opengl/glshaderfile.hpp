@@ -30,6 +30,10 @@ namespace xe { namespace internal {
 		                  ShaderStructVec &structs) override;
 
 		void parseUniformStruct(const string &block, ShaderStructVec &structs) override;
+
+	protected:
+		void setConstants(string &source) override;
+
 	};
 
 }}

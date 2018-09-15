@@ -32,6 +32,8 @@ namespace xe {
 			config.renderApi = stringToRenderApi(value);
 		} else if (strcmp(key, "apiVersion") == 0) {
 			config.apiVersion = (uint) atoi(value);
+		} else if (strcmp(key, "maxTextureUnits") == 0) {
+			config.maxTextureUnits = (uint) atoi(value);
 		}
 	}
 

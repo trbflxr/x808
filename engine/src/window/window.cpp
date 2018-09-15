@@ -9,7 +9,6 @@
 #include <xe/gfx/context.hpp>
 #include <xe/utils/sleep.hpp>
 #include <xe/utils/log.hpp>
-#include <xe/resources/soundmanager.hpp>
 #include <window/platformwindow.hpp>
 
 namespace {
@@ -19,7 +18,7 @@ namespace {
 namespace xe {
 
 	Window::Window() :
-          window(nullptr),
+			window(nullptr),
 			frameTimeLimit(0.0f),
 			size(0, 0) { }
 
@@ -187,8 +186,6 @@ namespace xe {
 			sleep(static_cast<uint>(frameTimeLimit - timer.elapsed()));
 			timer.reset();
 		}
-
-		SoundManager::update();
 	}
 
 	void Window::init() {

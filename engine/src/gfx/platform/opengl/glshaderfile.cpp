@@ -65,6 +65,8 @@ namespace xe { namespace internal {
 			}
 		}
 
+		setConstants(source);
+
 		shaderSource << shaderAdditions.str() << "\n";
 		shaderSource << source;
 
@@ -222,6 +224,14 @@ namespace xe { namespace internal {
 		}
 
 		structs.push_back(uniformStruct);
+	}
+
+	void GLShaderFile::setConstants(string &source) {
+		const string str = "@MAX_TEXTURES";
+		const size_t pos = source.find(str);
+		if (pos != string::npos) {
+			source.replace(pos, str.size(), std::to_string(Context::getMaxTextureUnits()));
+		}
 	}
 
 }}
