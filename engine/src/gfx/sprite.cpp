@@ -7,16 +7,27 @@
 namespace xe {
 
 	Sprite::Sprite(const Texture *texture, bool hasTransparency, uint color, bool flipUVs, bool visible) noexcept :
-			IRenderable2D(hasTransparency, visible),
-			texture(texture),
-			color(color) {
+			IRenderable2D(texture, color, hasTransparency, visible) {
 
-		vertices.reserve(4);
+		vertices = new Vertex2D[4];
+		indices = new uint[6];
 
 		for (uint i = 0; i < 4; ++i) {
 			vertices[i].uv = flipUVs ? getFlippedUVs()[i] : getDefaultUVs()[i];
 		}
 
+		indices[0] = 0;
+		indices[1] = 1;
+		indices[2] = 2;
+
+		indices[3] = 2;
+		indices[4] = 3;
+		indices[5] = 0;
+	}
+
+	Sprite::~Sprite() {
+		delete[] vertices;
+		delete[] indices;
 	}
 
 	const std::vector<vec2> &Sprite::getDefaultUVs() {
@@ -39,7 +50,7 @@ namespace xe {
 		return UVs;
 	}
 
-	const std::vector<Vertex2D> &Sprite::getVertices() const {
+	const Vertex2D *Sprite::getVertices() const {
 		if (isDirty()) {
 			setDirty(false);
 

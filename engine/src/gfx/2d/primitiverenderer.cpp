@@ -29,6 +29,8 @@ namespace xe {
 	}
 
 	void PrimitiveRenderer::flush() {
+		updateIndexBuffer();
+
 		shader->bind();
 		shader->updateUniforms();
 
@@ -39,7 +41,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->drawElements(indexCount, BeginMode::Triangles);
+		vertexArray->drawElements(indicesSize, BeginMode::Triangles);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();
@@ -50,7 +52,9 @@ namespace xe {
 
 		shader->unbind();
 
-		indexCount = 0;
+		indicesSize = 0;
+		indicesOffset = 0;
+
 		textures.clear();
 
 		//increment draw calls
@@ -58,6 +62,10 @@ namespace xe {
 	}
 
 	void PrimitiveRenderer::drawLine(float x0, float y0, float x1, float y1, float z, uint color, float thickness) {
+		static constexpr uint is = 6;
+		static constexpr uint io = 4;
+		static constexpr uint indices[is] = {0, 1, 2, 2, 3, 0};
+
 		static const std::vector<vec2> &uv = Sprite::getDefaultUVs();
 
 		const vec2 normal = vec2::normalize(vec2(y1 - y0, -(x1 - x0))) * thickness;
@@ -82,7 +90,7 @@ namespace xe {
 		buffer->color = color;
 		buffer++;
 
-		indexCount += 6;
+		appendIndices(indices, is, io);
 	}
 
 	void PrimitiveRenderer::drawLine(const vec2 &start, const vec2 &end, float z, uint color, float thickness) {
@@ -105,6 +113,10 @@ namespace xe {
 	}
 
 	void PrimitiveRenderer::fillRect(float x, float y, float width, float height, float z, uint color) {
+		static constexpr uint is = 6;
+		static constexpr uint io = 4;
+		static constexpr uint indices[is] = {0, 1, 2, 2, 3, 0};
+
 		static const std::vector<vec2> &uv = Sprite::getDefaultUVs();
 
 		const vec3 position(x, y, z);
@@ -134,7 +146,7 @@ namespace xe {
 		buffer->color = color;
 		buffer++;
 
-		indexCount += 6;
+		appendIndices(indices, is, io);
 	}
 
 	void PrimitiveRenderer::fillRect(const vec2 &position, const vec2 &size, float z, uint color) {

@@ -40,6 +40,8 @@ namespace xe {
 	}
 
 	void TextRenderer::flush() {
+		updateIndexBuffer();
+
 		shader->bind();
 		shader->updateUniforms();
 
@@ -50,7 +52,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->drawElements(indexCount, BeginMode::Triangles);
+		vertexArray->drawElements(indicesSize, BeginMode::Triangles);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();
@@ -61,7 +63,9 @@ namespace xe {
 
 		shader->unbind();
 
-		indexCount = 0;
+		indicesSize = 0;
+		indicesOffset = 0;
+
 		textures.clear();
 
 		//increment draw calls
@@ -85,6 +89,10 @@ namespace xe {
 
 	void TextRenderer::submitInternal(const Text *t) {
 		using namespace ftgl;
+
+		static constexpr uint is = 6;
+		static constexpr uint io = 4;
+		static constexpr uint indices[is] = {0, 1, 2, 2, 3, 0};
 
 		const Font &font = *t->font;
 		ftgl::texture_font_t *ftFont = font.getFTFont();
@@ -151,7 +159,7 @@ namespace xe {
 					buffer->color = outlineColor;
 					++buffer;
 
-					indexCount += 6;
+					appendIndices(indices, is, io);
 
 					x += glyph->advance_x / scale;
 				}
@@ -205,7 +213,7 @@ namespace xe {
 				buffer->color = color;
 				++buffer;
 
-				indexCount += 6;
+				appendIndices(indices, is, io);
 
 				x += glyph->advance_x / scale;
 			}

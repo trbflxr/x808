@@ -35,6 +35,9 @@ namespace xe {
 
 		virtual void flush() = 0;
 
+		void push(const mat4 &matrix, bool override = false);
+		void pop();
+
 		inline uint getWidth() const { return width; }
 		inline void setWidth(uint width) { IRenderer2D::width = width; }
 
@@ -43,13 +46,13 @@ namespace xe {
 
 	protected:
 		void updateCamera();
-
-		void push(const mat4 &matrix, bool override = false);
-		void pop();
+		void updateIndexBuffer();
 
 		float submitTexture(const Texture *texture);
 
 		void releaseBuffer();
+
+		void appendIndices(const uint *indices, uint size, uint offset);
 
 	protected:
 		friend class BatchRenderer2D;
@@ -57,9 +60,12 @@ namespace xe {
 		Camera *camera;
 		Shader *shader;
 
-		VertexArray *vertexArray;
 		IndexBuffer *indexBuffer;
-		uint indexCount;
+		uint *indices;
+		uint indicesSize;
+		uint indicesOffset;
+
+		VertexArray *vertexArray;
 		VertexData *buffer;
 
 		uint width;

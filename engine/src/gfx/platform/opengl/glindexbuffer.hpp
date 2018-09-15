@@ -14,12 +14,16 @@ namespace xe { namespace internal {
 	public:
 		explicit GLIndexBuffer(const uint16 *data, uint count);
 		explicit GLIndexBuffer(const uint *data, uint count);
+		explicit GLIndexBuffer();
 		~GLIndexBuffer() override;
 
 		void bind() const override;
 		void unbind() const override;
 
 		inline uint getCount() const override { return count; }
+
+		void setData(const uint16 *data, uint count) override;
+		void setData(const uint *data, uint count) override;
 
 	private:
 		uint handle;

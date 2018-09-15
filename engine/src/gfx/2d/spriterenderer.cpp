@@ -56,6 +56,8 @@ namespace xe {
 	}
 
 	void SpriteRenderer::flush() {
+		updateIndexBuffer();
+
 		shader->bind();
 		shader->updateUniforms();
 
@@ -66,7 +68,7 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
-		vertexArray->drawElements(indexCount, BeginMode::Triangles);
+		vertexArray->drawElements(indicesSize, BeginMode::Triangles);
 
 		indexBuffer->unbind();
 		vertexArray->unbind();
@@ -77,7 +79,9 @@ namespace xe {
 
 		shader->unbind();
 
-		indexCount = 0;
+		indicesSize = 0;
+		indicesOffset = 0;
+
 		textures.clear();
 
 		//increment draw calls
@@ -106,7 +110,7 @@ namespace xe {
 	}
 
 	void SpriteRenderer::submitInternal(const Sprite *sprite) {
-		const std::vector<Vertex2D> &vertices = sprite->getVertices();
+		const Vertex2D *vertices = sprite->getVertices();
 		const uint color = sprite->getColor();
 		const Texture *texture = sprite->getTexture();
 
@@ -114,6 +118,8 @@ namespace xe {
 		if (texture) {
 			textureSlot = submitTexture(texture);
 		}
+
+		appendIndices(sprite->getIndices(), sprite->getIndicesSize(), sprite->getVerticesSize());
 
 		for (uint i = 0; i < sprite->getVerticesSize(); ++i) {
 			buffer->vertex = mat4::translateVec(*transformationBack, vertices[i].pos);
@@ -123,7 +129,7 @@ namespace xe {
 			buffer++;
 		}
 
-		indexCount += 6;
+//		indexCount += 6;
 	}
 
 }

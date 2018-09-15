@@ -11,16 +11,18 @@ namespace xe { namespace internal {
 			count(count) {
 
 		glCall(glGenBuffers(1, &handle));
-		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle));
-		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint16), data, GL_STATIC_DRAW));
+		setData(data, count);
 	}
 
 	GLIndexBuffer::GLIndexBuffer(const uint *data, uint count) :
 			count(count) {
 
 		glCall(glGenBuffers(1, &handle));
-		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle));
-		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint), data, GL_STATIC_DRAW));
+		setData(data, count);
+	}
+
+	GLIndexBuffer::GLIndexBuffer() {
+		glCall(glGenBuffers(1, &handle));
 	}
 
 	GLIndexBuffer::~GLIndexBuffer() {
@@ -33,6 +35,21 @@ namespace xe { namespace internal {
 
 	void GLIndexBuffer::unbind() const {
 		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+	}
+
+	void GLIndexBuffer::setData(const uint16 *data, uint count) {
+		GLIndexBuffer::count = count;
+
+		bind();
+		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint16), data, GL_STATIC_DRAW));
+
+	}
+
+	void GLIndexBuffer::setData(const uint *data, uint count) {
+		GLIndexBuffer::count = count;
+
+		bind();
+		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint), data, GL_STATIC_DRAW));
 	}
 
 }}

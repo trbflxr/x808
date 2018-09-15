@@ -18,6 +18,9 @@ namespace xe { namespace internal {
 		virtual void unbind() const = 0;
 
 		virtual uint getCount() const = 0;
+
+		virtual void setData(const uint16 *data, uint count) = 0;
+		virtual void setData(const uint *data, uint count) = 0;
 	};
 
 }}

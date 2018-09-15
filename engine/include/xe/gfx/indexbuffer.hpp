@@ -19,12 +19,16 @@ namespace xe {
 	public:
 		explicit IndexBuffer(const uint16 *data, uint count);
 		explicit IndexBuffer(const uint *data, uint count);
+		explicit IndexBuffer();
 		~IndexBuffer();
 
-		virtual void bind() const;
-		virtual void unbind() const;
+		void bind() const;
+		void unbind() const;
 
-		virtual uint getCount() const;
+		uint getCount() const;
+
+		void setData(const uint16 *data, uint count);
+		void setData(const uint *data, uint count);
 
 	private:
 		internal::PlatformIndexBuffer *buffer;

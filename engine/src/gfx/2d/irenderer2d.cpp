@@ -18,7 +18,8 @@ namespace xe {
 			width(width),
 			height(height),
 			camera(camera),
-			indexCount(0) {
+			indicesOffset(0),
+			indicesSize(0) {
 
 		transformationStack.emplace_back(1.0f);
 		transformationBack = &transformationStack.back();
@@ -37,29 +38,16 @@ namespace xe {
 		vertexArray = new VertexArray();
 		vertexArray->pushBuffer(buffer);
 
-		uint *indices = new uint[RENDERER2D_INDICES_SIZE];
-
-		uint offset = 0;
-		for (uint i = 0; i < RENDERER2D_INDICES_SIZE; i += 6) {
-			indices[i] = offset + 0;
-			indices[i + 1] = offset + 1;
-			indices[i + 2] = offset + 2;
-
-			indices[i + 3] = offset + 2;
-			indices[i + 4] = offset + 3;
-			indices[i + 5] = offset + 0;
-
-			offset += 4;
-		}
-
-		indexBuffer = new IndexBuffer(indices, RENDERER2D_INDICES_SIZE);
-		vertexArray->unbind();
+		indices = new uint[RENDERER2D_INDICES_SIZE];
+		indexBuffer = new IndexBuffer();
 	}
 
 	IRenderer2D::~IRenderer2D() {
 		delete shader;
 		delete indexBuffer;
 		delete vertexArray;
+
+		delete[] indices;
 	}
 
 	void IRenderer2D::updateCamera() {
@@ -107,6 +95,25 @@ namespace xe {
 	void IRenderer2D::releaseBuffer() {
 		vertexArray->getBuffer(0)->releasePointer();
 		vertexArray->unbind();
+	}
+
+	void IRenderer2D::appendIndices(const uint *indices, uint size, uint offset) {
+		if (indicesSize + size >= RENDERER2D_INDICES_SIZE) {
+			releaseBuffer();
+			flush();
+			begin();
+		}
+
+		for (uint i = 0; i < size; ++i) {
+			IRenderer2D::indices[i + indicesSize] = indices[i] + indicesOffset;
+		}
+
+		indicesSize += size;
+		indicesOffset += offset;
+	}
+
+	void IRenderer2D::updateIndexBuffer() {
+		indexBuffer->setData(indices, indicesSize);
 	}
 
 }

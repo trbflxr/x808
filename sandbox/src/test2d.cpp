@@ -97,13 +97,13 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 1
+#define sp_size 2
 
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
 		for (float y = -600; y < 600; y += 5.7f) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite.transform.set({x, y, 0.0f}, vec2(4.9f));
+			s->sprite->set({x, y, 0.0f}, vec2(4.9f));
 
 			ecs.makeEntity(s);
 
@@ -114,7 +114,7 @@ Test2D::Test2D() {
 	for (float x = -800; x < 800; x += 10.3f) {
 		for (float y = -600; y < 600; y += 10.3f) {
 			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite->transform.set({x, y, 0.0f}, vec2(9.0f));
+			s->sprite->set({x, y, 0.0f}, vec2(9.0f));
 
 			ecs.makeEntity(s);
 
@@ -134,7 +134,7 @@ Test2D::Test2D() {
 	}
 #elif sp_size == 0
 	SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-	s->sprite.transform.set({0.0f, 0.0f, 0.0f}, vec2(9.0f));
+	s->sprite->set({0.0f, 0.0f, 0.0f}, vec2(9.0f));
 
 	ecs.makeEntity(s);
 

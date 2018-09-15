@@ -21,23 +21,20 @@ namespace xe {
 		                       bool flipUVs = false,
 		                       bool visible = true) noexcept;
 
-		inline const Texture *getTexture() const override { return texture; }
-		inline void setTexture(const Texture *texture) { Sprite::texture = texture; }
-
-		uint getColor() const override { return color; }
-		void setColor(uint color) { Sprite::color = color; }
+		~Sprite() override;
 
 		inline uint getVerticesSize() const override { return 4; }
-		const std::vector<Vertex2D> &getVertices() const override;
+		const Vertex2D *getVertices() const override;
+
+		inline uint getIndicesSize() const override { return 6; }
+		inline const uint *getIndices() const override { return indices; }
 
 		static const std::vector<vec2> &getDefaultUVs();
 		static const std::vector<vec2> &getFlippedUVs();
 
 	private:
-		const Texture *texture;
-		uint color;
-
-		mutable std::vector<Vertex2D> vertices;
+		mutable Vertex2D *vertices;
+		uint *indices;
 	};
 
 }
