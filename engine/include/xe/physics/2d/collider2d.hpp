@@ -11,6 +11,8 @@
 #include <xe/gfx/2d/itransformable2d.hpp>
 
 class b2Body;
+struct b2BodyDef;
+struct b2FixtureDef;
 
 namespace xe {
 
@@ -24,7 +26,7 @@ namespace xe {
 
 	class XE_API Collider2D {
 	public:
-		virtual ~Collider2D() = default;
+		virtual ~Collider2D();
 
 		inline ColliderType getType() const { return type; }
 
@@ -87,11 +89,16 @@ namespace xe {
 
 		virtual void update();
 
+		void create(PhysicsWorld2D *world);
+
 	protected:
 		friend class PhysicsWorld2D;
 
+		PhysicsWorld2D *world;
 		ITransformable2D *transformable;
 		ColliderType type;
+		b2BodyDef *bodyDef;
+		b2FixtureDef *fixtureDef;
 		b2Body *body;
 	};
 

@@ -9,9 +9,11 @@
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/math/vec2.hpp>
+#include <xe/physics/2d/collider2d.hpp>
 
 class b2World;
 class b2Body;
+class b2BodyDef;
 
 namespace xe {
 
@@ -22,9 +24,10 @@ namespace xe {
 
 		void update(float timeStep, uint velocityIterations, uint positionIterations);
 
-	private:
-		friend class Collider2D;
+		b2Body *createBody(b2BodyDef *bodyDef);
+		void destroyBody(b2Body *body);
 
+	private:
 		b2World *world;
 	};
 

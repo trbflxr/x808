@@ -19,15 +19,28 @@ namespace xe {
 	}
 
 	Collider2D::Collider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable) :
+			world(world),
 			transformable(transformable),
 			type(type) {
 
-		b2BodyDef bodyDef;
-		bodyDef.position = transformable->getPosition();
-		bodyDef.angle = to_rad(transformable->getRotation());
-		bodyDef.type = xeToBox2DBody(type);
+		bodyDef = new b2BodyDef();
+		fixtureDef = new b2FixtureDef();
 
-		body = world->world->CreateBody(&bodyDef);
+		create(world);
+	}
+
+	Collider2D::~Collider2D() {
+		delete bodyDef;
+		delete fixtureDef;
+		world->destroyBody(body);
+	}
+
+	void Collider2D::create(PhysicsWorld2D *world) {
+		bodyDef->position = transformable->getPosition();
+		bodyDef->angle = to_rad(transformable->getRotation());
+		bodyDef->type = xeToBox2DBody(type);
+
+		body = world->createBody(bodyDef);
 		body->SetUserData(this);
 	}
 
@@ -153,27 +166,27 @@ namespace xe {
 	}
 
 	float Collider2D::getFriction() const {
-		return body->GetFixtureList()[0].GetFriction();
+		return fixtureDef->friction;
 	}
 
 	void Collider2D::setFriction(float friction) {
-		body->GetFixtureList()[0].SetFriction(friction);
+		fixtureDef->friction = friction;
 	}
 
 	float Collider2D::getRestitution() const {
-		return body->GetFixtureList()[0].GetRestitution();
+		return fixtureDef->restitution;
 	}
 
 	void Collider2D::setRestitution(float restitution) {
-		body->GetFixtureList()[0].SetRestitution(restitution);
+		fixtureDef->restitution = restitution;
 	}
 
 	float Collider2D::getDensity() const {
-		return body->GetFixtureList()[0].GetDensity();
+		return fixtureDef->density;
 	}
 
 	void Collider2D::setDensity(float density) {
-		body->GetFixtureList()[0].SetDensity(density);
+		fixtureDef->density = density;
 		body->ResetMassData();
 	}
 

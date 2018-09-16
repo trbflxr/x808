@@ -9,14 +9,20 @@
 #include <xe/gfx/rectangleshape.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 
+class b2PolygonShape;
+
 namespace xe {
 
 	class XE_API BoxCollider2D : public Collider2D {
 	public:
 		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect);
+		~BoxCollider2D() override;
 
 	protected:
 		void update() override;
+
+	private:
+		b2PolygonShape *shape;
 	};
 
 }

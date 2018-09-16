@@ -17,7 +17,10 @@ namespace xe {
 		~RectangleShape() override;
 
 		inline const vec2 &getSize() const { return size; }
-		inline void setSize(const vec2 &size) { RectangleShape::size = size; }
+		void setSize(const vec2 &size);
+
+		inline bool isSizeChanged() const { return sizeChanged; }
+		inline void setSizeChanged(bool changed) { sizeChanged = changed; }
 
 		inline uint getVerticesSize() const override { return 4; }
 		const Vertex2D *getVertices() const override;
@@ -29,6 +32,7 @@ namespace xe {
 
 	private:
 		vec2 size;
+		bool sizeChanged;
 
 		mutable Vertex2D *vertices;
 		uint *indices;

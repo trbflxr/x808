@@ -28,4 +28,12 @@ namespace xe {
 		}
 	}
 
+	b2Body *PhysicsWorld2D::createBody(b2BodyDef *bodyDef) {
+		return world->CreateBody(bodyDef);
+	}
+
+	void PhysicsWorld2D::destroyBody(b2Body *body) {
+		world->DestroyBody(body);
+	}
+
 }

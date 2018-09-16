@@ -54,14 +54,14 @@ TestB2D::~TestB2D() {
 	delete camera;
 	delete renderer;
 
-	delete world;
-
 	delete boxCollider;
 	delete groundCollider;
 
 	delete box;
 	delete ground;
 	delete sprite;
+
+	delete world;
 }
 
 void TestB2D::render() {
@@ -88,10 +88,28 @@ void TestB2D::update(float delta) {
 }
 
 void TestB2D::input(xe::Event &event) {
-	if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Right) {
-		static bool wake = false;
-		boxCollider->setAwake(wake);
-		wake = !wake;
+
+
+	switch (event.type) {
+		case Event::KeyPressed: {
+			if (event.key.code == Keyboard::Up) {
+				box->setSize(box->getSize() + 1);
+			} else if (event.key.code == Keyboard::Down) {
+				box->setSize(box->getSize() - 1);
+			}
+			break;
+		}
+
+		case Event::MouseButtonPressed: {
+			if (event.mouseButton.button == Mouse::Right) {
+				static bool wake = false;
+				boxCollider->setAwake(wake);
+				wake = !wake;
+			}
+			break;
+		}
+
+		default: break;
 	}
 }
 

@@ -8,7 +8,8 @@
 namespace xe {
 
 	RectangleShape::RectangleShape(const vec2 &size) :
-			size(size) {
+			size(size),
+			sizeChanged(true) {
 
 		vertices = new Vertex2D[4];
 		indices = new uint[6];
@@ -30,6 +31,12 @@ namespace xe {
 	RectangleShape::~RectangleShape() {
 		delete[] vertices;
 		delete[] indices;
+	}
+
+	void RectangleShape::setSize(const vec2 &size) {
+		RectangleShape::size = size;
+		setDirty(true);
+		sizeChanged = true;
 	}
 
 	const Vertex2D *RectangleShape::getVertices() const {
