@@ -81,11 +81,6 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["spriteRenderer_frag"])
 		}));
 
-		shaders.emplace("dPrimitiveRenderer", new BaseShader("dPrimitiveRenderer", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["primitiveRenderer_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["primitiveRenderer_frag"])
-		}));
-
 		shaders.emplace("dTextRenderer", new BaseShader("dTextRenderer", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["textRenderer_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["textRenderer_frag"])

@@ -61,9 +61,9 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("32", "assets/textures/enemyspotted.png", params));
 	TextureManager::add(new Texture("33", "assets/textures/enemyspotted.png", params));
 	TextureManager::add(new Texture("34", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("35", "assets/textures/jdm.png", params));
-	TextureManager::add(new Texture("36", "assets/textures/star.png", params));
-	TextureManager::add(new Texture("37", "assets/textures/cosmic.png", params));
+	TextureManager::add(new Texture("35", "assets/textures/jdm.png", params, true));
+	TextureManager::add(new Texture("36", "assets/textures/star.png", params, true));
+	TextureManager::add(new Texture("37", "assets/textures/cosmic.png", params, true));
 	TextureManager::add(new Texture("38", "assets/textures/test7.png", params));
 	TextureManager::add(new Texture("39", "assets/textures/test8.png", params));
 
@@ -75,21 +75,11 @@ Test2D::Test2D() {
 	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
-
 	uint texCount = 38;
 
 
-	//create camera
 	camera = new Camera(mat4::ortho(-width, width, -height, height, -1, 1000));
-
 	renderer = new BatchRenderer2D(width, height, camera);
-
-	//render system
-	spriteRendererSystem = new SpriteRendererSystem(renderer);
-	textRendererSystem = new TextRendererSystem(renderer);
-
-	renderingPipeline.addSystem(*spriteRendererSystem);
-	renderingPipeline.addSystem(*textRendererSystem);
 
 	uint sprites = 0;
 
@@ -113,10 +103,11 @@ Test2D::Test2D() {
 #elif sp_size == 2
 	for (float x = -800; x < 800; x += 10.3f) {
 		for (float y = -600; y < 600; y += 10.3f) {
-			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite->set({x, y, 0.0f}, vec2(9.0f));
+			RectangleShape *s = new RectangleShape({9.0f, 9.0f});
+			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->transformation({x, y, 0.0f});
 
-			ecs.makeEntity(s);
+			renderables.push_back(s);
 
 			++sprites;
 		}
@@ -143,41 +134,48 @@ Test2D::Test2D() {
 
 	XE_INFO("size: ", sprites);
 
-	text = ecs.makeEntity(new TextComponent(new Text(L"i:", 200, {-700, 300},
-	                                                 GETFONT("default"), color::LIGHTGRAY, color::GRAY, 3)));
+	text0 = new Text(L"i:", 200, {-700, 300}, GETFONT("default"), color::LIGHTGRAY, color::GRAY, 3);
+	text1 = new Text(L"0", 200, {-200, -100}, GETFONT("consolata"), color::RED, color::GREEN, 3);
+	inputText = new Text(L"слава ukraine", 200, {-700, 100}, GETFONT("consolata"), color::PINK, color::CYAN, 3);
 
-	inputText = ecs.makeEntity(new TextComponent(new Text(L"слава ukraine", 200, {-700, 100},
-	                                                      GETFONT("consolata"), color::PINK, color::CYAN, 3)));
+	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f});
+	s0->setTexture(GETTEXTURE("35"));
+	s0->transformation({-100.0f, -100.0f, 1.0f});
 
-	ecs.makeEntity(new TextComponent(new Text(L"0", 200, {-200, -100},
-	                                          GETFONT("consolata"), color::RED, color::GREEN, 3)));
+	RectangleShape *s1 = new RectangleShape({200.0f, 200.0f});
+	s1->setTexture(GETTEXTURE("37"));
+	s1->transformation({-40.0f, -40.0f, 3.0f});
 
-	SpriteComponent *s0 = new SpriteComponent(GETTEXTURE("35"), true, color::WHITE);
-	s0->sprite->set({-100.0f, -100.0f, 1.0f}, vec2(200.0f));
+	star = new RectangleShape({200.0f, 200.0f});
+	star->setTexture(GETTEXTURE("36"));
+	star->transformation({-40.0f, -40.0f, 2.0f});
 
-	SpriteComponent *s1 = new SpriteComponent(GETTEXTURE("36"), true, color::WHITE);
-	s1->sprite->set({-40.0f, -40.0f, 2.0f}, vec2(200.0f));
-
-	SpriteComponent *s2 = new SpriteComponent(GETTEXTURE("37"), true, color::WHITE);
-	s2->sprite->set({-40.0f, -40.0f, 3.0f}, vec2(200.0f));
-
-
-	ecs.makeEntity(s0);
-	a = ecs.makeEntity(s1);
-	ecs.makeEntity(s2);
+	renderables.push_back(s0);
+	renderables.push_back(s1);
+	renderables.push_back(star);
 }
 
 Test2D::~Test2D() {
 	delete camera;
-
 	delete renderer;
 
-	delete spriteRendererSystem;
-	delete textRendererSystem;
+	for (const auto &r : renderables) {
+		delete r;
+	}
+
+	delete inputText;
+	delete text0;
+	delete text1;
 }
 
 void Test2D::render() {
-	ecs.updateSystems(renderingPipeline, 0.0f);
+	for (const auto &r : renderables) {
+		renderer->submit(r);
+	}
+
+	renderer->submit(text0);
+	renderer->submit(text1);
+	renderer->submit(inputText);
 
 	renderer->renderSprites();
 	renderer->renderText();
@@ -186,18 +184,13 @@ void Test2D::render() {
 }
 
 void Test2D::update(float delta) {
-	static SpriteComponent *s = ecs.getComponent<SpriteComponent>(a);
-
 	static const vec2i halfSize = window.getSize() / 2;
 	static constexpr float spriteHalfSize = 50.0f;
 
 	const vec2 p = Mouse::getPosition(window);
 	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, (p.y - halfSize.y - spriteHalfSize) * 2.0f);
 
-	s->sprite->setPosition(pos);
-
-	ecs.updateSystems(mainSystems, delta);
-
+	star->setPosition(pos);
 
 	///update camera
 	vec3 camPos = camera->transform.getPosition();
@@ -257,14 +250,12 @@ void Test2D::input(xe::Event &event) {
 		}
 
 		case Event::TextEntered: {
-			static TextComponent *t = ecs.getComponent<TextComponent>(inputText);
-
 			if (event.text.unicode == 8) {
-				if (!t->text->getString().empty()) {
-					t->text->getString().erase(t->text->getString().end() - 1);
+				if (!inputText->getString().empty()) {
+					inputText->getString().erase(inputText->getString().end() - 1);
 				}
 			} else {
-				t->text->getString() += event.text.unicode;
+				inputText->getString() += event.text.unicode;
 			}
 
 			break;

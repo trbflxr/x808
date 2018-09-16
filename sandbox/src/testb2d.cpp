@@ -14,13 +14,10 @@ TestB2D::TestB2D() {
 	TextureParameters params;
 
 	TextureManager::add(new Texture("0", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("1", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("2", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("3", "assets/textures/jdm.png", params));
-	TextureManager::add(new Texture("4", "assets/textures/star.png", params));
-	TextureManager::add(new Texture("5", "assets/textures/cosmic.png", params));
-	TextureManager::add(new Texture("6", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture("7", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("1", "assets/textures/jdm.png", params, true));
+	TextureManager::add(new Texture("2", "assets/textures/star.png", params, true));
+	TextureManager::add(new Texture("3", "assets/textures/test1.png", params));
+	TextureManager::add(new Texture("4", "assets/textures/test8.png", params));
 
 	uint texCount = 7;
 
@@ -31,14 +28,17 @@ TestB2D::TestB2D() {
 	renderer = new BatchRenderer2D(width, height, camera);
 
 
-	box = new Sprite(GETTEXTURE("1"), true, color::WHITE);
-	box->set({400.0f, 400.0f, 1.0f}, {50.0f, 50.0f});
+	box = new RectangleShape({50.0f, 50.0f});
+	box->setTexture(GETTEXTURE("0"));
+	box->transformation({400.0f, 400.0f, 1.0f});
 
-	ground = new Sprite(GETTEXTURE("2"), true, color::WHITE);
-	ground->set({400.0f, 50.0f, 2.0f}, {500.0f, 5.0f}, 20.0f);
+	ground = new RectangleShape({500.0f, 5.0f});
+	ground->setTexture(GETTEXTURE("3"));
+	ground->transformation({400.0f, 50.0f, 0.0f}, 20.0f);
 
-	sprite = new Sprite(GETTEXTURE("3"), true, color::WHITE);
-	sprite->set({400.0f, 400.0f, 3.0f}, {50.0f, 50.0f});
+	sprite = new RectangleShape({50.0f, 50.0f});
+	sprite->setTexture(GETTEXTURE("1"));
+	sprite->transformation({400.0f, 400.0f, 2.0f});
 
 	world = new PhysicsWorld2D({0.0f, -9.8f});
 
@@ -79,12 +79,12 @@ void TestB2D::update(float delta) {
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 		const vec2 p = Mouse::getPosition(window);
 		boxCollider->set(p, boxCollider->getRotation());
-		boxCollider->setLinearVelocity({0, 0});
-		boxCollider->setAngularVelocity(0);
+//		boxCollider->setLinearVelocity({0, 0});
+//		boxCollider->setAngularVelocity(0);
 		boxCollider->setAwake(true);
 	}
 
-	world->update(1.0f / 60.0f, 8, 3);
+	world->update(delta, 6, 3);
 }
 
 void TestB2D::input(xe::Event &event) {

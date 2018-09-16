@@ -13,13 +13,9 @@
 
 namespace xe {
 
-	class Sprite : public IRenderable2D, public ITransformable2D {
+	class XE_API Sprite : public IRenderable2D, public ITransformable2D {
 	public:
-		explicit XE_API Sprite(const Texture *texture,
-		                       bool hasTransparency = false,
-		                       uint color = color::WHITE,
-		                       bool flipUVs = false,
-		                       bool visible = true) noexcept;
+		explicit Sprite(const Texture *texture, bool flipUVs = false) noexcept;
 
 		~Sprite() override;
 
@@ -28,6 +24,8 @@ namespace xe {
 
 		inline uint getIndicesSize() const override { return 6; }
 		inline const uint *getIndices() const override { return indices; }
+
+		inline float getZ() const override { return getPosition().z; }
 
 		static const std::vector<vec2> &getDefaultUVs();
 		static const std::vector<vec2> &getFlippedUVs();

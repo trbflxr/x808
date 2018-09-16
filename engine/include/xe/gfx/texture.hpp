@@ -82,6 +82,7 @@ namespace xe {
 		explicit Texture(const string &name,
 		                 const string &path,
 		                 const TextureParameters &params,
+		                 bool hasTransparency = false,
 		                 const TextureLoadOptions &options = { });
 
 		~Texture();
@@ -102,10 +103,14 @@ namespace xe {
 		uint getWidth() const;
 		uint getHeight() const;
 		uint getDepth() const;
+
 		uint getHandle() const;
+
 		TextureTarget getTarget() const;
 
 		uint getMaxMipMap() const;
+
+		bool hasTransparency() const;
 
 		static uint getMaxMipMap(uint width, uint height);
 

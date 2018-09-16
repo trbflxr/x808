@@ -1,20 +1,21 @@
 //
-// Created by FLXR on 9/12/2018.
+// Created by FLXR on 9/13/2018.
 //
 
 #include <xe/gfx/sprite.hpp>
+#include <xe/gfx/rectangleshape.hpp>
 
 namespace xe {
 
-	Sprite::Sprite(const Texture *texture, bool flipUVs) noexcept {
-
-		setTexture(texture);
+	RectangleShape::RectangleShape(const vec2 &size) :
+			size(size) {
 
 		vertices = new Vertex2D[4];
 		indices = new uint[6];
 
+		const auto &UVs = Sprite::getDefaultUVs();
 		for (uint i = 0; i < 4; ++i) {
-			vertices[i].uv = flipUVs ? getFlippedUVs()[i] : getDefaultUVs()[i];
+			vertices[i].uv = UVs[i];
 		}
 
 		indices[0] = 0;
@@ -26,37 +27,15 @@ namespace xe {
 		indices[5] = 0;
 	}
 
-	Sprite::~Sprite() {
+	RectangleShape::~RectangleShape() {
 		delete[] vertices;
 		delete[] indices;
 	}
 
-	const std::vector<vec2> &Sprite::getDefaultUVs() {
-		static std::vector<vec2> UVs{
-				vec2(0, 1),
-				vec2(1, 1),
-				vec2(1, 0),
-				vec2(0, 0)
-		};
-		return UVs;
-	}
-
-	const std::vector<vec2> &Sprite::getFlippedUVs() {
-		static std::vector<vec2> UVs{
-				vec2(0, 0),
-				vec2(1, 0),
-				vec2(1, 1),
-				vec2(0, 1)
-		};
-		return UVs;
-	}
-
-	const Vertex2D *Sprite::getVertices() const {
+	const Vertex2D *RectangleShape::getVertices() const {
 		if (isDirty()) {
 			setDirty(false);
 
-			const vec2 size = vec2(texture->getWidth(), texture->getHeight());
-//			const vec2 &size = getSize();
 			const vec3 &pos = getPosition();
 			const float rot = getRotation();
 
@@ -88,4 +67,5 @@ namespace xe {
 
 		return vertices;
 	}
+
 }

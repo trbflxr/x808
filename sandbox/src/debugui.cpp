@@ -21,72 +21,69 @@ DebugUI::DebugUI() :
 	camera = new Camera(mat4::ortho(-w, w, -h, h, -1, 1000));
 
 	renderer = new BatchRenderer2D(window.getSize().x, window.getSize().y, camera);
-	primitiveRenderer = new PrimitiveRenderer(window.getSize().x, window.getSize().y, camera);
 
-	//render system
-	spriteRendererSystem = new SpriteRendererSystem(renderer);
-	textRendererSystem = new TextRendererSystem(renderer);
-
-	renderingPipeline.addSystem(*spriteRendererSystem);
-	renderingPipeline.addSystem(*textRendererSystem);
-
-	//main systems
-	//mainSystems.addSystem();
+	const float xOffset = 3.0f;
+	const float yOffset = 3.0f;
 
 	//text
-	fpsText = ecs.makeEntity(new TextComponent(
-			new Text(L"fps: ", 3, {-122, 65}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
+	fpsText = new Text(L"fps: ", 3, {-122, 65}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	upsText = new Text(L"ups: ", 3, {-122, 60}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	frameTimeText = new Text(L"frame time: ", 3, {-122, 55}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	dcText = new Text(L"dc: ", 3, {-122, 50}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
 
-	upsText = ecs.makeEntity(new TextComponent(
-			new Text(L"ups: ", 3, {-122, 60}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
+	infoRect = new RectangleShape({45.0f, 21.0f});
+	infoRect->setColor(color::rgba(0,0,0,0.5f));
+	infoRect->setPosition({-w + xOffset, h - 21.0f - yOffset, 10.0f});
 
-	frameTimeText = ecs.makeEntity(new TextComponent(
-			new Text(L"frame time: ", 3, {-122, 55}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
+	//tracked
+	tePosText = new Text(L"position: ", 3, {-122, 40}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	teDirText = new Text(L"direction: ", 3, {-122, 35}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
 
-	dcText = ecs.makeEntity(new TextComponent(
-			new Text(L"dc: ", 3, {-122, 50}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
+	teRect = new RectangleShape({55.0f, 13.0f});
+	teRect->setColor(color::rgba(0,0,0,0.5f));
+	teRect->setPosition({-w + xOffset, h - 13.0f - 21.0f - yOffset - yOffset, 10.0f});
 
+	//buffers
+	sp0 = new RectangleShape({50, 30});
+	sp0->setVisible(false);
+	sp0->transformation({-125, -69, 0.0f});
 
-	sp0 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp0->set({-125, -69, 0.0f}, {50, 30});
+	sp1 = new RectangleShape({50, 30});
+	sp1->setVisible(false);
+	sp1->transformation({-72, -69, 0.0f});
 
-	sp1 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp1->set({-72, -69, 0.0f}, {50, 30});
+	sp2 = new RectangleShape({50, 30});
+	sp2->setVisible(false);
+	sp2->transformation({-19, -69, 0.0f});
 
-	sp2 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp2->set({-19, -69, 0.0f}, {50, 30});
-
-	sp3 = new Sprite(nullptr, false, color::WHITE, true, false);
-	sp3->set({34, -69, 0.0f}, {50, 30});
+	sp3 = new RectangleShape({50, 30});
+	sp3->setVisible(false);
+	sp3->transformation({34, -69, 0.0f});
 }
 
 DebugUI::~DebugUI() {
 	delete camera;
 
 	delete renderer;
-	delete primitiveRenderer;
-
-	delete spriteRendererSystem;
-	delete textRendererSystem;
 
 	delete sp0;
 	delete sp1;
 	delete sp2;
 	delete sp3;
+
+	delete fpsText;
+	delete upsText;
+	delete frameTimeText;
+	delete dcText;
+	delete infoRect;
+
+	delete tePosText;
+	delete teDirText;
+	delete teRect;
 }
 
 void DebugUI::render() {
-	//render primitives
-	primitiveRenderer->begin();
-
-	primitiveRenderer->fillRect(-125, 47, 45, 23, 2, color::rgba(0, 0, 0, 0.5f));
-	if (trackedTransform) {
-		primitiveRenderer->fillRect(-125, 27, 55, 17, 2, color::rgba(0, 0, 0, 0.5f));
-	}
-
-	primitiveRenderer->end();
-	primitiveRenderer->flush();
-
+	Renderer::clear(RendererBufferDepth);
 
 	//render sprites and text
 	renderer->submit(sp0);
@@ -94,7 +91,19 @@ void DebugUI::render() {
 	renderer->submit(sp2);
 	renderer->submit(sp3);
 
-	ecs.updateSystems(renderingPipeline, 0.0f);
+	renderer->submit(fpsText);
+	renderer->submit(upsText);
+	renderer->submit(frameTimeText);
+	renderer->submit(dcText);
+
+	renderer->submit(infoRect);
+
+	if (trackedTransform) {
+		renderer->submit(tePosText);
+		renderer->submit(teDirText);
+
+	}
+	renderer->submit(teRect);
 
 	renderer->renderSprites();
 	renderer->renderText();
@@ -103,31 +112,25 @@ void DebugUI::render() {
 }
 
 void DebugUI::update(float delta) {
-	ecs.updateSystems(mainSystems, delta);
+
 }
 
 void DebugUI::lateUpdate(float delta) {
-	static TextComponent *fps = ecs.getComponent<TextComponent>(fpsText);
-	static TextComponent *ups = ecs.getComponent<TextComponent>(upsText);
-	static TextComponent *frameTime = ecs.getComponent<TextComponent>(frameTimeText);
-	static TextComponent *dc = ecs.getComponent<TextComponent>(dcText);
-
 	static float s = 0.0f;
 	s += delta;
 
 	if (s >= 0.1f) {
 		s = 0;
-		fps->text->setString(L"fps: " + std::to_wstring(app.getFPS()));
-		ups->text->setString(L"ups: " + std::to_wstring(app.getUPS()));
-		frameTime->text->setString(L"frame time: " + std::to_wstring(app.getFrameTime()));
-		dc->text->setString(L"dc: " + std::to_wstring(Renderer::getDC()));
+		fpsText->setString(L"fps: " + std::to_wstring(app.getFPS()));
+		upsText->setString(L"ups: " + std::to_wstring(app.getUPS()));
+		frameTimeText->setString(L"frame time: " + std::to_wstring(app.getFrameTime()));
+		dcText->setString(L"dc: " + std::to_wstring(Renderer::getDC()));
 
 		displayEntityInfo();
 	}
 }
 
 void DebugUI::input(Event &event) {
-	ecs.inputSystems(mainSystems, event);
 
 	if (event.type == Event::KeyPressed) {
 		if (event.key.code == Keyboard::Num1) {
@@ -157,36 +160,16 @@ void DebugUI::input(Event &event) {
 	}
 }
 
-void DebugUI::trackEntity(const std::wstring &name, xe::Transform *entityTransform) {
-	teNameText = ecs.makeEntity(new TextComponent(
-			new Text(L"name: " + name, 3, {-122, 40}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
-
-	tePosText = ecs.makeEntity(new TextComponent(
-			new Text(L"position: ", 3, {-122, 35}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
-
-	teDirText = ecs.makeEntity(new TextComponent(
-			new Text(L"direction: ", 3, {-122, 30}, GETFONT("consolata"), color::WHITE, color::BLACK, 2)));
-
-
+void DebugUI::trackEntity(Transform *entityTransform) {
 	trackedTransform = entityTransform;
 }
 
 void DebugUI::untrackEntity() {
 	trackedTransform = nullptr;
-
-	ecs.removeEntity(teNameText);
-	ecs.removeEntity(tePosText);
-	ecs.removeEntity(teDirText);
-
-	teNameText = nullptr;
-	tePosText = nullptr;
-	teDirText = nullptr;
 }
 
 void DebugUI::displayEntityInfo() {
 	if (!trackedTransform) return;
-	static TextComponent *tePos = ecs.getComponent<TextComponent>(tePosText);
-	static TextComponent *teDir = ecs.getComponent<TextComponent>(teDirText);
 
 	std::wstringstream ss;
 	ss.precision(2);
@@ -195,10 +178,10 @@ void DebugUI::displayEntityInfo() {
 	vec3 d = trackedTransform->getRotation().getForward();
 
 	ss << std::fixed << L"pos: (" << p.x << ", " << p.y << ", " << p.z << ")";
-	tePos->text->setString(ss.str());
+	tePosText->setString(ss.str());
 	ss.str(L"");
 
 	ss << std::fixed << L"dir: (" << d.x << ", " << d.y << ", " << d.z << ")";
-	teDir->text->setString(ss.str());
+	teDirText->setString(ss.str());
 	ss.str(L"");
 }

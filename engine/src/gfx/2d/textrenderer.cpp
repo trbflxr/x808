@@ -135,6 +135,8 @@ namespace xe {
 					float s1 = glyph->s1;
 					float t1 = glyph->t1;
 
+					appendIndices(indices, is, io);
+
 					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y0));
 					buffer->uv = xe::vec2(s0, t0);
 					buffer->tid = tid;
@@ -158,8 +160,6 @@ namespace xe {
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
-
-					appendIndices(indices, is, io);
 
 					x += glyph->advance_x / scale;
 				}
@@ -188,6 +188,7 @@ namespace xe {
 				float s1 = glyph->s1;
 				float t1 = glyph->t1;
 
+				appendIndices(indices, is, io);
 
 				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y0));
 				buffer->uv = xe::vec2(s0, t0);
@@ -212,8 +213,6 @@ namespace xe {
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
-
-				appendIndices(indices, is, io);
 
 				x += glyph->advance_x / scale;
 			}

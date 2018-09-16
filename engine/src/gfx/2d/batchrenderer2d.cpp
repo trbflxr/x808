@@ -20,13 +20,15 @@ namespace xe {
 		delete textRenderer;
 	}
 
-	void BatchRenderer2D::submit(const Sprite *sprite) {
-		if (!sprite->isVisible()) return;
+	void BatchRenderer2D::submit(const IRenderable2D *target) {
+		if (!target->isVisible()) return;
 
-		if (sprite->hasTransparency()) {
-			transparentSprites.push_back(sprite);
+		const Texture *texture = target->getTexture();
+
+		if (texture && texture->hasTransparency()) {
+			transparentTargets.push_back(target);
 		} else {
-			sprites.push_back(sprite);
+			targets.push_back(target);
 		}
 	}
 
@@ -39,24 +41,24 @@ namespace xe {
 
 		Renderer::enableDepthTesting(true);
 
-		std::sort(sprites.begin(), sprites.end(),
+		std::sort(targets.begin(), targets.end(),
 		          [](const IRenderable2D *a, const IRenderable2D *b) {
 			          return a->getTexture() > b->getTexture();
 		          });
 
-		spriteRenderer->render(sprites);
-		sprites.clear();
+		spriteRenderer->render(targets);
+		targets.clear();
 
 		//draw transparent
-		if (!transparentSprites.empty()) {
+		if (!transparentTargets.empty()) {
 			//todo: there must be a better solution
-			std::sort(transparentSprites.begin(), transparentSprites.end(),
-			          [](const Sprite *a, const Sprite *b) {
-				          return a->getPosition().z < b->getPosition().z;
+			std::sort(transparentTargets.begin(), transparentTargets.end(),
+			          [](const IRenderable2D *a, const IRenderable2D *b) {
+				          return a->getZ() < b->getZ();
 			          });
 
-			spriteRenderer->render(transparentSprites);
-			transparentSprites.clear();
+			spriteRenderer->render(transparentTargets);
+			transparentTargets.clear();
 		}
 	}
 
@@ -70,8 +72,8 @@ namespace xe {
 	}
 
 	void BatchRenderer2D::clear() {
-		transparentSprites.clear();
-		sprites.clear();
+		transparentTargets.clear();
+		targets.clear();
 		text.clear();
 	}
 

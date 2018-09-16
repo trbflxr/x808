@@ -10,6 +10,7 @@
 #include <xe/common.hpp>
 #include <xe/math/vec3.hpp>
 #include <xe/math/vec2.hpp>
+#include <xe/gfx/color.hpp>
 #include <xe/gfx/texture.hpp>
 
 namespace xe {
@@ -21,19 +22,7 @@ namespace xe {
 
 	class XE_API IRenderable2D {
 	public:
-		explicit IRenderable2D(const Texture *texture, uint color, bool transparency, bool visible) :
-				texture(texture),
-				color(color),
-				transparency(transparency),
-				visible(visible) { }
-
 		virtual ~IRenderable2D() = default;
-
-		virtual uint getVerticesSize() const = 0;
-		virtual const Vertex2D *getVertices() const = 0;
-
-		virtual uint getIndicesSize() const = 0;
-		virtual const uint *getIndices() const = 0;
 
 		inline const Texture *getTexture() const { return texture; }
 		inline void setTexture(const Texture *texture) { IRenderable2D::texture = texture; }
@@ -44,13 +33,24 @@ namespace xe {
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { IRenderable2D::visible = visible; }
 
-		inline bool hasTransparency() const { return transparency; }
+		virtual uint getVerticesSize() const = 0;
+		virtual const Vertex2D *getVertices() const = 0;
+
+		virtual uint getIndicesSize() const = 0;
+		virtual const uint *getIndices() const = 0;
+
+		virtual float getZ() const = 0;
+
+	protected:
+		explicit IRenderable2D() :
+				texture(nullptr),
+				color(color::WHITE),
+				visible(true) { }
 
 	protected:
 		const Texture *texture;
 		uint color;
 
-		bool transparency;
 		bool visible;
 	};
 

@@ -6,13 +6,14 @@
 #define X808_BOXCOLLIDER2D_HPP
 
 
+#include <xe/gfx/rectangleshape.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 
 namespace xe {
 
 	class XE_API BoxCollider2D : public Collider2D {
 	public:
-		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable);
+		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect);
 
 	protected:
 		void update() override;

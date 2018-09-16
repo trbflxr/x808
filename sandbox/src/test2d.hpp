@@ -6,14 +6,9 @@
 #define X808_TEST2D_HPP
 
 
-#include <xe/ecs/ecs.hpp>
-#include <xe/ecs/components/spritecomponent.hpp>
-#include <xe/ecs/components/textcomponent.hpp>
-#include <xe/ecs/systems/spriterenderersystem.hpp>
-#include <xe/ecs/systems/textrenderersystem.hpp>
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/rectangleshape.hpp>
 #include <xe/gfx/2d/batchrenderer2d.hpp>
-
 
 class Test2D : public xe::Layer {
 public:
@@ -28,20 +23,15 @@ public:
 
 private:
 	xe::Camera *camera;
-
 	xe::BatchRenderer2D *renderer;
 
-	xe::ECS ecs;
+	std::vector<xe::IRenderable2D *> renderables;
 
-	xe::SpriteRendererSystem *spriteRendererSystem;
-	xe::TextRendererSystem *textRendererSystem;
+	xe::RectangleShape *star;
 
-	xe::ECSSystemList mainSystems;
-	xe::ECSSystemList renderingPipeline;
-
-	xe::EntityHandle text;
-	xe::EntityHandle inputText;
-	xe::EntityHandle a;
+	xe::Text *text0;
+	xe::Text *text1;
+	xe::Text *inputText;
 };
 
 

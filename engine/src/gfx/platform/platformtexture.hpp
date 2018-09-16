@@ -33,7 +33,10 @@ namespace xe { namespace internal {
 		virtual uint getWidth() const = 0;
 		virtual uint getHeight() const = 0;
 		virtual uint getDepth() const = 0;
+
 		virtual TextureTarget getTarget() const = 0;
+
+		virtual bool hasTransparency() const = 0;
 
 		virtual uint getMaxMipMap() const = 0;
 	};

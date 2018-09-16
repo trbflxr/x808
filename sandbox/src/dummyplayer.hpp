@@ -1,37 +1,33 @@
 //
-// Created by FLXR on 7/29/2018.
+// Created by FLXR on 9/16/2018.
 //
 
-#ifndef X808_DUMMYPLAYERCONTROLSYSTEM_HPP
-#define X808_DUMMYPLAYERCONTROLSYSTEM_HPP
+#ifndef X808_DUMMYPLAYER_HPP
+#define X808_DUMMYPLAYER_HPP
 
 
-#include <xe/ecs/ecssystem.hpp>
-#include <xe/ecs/components/transformcomponent.hpp>
+#include <xe/gfx/camera.hpp>
 #include <xe/app/application.hpp>
-#include <xe/window/window.hpp>
-#include <xe/window/keyboard.hpp>
-#include <xe/window/mouse.hpp>
-#include "dummyplayercomponent.hpp"
 
-class DummyPlayerControlSystem : public xe::BaseECSSystem {
+class DummyPlayer {
 public:
-	explicit DummyPlayerControlSystem() :
-			BaseECSSystem(),
-			mouseLocked(false) {
+	explicit DummyPlayer(xe::Camera *camera,
+	                     float speed = 4.0f,
+	                     float sprint = 4.0f,
+	                     float sensitivity = 0.15f) :
+			camera(camera),
+			mouseSensitivity(sensitivity),
+			speed(speed),
+			sprintSpeed(speed * sprint),
+			mouseLocked(false) { }
 
-		addComponentType(DummyPlayerComponent::ID);
-		addComponentType(xe::TransformComponent::ID);
-	}
-
-	void updateComponents(float delta, xe::BaseECSComponent **components) override {
+	void update(float delta) {
 		static xe::Window &window = xe::Application::get().getWindow();
 		static xe::vec2i windowSize = window.getSize();
 		static xe::vec2 windowCenter = xe::vec2(windowSize.x / 2.0f, windowSize.y / 2.0f);
 		static xe::vec2 lastMousePosition = xe::Mouse::getPosition();
 
-		DummyPlayerComponent *player = (DummyPlayerComponent *) components[0];
-		xe::Transform &transform = ((xe::TransformComponent *) components[1])->transform;
+		xe::Transform &transform = camera->transform;
 
 		if (mouseLocked) {
 			window.setMouseCursorGrabbed(true);
@@ -44,17 +40,15 @@ public:
 		if (window.isMouseCursorGrabbed()) {
 			xe::vec2 mouseChange = xe::Mouse::getPosition() - lastMousePosition;
 
-
 			//rotate
-			transform.rotate(-xe::vec3::UnitY, mouseChange.x * player->mouseSensitivity);
-			transform.rotate(transform.getRotation().getLeft(), mouseChange.y * player->mouseSensitivity);
+			transform.rotate(-xe::vec3::UnitY, mouseChange.x * mouseSensitivity);
+			transform.rotate(transform.getRotation().getLeft(), mouseChange.y * mouseSensitivity);
 
 			xe::Mouse::setPosition(windowCenter, window);
 			lastMousePosition = xe::Mouse::getPosition();
 
-
 			//move
-			float speed = xe::Keyboard::isKeyPressed(xe::Keyboard::LControl) ? player->sprintSpeed : player->speed;
+			float speed = xe::Keyboard::isKeyPressed(xe::Keyboard::LControl) ? sprintSpeed : DummyPlayer::speed;
 			if (xe::Keyboard::isKeyPressed(xe::Keyboard::W)) {
 				move(transform, transform.getRotation().getForward(), speed * delta);
 			}
@@ -76,8 +70,7 @@ public:
 				move(transform, -xe::vec3::UnitY, speed * delta);
 			}
 
-			memcpy(&player->camera->transform, &transform, sizeof(xe::Transform));
-			player->camera->update();
+			camera->update();
 		}
 
 		if (!mouseLocked) {
@@ -86,7 +79,7 @@ public:
 		}
 	}
 
-	void inputComponents(xe::Event &event, xe::BaseECSComponent **components) override {
+	void input(xe::Event &event) {
 		if (event.type == xe::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == xe::Mouse::Right) {
 				mouseLocked = !mouseLocked;
@@ -108,7 +101,13 @@ private:
 
 private:
 	bool mouseLocked;
+
+	xe::Camera *camera;
+
+	float mouseSensitivity;
+	float speed;
+	float sprintSpeed;
 };
 
 
-#endif //X808_DUMMYPLAYERCONTROLSYSTEM_HPP
+#endif //X808_DUMMYPLAYER_HPP

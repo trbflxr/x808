@@ -16,7 +16,7 @@
 #include <xe/gfx/uniformbuffer.hpp>
 #include <xe/gfx/deferredrenderer.hpp>
 #include "debugui.hpp"
-#include "dummyplayercontrolsystem.hpp"
+#include "dummyplayer.hpp"
 
 class Test3D : public xe::Layer {
 public:
@@ -32,20 +32,15 @@ public:
 private:
 	DebugUI *ui;
 
-	xe::ECS ecs;
-	xe::ECSSystemList mainSystems;
-	xe::ECSSystemList renderingPipeline;
-
 	xe::Camera *camera;
-
-	DummyPlayerControlSystem *playerControlSystem;
-	xe::EntityHandle playerEntity;
 
 	xe::Scene *scene;
 
 	xe::DeferredRenderer *renderer;
 
 	bool light = false;
+
+	DummyPlayer *player;
 };
 
 

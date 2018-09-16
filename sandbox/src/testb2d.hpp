@@ -11,6 +11,7 @@
 #include <xe/gfx/2d/batchrenderer2d.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
 #include <xe/physics/2d/boxcollider2d.hpp>
+#include <xe/gfx/rectangleshape.hpp>
 
 class TestB2D : public xe::Layer {
 public:
@@ -34,9 +35,9 @@ private:
 	xe::BoxCollider2D *boxCollider;
 	xe::BoxCollider2D *groundCollider;
 
-	xe::Sprite *box;
-	xe::Sprite *ground;
-	xe::Sprite *sprite;
+	xe::RectangleShape *box;
+	xe::RectangleShape *ground;
+	xe::RectangleShape *sprite;
 };
 
 #endif //X808_TESTB2D_HPP

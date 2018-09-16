@@ -20,22 +20,13 @@ Test3D::Test3D(DebugUI *ui) :
 	TextureManager::add(new Texture("rock", "assets/textures/rock.png", params));
 	TextureManager::add(new Texture("bgr", "assets/textures/bgr.jfif", params));
 
-	//init objects
-	TransformComponent *tc = new TransformComponent();
-
 	//move player
-	tc->transform.setPosition({0.0f, 8.0f, -95.0f});
-
 	camera = new Camera(mat4::perspective(75.0f, width / height, 0.1f, 1000.0f));
-	camera->transform = tc->transform;
+	camera->transform.setPosition({0.0f, 8.0f, -95.0f});
 
-	playerEntity = ecs.makeEntity(new DummyPlayerComponent(camera, 6.0f), tc);
+	player = new DummyPlayer(camera, 6.0f);
 
-	playerControlSystem = new DummyPlayerControlSystem();
-	mainSystems.addSystem(*playerControlSystem);
-
-	Transform *t = &ecs.getComponent<TransformComponent>(playerEntity)->transform;
-	ui->trackEntity(L"player", t);
+	ui->trackEntity(&camera->transform);
 
 	scene = new Scene("assets/scenes/sponza", "sponza");
 
@@ -51,20 +42,17 @@ Test3D::Test3D(DebugUI *ui) :
 
 Test3D::~Test3D() {
 	delete scene;
-
-	delete playerControlSystem;
-
 	delete camera;
+
+	delete player;
 }
 
 void Test3D::render() {
-	ecs.updateSystems(renderingPipeline, 0.0f);
-
 	renderer->render(scene, camera);
 }
 
 void Test3D::update(float delta) {
-	ecs.updateSystems(mainSystems, delta);
+	player->update(delta);
 
 	scene->update(camera->transform, 0.0f);
 
@@ -83,7 +71,7 @@ void Test3D::update(float delta) {
 }
 
 void Test3D::input(Event &event) {
-	ecs.inputSystems(mainSystems, event);
+	player->input(event);
 
 	if (event.type == Event::KeyPressed) {
 		if (event.key.code == Keyboard::F1) {
@@ -107,13 +95,12 @@ void Test3D::input(Event &event) {
 			renderer->getGBuffer()->enableLightBounds(enabled);
 		}
 		if (event.key.code == Keyboard::T) {
-			Transform *cam = &ecs.getComponent<TransformComponent>(playerEntity)->transform;
 			static bool t = false;
 			t = !t;
 			if (t) {
-				cam->setPosition({0, 0, 0});
+				camera->transform.setPosition({0, 0, 0});
 			} else {
-				cam->setPosition({0.0f, 8.0f, -95.0f});
+				camera->transform.setPosition({0.0f, 8.0f, -95.0f});
 			}
 		}
 		if (event.key.code == Keyboard::F) {

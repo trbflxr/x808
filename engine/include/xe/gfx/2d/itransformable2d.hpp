@@ -14,25 +14,22 @@ namespace xe {
 	public:
 		inline ITransformable2D() :
 				position(0.0f, 0.0f, 0.0f),
-				size(1.0f, 1.0f),
 				rotation(0.0f),
 				dirty(true) { }
 
 
-		inline explicit ITransformable2D(const vec3 &position, const vec2 &size, float rotationDeg = 0.0f) :
+		inline explicit ITransformable2D(const vec3 &position, float rotationDeg = 0.0f) :
 				position(position),
-				size(size),
 				rotation(rotationDeg),
 				dirty(true) { }
 
-		inline void set(const vec3 &position, const vec2 &size, float angleDeg = 0.0f);
+		inline void transformation(const vec3 &position, float angleDeg = 0.0f);
 
 		inline bool isDirty() const { return dirty; }
 		inline void setDirty(bool isDirty) const { dirty = isDirty; }
 
 		inline const vec3 &getPosition() const { return position; }
 		inline float getRotation() const { return rotation; }
-		inline const vec2 &getSize() const { return size; }
 
 		inline void setPosition(const vec3 &position) {
 			ITransformable2D::position = position;
@@ -50,11 +47,6 @@ namespace xe {
 			dirty = true;
 		}
 
-		inline void setSize(const vec2 &size) {
-			ITransformable2D::size = size;
-			dirty = true;
-		}
-
 		inline void rotate(float angleDeg);
 		inline void move(const vec2 &dir);
 
@@ -63,13 +55,11 @@ namespace xe {
 
 		vec3 position;
 		float rotation;
-		vec2 size;
 	};
 
 
-	void ITransformable2D::set(const vec3 &position, const vec2 &size, float angleDeg) {
+	void ITransformable2D::transformation(const vec3 &position, float angleDeg) {
 		ITransformable2D::position = position;
-		ITransformable2D::size = size;
 		rotation = angleDeg;
 		dirty = true;
 	}

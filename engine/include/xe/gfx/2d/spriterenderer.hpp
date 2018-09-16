@@ -9,8 +9,7 @@
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/gfx/2d/irenderer2d.hpp>
-#include <xe/gfx/uniformbuffer.hpp>
-#include <xe/gfx/sprite.hpp>
+#include <xe/gfx/2d/irenderable2d.hpp>
 
 namespace xe {
 
@@ -18,20 +17,20 @@ namespace xe {
 	public:
 		explicit SpriteRenderer(uint width, uint height, Camera *camera);
 
-		void submit(const Sprite *sprite);
+		void submit(const IRenderable2D *target);
 
 		void begin() override;
 		void end() override;
 		void flush() override;
 
-		void render(const std::vector<const Sprite *> &sprites);
+		void render(const std::vector<const IRenderable2D *> &targets);
 
 	private:
-		void submitInternal(const Sprite *sprite);
+		void submitInternal(const IRenderable2D *target);
 
 	private:
-		std::vector<const Sprite *> targets;
-		std::vector<const Sprite *> transparentTargets;
+		std::vector<const IRenderable2D *> targets;
+		std::vector<const IRenderable2D *> transparentTargets;
 	};
 }
 

@@ -18,6 +18,7 @@ namespace xe { namespace internal {
 			width(width),
 			height(height),
 			depth(params.target == TextureTarget::TexCubeMap ? 6 : depth),
+			transparency(false),
 			params(params) {
 
 		handle = loadInternal(nullptr);
@@ -26,12 +27,14 @@ namespace xe { namespace internal {
 	GLTexture::GLTexture(const string &name,
 	                     const string &path,
 	                     const TextureParameters &params,
+	                     bool hasTransparency,
 	                     const TextureLoadOptions &options) :
 			name(name),
 			fileName(path),
 			width(0),
 			height(0),
 			depth(1),
+			transparency(hasTransparency),
 			params(params) {
 
 		handle = loadInternal(&options);
