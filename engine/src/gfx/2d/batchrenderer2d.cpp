@@ -11,12 +11,12 @@ namespace xe {
 	BatchRenderer2D::BatchRenderer2D(uint width, uint height, Camera *camera) :
 			camera(camera) {
 
-		spriteRenderer = new SpriteRenderer(width, height, camera);
+		renderer = new Renderer2D(width, height, camera);
 		textRenderer = new TextRenderer(width, height, camera);
 	}
 
 	BatchRenderer2D::~BatchRenderer2D() {
-		delete spriteRenderer;
+		delete renderer;
 		delete textRenderer;
 	}
 
@@ -37,7 +37,7 @@ namespace xe {
 	}
 
 	void BatchRenderer2D::renderSprites() {
-		spriteRenderer->updateCamera();
+		renderer->updateCamera();
 
 		Renderer::enableDepthTesting(true);
 
@@ -46,7 +46,7 @@ namespace xe {
 			          return a->getTexture() > b->getTexture();
 		          });
 
-		spriteRenderer->render(targets);
+		renderer->render(targets);
 		targets.clear();
 
 		//draw transparent
@@ -57,7 +57,7 @@ namespace xe {
 				          return a->getZ() < b->getZ();
 			          });
 
-			spriteRenderer->render(transparentTargets);
+			renderer->render(transparentTargets);
 			transparentTargets.clear();
 		}
 	}

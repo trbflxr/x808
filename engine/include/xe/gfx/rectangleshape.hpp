@@ -29,6 +29,7 @@ namespace xe {
 		inline const uint *getIndices() const override { return indices; }
 
 		inline float getZ() const override { return getPosition().z; }
+		inline const mat4 &getTransformation() const override { return toMatrix(); }
 
 	private:
 		vec2 size;

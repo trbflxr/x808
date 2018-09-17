@@ -137,25 +137,25 @@ namespace xe {
 
 					appendIndices(indices, is, io);
 
-					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y0));
+					buffer->vertex = *transformationBack * xe::vec3(x0, -y0);
 					buffer->uv = xe::vec2(s0, t0);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y1));
+					buffer->vertex = *transformationBack * xe::vec3(x0, -y1);
 					buffer->uv = xe::vec2(s0, t1);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y1));
+					buffer->vertex = *transformationBack * xe::vec3(x1, -y1);
 					buffer->uv = xe::vec2(s1, t1);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y0));
+					buffer->vertex = *transformationBack * xe::vec3(x1, -y0);
 					buffer->uv = xe::vec2(s1, t0);
 					buffer->tid = tid;
 					buffer->color = outlineColor;
@@ -190,25 +190,25 @@ namespace xe {
 
 				appendIndices(indices, is, io);
 
-				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y0));
+				buffer->vertex = *transformationBack * xe::vec3(x0, -y0);
 				buffer->uv = xe::vec2(s0, t0);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x0, -y1));
+				buffer->vertex = *transformationBack * xe::vec3(x0, -y1);
 				buffer->uv = xe::vec2(s0, t1);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y1));
+				buffer->vertex = *transformationBack * xe::vec3(x1, -y1);
 				buffer->uv = xe::vec2(s1, t1);
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = mat4::translateVec(*transformationBack, xe::vec2(x1, -y0));
+				buffer->vertex = *transformationBack * xe::vec3(x1, -y0);
 				buffer->uv = xe::vec2(s1, t0);
 				buffer->tid = tid;
 				buffer->color = color;

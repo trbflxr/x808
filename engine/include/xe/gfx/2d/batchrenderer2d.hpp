@@ -6,7 +6,7 @@
 #define X808_BATCHRENDERER2D_HPP
 
 
-#include <xe/gfx/2d/spriterenderer.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 
 namespace xe {
@@ -24,10 +24,12 @@ namespace xe {
 
 		void clear();
 
+		inline Renderer2D *getRenderer2D() const { return renderer; }
+
 	private:
 		Camera *camera;
 
-		SpriteRenderer *spriteRenderer;
+		Renderer2D *renderer;
 		TextRenderer *textRenderer;
 
 		std::vector<const IRenderable2D *> targets;

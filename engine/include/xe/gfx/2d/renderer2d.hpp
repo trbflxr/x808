@@ -2,8 +2,8 @@
 // Created by FLXR on 9/6/2018.
 //
 
-#ifndef X808_SPRITERENDERER_HPP
-#define X808_SPRITERENDERER_HPP
+#ifndef X808_RENDERER2D_HPP
+#define X808_RENDERER2D_HPP
 
 
 #include <xe/common.hpp>
@@ -13,9 +13,9 @@
 
 namespace xe {
 
-	class XE_API SpriteRenderer : public IRenderer2D {
+	class XE_API Renderer2D : public IRenderer2D {
 	public:
-		explicit SpriteRenderer(uint width, uint height, Camera *camera);
+		explicit Renderer2D(uint width, uint height, Camera *camera);
 
 		void submit(const IRenderable2D *target);
 
@@ -35,4 +35,4 @@ namespace xe {
 }
 
 
-#endif //X808_SPRITERENDERER_HPP
+#endif //X808_RENDERER2D_HPP

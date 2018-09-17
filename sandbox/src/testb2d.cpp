@@ -19,8 +19,6 @@ TestB2D::TestB2D() {
 	TextureManager::add(new Texture("3", "assets/textures/test1.png", params));
 	TextureManager::add(new Texture("4", "assets/textures/test8.png", params));
 
-	uint texCount = 7;
-
 
 	//create camera
 	camera = new Camera(mat4::ortho(0, width, 0, height, -1, 1000));

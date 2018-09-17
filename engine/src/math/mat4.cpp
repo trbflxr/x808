@@ -266,28 +266,11 @@ namespace xe {
 		            rows[2].x * r.x + rows[2].y * r.y + rows[2].z * r.z + rows[2].w);
 	}
 
-	vec3 mat4::translateVec(const mat4 &m, const vec2 &vec) {
-		return vec3(m.rows[0].x * vec.x + m.rows[1].x * vec.y + m.rows[3].x,
-		            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[3].y,
-		            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[3].z);
-	}
-
-	vec3 mat4::translateVec(const mat4 &m, const vec3 &vec) {
-		return vec3(m.rows[0].x * vec.x + m.rows[1].x * vec.y + m.rows[2].x * vec.z + m.rows[3].x,
-		            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[2].y * vec.z + m.rows[3].y,
-		            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[2].z * vec.z + m.rows[3].z);
-	}
-	vec3 mat4::translateVec(const mat4 &m, const vec2 &vec, float z) {
-		return vec3(m.rows[0].x * vec.x + m.rows[1].x * vec.y + m.rows[2].x * z + m.rows[3].x,
-		            m.rows[0].y * vec.x + m.rows[1].y * vec.y + m.rows[2].y * z + m.rows[3].y,
-		            m.rows[0].z * vec.x + m.rows[1].z * vec.y + m.rows[2].z * z + m.rows[3].z);
-	}
-
-	mat4 mat4::rotateMatZ(float rad) {
+	mat4 mat4::rotateMatZ(float deg) {
 		mat4 m = mat4::identity();
 
-		const float s = sinf(rad);
-		const float c = cosf(rad);
+		const float s = sinf(to_rad(deg));
+		const float c = cosf(to_rad(deg));
 
 		m.rows[0].x = c;
 		m.rows[0].y = -s;

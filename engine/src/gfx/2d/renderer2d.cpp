@@ -4,17 +4,17 @@
 
 #include <algorithm>
 #include <xe/gfx/renderer.hpp>
-#include <xe/gfx/2d/spriterenderer.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
 
 namespace xe {
 
-	SpriteRenderer::SpriteRenderer(uint width, uint height, Camera *camera) :
+	Renderer2D::Renderer2D(uint width, uint height, Camera *camera) :
 			IRenderer2D(width, height, camera) {
 
-		shader = new Shader("dSpriteRenderer");
+		shader = new Shader("dRenderer2D");
 	}
 
-	void SpriteRenderer::begin() {
+	void Renderer2D::begin() {
 		Renderer::enableBlend(true);
 		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 		Renderer::setViewport(0, 0, width, height);
@@ -23,7 +23,7 @@ namespace xe {
 		buffer = static_cast<VertexData *>(vertexArray->getBuffer(0)->getPointer());
 	}
 
-	void SpriteRenderer::end() {
+	void Renderer2D::end() {
 		updateCamera();
 
 		Renderer::enableDepthTesting(true);
@@ -55,7 +55,7 @@ namespace xe {
 		releaseBuffer();
 	}
 
-	void SpriteRenderer::flush() {
+	void Renderer2D::flush() {
 		updateIndexBuffer();
 
 		shader->bind();
@@ -88,7 +88,7 @@ namespace xe {
 		Renderer::incDC();
 	}
 
-	void SpriteRenderer::render(const std::vector<const IRenderable2D *> &targets) {
+	void Renderer2D::render(const std::vector<const IRenderable2D *> &targets) {
 		begin();
 
 		for (const auto &t: targets) {
@@ -99,7 +99,7 @@ namespace xe {
 		flush();
 	}
 
-	void SpriteRenderer::submit(const IRenderable2D *target) {
+	void Renderer2D::submit(const IRenderable2D *target) {
 		if (!target->isVisible()) return;
 
 		const Texture *texture = target->getTexture();
@@ -111,10 +111,12 @@ namespace xe {
 		}
 	}
 
-	void SpriteRenderer::submitInternal(const IRenderable2D *target) {
+	void Renderer2D::submitInternal(const IRenderable2D *target) {
 		const Vertex2D *vertices = target->getVertices();
 		const uint color = target->getColor();
 		const Texture *texture = target->getTexture();
+
+		const mat4 transform = *transformationBack * target->getTransformation();
 
 		float textureSlot = 0.0f;
 		if (texture) {
@@ -124,7 +126,7 @@ namespace xe {
 		appendIndices(target->getIndices(), target->getIndicesSize(), target->getVerticesSize());
 
 		for (uint i = 0; i < target->getVerticesSize(); ++i) {
-			buffer->vertex = mat4::translateVec(*transformationBack, vertices[i].pos);
+			buffer->vertex = transform * vertices[i].pos;
 			buffer->uv = vertices[i].uv;
 			buffer->tid = textureSlot;
 			buffer->color = color;

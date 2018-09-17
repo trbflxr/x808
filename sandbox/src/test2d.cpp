@@ -78,7 +78,7 @@ Test2D::Test2D() {
 	uint texCount = 38;
 
 
-	camera = new Camera(mat4::ortho(-width, width, -height, height, -1, 1000));
+	camera = new Camera(mat4::ortho(-width, width, -height, height, -1000, 1000));
 	renderer = new BatchRenderer2D(width, height, camera);
 
 	uint sprites = 0;
@@ -87,15 +87,16 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 2
+#define sp_size 1
 
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
 		for (float y = -600; y < 600; y += 5.7f) {
-			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite->set({x, y, 0.0f}, vec2(4.9f));
+			RectangleShape *s = new RectangleShape({4.9f, 4.9f});
+			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->transformation({x, y, 0.0f});
 
-			ecs.makeEntity(s);
+			renderables.push_back(s);
 
 			++sprites;
 		}
@@ -115,10 +116,11 @@ Test2D::Test2D() {
 #elif sp_size == 1
 	for (int32 x = -800; x < 800; x += 40) {
 		for (int32 y = -600; y < 600; y += 40) {
-			SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->sprite->set(vec3(x, y, 0.0f), vec2(30.0f));
+			RectangleShape *s = new RectangleShape({30.0f, 30.0f});
+			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->transformation(vec3(x, y, 0.0f));
 
-			ecs.makeEntity(s);
+			renderables.push_back(s);
 
 			++sprites;
 		}
@@ -170,6 +172,7 @@ Test2D::~Test2D() {
 
 void Test2D::render() {
 	for (const auto &r : renderables) {
+		((RectangleShape *) r)->rotate(1);
 		renderer->submit(r);
 	}
 
@@ -185,10 +188,9 @@ void Test2D::render() {
 
 void Test2D::update(float delta) {
 	static const vec2i halfSize = window.getSize() / 2;
-	static constexpr float spriteHalfSize = 50.0f;
 
 	const vec2 p = Mouse::getPosition(window);
-	const vec2 pos = vec2((p.x - halfSize.x - spriteHalfSize) * 2.0f, (p.y - halfSize.y - spriteHalfSize) * 2.0f);
+	const vec2 pos = vec2((p.x - halfSize.x) * 2.0f, (p.y - halfSize.y) * 2.0f);
 
 	star->setPosition(pos);
 

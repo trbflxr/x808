@@ -35,7 +35,7 @@ namespace xe {
 			body->CreateFixture(fixtureDef);
 		}
 
-		transformable->setPosition(getPosition() - rect->getSize() / 2.0f);
+		transformable->setPosition(getPosition());
 		transformable->setRotation(getRotation());
 	}
 

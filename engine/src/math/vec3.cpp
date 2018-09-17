@@ -18,6 +18,7 @@ namespace xe {
 	vec3::vec3(float x, float y) : x(x), y(y), z(0) { }
 	vec3::vec3(const vec3 &vec) : x(vec.x), y(vec.y), z(vec.z) { }
 	vec3::vec3(const vec2 &vec) : x(vec.x), y(vec.y), z(0.0f) { }
+	vec3::vec3(const vec2 &xy, float z) : x(xy.x), y(xy.y), z(z) { }
 	vec3::vec3(const vec4 &vec) : x(vec.x), y(vec.y), z(vec.z) { }
 
 	vec3 vec3::rotate(const quat &rotation) const {
@@ -79,10 +80,9 @@ namespace xe {
 
 	///----- operators -----///
 	vec3 operator*(const vec3 &left, const mat4 &right) {
-		return vec3(
-				right.rows[0].x * left.x + right.rows[0].y * left.y + right.rows[0].z * left.z + right.rows[0].w,
-				right.rows[1].x * left.x + right.rows[1].y * left.y + right.rows[1].z * left.z + right.rows[1].w,
-				right.rows[2].x * left.x + right.rows[2].y * left.y + right.rows[2].z * left.z + right.rows[2].w);
+		return vec3(right.rows[0].x * left.x + right.rows[0].y * left.y + right.rows[0].z * left.z + right.rows[0].w,
+		            right.rows[1].x * left.x + right.rows[1].y * left.y + right.rows[1].z * left.z + right.rows[1].w,
+		            right.rows[2].x * left.x + right.rows[2].y * left.y + right.rows[2].z * left.z + right.rows[2].w);
 	}
 
 }

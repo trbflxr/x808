@@ -26,6 +26,7 @@ namespace xe {
 		explicit vec3(float x, float y);
 		vec3(const vec3 &other);
 		explicit vec3(const vec2 &other);
+		explicit vec3(const vec2 &xy, float z);
 		explicit vec3(const vec4 &other);
 
 		vec3 rotate(const quat &rotation) const;

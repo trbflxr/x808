@@ -41,6 +41,8 @@ namespace xe {
 
 		virtual float getZ() const = 0;
 
+		virtual const mat4 &getTransformation() const = 0;
+
 	protected:
 		explicit IRenderable2D() :
 				texture(nullptr),
