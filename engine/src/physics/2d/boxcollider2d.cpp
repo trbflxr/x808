@@ -19,7 +19,7 @@ namespace xe {
 	}
 
 	void BoxCollider2D::update() {
-		RectangleShape *rect = ((RectangleShape *) transformable);
+		RectangleShape *rect = (RectangleShape *) transformable;
 
 		if (rect->isSizeChanged()) {
 			rect->setSizeChanged(false);

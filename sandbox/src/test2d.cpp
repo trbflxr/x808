@@ -11,6 +11,7 @@
 #include <xe/utils/random.hpp>
 #include <xe/gfx/indexedmodel.hpp>
 #include <xe/utils/log.hpp>
+#include <xe/gfx/circleshape.hpp>
 #include "xe/utils/utf.hpp"
 #include "test2d.hpp"
 
@@ -125,36 +126,35 @@ Test2D::Test2D() {
 			++sprites;
 		}
 	}
-#elif sp_size == 0
-	SpriteComponent *s = new SpriteComponent(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-	s->sprite->set({0.0f, 0.0f, 0.0f}, vec2(9.0f));
-
-	ecs.makeEntity(s);
-
-	++sprites;
 #endif
 
 	XE_INFO("size: ", sprites);
 
-	text0 = new Text(L"i:", 200, {-700, 300}, GETFONT("default"), color::LIGHTGRAY, color::GRAY, 3);
-	text1 = new Text(L"0", 200, {-200, -100}, GETFONT("consolata"), color::RED, color::GREEN, 3);
-	inputText = new Text(L"слава ukraine", 200, {-700, 100}, GETFONT("consolata"), color::PINK, color::CYAN, 3);
+	inputText = new Text(L"слава ukraine", 200, {-700, 300}, GETFONT("consolata"), color::PINK, color::CYAN, 3);
 
 	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f});
 	s0->setTexture(GETTEXTURE("35"));
-	s0->transformation({-100.0f, -100.0f, 1.0f});
+	s0->transformation({-100.0f, -100.0f, 2.0f});
 
 	RectangleShape *s1 = new RectangleShape({200.0f, 200.0f});
 	s1->setTexture(GETTEXTURE("37"));
-	s1->transformation({-40.0f, -40.0f, 3.0f});
+	s1->transformation({-40.0f, -40.0f, 4.0f});
 
 	star = new RectangleShape({200.0f, 200.0f});
 	star->setTexture(GETTEXTURE("36"));
-	star->transformation({-40.0f, -40.0f, 2.0f});
+	star->transformation({-40.0f, -40.0f, 3.0f});
 
 	renderables.push_back(s0);
-	renderables.push_back(s1);
-	renderables.push_back(star);
+//	renderables.push_back(s1);
+//	renderables.push_back(star);
+
+
+	//circle test
+	CircleShape *c0 = new CircleShape(300.0f, 30);
+	c0->setTexture(GETTEXTURE("1"));
+	c0->transformation({-40.0f, -40.0f, 1.0f});
+
+	renderables.push_back(c0);
 }
 
 Test2D::~Test2D() {
@@ -166,18 +166,14 @@ Test2D::~Test2D() {
 	}
 
 	delete inputText;
-	delete text0;
-	delete text1;
 }
 
 void Test2D::render() {
 	for (const auto &r : renderables) {
-		((RectangleShape *) r)->rotate(1);
+//		((RectangleShape *) r)->rotate(0.5f);
 		renderer->submit(r);
 	}
 
-	renderer->submit(text0);
-	renderer->submit(text1);
 	renderer->submit(inputText);
 
 	renderer->renderSprites();

@@ -125,9 +125,10 @@ namespace xe {
 
 		appendIndices(target->getIndices(), target->getIndicesSize(), target->getVerticesSize());
 
+		uint ti = target->getVerticesSize() - 1;
 		for (uint i = 0; i < target->getVerticesSize(); ++i) {
 			buffer->vertex = transform * vertices[i].pos;
-			buffer->uv = vertices[i].uv;
+			buffer->uv = vertices[ti--].uv;
 			buffer->tid = textureSlot;
 			buffer->color = color;
 			buffer++;

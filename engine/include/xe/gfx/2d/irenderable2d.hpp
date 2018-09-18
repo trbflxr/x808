@@ -6,7 +6,6 @@
 #define X808_IRENDERABLE2D_HPP
 
 
-#include <vector>
 #include <xe/common.hpp>
 #include <xe/math/vec3.hpp>
 #include <xe/math/vec2.hpp>
@@ -24,14 +23,13 @@ namespace xe {
 	public:
 		virtual ~IRenderable2D() = default;
 
-		inline const Texture *getTexture() const { return texture; }
-		inline void setTexture(const Texture *texture) { IRenderable2D::texture = texture; }
-
-		uint getColor() const { return color; }
-		void setColor(uint color) { IRenderable2D::color = color; }
+		inline uint getColor() const { return color; }
+		inline void setColor(uint color) { IRenderable2D::color = color; }
 
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { IRenderable2D::visible = visible; }
+
+		virtual const Texture *getTexture() const = 0;
 
 		virtual uint getVerticesSize() const = 0;
 		virtual const Vertex2D *getVertices() const = 0;
@@ -40,19 +38,15 @@ namespace xe {
 		virtual const uint *getIndices() const = 0;
 
 		virtual float getZ() const = 0;
-
 		virtual const mat4 &getTransformation() const = 0;
 
 	protected:
 		explicit IRenderable2D() :
-				texture(nullptr),
 				color(color::WHITE),
 				visible(true) { }
 
 	protected:
-		const Texture *texture;
 		uint color;
-
 		bool visible;
 	};
 

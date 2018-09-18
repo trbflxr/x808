@@ -6,15 +6,13 @@
 #define X808_RECTANGLESHAPE_HPP
 
 
-#include <xe/gfx/2d/irenderable2d.hpp>
-#include <xe/gfx/2d/itransformable2d.hpp>
+#include <xe/gfx/2d/shape.hpp>
 
 namespace xe {
 
-	class XE_API RectangleShape : public IRenderable2D, public ITransformable2D {
+	class XE_API RectangleShape : public Shape {
 	public:
 		explicit RectangleShape(const vec2 &size);
-		~RectangleShape() override;
 
 		inline const vec2 &getSize() const { return size; }
 		void setSize(const vec2 &size);
@@ -23,20 +21,14 @@ namespace xe {
 		inline void setSizeChanged(bool changed) { sizeChanged = changed; }
 
 		inline uint getVerticesSize() const override { return 4; }
-		const Vertex2D *getVertices() const override;
-
 		inline uint getIndicesSize() const override { return 6; }
-		inline const uint *getIndices() const override { return indices; }
 
-		inline float getZ() const override { return getPosition().z; }
-		inline const mat4 &getTransformation() const override { return toMatrix(); }
+	protected:
+		vec2 getPoint(uint index) override;
 
 	private:
 		vec2 size;
 		bool sizeChanged;
-
-		mutable Vertex2D *vertices;
-		uint *indices;
 	};
 
 }

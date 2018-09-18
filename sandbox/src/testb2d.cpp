@@ -25,7 +25,9 @@ TestB2D::TestB2D() {
 
 	renderer = new BatchRenderer2D(width, height, camera);
 
+	world = new PhysicsWorld2D({0.0f, -9.8f});
 
+	//rectangles
 	box = new RectangleShape({50.0f, 50.0f});
 	box->setTexture(GETTEXTURE("0"));
 	box->transformation({400.0f, 400.0f, 1.0f});
@@ -34,18 +36,25 @@ TestB2D::TestB2D() {
 	ground->setTexture(GETTEXTURE("3"));
 	ground->transformation({400.0f, 50.0f, 0.0f}, 20.0f);
 
-	sprite = new RectangleShape({50.0f, 50.0f});
-	sprite->setTexture(GETTEXTURE("1"));
-	sprite->transformation({400.0f, 400.0f, 2.0f});
+	jdm = new RectangleShape({50.0f, 50.0f});
+	jdm->setTexture(GETTEXTURE("1"));
+	jdm->transformation({400.0f, 400.0f, 2.0f});
 
-	world = new PhysicsWorld2D({0.0f, -9.8f});
-
+	//rect colliders
 	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, box);
 	boxCollider->setDensity(20.5f);
 	boxCollider->setFriction(0.2f);
 	boxCollider->setRestitution(0.5f);
 
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
+
+	//circles
+	circle0 = new CircleShape(100.0f);
+	circle0->setTexture(GETTEXTURE("3"));
+	circle0->transformation({400.0f, 200.0f, 0.0f});
+
+	//circle colliders
+	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
 }
 
 TestB2D::~TestB2D() {
@@ -57,7 +66,11 @@ TestB2D::~TestB2D() {
 
 	delete box;
 	delete ground;
-	delete sprite;
+	delete jdm;
+
+	delete circle0;
+
+	delete circleCollider0;
 
 	delete world;
 }
@@ -65,7 +78,8 @@ TestB2D::~TestB2D() {
 void TestB2D::render() {
 	renderer->submit(box);
 	renderer->submit(ground);
-	renderer->submit(sprite);
+	renderer->submit(jdm);
+	renderer->submit(circle0);
 
 	renderer->renderSprites();
 	renderer->renderText();
@@ -77,8 +91,6 @@ void TestB2D::update(float delta) {
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 		const vec2 p = Mouse::getPosition(window);
 		boxCollider->set(p, boxCollider->getRotation());
-//		boxCollider->setLinearVelocity({0, 0});
-//		boxCollider->setAngularVelocity(0);
 		boxCollider->setAwake(true);
 	}
 

@@ -29,8 +29,6 @@ private:
 
 	xe::RectangleShape *star;
 
-	xe::Text *text0;
-	xe::Text *text1;
 	xe::Text *inputText;
 };
 

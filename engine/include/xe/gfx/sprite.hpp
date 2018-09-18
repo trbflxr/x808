@@ -15,20 +15,20 @@ namespace xe {
 
 	class XE_API Sprite : public IRenderable2D, public ITransformable2D {
 	public:
-		explicit Sprite(const Texture *texture, bool flipUVs = false) noexcept;
-
+		explicit Sprite(const Texture *texture, bool flipUVs = false);
 		~Sprite() override;
 
 		inline uint getVerticesSize() const override { return 4; }
-		const Vertex2D *getVertices() const override;
-
-		inline uint getIndicesSize() const override { return 6; }
+		const Vertex2D *getVertices() const override { return vertices; }
 		inline const uint *getIndices() const override { return indices; }
 
 		inline float getZ() const override { return getPosition().z; }
 
 		static const std::vector<vec2> &getDefaultUVs();
 		static const std::vector<vec2> &getFlippedUVs();
+
+	private:
+		void updateVertices();
 
 	private:
 		mutable Vertex2D *vertices;

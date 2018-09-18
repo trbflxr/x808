@@ -6,33 +6,31 @@
 #define X808_CIRCLESHAPE_HPP
 
 
-#include <xe/gfx/2d/irenderable2d.hpp>
-#include <xe/gfx/2d/itransformable2d.hpp>
+#include <xe/gfx/2d/shape.hpp>
 
 namespace xe {
 
-	class XE_API CircleShape : public IRenderable2D, public ITransformable2D {
+	class XE_API CircleShape : public Shape {
 	public:
 		explicit CircleShape(float radius, uint pointCount = 30);
-		~CircleShape() override;
 
 		inline float getRadius() const { return radius; }
 		inline void setRadius(float radius);
 
+		inline bool isRadiusChanged() const { return radiusChanged; }
+		inline void setRadiusChanged(bool changed) { radiusChanged = changed; }
+
 		inline uint getVerticesSize() const override { return pointCount; }
-		const Vertex2D *getVertices() const override;
+		inline uint getIndicesSize() const override { return 3 * (pointCount - 2); }
 
-		inline uint getIndicesSize() const override { return pointCount + 2; }
-		inline const uint *getIndices() const override { return indices; }
-
-		inline float getZ() const override { return getPosition().z; }
+	protected:
+		vec2 getPoint(uint index) override;
 
 	private:
+		bool radiusChanged;
+
 		float radius;
 		uint pointCount;
-
-		mutable Vertex2D *vertices;
-		uint *indices;
 	};
 
 }
