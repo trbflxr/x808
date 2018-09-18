@@ -26,8 +26,8 @@ namespace xe {
 	void Shape::update() {
 		const float z = getZ();
 
-		uint count = getVerticesSize();
-		uint indicesCount = getIndicesSize();
+		uint count = getPointCount();
+		uint indicesCount = getIndicesCount();
 
 		if (count < 3) {
 			vertices.resize(0);
@@ -79,7 +79,7 @@ namespace xe {
 	}
 
 	void Shape::updateUVs() {
-		for (uint i = 0; i < getVerticesSize(); ++i) {
+		for (uint i = 0; i < getPointCount(); ++i) {
 			const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
 			const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
 

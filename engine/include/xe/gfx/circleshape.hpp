@@ -20,8 +20,8 @@ namespace xe {
 		inline bool isRadiusChanged() const { return radiusChanged; }
 		inline void setRadiusChanged(bool changed) { radiusChanged = changed; }
 
-		inline uint getVerticesSize() const override { return pointCount; }
-		inline uint getIndicesSize() const override { return 3 * (pointCount - 2); }
+		inline uint getPointCount() const override { return pointCount; }
+		inline uint getIndicesCount() const override { return 3 * (pointCount - 2); }
 
 	protected:
 		vec2 getPoint(uint index) override;

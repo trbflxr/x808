@@ -51,10 +51,20 @@ TestB2D::TestB2D() {
 	//circles
 	circle0 = new CircleShape(100.0f);
 	circle0->setTexture(GETTEXTURE("3"));
-	circle0->transformation({400.0f, 200.0f, 0.0f});
+	circle0->transformation({370.0f, 200.0f, 0.0f});
 
 	//circle colliders
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
+
+	//polygons
+	poly0 = new ConvexShape(5);
+	poly0->setPoint(0, {0, 0});
+	poly0->setPoint(1, {100, 0});
+	poly0->setPoint(2, {100, 100});
+	poly0->setPoint(3, {50, 150});
+	poly0->setPoint(4, {0, 100});
+	poly0->setTexture(GETTEXTURE("4"));
+	poly0->transformation({800.0f, 400.0f, 5.0f});
 }
 
 TestB2D::~TestB2D() {
@@ -72,6 +82,8 @@ TestB2D::~TestB2D() {
 
 	delete circleCollider0;
 
+	delete poly0;
+
 	delete world;
 }
 
@@ -80,6 +92,7 @@ void TestB2D::render() {
 	renderer->submit(ground);
 	renderer->submit(jdm);
 	renderer->submit(circle0);
+	renderer->submit(poly0);
 
 	renderer->renderSprites();
 	renderer->renderText();

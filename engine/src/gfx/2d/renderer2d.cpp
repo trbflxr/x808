@@ -123,10 +123,10 @@ namespace xe {
 			textureSlot = submitTexture(texture);
 		}
 
-		appendIndices(target->getIndices(), target->getIndicesSize(), target->getVerticesSize());
+		appendIndices(target->getIndices(), target->getIndicesCount(), target->getPointCount());
 
-		uint ti = target->getVerticesSize() - 1;
-		for (uint i = 0; i < target->getVerticesSize(); ++i) {
+		uint ti = target->getPointCount() - 1;
+		for (uint i = 0; i < target->getPointCount(); ++i) {
 			buffer->vertex = transform * vertices[i].pos;
 			buffer->uv = vertices[ti--].uv;
 			buffer->tid = textureSlot;

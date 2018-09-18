@@ -14,6 +14,7 @@
 #include <xe/physics/2d/circlecollider2d.hpp>
 #include <xe/gfx/rectangleshape.hpp>
 #include <xe/gfx/circleshape.hpp>
+#include <xe/gfx/convexshape.hpp>
 
 class TestB2D : public xe::Layer {
 public:
@@ -45,6 +46,9 @@ private:
 	//circles
 	xe::CircleShape *circle0;
 	xe::CircleCollider2D *circleCollider0;
+
+	//polygons
+	xe::ConvexShape *poly0;
 };
 
 #endif //X808_TESTB2D_HPP

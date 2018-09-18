@@ -20,8 +20,8 @@ namespace xe {
 		inline bool isSizeChanged() const { return sizeChanged; }
 		inline void setSizeChanged(bool changed) { sizeChanged = changed; }
 
-		inline uint getVerticesSize() const override { return 4; }
-		inline uint getIndicesSize() const override { return 6; }
+		inline uint getPointCount() const override { return 4; }
+		inline uint getIndicesCount() const override { return 6; }
 
 	protected:
 		vec2 getPoint(uint index) override;

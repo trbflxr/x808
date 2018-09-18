@@ -18,7 +18,7 @@ namespace xe {
 		explicit Sprite(const Texture *texture, bool flipUVs = false);
 		~Sprite() override;
 
-		inline uint getVerticesSize() const override { return 4; }
+		inline uint getPointCount() const override { return 4; }
 		const Vertex2D *getVertices() const override { return vertices; }
 		inline const uint *getIndices() const override { return indices; }
 

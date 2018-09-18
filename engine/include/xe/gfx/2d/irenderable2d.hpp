@@ -31,10 +31,10 @@ namespace xe {
 
 		virtual const Texture *getTexture() const = 0;
 
-		virtual uint getVerticesSize() const = 0;
+		virtual uint getPointCount() const = 0;
 		virtual const Vertex2D *getVertices() const = 0;
 
-		virtual uint getIndicesSize() const = 0;
+		virtual uint getIndicesCount() const = 0;
 		virtual const uint *getIndices() const = 0;
 
 		virtual float getZ() const = 0;
