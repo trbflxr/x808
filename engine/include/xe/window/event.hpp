@@ -31,20 +31,20 @@ namespace xe {
 		};
 
 		struct MouseMoveEvent {
-			int32 x;
-			int32 y;
+			float x;
+			float y;
 		};
 
 		struct MouseButtonEvent {
 			Mouse::Button button;
-			int32 x;
-			int32 y;
+			float x;
+			float y;
 		};
 
 		struct MouseWheelEvent {
 			int32 delta;
-			int32 x;
-			int32 y;
+			float x;
+			float y;
 		};
 
 

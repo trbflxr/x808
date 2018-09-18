@@ -23,11 +23,10 @@ namespace xe {
 		updateUVs();
 	}
 
-	void Shape::update() {
+	void Shape::update(bool genIndices) {
 		const float z = getZ();
 
-		uint count = getPointCount();
-		uint indicesCount = getIndicesCount();
+		const uint count = getPointCount();
 
 		if (count < 3) {
 			vertices.resize(0);
@@ -36,7 +35,6 @@ namespace xe {
 		}
 
 		vertices.resize(count);
-		indices.resize(indicesCount);
 
 		//positions
 		vertices[0].pos = vec3(getPoint(0), z);
@@ -70,11 +68,16 @@ namespace xe {
 		updateUVs();
 
 		//update indices
-		uint index = 0;
-		for (uint i = 2; i < count; ++i) {
-			indices[index++] = 0;
-			indices[index++] = i - 1;
-			indices[index++] = i;
+		if (genIndices) {
+			const uint indicesCount = 3 * (count - 2);
+			indices.resize(indicesCount);
+
+			uint index = 0;
+			for (uint i = 2; i < count; ++i) {
+				indices[index++] = 0;
+				indices[index++] = i - 1;
+				indices[index++] = i;
+			}
 		}
 	}
 

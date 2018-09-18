@@ -112,6 +112,8 @@ namespace xe {
 	}
 
 	void Renderer2D::submitInternal(const IRenderable2D *target) {
+		if (target->getPointCount() < 3) return;
+
 		const Vertex2D *vertices = target->getVertices();
 		const uint color = target->getColor();
 		const Texture *texture = target->getTexture();

@@ -21,7 +21,6 @@ namespace xe {
 		inline void setSizeChanged(bool changed) { sizeChanged = changed; }
 
 		inline uint getPointCount() const override { return 4; }
-		inline uint getIndicesCount() const override { return 6; }
 
 	protected:
 		vec2 getPoint(uint index) override;

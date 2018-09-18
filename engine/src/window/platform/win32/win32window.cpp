@@ -492,7 +492,7 @@ namespace xe { namespace internal {
 				event.type = Event::MouseWheelMoved;
 				event.mouseWheel.delta = delta / 120;
 				event.mouseWheel.x = position.x;
-				event.mouseWheel.y = position.y;
+				event.mouseWheel.y = (rect.bottom - rect.top) - position.y;
 				pushEvent(event);
 				break;
 			}
@@ -501,8 +501,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonPressed;
 				event.mouseButton.button = Mouse::Left;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -511,8 +511,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonReleased;
 				event.mouseButton.button = Mouse::Left;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -521,8 +521,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonPressed;
 				event.mouseButton.button = Mouse::Right;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -531,8 +531,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonReleased;
 				event.mouseButton.button = Mouse::Right;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -541,8 +541,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonPressed;
 				event.mouseButton.button = Mouse::Middle;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -552,7 +552,7 @@ namespace xe { namespace internal {
 				event.type = Event::MouseButtonReleased;
 				event.mouseButton.button = Mouse::Middle;
 				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<int16>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -561,8 +561,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonPressed;
 				event.mouseButton.button = HIWORD(wParam) == XBUTTON1 ? Mouse::XButton1 : Mouse::XButton2;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -571,8 +571,8 @@ namespace xe { namespace internal {
 				Event event{ };
 				event.type = Event::MouseButtonReleased;
 				event.mouseButton.button = HIWORD(wParam) == XBUTTON1 ? Mouse::XButton1 : Mouse::XButton2;
-				event.mouseButton.x = static_cast<int16>(LOWORD(lParam));
-				event.mouseButton.y = static_cast<int16>(HIWORD(lParam));
+				event.mouseButton.x = static_cast<float>(LOWORD(lParam));
+				event.mouseButton.y = (rect.bottom - rect.top) - static_cast<float>(HIWORD(lParam));
 				pushEvent(event);
 				break;
 			}
@@ -589,8 +589,8 @@ namespace xe { namespace internal {
 			}
 
 			case WM_MOUSEMOVE: {
-				int x = static_cast<int16>(LOWORD(lParam));
-				int y = static_cast<int16>(HIWORD(lParam));
+				float x = static_cast<float>(LOWORD(lParam));
+				float y = static_cast<float>(HIWORD(lParam));
 
 				RECT area;
 				GetClientRect(handle, &area);

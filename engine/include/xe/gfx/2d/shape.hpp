@@ -21,6 +21,7 @@ namespace xe {
 
 		inline const Vertex2D *getVertices() const override { return &vertices[0]; }
 		inline const uint *getIndices() const override { return &indices[0]; }
+		inline uint getIndicesCount() const override { return (uint) indices.size(); }
 
 		inline float getZ() const override { return getPosition().z; };
 		inline const mat4 &getTransformation() const override { return toMatrix(); };
@@ -28,7 +29,9 @@ namespace xe {
 	protected:
 		explicit Shape();
 
-		void update();
+		void update(bool genIndices = true);
+
+		inline void setIndices(const std::vector<uint> &indices) { Shape::indices = indices; }
 
 		virtual vec2 getPoint(uint index) = 0;
 

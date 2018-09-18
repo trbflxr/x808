@@ -57,14 +57,17 @@ TestB2D::TestB2D() {
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
 
 	//polygons
-	poly0 = new ConvexShape(5);
-	poly0->setPoint(0, {0, 0});
-	poly0->setPoint(1, {100, 0});
-	poly0->setPoint(2, {100, 100});
-	poly0->setPoint(3, {50, 150});
-	poly0->setPoint(4, {0, 100});
+	poly0 = new Polygon(0);
+//	poly0->setPoint(0, {0, 0});
+//	poly0->setPoint(1, {100, 0});
+//	poly0->setPoint(2, {100, 100});
+//	poly0->setPoint(3, {50, 150});
+//	poly0->setPoint(4, {-30, 120});
+//	poly0->setPoint(5, {0, 100});
+//	poly0->create();
 	poly0->setTexture(GETTEXTURE("4"));
-	poly0->transformation({800.0f, 400.0f, 5.0f});
+//	poly0->setColor(color::GREEN);
+	poly0->transformation({0.0f, 0.0f, 5.0f});
 }
 
 TestB2D::~TestB2D() {
@@ -103,8 +106,8 @@ void TestB2D::render() {
 void TestB2D::update(float delta) {
 	if (Mouse::isButtonPressed(Mouse::Left)) {
 		const vec2 p = Mouse::getPosition(window);
-		boxCollider->set(p, boxCollider->getRotation());
-		boxCollider->setAwake(true);
+//		boxCollider->set(p, boxCollider->getRotation());
+//		boxCollider->setAwake(true);
 	}
 
 	world->update(delta, 6, 3);
@@ -120,15 +123,30 @@ void TestB2D::input(xe::Event &event) {
 			} else if (event.key.code == Keyboard::Down) {
 				box->setSize(box->getSize() - 1);
 			}
+
+			if (event.key.code == Keyboard::R) {
+				poly0->setPointCount(0);
+				poly0->create();
+			}
 			break;
 		}
 
 		case Event::MouseButtonPressed: {
-			if (event.mouseButton.button == Mouse::Right) {
-				static bool wake = false;
-				boxCollider->setAwake(wake);
-				wake = !wake;
+			if (event.mouseButton.button == Mouse::Left) {
+				uint size = poly0->getPointCount();
+				poly0->setPointCount(size + 1);
+				poly0->setPoint(size, {event.mouseButton.x, event.mouseButton.y});
+				poly0->create();
 			}
+
+			if (event.mouseButton.button == Mouse::Right) {
+//				static bool wake = false;
+//				boxCollider->setAwake(wake);
+//				wake = !wake;
+
+				poly0->create();
+			}
+
 			break;
 		}
 
