@@ -23,6 +23,9 @@ namespace xe {
 	public:
 		virtual ~IRenderable2D() = default;
 
+		inline float getLayer() const { return layer; }
+		inline void setLayer(float layer) { IRenderable2D::layer = layer; }
+
 		inline uint getColor() const { return color; }
 		inline void setColor(uint color) { IRenderable2D::color = color; }
 
@@ -37,15 +40,16 @@ namespace xe {
 		virtual uint getIndicesCount() const = 0;
 		virtual const uint *getIndices() const = 0;
 
-		virtual float getZ() const = 0;
 		virtual const mat4 &getTransformation() const = 0;
 
 	protected:
-		explicit IRenderable2D() :
+		explicit IRenderable2D(float layer) :
+				layer(layer),
 				color(color::WHITE),
 				visible(true) { }
 
 	protected:
+		float layer;
 		uint color;
 		bool visible;
 	};

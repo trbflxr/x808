@@ -17,7 +17,9 @@ TestB2D::TestB2D() {
 	TextureManager::add(new Texture("1", "assets/textures/jdm.png", params, true));
 	TextureManager::add(new Texture("2", "assets/textures/star.png", params, true));
 	TextureManager::add(new Texture("3", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("4", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("4", "assets/textures/test6.png", params));
+	TextureManager::add(new Texture("5", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("6", "assets/textures/defaultNormal.png", params));
 
 
 	//create camera
@@ -28,17 +30,17 @@ TestB2D::TestB2D() {
 	world = new PhysicsWorld2D({0.0f, -9.8f});
 
 	//rectangles
-	box = new RectangleShape({50.0f, 50.0f});
+	box = new RectangleShape({50.0f, 50.0f}, 1.0f);
 	box->setTexture(GETTEXTURE("0"));
-	box->transformation({400.0f, 400.0f, 1.0f});
+	box->transformation({400.0f, 400.0f});
 
-	ground = new RectangleShape({500.0f, 5.0f});
+	ground = new RectangleShape({500.0f, 5.0f}, 0.0f);
 	ground->setTexture(GETTEXTURE("3"));
-	ground->transformation({400.0f, 50.0f, 0.0f}, 20.0f);
+	ground->transformation({400.0f, 50.0f}, 20.0f);
 
-	jdm = new RectangleShape({50.0f, 50.0f});
+	jdm = new RectangleShape({50.0f, 50.0f}, 2.0f);
 	jdm->setTexture(GETTEXTURE("1"));
-	jdm->transformation({400.0f, 400.0f, 2.0f});
+	jdm->transformation({400.0f, 400.0f});
 
 	//rect colliders
 	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, box);
@@ -49,15 +51,15 @@ TestB2D::TestB2D() {
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
 
 	//circles
-	circle0 = new CircleShape(100.0f);
-	circle0->setTexture(GETTEXTURE("3"));
-	circle0->transformation({370.0f, 200.0f, 0.0f});
+	circle0 = new CircleShape(100.0f, 0.0f);
+	circle0->setTexture(GETTEXTURE("5"));
+	circle0->transformation({370.0f, 200.0f});
 
 	//circle colliders
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
 
 	//polygons
-	poly0 = new Polygon(0);
+	poly0 = new Polygon(0, 5.0f);
 //	poly0->setPoint(0, {0, 0});
 //	poly0->setPoint(1, {100, 0});
 //	poly0->setPoint(2, {100, 100});
@@ -67,7 +69,13 @@ TestB2D::TestB2D() {
 //	poly0->create();
 	poly0->setTexture(GETTEXTURE("4"));
 //	poly0->setColor(color::GREEN);
-	poly0->transformation({0.0f, 0.0f, 5.0f});
+	poly0->transformation({0.0f, 0.0f});
+
+	//sprites
+	sp0 = new Sprite(GETTEXTURE("4"), 2.0f);
+	sp0->transformation({20.0f, 20.0f});
+	sp0->setTextureRect(rect(150, 130, 300, 320));
+	sp0->setScale({0.3f, 0.3f});
 }
 
 TestB2D::~TestB2D() {
@@ -87,6 +95,8 @@ TestB2D::~TestB2D() {
 
 	delete poly0;
 
+	delete sp0;
+
 	delete world;
 }
 
@@ -96,6 +106,7 @@ void TestB2D::render() {
 	renderer->submit(jdm);
 	renderer->submit(circle0);
 	renderer->submit(poly0);
+	renderer->submit(sp0);
 
 	renderer->renderSprites();
 	renderer->renderText();

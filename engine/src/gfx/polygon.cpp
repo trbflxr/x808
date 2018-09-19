@@ -7,7 +7,9 @@
 
 namespace xe {
 
-	Polygon::Polygon(uint pointCount) {
+	Polygon::Polygon(uint pointCount, float layer) :
+			Shape(layer) {
+
 		polygon.resize(1);
 		setPointCount(pointCount);
 	}

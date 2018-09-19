@@ -7,15 +7,11 @@
 
 namespace xe {
 
-	Sprite::Sprite(const Texture *texture, bool flipUVs) {
-		XE_ASSERT(false, "Not implemented");
+	Sprite::Sprite(const Texture *texture, float layer) :
+			IRenderable2D(layer) {
 
 		vertices = new Vertex2D[4];
 		indices = new uint[6];
-
-		for (uint i = 0; i < 4; ++i) {
-			vertices[i].uv = flipUVs ? getFlippedUVs()[i] : getDefaultUVs()[i];
-		}
 
 		indices[0] = 0;
 		indices[1] = 1;
@@ -25,9 +21,7 @@ namespace xe {
 		indices[4] = 3;
 		indices[5] = 0;
 
-		updateVertices();
-
-//		setTexture(texture);
+		setTexture(texture);
 	}
 
 	Sprite::~Sprite() {
@@ -35,33 +29,48 @@ namespace xe {
 		delete[] indices;
 	}
 
-	void Sprite::updateVertices() {
-//		const vec2 size = vec2(texture->getWidth(), texture->getHeight());
-//		const float z = getZ();
-//
-//		vertices[0].pos = {0.0f, 0.0f, z};
-//		vertices[1].pos = {size.x, 0.0f, z};
-//		vertices[2].pos = {size.x, size.y, z};
-//		vertices[3].pos = {0.0f, size.y, z};
+	void Sprite::setTexture(const Texture *texture) {
+		Sprite::texture = texture;
+
+		if (texture) {
+			setTextureRect(rect(0.0f, 0.0f, texture->getWidth(), texture->getHeight()));
+		}
 	}
 
-	const std::vector<vec2> &Sprite::getDefaultUVs() {
-		static std::vector<vec2> UVs{
-				vec2(0, 1),
-				vec2(1, 1),
-				vec2(1, 0),
-				vec2(0, 0)
-		};
-		return UVs;
+	void Sprite::setTextureRect(const rect &rect) {
+		if (rect != textureRect) {
+			Sprite::textureRect = rect;
+			update();
+		}
 	}
 
-	const std::vector<vec2> &Sprite::getFlippedUVs() {
-		static std::vector<vec2> UVs{
-				vec2(0, 0),
-				vec2(1, 0),
-				vec2(1, 1),
-				vec2(0, 1)
-		};
-		return UVs;
+	void Sprite::update() {
+		//bounds
+		const float width = fabsf(textureRect.width);
+		const float height = fabsf(textureRect.height);
+		const rect bounds(0.f, 0.0f, width, height);
+
+		//positions
+		vertices[0].pos = vec3(0.0f, 0.0f, layer);
+		vertices[1].pos = vec3(bounds.width, 0.0f, layer);
+		vertices[2].pos = vec3(bounds.width, bounds.height, layer);
+		vertices[3].pos = vec3(0.0f, bounds.height, layer);
+
+		//uvs
+		if (texture) {
+			const float w = texture->getWidth();
+			const float h = texture->getHeight();
+
+			const float x = textureRect.x / w;
+			const float mx = (x + textureRect.width) / w;
+			const float y = textureRect.y / h;
+			const float my = (y + textureRect.height) / h;
+
+			vertices[0].uv = vec2(x, y);
+			vertices[1].uv = vec2(mx, y);
+			vertices[2].uv = vec2(mx, my);
+			vertices[3].uv = vec2(x, my);
+		}
 	}
+
 }

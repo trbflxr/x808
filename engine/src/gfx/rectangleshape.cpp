@@ -7,7 +7,8 @@
 
 namespace xe {
 
-	RectangleShape::RectangleShape(const vec2 &size) :
+	RectangleShape::RectangleShape(const vec2 &size, float layer) :
+			Shape(layer),
 			size(size),
 			sizeChanged(true) {
 

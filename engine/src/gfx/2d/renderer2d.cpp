@@ -43,7 +43,7 @@ namespace xe {
 			//todo: there must be a better solution
 			std::sort(transparentTargets.begin(), transparentTargets.end(),
 			          [](const IRenderable2D *a, const IRenderable2D *b) {
-				          return a->getZ() < b->getZ();
+				          return a->getLayer() < b->getLayer();
 			          });
 
 			for (auto &&target : transparentTargets) {
@@ -127,10 +127,10 @@ namespace xe {
 
 		appendIndices(target->getIndices(), target->getIndicesCount(), target->getPointCount());
 
-		uint ti = target->getPointCount() - 1;
+		uint ti = target->getPointCount();
 		for (uint i = 0; i < target->getPointCount(); ++i) {
 			buffer->vertex = transform * vertices[i].pos;
-			buffer->uv = vertices[ti--].uv;
+			buffer->uv = vertices[--ti].uv;
 			buffer->tid = textureSlot;
 			buffer->color = color;
 			buffer++;

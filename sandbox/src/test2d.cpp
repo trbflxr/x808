@@ -93,9 +93,9 @@ Test2D::Test2D() {
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
 		for (float y = -600; y < 600; y += 5.7f) {
-			RectangleShape *s = new RectangleShape({4.9f, 4.9f});
+			RectangleShape *s = new RectangleShape({4.9f, 4.9f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->transformation({x, y, 0.0f});
+			s->transformation({x, y});
 
 			renderables.push_back(s);
 
@@ -105,9 +105,9 @@ Test2D::Test2D() {
 #elif sp_size == 2
 	for (float x = -800; x < 800; x += 10.3f) {
 		for (float y = -600; y < 600; y += 10.3f) {
-			RectangleShape *s = new RectangleShape({9.0f, 9.0f});
+			RectangleShape *s = new RectangleShape({9.0f, 9.0f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->transformation({x, y, 0.0f});
+			s->transformation({x, y});
 
 			renderables.push_back(s);
 
@@ -117,9 +117,9 @@ Test2D::Test2D() {
 #elif sp_size == 1
 	for (int32 x = -800; x < 800; x += 40) {
 		for (int32 y = -600; y < 600; y += 40) {
-			RectangleShape *s = new RectangleShape({30.0f, 30.0f});
+			RectangleShape *s = new RectangleShape({30.0f, 30.0f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->transformation(vec3(x, y, 0.0f));
+			s->transformation(vec2(x, y));
 
 			renderables.push_back(s);
 
@@ -132,17 +132,17 @@ Test2D::Test2D() {
 
 	inputText = new Text(L"слава ukraine", 200, {-700, 300}, GETFONT("consolata"), color::PINK, color::CYAN, 3);
 
-	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f});
+	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f}, 2.0f);
 	s0->setTexture(GETTEXTURE("35"));
-	s0->transformation({-100.0f, -100.0f, 2.0f});
+	s0->transformation({-100.0f, -100.0f});
 
-	RectangleShape *s1 = new RectangleShape({200.0f, 200.0f});
+	RectangleShape *s1 = new RectangleShape({200.0f, 200.0f}, 4.0f);
 	s1->setTexture(GETTEXTURE("37"));
-	s1->transformation({-40.0f, -40.0f, 4.0f});
+	s1->transformation({-40.0f, -40.0f});
 
-	star = new RectangleShape({200.0f, 200.0f});
+	star = new RectangleShape({200.0f, 200.0f}, 3.0f);
 	star->setTexture(GETTEXTURE("36"));
-	star->transformation({-40.0f, -40.0f, 3.0f});
+	star->transformation({-40.0f, -40.0f});
 
 	renderables.push_back(s0);
 //	renderables.push_back(s1);
@@ -150,9 +150,9 @@ Test2D::Test2D() {
 
 
 	//circle test
-	CircleShape *c0 = new CircleShape(300.0f, 30);
+	CircleShape *c0 = new CircleShape(300.0f, 1.0f);
 	c0->setTexture(GETTEXTURE("1"));
-	c0->transformation({-40.0f, -40.0f, 1.0f});
+	c0->transformation({-40.0f, -40.0f});
 
 	renderables.push_back(c0);
 }

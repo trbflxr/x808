@@ -18,47 +18,66 @@ DebugUI::DebugUI() :
 	float w = app.getConfig().width / 10.0f;
 	float h = app.getConfig().height / 10.0f;
 
-	camera = new Camera(mat4::ortho(-w, w, -h, h, -1, 1000));
+	camera = new Camera(mat4::ortho(0, w, 0, h, -1, 1000));
 
 	renderer = new BatchRenderer2D(window.getSize().x, window.getSize().y, camera);
 
-	const float xOffset = 3.0f;
-	const float yOffset = 3.0f;
+	const float xOffset = 1.5f;
+	const float yOffset = 1.5f;
+
+	const float lw = 2.5f;
+	const float lxo = 1.0f;
+
+	const float irw = 22.0f;
+	const float irh = 10.0f;
+
+	const float ttw = 27.0f;
+	const float tth = 6.0f;
 
 	//text
-	fpsText = new Text(L"fps: ", 3, {-122, 65}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
-	upsText = new Text(L"ups: ", 3, {-122, 60}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
-	frameTimeText = new Text(L"frame time: ", 3, {-122, 55}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
-	dcText = new Text(L"dc: ", 3, {-122, 50}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	fpsText = new Text(L"fps: ", 1.5f, {xOffset + lxo, h - yOffset / lw - lw},
+	                   GETFONT("consolata"), color::WHITE, color::BLACK, 2);
 
-	infoRect = new RectangleShape({45.0f, 21.0f});
-	infoRect->setColor(color::rgba(0,0,0,0.5f));
-	infoRect->setPosition({-w + xOffset, h - 21.0f - yOffset, 10.0f});
+	upsText = new Text(L"ups: ", 1.5f, {xOffset + lxo, fpsText->getPosition().y - lw},
+	                   GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+
+	frameTimeText = new Text(L"frame time: ", 1.5f, {xOffset + lxo, upsText->getPosition().y - lw},
+	                         GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+
+	dcText = new Text(L"dc: ", 1.5f, {xOffset + lxo, frameTimeText->getPosition().y - lw},
+	                  GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+
+	infoRect = new RectangleShape({irw, irh}, 10.0f);
+	infoRect->setColor(color::rgba(0, 0, 0, 0.5f));
+	infoRect->setPosition({xOffset + irw / 2.0f, h - irh / 2.0f - yOffset});
 
 	//tracked
-	tePosText = new Text(L"position: ", 3, {-122, 40}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
-	teDirText = new Text(L"direction: ", 3, {-122, 35}, GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	tePosText = new Text(L"position: ", 1.5f, {xOffset + lxo, dcText->getPosition().y - yOffset * 1.5f - yOffset},
+	                     GETFONT("consolata"), color::WHITE, color::BLACK, 2);
 
-	teRect = new RectangleShape({55.0f, 13.0f});
-	teRect->setColor(color::rgba(0,0,0,0.5f));
-	teRect->setPosition({-w + xOffset, h - 13.0f - 21.0f - yOffset - yOffset, 10.0f});
+	teDirText = new Text(L"direction: ", 1.5f, {xOffset + lxo, tePosText->getPosition().y - lw},
+	                     GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+
+	teRect = new RectangleShape({ttw, tth}, 10.0f);
+	teRect->setColor(color::rgba(0, 0, 0, 0.5f));
+	teRect->setPosition({xOffset + ttw / 2.0f, infoRect->getPosition().y - tth * yOffset});
 
 	//buffers
-	sp0 = new RectangleShape({50, 30});
+	sp0 = new RectangleShape({50, 30}, 0.0f);
 	sp0->setVisible(false);
-	sp0->transformation({-125, -69, 0.0f});
+	sp0->transformation({-125, -69});
 
-	sp1 = new RectangleShape({50, 30});
+	sp1 = new RectangleShape({50, 30}, 0.0f);
 	sp1->setVisible(false);
-	sp1->transformation({-72, -69, 0.0f});
+	sp1->transformation({-72, -69});
 
-	sp2 = new RectangleShape({50, 30});
+	sp2 = new RectangleShape({50, 30}, 0.0f);
 	sp2->setVisible(false);
-	sp2->transformation({-19, -69, 0.0f});
+	sp2->transformation({-19, -69});
 
-	sp3 = new RectangleShape({50, 30});
+	sp3 = new RectangleShape({50, 30}, 0.0f);
 	sp3->setVisible(false);
-	sp3->transformation({34, -69, 0.0f});
+	sp3->transformation({34, -69});
 }
 
 DebugUI::~DebugUI() {
@@ -101,9 +120,9 @@ void DebugUI::render() {
 	if (trackedTransform) {
 		renderer->submit(tePosText);
 		renderer->submit(teDirText);
-
+		renderer->submit(teRect);
 	}
-	renderer->submit(teRect);
+
 
 	renderer->renderSprites();
 	renderer->renderText();

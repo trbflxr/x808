@@ -12,7 +12,7 @@ namespace xe {
 
 	class XE_API Polygon : public Shape {
 	public:
-		explicit Polygon(uint pointCount = 0);
+		explicit Polygon(uint pointCount = 0, float layer = 0.0f);
 
 		void setPointCount(uint count);
 		void setPoint(uint index, const vec2 &point);

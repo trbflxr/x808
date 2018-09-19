@@ -13,38 +13,32 @@ namespace xe {
 	class ITransformable2D {
 	public:
 		inline ITransformable2D() :
-				position(0.0f, 0.0f, 0.0f),
+				position(0.0f, 0.0f),
 				rotation(0.0f),
 				scale_(1.0f, 1.0f),
 				origin(0.0f, 0.0f),
 				dirty(true) { }
 
 
-		inline explicit ITransformable2D(const vec3 &position, float rotationDeg = 0.0f) :
+		inline explicit ITransformable2D(const vec2 &position, float rotationDeg = 0.0f) :
 				position(position),
 				rotation(rotationDeg),
 				scale_(1.0f, 1.0f),
 				origin(0.0f, 0.0f),
 				dirty(true) { }
 
-		inline void transformation(const vec3 &position, float angleDeg = 0.0f);
+		inline void transformation(const vec2 &position, float angleDeg = 0.0f);
 
 		inline bool isDirty() const { return dirty; }
 		inline void setDirty(bool isDirty) const { dirty = isDirty; }
 
 		inline const vec2 &getScale() const { return scale_; }
-		inline const vec3 &getPosition() const { return position; }
+		inline const vec2 &getPosition() const { return position; }
 		inline float getRotation() const { return rotation; }
 		inline const vec2 &getOrigin() const { return origin; }
 
-		inline void setPosition(const vec3 &position) {
-			ITransformable2D::position = position;
-			dirty = true;
-		}
-
 		inline void setPosition(const vec2 &position) {
-			ITransformable2D::position.x = position.x;
-			ITransformable2D::position.y = position.y;
+			ITransformable2D::position = position;
 			dirty = true;
 		}
 
@@ -75,13 +69,13 @@ namespace xe {
 
 		vec2 origin;
 
-		vec3 position;
+		vec2 position;
 		float rotation;
 		vec2 scale_;
 	};
 
 
-	void ITransformable2D::transformation(const vec3 &position, float angleDeg) {
+	void ITransformable2D::transformation(const vec2 &position, float angleDeg) {
 		ITransformable2D::position = position;
 		rotation = angleDeg;
 		dirty = true;
@@ -122,13 +116,14 @@ namespace xe {
 			const float sys = scale_.y * s;
 			const float tx = -origin.x * sxc - origin.y * sys + position.x;
 			const float ty = origin.x * sxs - origin.y * syc + position.y;
-			const float tz = position.z;
 
-			model.rows[0].x = sxc;  model.rows[0].y = sys; model.rows[0].z = 0; model.rows[0].w = tx;
-			model.rows[1].x = -sxs; model.rows[1].y = syc; model.rows[1].z = 0; model.rows[1].w = ty;
-			model.rows[2].x = 0;    model.rows[2].y = 0;   model.rows[2].z = 1; model.rows[2].w = tz;
-			model.rows[3].x = 0;    model.rows[3].y = 0;   model.rows[3].z = 0; model.rows[3].w = 1;
+			model.rows[0].x = sxc;
+			model.rows[0].y = sys;
+			model.rows[0].w = tx;
 
+			model.rows[1].x = -sxs;
+			model.rows[1].y = syc;
+			model.rows[1].w = ty;
 		}
 
 		return model;

@@ -15,6 +15,7 @@
 #include <xe/gfx/rectangleshape.hpp>
 #include <xe/gfx/circleshape.hpp>
 #include <xe/gfx/polygon.hpp>
+#include <xe/gfx/sprite.hpp>
 
 class TestB2D : public xe::Layer {
 public:
@@ -49,6 +50,9 @@ private:
 
 	//polygons
 	xe::Polygon *poly0;
+
+	//sprites
+	xe::Sprite *sp0;
 };
 
 #endif //X808_TESTB2D_HPP

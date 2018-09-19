@@ -6,7 +6,8 @@
 
 namespace xe {
 
-	Shape::Shape() :
+	Shape::Shape(float layer) :
+			IRenderable2D(layer),
 			texture(nullptr) { }
 
 
@@ -24,9 +25,7 @@ namespace xe {
 	}
 
 	void Shape::update(bool genIndices) {
-		const float z = getZ();
-
-		const uint count = getPointCount();
+			const uint count = getPointCount();
 
 		if (count < 3) {
 			vertices.resize(0);
@@ -37,7 +36,7 @@ namespace xe {
 		vertices.resize(count);
 
 		//positions
-		vertices[0].pos = vec3(getPoint(0), z);
+		vertices[0].pos = vec3(getPoint(0), layer);
 
 		//bounds
 		float left = vertices[0].pos.x;
@@ -47,7 +46,7 @@ namespace xe {
 
 		//positions
 		for (uint i = 1; i < count; ++i) {
-			vertices[i].pos = vec3(getPoint(i), z);
+			vertices[i].pos = vec3(getPoint(i), layer);
 
 			if (vertices[i].pos.x < left) {
 				left = vertices[i].pos.x;
@@ -83,11 +82,16 @@ namespace xe {
 
 	void Shape::updateUVs() {
 		for (uint i = 0; i < getPointCount(); ++i) {
-			const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
-			const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
+			if (texture) {
+				const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
+				const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
 
-			vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / textureRect.width;
-			vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio) / textureRect.height;
+				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
+				vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
+			} else {
+				vertices[i].uv.x = 0.0f;
+				vertices[i].uv.y = 0.0f;
+			}
 		}
 	}
 

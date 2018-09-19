@@ -6,7 +6,8 @@
 
 namespace xe {
 
-	CircleShape::CircleShape(float radius, uint pointCount) :
+	CircleShape::CircleShape(float radius, float layer, uint pointCount) :
+			Shape(layer),
 			radius(radius),
 			pointCount(pointCount),
 			radiusChanged(true) {

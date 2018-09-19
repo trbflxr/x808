@@ -23,11 +23,10 @@ namespace xe {
 		inline const uint *getIndices() const override { return &indices[0]; }
 		inline uint getIndicesCount() const override { return (uint) indices.size(); }
 
-		inline float getZ() const override { return getPosition().z; };
 		inline const mat4 &getTransformation() const override { return toMatrix(); };
 
 	protected:
-		explicit Shape();
+		explicit Shape(float layer);
 
 		void update(bool genIndices = true);
 

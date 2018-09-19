@@ -54,7 +54,7 @@ namespace xe {
 			//todo: there must be a better solution
 			std::sort(transparentTargets.begin(), transparentTargets.end(),
 			          [](const IRenderable2D *a, const IRenderable2D *b) {
-				          return a->getZ() < b->getZ();
+				          return a->getLayer() < b->getLayer();
 			          });
 
 			renderer->render(transparentTargets);
