@@ -46,6 +46,10 @@ namespace xe { namespace math {
 		return powf(src1 / src0, t) * src0;
 	}
 
+	static float signum(float val) {
+		return (val == 0.0f || std::isnan(val)) ? val : copysignf(1.0f, val);
+	}
+
 }}
 
 

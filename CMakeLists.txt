@@ -28,7 +28,6 @@ set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/json/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/earcut/include
         CACHE STRING "XE external include dirs" FORCE)
 
 #copy files

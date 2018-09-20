@@ -86,8 +86,11 @@ namespace xe {
 				const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
 				const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
 
-				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
-				vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
+//				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
+//				vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
+
+				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio);// / texture->getWidth();
+				vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio);// / texture->getHeight();
 			} else {
 				vertices[i].uv.x = 0.0f;
 				vertices[i].uv.y = 0.0f;
