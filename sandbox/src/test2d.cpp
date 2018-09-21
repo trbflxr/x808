@@ -88,7 +88,7 @@ Test2D::Test2D() {
 	/// 1 - 1.2k
 	/// 2 - 11k
 	/// 3 - 59k
-#define sp_size 1
+#define sp_size 2
 
 #if sp_size == 3
 	for (float x = -800; x < 800; x += 5.7f) {
@@ -132,7 +132,7 @@ Test2D::Test2D() {
 
 	inputText = new Text(L"слава ukraine", 200, {-700, 300}, GETFONT("consolata"), color::PINK, color::CYAN, 3);
 
-	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f}, 2.0f);
+	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f}, 3.0f);
 	s0->setTexture(GETTEXTURE("35"));
 	s0->transformation({-100.0f, -100.0f});
 
@@ -145,16 +145,16 @@ Test2D::Test2D() {
 	star->transformation({-40.0f, -40.0f});
 
 	renderables.push_back(s0);
-//	renderables.push_back(s1);
-//	renderables.push_back(star);
+	renderables.push_back(s1);
+	renderables.push_back(star);
 
 
 	//circle test
-	CircleShape *c0 = new CircleShape(300.0f, 1.0f);
+	CircleShape *c0 = new CircleShape(300.0f, 2.0f);
 	c0->setTexture(GETTEXTURE("1"));
 	c0->transformation({-40.0f, -40.0f});
 
-	renderables.push_back(c0);
+//	renderables.push_back(c0);
 }
 
 Test2D::~Test2D() {

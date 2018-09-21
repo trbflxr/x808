@@ -66,10 +66,10 @@ namespace xe {
 			const float y = textureRect.y / h;
 			const float my = (y + textureRect.height) / h;
 
-			vertices[0].uv = vec2(x, y);
-			vertices[1].uv = vec2(mx, y);
-			vertices[2].uv = vec2(mx, my);
-			vertices[3].uv = vec2(x, my);
+			vertices[0].uv = vec2(x, my);
+			vertices[1].uv = vec2(mx, my);
+			vertices[2].uv = vec2(mx, y);
+			vertices[3].uv = vec2(x, y);
 		}
 	}
 

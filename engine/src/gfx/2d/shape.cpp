@@ -24,8 +24,8 @@ namespace xe {
 		updateUVs();
 	}
 
-	void Shape::update(bool genIndices) {
-			const uint count = getPointCount();
+	void Shape::update() {
+		const uint count = getPointCount();
 
 		if (count < 3) {
 			vertices.resize(0);
@@ -67,16 +67,15 @@ namespace xe {
 		updateUVs();
 
 		//update indices
-		if (genIndices) {
-			const uint indicesCount = 3 * (count - 2);
-			indices.resize(indicesCount);
 
-			uint index = 0;
-			for (uint i = 2; i < count; ++i) {
-				indices[index++] = 0;
-				indices[index++] = i - 1;
-				indices[index++] = i;
-			}
+		const uint indicesCount = 3 * (count - 2);
+		indices.resize(indicesCount);
+
+		uint index = 0;
+		for (uint i = 2; i < count; ++i) {
+			indices[index++] = 0;
+			indices[index++] = i - 1;
+			indices[index++] = i;
 		}
 	}
 
@@ -86,11 +85,8 @@ namespace xe {
 				const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
 				const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
 
-//				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
-//				vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
-
-				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio);// / texture->getWidth();
-				vertices[i].uv.y = (textureRect.y + textureRect.height * yRatio);// / texture->getHeight();
+				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
+				vertices[i].uv.y = 1.0f-(textureRect.y + textureRect.height * yRatio) / texture->getHeight();
 			} else {
 				vertices[i].uv.x = 0.0f;
 				vertices[i].uv.y = 0.0f;

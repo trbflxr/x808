@@ -169,7 +169,7 @@ namespace xe {
 		xe::Event event{ };
 
 		while (window.pollEvent(event)) {
-			for (int i = static_cast<int32>(layerStack.size() - 1); i >= 0; i--) {
+			for (int32 i = (int32) layerStack.size() - 1; i >= 0; --i) {
 				layerStack[i]->input(event);
 				if (event.handled) return;
 			}

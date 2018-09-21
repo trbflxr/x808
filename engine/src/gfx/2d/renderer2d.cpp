@@ -9,7 +9,8 @@
 namespace xe {
 
 	Renderer2D::Renderer2D(uint width, uint height, Camera *camera) :
-			IRenderer2D(width, height, camera) {
+			IRenderer2D(width, height, camera),
+			enableWireframe_(false) {
 
 		shader = new Shader("dRenderer2D");
 	}
@@ -68,7 +69,15 @@ namespace xe {
 		vertexArray->bind();
 		indexBuffer->bind();
 
+		if (enableWireframe_) {
+			Renderer::setPolygonMode(MaterialFace::FrontAndBack, PolygonMode::Line);
+		}
+
 		vertexArray->drawElements(indicesSize, BeginMode::Triangles);
+
+		if (enableWireframe_) {
+			Renderer::setPolygonMode(MaterialFace::FrontAndBack, PolygonMode::Fill);
+		}
 
 		indexBuffer->unbind();
 		vertexArray->unbind();
@@ -112,7 +121,10 @@ namespace xe {
 	}
 
 	void Renderer2D::submitInternal(const IRenderable2D *target) {
-		if (target->getPointCount() < 3) return;
+		const uint count = target->getPointCount();
+		const uint indicesCount = target->getIndicesCount();
+
+		if (count < 3) return;
 
 		const Vertex2D *vertices = target->getVertices();
 		const uint color = target->getColor();
@@ -125,12 +137,11 @@ namespace xe {
 			textureSlot = submitTexture(texture);
 		}
 
-		appendIndices(target->getIndices(), target->getIndicesCount(), target->getPointCount());
+		appendIndices(target->getIndices(), indicesCount, count);
 
-		uint ti = target->getPointCount();
-		for (uint i = 0; i < target->getPointCount(); ++i) {
+		for (uint i = 0; i < count; ++i) {
 			buffer->vertex = transform * vertices[i].pos;
-			buffer->uv = vertices[--ti].uv;
+			buffer->uv = vertices[i].uv;
 			buffer->tid = textureSlot;
 			buffer->color = color;
 			buffer++;

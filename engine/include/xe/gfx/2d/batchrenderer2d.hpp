@@ -25,6 +25,7 @@ namespace xe {
 		void clear();
 
 		inline Renderer2D *getRenderer2D() const { return renderer; }
+		inline void enableWireframe(bool flag) { renderer->enableWireframe(flag); }
 
 	private:
 		Camera *camera;

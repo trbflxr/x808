@@ -2,36 +2,75 @@
 // Created by FLXR on 9/18/2018.
 //
 
+#include <xe/math/triangulator.hpp>
 #include <xe/gfx/polygon.hpp>
+#include <algorithm>
 
 namespace xe {
 
-	Polygon::Polygon(uint pointCount, float layer) :
-			Shape(layer) {
+	Polygon::Polygon(float layer) :
+			IRenderable2D(layer),
+			texture(nullptr) { }
 
-		polygon.resize(1);
-		setPointCount(pointCount);
+	Polygon::Polygon(const std::vector<vec2> &points, float layer) :
+			IRenderable2D(layer),
+			points(points),
+			texture(nullptr) {
+
+		create();
 	}
 
 	void Polygon::create() {
-		if (polygon[0].size() < 3) return;
+		if (points.size() < 3) return;
 
-//		setIndices(mapbox::earcut(polygon));
+		indices.clear();
+		triangulator::compute(points, indices);
 
-		update(false);
+		std::reverse(indices.begin(), indices.end());
+
+		vertices.resize(points.size());
+		for (uint i = 0; i < points.size(); ++i) {
+			vertices[i].pos = vec3(points[i], layer);
+		}
+
+		updateUVs();
 	}
 
-	void Polygon::setPointCount(uint count) {
-		polygon[0].resize(count);
+	void Polygon::reshape(const std::vector<vec2> &points) {
+		Polygon::points = points;
+		create();
 	}
 
-	void Polygon::setPoint(uint index, const vec2 &point) {
-		polygon[0][index][0] = point.x;
-		polygon[0][index][1] = point.y;
+	void Polygon::setTexture(const Texture *texture) {
+		Polygon::texture = texture;
+
+		if (texture) {
+			setTextureRect(rect(0.0f, 0.0f, texture->getWidth(), texture->getHeight()));
+		}
 	}
 
-	vec2 Polygon::getPoint(uint index) {
-		return vec2(polygon[0][index][0], polygon[0][index][1]);
+	void Polygon::setTextureRect(const rect &rect) {
+		Polygon::textureRect = rect;
+		updateUVs();
+	}
+	void Polygon::updateUVs() {
+		if (texture) {
+			const float invTexWidth = 1.0f / texture->getWidth();
+			const float invTexHeight = 1.0f / texture->getHeight();
+			const float u0 = textureRect.x * invTexWidth;
+			const float v0 = textureRect.y * invTexHeight;
+			const float u1 = (textureRect.x + textureRect.width) * invTexWidth;
+			const float v1 = (textureRect.y + textureRect.height) * invTexHeight;
+			const float uvWidth = u1 - u0;
+			const float uvHeight = v1 - v0;
+			const float width = roundf(fabsf(uvWidth) * texture->getWidth());
+			const float height = roundf(fabsf(uvHeight) * texture->getHeight());
+
+			for (auto &&v : vertices) {
+				v.uv.x = u0 + uvWidth * (v.pos.x / width);
+				v.uv.y = v0 + uvHeight * (1.0f - v.pos.y / height);
+			}
+		}
 	}
 
 }

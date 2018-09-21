@@ -51,8 +51,10 @@ private:
 	//polygons
 	xe::Polygon *poly0;
 
-	//sprites
-	xe::Sprite *sp0;
+	std::vector<xe::IRenderable2D *> renderables;
+	std::vector<xe::IRenderable2D *> points;
+
+	std::vector<xe::vec2> polyPoints;
 };
 
 #endif //X808_TESTB2D_HPP

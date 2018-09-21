@@ -6,26 +6,44 @@
 #define X808_POLYGON_HPP
 
 
-#include <xe/gfx/2d/shape.hpp>
+#include <xe/gfx/2d/irenderable2d.hpp>
+#include <xe/gfx/2d/itransformable2d.hpp>
 
 namespace xe {
 
-	class XE_API Polygon : public Shape {
+	class XE_API Polygon : public IRenderable2D, public ITransformable2D {
 	public:
-		explicit Polygon(uint pointCount = 0, float layer = 0.0f);
+		explicit Polygon(float layer = 0.0f);
+		explicit Polygon(const std::vector<vec2> &points, float layer = 0.0f);
 
-		void setPointCount(uint count);
-		void setPoint(uint index, const vec2 &point);
+		void reshape(const std::vector<vec2> &points);
 
-		void create();
+		inline const rect &getTextureRect() const { return textureRect; }
+		void setTextureRect(const rect &rect);
 
-		inline uint getPointCount() const override { return (uint) polygon[0].size(); }
+		inline const Texture *getTexture() const override { return texture; }
+		void setTexture(const Texture *texture);
 
-	protected:
-		vec2 getPoint(uint index) override;
+		inline const Vertex2D *getVertices() const override { return vertices.data(); }
+		inline uint getPointCount() const override { return (uint) points.size(); }
+
+		inline uint getIndicesCount() const override { return (uint) indices.size(); }
+		inline const uint *getIndices() const override { return indices.data(); }
+
+		inline const mat4 &getTransformation() const override { return toMatrix(); }
 
 	private:
-		std::vector<std::vector<std::array<float, 2>>> polygon;
+		void create();
+		void updateUVs();
+
+	private:
+		std::vector<vec2> points;
+
+		const Texture *texture;
+		rect textureRect;
+
+		std::vector<Vertex2D> vertices;
+		std::vector<uint> indices;
 	};
 
 }

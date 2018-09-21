@@ -28,7 +28,7 @@ namespace xe {
 	protected:
 		explicit Shape(float layer);
 
-		void update(bool genIndices = true);
+		void update();
 
 		inline void setIndices(const std::vector<uint> &indices) { Shape::indices = indices; }
 

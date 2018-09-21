@@ -25,10 +25,14 @@ namespace xe {
 
 		void render(const std::vector<const IRenderable2D *> &targets);
 
+		inline void enableWireframe(bool flag) { Renderer2D::enableWireframe_ = flag; }
+
 	private:
 		void submitInternal(const IRenderable2D *target);
 
 	private:
+		bool enableWireframe_;
+
 		std::vector<const IRenderable2D *> targets;
 		std::vector<const IRenderable2D *> transparentTargets;
 	};
