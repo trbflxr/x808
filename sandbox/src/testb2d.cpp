@@ -164,7 +164,7 @@ void TestB2D::input(xe::Event &event) {
 				const vec2 pos = {event.mouseButton.x, event.mouseButton.y};
 				polyPoints.push_back(pos);
 
-				RectangleShape *rs = new RectangleShape({10.0f, 10.0f}, poly0->getLayer() + 0.1f);
+				RectangleShape *rs = new RectangleShape({5.0f, 5.0f}, poly0->getLayer() + 0.1f);
 				rs->setColor(color::GREEN);
 				rs->transformation(pos);
 				points.push_back(rs);

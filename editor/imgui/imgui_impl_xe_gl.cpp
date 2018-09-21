@@ -61,6 +61,8 @@ namespace ImGui { namespace xe {
 		}
 
 		s_windowHasFocus = window.hasFocus();
+
+		ImGui::InitDock();
 	}
 
 	void processEvent(const ::xe::Event &event) {
@@ -122,11 +124,10 @@ namespace ImGui { namespace xe {
 
 		if (s_windowHasFocus) {
 			if (io.WantSetMousePos) {
-				::xe::vec2 pos((int32) io.MousePos.x, (int32) io.MousePos.y);
-				::xe::Mouse::setPosition(pos);
+				::xe::Mouse::setPosition({io.MousePos.x, windowSize.y - io.MousePos.y});
 			} else {
 				io.MousePos.x = mousePos.x;
-				io.MousePos.y = mousePos.y;
+				io.MousePos.y = windowSize.y - mousePos.y;
 			}
 			for (uint i = 0; i < 3; i++) {
 				io.MouseDown[i] = s_mousePressed[i] || ::xe::Mouse::isButtonPressed((::xe::Mouse::Button) i);
