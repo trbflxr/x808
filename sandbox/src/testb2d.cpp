@@ -70,6 +70,8 @@ TestB2D::TestB2D() {
 	poly0 = new Polygon(4.0f);
 	poly0->setTexture(GETTEXTURE("6"));
 
+//	polyCollider0 = new PolygonCollider2D(world, ColliderType::Static, poly0);
+
 	//sprites
 	Sprite *sp0 = new Sprite(GETTEXTURE("4"), 5.0f);
 	sp0->transformation({20.0f, 20.0f});
@@ -85,6 +87,7 @@ TestB2D::~TestB2D() {
 	delete boxCollider;
 	delete groundCollider;
 	delete circleCollider0;
+//	delete polyCollider0;
 
 	for (const auto &r : renderables) {
 		delete r;

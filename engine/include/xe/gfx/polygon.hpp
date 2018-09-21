@@ -18,6 +18,9 @@ namespace xe {
 
 		void reshape(const std::vector<vec2> &points);
 
+		inline bool isPointsChanged() const { return pointsChanged; }
+		inline void setPointsChanged(bool changed) { Polygon::pointsChanged = changed; }
+
 		inline const rect &getTextureRect() const { return textureRect; }
 		void setTextureRect(const rect &rect);
 
@@ -30,6 +33,8 @@ namespace xe {
 		inline uint getIndicesCount() const override { return (uint) indices.size(); }
 		inline const uint *getIndices() const override { return indices.data(); }
 
+		inline const vec2 *getRawPoints() const { return points.data(); }
+
 		void setLayer(float layer) override;
 
 		inline const mat4 &getTransformation() const override { return toMatrix(); }
@@ -39,6 +44,7 @@ namespace xe {
 		void updateUVs();
 
 	private:
+		bool pointsChanged;
 		std::vector<vec2> points;
 
 		const Texture *texture;

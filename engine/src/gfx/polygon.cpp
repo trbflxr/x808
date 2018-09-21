@@ -10,18 +10,22 @@ namespace xe {
 
 	Polygon::Polygon(float layer) :
 			IRenderable2D(layer),
-			texture(nullptr) { }
+			texture(nullptr),
+			pointsChanged(false) { }
 
 	Polygon::Polygon(const std::vector<vec2> &points, float layer) :
 			IRenderable2D(layer),
 			points(points),
-			texture(nullptr) {
+			texture(nullptr),
+			pointsChanged(false) {
 
 		create();
 	}
 
 	void Polygon::create() {
 		if (points.size() < 3) return;
+
+		pointsChanged = true;
 
 		indices.clear();
 		triangulator::compute(points, indices);

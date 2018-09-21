@@ -12,6 +12,7 @@
 #include <xe/physics/2d/physicsworld2d.hpp>
 #include <xe/physics/2d/boxcollider2d.hpp>
 #include <xe/physics/2d/circlecollider2d.hpp>
+#include <xe/physics/2d/polygoncollider2d.hpp>
 #include <xe/gfx/rectangleshape.hpp>
 #include <xe/gfx/circleshape.hpp>
 #include <xe/gfx/polygon.hpp>
@@ -50,7 +51,9 @@ private:
 
 	//polygons
 	xe::Polygon *poly0;
+	xe::PolygonCollider2D *polyCollider0;
 
+	//
 	std::vector<xe::IRenderable2D *> renderables;
 	std::vector<xe::IRenderable2D *> points;
 

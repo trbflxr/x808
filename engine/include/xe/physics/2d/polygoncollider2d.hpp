@@ -9,10 +9,20 @@
 #include <xe/gfx/polygon.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 
+class b2PolygonShape;
+
 namespace xe {
 
 	class XE_API PolygonCollider2D : public Collider2D {
+	public:
+		explicit PolygonCollider2D(PhysicsWorld2D *world, ColliderType type, Polygon *polygon);
+		~PolygonCollider2D() override;
 
+	protected:
+		void update() override;
+
+	private:
+		b2PolygonShape *shape;
 	};
 
 }
