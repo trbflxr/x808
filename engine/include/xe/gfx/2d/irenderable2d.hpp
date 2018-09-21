@@ -23,8 +23,8 @@ namespace xe {
 	public:
 		virtual ~IRenderable2D() = default;
 
-		inline float getLayer() const { return layer; }
-		inline void setLayer(float layer) { IRenderable2D::layer = layer; }
+		virtual inline float getLayer() const { return layer; }
+		virtual void setLayer(float layer) = 0;
 
 		inline uint getColor() const { return color; }
 		inline void setColor(uint color) { IRenderable2D::color = color; }

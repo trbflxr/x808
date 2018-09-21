@@ -57,6 +57,8 @@ namespace xe {
 	}
 
 	void Renderer2D::flush() {
+		Renderer::enableDepthTesting(true);
+
 		updateIndexBuffer();
 
 		shader->bind();
@@ -140,7 +142,7 @@ namespace xe {
 		appendIndices(target->getIndices(), indicesCount, count);
 
 		for (uint i = 0; i < count; ++i) {
-			buffer->vertex = transform * vertices[i].pos;
+			buffer->vertex = mat4::translateXY(transform, vertices[i].pos);
 			buffer->uv = vertices[i].uv;
 			buffer->tid = textureSlot;
 			buffer->color = color;

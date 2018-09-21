@@ -23,14 +23,14 @@ namespace xe {
 		inline const uint *getIndices() const override { return &indices[0]; }
 		inline uint getIndicesCount() const override { return (uint) indices.size(); }
 
+		void setLayer(float layer) override;
+
 		inline const mat4 &getTransformation() const override { return toMatrix(); };
 
 	protected:
 		explicit Shape(float layer);
 
 		void update();
-
-		inline void setIndices(const std::vector<uint> &indices) { Shape::indices = indices; }
 
 		virtual vec2 getPoint(uint index) = 0;
 

@@ -44,6 +44,15 @@ namespace xe {
 		}
 	}
 
+	void Sprite::setLayer(float layer) {
+		IRenderable2D::layer = layer;
+
+		vertices[0].pos.z = layer;
+		vertices[1].pos.z = layer;
+		vertices[2].pos.z = layer;
+		vertices[3].pos.z = layer;
+	}
+
 	void Sprite::update() {
 		//bounds
 		const float width = fabsf(textureRect.width);

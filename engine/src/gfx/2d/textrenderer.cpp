@@ -137,26 +137,30 @@ namespace xe {
 
 					appendIndices(indices, is, io);
 
-					buffer->vertex = *transformationBack * xe::vec3(x0, -y0);
-					buffer->uv = xe::vec2(s0, t0);
+					buffer->vertex = mat4::translateXY(*transformationBack, x0, -y0);
+					buffer->uv.x = s0;
+					buffer->uv.y = t0;
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = *transformationBack * xe::vec3(x0, -y1);
-					buffer->uv = xe::vec2(s0, t1);
+					buffer->vertex = mat4::translateXY(*transformationBack, x0, -y1);
+					buffer->uv.x = s0;
+					buffer->uv.y = t1;
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = *transformationBack * xe::vec3(x1, -y1);
-					buffer->uv = xe::vec2(s1, t1);
+					buffer->vertex = mat4::translateXY(*transformationBack, x1, -y1);
+					buffer->uv.x = s1;
+					buffer->uv.y = t1;
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
 
-					buffer->vertex = *transformationBack * xe::vec3(x1, -y0);
-					buffer->uv = xe::vec2(s1, t0);
+					buffer->vertex = mat4::translateXY(*transformationBack, x1, -y0);
+					buffer->uv.x = s1;
+					buffer->uv.y = t0;
 					buffer->tid = tid;
 					buffer->color = outlineColor;
 					++buffer;
@@ -190,26 +194,30 @@ namespace xe {
 
 				appendIndices(indices, is, io);
 
-				buffer->vertex = *transformationBack * xe::vec3(x0, -y0);
-				buffer->uv = xe::vec2(s0, t0);
+				buffer->vertex = mat4::translateXY(*transformationBack, x0, -y0);
+				buffer->uv.x = s0;
+				buffer->uv.y = t0;
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = *transformationBack * xe::vec3(x0, -y1);
-				buffer->uv = xe::vec2(s0, t1);
+				buffer->vertex = mat4::translateXY(*transformationBack, x0, -y1);
+				buffer->uv.x = s0;
+				buffer->uv.y = t1;
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = *transformationBack * xe::vec3(x1, -y1);
-				buffer->uv = xe::vec2(s1, t1);
+				buffer->vertex = mat4::translateXY(*transformationBack, x1, -y1);
+				buffer->uv.x = s1;
+				buffer->uv.y = t1;
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;
 
-				buffer->vertex = *transformationBack * xe::vec3(x1, -y0);
-				buffer->uv = xe::vec2(s1, t0);
+				buffer->vertex = mat4::translateXY(*transformationBack, x1, -y0);
+				buffer->uv.x = s1;
+				buffer->uv.y = t0;
 				buffer->tid = tid;
 				buffer->color = color;
 				++buffer;

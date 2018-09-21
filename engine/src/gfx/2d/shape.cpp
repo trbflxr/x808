@@ -11,6 +11,16 @@ namespace xe {
 			texture(nullptr) { }
 
 
+	void Shape::setLayer(float layer) {
+		IRenderable2D::layer = layer;
+
+		if (!vertices.empty() && vertices[0].pos.z != layer) {
+			for (auto &&v : vertices) {
+				v.pos.z = layer;
+			}
+		}
+	}
+
 	void Shape::setTexture(const xe::Texture *texture) {
 		Shape::texture = texture;
 
@@ -67,7 +77,6 @@ namespace xe {
 		updateUVs();
 
 		//update indices
-
 		const uint indicesCount = 3 * (count - 2);
 		indices.resize(indicesCount);
 
@@ -86,7 +95,7 @@ namespace xe {
 				const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
 
 				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
-				vertices[i].uv.y = 1.0f-(textureRect.y + textureRect.height * yRatio) / texture->getHeight();
+				vertices[i].uv.y = 1.0f - (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
 			} else {
 				vertices[i].uv.x = 0.0f;
 				vertices[i].uv.y = 0.0f;

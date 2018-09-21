@@ -30,6 +30,8 @@ namespace xe {
 		inline uint getIndicesCount() const override { return 6; }
 		inline const uint *getIndices() const override { return indices; }
 
+		void setLayer(float layer) override;
+
 		inline const mat4 &getTransformation() const override { return toMatrix(); }
 
 	private:

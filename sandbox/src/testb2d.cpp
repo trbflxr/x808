@@ -26,7 +26,7 @@ TestB2D::TestB2D() {
 
 
 	//create camera
-	camera = new Camera(mat4::ortho(0, width, 0, height, -1, 10));
+	camera = new Camera(mat4::ortho(0, width, 0, height, -1, 1000));
 
 	renderer = new BatchRenderer2D(width, height, camera);
 
@@ -38,7 +38,7 @@ TestB2D::TestB2D() {
 	box->transformation({400.0f, 400.0f});
 	renderables.push_back(box);
 
-	ground = new RectangleShape({500.0f, 5.0f}, 0.0f);
+	ground = new RectangleShape({500.0f, 5.0f}, 0.1f);
 	ground->setTexture(GETTEXTURE("3"));
 	ground->transformation({400.0f, 50.0f}, 20.0f);
 	renderables.push_back(ground);
@@ -57,7 +57,7 @@ TestB2D::TestB2D() {
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
 
 	//circles
-	circle0 = new CircleShape(100.0f, 0.0f);
+	circle0 = new CircleShape(100.0f, 0.3f);
 	circle0->setTexture(GETTEXTURE("5"));
 	circle0->setTextureRect({100, 100, 400, 400});
 	circle0->transformation({370.0f, 200.0f});
@@ -67,11 +67,11 @@ TestB2D::TestB2D() {
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
 
 	//polygons
-	poly0 = new Polygon();
+	poly0 = new Polygon(4.0f);
 	poly0->setTexture(GETTEXTURE("6"));
 
 	//sprites
-	Sprite *sp0 = new Sprite(GETTEXTURE("4"), 0.0f);
+	Sprite *sp0 = new Sprite(GETTEXTURE("4"), 5.0f);
 	sp0->transformation({20.0f, 20.0f});
 	sp0->setTextureRect(rect(150, 130, 300, 320));
 	sp0->setScale({0.3f, 0.3f});
@@ -110,11 +110,11 @@ void TestB2D::render() {
 }
 
 void TestB2D::update(float delta) {
-//	if (Mouse::isButtonPressed(Mouse::Left)) {
-//		const vec2 p = Mouse::getPosition(window);
-//		boxCollider->set(p, boxCollider->getRotation());
-//		boxCollider->setAwake(true);
-//	}
+	if (Mouse::isButtonPressed(Mouse::Right)) {
+		const vec2 p = Mouse::getPosition(window);
+		boxCollider->set(p, boxCollider->getRotation());
+		boxCollider->setAwake(true);
+	}
 
 	world->update(delta, 6, 3);
 }
@@ -148,6 +148,11 @@ void TestB2D::input(xe::Event &event) {
 				poly0->reshape(polyPoints);
 				poly0->setVisible(true);
 			}
+
+			if (event.key.code == Keyboard::W) {
+				bool wake = boxCollider->isAwake();
+				boxCollider->setAwake(!wake);
+			}
 			break;
 		}
 
@@ -156,20 +161,13 @@ void TestB2D::input(xe::Event &event) {
 				const vec2 pos = {event.mouseButton.x, event.mouseButton.y};
 				polyPoints.push_back(pos);
 
-				RectangleShape *rs = new RectangleShape({10.0f, 10.0f}, 6.0f);
+				RectangleShape *rs = new RectangleShape({10.0f, 10.0f}, poly0->getLayer() + 0.1f);
 				rs->setColor(color::GREEN);
 				rs->transformation(pos);
 				points.push_back(rs);
 
 //				XE_INFO(vec2(event.mouseButton.x, event.mouseButton.y));
 			}
-
-			if (event.mouseButton.button == Mouse::Right) {
-//				static bool wake = false;
-//				boxCollider->setAwake(wake);
-//				wake = !wake;
-			}
-
 			break;
 		}
 

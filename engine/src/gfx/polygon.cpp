@@ -49,10 +49,21 @@ namespace xe {
 		}
 	}
 
+	void Polygon::setLayer(float layer) {
+		IRenderable2D::layer = layer;
+
+		if (!vertices.empty() && vertices[0].pos.z != layer) {
+			for (auto &&v : vertices) {
+				v.pos.z = layer;
+			}
+		}
+	}
+
 	void Polygon::setTextureRect(const rect &rect) {
 		Polygon::textureRect = rect;
 		updateUVs();
 	}
+
 	void Polygon::updateUVs() {
 		if (texture) {
 			const float invTexWidth = 1.0f / texture->getWidth();

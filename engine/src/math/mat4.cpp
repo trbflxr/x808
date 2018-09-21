@@ -481,6 +481,24 @@ namespace xe {
 		return t * r;
 	}
 
+	vec3 mat4::translateXY(const mat4 &mat, const vec3 &vec) {
+		return vec3(mat.rows[0].x * vec.x + mat.rows[0].y * vec.y + mat.rows[0].z * vec.z + mat.rows[0].w,
+		            mat.rows[1].x * vec.x + mat.rows[1].y * vec.y + mat.rows[1].z * vec.z + mat.rows[1].w,
+		            vec.z);
+	}
+
+	vec3 mat4::translateXY(const mat4 &mat, const vec2 &vec) {
+		return vec3(mat.rows[0].x * vec.x + mat.rows[0].y * vec.y + mat.rows[0].w,
+		            mat.rows[1].x * vec.x + mat.rows[1].y * vec.y + mat.rows[1].w,
+		            0.0f);
+	}
+
+	vec3 mat4::translateXY(const mat4 &mat, float x, float y) {
+		return vec3(mat.rows[0].x * x + mat.rows[0].y * y + mat.rows[0].w,
+		            mat.rows[1].x * x + mat.rows[1].y * y + mat.rows[1].w,
+		            0.0f);
+	}
+
 	///----- operators -----///
 	mat4 &operator*=(mat4 &left, const mat4 &right) {
 		float data[16];

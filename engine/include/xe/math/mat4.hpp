@@ -46,6 +46,10 @@ namespace xe {
 
 		static mat4 rotateMatZ(float deg);
 
+		static vec3 translateXY(const mat4 &mat, const vec3 &vec);
+		static vec3 translateXY(const mat4 &mat, const vec2 &vec);
+		static vec3 translateXY(const mat4 &mat, float x, float y);
+
 		static mat4 initRotation(const vec3 &forward, const vec3 &up);
 		static mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 
