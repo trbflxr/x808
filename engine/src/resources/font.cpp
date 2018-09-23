@@ -16,8 +16,7 @@ namespace xe {
 
 		if (!loader.load()) {
 			XE_ERROR("[Font]: failed to load font '", name, "'!");
-
-			//todo: load default
+			XE_ASSERT(false);
 		}
 	}
 

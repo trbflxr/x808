@@ -17,4 +17,23 @@ namespace xe { namespace internal {
 	uint DEFAULT_TEXTURE_W = 247;
 	uint DEFAULT_TEXTURE_H = 200;
 
+
+	///font texture
+	byte DEFAULT_FONT_TEXTURE_ARRAY[] = {
+#include "files/consolatatex.embed"
+	};
+
+	byte *DEFAULT_FONT_TEXTURE = DEFAULT_FONT_TEXTURE_ARRAY;
+	uint DEFAULT_FONT_TEXTURE_SIZE = sizeof(DEFAULT_FONT_TEXTURE_ARRAY);
+	uint DEFAULT_FONT_TEXTURE_W = 1024;
+
+
+	///font file
+	const char *DEFAULT_FONT_ARRAY[] = {
+#include "files/consolatafnt.embed"
+	};
+
+	uint DEFAULT_FONT_SIZE = 168;
+	const char **DEFAULT_FONT = DEFAULT_FONT_ARRAY;
+
 }}

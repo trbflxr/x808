@@ -91,7 +91,7 @@ namespace xe {
 		void bindImageUnit(uint index, TextureAccess access, uint level = 0, uint layer = 0) const;
 		void unbind(uint slot) const;
 
-		void setData2D(const void *pixels);
+		void setData2D(const void *pixels) const;
 
 		void generateMipMaps(const TextureTarget &target);
 

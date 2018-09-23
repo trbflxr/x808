@@ -64,7 +64,7 @@ namespace xe {
 		texture->unbind(slot);
 	}
 
-	void Texture::setData2D(const void *pixels) {
+	void Texture::setData2D(const void *pixels) const {
 		texture->setData2D(pixels);
 	}
 

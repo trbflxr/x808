@@ -17,8 +17,11 @@ namespace xe {
 	class XE_API FontLoader : NonCopyable {
 	public:
 		explicit FontLoader(Font *font);
+		explicit FontLoader(const string &name);
 
-		bool load();
+		bool load(bool fromFile = true);
+
+		Font *getFont() const { return font; }
 
 	private:
 		int32 get(const string &key);
@@ -28,6 +31,10 @@ namespace xe {
 		Glyph parseGlyph();
 
 		bool loadAtlas(const string &line);
+		void loadEmbedAtlas();
+
+		bool readFile();
+		void loadEmbed();
 
 	private:
 		Font *font;

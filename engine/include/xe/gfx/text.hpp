@@ -20,9 +20,9 @@ namespace xe {
 				font(font),
 				textColor(color::WHITE),
 				outlineColor(color::TRANSPARENT),
-				outline(0.0f, 0.001f),
+				edge(0.5f, 0.1f),
+				outline(0.0f, 0.0f),
 				outlineOffset(0.0f, 0.0f),
-				edge(0.0f, 0.001f),
 				useAutoEdge_(true) { }
 
 		inline const Font *getFont() const { return font; }
@@ -40,7 +40,7 @@ namespace xe {
 
 		inline const vec2 &getOutline() const { return outline; }
 		inline void setOutline(const vec2 &outline) { Text::outline = outline; }
-		inline void setOutline(float width, float edgeAboveZero) { Text::outline = {width, edgeAboveZero}; }
+		inline void setOutline(float width, float edge) { Text::outline = {width, edge}; }
 
 		inline const vec2 &getOutlineOffset() const { return outlineOffset; }
 		inline void setOutlineOffset(const vec2 &offset) { Text::outlineOffset = offset; }
@@ -58,9 +58,9 @@ namespace xe {
 			Text::edge = edge;
 		}
 
-		inline void setEdge(float width, float edgeAboveZero) {
+		inline void setEdge(float width, float edge) {
 			useAutoEdge_ = false;
-			Text::edge = {width, edgeAboveZero};
+			Text::edge = {width, edge};
 		}
 
 	private:

@@ -40,6 +40,9 @@ namespace xe {
 		static float getKerning(const Glyph &glyph, uint id);
 
 	private:
+		explicit Font() = default;
+
+	private:
 		friend class FontLoader;
 
 		string name;

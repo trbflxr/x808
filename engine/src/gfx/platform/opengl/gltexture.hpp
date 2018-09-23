@@ -26,7 +26,7 @@ namespace xe { namespace internal {
 		void bindImageUnit(uint index, TextureAccess access, uint level, uint layer) const override;
 		void unbind(uint slot) const override;
 
-		void setData2D(const void *pixels) override;
+		void setData2D(const void *pixels) const override;
 
 		void generateMipMaps(const TextureTarget &target) override;
 

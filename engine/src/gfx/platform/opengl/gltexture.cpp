@@ -77,7 +77,7 @@ namespace xe { namespace internal {
 		glCall(glBindTexture(target, 0));
 	}
 
-	void GLTexture::setData2D(const void *pixels) {
+	void GLTexture::setData2D(const void *pixels) const {
 		if (params.format == PixelFormat::DepthComponent) {
 			XE_ERROR("[GLTexture]: ", name, " 'SetData' is unavailable for depth texture!");
 			return;

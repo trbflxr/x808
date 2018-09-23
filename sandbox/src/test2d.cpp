@@ -6,7 +6,6 @@
 #include <xe/app/application.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
-#include <xe/resources/fontmanager.hpp>
 #include <xe/resources/soundmanager.hpp>
 #include <xe/utils/random.hpp>
 #include <xe/gfx/indexedmodel.hpp>
@@ -66,10 +65,6 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("37", L"assets/textures/cosmic.png", params, true));
 	TextureManager::add(new Texture("38", L"assets/textures/test7.png", params));
 	TextureManager::add(new Texture("39", L"assets/textures/test8.png", params));
-
-
-	FontManager::add(new Font("consolata", L"assets/fonts/consolata.fnt"));
-	FontManager::add(new Font("segoeui", L"assets/fonts/segoeui.fnt"));
 
 
 	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
@@ -141,12 +136,12 @@ Test2D::Test2D() {
 
 	XE_INFO("size: ", sprites);
 
-	inputText = new Text(L"[]][/\\слава ukraine", 20, GETFONT("consolata"));
+	inputText = new Text(L"[]][/\\слава ukraine", 20);
 
 	inputText->setPosition({-700, 300});
 	inputText->setTextColor(color::WHITE);
-	inputText->setOutlineColor(color::BLACK);
-	inputText->setOutline({0.5, 0.5f});
+	inputText->setOutlineColor(color::RED);
+	inputText->setOutline({0.5f, 0.3f});
 
 	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f}, 3.1f);
 	s0->setTexture(GETTEXTURE("35"));

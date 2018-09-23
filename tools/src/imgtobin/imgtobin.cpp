@@ -2,19 +2,22 @@
 // Created by FLXR on 7/22/2018.
 //
 
+
+#include <codecvt>
+#include <locale>
 #include <cstdio>
 #include <cstring>
 #include <Freeimage/FreeImage.h>
 #include <Freeimage/FreeImageUtilities.h>
 
 
-int imgToBin(const char *in, const char *out, bool flipY, bool swapRB) {
+int imgToBin(const wchar_t *in, const wchar_t *out, bool flipY) {
 	FREE_IMAGE_FORMAT fif;
 	FIBITMAP *dib = nullptr;
-	fif = FreeImage_GetFileType(in, 0);
+	fif = FreeImage_GetFileTypeU(in, 0);
 
 	if (fif == FIF_UNKNOWN) {
-		fif = FreeImage_GetFIFFromFilename(in);
+		fif = FreeImage_GetFIFFromFilenameU(in);
 	}
 
 	if (fif == FIF_UNKNOWN) {
@@ -22,11 +25,11 @@ int imgToBin(const char *in, const char *out, bool flipY, bool swapRB) {
 	}
 
 	if (FreeImage_FIFSupportsReading(fif)) {
-		dib = FreeImage_Load(fif, in);
+		dib = FreeImage_LoadU(fif, in);
 	}
 
 	if (!dib) {
-		fprintf(stderr, "Could not load image: %s\n", in);
+		fwprintf(stderr, L"Could not load image: %ls\n", in);
 		FreeImage_Unload(dib);
 
 		return 1;
@@ -41,27 +44,29 @@ int imgToBin(const char *in, const char *out, bool flipY, bool swapRB) {
 	unsigned h = FreeImage_GetHeight(bitmap);
 	unsigned b = FreeImage_GetBPP(bitmap);
 
-	printf("width: %i, height %i, bits: %i\n", w, h, b);
+	wprintf(L"width: %i, height %i, bits: %i\n", w, h, b);
 
 	if (flipY) {
 		FreeImage_FlipVertical(bitmap);
 	}
 
-	if (swapRB) {
+	if (FreeImage_GetRedMask(bitmap) == 0xff0000) {
 		SwapRedBlue32(bitmap);
 	}
-	unsigned size = w * h * (b / 8);
+	size_t size = w * h * (b / 8);
 	unsigned char *result = new unsigned char[size];
+
+	wprintf(L"file size: %llu\n", size);
 
 	memcpy(result, pixels, size);
 	FreeImage_Unload(bitmap);
 
-	FILE *res = fopen(out, "wb");
-
+	FILE *res = _wfopen(out, L"wb");
+	
 	int line = 0;
 	for (size_t i = 0; i < size; ++i) {
 		++line;
-		fprintf(res, "0x%x, ", pixels[i]);
+		fprintf(res, "%u, ", result[i]);
 		if (line == 13) {
 			fprintf(res, "\n");
 			line = 0;
@@ -76,8 +81,8 @@ int imgToBin(const char *in, const char *out, bool flipY, bool swapRB) {
 int main(int argc, char **argv) {
 	FreeImage_Initialise();
 
-	if (argc < 4) {
-		printf("Syntax: %s [-flipy] <inputfile> <outputfile> <SwapRedBlue32(1-0)>\n", argv[0]);
+	if (argc < 3) {
+		printf("Syntax: %s [-flipy] <inputfile> <outputfile>\n", argv[0]);
 		return 0;
 	}
 
@@ -94,7 +99,9 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	bool swapRB = static_cast<bool>(argv[argn + 2]);
+	static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
-	return imgToBin(argv[argn], argv[argn + 1], !flipY, swapRB);
+	return imgToBin(converter.from_bytes(argv[argn]).c_str(),
+	                converter.from_bytes(argv[argn + 1]).c_str(),
+	                !flipY);
 }

@@ -5,15 +5,12 @@
 #include <sstream>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
-#include <xe/resources/fontmanager.hpp>
 #include "debugui.hpp"
 
 using namespace xe;
 
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
-
-	FontManager::add(new Font("consolata", L"assets/fonts/consolata.fnt"));
 
 	//create camera
 	float w = app.getConfig().width;
@@ -40,22 +37,22 @@ DebugUI::DebugUI() :
 	const vec2 outline(0.65f, 0.35f);
 
 	//text
-	fpsText = new Text(L"fps: ", 2.0f, GETFONT("consolata"));
+	fpsText = new Text(L"fps: ", 2.0f);
 	fpsText->setPosition({offset + offset, h - offset});
 	fpsText->setOutlineColor(color::BLACK);
 	fpsText->setOutline(outline);
 
-	upsText = new Text(L"ups: ", 2.0f, GETFONT("consolata"));
+	upsText = new Text(L"ups: ", 2.0f);
 	upsText->setPosition({offset + offset, fpsText->getPosition().y - lw});
 	upsText->setOutlineColor(color::BLACK);
 	upsText->setOutline(outline);
 
-	frameTimeText = new Text(L"frame time: ", 2.0f, GETFONT("consolata"));
+	frameTimeText = new Text(L"frame time: ", 2.0f);
 	frameTimeText->setPosition({offset + offset, upsText->getPosition().y - lw});
 	frameTimeText->setOutlineColor(color::BLACK);
 	frameTimeText->setOutline(outline);
 
-	dcText = new Text(L"dc: ", 2.0f, GETFONT("consolata"));
+	dcText = new Text(L"dc: ", 2.0f);
 	dcText->setPosition({offset + offset, frameTimeText->getPosition().y - lw});
 	dcText->setOutlineColor(color::BLACK);
 	dcText->setOutline(outline);
@@ -65,12 +62,12 @@ DebugUI::DebugUI() :
 	infoRect->setPosition({offset + irw / 2.0f, h - irh / 2.0f - offset});
 
 	//tracked
-	tePosText = new Text(L"position: ", 2.0f, GETFONT("consolata"));
+	tePosText = new Text(L"position: ", 2.0f);
 	tePosText->setPosition({offset + offset, dcText->getPosition().y - offset * 4.0f - (offset / 2.0f)});
 	tePosText->setOutlineColor(color::BLACK);
 	tePosText->setOutline(outline);
 
-	teDirText = new Text(L"direction: ", 2.0f, GETFONT("consolata"));
+	teDirText = new Text(L"direction: ", 2.0f);
 	teDirText->setPosition({offset + offset, tePosText->getPosition().y - lw});
 	teDirText->setOutlineColor(color::BLACK);
 	teDirText->setOutline(outline);

@@ -144,8 +144,6 @@ namespace xe {
 
 		if (t->useAutoEdge()) {
 			//todo: formula?
-			edge.x = 0.50f;
-			edge.y = 0.1f;
 		}
 
 		const vec4 widthEdge = vec4(edge.x, edge.y, outline.x, outline.y);

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <xe/utils/log.hpp>
 #include <xe/loaders/fontloader.hpp>
+#include <embedded/embedded.hpp>
 
 namespace xe {
 
@@ -20,20 +21,21 @@ namespace xe {
 	FontLoader::FontLoader(Font *font) :
 			font(font) { }
 
+	FontLoader::FontLoader(const string &name) {
+		font = new Font();
+		font->name = name;
+		font->path = L"defaultFont";
+	}
+
 	int32 FontLoader::get(const string &key) {
 		return atoi(values[key].c_str());
 	}
 
-	bool FontLoader::load() {
-		std::ifstream file(font->path.c_str());
-		if (!file.is_open()) {
-			XE_ERROR("[FontLoader]: couldn't open file '", font->path, "'");
-			return false;
-		}
-
-		string l;
-		while (std::getline(file, l)) {
-			lines.push_back(l);
+	bool FontLoader::load(bool fromFile) {
+		if (fromFile) {
+			if (!readFile()) return false;
+		} else {
+			loadEmbed();
 		}
 
 		auto line = lines.begin();
@@ -46,8 +48,13 @@ namespace xe {
 		atlasSize = get("scaleW");
 		values.clear();
 
-		//skip line
-		loadAtlas(*line++);
+		//load texture
+		if (fromFile) {
+			loadAtlas(*line++);
+		} else {
+			line++;
+			loadEmbedAtlas();
+		}
 		values.clear();
 
 		//get chars count
@@ -85,7 +92,6 @@ namespace xe {
 			values.clear();
 		}
 
-		file.close();
 		return true;
 	}
 
@@ -130,7 +136,10 @@ namespace xe {
 
 	bool FontLoader::loadAtlas(const string &line) {
 		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		static TextureParameters params;
+		static TextureParameters params(TextureTarget::Tex2D,
+		                                PixelInternalFormat::Rgba,
+		                                PixelFormat::Rgba,
+		                                PixelType::UnsignedByte);
 
 		const wstring wide = converter.from_bytes(line);
 
@@ -141,9 +150,47 @@ namespace xe {
 		const size_t slash = font->path.find_last_of(L"/\\") + 1;
 		const wstring path = font->path.substr(0, slash) + file;
 
-		font->atlas = new Texture(font->name, path, params);
+		font->atlas = new Texture(font->name + "_atlas", path, params);
 
 		return true;
+	}
+
+	void FontLoader::loadEmbedAtlas() {
+		static TextureParameters params(TextureTarget::Tex2D,
+		                                PixelInternalFormat::Rgba,
+		                                PixelFormat::Rgba,
+		                                PixelType::UnsignedByte);
+
+		const uint size = internal::DEFAULT_FONT_TEXTURE_W;
+		font->atlas = new Texture(font->name + "_atlas", size, size, 0, params);
+		font->atlas->setData2D(internal::DEFAULT_FONT_TEXTURE);
+	}
+
+	bool FontLoader::readFile() {
+		std::ifstream file(font->path.c_str());
+		if (!file.is_open()) {
+			XE_ERROR("[FontLoader]: couldn't open file '", font->path, "'");
+			return false;
+		}
+
+		string l;
+		while (std::getline(file, l)) {
+			lines.push_back(l);
+		}
+		file.close();
+
+		return true;
+	}
+
+	void FontLoader::loadEmbed() {
+		const uint size = internal::DEFAULT_FONT_SIZE;
+		const char **file = internal::DEFAULT_FONT;
+
+		lines.reserve(size);
+
+		for (uint i = 0; i < size; ++i) {
+			lines.emplace_back(file[i]);
+		}
 	}
 
 }
