@@ -53,6 +53,10 @@ namespace xe {
 
 	void VertexArray::pushBuffer(VertexBuffer *buffer) {
 		array->pushBuffer(buffer);
-	};
+	}
+
+	VertexBuffer *VertexArray::popBuffer() {
+		return 	array->popBuffer();
+	}
 
 }

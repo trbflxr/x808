@@ -10,13 +10,13 @@
 
 namespace xe {
 
-	Scene::Scene(const string &folder, const string &name) :
+	Scene::Scene(const wstring &folder, const wstring &name) :
 			folder(folder),
 			name(name) {
 
 		lightManager = new LightManager();
 
-		SceneLoader::load(folder.data(), name.data(), materials, meshes, lightManager->getLights());
+		SceneLoader::load(folder.c_str(), name.c_str(), materials, meshes, lightManager->getLights());
 	}
 
 	Scene::~Scene() {

@@ -23,6 +23,7 @@ namespace xe { namespace internal {
 
 		virtual VertexBuffer *getBuffer(uint index) = 0;
 		virtual void pushBuffer(VertexBuffer *buffer) = 0;
+		virtual VertexBuffer *popBuffer() = 0;
 	};
 
 }}

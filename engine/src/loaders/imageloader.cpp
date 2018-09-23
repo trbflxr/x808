@@ -2,20 +2,20 @@
 // Created by FLXR on 8/16/2018.
 //
 
-#include <FreeImage/FreeImage.h>
-#include <FreeImage/FreeImageUtilities.h>
+#include <Freeimage/FreeImage.h>
+#include <Freeimage/FreeImageUtilities.h>
 #include <xe/utils/log.hpp>
 #include <xe/loaders/imageloader.hpp>
 
 namespace xe {
 
-	byte *ImageLoader::load(const char *path, uint *width, uint *height, uint *bits, bool flipY) {
+	byte *ImageLoader::load(const wchar_t *path, uint *width, uint *height, uint *bits, bool flipY) {
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		FIBITMAP *dib = nullptr;
-		fif = FreeImage_GetFileType(path, 0);
+		fif = FreeImage_GetFileTypeU(path, 0);
 
 		if (fif == FIF_UNKNOWN) {
-			fif = FreeImage_GetFIFFromFilename(path);
+			fif = FreeImage_GetFIFFromFilenameU(path);
 		}
 
 		if (fif == FIF_UNKNOWN) {
@@ -23,7 +23,7 @@ namespace xe {
 		}
 
 		if (FreeImage_FIFSupportsReading(fif)) {
-			dib = FreeImage_Load(fif, path);
+			dib = FreeImage_LoadU(fif, path);
 		}
 
 		if (!dib) {
@@ -63,7 +63,7 @@ namespace xe {
 		return result;
 	}
 
-	byte *ImageLoader::load(const string &path, uint *width, uint *height, uint *bits, bool flipY) {
+	byte *ImageLoader::load(const wstring &path, uint *width, uint *height, uint *bits, bool flipY) {
 		return load(path.c_str(), width, height, bits, flipY);
 	}
 

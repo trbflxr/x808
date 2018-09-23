@@ -16,7 +16,6 @@ set(XE_INCLUDE_DIRS
 set(XE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/lib
         ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/lib
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/lib
         CACHE STRING "XE library dirs" FORCE)
 
@@ -25,7 +24,6 @@ set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/glew/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype-gl/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/json/include
         CACHE STRING "XE external include dirs" FORCE)

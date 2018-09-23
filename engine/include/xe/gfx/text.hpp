@@ -6,61 +6,74 @@
 #define X808_TEXT_HPP
 
 
-#include <xe/resources/font.hpp>
-#include <xe/xeint.hpp>
-#include <xe/resources/fontmanager.hpp>
 #include <xe/gfx/color.hpp>
+#include <xe/resources/fontmanager.hpp>
+#include <xe/gfx/2d/itransformable2d.hpp>
 
 namespace xe {
 
-	class Text {
-	private:
-		friend class TextRenderer;
-
+	class Text : public ITransformable2D {
 	public:
-		explicit Text(const wstring &string, float size, const vec2 &position,
-		              const Font *font = GETFONT("default"),
-		              uint textColor = color::WHITE,
-		              uint outlineColor = color::TRANSPARENT,
-		              float outlineThickness = 0.0f) noexcept :
+		explicit Text(const wstring &string, float size, const Font *font = GETFONT("default")) noexcept :
 				string(string),
 				size(size),
-				position(position),
 				font(font),
-				textColor(textColor),
-				outlineColor(outlineColor),
-				outlineThickness(outlineThickness) { }
+				textColor(color::WHITE),
+				outlineColor(color::TRANSPARENT),
+				outline(0.0f, 0.001f),
+				outlineOffset(0.0f, 0.0f),
+				edge(0.0f, 0.001f),
+				useAutoEdge_(true) { }
 
-		const Font *getFont() const { return font; }
-		void setFont(const Font *font) { Text::font = font; }
+		inline const Font *getFont() const { return font; }
+		inline void setFont(const Font *font) { Text::font = font; }
 
-		wstring &getString() { return string; }
-		const wstring &getString() const { return string; }
-		void setString(const wstring &string) { Text::string = string; }
+		inline wstring &getString() { return string; }
+		inline const wstring &getString() const { return string; }
+		inline void setString(const wstring &string) { Text::string = string; }
 
-		uint getTextColor() const { return textColor; }
-		void setTextColor(uint textColor) { Text::textColor = textColor; }
+		inline uint getTextColor() const { return textColor; }
+		inline void setTextColor(uint textColor) { Text::textColor = textColor; }
 
-		uint getOutlineColor() const { return outlineColor; }
-		void setOutlineColor(uint outlineColor) { Text::outlineColor = outlineColor; }
+		inline uint getOutlineColor() const { return outlineColor; }
+		inline void setOutlineColor(uint outlineColor) { Text::outlineColor = outlineColor; }
 
-		float getOutlineThickness() const { return outlineThickness; }
-		void setOutlineThickness(float thickness) { Text::outlineThickness = thickness; }
+		inline const vec2 &getOutline() const { return outline; }
+		inline void setOutline(const vec2 &outline) { Text::outline = outline; }
+		inline void setOutline(float width, float edgeAboveZero) { Text::outline = {width, edgeAboveZero}; }
 
-		float getSize() const { return size; }
-		void setSize(float size) { Text::size = size; }
+		inline const vec2 &getOutlineOffset() const { return outlineOffset; }
+		inline void setOutlineOffset(const vec2 &offset) { Text::outlineOffset = offset; }
 
-		const vec2 &getPosition() const { return position; }
-		void setPosition(const vec2 &position) { Text::position = position; }
+		inline float getSize() const { return size; }
+		inline void setSize(float size) { Text::size = size; }
+
+		inline void useAutoEdge(bool use) { Text::useAutoEdge_ = use; }
+		inline bool useAutoEdge() const { return useAutoEdge_; }
+
+		inline const vec2 &getEdge() const { return edge; }
+
+		inline void setEdge(const vec2 &edge) {
+			useAutoEdge_ = false;
+			Text::edge = edge;
+		}
+
+		inline void setEdge(float width, float edgeAboveZero) {
+			useAutoEdge_ = false;
+			Text::edge = {width, edgeAboveZero};
+		}
 
 	private:
 		const Font *font;
 		wstring string;
 		uint textColor;
 		uint outlineColor;
-		float outlineThickness;
+		vec2 outline;
+		vec2 outlineOffset;
 		float size;
-		vec2 position;
+
+		bool useAutoEdge_;
+		vec2 edge;
 	};
 
 }

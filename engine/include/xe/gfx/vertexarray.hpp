@@ -28,6 +28,7 @@ namespace xe {
 
 		VertexBuffer *getBuffer(uint index = 0);
 		void pushBuffer(VertexBuffer *buffer);
+		VertexBuffer *popBuffer();
 
 	private:
 		internal::PlatformVertexArray *array;

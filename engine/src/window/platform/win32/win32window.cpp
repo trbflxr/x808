@@ -11,7 +11,6 @@
 #include <dbt.h>
 #include <xe/window/window.hpp>
 #include <xe/utils/log.hpp>
-#include <xe/utils/utf.hpp>
 #include "win32window.hpp"
 
 namespace {
@@ -80,9 +79,7 @@ namespace xe { namespace internal {
 			height = rectangle.bottom - rectangle.top;
 		}
 
-		std::wstring output;
-		output.reserve(title.size() + 1);
-		utf32::toWide(title.begin(), title.end(), std::back_inserter(output), 0);
+		const wstring output = utils::toWstring(title);
 
 		handle = CreateWindow(className, output.c_str(), win32Style, left, top, width, height,
 		                      nullptr, nullptr, GetModuleHandle(nullptr), this);
@@ -181,9 +178,7 @@ namespace xe { namespace internal {
 	}
 
 	void PlatformWindowWin32::setTitle(const string &title) {
-		std::wstring output;
-		output.reserve(title.size() + 1);
-		utf32::toWide(title.begin(), title.end(), std::back_inserter(output), 0);
+		wstring output = utils::toWstring(title);
 
 		SetWindowText(handle, output.c_str());
 	}
@@ -439,7 +434,8 @@ namespace xe { namespace internal {
 					} else {
 						if ((character >= 0xDC00) && (character <= 0xDFFF)) {
 							uint16 utf16[] = {surrogate, static_cast<uint16>(character)};
-							xe::utf16::toUtf32(utf16, utf16 + 2, &character);
+							utf16::toUtf32(utf16, utf16 + 2, &character);
+
 							surrogate = 0;
 						}
 

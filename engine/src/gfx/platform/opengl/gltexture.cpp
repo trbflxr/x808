@@ -14,7 +14,7 @@ namespace xe { namespace internal {
 
 	GLTexture::GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) :
 			name(name),
-			fileName("NULL"),
+			path(L"NULL"),
 			width(width),
 			height(height),
 			depth(params.target == TextureTarget::TexCubeMap ? 6 : depth),
@@ -25,12 +25,12 @@ namespace xe { namespace internal {
 	}
 
 	GLTexture::GLTexture(const string &name,
-	                     const string &path,
+	                     const wstring &path,
 	                     const TextureParameters &params,
 	                     bool hasTransparency,
 	                     const TextureLoadOptions &options) :
 			name(name),
-			fileName(path),
+			path(path),
 			width(0),
 			height(0),
 			depth(1),
@@ -162,12 +162,12 @@ namespace xe { namespace internal {
 
 		uint bits;
 		// FreeImage loads bottom->top
-		outPixels = ImageLoader::load(fileName.c_str(), &width, &height, &bits, !options->flipY);
+		outPixels = ImageLoader::load(path.c_str(), &width, &height, &bits, !options->flipY);
 
 		if (!outPixels) {
 			fail = true;
 			name = "default";
-			fileName = "NULL";
+			path = L"NULL";
 			width = internal::DEFAULT_TEXTURE_W;
 			height = internal::DEFAULT_TEXTURE_H;
 

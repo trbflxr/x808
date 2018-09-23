@@ -15,35 +15,57 @@
 
 namespace xe {
 
-	bool SceneLoader::load(const char *folder, const char *name,
+	bool SceneLoader::load(const wchar_t *folder, const wchar_t *name,
 	                       std::vector<Material *> &outMaterials,
 	                       std::vector<UniqueMesh *> &outMeshes,
 	                       std::vector<Light *> &outLights) {
 
-		char paths[2][1024];
+		wchar_t paths[2][1024];
 
 		//collada path
-		strcpy(paths[0], folder);
-		strcat(paths[0], "/");
-		strcat(paths[0], name);
-		strcat(paths[0], ".dae");
+		wcscpy(paths[0], folder);
+		wcscat(paths[0], L"/");
+		wcscat(paths[0], name);
+		wcscat(paths[0], L".dae");
 
 		//lights path
-		strcpy(paths[1], folder);
-		strcat(paths[1], "/");
-		strcat(paths[1], name);
-		strcat(paths[1], ".lights");
+		wcscpy(paths[1], folder);
+		wcscat(paths[1], L"/");
+		wcscat(paths[1], name);
+		wcscat(paths[1], L".lights");
 
+
+		//read file to memory
+		FILE *file = _wfopen(paths[0], L"rb");
+
+		if (!file) {
+			fclose(file);
+			XE_FATAL("[SceneLoader]: unable to read file '", paths[0], "'");
+			XE_ASSERT(false);
+			return false;
+		}
+
+		fseek(file, 0, SEEK_END);
+		const size_t size = (size_t) ftell(file);
+		rewind(file);
+
+		byte *buff = new byte[size + 1];
+		buff[size] = 0;
+		fread(buff, size, 1, file);
+
+		fclose(file);
 
 		//load assimp scene
 		Assimp::Importer importer;
-		const aiScene *scene = importer.ReadFile(paths[0],
-		                                         aiProcessPreset_TargetRealtime_MaxQuality |
-		                                         aiProcess_JoinIdenticalVertices |
-		                                         aiProcess_Triangulate |
-		                                         aiProcess_GenSmoothNormals |
-		                                         aiProcess_CalcTangentSpace |
-		                                         aiProcess_FlipUVs);
+		const aiScene *scene = importer.ReadFileFromMemory(buff, size,
+		                                                   aiProcessPreset_TargetRealtime_MaxQuality |
+		                                                   aiProcess_JoinIdenticalVertices |
+		                                                   aiProcess_Triangulate |
+		                                                   aiProcess_GenSmoothNormals |
+		                                                   aiProcess_CalcTangentSpace |
+		                                                   aiProcess_FlipUVs);
+		delete[] buff;
+
 		if (!scene) {
 			XE_FATAL("[SceneLoader]: unable to load scene '", paths[0], "'");
 			XE_ASSERT(false);
@@ -58,7 +80,7 @@ namespace xe {
 		return true;
 	}
 
-	void SceneLoader::loadMaterials(const char *folder, const aiScene *scene, std::vector<Material *> &materials) {
+	void SceneLoader::loadMaterials(const wchar_t *folder, const aiScene *scene, std::vector<Material *> &materials) {
 		for (uint i = 0; i < scene->mNumMaterials; ++i) {
 			aiMaterial *material = scene->mMaterials[i];
 
@@ -136,7 +158,7 @@ namespace xe {
 		}
 	}
 
-	void SceneLoader::loadLights(const char *path, const aiScene *scene, std::vector<Light *> &lights) {
+	void SceneLoader::loadLights(const wchar_t *path, const aiScene *scene, std::vector<Light *> &lights) {
 		//info
 		std::vector<string> ids;
 		std::vector<string> types;
@@ -225,7 +247,7 @@ namespace xe {
 		}
 	}
 
-	const Texture *SceneLoader::loadTexture(const char *folder, const char *file) {
+	const Texture *SceneLoader::loadTexture(const wchar_t *folder, const char *file) {
 		static TextureParameters params(TextureTarget::Tex2D,
 		                                PixelInternalFormat::Rgba,
 		                                PixelFormat::Rgba,
@@ -236,10 +258,12 @@ namespace xe {
 		                                MIP_MAP_AUTO,
 		                                ANISOTROPY_AUTO);
 
-		char path[1024];
-		strcpy(path, folder);
-		strcat(path, "/");
-		strcat(path, file);
+		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+		wchar_t path[1024];
+		wcscpy(path, folder);
+		wcscat(path, L"/");
+		wcscat(path, converter.from_bytes(file).c_str());
 
 		string textureName = utils::getFileName(file, false);
 

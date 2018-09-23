@@ -10,7 +10,8 @@
 namespace xe {
 
 	FontManager::FontManager() {
-		fonts.emplace("default", new Font("default", internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE, 100));
+		//todo:
+//		fonts.emplace("default", new Font("default", internal::DEFAULT_FONT, internal::DEFAULT_FONT_SIZE, 100));
 	}
 
 	FontManager::~FontManager() {

@@ -1,48 +1,52 @@
 //
-// Created by FLXR on 7/2/2018.
+// Created by FLXR on 9/22/2018.
 //
 
 #ifndef X808_FONT_HPP
 #define X808_FONT_HPP
 
 
-#include <string>
-#include <xe/xeint.hpp>
+#include <vector>
+#include <array>
 #include <xe/common.hpp>
-#include <xe/gfx/texture.hpp>
 #include <xe/math/vec2.hpp>
-
-namespace ftgl {
-	struct texture_font_t;
-	struct texture_atlas_t;
-}
+#include <xe/gfx/texture.hpp>
+#include <xe/utils/string.hpp>
 
 namespace xe {
 
+	struct Glyph {
+		uint id;
+		vec2 uv;
+		vec2 texSize;
+		vec2 offset;
+		vec2 size;
+		float xAdvance;
+
+		std::vector<vec2> kernings;
+	};
+
 	class XE_API Font {
 	public:
-		explicit Font(const string &name, const string &path, float size);
-		explicit Font(const string &name, const byte *data, uint dataSize, float size);
-		~Font();
+		explicit Font(const string &name, const wstring &path);
+		virtual ~Font();
 
+		const Glyph &get(uint id) const;
+
+		inline const Texture *getAtlas() const { return atlas; }
 		inline const string &getName() const { return name; }
-		inline ftgl::texture_font_t *getFTFont() const { return ftFont; }
-		inline float getSize() const { return size; }
+		inline const wstring &getPath() const { return path; }
 
-		Texture *getTexture() const;
-
-		vec2 getTextSize(const std::wstring_view &text, float fontSize, vec2 *position = nullptr) const;
+		static float getKerning(const Glyph &glyph, uint id);
 
 	private:
-		void updateAtlas() const;
+		friend class FontLoader;
 
-	private:
-		ftgl::texture_font_t *ftFont;
-		ftgl::texture_atlas_t *ftAtlas;
-		mutable Texture *texture;
-
-		float size;
 		string name;
+		wstring path;
+
+		const Texture *atlas;
+		std::vector<Glyph> glyphs;
 	};
 
 }

@@ -2,14 +2,52 @@
 // Created by FLXR on 9/6/2018.
 //
 
-#include <freetype-gl/freetype-gl.h>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 
 namespace xe {
 
+#define TEXT_RENDERER_VERTEX_SIZE sizeof(TextVertexData)
+
+#define TEXT_RENDERER_SPRITE_SIZE     (TEXT_RENDERER_VERTEX_SIZE * 4)
+#define TEXT_RENDERER_BUFFER_SIZE     (TEXT_RENDERER_SPRITE_SIZE * XE_RENDERER2D_MAX_SPRITES)
+
 	TextRenderer::TextRenderer(uint width, uint height, Camera *camera) :
 			IRenderer2D(width, height, camera) {
+
+		VertexBuffer *buffer = vertexArray->popBuffer();
+		delete buffer;
+
+		buffer = new VertexBuffer(BufferUsage::DynamicDraw);
+		buffer->resize(TEXT_RENDERER_BUFFER_SIZE);
+
+		BufferLayout layout;
+		layout.push<vec4>("posTid");
+		layout.push<vec2>("uv");
+		layout.push<byte>("color", 4, true);
+		layout.push<byte>("outlineColor", 4, true);
+		layout.push<vec2>("offset");
+		layout.push<vec4>("widthEdge");
+
+		buffer->setLayout(layout);
+
+		vertexArray->pushBuffer(buffer);
+
+
+		uint offset = 0;
+		for (uint i = 0; i < XE_RENDERER2D_MAX_SPRITES * 6; i += 6) {
+			indices[i + 0] = offset + 0;
+			indices[i + 1] = offset + 1;
+			indices[i + 2] = offset + 2;
+
+			indices[i + 3] = offset + 2;
+			indices[i + 4] = offset + 3;
+			indices[i + 5] = offset + 0;
+
+			offset += 4;
+		}
+
+		indexBuffer->setData(indices, XE_RENDERER2D_MAX_SPRITES * 6);
 
 		shader = new Shader("dTextRenderer");
 	}
@@ -20,7 +58,7 @@ namespace xe {
 		Renderer::setViewport(0, 0, width, height);
 
 		vertexArray->bind();
-		buffer = static_cast<VertexData *>(vertexArray->getBuffer(0)->getPointer());
+		buffer = static_cast<TextVertexData *>(vertexArray->getBuffer(0)->getPointer());
 	}
 
 	void TextRenderer::end() {
@@ -40,14 +78,14 @@ namespace xe {
 	}
 
 	void TextRenderer::flush() {
-		updateIndexBuffer();
-
 		shader->bind();
 		shader->updateUniforms();
 
 		for (uint i = 0; i < textures.size(); i++) {
 			textures[i]->bind(i);
 		}
+
+		Renderer::enableDepthMask(false);
 
 		vertexArray->bind();
 		indexBuffer->bind();
@@ -56,6 +94,8 @@ namespace xe {
 
 		indexBuffer->unbind();
 		vertexArray->unbind();
+
+		Renderer::enableDepthMask(true);
 
 		for (uint i = 0; i < textures.size(); i++) {
 			textures[i]->unbind(i);
@@ -88,144 +128,90 @@ namespace xe {
 	}
 
 	void TextRenderer::submitInternal(const Text *t) {
-		using namespace ftgl;
+		const Font &font = *t->getFont();
+		const Texture *atlas = font.getAtlas();
+		const float tid = submitTexture(atlas);
 
-		static constexpr uint is = 6;
-		static constexpr uint io = 4;
-		static constexpr uint indices[is] = {0, 1, 2, 2, 3, 0};
+		const float size = t->getSize() / 10.0f;
+		const wstring &string = t->getString();
+		const vec2 &offset = t->getOutlineOffset();
+		const uint color = t->getTextColor();
+		const uint outlineColor = t->getOutlineColor();
 
-		const Font &font = *t->font;
-		ftgl::texture_font_t *ftFont = font.getFTFont();
-		const wstring &string = t->string;
-		const uint color = t->textColor;
-		const uint outlineColor = t->outlineColor;
-		const float outlineThickness = t->outlineThickness;
-		const vec2 &position = t->position;
-		const float size = t->size;
+		//edge and outline
+		const vec2 &outline = t->getOutline();
+		vec2 edge = t->getEdge();
 
-		const Texture *texture = font.getTexture();
-		XE_ASSERT(texture);
-
-		const float tid = submitTexture(texture);
-		const float scale = font.getSize() / size;
-
-		float x = position.x;
-		const float y = -position.y;
-
-
-		if (outlineThickness > 0) {
-			ftFont->outline_thickness = outlineThickness;
-
-			for (uint i = 0; i < string.length(); i++) {
-				auto *glyph = ftgl::texture_font_get_glyph(ftFont, string[i]);
-				if (glyph) {
-
-					if (i > 0) {
-						float kerning = ftgl::texture_glyph_get_kerning(glyph, string[i - 1]);
-						x += kerning / scale;
-					}
-
-					float x0 = x + glyph->offset_x / scale;
-					float y0 = y - glyph->offset_y / scale;
-					float x1 = x0 + glyph->width / scale;
-					float y1 = y0 + glyph->height / scale;
-
-					float s0 = glyph->s0;
-					float t0 = glyph->t0;
-					float s1 = glyph->s1;
-					float t1 = glyph->t1;
-
-					appendIndices(indices, is, io);
-
-					buffer->vertex = mat4::translateXY(*transformationBack, x0, -y0);
-					buffer->uv.x = s0;
-					buffer->uv.y = t0;
-					buffer->tid = tid;
-					buffer->color = outlineColor;
-					++buffer;
-
-					buffer->vertex = mat4::translateXY(*transformationBack, x0, -y1);
-					buffer->uv.x = s0;
-					buffer->uv.y = t1;
-					buffer->tid = tid;
-					buffer->color = outlineColor;
-					++buffer;
-
-					buffer->vertex = mat4::translateXY(*transformationBack, x1, -y1);
-					buffer->uv.x = s1;
-					buffer->uv.y = t1;
-					buffer->tid = tid;
-					buffer->color = outlineColor;
-					++buffer;
-
-					buffer->vertex = mat4::translateXY(*transformationBack, x1, -y0);
-					buffer->uv.x = s1;
-					buffer->uv.y = t0;
-					buffer->tid = tid;
-					buffer->color = outlineColor;
-					++buffer;
-
-					x += glyph->advance_x / scale;
-				}
-			}
-			x = position.x;
-			ftFont->outline_type = 0;
-			ftFont->outline_thickness = 0;
+		if (t->useAutoEdge()) {
+			//todo: formula?
+			edge.x = 0.50f;
+			edge.y = 0.1f;
 		}
 
-		for (uint i = 0; i < string.length(); i++) {
-			auto *glyph = ftgl::texture_font_get_glyph(ftFont, string[i]);
-			if (glyph) {
+		const vec4 widthEdge = vec4(edge.x, edge.y, outline.x, outline.y);
 
-				if (i > 0) {
-					float kerning = ftgl::texture_glyph_get_kerning(glyph, string[i - 1]);
-					x += kerning / scale;
-				}
+		//transform
+		const mat4 transform = *transformationBack * t->toMatrix();
 
-				float x0 = x + glyph->offset_x / scale;
-				float y0 = y - glyph->offset_y / scale;
-				float x1 = x0 + glyph->width / scale;
-				float y1 = y0 + glyph->height / scale;
+		float x = 0.0f;
+		for (uint i = 0; i < string.length(); ++i) {
+			const Glyph &glyph = font.get((uint) string[i]);
 
-				float s0 = glyph->s0;
-				float t0 = glyph->t0;
-				float s1 = glyph->s1;
-				float t1 = glyph->t1;
-
-				appendIndices(indices, is, io);
-
-				buffer->vertex = mat4::translateXY(*transformationBack, x0, -y0);
-				buffer->uv.x = s0;
-				buffer->uv.y = t0;
-				buffer->tid = tid;
-				buffer->color = color;
-				++buffer;
-
-				buffer->vertex = mat4::translateXY(*transformationBack, x0, -y1);
-				buffer->uv.x = s0;
-				buffer->uv.y = t1;
-				buffer->tid = tid;
-				buffer->color = color;
-				++buffer;
-
-				buffer->vertex = mat4::translateXY(*transformationBack, x1, -y1);
-				buffer->uv.x = s1;
-				buffer->uv.y = t1;
-				buffer->tid = tid;
-				buffer->color = color;
-				++buffer;
-
-				buffer->vertex = mat4::translateXY(*transformationBack, x1, -y0);
-				buffer->uv.x = s1;
-				buffer->uv.y = t0;
-				buffer->tid = tid;
-				buffer->color = color;
-				++buffer;
-
-				x += glyph->advance_x / scale;
+			if (i > 0) {
+				const float kerning = Font::getKerning(glyph, (uint) string[i - 1]);
+				x += kerning * size;
 			}
+
+			const float x0 = x + glyph.offset.x * size;
+			const float y0 = glyph.offset.y * size;
+			const float x1 = x0 + glyph.size.x * size;
+			const float y1 = y0 + glyph.size.y * size;
+
+			const float u0 = glyph.uv.x;
+			const float v0 = glyph.uv.y;
+			const float u1 = u0 + glyph.texSize.x;
+			const float v1 = v0 + glyph.texSize.y;
+
+			buffer->vertexTid = vec4(mat4::translateXY(transform, x0, -y0), tid);
+			buffer->uv.x = u0;
+			buffer->uv.y = v0;
+			buffer->color = color;
+			buffer->outlineColor = outlineColor;
+			buffer->offset = offset;
+			buffer->widthEdge = widthEdge;
+			++buffer;
+
+			buffer->vertexTid = vec4(mat4::translateXY(transform, x0, -y1), tid);
+			buffer->uv.x = u0;
+			buffer->uv.y = v1;
+			buffer->color = color;
+			buffer->outlineColor = outlineColor;
+			buffer->offset = offset;
+			buffer->widthEdge = widthEdge;
+			++buffer;
+
+			buffer->vertexTid = vec4(mat4::translateXY(transform, x1, -y1), tid);
+			buffer->uv.x = u1;
+			buffer->uv.y = v1;
+			buffer->color = color;
+			buffer->outlineColor = outlineColor;
+			buffer->offset = offset;
+			buffer->widthEdge = widthEdge;
+			++buffer;
+
+			buffer->vertexTid = vec4(mat4::translateXY(transform, x1, -y0), tid);
+			buffer->uv.x = u1;
+			buffer->uv.y = v0;
+			buffer->color = color;
+			buffer->outlineColor = outlineColor;
+			buffer->offset = offset;
+			buffer->widthEdge = widthEdge;
+			++buffer;
+
+			x += glyph.xAdvance * size;
+
+			indicesSize += 6;
 		}
-		ftFont->outline_type = 2;
 	}
 
 }

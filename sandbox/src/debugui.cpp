@@ -5,6 +5,7 @@
 #include <sstream>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
+#include <xe/resources/fontmanager.hpp>
 #include "debugui.hpp"
 
 using namespace xe;
@@ -12,72 +13,88 @@ using namespace xe;
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
-	FontManager::add(new Font("consolata", "assets/fonts/consolata.otf", 100));
+	FontManager::add(new Font("consolata", L"assets/fonts/consolata.fnt"));
 
 	//create camera
-	float w = app.getConfig().width / 10.0f;
-	float h = app.getConfig().height / 10.0f;
+	float w = app.getConfig().width;
+	float h = app.getConfig().height;
 
 	camera = new Camera(mat4::ortho(0, w, 0, h, -1, 1000));
 
 	renderer = new BatchRenderer2D(window.getSize().x, window.getSize().y, camera);
 
-	const float xOffset = 1.5f;
-	const float yOffset = 1.5f;
+	const float offset = 10.0f;
 
-	const float lw = 2.5f;
-	const float lxo = 1.0f;
+	const float lw = 25.0f;
 
-	const float irw = 22.0f;
-	const float irh = 10.0f;
+	const float irw = 250.0f;
+	const float irh = 110.0f;
 
-	const float ttw = 27.0f;
-	const float tth = 6.0f;
+	const float ttw = 270.0f;
+	const float tth = 55.0f;
+
+	const float spWidth = 250.0f;
+	const float spHeight = 150.0f;
+	const float spY = spHeight / 2.0f + offset;
+
+	const vec2 outline(0.65f, 0.35f);
 
 	//text
-	fpsText = new Text(L"fps: ", 1.5f, {xOffset + lxo, h - yOffset / lw - lw},
-	                   GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	fpsText = new Text(L"fps: ", 2.0f, GETFONT("consolata"));
+	fpsText->setPosition({offset + offset, h - offset});
+	fpsText->setOutlineColor(color::BLACK);
+	fpsText->setOutline(outline);
 
-	upsText = new Text(L"ups: ", 1.5f, {xOffset + lxo, fpsText->getPosition().y - lw},
-	                   GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	upsText = new Text(L"ups: ", 2.0f, GETFONT("consolata"));
+	upsText->setPosition({offset + offset, fpsText->getPosition().y - lw});
+	upsText->setOutlineColor(color::BLACK);
+	upsText->setOutline(outline);
 
-	frameTimeText = new Text(L"frame time: ", 1.5f, {xOffset + lxo, upsText->getPosition().y - lw},
-	                         GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	frameTimeText = new Text(L"frame time: ", 2.0f, GETFONT("consolata"));
+	frameTimeText->setPosition({offset + offset, upsText->getPosition().y - lw});
+	frameTimeText->setOutlineColor(color::BLACK);
+	frameTimeText->setOutline(outline);
 
-	dcText = new Text(L"dc: ", 1.5f, {xOffset + lxo, frameTimeText->getPosition().y - lw},
-	                  GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	dcText = new Text(L"dc: ", 2.0f, GETFONT("consolata"));
+	dcText->setPosition({offset + offset, frameTimeText->getPosition().y - lw});
+	dcText->setOutlineColor(color::BLACK);
+	dcText->setOutline(outline);
 
 	infoRect = new RectangleShape({irw, irh}, 10.0f);
-	infoRect->setColor(color::rgba(0, 0, 0, 0.5f));
-	infoRect->setPosition({xOffset + irw / 2.0f, h - irh / 2.0f - yOffset});
+	infoRect->setColor(color::rgba(0, 0, 0, 0.6f));
+	infoRect->setPosition({offset + irw / 2.0f, h - irh / 2.0f - offset});
 
 	//tracked
-	tePosText = new Text(L"position: ", 1.5f, {xOffset + lxo, dcText->getPosition().y - yOffset * 1.5f - yOffset},
-	                     GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	tePosText = new Text(L"position: ", 2.0f, GETFONT("consolata"));
+	tePosText->setPosition({offset + offset, dcText->getPosition().y - offset * 4.0f - (offset / 2.0f)});
+	tePosText->setOutlineColor(color::BLACK);
+	tePosText->setOutline(outline);
 
-	teDirText = new Text(L"direction: ", 1.5f, {xOffset + lxo, tePosText->getPosition().y - lw},
-	                     GETFONT("consolata"), color::WHITE, color::BLACK, 2);
+	teDirText = new Text(L"direction: ", 2.0f, GETFONT("consolata"));
+	teDirText->setPosition({offset + offset, tePosText->getPosition().y - lw});
+	teDirText->setOutlineColor(color::BLACK);
+	teDirText->setOutline(outline);
 
 	teRect = new RectangleShape({ttw, tth}, 10.0f);
-	teRect->setColor(color::rgba(0, 0, 0, 0.5f));
-	teRect->setPosition({xOffset + ttw / 2.0f, infoRect->getPosition().y - tth * yOffset});
+	teRect->setColor(color::rgba(0, 0, 0, 0.6f));
+	teRect->setPosition({offset + ttw / 2.0f, infoRect->getPosition().y - irh / 2.0f - (offset * 4.0f)});
 
 	//buffers
-	sp0 = new RectangleShape({50, 30}, 0.0f);
+	sp0 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp0->setVisible(false);
-	sp0->transformation({-125, -69});
+	sp0->transformation({spWidth / 2.0f + offset, spY}, 180.0f);
 
-	sp1 = new RectangleShape({50, 30}, 0.0f);
+	sp1 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp1->setVisible(false);
-	sp1->transformation({-72, -69});
+	sp1->transformation({sp0->getPosition().x + offset + spWidth, spY}, 180.0f);
 
-	sp2 = new RectangleShape({50, 30}, 0.0f);
+	sp2 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp2->setVisible(false);
-	sp2->transformation({-19, -69});
+	sp2->transformation({sp1->getPosition().x + offset + spWidth, spY}, 180.0f);
 
-	sp3 = new RectangleShape({50, 30}, 0.0f);
+	sp3 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp3->setVisible(false);
-	sp3->transformation({34, -69});
+	sp3->transformation({sp2->getPosition().x + offset + spWidth, spY}, 180.0f);
 }
 
 DebugUI::~DebugUI() {
@@ -150,31 +167,32 @@ void DebugUI::lateUpdate(float delta) {
 }
 
 void DebugUI::input(Event &event) {
-
 	if (event.type == Event::KeyPressed) {
-		if (event.key.code == Keyboard::Num1) {
-			static bool visible = false;
-			visible = !visible;
-			sp0->setVisible(visible);
-			event.handled = true;
-		}
-		if (event.key.code == Keyboard::Num2) {
-			static bool visible = false;
-			visible = !visible;
-			sp1->setVisible(visible);
-			event.handled = true;
-		}
-		if (event.key.code == Keyboard::Num3) {
-			static bool visible = false;
-			visible = !visible;
-			sp2->setVisible(visible);
-			event.handled = true;
-		}
-		if (event.key.code == Keyboard::Num4) {
-			static bool visible = false;
-			visible = !visible;
-			sp3->setVisible(visible);
-			event.handled = true;
+		if (trackedTransform) {
+			if (event.key.code == Keyboard::Num1) {
+				static bool visible = false;
+				visible = !visible;
+				sp0->setVisible(visible);
+				event.handled = true;
+			}
+			if (event.key.code == Keyboard::Num2) {
+				static bool visible = false;
+				visible = !visible;
+				sp1->setVisible(visible);
+				event.handled = true;
+			}
+			if (event.key.code == Keyboard::Num3) {
+				static bool visible = false;
+				visible = !visible;
+				sp2->setVisible(visible);
+				event.handled = true;
+			}
+			if (event.key.code == Keyboard::Num4) {
+				static bool visible = false;
+				visible = !visible;
+				sp3->setVisible(visible);
+				event.handled = true;
+			}
 		}
 	}
 }

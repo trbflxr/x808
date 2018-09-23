@@ -80,7 +80,7 @@ namespace xe {
 		explicit Texture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
 
 		explicit Texture(const string &name,
-		                 const string &path,
+		                 const wstring &path,
 		                 const TextureParameters &params,
 		                 bool hasTransparency = false,
 		                 const TextureLoadOptions &options = { });
@@ -98,7 +98,7 @@ namespace xe {
 		void copyTo(const Texture *texture) const;
 
 		const string &getName() const;
-		const string &getFilePath() const;
+		const wstring &getFilePath() const;
 
 		uint getWidth() const;
 		uint getHeight() const;

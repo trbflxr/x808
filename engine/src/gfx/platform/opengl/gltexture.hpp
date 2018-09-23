@@ -15,7 +15,7 @@ namespace xe { namespace internal {
 		explicit GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
 
 		explicit GLTexture(const string &name,
-		                   const string &path,
+		                   const wstring &path,
 		                   const TextureParameters &params,
 		                   bool hasTransparency,
 		                   const TextureLoadOptions &options);
@@ -34,7 +34,7 @@ namespace xe { namespace internal {
 
 		inline uint getHandle() const override { return handle; }
 		inline const string &getName() const override { return name; }
-		inline const string &getFilePath() const override { return fileName; }
+		inline const wstring &getFilePath() const override { return path; }
 
 		inline uint getWidth() const override { return width; };
 		inline uint getHeight() const override { return height; };
@@ -53,7 +53,7 @@ namespace xe { namespace internal {
 
 	private:
 		string name;
-		string fileName;
+		wstring path;
 
 		uint width;
 		uint height;

@@ -20,7 +20,12 @@ namespace xe { namespace internal {
 		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const override;
 
 		inline VertexBuffer *getBuffer(uint index) override { return buffers[index]; }
-		inline void pushBuffer(VertexBuffer *buffer) override { buffers.push_back(buffer); };
+		inline void pushBuffer(VertexBuffer *buffer) override { buffers.push_back(buffer); }
+		inline VertexBuffer *popBuffer() override {
+			VertexBuffer *buffer = buffers.back();
+			buffers.pop_back();
+			return buffer;
+		}
 
 	private:
 		std::vector<VertexBuffer *> buffers;

@@ -17,6 +17,8 @@
 
 namespace xe {
 
+#define XE_RENDERER2D_MAX_SPRITES 120000
+
 	class XE_API IRenderer2D {
 	protected:
 		struct VertexData {
@@ -66,7 +68,6 @@ namespace xe {
 		uint indicesOffset;
 
 		VertexArray *vertexArray;
-		VertexData *buffer;
 
 		uint width;
 		uint height;

@@ -29,7 +29,7 @@ namespace xe {
 		}
 	}
 
-	Texture::Texture(const string &name, const string &path,
+	Texture::Texture(const string &name, const wstring &path,
 	                 const TextureParameters &params,
 	                 bool hasTransparency,
 	                 const TextureLoadOptions &options) {
@@ -80,7 +80,7 @@ namespace xe {
 		return texture->getName();
 	}
 
-	const string &Texture::getFilePath() const {
+	const wstring &Texture::getFilePath() const {
 		return texture->getFilePath();
 	}
 

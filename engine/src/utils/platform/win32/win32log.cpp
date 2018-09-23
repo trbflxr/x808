@@ -7,7 +7,7 @@
 
 namespace xe { namespace internal {
 
-	void platformLogMessage(uint level, const char *message) {
+	void platformLogMessage(uint level, const wchar_t *message) {
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		switch (level) {
 			case XE_LOG_LEVEL_FATAL:
@@ -25,7 +25,7 @@ namespace xe { namespace internal {
 			default:break;
 		}
 
-		printf("%s", message);
+		wprintf(L"%ls", message);
 		SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN);
 	}
 

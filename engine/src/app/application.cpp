@@ -2,6 +2,7 @@
 // Created by FLXR on 6/29/2018.
 //
 
+#include <fcntl.h>
 #include <xe/utils/random.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/layer.hpp>
@@ -19,6 +20,10 @@ namespace xe {
 	Application::Application(const Config &config) :
 			config(config),
 			frameTime(0.0f) {
+
+#ifdef UNICODE
+		_setmode(_fileno(stdout), _O_U16TEXT);
+#endif
 
 		//init random
 		random::nextInt32(0, 1);

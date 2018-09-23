@@ -35,6 +35,8 @@ namespace xe {
 
 		std::vector<const IRenderable2D *> targets;
 		std::vector<const IRenderable2D *> transparentTargets;
+
+		VertexData *buffer;
 	};
 }
 

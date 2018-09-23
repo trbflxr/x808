@@ -14,15 +14,15 @@ TestB2D::TestB2D() {
 
 	TextureParameters params;
 
-	TextureManager::add(new Texture("0", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("1", "assets/textures/jdm.png", params, true));
-	TextureManager::add(new Texture("2", "assets/textures/star.png", params, true));
-	TextureManager::add(new Texture("3", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("4", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture("5", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("0", L"assets/textures/enemyspotted.png", params));
+	TextureManager::add(new Texture("1", L"assets/textures/jdm.png", params, true));
+	TextureManager::add(new Texture("2", L"assets/textures/star.png", params, true));
+	TextureManager::add(new Texture("3", L"assets/textures/test1.png", params));
+	TextureManager::add(new Texture("4", L"assets/textures/test6.png", params));
+	TextureManager::add(new Texture("5", L"assets/textures/test8.png", params));
 
 	params.wrap = TextureWrap::Repeat;
-	TextureManager::add(new Texture("6", "assets/textures/sp0.png", params));
+	TextureManager::add(new Texture("6", L"assets/textures/sp0.png", params));
 
 
 	//create camera

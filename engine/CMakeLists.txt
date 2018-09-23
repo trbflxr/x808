@@ -82,7 +82,6 @@ target_link_libraries(xe
         spak
         freeimage
         assimp irrxml
-        freetype-gl freetype bz2
         gorilla openal32
         box2d)
 

@@ -4,6 +4,8 @@
 
 #include <cstring>
 #include <libgen.h>
+#include <codecvt>
+#include <locale>
 #include <xe/utils/string.hpp>
 
 namespace xe { namespace utils {
@@ -107,6 +109,15 @@ namespace xe { namespace utils {
 
 	bool startsWith(const string &str, const string &start) {
 		return str.find(start) == 0;
+	}
+
+	wstring toWstring(const string &str) {
+		return toWstring(str.c_str());
+	}
+
+	wstring toWstring(const char *str) {
+		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		return converter.from_bytes(str);
 	}
 
 }}

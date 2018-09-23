@@ -21,21 +21,21 @@ struct aiNode;
 namespace xe {
 
 	struct XE_API SceneLoader : NonCopyable {
-		static bool load(const char *folder, const char *name,
+		static bool load(const wchar_t *folder, const wchar_t *name,
 		                 std::vector<Material *> &outMaterials,
 		                 std::vector<UniqueMesh *> &outMeshes,
 		                 std::vector<Light *> &outLights);
 
 	private:
-		static void loadMaterials(const char *folder, const aiScene *scene, std::vector<Material *> &materials);
+		static void loadMaterials(const wchar_t *folder, const aiScene *scene, std::vector<Material *> &materials);
 
 		static void loadMeshes(const aiScene *scene, const aiNode *node,
 		                       std::vector<UniqueMesh *> &meshes,
 		                       std::vector<Material *> &materials);
 
-		static void loadLights(const char *path, const aiScene *scene, std::vector<Light *> &lights);
+		static void loadLights(const wchar_t *path, const aiScene *scene, std::vector<Light *> &lights);
 
-		static const Texture *loadTexture(const char *folder, const char *file);
+		static const Texture *loadTexture(const wchar_t *folder, const char *file);
 	};
 
 }

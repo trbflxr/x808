@@ -28,7 +28,7 @@ namespace xe { namespace internal {
 
 		virtual uint getHandle() const = 0;
 		virtual const string &getName() const = 0;
-		virtual const string &getFilePath() const = 0;
+		virtual const wstring &getFilePath() const = 0;
 
 		virtual uint getWidth() const = 0;
 		virtual uint getHeight() const = 0;
