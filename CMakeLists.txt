@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(x808)
 
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Ofast")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast")
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -15,17 +16,16 @@ set(XE_INCLUDE_DIRS
 
 set(XE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/lib
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/lib
         CACHE STRING "XE library dirs" FORCE)
 
 set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/tools/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/glew/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/stb
+        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/glew
+        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/json
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/json/include
         CACHE STRING "XE external include dirs" FORCE)
 
 #copy files

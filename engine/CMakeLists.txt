@@ -60,7 +60,7 @@ file(GLOB ENGINE_WIN32_SRC
 
 #opengl
 file(GLOB ENGINE_GL_SRC
-        src/gfx/platform/opengl/*.c
+        external/glew/glew.c
         src/gfx/platform/opengl/*.cpp)
 
 #total platform files
