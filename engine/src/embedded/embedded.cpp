@@ -14,8 +14,8 @@ namespace xe { namespace internal {
 
 	byte *DEFAULT_TEXTURE = DEFAULT_TEXTURE_ARRAY;
 	uint DEFAULT_TEXTURE_SIZE = sizeof(DEFAULT_TEXTURE_ARRAY);
-	uint DEFAULT_TEXTURE_W = 247;
-	uint DEFAULT_TEXTURE_H = 200;
+	uint DEFAULT_TEXTURE_W = 256;
+	uint DEFAULT_TEXTURE_H = 256;
 
 
 	///font texture

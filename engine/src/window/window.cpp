@@ -2,7 +2,6 @@
 // Created by FLXR on 7/14/2018.
 //
 
-#include <Freeimage/FreeImage.h>
 
 #include <xe/window/window.hpp>
 #include <xe/gfx/renderer.hpp>
@@ -189,8 +188,6 @@ namespace xe {
 	}
 
 	void Window::init() {
-		FreeImage_Initialise();
-
 		Context::create(getHandle());
 		Renderer::init();
 

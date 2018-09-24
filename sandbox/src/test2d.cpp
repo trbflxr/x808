@@ -55,14 +55,14 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("28", L"assets/textures/test5.png", params));
 	TextureManager::add(new Texture("29", L"assets/textures/test6.png", params));
 	TextureManager::add(new Texture("30", L"assets/textures/test7.png", params));
-	TextureManager::add(new Texture("31", L"assets/textures/test8.png", params));
+	TextureManager::add(new Texture("31", L"assets/textures/error.png", params));
 
 	TextureManager::add(new Texture("32", L"assets/textures/enemyspotted.png", params));
 	TextureManager::add(new Texture("33", L"assets/textures/enemyspotted.png", params));
 	TextureManager::add(new Texture("34", L"assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("35", L"assets/textures/jdm.png", params, true));
-	TextureManager::add(new Texture("36", L"assets/textures/star.png", params, true));
-	TextureManager::add(new Texture("37", L"assets/textures/cosmic.png", params, true));
+	TextureManager::add(new Texture("35", L"assets/textures/jdm.png", params));
+	TextureManager::add(new Texture("36", L"assets/textures/star.png", params));
+	TextureManager::add(new Texture("37", L"assets/textures/cosmic.png", params));
 	TextureManager::add(new Texture("38", L"assets/textures/test7.png", params));
 	TextureManager::add(new Texture("39", L"assets/textures/test8.png", params));
 

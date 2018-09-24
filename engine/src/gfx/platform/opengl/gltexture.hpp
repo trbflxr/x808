@@ -13,12 +13,7 @@ namespace xe { namespace internal {
 	class GLTexture : public PlatformTexture {
 	public:
 		explicit GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
-
-		explicit GLTexture(const string &name,
-		                   const wstring &path,
-		                   const TextureParameters &params,
-		                   bool hasTransparency,
-		                   const TextureLoadOptions &options);
+		explicit GLTexture(const string &name, const wstring &path, const TextureParameters &params);
 
 		~GLTexture() override;
 
@@ -41,14 +36,13 @@ namespace xe { namespace internal {
 		inline uint getDepth() const override { return depth; };
 
 		inline TextureTarget getTarget() const override { return params.target; };
-
-		inline bool hasTransparency() const override { return transparency; }
+		inline const TextureParameters &getParams() const override { return params; }
 
 		inline uint getMaxMipMap() const override { return Texture::getMaxMipMap(width, height); }
 
 	private:
-		uint loadInternal(const TextureLoadOptions *options);
-		byte *loadFromFile(bool &fail, const TextureLoadOptions *options);
+		uint load(bool fromFile);
+		byte *loadFromFile(bool &fail);
 		void setTextureParams(const TextureTarget &target);
 
 	private:
@@ -62,8 +56,6 @@ namespace xe { namespace internal {
 		uint handle;
 		uint maxMipMapLevels;
 		uint maxAnisotropy;
-
-		bool transparency;
 
 		TextureParameters params;
 	};

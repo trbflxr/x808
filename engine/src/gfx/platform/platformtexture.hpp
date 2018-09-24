@@ -20,7 +20,7 @@ namespace xe { namespace internal {
 		virtual void bindImageUnit(uint index, TextureAccess access, uint level, uint layer) const = 0;
 		virtual void unbind(uint slot) const = 0;
 
-		virtual void setData2D(const void *pixels) const  = 0;
+		virtual void setData2D(const void *pixels) const = 0;
 
 		virtual void generateMipMaps(const TextureTarget &target) = 0;
 
@@ -35,8 +35,7 @@ namespace xe { namespace internal {
 		virtual uint getDepth() const = 0;
 
 		virtual TextureTarget getTarget() const = 0;
-
-		virtual bool hasTransparency() const = 0;
+		virtual const TextureParameters &getParams() const = 0;
 
 		virtual uint getMaxMipMap() const = 0;
 	};

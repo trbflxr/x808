@@ -15,7 +15,6 @@ add_definitions(
         -D NOGDI
         -D UNICODE
         -D XE_STATIC
-        -D FREEIMAGE_LIB
         -D GLEW_STATIC)
 
 #external libs
@@ -80,7 +79,6 @@ add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
 
 target_link_libraries(xe
         spak
-        freeimage
         assimp irrxml
         gorilla openal32
         box2d)

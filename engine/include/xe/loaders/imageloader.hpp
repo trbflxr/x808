@@ -14,11 +14,8 @@
 namespace xe {
 
 	struct XE_API ImageLoader : NonCopyable {
-		static byte *load(const wchar_t *path, uint *width = nullptr, uint *height = nullptr,
-		                  uint *bits = nullptr, bool flipY = false);
-
-		static byte *load(const wstring &path, uint *width = nullptr, uint *height = nullptr,
-		                  uint *bits = nullptr, bool flipY = false);
+		static byte *load(const wchar_t *path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+		static byte *load(const wstring &path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
 	};
 
 }

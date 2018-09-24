@@ -12,8 +12,6 @@ include_directories(include)
 set(I2B_SRC src/imgtobin/imgtobin.cpp)
 
 add_executable(img_to_bin ${I2B_SRC})
-target_link_libraries(img_to_bin freeimage)
-target_compile_definitions(img_to_bin PRIVATE -DFREEIMAGE_LIB)
 
 
 #spak

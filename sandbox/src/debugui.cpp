@@ -27,7 +27,7 @@ DebugUI::DebugUI() :
 	const float irw = 250.0f;
 	const float irh = 110.0f;
 
-	const float ttw = 270.0f;
+	const float ttw = 320.0f;
 	const float tth = 55.0f;
 
 	const float spWidth = 250.0f;

@@ -67,13 +67,6 @@ namespace xe {
 				anisotropy(anisotropy) { }
 	};
 
-	struct TextureLoadOptions {
-		bool flipX;
-		bool flipY;
-
-		TextureLoadOptions() : flipX(false), flipY(false) { }
-		TextureLoadOptions(bool flipX, bool flipY) : flipX(flipX), flipY(flipY) { }
-	};
 
 	class XE_API Texture {
 	public:
@@ -81,9 +74,7 @@ namespace xe {
 
 		explicit Texture(const string &name,
 		                 const wstring &path,
-		                 const TextureParameters &params,
-		                 bool hasTransparency = false,
-		                 const TextureLoadOptions &options = { });
+		                 const TextureParameters &params);
 
 		~Texture();
 
@@ -107,10 +98,9 @@ namespace xe {
 		uint getHandle() const;
 
 		TextureTarget getTarget() const;
+		const TextureParameters &getParams() const;
 
 		uint getMaxMipMap() const;
-
-		bool hasTransparency() const;
 
 		static uint getMaxMipMap(uint width, uint height);
 

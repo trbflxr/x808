@@ -23,7 +23,7 @@ set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/tools/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/glew/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/freeimage/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/stb
         ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/json/include
         CACHE STRING "XE external include dirs" FORCE)

@@ -15,8 +15,8 @@ TestB2D::TestB2D() {
 	TextureParameters params;
 
 	TextureManager::add(new Texture("0", L"assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("1", L"assets/textures/jdm.png", params, true));
-	TextureManager::add(new Texture("2", L"assets/textures/star.png", params, true));
+	TextureManager::add(new Texture("1", L"assets/textures/jdm.png", params));
+	TextureManager::add(new Texture("2", L"assets/textures/star.png", params));
 	TextureManager::add(new Texture("3", L"assets/textures/test1.png", params));
 	TextureManager::add(new Texture("4", L"assets/textures/test6.png", params));
 	TextureManager::add(new Texture("5", L"assets/textures/test8.png", params));

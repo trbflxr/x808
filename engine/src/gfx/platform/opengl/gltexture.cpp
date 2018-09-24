@@ -18,26 +18,20 @@ namespace xe { namespace internal {
 			width(width),
 			height(height),
 			depth(params.target == TextureTarget::TexCubeMap ? 6 : depth),
-			transparency(false),
 			params(params) {
 
-		handle = loadInternal(nullptr);
+		handle = load(false);
 	}
 
-	GLTexture::GLTexture(const string &name,
-	                     const wstring &path,
-	                     const TextureParameters &params,
-	                     bool hasTransparency,
-	                     const TextureLoadOptions &options) :
+	GLTexture::GLTexture(const string &name, const wstring &path, const TextureParameters &params) :
 			name(name),
 			path(path),
 			width(0),
 			height(0),
 			depth(1),
-			transparency(hasTransparency),
 			params(params) {
 
-		handle = loadInternal(&options);
+		handle = load(true);
 	}
 
 	GLTexture::~GLTexture() {
@@ -98,12 +92,12 @@ namespace xe { namespace internal {
 		                          width, height, 1));
 	}
 
-	uint GLTexture::loadInternal(const TextureLoadOptions *options) {
+	uint GLTexture::load(bool fromFile) {
 		byte *pixels = nullptr;
 		bool fail = false;
 
-		if (options) {
-			pixels = loadFromFile(fail, options);
+		if (fromFile) {
+			pixels = loadFromFile(fail);
 		}
 
 		uint handle;
@@ -157,12 +151,11 @@ namespace xe { namespace internal {
 		return handle;
 	}
 
-	byte *GLTexture::loadFromFile(bool &fail, const TextureLoadOptions *options) {
+	byte *GLTexture::loadFromFile(bool &fail) {
 		byte *outPixels = nullptr;
 
 		uint bits;
-		// FreeImage loads bottom->top
-		outPixels = ImageLoader::load(path.c_str(), &width, &height, &bits, !options->flipY);
+		outPixels = ImageLoader::load(path.c_str(), &width, &height, &bits);
 
 		if (!outPixels) {
 			fail = true;
@@ -172,8 +165,8 @@ namespace xe { namespace internal {
 			height = internal::DEFAULT_TEXTURE_H;
 
 			outPixels = internal::DEFAULT_TEXTURE;
-			params.format = PixelFormat::Rgba;
-			params.internalFormat = PixelInternalFormat::Rgba;
+			params.format = PixelFormat::Rgb;
+			params.internalFormat = PixelInternalFormat::Rgb;
 		} else {
 			if (bits != 24 && bits != 32) {
 				XE_FATAL("[GLTexture]: ", name, " Unsupported image bit-depth! ('", bits, "')");

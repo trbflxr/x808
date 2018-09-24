@@ -29,14 +29,11 @@ namespace xe {
 		}
 	}
 
-	Texture::Texture(const string &name, const wstring &path,
-	                 const TextureParameters &params,
-	                 bool hasTransparency,
-	                 const TextureLoadOptions &options) {
+	Texture::Texture(const string &name, const wstring &path, const TextureParameters &params) {
 
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OpenGL: {
-				texture = new internal::GLTexture(name, path, params, hasTransparency, options);
+				texture = new internal::GLTexture(name, path, params);
 				break;
 			}
 
@@ -104,8 +101,8 @@ namespace xe {
 		return texture->getTarget();
 	}
 
-	bool Texture::hasTransparency() const {
-		return texture->hasTransparency();
+	const TextureParameters &Texture::getParams() const {
+		return texture->getParams();
 	}
 
 	uint Texture::getMaxMipMap() const {
