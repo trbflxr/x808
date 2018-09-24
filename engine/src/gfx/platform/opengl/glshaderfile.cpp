@@ -97,7 +97,7 @@ namespace xe { namespace internal {
 			string line;
 
 			//get error line
-			for (int i = 2; i < error.size(); ++i) {
+			for (uint i = 2; i < error.size(); ++i) {
 				if (error[i] == ')') break;
 				line += error[i];
 			}

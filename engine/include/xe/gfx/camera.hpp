@@ -56,10 +56,10 @@ namespace xe {
 		}
 
 	private:
-		GameObject *entity;
-
 		mat4 projection;
 		mat4 view;
+
+		GameObject *entity;
 	};
 
 }

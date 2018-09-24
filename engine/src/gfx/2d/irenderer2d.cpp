@@ -17,8 +17,8 @@ namespace xe {
 			width(width),
 			height(height),
 			camera(camera),
-			indicesOffset(0),
-			indicesSize(0) {
+			indicesSize(0),
+			indicesOffset(0) {
 
 		transformationStack.emplace_back(1.0f);
 		transformationBack = &transformationStack.back();

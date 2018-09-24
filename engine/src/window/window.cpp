@@ -18,13 +18,13 @@ namespace xe {
 
 	Window::Window() :
 			window(nullptr),
-			frameTimeLimit(0.0f),
-			size(0, 0) { }
+			size(0, 0),
+			frameTimeLimit(0.0f) { }
 
 	Window::Window(VideoMode mode, const string &title, uint style) :
 			window(nullptr),
-			frameTimeLimit(0.0f),
-			size(0, 0) {
+			size(0, 0),
+			frameTimeLimit(0.0f) {
 
 		create(mode, title, style);
 	}

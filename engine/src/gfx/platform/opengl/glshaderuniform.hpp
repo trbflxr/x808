@@ -31,7 +31,7 @@ namespace xe { namespace internal {
 		inline uint getOffset() const override { return offset; }
 		inline uint getAbsoluteOffset() const { return struct_ ? struct_->getOffset() + offset : offset; }
 
-		uint getLocation() const { return location; }
+		int32 getLocation() const { return location; }
 		inline Type getType() const { return type; }
 		const ShaderStruct &getShaderUniformStruct() const;
 
@@ -43,14 +43,15 @@ namespace xe { namespace internal {
 		void setOffset(uint offset) override;
 
 	private:
+		Type type;
 		string name;
-		uint size;
 		uint count;
+
+		uint size;
 		uint offset;
 
-		Type type;
 		ShaderStruct *struct_;
-		mutable uint location;
+		mutable int32 location;
 	};
 
 	///------------------------------///
@@ -61,7 +62,7 @@ namespace xe { namespace internal {
 		void pushUniform(GLShaderUniform *uniform);
 
 		inline const string &getName() const override { return name; }
-		inline uint getRegister() const override { return register_; }
+		inline int32 getLocation() const override { return location; }
 		inline uint getSize() const override { return size; }
 		inline const ShaderUniformVec &getUniforms() const override { return uniforms; }
 
@@ -69,9 +70,9 @@ namespace xe { namespace internal {
 
 	private:
 		string name;
-		ShaderUniformVec uniforms;
-		uint register_;
 		uint size;
+		uint location;
+		ShaderUniformVec uniforms;
 	};
 	typedef std::vector<ShaderUniformBuffer *> ShaderUniformBufferVec;
 

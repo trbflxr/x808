@@ -32,7 +32,6 @@ namespace xe {
 
 	public:
 		explicit Material(const string &id) :
-				id(id),
 				diffuseColor(0.5f),
 				emission(0.0f),
 				specularColor(1.0f),
@@ -42,7 +41,8 @@ namespace xe {
 				specular(nullptr),
 				normal(nullptr),
 				displacement(nullptr),
-				parallax(nullptr) { }
+				parallax(nullptr),
+				id(id) { }
 
 		const string &getId() const { return id; }
 

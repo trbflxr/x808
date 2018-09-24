@@ -110,7 +110,7 @@ namespace xe {
 		VertexList vertices = ICOS_VERTICES;
 		TriangleList triangles = ICOS_TRIANGLES;
 
-		for (int i = 0; i < subdivisions; ++i) {
+		for (uint i = 0; i < subdivisions; ++i) {
 			triangles = subdivide(vertices, triangles);
 		}
 

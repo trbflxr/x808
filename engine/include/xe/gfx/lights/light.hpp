@@ -35,17 +35,17 @@ namespace xe {
 		explicit Light(const string &id, Type type, const vec3 &color, float intensity, float falloff, bool shadow,
 		               const mat4 &transformation, Mesh *mesh) :
 				GameObject(transformation),
-				name(id),
-				id(-1),
-				shadowId(-1),
 				enabled(false),
-				type(type),
+				shadowed(shadow),
 				color(color),
 				intensity(intensity),
 				falloff(falloff),
-				shadowed(shadow),
+				mesh(mesh),
 				boundsMatrix(mat4::identity()),
-				mesh(mesh) { }
+				name(id),
+				id(-1),
+				shadowId(-1),
+				type(type) { }
 
 		~Light() override {
 			delete mesh;

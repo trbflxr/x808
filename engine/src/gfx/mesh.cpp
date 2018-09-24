@@ -9,14 +9,14 @@ namespace xe {
 
 	Mesh::Mesh(const string &id) :
 			id(id),
-			indexBuffer(nullptr),
-			vertexArray(nullptr) { }
+			vertexArray(nullptr),
+			indexBuffer(nullptr) { }
 
 	Mesh::Mesh(const string &id, const IndexedModel &model, Material *material) :
 			id(id),
-			material(material),
+			vertexArray(nullptr),
 			indexBuffer(nullptr),
-			vertexArray(nullptr) {
+			material(material) {
 
 		initMesh(model);
 	}

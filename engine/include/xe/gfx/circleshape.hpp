@@ -26,10 +26,10 @@ namespace xe {
 		vec2 getPoint(uint index) override;
 
 	private:
-		bool radiusChanged;
-
 		float radius;
 		uint pointCount;
+
+		bool radiusChanged;
 	};
 
 }

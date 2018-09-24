@@ -15,8 +15,8 @@ namespace xe {
 	Sound::Sound(const string &name, const string &path) :
 			name(name),
 			path(path),
-			playing(false),
 			count(0),
+			playing(false),
 			gain(1.0f) {
 
 		std::vector<string> split = utils::splitString(path, '.');

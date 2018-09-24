@@ -29,10 +29,10 @@ namespace xe { namespace internal {
 		static bool isTypeStrSampler(const string &type);
 
 	private:
-		string name;
-		uint location;
-		uint count;
 		Type type;
+		string name;
+		uint count;
+		uint location;
 	};
 
 }}

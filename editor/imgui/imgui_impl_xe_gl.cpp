@@ -212,7 +212,7 @@ void renderDrawLists(ImDrawData *drawData) {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	for (uint n = 0; n < drawData->CmdListsCount; ++n) {
+	for (int32 n = 0; n < drawData->CmdListsCount; ++n) {
 		const ImDrawList *cmd_list = drawData->CmdLists[n];
 		const byte *vtx_buffer = (const byte *) &cmd_list->VtxBuffer.front();
 		const ImDrawIdx *idx_buffer = &cmd_list->IdxBuffer.front();

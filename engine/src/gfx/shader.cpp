@@ -11,15 +11,15 @@
 namespace xe {
 
 	Shader::Shader(BaseShader *shader, bool deleteBase) :
-			shader(shader),
-			deleteBase(deleteBase) {
+			deleteBase(deleteBase),
+			shader(shader) {
 
 		init();
 	}
 
 	Shader::Shader(const string &nameInShaderManager) :
-			shader(GETSHADER(nameInShaderManager)),
-			deleteBase(false) {
+			deleteBase(false),
+			shader(GETSHADER(nameInShaderManager)) {
 
 		init();
 	}

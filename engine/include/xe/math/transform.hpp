@@ -14,38 +14,38 @@ namespace xe {
 	public:
 		inline Transform() :
 				transformation(mat4::identity()),
+				dirty(true),
 				position(0.0f, 0.0f, 0.0f),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
-				scale(1.0f, 1.0f, 1.0f),
-				dirty(false) { }
+				scale(1.0f, 1.0f, 1.0f) { }
 
 		inline explicit Transform(const mat4 &transformation) :
 				transformation(transformation),
+				dirty(false),
 				position(transformation.getTranslation()),
-				scale(transformation.getScale()),
 				rotation(transformation.getRotation()),
-				dirty(true) { }
+				scale(transformation.getScale()) { }
 
 		inline explicit Transform(const vec3 &translation) :
 				transformation(mat4::identity()),
+				dirty(true),
 				position(translation),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
-				scale(1.0f, 1.0f, 1.0f),
-				dirty(false) { }
+				scale(1.0f, 1.0f, 1.0f) { }
 
 		inline explicit Transform(const quat &rotation) :
 				transformation(mat4::identity()),
+				dirty(true),
 				position(0.0f, 0.0f, 0.0f),
 				rotation(rotation),
-				scale(1.0f, 1.0f, 1.0f),
-				dirty(false) { }
+				scale(1.0f, 1.0f, 1.0f){ }
 
 		inline explicit Transform(const vec3 &translation, const quat &rotation, const vec3 &scale) :
 				transformation(mat4::identity()),
+				dirty(true),
 				position(translation),
 				rotation(rotation),
-				scale(scale),
-				dirty(false) { }
+				scale(scale) { }
 
 		inline const mat4 &toMatrix() const;
 
@@ -95,7 +95,6 @@ namespace xe {
 
 		vec3 position;
 		quat rotation;
-
 		vec3 scale;
 	};
 

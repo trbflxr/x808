@@ -46,8 +46,8 @@ namespace xe {
 		int32 paddingWidth;
 		int32 paddingHeight;
 
-		int32 atlasSize;
-		int32 charsCount;
+		uint atlasSize;
+		uint charsCount;
 	};
 
 }

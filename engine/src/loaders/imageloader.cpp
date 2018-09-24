@@ -2,9 +2,7 @@
 // Created by FLXR on 8/16/2018.
 //
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
 #include <xe/utils/log.hpp>
 #include <xe/loaders/imageloader.hpp>
 

@@ -59,15 +59,15 @@ namespace xe {
 		void processEvents();
 
 	private:
+		Config config;
+		Window window;
+
 		bool running;
 		bool suspend_;
 
 		uint fps;
 		uint ups;
 		float frameTime;
-
-		Config config;
-		Window window;
 
 		std::vector<Layer *> layerStack;
 

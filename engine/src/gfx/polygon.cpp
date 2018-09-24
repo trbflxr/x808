@@ -10,14 +10,14 @@ namespace xe {
 
 	Polygon::Polygon(float layer) :
 			IRenderable2D(layer),
-			texture(nullptr),
-			pointsChanged(false) { }
+			pointsChanged(false),
+			texture(nullptr) { }
 
 	Polygon::Polygon(const std::vector<vec2> &points, float layer) :
 			IRenderable2D(layer),
 			points(points),
-			texture(nullptr),
-			pointsChanged(false) {
+			pointsChanged(true),
+			texture(nullptr) {
 
 		create();
 	}

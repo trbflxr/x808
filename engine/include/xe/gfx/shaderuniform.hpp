@@ -36,7 +36,7 @@ namespace xe {
 	public:
 		virtual ~ShaderUniformBuffer() = default;
 		virtual const string &getName() const = 0;
-		virtual uint getRegister() const = 0;
+		virtual int32 getLocation() const = 0;
 		virtual uint getSize() const = 0;
 		virtual const ShaderUniformVec &getUniforms() const = 0;
 

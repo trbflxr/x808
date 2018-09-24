@@ -12,15 +12,15 @@ namespace xe { namespace internal {
 			type(type),
 			name(name),
 			count(count),
-			struct_(nullptr),
-			size(sizeOfUniformType(type) * count) { }
+			size(sizeOfUniformType(type) * count),
+			struct_(nullptr) { }
 
 	GLShaderUniform::GLShaderUniform(ShaderStruct *uniformStruct, const string &name, uint count) :
 			type(Type::Struct),
 			name(name),
 			count(count),
-			struct_(uniformStruct),
-			size(uniformStruct->getSize() * count) { }
+			size(uniformStruct->getSize() * count),
+			struct_(uniformStruct) { }
 
 
 	const ShaderStruct &GLShaderUniform::getShaderUniformStruct() const {
@@ -80,7 +80,7 @@ namespace xe { namespace internal {
 	GLShaderUniformBuffer::GLShaderUniformBuffer(const string &name) :
 			name(name),
 			size(0),
-			register_(0) { }
+			location(0) { }
 
 
 	void GLShaderUniformBuffer::pushUniform(GLShaderUniform *uniform) {

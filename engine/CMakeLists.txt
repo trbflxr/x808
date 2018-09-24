@@ -5,11 +5,13 @@ project(xe)
 option(XE_PLATFORM_WIN32 "Win32" ON)
 option(XE_PLATFORM_GL "OpenGL" ON)
 
+set(XE_DEBUG_FLAGS "-D XE_DEBUG -Wall -Wno-unused-function -Wno-class-memaccess"
+        CACHE STRING "xe_debug defines, compile options")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D XE_DEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS}")
 
 add_definitions(
         -D NOGDI

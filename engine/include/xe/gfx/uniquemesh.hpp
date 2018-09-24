@@ -18,8 +18,8 @@ namespace xe {
 	public:
 		explicit UniqueMesh(const string &id, Mesh *mesh, const mat4 &transformation) :
 				GameObject(transformation),
-				id(id),
-				mesh(mesh) { }
+				mesh(mesh),
+				id(id) { }
 
 		~UniqueMesh() override {
 			delete mesh;

@@ -44,8 +44,8 @@ namespace xe {
 		void updateUVs();
 
 	private:
-		bool pointsChanged;
 		std::vector<vec2> points;
+		bool pointsChanged;
 
 		const Texture *texture;
 		rect textureRect;

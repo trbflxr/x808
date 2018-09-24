@@ -59,6 +59,12 @@ namespace xe {
 	protected:
 		friend class BatchRenderer2D;
 
+		//constants
+		const uint maxTextureUnits;
+
+		uint width;
+		uint height;
+
 		Camera *camera;
 		Shader *shader;
 
@@ -69,16 +75,12 @@ namespace xe {
 
 		VertexArray *vertexArray;
 
-		uint width;
-		uint height;
-
 		std::vector<mat4> transformationStack;
 		const mat4 *transformationBack;
 
 		std::vector<const Texture *> textures;
 
-		//constants
-		const uint maxTextureUnits;
+
 	};
 
 }

@@ -45,7 +45,7 @@ namespace xe {
 
 		//get atlas size
 		parseLine(*line++);
-		atlasSize = get("scaleW");
+		atlasSize = (uint) get("scaleW");
 		values.clear();
 
 		//load texture
@@ -59,7 +59,7 @@ namespace xe {
 
 		//get chars count
 		parseLine(*line++);
-		charsCount = get("count");
+		charsCount = (uint) get("count");
 		values.clear();
 
 		//get chars

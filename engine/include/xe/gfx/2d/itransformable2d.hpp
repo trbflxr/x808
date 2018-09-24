@@ -64,14 +64,13 @@ namespace xe {
 		inline const mat4 &toMatrix() const;
 
 	private:
-		mutable mat4 model;
-		mutable bool dirty;
-
-		vec2 origin;
-
 		vec2 position;
 		float rotation;
 		vec2 scale_;
+		vec2 origin;
+
+		mutable bool dirty;
+		mutable mat4 model;
 	};
 
 

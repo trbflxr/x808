@@ -15,11 +15,11 @@ public:
 	                     float speed = 4.0f,
 	                     float sprint = 4.0f,
 	                     float sensitivity = 0.15f) :
+			mouseLocked(false),
 			camera(camera),
 			mouseSensitivity(sensitivity),
 			speed(speed),
-			sprintSpeed(speed * sprint),
-			mouseLocked(false) { }
+			sprintSpeed(speed * sprint) { }
 
 	void update(float delta) {
 		static xe::Window &window = xe::Application::get().getWindow();

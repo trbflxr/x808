@@ -72,6 +72,9 @@ Test2D::Test2D() {
 
 	uint texCount = 38;
 
+#ifdef XE_DEBUG
+	XE_INFO(L"Jopa");
+#endif
 
 	camera = new Camera(mat4::ortho(-width, width, -height, height, -1000, 1000));
 	renderer = new BatchRenderer2D(width, height, camera);

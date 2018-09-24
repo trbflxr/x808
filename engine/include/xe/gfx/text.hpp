@@ -15,15 +15,15 @@ namespace xe {
 	class Text : public ITransformable2D {
 	public:
 		explicit Text(const wstring &string, float size, const Font *font = GETFONT("default")) noexcept :
-				string(string),
-				size(size),
 				font(font),
+				string(string),
 				textColor(color::WHITE),
 				outlineColor(color::TRANSPARENT),
-				edge(0.5f, 0.1f),
 				outline(0.0f, 0.0f),
 				outlineOffset(0.0f, 0.0f),
-				useAutoEdge_(true) { }
+				size(size),
+				useAutoEdge_(true),
+				edge(0.5f, 0.1f) { }
 
 		inline const Font *getFont() const { return font; }
 		inline void setFont(const Font *font) { Text::font = font; }
