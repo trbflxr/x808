@@ -15,13 +15,13 @@ public:
 			tb2d(nullptr){
 
 		ui = new DebugUI();
-		t2d = new Test2D();
 //		t3d = new Test3D(ui);
-//		tb2d = new TestB2D();
+//		t2d = new Test2D();
+		tb2d = new TestB2D();
 
-//		pushLayer(tb2d);
+		pushLayer(tb2d);
+//		pushLayer(t2d);
 //		pushLayer(t3d);
-		pushLayer(t2d);
 		pushLayer(ui);
 	}
 

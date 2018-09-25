@@ -15,17 +15,15 @@ set(XE_INCLUDE_DIRS
         CACHE STRING "XE include dirs" FORCE)
 
 set(XE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/lib
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/libs-mingw/x64 #todo: platform
         CACHE STRING "XE library dirs" FORCE)
 
 set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/tools/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/include
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/stb
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/glew
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/json
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/assimp/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/gorilla-audio/include
         CACHE STRING "XE external include dirs" FORCE)
 
 #copy files

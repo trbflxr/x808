@@ -2,8 +2,8 @@
 // Created by FLXR on 9/11/2018.
 //
 
-#include <new>
 #include <xe/resources/texturemanager.hpp>
+#include <xe/gfx/renderer.hpp>
 #include "testb2d.hpp"
 
 using namespace xe;
@@ -78,6 +78,8 @@ TestB2D::TestB2D() {
 	sp0->setTextureRect(rect(150, 130, 300, 320));
 	sp0->setScale({0.3f, 0.3f});
 	renderables.push_back(sp0);
+
+	Renderer::setClearColor(color::rgba(0.55f, 1.0f, 0.93f, 1.0f));
 }
 
 TestB2D::~TestB2D() {
@@ -178,6 +180,3 @@ void TestB2D::input(xe::Event &event) {
 	}
 }
 
-void TestB2D::tick() {
-
-}

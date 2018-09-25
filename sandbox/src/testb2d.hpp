@@ -29,8 +29,6 @@ public:
 
 	void input(xe::Event &event) override;
 
-	void tick() override;
-
 private:
 	xe::Camera *camera;
 

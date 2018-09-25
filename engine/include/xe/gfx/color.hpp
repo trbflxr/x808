@@ -48,10 +48,10 @@ namespace xe { namespace color {
 
 	static vec4 decode(uint color) {
 		vec4 result;
-		result.x = static_cast<byte>((color >> 0) / 255);
-		result.y = static_cast<byte>((color >> 8) / 255);
-		result.z = static_cast<byte>((color >> 16) / 255);
-		result.w = static_cast<byte>((color >> 24) / 255);
+		result.x = ((color >> 0) & 255) / 255.0f;
+		result.y = ((color >> 8) & 255) / 255.0f;
+		result.z = ((color >> 16) & 255) / 255.0f;
+		result.w = ((color >> 24) & 255) / 255.0f;
 
 		return result;
 	}

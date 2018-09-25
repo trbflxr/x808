@@ -2,12 +2,13 @@
 // Created by FLXR on 7/22/2018.
 //
 
+#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
 #include <codecvt>
 #include <locale>
 #include <cstdio>
 #include <cstring>
-
 
 int imgToBin(const wchar_t *in, const wchar_t *out) {
 	int w;
