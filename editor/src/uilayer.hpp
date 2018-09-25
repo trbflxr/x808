@@ -18,6 +18,9 @@ public:
 	void update(float delta) override;
 
 	void input(xe::Event &event) override;
+
+private:
+	void *dockContext;
 };
 
 

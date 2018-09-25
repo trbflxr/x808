@@ -7,3 +7,4 @@ cmake-build-release
 xeconfig
 pack001.pak
 imgui.ini
+dock.ini

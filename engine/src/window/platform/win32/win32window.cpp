@@ -36,7 +36,7 @@ namespace xe { namespace internal {
 		return result;
 	}
 
-	PlatformWindowWin32::PlatformWindowWin32(VideoMode mode, const string &title, uint style) :
+	PlatformWindowWin32::PlatformWindowWin32(VideoMode mode, const wstring &title, uint style) :
 			handle(nullptr),
 			callback(0),
 			cursorVisible(true),
@@ -79,9 +79,7 @@ namespace xe { namespace internal {
 			height = rectangle.bottom - rectangle.top;
 		}
 
-		const wstring output = utils::toWstring(title);
-
-		handle = CreateWindow(className, output.c_str(), win32Style, left, top, width, height,
+		handle = CreateWindow(className, title.c_str(), win32Style, left, top, width, height,
 		                      nullptr, nullptr, GetModuleHandle(nullptr), this);
 
 		DEV_BROADCAST_HDR deviceBroadcastHeader = {sizeof(DEV_BROADCAST_HDR), DBT_DEVTYP_DEVICEINTERFACE, 0};
@@ -152,7 +150,7 @@ namespace xe { namespace internal {
 		return vec2i(rect.left, rect.top);
 	}
 
-	void PlatformWindowWin32::setPosition(const vec2i &position) {
+	void PlatformWindowWin32::setPosition(const vec2i &position) const {
 		SetWindowPos(handle, nullptr, position.x, position.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
 		if (cursorGrabbed) {
@@ -167,20 +165,25 @@ namespace xe { namespace internal {
 		             static_cast<int32>(rect.bottom - rect.top));
 	}
 
-	void PlatformWindowWin32::setSize(const vec2i &size) {
+	void PlatformWindowWin32::setSize(const vec2i &size) const {
 		RECT rectangle = {0, 0, static_cast<LONG>(size.x), static_cast<LONG>(size.y)};
 		AdjustWindowRect(&rectangle, static_cast<DWORD>(GetWindowLong(handle, GWL_STYLE)), false);
 
-		int width = rectangle.right - rectangle.left;
-		int height = rectangle.bottom - rectangle.top;
+		int32 width = rectangle.right - rectangle.left;
+		int32 height = rectangle.bottom - rectangle.top;
 
 		SetWindowPos(handle, nullptr, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER);
 	}
 
-	void PlatformWindowWin32::setTitle(const string &title) {
-		wstring output = utils::toWstring(title);
+	void PlatformWindowWin32::setTitle(const wstring &title) const {
+		SetWindowText(handle, title.c_str());
+	}
 
-		SetWindowText(handle, output.c_str());
+	wstring PlatformWindowWin32::getTitle() const {
+		wstring title(128, '\0');
+		GetWindowText(handle, &title[0], 128);
+
+		return title;
 	}
 
 	void PlatformWindowWin32::setIcon(uint width, uint height, const byte *pixels) {
@@ -206,7 +209,7 @@ namespace xe { namespace internal {
 		}
 	}
 
-	void PlatformWindowWin32::setVisible(bool visible) {
+	void PlatformWindowWin32::setVisible(bool visible) const {
 		ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);
 	}
 
@@ -222,7 +225,7 @@ namespace xe { namespace internal {
 		grabCursor(cursorGrabbed);
 	}
 
-	bool PlatformWindowWin32::isMouseCursorGrabbed() {
+	bool PlatformWindowWin32::isMouseCursorGrabbed() const {
 		return cursorGrabbed;
 	}
 
@@ -235,7 +238,7 @@ namespace xe { namespace internal {
 		keyRepeatEnabled = enabled;
 	}
 
-	void PlatformWindowWin32::requestFocus() {
+	void PlatformWindowWin32::requestFocus() const {
 		DWORD thisPid = GetWindowThreadProcessId(handle, nullptr);
 		DWORD foregroundPid = GetWindowThreadProcessId(GetForegroundWindow(), nullptr);
 
@@ -325,7 +328,7 @@ namespace xe { namespace internal {
 		TrackMouseEvent(&mouseEvent);
 	}
 
-	void PlatformWindowWin32::grabCursor(bool grabbed) {
+	void PlatformWindowWin32::grabCursor(bool grabbed) const {
 		if (grabbed) {
 			RECT rect;
 			GetClientRect(handle, &rect);

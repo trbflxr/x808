@@ -7,7 +7,7 @@
 
 
 #include <imgui.h>
-#include <imgui_dock.h>
+#include <imguidock.h>
 #include <xe/xeint.hpp>
 #include <xe/math/vec2.hpp>
 #include <xe/math/tvec2.hpp>

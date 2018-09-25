@@ -33,10 +33,10 @@ namespace xe {
 	public:
 
 		Window();
-		explicit Window(VideoMode mode, const string &title, uint style = WindowStyle::Default);
+		explicit Window(VideoMode mode, const wstring &title, uint style = WindowStyle::Default);
 		~Window() override;
 
-		void create(VideoMode mode, const string &title, uint style = WindowStyle::Default);
+		void create(VideoMode mode, const wstring &title, uint style = WindowStyle::Default);
 
 		void close();
 		bool isOpen() const;
@@ -44,29 +44,30 @@ namespace xe {
 		bool pollEvent(Event &event);
 
 		vec2i getPosition() const;
-		void setPosition(const vec2i &position);
+		void setPosition(const vec2i &position) const;
 
 		inline vec2i getSize() const { return size; };
 		void setSize(const vec2i &size);
 
-		void setTitle(const string &title);
+		void setTitle(const wstring &title) const;
+		wstring getTitle() const;
 
-		void setIcon(uint width, uint height, const byte *pixels);
+		void setIcon(uint width, uint height, const byte *pixels) const;
 
-		void setVisible(bool visible);
+		void setVisible(bool visible) const;
 
-		void setVerticalSyncEnabled(bool enabled);
+		void setVerticalSyncEnabled(bool enabled) const;
 
-		void setMouseCursorVisible(bool visible);
-		void setMouseCursorGrabbed(bool grabbed);
-		bool isMouseCursorGrabbed();
-		void setMouseCursor(const Cursor &cursor);
+		void setMouseCursorVisible(bool visible) const;
+		void setMouseCursorGrabbed(bool grabbed) const;
+		bool isMouseCursorGrabbed() const;
+		void setMouseCursor(const Cursor &cursor) const;
 
-		void setKeyRepeatEnabled(bool enabled);
+		void setKeyRepeatEnabled(bool enabled) const;
 
 		void setFramerateLimit(uint limit);
 
-		void requestFocus();
+		void requestFocus() const;
 		bool hasFocus() const;
 
 		void clear() const;

@@ -3,6 +3,7 @@
 //
 
 #include <imgui_impl_xe_gl.hpp>
+#include <xe/utils/log.hpp>
 #include "uilayer.hpp"
 
 using namespace xe;
@@ -11,10 +12,21 @@ UILayer::UILayer() {
 	ImGui::xe::init(window);
 
 	ImGui::StyleColorsDark();
+
+	dockContext = ImGui::CreateDockContext();
+	ImGui::SetCurrentDockContext((ImGui::DockContext *) dockContext);
+
+	ImGui::LoadDock("dock.ini");
+
+	XE_INFO(L"title: ", window.getTitle());
 }
 
 UILayer::~UILayer() {
+	ImGui::SaveDock("dock.ini");
+
 	ImGui::xe::shutdown();
+
+	ImGui::DestroyDockContext((ImGui::DockContext *) dockContext);
 }
 
 void UILayer::render() {
@@ -56,49 +68,58 @@ void UILayer::render() {
 //	if (show_demo_window)
 //		ImGui::ShowDemoWindow(&show_demo_window);
 
+	// Fullscreen (without visual artifacts):
+	ImGui::SetNextWindowPos({0, 0});
+	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+
+	const ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove |
+	                               ImGuiWindowFlags_NoBringToFrontOnFocus |
+	                               ImGuiWindowFlags_NoResize |
+	                               ImGuiWindowFlags_NoScrollbar |
+	                               ImGuiWindowFlags_NoSavedSettings |
+	                               ImGuiWindowFlags_NoTitleBar;
+
+	const float oldWindowRounding = ImGui::GetStyle().WindowRounding;
+
+	ImGui::GetStyle().WindowRounding = 0;
+
+	const bool visible = ImGui::Begin("imguidock window", nullptr, {0, 0}, 1.0f, flags);
+
+	ImGui::GetStyle().WindowRounding = oldWindowRounding;
+
+	if (visible) {
+		ImGui::BeginDockspace();
+		static char tmp[128];
+		for (int i = 0; i < 10; i++) {
+			sprintf(tmp, "Dock %d", i);
+
+			if (i == 9) {
+				ImGui::SetNextDock(ImGuiDockSlot_Bottom);// optional
+
+				if (ImGui::BeginDock(tmp)) {
+					ImGui::Text("Content of dock window %d goes here", i);
+				}
+				ImGui::EndDock();
+
+				continue;
+			}
+
+			if (ImGui::BeginDock(tmp)) {
+				ImGui::Text("Content of dock window %d goes here", i);
+			}
+			ImGui::EndDock();
+		}
+		ImGui::EndDockspace();
+	}
+	ImGui::End();
+
+
 	ImGui::xe::render();
 }
 
 void UILayer::update(float delta) {
 	ImGui::xe::update(window, delta);
 
-	if(ImGui::Begin("Dock Demo"))
-	{
-		// dock layout by hard-coded or .ini file
-		ImGui::BeginDockspace();
-
-		if(ImGui::BeginDock("Dock 1")){
-			ImGui::Text("I'm Wubugui!");
-		}
-		ImGui::EndDock();
-
-		if(ImGui::BeginDock("Dock 2")){
-			ImGui::Text("I'm BentleyBlanks!");
-		}
-		ImGui::EndDock();
-
-		if(ImGui::BeginDock("Dock 3")){
-			ImGui::Text("I'm LonelyWaiting!");
-		}
-		ImGui::EndDock();
-
-		ImGui::EndDockspace();
-	}
-	ImGui::End();
-
-	// multiple dockspace supported
-	if(ImGui::Begin("Dock Demo2"))
-	{
-		ImGui::BeginDockspace();
-
-		if(ImGui::BeginDock("Dock 2")){
-			ImGui::Text("Who's your daddy?");
-		}
-		ImGui::EndDock();
-
-		ImGui::EndDockspace();
-	}
-	ImGui::End();
 }
 
 void UILayer::input(xe::Event &event) {

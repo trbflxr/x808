@@ -14,7 +14,6 @@ namespace xe {
 	struct XE_API Config {
 		uint width;
 		uint height;
-		char title[128];
 		bool fullScreen;
 		bool vSync;
 

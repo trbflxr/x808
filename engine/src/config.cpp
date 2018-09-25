@@ -16,8 +16,6 @@ namespace xe {
 			config.width = (uint) atoi(value);
 		} else if (strcmp(key, "height") == 0) {
 			config.height = (uint) atoi(value);
-		} else if (strcmp(key, "title") == 0) {
-			strcpy(config.title, value);
 		} else if (strcmp(key, "fullScreen") == 0) {
 			config.fullScreen = (bool) atoi(value);
 		} else if (strcmp(key, "vSync") == 0) {

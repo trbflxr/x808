@@ -61,8 +61,6 @@ namespace ImGui { namespace xe {
 		}
 
 		s_windowHasFocus = window.hasFocus();
-
-		ImGui::InitDock();
 	}
 
 	void processEvent(const ::xe::Event &event) {

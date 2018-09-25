@@ -21,7 +21,7 @@ namespace xe {
 			size(0, 0),
 			frameTimeLimit(0.0f) { }
 
-	Window::Window(VideoMode mode, const string &title, uint style) :
+	Window::Window(VideoMode mode, const wstring &title, uint style) :
 			window(nullptr),
 			size(0, 0),
 			frameTimeLimit(0.0f) {
@@ -33,7 +33,7 @@ namespace xe {
 		close();
 	}
 
-	void Window::create(VideoMode mode, const string &title, uint style) {
+	void Window::create(VideoMode mode, const wstring &title, uint style) {
 		close();
 
 		if (style & WindowStyle::Fullscreen) {
@@ -67,7 +67,7 @@ namespace xe {
 		return window ? window->getPosition() : vec2i();
 	}
 
-	void Window::setPosition(const vec2i &position) {
+	void Window::setPosition(const vec2i &position) const {
 		if (window) {
 			window->setPosition(position);
 		}
@@ -84,60 +84,68 @@ namespace xe {
 		}
 	}
 
-	void Window::setTitle(const string &title) {
+	void Window::setTitle(const wstring &title) const {
 		if (window) {
 			window->setTitle(title);
 		}
 	}
 
-	void Window::setIcon(uint width, uint height, const byte *pixels) {
+	wstring Window::getTitle() const {
+		if (window) {
+			return window->getTitle();
+		}
+		return L"NULL";
+	}
+
+	void Window::setIcon(uint width, uint height, const byte *pixels) const {
 		if (window) {
 			window->setIcon(width, height, pixels);
 		}
 	}
 
-	void Window::setVisible(bool visible) {
+	void Window::setVisible(bool visible) const {
 		if (window) {
 			window->setVisible(visible);
 		}
 	}
 
-	void Window::setMouseCursorVisible(bool visible) {
+	void Window::setMouseCursorVisible(bool visible) const {
 		if (window) {
 			window->setMouseCursorVisible(visible);
 		}
 	}
 
-	void Window::setMouseCursorGrabbed(bool grabbed) {
+	void Window::setMouseCursorGrabbed(bool grabbed) const {
 		if (window) {
 			window->setMouseCursorGrabbed(grabbed);
 		}
 	}
 
-	bool Window::isMouseCursorGrabbed() {
+	bool Window::isMouseCursorGrabbed() const {
 		if (window) {
 			return window->isMouseCursorGrabbed();
 		}
 		return false;
 	}
 
-	void Window::setMouseCursor(const Cursor &cursor) {
+	void Window::setMouseCursor(const Cursor &cursor) const {
 		if (window) {
 			window->setMouseCursor(cursor);
 		}
 	}
 
-	void Window::setKeyRepeatEnabled(bool enabled) {
+	void Window::setKeyRepeatEnabled(bool enabled) const {
 		if (window) {
 			window->setKeyRepeatEnabled(enabled);
 		}
 	}
 
-	void Window::requestFocus() {
+	void Window::requestFocus() const {
 		if (window) {
 			window->requestFocus();
 		}
 	}
+
 
 	bool Window::hasFocus() const {
 		return window && window->hasFocus();
@@ -147,7 +155,6 @@ namespace xe {
 	void *Window::getHandle() const {
 		return window ? window->getHandle() : nullptr;
 	}
-
 
 	bool Window::isOpen() const {
 		return window != nullptr;
@@ -161,7 +168,7 @@ namespace xe {
 		}
 	}
 
-	void Window::setVerticalSyncEnabled(bool enabled) {
+	void Window::setVerticalSyncEnabled(bool enabled) const {
 		Renderer::enableVsync(enabled);
 	}
 

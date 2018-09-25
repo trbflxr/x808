@@ -8,7 +8,7 @@
 class Editor : public xe::Application {
 public:
 	explicit Editor(const xe::Config &config) :
-			Application(config),
+			Application(config, L"XE Editor"),
 			ui(nullptr) {
 
 		ui = new UILayer();

@@ -17,7 +17,7 @@ namespace xe {
 
 	Application *Application::instance = nullptr;
 
-	Application::Application(const Config &config) :
+	Application::Application(const Config &config, const wstring &title) :
 			config(config),
 			frameTime(0.0f) {
 
@@ -32,16 +32,16 @@ namespace xe {
 
 		instance = this;
 
-		init();
+		init(title);
 	}
 
-	void Application::init() {
+	void Application::init(const wstring &title) {
 		if (config.fullScreen) {
-			window.create(VideoMode::getDesktopMode(), config.title, WindowStyle::Fullscreen);
+			window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
 
 		} else {
 			VideoMode mode(config.width, config.height);
-			window.create(mode, config.title, WindowStyle::Default);
+			window.create(mode, title, WindowStyle::Default);
 		}
 
 		window.setFramerateLimit(config.fps);

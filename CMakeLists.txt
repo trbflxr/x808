@@ -40,7 +40,6 @@ else ()
     file(WRITE xeconfig
             "width=1280\n"
             "height=720\n"
-            "title=sandbox title\n"
             "fullScreen=0\n"
             "vSync=0\n"
             "\n"

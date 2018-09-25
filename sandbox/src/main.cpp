@@ -8,7 +8,7 @@
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config),
+			Application(config, L"Sandbox"),
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr),
