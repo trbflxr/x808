@@ -7,6 +7,7 @@
 
 
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/framebuffer.hpp>
 
 class UILayer : public xe::Layer {
 public:
@@ -20,7 +21,14 @@ public:
 	void input(xe::Event &event) override;
 
 private:
+	void initImGui();
+
+private:
 	void *dockContext;
+
+	//framebuffer
+	xe::FrameBuffer *renderWindow;
+	xe::Texture *renderTexture;
 };
 
 

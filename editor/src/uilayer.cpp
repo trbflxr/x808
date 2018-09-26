@@ -4,21 +4,21 @@
 
 #include <imgui_impl_xe_gl.hpp>
 #include <xe/utils/log.hpp>
+#include <xe/gfx/color.hpp>
+#include <xe/gfx/renderer.hpp>
 #include "uilayer.hpp"
 
 using namespace xe;
 
 UILayer::UILayer() {
-	ImGui::xe::init(window);
+	initImGui();
 
-	ImGui::StyleColorsDark();
+	TextureParameters params;
+//	renderTexture = new Texture("a", L"assets/textures/test1.png", params);
+	renderTexture = new Texture("renderTexture", 512, 512, 0, params);
 
-	dockContext = ImGui::CreateDockContext();
-	ImGui::SetCurrentDockContext((ImGui::DockContext *) dockContext);
-
-	ImGui::LoadDock("dock.ini");
-
-	XE_INFO(L"title: ", window.getTitle());
+	renderWindow = new FrameBuffer("renderWindow");
+	renderWindow->load({std::make_pair(Attachment::Color0, renderTexture)});
 }
 
 UILayer::~UILayer() {
@@ -27,46 +27,39 @@ UILayer::~UILayer() {
 	ImGui::xe::shutdown();
 
 	ImGui::DestroyDockContext((ImGui::DockContext *) dockContext);
+
+	delete renderTexture;
+	delete renderWindow;
+}
+
+void UILayer::initImGui() {
+	ImGui::xe::init(window);
+
+	ImGui::StyleColorsDark();
+
+	dockContext = ImGui::CreateDockContext();
+	ImGui::SetCurrentDockContext((ImGui::DockContext *) dockContext);
+
+	ImGui::LoadDock("dock.ini");
 }
 
 void UILayer::render() {
-//	static bool show_demo_window = true;
-//	static bool show_another_window = false;
-//	static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-//
-//	{
-//		static float f = 0.0f;
-//		static int counter = 0;
-//
-//		ImGui::Begin("Hello, world!");
-//
-//		ImGui::Text("This is some useful text.");
-//		ImGui::Checkbox("Demo Window", &show_demo_window);
-//		ImGui::Checkbox("Another Window", &show_another_window);
-//
-//		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-//		ImGui::ColorEdit3("clear color", (float *) &clear_color);
-//
-//		if (ImGui::Button("Button"))
-//			counter++;
-//		ImGui::SameLine();
-//		ImGui::Text("counter = %d", counter);
-//
-//		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-//		            ImGui::GetIO().Framerate);
-//		ImGui::End();
-//	}
-//
-//	if (show_another_window) {
-//		ImGui::Begin("Another Window", &show_another_window);
-//		ImGui::Text("Hello from another window!");
-//		if (ImGui::Button("Close Me"))
-//			show_another_window = false;
-//		ImGui::End();
-//	}
-//
-//	if (show_demo_window)
-//		ImGui::ShowDemoWindow(&show_demo_window);
+	//ImGui::ShowDemoWindow(&show_demo_window);
+
+	renderWindow->bindDraw(Attachment::Color0);
+	Renderer::setViewport(0, 0, 512, 512);
+	Renderer::setClearColor(color::GREEN);
+	Renderer::clear(RendererBufferColor);
+	
+//	glColor3f(1, 0, 1);
+//	glBegin(GL_TRIANGLES);
+//	glVertex2f(0, 0);
+//	glVertex2f(1, 0);
+//	glVertex2f(1, 1);
+//	glEnd();
+
+	renderWindow->unbind();
+
 
 	// Fullscreen (without visual artifacts):
 	ImGui::SetNextWindowPos({0, 0});
@@ -93,11 +86,27 @@ void UILayer::render() {
 		for (int i = 0; i < 10; i++) {
 			sprintf(tmp, "Dock %d", i);
 
+			if (i == 8) {
+				ImGui::SetNextDock(ImGuiDockSlot_Right);// optional
+
+				if (ImGui::BeginDock(tmp)) {
+					ImGui::Text("Render window");
+
+					ImGui::Image((void *) renderTexture->getHandle(), {512, 512});
+				}
+				ImGui::EndDock();
+
+				continue;
+			}
+
 			if (i == 9) {
 				ImGui::SetNextDock(ImGuiDockSlot_Bottom);// optional
 
 				if (ImGui::BeginDock(tmp)) {
 					ImGui::Text("Content of dock window %d goes here", i);
+
+					ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+					            ImGui::GetIO().Framerate);
 				}
 				ImGui::EndDock();
 
