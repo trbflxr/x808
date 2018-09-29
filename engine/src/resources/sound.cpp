@@ -21,13 +21,13 @@ namespace xe {
 
 		std::vector<string> split = utils::splitString(path, '.');
 		if (split.size() < 2) {
-			XE_ERROR("[Sound] Invalid filename ", path);
+			XE_ERROR(L"[Sound]: Invalid filename ", path);
 			return;
 		}
 
 		sound = gau_load_sound_file(path.data(), split.back().c_str());
 		if (!sound) {
-			XE_ERROR("[Sound] Could not load file ", path);
+			XE_ERROR(L"[Sound]: Could not load file ", path);
 		}
 	}
 
@@ -78,7 +78,7 @@ namespace xe {
 
 	void Sound::setGain(float gain) const {
 		if (!playing) {
-			XE_ERROR("[Sound] Cannot set gain! Sound is not currently playing!");
+			XE_ERROR(L"[Sound]: Cannot set gain! Sound is not currently playing!");
 			return;
 		}
 

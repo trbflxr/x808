@@ -205,7 +205,7 @@ namespace xe { namespace internal {
 			SendMessage(handle, WM_SETICON, ICON_BIG, (LPARAM) icon);
 			SendMessage(handle, WM_SETICON, ICON_SMALL, (LPARAM) icon);
 		} else {
-			XE_ERROR("[PlatformWindowWin32]: Failed to set the window's icon");
+			XE_ERROR(L"[PlatformWindowWin32]: Failed to set the window's icon");
 		}
 	}
 
@@ -294,7 +294,7 @@ namespace xe { namespace internal {
 		devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
 
 		if (ChangeDisplaySettingsW(&devMode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL) {
-			XE_ERROR("[PlatformWindowWin32]: Failed to change display mode for fullscreen");
+			XE_ERROR(L"[PlatformWindowWin32]: Failed to change display mode for fullscreen");
 			return;
 		}
 

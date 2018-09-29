@@ -38,11 +38,11 @@ namespace xe {
 
 		if (style & WindowStyle::Fullscreen) {
 			if (fullscreenWindow) {
-				XE_ERROR("[Window]: Creating two fullscreen windows is not allowed, switching to windowed mode");
+				XE_ERROR(L"[Window]: Creating two fullscreen windows is not allowed, switching to windowed mode");
 				style &= ~WindowStyle::Fullscreen;
 			} else {
 				if (!mode.isValid()) {
-					XE_ERROR("[Window]: The requested video mode is not available, switching to a valid mode");
+					XE_ERROR(L"[Window]: The requested video mode is not available, switching to a valid mode");
 					mode = VideoMode::getFullscreenModes()[0];
 				}
 				fullscreenWindow = this;

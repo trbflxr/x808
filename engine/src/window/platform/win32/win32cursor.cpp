@@ -44,7 +44,7 @@ namespace xe {
 		ReleaseDC(nullptr, screenDC);
 
 		if (!color) {
-			XE_ERROR("[Win32Cursor]: Failed to create cursor color bitmap");
+			XE_ERROR(L"[Win32Cursor]: Failed to create cursor color bitmap");
 			XE_ASSERT(color);
 		}
 
@@ -54,7 +54,7 @@ namespace xe {
 
 		if (!mask) {
 			DeleteObject(color);
-			XE_ERROR("[Win32Cursor]: Failed to create cursor mask bitmap");
+			XE_ERROR(L"[Win32Cursor]: Failed to create cursor mask bitmap");
 			XE_ASSERT(mask);
 		}
 
@@ -73,7 +73,7 @@ namespace xe {
 		DeleteObject(mask);
 
 		if (!cursor) {
-			XE_ERROR("[Win32Cursor]: Failed to create cursor from bitmaps");
+			XE_ERROR(L"[Win32Cursor]: Failed to create cursor from bitmaps");
 			XE_ASSERT(cursor);
 		}
 	}
@@ -116,7 +116,7 @@ namespace xe {
 		cursor = CopyCursor(LoadCursor(nullptr, shape));
 
 		if (!cursor) {
-			XE_ERROR("[Win32Cursor]: Could not create copy of a system cursor");
+			XE_ERROR(L"[Win32Cursor]: Could not create copy of a system cursor");
 			XE_ASSERT(cursor);
 		}
 	}

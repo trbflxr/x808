@@ -29,7 +29,7 @@ namespace xe {
 		auto &&it = instance().textures.find(texture->getName());
 
 		if (it != instance().textures.end()) {
-			XE_ERROR("[TextureManager]: texture '", texture->getName(), "' already exist and be deleted");
+			XE_ERROR(L"[TextureManager]: texture '", texture->getName(), L"' already exist and be deleted");
 
 			delete texture;
 			return false;
@@ -43,7 +43,7 @@ namespace xe {
 	const Texture *TextureManager::get(const string &name) {
 		auto &&it = instance().textures.find(name.data());
 		if (it == instance().textures.end()) {
-			XE_ERROR("Texture '", name, "' not found!");
+			XE_ERROR(L"[TextureManager]: texture '", name, L"' not found!");
 
 			return get("default");
 		}
@@ -58,14 +58,13 @@ namespace xe {
 	}
 
 	void TextureManager::createDefaultTextures() {
-		TextureParameters params(TextureTarget::Tex2D,
-		                         PixelInternalFormat::Rgba,
-		                         PixelFormat::Rgba,
-		                         PixelType::UnsignedByte,
-		                         TextureMinFilter::Nearest,
-		                         TextureMagFilter::Nearest);
+		static TextureParameters params(TextureTarget::Tex2D,
+		                                PixelInternalFormat::Rgb,
+		                                PixelFormat::Rgb,
+		                                PixelType::UnsignedByte,
+		                                TextureMinFilter::Linear,
+		                                TextureMagFilter::Linear);
 
-		///texture
 		Texture *errorTexture = new Texture("default", internal::DEFAULT_TEXTURE_W,
 		                                    internal::DEFAULT_TEXTURE_H, 0, params);
 		errorTexture->setData2D(internal::DEFAULT_TEXTURE);

@@ -140,7 +140,7 @@ Test2D::Test2D() {
 	}
 #endif
 
-	XE_INFO("size: ", sprites);
+	XE_INFO(L"size: ", sprites);
 
 	inputText = new Text(L"consolata72", GETFONT("consolata72"));
 	inputText->setTextColor(color::WHITE);

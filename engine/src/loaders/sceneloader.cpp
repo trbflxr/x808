@@ -173,7 +173,7 @@ namespace xe {
 		std::ifstream file(path);
 		if (!file.good()) {
 			file.close();
-			XE_WARN("[SceneLoader]: .lights file '", path, "' not found");
+			XE_WARN(L"[SceneLoader]: .lights file '", path, "' not found");
 			return;
 		}
 

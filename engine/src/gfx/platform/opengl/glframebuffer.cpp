@@ -52,7 +52,7 @@ namespace xe { namespace internal {
 		uint mode = attachmentToGL(attachment);
 
 		if (mode == GL_DEPTH_ATTACHMENT || mode == GL_STENCIL_ATTACHMENT) {
-			XE_ERROR("[GLFrameBuffer]: Can't read depth or stencil attachments.");
+			XE_ERROR(L"[GLFrameBuffer]: Can't read depth or stencil attachments.");
 			return;
 		}
 

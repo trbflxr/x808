@@ -33,7 +33,7 @@ namespace xe {
 		auto &&it = instance().sounds.find(sound->getName());
 
 		if (it != instance().sounds.end()) {
-			XE_ERROR("[SoundManager]: sound '", sound->getName(), "' already exist and be deleted");
+			XE_ERROR(L"[SoundManager]: sound '", sound->getName(), L"' already exist and be deleted");
 
 			delete sound;
 			return false;
