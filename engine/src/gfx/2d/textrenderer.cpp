@@ -139,10 +139,8 @@ namespace xe {
 	void TextRenderer::submitString(const wstring &str, const Font *font, uint color, float tid,
 	                                float scale, const mat4 &transform, float &x, float &y) {
 
-		using namespace ftgl;
-
 		for (uint i = 0; i < str.length(); i++) {
-			const texture_glyph_t *glyph = static_cast<texture_glyph_t *>(font->getGlyph(str[i]));
+			const ftgl::texture_glyph_t *glyph = static_cast<ftgl::texture_glyph_t *>(font->getGlyph(str[i]));
 
 			if (!glyph) continue;
 

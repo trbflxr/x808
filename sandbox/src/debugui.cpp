@@ -12,6 +12,8 @@ using namespace xe;
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
+	XE_INFO(Context::getInfo());
+
 	//create camera
 	float w = app.getConfig().width;
 	float h = app.getConfig().height;
@@ -35,7 +37,7 @@ DebugUI::DebugUI() :
 	const float spHeight = 150.0f;
 	const float spY = spHeight / 2.0f + offset;
 
-	const float outline = 2.0f;
+	const float outline = 4.0f;
 
 	//text
 	fpsText = new Text(L"fps: ", GETFONT("default"), 0.25f);

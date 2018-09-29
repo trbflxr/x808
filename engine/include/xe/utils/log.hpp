@@ -11,6 +11,7 @@
 #include <cstring>
 #include <string>
 #include <xe/common.hpp>
+#include <xe/gfx/context.hpp>
 #include <xe/math/math.hpp>
 
 #define XE_LOG_LEVEL_FATAL 0
@@ -201,6 +202,27 @@ namespace xe { namespace internal {
 		         t.elements[4], t.elements[5], t.elements[6], t.elements[7],
 		         t.elements[8], t.elements[9], t.elements[10], t.elements[11],
 		         t.elements[12], t.elements[13], t.elements[14], t.elements[15]);
+		return buffer;
+	}
+
+	template<>
+	inline const wchar_t *to_wstring<GAPIInfo>(const GAPIInfo &t) {
+		swprintf(buffer, L"Context:\n"
+		                 L"\t - Vendor:            %s\n"
+		                 L"\t - Version:           %s\n"
+		                 L"\t - Renderer:          %s\n"
+		                 L"\t - Shading language:  %s\n"
+		                 L"\t - Max texture size:  %i\n"
+		                 L"\t - Max texture units: %i\n"
+		                 L"\t - Max image units:   %i",
+		         t.vendor,
+		         t.version,
+		         t.renderer,
+		         t.shadingLevel,
+		         t.maxTexSize,
+		         t.maxTexUnits,
+		         t.maxTexImgUnits);
+
 		return buffer;
 	}
 

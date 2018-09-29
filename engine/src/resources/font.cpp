@@ -10,8 +10,6 @@
 
 namespace xe {
 
-	using namespace ftgl;
-
 	Font::Font(const string &name, const wstring &path, float size) :
 			name(name),
 			path(path),
@@ -47,8 +45,8 @@ namespace xe {
 	}
 
 	Font::~Font() {
-		texture_atlas_delete(static_cast<texture_atlas_t *>(atlas));
-		texture_font_delete(static_cast<texture_font_t *>(font));
+		texture_atlas_delete(static_cast<ftgl::texture_atlas_t *>(atlas));
+		texture_font_delete(static_cast<ftgl::texture_font_t *>(font));
 
 		delete texture;
 
@@ -63,7 +61,7 @@ namespace xe {
 		                                PixelType::UnsignedByte);
 
 		texture = new Texture(name + "_FontTexture", size, size, 0, params);
-		texture->setData2D(static_cast<texture_atlas_t *>(atlas)->data);
+		texture->setData2D(static_cast<ftgl::texture_atlas_t *>(atlas)->data);
 	}
 
 	const Texture *Font::getTexture() const {
@@ -72,7 +70,7 @@ namespace xe {
 	}
 
 	void Font::updateAtlas() const {
-		texture_atlas_t *a = static_cast<texture_atlas_t *>(atlas);
+		ftgl::texture_atlas_t *a = static_cast<ftgl::texture_atlas_t *>(atlas);
 
 		if (a->dirty) {
 			texture->setData2D(a->data);
@@ -81,19 +79,19 @@ namespace xe {
 	}
 
 	void *Font::getGlyph(wchar_t code) const {
-		return texture_font_get_glyph(static_cast<texture_font_t *>(font), code);
+		return texture_font_get_glyph(static_cast<ftgl::texture_font_t *>(font), code);
 	}
 
 	float Font::getKerning(void *glyph, wchar_t c) const {
-		return texture_glyph_get_kerning(static_cast<texture_glyph_t *>(glyph), c);
+		return texture_glyph_get_kerning(static_cast<ftgl::texture_glyph_t *>(glyph), c);
 	}
 
 	void Font::setOutlineThickness(float thickness) const {
-		static_cast<texture_font_t *>(font)->outline_thickness = thickness;
+		static_cast<ftgl::texture_font_t *>(font)->outline_thickness = thickness;
 	}
 
 	void Font::setOutlineType(int32 type) const {
-		static_cast<texture_font_t *>(font)->outline_type = type;
+		static_cast<ftgl::texture_font_t *>(font)->outline_type = type;
 	}
 
 	uint Font::computeAtlasSize(float fontSize) {

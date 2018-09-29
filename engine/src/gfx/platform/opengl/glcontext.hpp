@@ -21,8 +21,9 @@ namespace xe { namespace internal {
 		inline static GLContext *get() { return (GLContext *) context; }
 
 	protected:
-		uint getMaxTexUnits() override;
+		uint getMaxTexUnits() const override;
 
+		GAPIInfo getInfoInternal() const override;
 	};
 
 }}

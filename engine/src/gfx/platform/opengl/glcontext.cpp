@@ -56,11 +56,30 @@ namespace xe { namespace internal {
 		glCall(wglSwapIntervalEXT(enabled));
 	}
 
-	uint GLContext::getMaxTexUnits() {
+	uint GLContext::getMaxTexUnits() const {
 		int32 size;
 		glCall(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &size));
 
 		return static_cast<uint>(size);
+	}
+
+	GAPIInfo GLContext::getInfoInternal() const {
+		static GAPIInfo *info = nullptr;
+
+		if (!info) {
+			info = new GAPIInfo();
+
+			info->vendor = glGetString(GL_VENDOR);
+			info->renderer = glGetString(GL_RENDERER);
+			info->version = glGetString(GL_VERSION);
+			info->shadingLevel = glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+			glGetIntegerv(GL_MAX_TEXTURE_SIZE, &info->maxTexSize);
+			glGetIntegerv(GL_MAX_TEXTURE_UNITS, &info->maxTexUnits);
+			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &info->maxTexImgUnits);
+		}
+
+		return *info;
 	}
 
 }}
