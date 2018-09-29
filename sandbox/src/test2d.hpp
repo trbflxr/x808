@@ -26,9 +26,9 @@ private:
 	xe::BatchRenderer2D *renderer;
 
 	std::vector<xe::IRenderable2D *> renderables;
-
 	xe::RectangleShape *star;
 
+	std::vector<xe::Text *> text;
 	xe::Text *inputText;
 };
 

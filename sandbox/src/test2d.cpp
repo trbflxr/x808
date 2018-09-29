@@ -72,6 +72,10 @@ Test2D::Test2D() {
 
 
 	FontManager::add(new Font("consolata72", L"assets/fonts/consolata.otf", 72.0f));
+	FontManager::add(new Font("fogsans72", L"assets/fonts/fogsans.otf", 72.0f));
+	FontManager::add(new Font("fogsansit72", L"assets/fonts/fogsansit.otf", 72.0f));
+	FontManager::add(new Font("robotoregular72", L"assets/fonts/robotoregular.ttf", 72.0f));
+	FontManager::add(new Font("robotobold72", L"assets/fonts/robotobold.ttf", 72.0f));
 
 	uint texCount = 38;
 
@@ -138,11 +142,40 @@ Test2D::Test2D() {
 
 	XE_INFO("size: ", sprites);
 
-	inputText = new Text(L"[]][/\\слава ukraine", GETFONT("consolata72"));
+	inputText = new Text(L"consolata72", GETFONT("consolata72"));
 	inputText->setTextColor(color::WHITE);
 	inputText->setOutlineColor(color::BLACK);
 	inputText->setOutlineThickness(3.0f);
-	inputText->setPosition({640.0f, 300.0f});
+	inputText->setPosition({50.0f, 500.0f});
+	text.push_back(inputText);
+
+	Text *t0 = new Text(L"fogsans72", GETFONT("fogsans72"));
+	t0->setTextColor(color::WHITE);
+	t0->setOutlineColor(color::BLACK);
+	t0->setOutlineThickness(3.0f);
+	t0->setPosition({50.0f, 400.0f});
+	text.push_back(t0);
+
+	Text *t1 = new Text(L"fogsansit72", GETFONT("fogsansit72"));
+	t1->setTextColor(color::WHITE);
+	t1->setOutlineColor(color::BLACK);
+	t1->setOutlineThickness(3.0f);
+	t1->setPosition({50.0f, 300.0f});
+	text.push_back(t1);
+
+	Text *t2 = new Text(L"robotoregular72", GETFONT("robotoregular72"));
+	t2->setTextColor(color::WHITE);
+	t2->setOutlineColor(color::BLACK);
+	t2->setOutlineThickness(3.0f);
+	t2->setPosition({50.0f, 200.0f});
+	text.push_back(t2);
+
+	Text *t3 = new Text(L"robotobold72", GETFONT("robotobold72"));
+	t3->setTextColor(color::WHITE);
+	t3->setOutlineColor(color::BLACK);
+	t3->setOutlineThickness(3.0f);
+	t3->setPosition({50.0f, 100.0f});
+	text.push_back(t3);
 
 	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
 	s0->setTexture(GETTEXTURE("35"));
@@ -166,6 +199,8 @@ Test2D::Test2D() {
 	c0->setTexture(GETTEXTURE("1"));
 	c0->transformation({710.0f, 350.0f});
 	renderables.push_back(c0);
+
+	Renderer::setClearColor(0xff57513c);
 }
 
 Test2D::~Test2D() {
@@ -176,7 +211,10 @@ Test2D::~Test2D() {
 		delete r;
 	}
 
-	delete inputText;
+	for (const auto &t : text) {
+		delete t;
+	}
+
 }
 
 void Test2D::render() {
@@ -185,7 +223,9 @@ void Test2D::render() {
 		renderer->submit(r);
 	}
 
-	renderer->submit(inputText);
+	for (const auto &t : text) {
+		renderer->submit(t);
+	}
 
 	renderer->renderSprites();
 	renderer->renderText();
