@@ -1,25 +1,27 @@
 //
 // Created by FLXR on 8/11/2018.
 //
-
+#include <xe/gfx/context.hpp>
+#include <gfx/platform/opengl/glbaseshader.hpp>
+#include <xe/utils/log.hpp>
+#include <xe/resources/shadermanager.hpp>
 #include <xe/gfx/shader.hpp>
-
-#include "xe/gfx/shader.hpp"
-#include "xe/resources/shadermanager.hpp"
-#include "xe/utils/log.hpp"
 
 namespace xe {
 
-	Shader::Shader(BaseShader *shader, bool deleteBase) :
-			deleteBase(deleteBase),
-			shader(shader) {
+	Shader::Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OpenGL : {
+				base = new internal::GLBaseShader(name, shaderPipeline);
+				break;
+			}
 
-		init();
-	}
-
-	Shader::Shader(const string &nameInShaderManager) :
-			deleteBase(false),
-			shader(GETSHADER(nameInShaderManager)) {
+			default: {
+				XE_FATAL(L"[BaseShader]: selected render API is not supported");
+				base = nullptr;
+				break;
+			}
+		}
 
 		init();
 	}
@@ -29,38 +31,36 @@ namespace xe {
 			delete[] data.buffer;
 		}
 
-		if (deleteBase) {
-			delete shader;
-		}
+		delete base;
 	}
 
 	void Shader::init() {
-		const ShaderUniformBufferVec &shaderUniforms = shader->getUniforms();
-		for (auto &&ub : shaderUniforms) {
-			UniformData buffer(ub->getSize());
+		const ShaderUniformBufferVec &shaderUniforms = base->getUniforms();
+		for (const auto &ub : shaderUniforms) {
+			const UniformData buffer(ub->getSize());
 			uniformData.push_back(buffer);
 
-			for (auto &&uniform: ub->getUniforms()) {
+			for (const auto &uniform: ub->getUniforms()) {
 				uniforms.emplace_back(uniform->getName().c_str(), buffer, uniform->getOffset());
 			}
 		}
 	}
 
 	void Shader::bind() const {
-		shader->bind();
+		base->bind();
 	}
 
 	void Shader::unbind() const {
-		shader->unbind();
+		base->unbind();
 	}
 
 	void Shader::updateUniforms() const {
 		for (uint i = 0; i < uniformData.size(); i++) {
-			shader->setUniformBuffer(uniformData[i].buffer, uniformData[i].size, i);
+			base->setUniformBuffer(uniformData[i].buffer, uniformData[i].size, i);
 		}
 	}
 
-	void Shader::setUniform(const string &name, const void *data, size_t size) {
+	void Shader::setUniform(const string &name, const void *data, size_t size) const {
 		for (auto &&uniform : uniforms) {
 			if (uniform.name == name) {
 				memcpy(uniform.data.buffer + uniform.offset, data, size);
@@ -68,21 +68,44 @@ namespace xe {
 			}
 		}
 
-		XE_FATAL("[Shader]: Uniform '", name, "' not found!");
+		XE_FATAL(L"[Shader]: Uniform '", name, L"' not found!");
 	}
 
-	uint Shader::getSampler(const string &name) {
-		for (auto &&resource : shader->getSamplers()) {
-			if (resource->getName() == name) {
-				return resource->getLocation();
+	uint Shader::getSampler(const string &name) const {
+		for (auto &&s : base->getSamplers()) {
+			if (s->getName() == name) {
+				return s->getLocation();
 			}
 		}
-
 		return 0;
 	}
 
+	void Shader::setUniformBuffer(byte *data, uint size, uint slot) const {
+		base->setUniformBuffer(data, size, slot);
+	}
+
 	void Shader::bindUniformBlock(const char *blockName, uint location) const {
-		shader->bindUniformBlock(blockName, location);
+		base->bindUniformBlock(blockName, location);
+	}
+
+	const string &Shader::getName() const {
+		return base->getName();
+	}
+
+	uint Shader::getHandle() const {
+		return base->getHandle();
+	}
+
+	const ShaderSamplerVec &Shader::getSamplers() const {
+		return base->getSamplers();
+	}
+
+	const ShaderUniformBufferVec &Shader::getUniforms() const {
+		return base->getUniforms();
+	}
+
+	const std::unordered_map<string, string> &Shader::getSources() const {
+		return base->getSources();
 	}
 
 }

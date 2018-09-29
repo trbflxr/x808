@@ -8,7 +8,7 @@
 
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/camera.hpp>
-#include <xe/gfx/2d/batchrenderer2d.hpp>
+#include <xe/gfx/batchrenderer2d.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
 #include <xe/physics/2d/boxcollider2d.hpp>
 #include <xe/physics/2d/circlecollider2d.hpp>

@@ -16,15 +16,15 @@ namespace xe {
 	class XE_API SceneRenderer {
 	public:
 		static void drawMeshes(BeginMode mode, const std::vector<UniqueMesh *> &meshes,
-		                       Shader *shader, const mat4 &transform, float delta, bool useMaterial);
+		                       const Shader *shader, const mat4 &transform, float delta, bool useMaterial);
 
 		static void drawLights(BeginMode mode, const std::vector<Light *> &lights,
-		                       Shader *shader, const mat4 &transform, float delta, bool displayBounds);
+		                       const Shader *shader, const mat4 &transform, float delta, bool displayBounds);
 
-		static void drawLightBounds(const Light *light, Shader *shader);
+		static void drawLightBounds(const Light *light, const Shader *shader);
 
 	private:
-		static int32 setTexture(Shader *shader, const Texture *texture, const char *sampler, const char *enable);
+		static int32 setTexture(const Shader *shader, const Texture *texture, const char *sampler, const char *enable);
 
 	private:
 		static constexpr int32 enabled = 1;

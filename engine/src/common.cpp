@@ -18,6 +18,6 @@ RenderAPI stringToRenderApi(const char *api) {
 	if (strcmp(api, "ogl") == 0) return RenderAPI::OpenGL;
 	if (strcmp(api, "d3d") == 0) return RenderAPI::Direct3D;
 
-	XE_FATAL("[Core]: Invalid render API '", api, "'");
+	XE_FATAL(L"[Core]: Invalid render API '", api, L"'");
 	return RenderAPI::Invalid;
 }

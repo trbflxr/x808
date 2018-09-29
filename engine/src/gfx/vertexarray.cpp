@@ -16,7 +16,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL("[VertexArray]: selected render API is not supported");
+				XE_FATAL(L"[VertexArray]: selected render API is not supported");
 				array = nullptr;
 				break;
 			}

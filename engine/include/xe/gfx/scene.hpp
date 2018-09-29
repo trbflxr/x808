@@ -19,10 +19,10 @@ namespace xe {
 
 		void update(const Transform &cameraTransform, float delta);
 
-		void render(BeginMode mode, Shader *shader, bool drawLightObjects, bool drawLightBounds) const;
-		void renderMeshes(BeginMode mode, Shader *shader) const;
-		void renderMeshesBasic(BeginMode mode, Shader *shader) const;
-		void renderLightObjects(BeginMode mode, Shader *shader, bool drawLightBounds) const;
+		void render(BeginMode mode, const Shader *shader, bool drawLightObjects, bool drawLightBounds) const;
+		void renderMeshes(BeginMode mode, const Shader *shader) const;
+		void renderMeshesBasic(BeginMode mode, const Shader *shader) const;
+		void renderLightObjects(BeginMode mode, const Shader *shader, bool drawLightBounds) const;
 
 		void addMesh(UniqueMesh *mesh) { meshes.push_back(mesh); }
 		void addLight(Light *light) { lightManager->addLight(light); }

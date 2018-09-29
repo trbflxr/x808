@@ -42,7 +42,6 @@ namespace xe {
 	}
 
 	IRenderer2D::~IRenderer2D() {
-		delete shader;
 		delete indexBuffer;
 		delete vertexArray;
 

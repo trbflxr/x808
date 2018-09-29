@@ -35,7 +35,7 @@ namespace xe {
 		lightManager->update(-cameraTransform.getPosition(), delta);
 	}
 
-	void Scene::render(BeginMode mode, Shader *shader, bool drawLightObjects, bool drawLightBounds) const {
+	void Scene::render(BeginMode mode, const Shader *shader, bool drawLightObjects, bool drawLightBounds) const {
 		static constexpr int32 enabled = 1;
 		static constexpr int32 disabled = 0;
 
@@ -49,15 +49,15 @@ namespace xe {
 		}
 	}
 
-	void Scene::renderMeshes(BeginMode mode, Shader *shader) const {
+	void Scene::renderMeshes(BeginMode mode, const Shader *shader) const {
 		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, true);
 	}
 
-	void Scene::renderMeshesBasic(BeginMode mode, Shader *shader) const {
+	void Scene::renderMeshesBasic(BeginMode mode, const Shader *shader) const {
 		SceneRenderer::drawMeshes(mode, meshes, shader, mat4::identity(), 0.0f, false);
 	}
 
-	void Scene::renderLightObjects(BeginMode mode, Shader *shader, bool drawLightBounds) const {
+	void Scene::renderLightObjects(BeginMode mode, const Shader *shader, bool drawLightBounds) const {
 		SceneRenderer::drawLights(mode, lightManager->getLights(), shader, mat4::identity(), 0.0f, drawLightBounds);
 	}
 

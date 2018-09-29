@@ -54,11 +54,11 @@ namespace xe { namespace fx {
 
 		FrameBuffer *gBuffer;
 
-		Shader *geometryShader;
-		Shader *stencilShader;
-		Shader *spotShader;
-		Shader *pointShader;
-		Shader *accumulationShader;
+		const Shader *geometryShader;
+		const Shader *stencilShader;
+		const Shader *spotShader;
+		const Shader *pointShader;
+		const Shader *accumulationShader;
 
 		Texture *depthStencilTexture;
 		Texture *diffuseTexture;

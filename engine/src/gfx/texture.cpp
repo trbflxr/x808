@@ -22,7 +22,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL("[Texture]: selected render API is not supported");
+				XE_FATAL(L"[Texture]: selected render API is not supported");
 				texture = nullptr;
 				break;
 			}
@@ -38,7 +38,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL("[Texture]: selected render API is not supported");
+				XE_FATAL(L"[Texture]: selected render API is not supported");
 				texture = nullptr;
 				break;
 			}

@@ -35,60 +35,17 @@ namespace xe { namespace fx {
 
 
 		//texture shaders
-		BaseShader *rt1 = new BaseShader("dRenderTexture1D", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture1D_frag"))
-		});
-		renderTexture1D = new Shader(rt1);
-
-
-		BaseShader *rt2 = new BaseShader("dRenderTexture2D", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture2D_frag"))
-		});
-		renderTexture2D = new Shader(rt2);
-
-
-		BaseShader *rt2a = new BaseShader("dRenderTexture2DArray", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture2DArray_frag"))
-		});
-		renderTexture2DArray = new Shader(rt2a);
-
-
-		BaseShader *rt3 = new BaseShader("dRenderTexture3D", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTexture3D_frag"))
-		});
-		renderTexture3D = new Shader(rt3);
-
-
-		BaseShader *rtc = new BaseShader("dRenderTextureCube", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("renderTextureCube_vert"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTextureCube_frag"))
-		});
-		renderTextureCube = new Shader(rtc);
-
-
-		BaseShader *rtca = new BaseShader("dRenderTextureCubeArray", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("renderTextureCube_vert"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("renderTextureCubeArray_frag"))
-		});
-		renderTextureCubeArray = new Shader(rtca);
+		renderTexture1D = GETSHADER("dRenderTexture1D");
+		renderTexture2D = GETSHADER("dRenderTexture2D");
+		renderTexture2DArray = GETSHADER("dRenderTexture2DArray");
+		renderTexture3D = GETSHADER("dRenderTexture3D");
+		renderTextureCube = GETSHADER("dRenderTextureCube");
+		renderTextureCubeArray = GETSHADER("dRenderTextureCubeArray");
 	}
 
 	Quad::~Quad() {
 		delete vao;
 		delete ibo;
-
-		delete renderTexture1D;
-		delete renderTexture2D;
-		delete renderTexture2DArray;
-		delete renderTexture3D;
-		delete renderTextureCube;
-		delete renderTextureCubeArray;
 	}
 
 	void Quad::render() const {
@@ -192,7 +149,7 @@ namespace xe { namespace fx {
 		}
 	}
 
-	void Quad::renderTexture(Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad) {
+	void Quad::renderTexture(const Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad) {
 		shader->bind();
 
 		if (strlen(uniform) > 0) {

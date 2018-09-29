@@ -3,7 +3,7 @@
 //
 
 #include <algorithm>
-#include <xe/gfx/2d/batchrenderer2d.hpp>
+#include <xe/gfx/batchrenderer2d.hpp>
 #include <xe/gfx/renderer.hpp>
 
 namespace xe {

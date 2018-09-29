@@ -20,11 +20,8 @@ namespace xe {
 	public:
 		virtual ~ShaderFile() = default;
 
-		inline ShaderType getType() const { return type; }
-		inline const string &getPathOrSource() const { return pathOrSource; }
-		inline const string &getFullSource() const { return fullSource; }
-		inline const std::vector<string> &getDependencies() const { return dependencies; }
-		inline const std::vector<string> &getExtensions() const { return extensions; }
+		virtual ShaderType getType() const = 0;
+		virtual const string &getSource() const = 0;
 
 		virtual uint compile() = 0;
 
@@ -43,33 +40,14 @@ namespace xe {
 		                              const std::vector<string> &dependenciesSource = { },
 		                              const std::vector<string> &extensions = { });
 
-		static ShaderFile *fromFile(ShaderType type, const string &path,
-		                            const std::vector<string> &dependencies = { },
+		static ShaderFile *fromFile(ShaderType type, const wstring &path,
+		                            const std::vector<wstring> &dependencies = { },
 		                            const std::vector<string> &extensions = { });
 
 		static const char *typeToString(ShaderType type);
 
 	protected:
-		explicit ShaderFile(bool fromSource, ShaderType type, const string &pathOrSource,
-		                    const std::vector<string> &dependencies,
-		                    const std::vector<string> &extensions);
-
-		string loadFromFile(const char *path);
-
 		virtual void setConstants(string &source) { }
-
-	protected:
-		bool createFromSource;
-
-		ShaderType type;
-
-		string pathOrSource;
-		std::vector<string> dependencies;
-		std::vector<string> extensions;
-
-		string fullSource;
-
-		uint addedLines;
 	};
 
 }

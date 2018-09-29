@@ -6,35 +6,65 @@
 #define X808_SHADER_HPP
 
 
-#include <xe/gfx/baseshader.hpp>
+#include <unordered_map>
+#include <xe/common.hpp>
+#include <xe/resources/shaderfile.hpp>
 
 namespace xe {
 
+	namespace internal {
+		class PlatformBaseShader;
+	}
+
+	struct UniformData {
+		byte *buffer;
+		uint size;
+
+		UniformData() = default;
+		explicit UniformData(uint size) : size(size) {
+			buffer = new byte[size];
+			memset(buffer, 0, size);
+		}
+	};
+
+	struct Uniform {
+		const char *name;
+		UniformData data;
+		uint offset;
+
+		Uniform() = default;
+		explicit Uniform(const char *name, const UniformData &data, uint offset) :
+				name(name), data(data), offset(offset) { }
+	};
+
 	class XE_API Shader {
 	public:
-		explicit Shader(BaseShader *shader, bool deleteBase = true);
-		explicit Shader(const string &nameInShaderManager);
+		explicit Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
 		virtual ~Shader();
 
-		virtual void bind() const;
-		virtual void unbind() const;
-
 		void updateUniforms() const;
+		void setUniform(const string &name, const void *data, size_t size) const;
 
-		void setUniform(const string &name, const void *data, size_t size);
+		uint getSampler(const string &name) const;
 
-		uint getSampler(const string &name);
+		void bind() const;
+		void unbind() const;
+
+		void setUniformBuffer(byte *data, uint size, uint slot) const;
 
 		void bindUniformBlock(const char *blockName, uint location) const;
 
-		inline const BaseShader *getBaseShader() const { return shader; }
+		const string &getName() const;
+		uint getHandle() const;
+		const ShaderSamplerVec &getSamplers() const;
+		const ShaderUniformBufferVec &getUniforms() const;
+		const std::unordered_map<string, string> &getSources() const;
 
 	private:
 		void init();
 
 	protected:
-		bool deleteBase;
-		const BaseShader *shader;
+		const internal::PlatformBaseShader *base;
 
 		std::vector<Uniform> uniforms;
 		std::vector<UniformData> uniformData;

@@ -18,12 +18,12 @@ namespace xe { namespace internal {
 		uint shaders[shaderPipeline.size()];
 
 		for (uint i = 0; i < shaderPipeline.size(); ++i) {
-			sources.emplace(shaderTypeToString(shaderPipeline[i]->getType()), shaderPipeline[i]->getFullSource());
+			sources.emplace(shaderTypeToString(shaderPipeline[i]->getType()), shaderPipeline[i]->getSource());
 
 			shaders[i] = shaderPipeline[i]->compile();
 			if (!shaders[i]) {
 				glCall(glDeleteProgram(handle));
-				XE_FATAL("[GLBaseShader]: shader name: ", name);
+				XE_FATAL(L"[GLBaseShader]: shader name: ", name);
 				XE_ASSERT(false);
 				return;
 			}
@@ -96,7 +96,7 @@ namespace xe { namespace internal {
 				break;
 			case GLShaderUniform::Type::Image3D: setUniform1i(field.getLocation(), *(int32 *) &data[offset]);
 				break;
-			default: XE_ASSERT(false, "Unknown type!");
+			default: XE_ASSERT(false, L"Unknown type!");
 		}
 	}
 
@@ -126,7 +126,7 @@ namespace xe { namespace internal {
 		for (auto &smpl : samplers) {
 			GLShaderSampler *resource = (GLShaderSampler *) smpl;
 
-			uint location = getUniformLocation(resource->name, false);
+			const uint location = getUniformLocation(resource->name, false);
 			if (resource->count == 1) {
 				resource->location = sampler;
 				setUniform1i(location, sampler++);
@@ -134,15 +134,14 @@ namespace xe { namespace internal {
 			} else if (resource->count > 1) {
 				resource->location = 0;
 
-				uint count = resource->count;
-				int32 *samplers = new int32[count];
+				const uint count = resource->count;
+				int32 samplers[count];
 
 				for (uint s = 0; s < count; s++) {
 					samplers[s] = s;
 				}
 
 				setUniform1iv(resource->getName(), samplers, count);
-				delete[] samplers;
 			}
 		}
 
@@ -153,9 +152,9 @@ namespace xe { namespace internal {
 		glCall(GLint result = glGetUniformLocation(handle, name.c_str()));
 		if (result == -1) {
 			if (runTime) {
-				XE_ERROR("[GLBaseShader]: '", GLBaseShader::name, "' could not get uniform location '", name, "'");
+				XE_ERROR(L"[GLBaseShader]: '", GLBaseShader::name, L"' could not get uniform location '", name, L"'");
 			} else {
-				XE_WARN("[GLBaseShader]: '", GLBaseShader::name, "' uniform '", name, "' optimized out");
+				XE_WARN(L"[GLBaseShader]: '", GLBaseShader::name, L"' uniform '", name, L"' optimized out");
 			}
 		}
 
@@ -211,7 +210,7 @@ namespace xe { namespace internal {
 				break;
 			case GLShaderUniform::Type::Struct: setUniformStruct(uniform, data, offset);
 				break;
-			default: XE_ASSERT(false, "Unknown type!");
+			default: XE_ASSERT(false, L"Unknown type!");
 		}
 	}
 
@@ -260,35 +259,35 @@ namespace xe { namespace internal {
 		setUniformMat4(getUniformLocation(name), matrix);
 	}
 
-	void GLBaseShader::setUniform1f(uint location, float value) const {
+	void GLBaseShader::setUniform1f(int32 location, float value) const {
 		glCall(glUniform1f(location, value));
 	}
 
-	void GLBaseShader::setUniform1fv(uint location, float *value, int32 count) const {
+	void GLBaseShader::setUniform1fv(int32 location, float *value, int32 count) const {
 		glCall(glUniform1fv(location, count, value));
 	}
 
-	void GLBaseShader::setUniform1i(uint location, int32 value) const {
+	void GLBaseShader::setUniform1i(int32 location, int32 value) const {
 		glCall(glUniform1i(location, value));
 	}
 
-	void GLBaseShader::setUniform1iv(uint location, int32 *value, int32 count) const {
+	void GLBaseShader::setUniform1iv(int32 location, int32 *value, int32 count) const {
 		glCall(glUniform1iv(location, count, value));
 	}
 
-	void GLBaseShader::setUniform2f(uint location, const vec2 &vector) const {
+	void GLBaseShader::setUniform2f(int32 location, const vec2 &vector) const {
 		glCall(glUniform2f(location, vector.x, vector.y));
 	}
 
-	void GLBaseShader::setUniform3f(uint location, const vec3 &vector) const {
+	void GLBaseShader::setUniform3f(int32 location, const vec3 &vector) const {
 		glCall(glUniform3f(location, vector.x, vector.y, vector.z));
 	}
 
-	void GLBaseShader::setUniform4f(uint location, const vec4 &vector) const {
+	void GLBaseShader::setUniform4f(int32 location, const vec4 &vector) const {
 		glCall(glUniform4f(location, vector.x, vector.y, vector.z, vector.w));
 	}
 
-	void GLBaseShader::setUniformMat4(uint location, const mat4 &matrix) const {
+	void GLBaseShader::setUniformMat4(int32 location, const mat4 &matrix) const {
 		glCall(glUniformMatrix4fv(location, 1, GL_TRUE, matrix.elements));
 	}
 

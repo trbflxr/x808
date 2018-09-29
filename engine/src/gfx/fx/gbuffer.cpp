@@ -31,12 +31,6 @@ namespace xe { namespace fx {
 	}
 
 	GBuffer::~GBuffer() {
-		delete geometryShader;
-		delete stencilShader;
-		delete spotShader;
-		delete pointShader;
-		delete accumulationShader;
-
 		delete depthStencilTexture;
 		delete diffuseTexture;
 		delete normalDepthTexture;
@@ -83,69 +77,12 @@ namespace xe { namespace fx {
 	}
 
 	void GBuffer::createShaders() {
-		//includes
-		std::vector<string> geomInclude{ShaderManager::getSource("1_cameraSpatials_ubo"),
-		                                ShaderManager::getSource("gBufferFunctions_include"),
-		                                ShaderManager::getSource("linearDepth_include")};
-
-		std::vector<string> lightingInclude{ShaderManager::getSource("1_cameraSpatials_ubo"),
-		                                    ShaderManager::getSource("lightingFunctions_include"),
-		                                    ShaderManager::getSource("positionFromDepth_include"),
-		                                    ShaderManager::getSource("linearDepth_include")};
-
-
 		//shaders
-		BaseShader *geomBase = new BaseShader("dGeomShader", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("geometry_vert")),
-
-				ShaderFile::fromSource(ShaderType::TessControl, ShaderManager::getSource("gBufferGeometry_tesc"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo"),
-				                        ShaderManager::getSource("culling_include")}),
-
-				ShaderFile::fromSource(ShaderType::TessEval, ShaderManager::getSource("gBufferGeometry_tese")),
-
-				ShaderFile::fromSource(ShaderType::Geom, ShaderManager::getSource("gBufferGeometry_geom"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
-
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferGeometry_frag"),
-				                       {geomInclude})
-		});
-		geometryShader = new Shader(geomBase);
-
-
-		BaseShader *stencilBase = new BaseShader("dStencil", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("gBufferStencil_vert"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo")})
-		});
-		stencilShader = new Shader(stencilBase);
-
-
-		BaseShader *spotLightBase = new BaseShader("dSpotLight", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("gBufferStencil_vert"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
-
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferLightingSpot_frag"),
-				                       {lightingInclude})
-		});
-		spotShader = new Shader(spotLightBase);
-
-
-		BaseShader *pointLightBase = new BaseShader("dPointLight", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("gBufferStencil_vert"),
-				                       {ShaderManager::getSource("1_cameraSpatials_ubo")}),
-
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferLightingPoint_frag"),
-				                       {lightingInclude})
-		});
-		pointShader = new Shader(pointLightBase);
-
-
-		BaseShader *accumulationBase = new BaseShader("dAccumulation", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("gBufferAccumulation_frag"))
-		});
-		accumulationShader = new Shader(accumulationBase);
-
+		geometryShader = GETSHADER("dGeomShader");
+		stencilShader = GETSHADER("dStencil");
+		spotShader = GETSHADER("dSpotLight");
+		pointShader = GETSHADER("dPointLight");
+		accumulationShader = GETSHADER("dAccumulation");
 	}
 
 	void GBuffer::passDeferredShading(const Scene *scene) const {

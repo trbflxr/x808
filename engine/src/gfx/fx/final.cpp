@@ -12,12 +12,7 @@ namespace xe { namespace fx {
 			RenderEffect(width, height) {
 
 		//fx final
-		BaseShader *finalFX = new BaseShader("dFinalFX", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("finalScene_frag"),
-				                       {ShaderManager::getSource("fxaa_include")})
-		});
-		finalShader = new Shader(finalFX);
+		finalShader = GETSHADER("dFinalFX");
 		sampler0 = finalShader->getSampler("sampler0");
 
 		//texture
@@ -41,7 +36,6 @@ namespace xe { namespace fx {
 	}
 
 	Final::~Final() {
-		delete finalShader;
 		delete finalFBO;
 		delete finalTexture;
 	}

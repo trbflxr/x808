@@ -28,7 +28,7 @@ namespace xe { namespace internal {
 		}
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_FATAL("[GLFrameBuffer]: '", name, "' creation fail");
+			XE_FATAL(L"[GLFrameBuffer]: '", name, L"' creation fail");
 			XE_ASSERT(false);
 		}
 
@@ -82,7 +82,7 @@ namespace xe { namespace internal {
 		glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(attachment), texture->getHandle(), 0));
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_FATAL("[GLFrameBuffer]: setting texture failed");
+			XE_FATAL(L"[GLFrameBuffer]: setting texture failed");
 			XE_ASSERT(false);
 		}
 	}

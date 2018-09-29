@@ -3,6 +3,7 @@
 //
 
 #include <freetype-gl/freetype-gl.h>
+#include <xe/resources/shadermanager.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 
@@ -26,7 +27,7 @@ namespace xe {
 
 		indexBuffer->setData(indices, XE_RENDERER2D_MAX_SPRITES * 6);
 
-		shader = new Shader("dTextRenderer");
+		shader = GETSHADER("dTextRenderer");
 	}
 
 	void TextRenderer::begin() {

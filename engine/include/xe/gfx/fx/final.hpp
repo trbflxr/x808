@@ -29,7 +29,7 @@ namespace xe { namespace fx {
 	private:
 		uint sampler0;
 
-		Shader *finalShader;
+		const Shader *finalShader;
 		FrameBuffer *finalFBO;
 		Texture *finalTexture;
 

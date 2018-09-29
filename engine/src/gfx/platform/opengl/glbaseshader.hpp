@@ -25,7 +25,7 @@ namespace xe { namespace internal {
 
 		void bindUniformBlock(const char *blockName, uint location) const override;
 
-		inline const ShaderUniformBufferVec &getUniforms() override { return uniformBuffers; }
+		inline const ShaderUniformBufferVec &getUniforms() const override { return uniformBuffers; }
 		inline const ShaderSamplerVec &getSamplers() const override { return samplers; }
 		inline const string &getName() const override { return name; }
 		inline uint getHandle() const override { return handle; }
@@ -54,14 +54,14 @@ namespace xe { namespace internal {
 		void setUniform4f(const string &name, const vec4 &vector) const;
 		void setUniformMat4(const string &name, const mat4 &matrix) const;
 
-		void setUniform1f(uint location, float value) const;
-		void setUniform1fv(uint location, float *value, int32 count) const;
-		void setUniform1i(uint location, int32 value) const;
-		void setUniform1iv(uint location, int32 *value, int32 count) const;
-		void setUniform2f(uint location, const vec2 &vector) const;
-		void setUniform3f(uint location, const vec3 &vector) const;
-		void setUniform4f(uint location, const vec4 &vector) const;
-		void setUniformMat4(uint location, const mat4 &matrix) const;
+		void setUniform1f(int32 location, float value) const;
+		void setUniform1fv(int32 location, float *value, int32 count) const;
+		void setUniform1i(int32 location, int32 value) const;
+		void setUniform1iv(int32 location, int32 *value, int32 count) const;
+		void setUniform2f(int32 location, const vec2 &vector) const;
+		void setUniform3f(int32 location, const vec3 &vector) const;
+		void setUniform4f(int32 location, const vec4 &vector) const;
+		void setUniformMat4(int32 location, const mat4 &matrix) const;
 
 	private:
 		string name;

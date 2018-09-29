@@ -9,7 +9,7 @@
 #include <xe/ecs/ecs.hpp>
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/rectangleshape.hpp>
-#include <xe/gfx/2d/batchrenderer2d.hpp>
+#include <xe/gfx/batchrenderer2d.hpp>
 
 class DebugUI : public xe::Layer {
 private:

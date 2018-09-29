@@ -31,18 +31,18 @@ namespace xe { namespace fx {
 		void renderTexture(const Texture *texture, float size, int32 pos, int32 layer = 0, int32 channel = -1);
 
 	private:
-		void renderTexture(Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad);
+		void renderTexture(const Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad);
 
 	private:
 		VertexArray *vao;
 		IndexBuffer *ibo;
 
-		Shader *renderTexture1D;
-		Shader *renderTexture2D;
-		Shader *renderTexture2DArray;
-		Shader *renderTexture3D;
-		Shader *renderTextureCube;
-		Shader *renderTextureCubeArray;
+		const Shader *renderTexture1D;
+		const Shader *renderTexture2D;
+		const Shader *renderTexture2DArray;
+		const Shader *renderTexture3D;
+		const Shader *renderTextureCube;
+		const Shader *renderTextureCubeArray;
 	};
 
 }}

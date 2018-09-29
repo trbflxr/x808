@@ -40,7 +40,7 @@ namespace xe {
 
 		if (!file) {
 			fclose(file);
-			XE_FATAL("[SceneLoader]: unable to read file '", paths[0], "'");
+			XE_FATAL(L"[SceneLoader]: unable to read file '", paths[0], L"'");
 			XE_ASSERT(false);
 			return false;
 		}
@@ -67,7 +67,7 @@ namespace xe {
 		delete[] buff;
 
 		if (!scene) {
-			XE_FATAL("[SceneLoader]: unable to load scene '", paths[0], "'");
+			XE_FATAL(L"[SceneLoader]: unable to load scene '", paths[0], L"'");
 			XE_ASSERT(false);
 			return false;
 		}

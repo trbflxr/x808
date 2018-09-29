@@ -30,7 +30,7 @@ namespace xe {
 
 		for (uint i = 0; i < numComponents; i++) {
 			if (!BaseECSComponent::isTypeValid(componentIDs[i])) {
-				XE_FATAL("[ECS]: ", componentIDs[i], " is not a valid component type");
+				XE_FATAL(L"[ECS]: '", componentIDs[i], L"' is not a valid component type");
 
 				delete newEntity;
 				return nullptr;

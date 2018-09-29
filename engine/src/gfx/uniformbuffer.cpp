@@ -16,7 +16,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL("[UniformBuffer]: selected render API is not supported");
+				XE_FATAL(L"[UniformBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

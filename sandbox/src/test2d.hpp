@@ -8,7 +8,7 @@
 
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/rectangleshape.hpp>
-#include <xe/gfx/2d/batchrenderer2d.hpp>
+#include <xe/gfx/batchrenderer2d.hpp>
 
 class Test2D : public xe::Layer {
 public:

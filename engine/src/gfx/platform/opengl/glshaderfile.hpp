@@ -6,17 +6,23 @@
 #define X808_GLSHADERFILE_HPP
 
 
+#include <sstream>
 #include <xe/resources/shaderfile.hpp>
 
 namespace xe { namespace internal {
 
 	class GLShaderFile : public ShaderFile {
 	public:
-		explicit GLShaderFile(bool fromSource, ShaderType type, const string &pathOrSource,
-		                      const std::vector<string> &dependencies,
+		explicit GLShaderFile(ShaderType type, const string &source,
+		                      const std::vector<string> &dependenciesSource,
 		                      const std::vector<string> &extensions);
 
-		~GLShaderFile() override = default;
+		explicit GLShaderFile(ShaderType type, const wstring &path,
+		                      const std::vector<wstring> &dependencies,
+		                      const std::vector<string> &extensions);
+
+		inline ShaderType getType() const override { return type; }
+		inline const string &getSource() const override { return source; }
 
 		uint compile() override;
 
@@ -34,6 +40,16 @@ namespace xe { namespace internal {
 	protected:
 		void setConstants(string &source) override;
 
+	private:
+		void appendConstants(std::stringstream &stream);
+		void appendExtensions(std::stringstream &stream, const std::vector<string> &extensions);
+		void appendDependencies(std::stringstream &stream, const std::vector<string> &dependencies);
+
+	private:
+		ShaderType type;
+
+		string source;
+		uint addedLines;
 	};
 
 }}

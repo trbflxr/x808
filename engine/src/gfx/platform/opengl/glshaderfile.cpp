@@ -2,10 +2,9 @@
 // Created by FLXR on 8/6/2018.
 //
 
-#include <sstream>
-#include <vector>
 #include <xe/gfx/context.hpp>
 #include <xe/utils/string.hpp>
+#include <xe/loaders/shaderloader.hpp>
 #include "glshaderfile.hpp"
 #include "glcommon.hpp"
 #include "glenums.hpp"
@@ -15,19 +14,77 @@
 
 namespace xe { namespace internal {
 
-	GLShaderFile::GLShaderFile(bool fromSource, ShaderType type, const string &pathOrSource,
-	                           const std::vector<string> &dependencies,
+
+	GLShaderFile::GLShaderFile(ShaderType type, const string &source,
+	                           const std::vector<string> &dependenciesSource,
 	                           const std::vector<string> &extensions) :
-			ShaderFile(fromSource, type, pathOrSource, dependencies, extensions) {
+			type(type) {
 
 		std::stringstream shaderSource;
 		std::stringstream shaderAdditions;
-		std::stringstream shaderExtensions;
 
+		appendConstants(shaderAdditions);
+		appendExtensions(shaderAdditions, extensions);
+		appendDependencies(shaderAdditions, dependenciesSource);
+
+		shaderSource << shaderAdditions.str() << "\n";
+		shaderSource << source;
+
+		GLShaderFile::source = shaderSource.str();
+
+		setConstants(GLShaderFile::source);
+	}
+
+	GLShaderFile::GLShaderFile(ShaderType type, const wstring &path,
+	                           const std::vector<wstring> &dependencies,
+	                           const std::vector<string> &extensions) :
+			type(type) {
+
+		//load from file
+		const string source = ShaderLoader::load(path);
+
+		std::vector<string> dependenciesSource(dependencies.size());
+		for (const auto &d : dependencies) {
+			dependenciesSource.emplace_back(ShaderLoader::load(d));
+		}
+
+		std::stringstream shaderSource;
+		std::stringstream shaderAdditions;
+
+		appendConstants(shaderAdditions);
+		appendExtensions(shaderAdditions, extensions);
+		appendDependencies(shaderAdditions, dependenciesSource);
+
+		shaderSource << shaderAdditions.str() << "\n";
+		shaderSource << source;
+
+		GLShaderFile::source = shaderSource.str();
+
+		setConstants(GLShaderFile::source);
+	}
+
+	void GLShaderFile::setConstants(string &source) {
+		const string str = "@MAX_TEXTURES";
+		const size_t pos = source.find(str);
+		if (pos != string::npos) {
+			source.replace(pos, str.size(), std::to_string(Context::getMaxTextureUnits()));
+		}
+	}
+
+	void GLShaderFile::appendConstants(std::stringstream &stream) {
 		//constants
-		const char *MATH_PI = "#define MATH_PI 3.1415926535897932384626433832795";
-		const char *MATH_HALF_PI = "#define MATH_HALF_PI 1.57079632679489661923132169163975";
-		const char *MATH_2_PI = "#define MATH_2_PI 6.283185307179586476925286766559";
+		static const char *MATH_PI = "#define MATH_PI 3.1415926535897932384626433832795";
+		static const char *MATH_HALF_PI = "#define MATH_HALF_PI 1.57079632679489661923132169163975";
+		static const char *MATH_2_PI = "#define MATH_2_PI 6.283185307179586476925286766559";
+
+		stream << "#version " << Context::getRenderAPIVersion() << "\n";
+		stream << MATH_PI << "\n";
+		stream << MATH_HALF_PI << "\n";
+		stream << MATH_2_PI << "\n ";
+	}
+
+	void GLShaderFile::appendExtensions(std::stringstream &stream, const std::vector<string> &extensions) {
+		std::stringstream shaderExtensions;
 
 		//extensions
 		if (!extensions.empty()) {
@@ -35,51 +92,22 @@ namespace xe { namespace internal {
 				shaderExtensions << extension << "\n";
 			}
 		}
-		++addedLines;
 
-		shaderAdditions << "#version " << Context::getRenderAPIVersion() << "\n";
-		shaderAdditions << shaderExtensions.str() << "\n";
-		shaderAdditions << MATH_PI << "\n";
-		shaderAdditions << MATH_HALF_PI << "\n";
-		shaderAdditions << MATH_2_PI << "\n ";
+		stream << shaderExtensions.str() << "\n";
+	}
 
-		string source;
-		if (createFromSource) {
-			source = pathOrSource;
-
-			if (!dependencies.empty()) {
-				for (auto &&dependency : dependencies) {
-					shaderAdditions << "\n" << dependency;
-				}
-				++addedLines;
-			}
-
-		} else {
-			source = loadFromFile(pathOrSource.data());
-
-			if (!dependencies.empty()) {
-				for (auto &&dependency : dependencies) {
-					shaderAdditions << "\n" << loadFromFile(dependency.c_str());
-				}
-				++addedLines;
+	void GLShaderFile::appendDependencies(std::stringstream &stream, const std::vector<string> &dependencies) {
+		if (!dependencies.empty()) {
+			for (const auto &d : dependencies) {
+				stream << "\n" << d;
 			}
 		}
-
-		setConstants(source);
-
-		shaderSource << shaderAdditions.str() << "\n";
-		shaderSource << source;
-
-		auto vec = utils::splitString(shaderAdditions.str(), '\n');
-		addedLines += vec.size();
-
-		fullSource = shaderSource.str();
 	}
 
 	uint GLShaderFile::compile() {
 		glCall(uint id = glCreateShader(shaderTypeToGL(type)));
 
-		const char *sourcePtr = fullSource.c_str();
+		const char *sourcePtr = source.c_str();
 
 		glCall(glShaderSource(id, 1, &sourcePtr, nullptr));
 		glCall(glCompileShader(id));
@@ -103,9 +131,9 @@ namespace xe { namespace internal {
 			}
 			uint lineNumber = std::stoul(line) - addedLines;
 
-			XE_FATAL("[GLShaderFile]: Failed to compile ", typeToString(type), " shader.");
-			XE_FATAL("[GLShaderFile]: Line: ", lineNumber);
-			XE_FATAL("[GLShaderFile]: ", errorMessage);
+			XE_FATAL(L"[GLShaderFile]: Failed to compile ", typeToString(type), L" shader.");
+			XE_FATAL(L"[GLShaderFile]: Line: ", lineNumber);
+			XE_FATAL(L"[GLShaderFile]: ", errorMessage);
 
 			glCall(glDeleteShader(id));
 			return 0;
@@ -119,18 +147,18 @@ namespace xe { namespace internal {
 	                         ShaderStructVec &structs) {
 
 		const char *token;
-		const char *source;
+		const char *sourcePtr;
 
 		//structs
-		source = fullSource.c_str();
-		while ((token = utils::findToken(source, "struct"))) {
-			parseUniformStruct(utils::getBlock(token, &source), structs);
+		sourcePtr = source.c_str();
+		while ((token = utils::findToken(sourcePtr, "struct"))) {
+			parseUniformStruct(utils::getBlock(token, &sourcePtr), structs);
 		}
 
 		//uniforms
-		source = fullSource.c_str();
-		while ((token = utils::findToken(source, "uniform"))) {
-			parseUniform(utils::getStatement(token, &source), buffers, samplers, structs);
+		sourcePtr = source.c_str();
+		while ((token = utils::findToken(sourcePtr, "uniform"))) {
+			parseUniform(utils::getStatement(token, &sourcePtr), buffers, samplers, structs);
 		}
 	}
 
@@ -180,7 +208,7 @@ namespace xe { namespace internal {
 					}
 				}
 
-				XE_ASSERT(s, "[GLShaderFile]: Could not find struct: ", typeStr, " ", name);
+				XE_ASSERT(s, L"[GLShaderFile]: Could not find struct: ", typeStr, L" ", name);
 				uniform = new GLShaderUniform(s, name, count);
 			} else {
 				uniform = new GLShaderUniform(t, name, count);
@@ -224,14 +252,6 @@ namespace xe { namespace internal {
 		}
 
 		structs.push_back(uniformStruct);
-	}
-
-	void GLShaderFile::setConstants(string &source) {
-		const string str = "@MAX_TEXTURES";
-		const size_t pos = source.find(str);
-		if (pos != string::npos) {
-			source.replace(pos, str.size(), std::to_string(Context::getMaxTextureUnits()));
-		}
 	}
 
 }}

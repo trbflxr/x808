@@ -66,7 +66,7 @@ namespace xe {
 		uint height;
 
 		Camera *camera;
-		Shader *shader;
+		const Shader *shader;
 
 		IndexBuffer *indexBuffer;
 		uint *indices;

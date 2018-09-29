@@ -16,7 +16,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL("[VertexBuffer]: selected render API is not supported");
+				XE_FATAL(L"[VertexBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

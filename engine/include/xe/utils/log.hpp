@@ -214,7 +214,7 @@ namespace xe { namespace internal {
 		                 L"\t - Shading language:  %s\n"
 		                 L"\t - Max texture size:  %i\n"
 		                 L"\t - Max texture units: %i\n"
-		                 L"\t - Max image units:   %i",
+		                 L"\t - Max image units:   %i\n",
 		         t.vendor,
 		         t.version,
 		         t.renderer,

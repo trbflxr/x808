@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <xe/gfx/renderer.hpp>
+#include <xe/resources/shadermanager.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 
 namespace xe {
@@ -12,7 +13,7 @@ namespace xe {
 			IRenderer2D(width, height, camera),
 			enableWireframe_(false) {
 
-		shader = new Shader("dRenderer2D");
+		shader = GETSHADER("dRenderer2D");
 	}
 
 	void Renderer2D::begin() {

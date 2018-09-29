@@ -92,10 +92,10 @@ namespace xe { namespace internal {
 
 		if (pixelFormat) {
 			if (!SetPixelFormat(screenDC, pixelFormat, &pfd)) {
-				XE_FATAL("[PlatformWindowWin32]: Failed setting pixel format!");
+				XE_FATAL(L"[PlatformWindowWin32]: Failed setting pixel format!");
 			}
 		} else {
-			XE_FATAL("[PlatformWindowWin32]: Failed choosing pixel format!");
+			XE_FATAL(L"[PlatformWindowWin32]: Failed choosing pixel format!");
 		}
 		ReleaseDC(handle, screenDC);
 

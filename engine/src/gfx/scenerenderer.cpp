@@ -8,7 +8,7 @@
 
 namespace xe {
 
-	void SceneRenderer::drawMeshes(BeginMode mode, const std::vector<UniqueMesh *> &meshes, Shader *shader,
+	void SceneRenderer::drawMeshes(BeginMode mode, const std::vector<UniqueMesh *> &meshes, const Shader *shader,
 	                               const mat4 &transform, float delta, bool useMaterial) {
 
 		for (auto &&mesh : meshes) {
@@ -54,7 +54,7 @@ namespace xe {
 	}
 
 	void SceneRenderer::drawLights(BeginMode mode, const std::vector<Light *> &lights,
-	                               Shader *shader, const mat4 &transform, float delta, bool displayBounds) {
+	                               const Shader *shader, const mat4 &transform, float delta, bool displayBounds) {
 
 		for (auto &&light : lights) {
 			if (!light->getMesh()) continue;
@@ -107,7 +107,7 @@ namespace xe {
 		Renderer::setCullFace(CullFace::Back);
 	}
 
-	void SceneRenderer::drawLightBounds(const Light *light, Shader *shader) {
+	void SceneRenderer::drawLightBounds(const Light *light, const Shader *shader) {
 		const mat4 &bModel = light->transform.toMatrix().clearScale() * light->getBoundsMatrix();
 
 		shader->setUniform(uniform::model, &bModel, sizeof(mat4));
@@ -117,7 +117,9 @@ namespace xe {
 		light->getMesh()->render(BeginMode::Triangles);
 	}
 
-	int32 SceneRenderer::setTexture(Shader *shader, const Texture *texture, const char *sampler, const char *enable) {
+	int32 SceneRenderer::setTexture(const Shader *shader, const Texture *texture,
+	                                const char *sampler, const char *enable) {
+
 		if (!texture) {
 			shader->setUniform(enable, &disabled, sizeof(int32));
 			return -1;

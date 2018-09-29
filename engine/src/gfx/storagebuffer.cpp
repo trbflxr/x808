@@ -15,7 +15,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL("[StorageBuffer]: selected render API is not supported");
+				XE_FATAL(L"[StorageBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

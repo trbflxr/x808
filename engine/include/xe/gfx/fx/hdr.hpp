@@ -36,9 +36,9 @@ namespace xe { namespace fx {
 		uint aeSampler0;
 		uint ssSampler0;
 
-		Shader *luminosityShader;
-		Shader *autoExposureShader;
-		Shader *scaleSceneShader;
+		const Shader *luminosityShader;
+		const Shader *autoExposureShader;
+		const Shader *scaleSceneShader;
 
 		Texture *luminosityTexture;
 		Texture *tempScene;

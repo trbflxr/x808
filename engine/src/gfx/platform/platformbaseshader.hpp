@@ -24,7 +24,7 @@ namespace xe { namespace internal {
 
 		virtual void bindUniformBlock(const char *blockName, uint location) const = 0;
 
-		virtual const ShaderUniformBufferVec &getUniforms() = 0;
+		virtual const ShaderUniformBufferVec &getUniforms() const = 0;
 		virtual const ShaderSamplerVec &getSamplers() const = 0;
 		virtual const string &getName() const = 0;
 		virtual uint getHandle() const = 0;

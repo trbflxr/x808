@@ -24,10 +24,6 @@ namespace xe { namespace fx {
 	}
 
 	HDR::~HDR() {
-		delete luminosityShader;
-		delete autoExposureShader;
-		delete scaleSceneShader;
-
 		delete luminosityTexture;
 		delete tempScene;
 
@@ -57,25 +53,9 @@ namespace xe { namespace fx {
 	}
 
 	void HDR::createShaders() {
-		//luminosity
-		BaseShader *baseLuminosity = new BaseShader("dLuminosity", {
-				ShaderFile::fromSource(ShaderType::Compute, ShaderManager::getSource("hdrLuminosity_comp"))
-		});
-		luminosityShader = new Shader(baseLuminosity);
-
-		//autoExposure
-		BaseShader *baseAutoExposure = new BaseShader("dAutoExposure", {
-				ShaderFile::fromSource(ShaderType::Compute, ShaderManager::getSource("hdrAutoExposure_comp"),
-				                       {ShaderManager::getSource("interpolation_include")})
-		});
-		autoExposureShader = new Shader(baseAutoExposure);
-
-		//Luminosity
-		BaseShader *baseScaleScene = new BaseShader("dScaleScene", {
-				ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("commonGeneric_vert")),
-				ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("hdrScaleScene_frag"))
-		});
-		scaleSceneShader = new Shader(baseScaleScene);
+		luminosityShader = GETSHADER("dLuminosity");
+		autoExposureShader = GETSHADER("dAutoExposure");
+		scaleSceneShader = GETSHADER("dScaleScene");
 
 		//get samplers
 		aeSampler0 = autoExposureShader->getSampler("sampler0");

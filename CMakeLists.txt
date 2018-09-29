@@ -48,7 +48,7 @@ else ()
             "\n"
             "srgb=1\n"
             "\n"
-            "#must be 'ogl'. v330 for 2d and v450 for 3d\n"
+            "#must be 'ogl'. v330 for 2d and v430 for 3d\n"
             "renderApi=ogl\n"
             "apiVersion=330\n"
             "\n"
