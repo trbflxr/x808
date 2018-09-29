@@ -21,6 +21,7 @@ DebugUI::DebugUI() :
 	renderer = new BatchRenderer2D(window.getSize().x, window.getSize().y, camera);
 
 	const float offset = 10.0f;
+	const float textOffset = 32.0f;
 
 	const float lw = 25.0f;
 
@@ -34,43 +35,43 @@ DebugUI::DebugUI() :
 	const float spHeight = 150.0f;
 	const float spY = spHeight / 2.0f + offset;
 
-	const vec2 outline(0.65f, 0.35f);
+	const float outline = 2.0f;
 
 	//text
-	fpsText = new Text(L"fps: ", 2.0f);
-	fpsText->setPosition({offset + offset, h - offset});
+	fpsText = new Text(L"fps: ", GETFONT("default"), 0.25f);
+	fpsText->setPosition({offset + offset, h - textOffset});
 	fpsText->setOutlineColor(color::BLACK);
-	fpsText->setOutline(outline);
+	fpsText->setOutlineThickness(outline);
 
-	upsText = new Text(L"ups: ", 2.0f);
+	upsText = new Text(L"ups: ", GETFONT("default"), 0.25f);
 	upsText->setPosition({offset + offset, fpsText->getPosition().y - lw});
 	upsText->setOutlineColor(color::BLACK);
-	upsText->setOutline(outline);
+	upsText->setOutlineThickness(outline);
 
-	frameTimeText = new Text(L"frame time: ", 2.0f);
+	frameTimeText = new Text(L"frame time: ", GETFONT("default"), 0.25f);
 	frameTimeText->setPosition({offset + offset, upsText->getPosition().y - lw});
 	frameTimeText->setOutlineColor(color::BLACK);
-	frameTimeText->setOutline(outline);
+	frameTimeText->setOutlineThickness(outline);
 
-	dcText = new Text(L"dc: ", 2.0f);
+	dcText = new Text(L"dc: ", GETFONT("default"), 0.25f);
 	dcText->setPosition({offset + offset, frameTimeText->getPosition().y - lw});
 	dcText->setOutlineColor(color::BLACK);
-	dcText->setOutline(outline);
+	dcText->setOutlineThickness(outline);
 
 	infoRect = new RectangleShape({irw, irh}, 10.0f);
 	infoRect->setColor(color::rgba(0, 0, 0, 0.6f));
 	infoRect->setPosition({offset + irw / 2.0f, h - irh / 2.0f - offset});
 
 	//tracked
-	tePosText = new Text(L"position: ", 2.0f);
+	tePosText = new Text(L"position: ", GETFONT("default"), 0.25f);
 	tePosText->setPosition({offset + offset, dcText->getPosition().y - offset * 4.0f - (offset / 2.0f)});
 	tePosText->setOutlineColor(color::BLACK);
-	tePosText->setOutline(outline);
+	tePosText->setOutlineThickness(outline);
 
-	teDirText = new Text(L"direction: ", 2.0f);
+	teDirText = new Text(L"direction: ", GETFONT("default"), 0.25f);
 	teDirText->setPosition({offset + offset, tePosText->getPosition().y - lw});
 	teDirText->setOutlineColor(color::BLACK);
-	teDirText->setOutline(outline);
+	teDirText->setOutlineThickness(outline);
 
 	teRect = new RectangleShape({ttw, tth}, 10.0f);
 	teRect->setColor(color::rgba(0, 0, 0, 0.6f));

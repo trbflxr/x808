@@ -14,16 +14,6 @@
 namespace xe {
 
 	class XE_API TextRenderer : public IRenderer2D {
-	private:
-		struct TextVertexData {
-			vec4 vertexTid;
-			vec2 uv;
-			uint color;
-			uint outlineColor;
-			vec2 offset;
-			vec4 widthEdge;
-		};
-
 	public:
 		explicit TextRenderer(uint width, uint height, Camera *camera);
 
@@ -38,10 +28,13 @@ namespace xe {
 	private:
 		void submitInternal(const Text *t);
 
+		void submitString(const wstring &str, const Font *font, uint color, float tid,
+		                  float scale, const mat4 &transform, float &x, float &y);
+
 	private:
 		std::vector<const Text *> text;
 
-		TextVertexData *buffer;
+		VertexData *buffer;
 	};
 
 }

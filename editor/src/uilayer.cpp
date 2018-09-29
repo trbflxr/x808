@@ -50,7 +50,7 @@ void UILayer::render() {
 	Renderer::setViewport(0, 0, 512, 512);
 	Renderer::setClearColor(color::GREEN);
 	Renderer::clear(RendererBufferColor);
-	
+
 //	glColor3f(1, 0, 1);
 //	glBegin(GL_TRIANGLES);
 //	glVertex2f(0, 0);

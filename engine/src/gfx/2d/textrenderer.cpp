@@ -2,37 +2,14 @@
 // Created by FLXR on 9/6/2018.
 //
 
+#include <freetype-gl/freetype-gl.h>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 
 namespace xe {
 
-#define TEXT_RENDERER_VERTEX_SIZE sizeof(TextVertexData)
-
-#define TEXT_RENDERER_SPRITE_SIZE     (TEXT_RENDERER_VERTEX_SIZE * 4)
-#define TEXT_RENDERER_BUFFER_SIZE     (TEXT_RENDERER_SPRITE_SIZE * XE_RENDERER2D_MAX_SPRITES)
-
 	TextRenderer::TextRenderer(uint width, uint height, Camera *camera) :
 			IRenderer2D(width, height, camera) {
-
-		VertexBuffer *buffer = vertexArray->popBuffer();
-		delete buffer;
-
-		buffer = new VertexBuffer(BufferUsage::DynamicDraw);
-		buffer->resize(TEXT_RENDERER_BUFFER_SIZE);
-
-		BufferLayout layout;
-		layout.push<vec4>("posTid");
-		layout.push<vec2>("uv");
-		layout.push<byte>("color", 4, true);
-		layout.push<byte>("outlineColor", 4, true);
-		layout.push<vec2>("offset");
-		layout.push<vec4>("widthEdge");
-
-		buffer->setLayout(layout);
-
-		vertexArray->pushBuffer(buffer);
-
 
 		uint offset = 0;
 		for (uint i = 0; i < XE_RENDERER2D_MAX_SPRITES * 6; i += 6) {
@@ -58,7 +35,7 @@ namespace xe {
 		Renderer::setViewport(0, 0, width, height);
 
 		vertexArray->bind();
-		buffer = static_cast<TextVertexData *>(vertexArray->getBuffer(0)->getPointer());
+		buffer = static_cast<VertexData *>(vertexArray->getBuffer(0)->getPointer());
 	}
 
 	void TextRenderer::end() {
@@ -128,87 +105,93 @@ namespace xe {
 	}
 
 	void TextRenderer::submitInternal(const Text *t) {
-		const Font &font = *t->getFont();
-		const Texture *atlas = font.getAtlas();
+		const Font *font = t->getFont();
+		const Texture *atlas = font->getTexture();
 		const float tid = submitTexture(atlas);
 
-		const float size = t->getSize() / 10.0f;
 		const wstring &string = t->getString();
-		const vec2 &offset = t->getOutlineOffset();
 		const uint color = t->getTextColor();
 		const uint outlineColor = t->getOutlineColor();
-
-		//edge and outline
-		const vec2 &outline = t->getOutline();
-		vec2 edge = t->getEdge();
-
-		if (t->useAutoEdge()) {
-			//todo: formula?
-		}
-
-		const vec4 widthEdge = vec4(edge.x, edge.y, outline.x, outline.y);
+		const float scale = t->getFontScale();
+		const float outlineThickness = t->getOutlineThickness();
 
 		//transform
 		const mat4 transform = *transformationBack * t->toMatrix();
 
 		float x = 0.0f;
-		for (uint i = 0; i < string.length(); ++i) {
-			const Glyph &glyph = font.get((uint) string[i]);
+		float y = 0.0f;
+
+		if (outlineThickness > 0.001f) {
+			font->setOutlineType(2);
+			font->setOutlineThickness(outlineThickness);
+
+			submitString(string, font, outlineColor, tid, scale, transform, x, y);
+
+			x = 0.0f;
+		}
+
+		font->setOutlineType(0);
+		font->setOutlineThickness(0.0f);
+
+		submitString(string, font, color, tid, scale, transform, x, y);
+	}
+
+	void TextRenderer::submitString(const wstring &str, const Font *font, uint color, float tid,
+	                                float scale, const mat4 &transform, float &x, float &y) {
+
+		using namespace ftgl;
+
+		for (uint i = 0; i < str.length(); i++) {
+			const texture_glyph_t *glyph = static_cast<texture_glyph_t *>(font->getGlyph(str[i]));
+
+			if (!glyph) continue;
 
 			if (i > 0) {
-				const float kerning = Font::getKerning(glyph, (uint) string[i - 1]);
-				x += kerning * size;
+				const float kerning = font->getKerning((void *) glyph, str[i - 1]);
+				x += kerning * scale;
 			}
 
-			const float x0 = x + glyph.offset.x * size;
-			const float y0 = glyph.offset.y * size;
-			const float x1 = x0 + glyph.size.x * size;
-			const float y1 = y0 + glyph.size.y * size;
+			float x0 = x + glyph->offset_x * scale;
+			float y0 = y - glyph->offset_y * scale;
+			float x1 = x0 + glyph->width * scale;
+			float y1 = y0 + glyph->height * scale;
 
-			const float u0 = glyph.uv.x;
-			const float v0 = glyph.uv.y;
-			const float u1 = u0 + glyph.texSize.x;
-			const float v1 = v0 + glyph.texSize.y;
+			float u0 = glyph->s0;
+			float v0 = glyph->t0;
+			float u1 = glyph->s1;
+			float v1 = glyph->t1;
 
-			buffer->vertexTid = vec4(mat4::translateXY(transform, x0, -y0), tid);
+			buffer->vertex = mat4::translateXY(transform, x0, -y0);
 			buffer->uv.x = u0;
 			buffer->uv.y = v0;
+			buffer->tid = tid;
 			buffer->color = color;
-			buffer->outlineColor = outlineColor;
-			buffer->offset = offset;
-			buffer->widthEdge = widthEdge;
 			++buffer;
 
-			buffer->vertexTid = vec4(mat4::translateXY(transform, x0, -y1), tid);
+			buffer->vertex = mat4::translateXY(transform, x0, -y1);
 			buffer->uv.x = u0;
 			buffer->uv.y = v1;
+			buffer->tid = tid;
 			buffer->color = color;
-			buffer->outlineColor = outlineColor;
-			buffer->offset = offset;
-			buffer->widthEdge = widthEdge;
 			++buffer;
 
-			buffer->vertexTid = vec4(mat4::translateXY(transform, x1, -y1), tid);
+			buffer->vertex = mat4::translateXY(transform, x1, -y1);
 			buffer->uv.x = u1;
 			buffer->uv.y = v1;
+			buffer->tid = tid;
 			buffer->color = color;
-			buffer->outlineColor = outlineColor;
-			buffer->offset = offset;
-			buffer->widthEdge = widthEdge;
 			++buffer;
 
-			buffer->vertexTid = vec4(mat4::translateXY(transform, x1, -y0), tid);
+			buffer->vertex = mat4::translateXY(transform, x1, -y0);
 			buffer->uv.x = u1;
 			buffer->uv.y = v0;
+			buffer->tid = tid;
 			buffer->color = color;
-			buffer->outlineColor = outlineColor;
-			buffer->offset = offset;
-			buffer->widthEdge = widthEdge;
 			++buffer;
-
-			x += glyph.xAdvance * size;
 
 			indicesSize += 6;
+
+			x += glyph->advance_x * scale;
 		}
 	}
 

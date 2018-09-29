@@ -30,6 +30,7 @@ namespace xe {
 		};
 
 		rect();
+		rect(const rect &other);
 		explicit rect(const aabb &aabb);
 		rect(const vec2 &position, const vec2 &size);
 		rect(float x, float y, float width, float height);

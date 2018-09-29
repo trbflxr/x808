@@ -8,6 +8,7 @@
 namespace xe {
 
 	rect::rect() : position(0.0f, 0.0f), size(0.0f, 0.0f) { }
+	rect::rect(const rect &other) : position(other.position), size(other.size) { }
 	rect::rect(const aabb &aabb) : position(vec2(aabb.min)), size(vec2(aabb.getSize())) { }
 	rect::rect(const vec2 &position, const vec2 &size) : position(position), size(size) { }
 	rect::rect(float x, float y, float width, float height) : position(x, y), size(width, height) { }

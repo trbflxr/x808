@@ -14,16 +14,13 @@ namespace xe {
 
 	class Text : public ITransformable2D {
 	public:
-		explicit Text(const wstring &string, float size, const Font *font = GETFONT("default")) noexcept :
+		explicit Text(const wstring &string, const Font *font = GETFONT("default"), float scale = 1.0f) noexcept :
 				font(font),
 				string(string),
 				textColor(color::WHITE),
 				outlineColor(color::TRANSPARENT),
-				outline(0.0f, 0.0f),
-				outlineOffset(0.0f, 0.0f),
-				size(size),
-				useAutoEdge_(true),
-				edge(0.5f, 0.1f) { }
+				outlineThickness(0.0f),
+				scale(scale) { }
 
 		inline const Font *getFont() const { return font; }
 		inline void setFont(const Font *font) { Text::font = font; }
@@ -38,42 +35,19 @@ namespace xe {
 		inline uint getOutlineColor() const { return outlineColor; }
 		inline void setOutlineColor(uint outlineColor) { Text::outlineColor = outlineColor; }
 
-		inline const vec2 &getOutline() const { return outline; }
-		inline void setOutline(const vec2 &outline) { Text::outline = outline; }
-		inline void setOutline(float width, float edge) { Text::outline = {width, edge}; }
+		inline float getFontScale() const { return scale; }
+		inline void setFontScale(float scale) { Text::scale = scale; }
 
-		inline const vec2 &getOutlineOffset() const { return outlineOffset; }
-		inline void setOutlineOffset(const vec2 &offset) { Text::outlineOffset = offset; }
-
-		inline float getSize() const { return size; }
-		inline void setSize(float size) { Text::size = size; }
-
-		inline void useAutoEdge(bool use) { Text::useAutoEdge_ = use; }
-		inline bool useAutoEdge() const { return useAutoEdge_; }
-
-		inline const vec2 &getEdge() const { return edge; }
-
-		inline void setEdge(const vec2 &edge) {
-			useAutoEdge_ = false;
-			Text::edge = edge;
-		}
-
-		inline void setEdge(float width, float edge) {
-			useAutoEdge_ = false;
-			Text::edge = {width, edge};
-		}
+		inline float getOutlineThickness() const { return outlineThickness; }
+		inline void setOutlineThickness(float thickness) { Text::outlineThickness = thickness; }
 
 	private:
 		const Font *font;
 		wstring string;
 		uint textColor;
 		uint outlineColor;
-		vec2 outline;
-		vec2 outlineOffset;
-		float size;
-
-		bool useAutoEdge_;
-		vec2 edge;
+		float outlineThickness;
+		float scale;
 	};
 
 }

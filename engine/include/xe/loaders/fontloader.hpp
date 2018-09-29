@@ -6,48 +6,16 @@
 #define X808_FONTLOADER_HPP
 
 
-#include <array>
-#include <unordered_map>
-#include <xe/utils/string.hpp>
-#include <xe/utils/noncopyable.hpp>
 #include <xe/resources/font.hpp>
+#include <xe/utils/noncopyable.hpp>
 
 namespace xe {
 
-	class XE_API FontLoader : NonCopyable {
-	public:
-		explicit FontLoader(Font *font);
-		explicit FontLoader(const string &name);
+	struct XE_API FontLoader : NonCopyable {
+		static bool load(Font *font, const wchar_t *path, float size, uint atlasSize);
+		static bool load(Font *font, const wstring &path, float size, uint atlasSize);
 
-		bool load(bool fromFile = true);
-
-		Font *getFont() const { return font; }
-
-	private:
-		int32 get(const string &key);
-
-		void parseLine(const string &line);
-		void parsePadding(const string &line);
-		Glyph parseGlyph();
-
-		bool loadAtlas(const string &line);
-		void loadEmbedAtlas();
-
-		bool readFile();
-		void loadEmbed();
-
-	private:
-		Font *font;
-
-		std::vector<string> lines;
-		std::unordered_map<string, string> values;
-
-		std::array<int32, 4> padding;
-		int32 paddingWidth;
-		int32 paddingHeight;
-
-		uint atlasSize;
-		uint charsCount;
+		static bool load(Font *font, const byte *data, size_t dataSize, float size, uint atlasSize);
 	};
 
 }

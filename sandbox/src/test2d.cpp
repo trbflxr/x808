@@ -70,23 +70,26 @@ Test2D::Test2D() {
 	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
+
+	FontManager::add(new Font("consolata72", L"assets/fonts/consolata.otf", 72.0f));
+
 	uint texCount = 38;
 
-	camera = new Camera(mat4::ortho(-width, width, -height, height, -1000, 1000));
+	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
 	renderer = new BatchRenderer2D(width, height, camera);
 
 	uint sprites = 0;
 
-	/// 1 - 1.2k
-	/// 2 - 18k
-	/// 3 - 59k
-	/// 4 - 120k
+	/// 1 - 2304
+	/// 2 - 14400
+	/// 3 - 60865
+	/// 4 - 102480
 #define sp_size 1
 
 #if sp_size == 4
-	for (float x = -800; x < 800; x += 4.0f) {
-		for (float y = -600; y < 600; y += 4.0f) {
-			RectangleShape *s = new RectangleShape({3.5f, 3.5f}, 0.0f);
+	for (float x = 0.0f; x < 1280; x += 3.0f) {
+		for (float y = 0.0f; y < 720; y += 3.0f) {
+			RectangleShape *s = new RectangleShape({2.5f, 2.5f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
 			s->transformation({x, y});
 
@@ -96,9 +99,9 @@ Test2D::Test2D() {
 		}
 	}
 #elif sp_size == 3
-	for (float x = -800; x < 800; x += 5.7f) {
-		for (float y = -600; y < 600; y += 5.7f) {
-			RectangleShape *s = new RectangleShape({4.9f, 4.9f}, 0.0f);
+	for (float x = 0.0f; x < 1280; x += 3.9f) {
+		for (float y = 0.0f; y < 720; y += 3.9f) {
+			RectangleShape *s = new RectangleShape({3.4f, 3.4f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
 			s->transformation({x, y});
 
@@ -108,11 +111,11 @@ Test2D::Test2D() {
 		}
 	}
 #elif sp_size == 2
-	for (float x = -800; x < 800; x += 10.3f) {
-		for (float y = -600; y < 600; y += 10.3f) {
-			RectangleShape *s = new RectangleShape({9.0f, 9.0f}, 0.0f);
+	for (uint x = 0; x < 1280; x += 8) {
+		for (uint y = 0; y < 720; y += 8) {
+			RectangleShape *s = new RectangleShape({6.0f, 6.0f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->transformation({x, y});
+			s->transformation(vec2(x + 3.0f, y + 3.0f));
 
 			renderables.push_back(s);
 
@@ -120,11 +123,11 @@ Test2D::Test2D() {
 		}
 	}
 #elif sp_size == 1
-	for (int32 x = -800; x < 800; x += 40) {
-		for (int32 y = -600; y < 600; y += 40) {
-			RectangleShape *s = new RectangleShape({30.0f, 30.0f}, 0.0f);
+	for (int32 x = 0; x < 1280; x += 20) {
+		for (int32 y = 0; y < 720; y += 20) {
+			RectangleShape *s = new RectangleShape({15.0f, 15.0f}, 0.0f);
 			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
-			s->transformation(vec2(x, y));
+			s->transformation(vec2(x + 7.5f, y + 7.5f));
 
 			renderables.push_back(s);
 
@@ -135,24 +138,23 @@ Test2D::Test2D() {
 
 	XE_INFO("size: ", sprites);
 
-	inputText = new Text(L"[]][/\\слава ukraine", 20);
-
-	inputText->setPosition({-700, 300});
+	inputText = new Text(L"[]][/\\слава ukraine", GETFONT("consolata72"));
 	inputText->setTextColor(color::WHITE);
-	inputText->setOutlineColor(color::RED);
-	inputText->setOutline({0.5f, 0.3f});
+	inputText->setOutlineColor(color::BLACK);
+	inputText->setOutlineThickness(3.0f);
+	inputText->setPosition({640.0f, 300.0f});
 
-	RectangleShape *s0 = new RectangleShape({200.0f, 200.0f}, 3.1f);
+	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
 	s0->setTexture(GETTEXTURE("35"));
-	s0->transformation({-100.0f, -100.0f});
+	s0->transformation({640.0f, 420.0f});
 
-	RectangleShape *s1 = new RectangleShape({200.0f, 200.0f}, 4.0f);
+	RectangleShape *s1 = new RectangleShape({100.0f, 100.0f}, 4.0f);
 	s1->setTexture(GETTEXTURE("37"));
-	s1->transformation({-40.0f, -40.0f});
+	s1->transformation({640.0f, 350.0f});
 
-	star = new RectangleShape({200.0f, 200.0f}, 3.0f);
+	star = new RectangleShape({100.0f, 100.0f}, 3.0f);
 	star->setTexture(GETTEXTURE("36"));
-	star->transformation({-40.0f, -40.0f});
+	star->transformation({640.0f, 350.0f});
 
 	renderables.push_back(s0);
 	renderables.push_back(s1);
@@ -162,7 +164,7 @@ Test2D::Test2D() {
 	//circle test
 	CircleShape *c0 = new CircleShape(50.0f, 2.0f);
 	c0->setTexture(GETTEXTURE("1"));
-	c0->transformation({-40.0f, -40.0f});
+	c0->transformation({710.0f, 350.0f});
 	renderables.push_back(c0);
 }
 
@@ -192,10 +194,7 @@ void Test2D::render() {
 }
 
 void Test2D::update(float delta) {
-	static const vec2i halfSize = window.getSize() / 2;
-
-	const vec2 p = Mouse::getPosition(window);
-	const vec2 pos = vec2((p.x - halfSize.x) * 2.0f, (p.y - halfSize.y) * 2.0f);
+	const vec2 pos = vec2(Mouse::getPosition(window));
 
 	star->setPosition(pos);
 

@@ -23,6 +23,9 @@ add_definitions(
 add_subdirectory(external/box2d)
 include_directories(external/box2d)
 
+add_subdirectory(external/freetype-gl)
+include_directories(external/freetype-gl/include)
+
 #includes and libs
 include_directories(src)
 link_directories(${XE_DIRS})
@@ -81,6 +84,7 @@ add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
 
 target_link_libraries(xe
         spak
+        freetype-gl freetype bz2 png libz
         assimp irrxml
         gorilla openal32
         box2d)

@@ -1,58 +1,59 @@
 //
-// Created by FLXR on 9/22/2018.
+// Created by FLXR on 9/26/2018.
 //
 
 #ifndef X808_FONT_HPP
 #define X808_FONT_HPP
 
 
-#include <vector>
-#include <array>
-#include <xe/common.hpp>
-#include <xe/math/vec2.hpp>
+#include <xe/xeint.hpp>
 #include <xe/gfx/texture.hpp>
-#include <xe/utils/string.hpp>
 
 namespace xe {
 
-	struct Glyph {
-		uint id;
-		vec2 uv;
-		vec2 texSize;
-		vec2 offset;
-		vec2 size;
-		float xAdvance;
-
-		std::vector<vec2> kernings;
-	};
-
 	class XE_API Font {
 	public:
-		explicit Font(const string &name, const wstring &path);
-		virtual ~Font();
+		explicit Font(const string &name, const wstring &path, float size);
+		explicit Font(const string &name, const byte *data, uint dataSize, float size, bool deleteData = true);
+		~Font();
 
-		const Glyph &get(uint id) const;
-
-		inline const Texture *getAtlas() const { return atlas; }
 		inline const string &getName() const { return name; }
 		inline const wstring &getPath() const { return path; }
+		inline float getSize() const { return size; }
 
-		static float getKerning(const Glyph &glyph, uint id);
+		const Texture *getTexture() const;
+
+		void *getGlyph(wchar_t code) const;
+
+		float getKerning(void *glyph, wchar_t c) const;
+
+		void setOutlineThickness(float thickness) const;
+		void setOutlineType(int32 type) const;
 
 	private:
-		explicit Font() = default;
+		void updateAtlas() const;
+
+		void createAtlas(uint size);
+
+		uint computeAtlasSize(float fontSize);
 
 	private:
-		friend class FontLoader;
+		friend struct FontLoader;
 
 		string name;
 		wstring path;
+		float size;
 
-		const Texture *atlas;
-		std::vector<Glyph> glyphs;
+		mutable Texture *texture;
+
+		bool deleteFontData;
+		byte *fontData;
+
+		void *font;
+		void *atlas;
 	};
 
 }
 
 
-#endif //X808_FONT_HPP
+#endif //X808_FONTT_HPP

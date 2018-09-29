@@ -2,17 +2,15 @@
 // Created by FLXR on 7/3/2018.
 //
 
-#include <xe/resources/fontmanager.hpp>
 #include <xe/utils/log.hpp>
-#include <xe/loaders/fontloader.hpp>
+#include <embedded/embedded.hpp>
+#include <xe/resources/fontmanager.hpp>
 
 namespace xe {
 
 	FontManager::FontManager() {
-		FontLoader loader("default");
-		loader.load(false);
-
-		fonts.emplace("default", loader.getFont());
+		fonts.emplace("default", new Font("default", internal::DEFAULT_FONT_DATA,
+		                                  internal::DEFAULT_FONT_DATA_SIZE, 50, false));
 	}
 
 	FontManager::~FontManager() {
