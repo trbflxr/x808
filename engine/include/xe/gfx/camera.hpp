@@ -6,6 +6,7 @@
 #define X808_CAMERA_HPP
 
 
+#include <cstring>
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/gameobject.hpp>

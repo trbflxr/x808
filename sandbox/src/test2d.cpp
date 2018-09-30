@@ -239,7 +239,7 @@ void Test2D::render() {
 }
 
 void Test2D::update(float delta) {
-	const vec2 pos = vec2(Mouse::getPosition(window));
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
 
 	star->setPosition(pos);
 

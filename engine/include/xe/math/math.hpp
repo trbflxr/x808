@@ -23,7 +23,6 @@
 #include <xe/math/quat.hpp>
 #include <xe/math/mat4.hpp>
 #include <xe/math/aabb.hpp>
-#include <xe/math/aobb.hpp>
 #include <xe/math/rect.hpp>
 #include <xe/math/tvec2.hpp>
 

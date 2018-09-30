@@ -21,9 +21,6 @@ if not os.path.exists(base_directory):
 dae_filename = base_filename + '.dae'
 dae_path = base_directory + dae_filename
 
-physics_filename = base_filename + '.physics'
-physics_path = base_directory + physics_filename 
-
 lights_filename = base_filename + '.lights'
 lights_path = base_directory + lights_filename 
 

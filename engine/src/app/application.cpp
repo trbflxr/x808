@@ -176,11 +176,12 @@ namespace xe {
 		while (window.pollEvent(event)) {
 			for (int32 i = (int32) layerStack.size() - 1; i >= 0; --i) {
 				layerStack[i]->input(event);
-				if (event.handled) return;
+				if (event.handled && event.type != Event::Closed) break;
 			}
 
 			if (event.type == Event::Closed) {
 				window.close();
+				break;
 			}
 		}
 	}
