@@ -23,11 +23,11 @@ namespace xe { namespace internal {
 
 		virtual void *getHandle() const = 0;
 
-		virtual vec2i getPosition() const = 0;
-		virtual void setPosition(const vec2i &position) const = 0;
+		virtual vec2 getPosition() const = 0;
+		virtual void setPosition(const vec2 &position) const = 0;
 
-		virtual vec2i getSize() const = 0;
-		virtual void setSize(const vec2i &size) const = 0;
+		virtual vec2 getSize() const = 0;
+		virtual void setSize(const vec2 &size) const = 0;
 
 		virtual void setTitle(const wstring &title) const = 0;
 		virtual wstring getTitle() const = 0;

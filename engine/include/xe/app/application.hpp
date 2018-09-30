@@ -10,7 +10,6 @@
 #include <xe/config.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/window/window.hpp>
-#include <xe/math/tvec2.hpp>
 
 namespace xe {
 
@@ -39,7 +38,7 @@ namespace xe {
 
 		inline const Config &getConfig() const { return config; }
 
-		inline vec2i getWindowSize() const { return window.getSize(); }
+		inline vec2 getWindowSize() const { return window.getSize(); }
 
 		inline static Application &get() { return *instance; }
 

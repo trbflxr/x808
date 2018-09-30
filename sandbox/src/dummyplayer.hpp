@@ -23,8 +23,8 @@ public:
 
 	void update(float delta) {
 		static xe::Window &window = xe::Application::get().getWindow();
-		static xe::vec2i windowSize = window.getSize();
-		static xe::vec2 windowCenter = xe::vec2(windowSize.x / 2.0f, windowSize.y / 2.0f);
+		static xe::vec2 windowSize = window.getSize();
+		static xe::vec2 windowCenter = windowSize / 2.0f;
 		static xe::vec2 lastMousePosition = xe::Mouse::getPosition();
 
 		xe::Transform &transform = camera->transform;

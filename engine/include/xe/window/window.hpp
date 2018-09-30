@@ -43,11 +43,11 @@ namespace xe {
 
 		bool pollEvent(Event &event);
 
-		vec2i getPosition() const;
-		void setPosition(const vec2i &position) const;
+		vec2 getPosition() const;
+		void setPosition(const vec2 &position) const;
 
-		inline vec2i getSize() const { return size; };
-		void setSize(const vec2i &size);
+		inline vec2 getSize() const { return size; };
+		void setSize(const vec2 &size);
 
 		void setTitle(const wstring &title) const;
 		wstring getTitle() const;
@@ -87,7 +87,7 @@ namespace xe {
 	private:
 		internal::PlatformWindow *window;
 
-		vec2i size;
+		vec2 size;
 		Timer timer;
 		float frameTimeLimit;
 

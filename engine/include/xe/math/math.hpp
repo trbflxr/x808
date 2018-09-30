@@ -24,7 +24,6 @@
 #include <xe/math/mat4.hpp>
 #include <xe/math/aabb.hpp>
 #include <xe/math/rect.hpp>
-#include <xe/math/tvec2.hpp>
 
 namespace xe { namespace math {
 

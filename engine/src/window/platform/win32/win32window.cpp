@@ -99,7 +99,7 @@ namespace xe { namespace internal {
 		}
 		ReleaseDC(handle, screenDC);
 
-		setSize(vec2i(mode.width, mode.height));
+		setSize(vec2(mode.width, mode.height));
 
 		if (fullscreen) {
 			switchToFullscreen(mode);
@@ -143,34 +143,36 @@ namespace xe { namespace internal {
 		return handle;
 	}
 
-	vec2i PlatformWindowWin32::getPosition() const {
+	vec2 PlatformWindowWin32::getPosition() const {
 		RECT rect;
 		GetWindowRect(handle, &rect);
 
-		return vec2i(rect.left, rect.top);
+		return vec2(rect.left, rect.top);
 	}
 
-	void PlatformWindowWin32::setPosition(const vec2i &position) const {
-		SetWindowPos(handle, nullptr, position.x, position.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+	void PlatformWindowWin32::setPosition(const vec2 &position) const {
+		SetWindowPos(handle, nullptr,
+		             static_cast<int32>(position.x),
+		             static_cast<int32>(position.y),
+		             0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
 		if (cursorGrabbed) {
 			grabCursor(true);
 		}
 	}
 
-	vec2i PlatformWindowWin32::getSize() const {
+	vec2 PlatformWindowWin32::getSize() const {
 		GetClientRect(handle, &rect);
 
-		return vec2i(static_cast<int32>(rect.right - rect.left),
-		             static_cast<int32>(rect.bottom - rect.top));
+		return vec2(rect.right - rect.left, rect.bottom - rect.top);
 	}
 
-	void PlatformWindowWin32::setSize(const vec2i &size) const {
+	void PlatformWindowWin32::setSize(const vec2 &size) const {
 		RECT rectangle = {0, 0, static_cast<LONG>(size.x), static_cast<LONG>(size.y)};
 		AdjustWindowRect(&rectangle, static_cast<DWORD>(GetWindowLong(handle, GWL_STYLE)), false);
 
-		int32 width = rectangle.right - rectangle.left;
-		int32 height = rectangle.bottom - rectangle.top;
+		const int32 width = rectangle.right - rectangle.left;
+		const int32 height = rectangle.bottom - rectangle.top;
 
 		SetWindowPos(handle, nullptr, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER);
 	}

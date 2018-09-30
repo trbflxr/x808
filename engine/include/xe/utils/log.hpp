@@ -175,18 +175,6 @@ namespace xe { namespace internal {
 	}
 
 	template<>
-	inline const wchar_t *to_wstring<vec2i>(const vec2i &t) {
-		swprintf(buffer, L"vec2i(%d, %d)", t.x, t.y);
-		return buffer;
-	}
-
-	template<>
-	inline const wchar_t *to_wstring<vec2f>(const vec2f &t) {
-		swprintf(buffer, L"vec2f(%f, %f)", t.x, t.y);
-		return buffer;
-	}
-
-	template<>
 	inline const wchar_t *to_wstring<quat>(const quat &t) {
 		swprintf(buffer, L"quat(%.3f, %.3f, %.3f, %.3f)", t.x, t.y, t.z, t.w);
 		return buffer;

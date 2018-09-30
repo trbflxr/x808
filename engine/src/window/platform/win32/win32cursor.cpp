@@ -3,7 +3,9 @@
 //
 
 #undef NOGDI
+
 #include <windows.h>
+
 #define NOGDI
 
 #include <xe/window/cursor.hpp>
@@ -11,7 +13,7 @@
 
 namespace xe {
 
-	Cursor::Cursor(const byte *pixels, vec2i size, vec2i hotspot) :
+	Cursor::Cursor(const byte *pixels, vec2 size, vec2 hotspot) :
 			cursor(nullptr) {
 
 		release();
@@ -48,9 +50,9 @@ namespace xe {
 			XE_ASSERT(color);
 		}
 
-		memcpy(bitmapData, pixels, size.x * size.y * 4);
+		memcpy(bitmapData, pixels, static_cast<size_t >(size.x * size.y * 4));
 
-		HBITMAP mask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+		HBITMAP mask = CreateBitmap(static_cast<int32>(size.x), static_cast<int32>(size.y), 1, 1, nullptr);
 
 		if (!mask) {
 			DeleteObject(color);

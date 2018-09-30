@@ -63,17 +63,17 @@ namespace xe {
 		}
 	}
 
-	vec2i Window::getPosition() const {
-		return window ? window->getPosition() : vec2i();
+	vec2 Window::getPosition() const {
+		return window ? window->getPosition() : vec2();
 	}
 
-	void Window::setPosition(const vec2i &position) const {
+	void Window::setPosition(const vec2 &position) const {
 		if (window) {
 			window->setPosition(position);
 		}
 	}
 
-	void Window::setSize(const vec2i &size) {
+	void Window::setSize(const vec2 &size) {
 		if (window) {
 			window->setSize(size);
 

@@ -7,7 +7,7 @@
 
 
 #include <xe/xeint.hpp>
-#include <xe/math/tvec2.hpp>
+#include <xe/math/vec2.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 namespace xe {
@@ -34,7 +34,7 @@ namespace xe {
 		};
 
 	public:
-		explicit Cursor(const byte *pixels, vec2i size, vec2i hotspot);
+		explicit Cursor(const byte *pixels, vec2 size, vec2 hotspot);
 		explicit Cursor(Type type);
 		~Cursor() override;
 
