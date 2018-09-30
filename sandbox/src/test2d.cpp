@@ -77,7 +77,7 @@ Test2D::Test2D() {
 	FontManager::add(new Font("robotoregular72", L"assets/fonts/robotoregular.ttf", 72.0f));
 	FontManager::add(new Font("robotobold72", L"assets/fonts/robotobold.ttf", 72.0f));
 
-	uint texCount = 38;
+	uint texCount = 40;
 
 	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
 	renderer = new BatchRenderer2D(width, height, camera);
@@ -88,7 +88,9 @@ Test2D::Test2D() {
 	/// 2 - 14400
 	/// 3 - 60865
 	/// 4 - 102480
-#define sp_size 1
+#define sp_size 2
+
+	Timer timer;
 
 #if sp_size == 4
 	for (float x = 0.0f; x < 1280; x += 3.0f) {
@@ -140,7 +142,10 @@ Test2D::Test2D() {
 	}
 #endif
 
+	timer.reset();
+
 	XE_INFO(L"size: ", sprites);
+	XE_INFO(L"elapsed: ", timer.elapsedMillis(), L" ms");
 
 	inputText = new Text(L"consolata72", GETFONT("consolata72"));
 	inputText->setTextColor(color::WHITE);

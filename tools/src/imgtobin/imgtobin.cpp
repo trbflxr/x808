@@ -40,7 +40,7 @@ int imgToBin(const wchar_t *in, const wchar_t *out) {
 	for (size_t i = 0; i < size; ++i) {
 		++line;
 		fprintf(res, "%u,", data[i]);
-		if (line == 13) {
+		if (line == 30) {
 			fprintf(res, "\n");
 			line = 0;
 		}
