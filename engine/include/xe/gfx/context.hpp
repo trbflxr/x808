@@ -11,10 +11,10 @@
 namespace xe {
 
 	struct GAPIInfo {
-		const byte *vendor;
-		const byte *renderer;
-		const byte *version;
-		const byte *shadingLevel;
+		char vendor[256];
+		char renderer[256];
+		char version[256];
+		char shadingLevel[256];
 
 		int32 maxTexSize;
 		int32 maxTexUnits;

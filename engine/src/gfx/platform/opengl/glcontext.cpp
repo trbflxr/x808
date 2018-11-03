@@ -69,10 +69,10 @@ namespace xe { namespace internal {
 		if (!info) {
 			info = new GAPIInfo();
 
-			info->vendor = glGetString(GL_VENDOR);
-			info->renderer = glGetString(GL_RENDERER);
-			info->version = glGetString(GL_VERSION);
-			info->shadingLevel = glGetString(GL_SHADING_LANGUAGE_VERSION);
+			sprintf(info->vendor, "%s", glGetString(GL_VENDOR));
+			sprintf(info->renderer, "%s", glGetString(GL_RENDERER));
+			sprintf(info->version, "%s", glGetString(GL_VERSION));
+			sprintf(info->shadingLevel, "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 			glGetIntegerv(GL_MAX_TEXTURE_SIZE, &info->maxTexSize);
 			glGetIntegerv(GL_MAX_TEXTURE_UNITS, &info->maxTexUnits);

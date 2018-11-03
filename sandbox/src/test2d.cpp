@@ -72,6 +72,7 @@ Test2D::Test2D() {
 
 
 	FontManager::add(new Font("consolata72", L"assets/fonts/consolata.otf", 72.0f));
+	FontManager::add(new Font("consolata32", L"assets/fonts/consolata.otf", 32.0f));
 	FontManager::add(new Font("fogsans72", L"assets/fonts/fogsans.otf", 72.0f));
 	FontManager::add(new Font("fogsansit72", L"assets/fonts/fogsansit.otf", 72.0f));
 	FontManager::add(new Font("robotoregular72", L"assets/fonts/robotoregular.ttf", 72.0f));
@@ -181,6 +182,18 @@ Test2D::Test2D() {
 	t3->setOutlineThickness(3.0f);
 	t3->setPosition({50.0f, 100.0f});
 	text.push_back(t3);
+
+	wstring s = std::to_wstring(sprites);
+	s += L" sprites drawn with ";
+	s += std::to_wstring(texCount);
+	s += L" different textures";
+
+	Text *t4 = new Text(s, GETFONT("consolata32"));
+	t4->setTextColor(color::RED);
+	t4->setOutlineColor(color::BLACK);
+	t4->setOutlineThickness(3.0f);
+	t4->setPosition({10.0f, height - 50.0f});
+	text.push_back(t4);
 
 	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
 	s0->setTexture(GETTEXTURE("35"));

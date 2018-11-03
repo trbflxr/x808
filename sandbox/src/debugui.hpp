@@ -41,6 +41,7 @@ private:
 
 	xe::BatchRenderer2D *renderer;
 
+	xe::Text *gpuText;
 	xe::Text *fpsText;
 	xe::Text *upsText;
 	xe::Text *frameTimeText;

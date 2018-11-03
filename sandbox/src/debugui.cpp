@@ -15,8 +15,8 @@ DebugUI::DebugUI() :
 	XE_INFO(Context::getInfo());
 
 	//create camera
-	float w = app.getConfig().width;
-	float h = app.getConfig().height;
+	const float w = app.getConfig().width;
+	const float h = app.getConfig().height;
 
 	camera = new Camera(mat4::ortho(0, w, 0, h, -1, 1000));
 
@@ -27,8 +27,8 @@ DebugUI::DebugUI() :
 
 	const float lw = 25.0f;
 
-	const float irw = 250.0f;
-	const float irh = 110.0f;
+	const float irw = 340.0f;
+	const float irh = 130.0f;
 
 	const float ttw = 320.0f;
 	const float tth = 55.0f;
@@ -39,9 +39,16 @@ DebugUI::DebugUI() :
 
 	const float outline = 4.0f;
 
+	const GAPIInfo info = Context::getInfo();
+
 	//text
+	gpuText = new Text(L"gpu: " + utils::toWstring(info.renderer), GETFONT("default"), 0.25f);
+	gpuText->setPosition({offset + offset, h - textOffset});
+	gpuText->setOutlineColor(color::BLACK);
+	gpuText->setOutlineThickness(outline);
+
 	fpsText = new Text(L"fps: ", GETFONT("default"), 0.25f);
-	fpsText->setPosition({offset + offset, h - textOffset});
+	fpsText->setPosition({offset + offset, gpuText->getPosition().y - lw});
 	fpsText->setOutlineColor(color::BLACK);
 	fpsText->setOutlineThickness(outline);
 
@@ -107,6 +114,7 @@ DebugUI::~DebugUI() {
 	delete sp2;
 	delete sp3;
 
+	delete gpuText;
 	delete fpsText;
 	delete upsText;
 	delete frameTimeText;
@@ -127,6 +135,7 @@ void DebugUI::render() {
 	renderer->submit(sp2);
 	renderer->submit(sp3);
 
+	renderer->submit(gpuText);
 	renderer->submit(fpsText);
 	renderer->submit(upsText);
 	renderer->submit(frameTimeText);
