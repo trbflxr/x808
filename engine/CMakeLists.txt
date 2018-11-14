@@ -51,6 +51,7 @@ file(GLOB ENGINE_SRC
         src/physics/2d/*.cpp
         src/objects/*.cpp
         src/resources/*.cpp
+        src/systems/*.cpp
         src/utils/*.cpp
         src/window/*.cpp
         src/*.cpp)

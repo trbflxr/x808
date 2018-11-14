@@ -6,12 +6,14 @@
 #include <xe/utils/random.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/layer.hpp>
+#include <xe/systems/system.hpp>
 #include <embedded/embedded.hpp>
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/resources/shadermanager.hpp>
 #include <xe/resources/soundmanager.hpp>
-#include "xe/app/application.hpp"
+#include <xe/app/application.hpp>
+#include <xe/systems/shell.hpp>
 
 namespace xe {
 
@@ -53,6 +55,8 @@ namespace xe {
 		SoundManager::init();
 		FontManager::init();
 		TextureManager::init();
+
+		systemDeque.push_back(new Shell());
 	}
 
 	void Application::start() {
@@ -139,30 +143,60 @@ namespace xe {
 	}
 
 	void Application::tick() {
+		for (auto &&system : systemDeque) {
+			system->tick();
+		}
+
 		for (auto &&layer : layerStack) {
-			layer->tick();
+			if (layer->isVisible()) {
+				layer->tick();
+			}
 		}
 	}
 
 	void Application::update(float delta) {
+		for (auto &&system : systemDeque) {
+			system->update(delta);
+		}
+
 		for (auto &&layer : layerStack) {
-			layer->update(delta);
+			if (layer->isVisible()) {
+				layer->update(delta);
+			}
 		}
 	}
 
 	void Application::lateUpdate(float delta) {
+		for (auto &&system : systemDeque) {
+			system->lateUpdate(delta);
+		}
+
 		for (auto &&layer : layerStack) {
-			layer->lateUpdate(delta);
+			if (layer->isVisible()) {
+				layer->lateUpdate(delta);
+			}
 		}
 	}
 
 	void Application::fixedUpdate(float delta) {
+		for (auto &&system : systemDeque) {
+			system->fixedUpdate(delta);
+		}
+
 		for (auto &&layer : layerStack) {
-			layer->fixedUpdate(delta);
+			if (layer->isVisible()) {
+				layer->fixedUpdate(delta);
+			}
 		}
 	}
 
 	void Application::render() {
+		for (auto &&system : systemDeque) {
+			if (system->isActive()) {
+				system->render();
+			}
+		}
+
 		for (auto &&layer : layerStack) {
 			if (layer->isVisible()) {
 				layer->render();
@@ -174,9 +208,17 @@ namespace xe {
 		xe::Event event{ };
 
 		while (window.pollEvent(event)) {
-			for (int32 i = (int32) layerStack.size() - 1; i >= 0; --i) {
-				layerStack[i]->input(event);
+
+			for (const auto &system : systemDeque) {
+				system->input(event);
 				if (event.handled && event.type != Event::Closed) break;
+			}
+
+			if (!event.handled && event.type != Event::Closed) {
+				for (int32 i = (int32) layerStack.size() - 1; i >= 0; --i) {
+					layerStack[i]->input(event);
+					if (event.handled && event.type != Event::Closed) break;
+				}
 			}
 
 			if (event.type == Event::Closed) {
@@ -205,6 +247,27 @@ namespace xe {
 			}
 		}
 		return layer;
+	}
+
+	void Application::pushSystem(System *system) {
+		systemDeque.push_back(system);
+		system->init();
+	}
+
+	System *Application::popSystem() {
+		System *system = systemDeque.back();
+		systemDeque.pop_back();
+		return system;
+	}
+
+	System *Application::popSystem(System *system) {
+		for (uint i = 0; i < systemDeque.size(); i++) {
+			if (systemDeque[i] == system) {
+				systemDeque.erase(systemDeque.begin() + i);
+				break;
+			}
+		}
+		return system;
 	}
 
 }

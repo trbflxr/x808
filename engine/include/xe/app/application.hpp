@@ -6,6 +6,7 @@
 #define X808_APPLICATION_HPP
 
 
+#include <deque>
 #include <xe/common.hpp>
 #include <xe/config.hpp>
 #include <xe/gfx/context.hpp>
@@ -14,6 +15,7 @@
 namespace xe {
 
 	class Layer;
+	class System;
 
 	class XE_API Application {
 	public:
@@ -23,6 +25,10 @@ namespace xe {
 		void pushLayer(Layer *layer);
 		Layer *popLayer();
 		Layer *popLayer(Layer *layer);
+
+		void pushSystem(System *system);
+		System *popSystem();
+		System *popSystem(System *system);
 
 		void start();
 		void suspend();
@@ -69,6 +75,7 @@ namespace xe {
 		float frameTime;
 
 		std::vector<Layer *> layerStack;
+		std::deque<System *> systemDeque;
 
 		static Application *instance;
 

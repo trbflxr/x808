@@ -8,7 +8,7 @@
 
 #include <xe/utils/noncopyable.hpp>
 
-namespace xe { namespace utils {
+namespace xe {
 
 	template<typename T>
 	class Singleton : NonCopyable {
@@ -19,7 +19,7 @@ namespace xe { namespace utils {
 		}
 	};
 
-}}
+}
 
 
 #endif //X808_SINGLETON_HPP
