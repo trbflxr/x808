@@ -12,12 +12,10 @@ link_directories(${XE_DIRS})
 include_directories(${XE_INCLUDE_DIRS})
 include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
 
-include_directories(imgui)
-
 #sandbox
 file(GLOB XEE_SRC
-        imgui/*.cpp
-        imgui/*.c
+        ../engine/external/imgui/imgui_impl_xe_gl.cpp
+        ../engine/external/glew/glew.c
         src/*.cpp)
 
 add_executable(xee ${XEE_SRC})

@@ -6,8 +6,8 @@
 #define X808_IMGUI_IMPL_XE_GL_HPP
 
 
-#include <imgui.h>
-#include <imgui_internal.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_internal.h>
 #include <xe/xeint.hpp>
 #include <xe/math/vec2.hpp>
 #include <xe/window/window.hpp>

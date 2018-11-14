@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <xe/gfx/texture.hpp>
 #include <xe/utils/log.hpp>
-#include "imgui_impl_xe_gl.hpp"
+#include "imgui/impl/imgui_impl_xe_gl.hpp"
 
 static bool windowHasFocus = false;
 static bool mousePressed[3] = {false, false, false};

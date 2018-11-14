@@ -17,6 +17,9 @@ namespace xe {
 		explicit Shell();
 		~Shell() override;
 
+		void render() override;
+
+		void update(float delta) override;
 		void input(Event &event) override;
 
 		void processCommand(const string &command);
@@ -27,8 +30,6 @@ namespace xe {
 		void createDefaultCommands();
 
 	private:
-
-
 		string base = "xe> ";
 
 		std::map<string, std::function<string(bool hint)>> commands;

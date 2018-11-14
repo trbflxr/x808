@@ -20,6 +20,9 @@ add_definitions(
         -D GLEW_STATIC)
 
 #external libs
+add_subdirectory(external/imgui)
+include_directories(external/imgui)
+
 add_subdirectory(external/box2d)
 include_directories(external/box2d)
 
@@ -65,6 +68,7 @@ file(GLOB ENGINE_WIN32_SRC
 #opengl
 file(GLOB ENGINE_GL_SRC
         external/glew/glew.c
+        external/imgui/imgui_impl_xe_gl.cpp
         src/gfx/platform/opengl/*.cpp)
 
 #total platform files
@@ -88,7 +92,8 @@ target_link_libraries(xe
         freetype-gl freetype bz2 png libz
         assimp irrxml
         gorilla openal32
-        box2d)
+        box2d
+        imgui)
 
 #link opengl libs
 if (XE_PLATFORM_GL)

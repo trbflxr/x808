@@ -191,15 +191,15 @@ namespace xe {
 	}
 
 	void Application::render() {
-		for (auto &&system : systemDeque) {
-			if (system->isActive()) {
-				system->render();
-			}
-		}
-
 		for (auto &&layer : layerStack) {
 			if (layer->isVisible()) {
 				layer->render();
+			}
+		}
+
+		for (int32 i = (int32) systemDeque.size() - 1; i >= 0; --i) {
+			if (systemDeque[i]->isActive()) {
+				systemDeque[i]->render();
 			}
 		}
 	}

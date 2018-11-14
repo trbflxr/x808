@@ -2,7 +2,7 @@
 // Created by FLXR on 9/7/2018.
 //
 
-#include <imgui_impl_xe_gl.hpp>
+#include <imgui/impl/imgui_impl_xe_gl.hpp>
 #include <xe/utils/log.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/renderer.hpp>
