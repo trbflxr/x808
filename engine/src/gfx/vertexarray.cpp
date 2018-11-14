@@ -35,8 +35,8 @@ namespace xe {
 		array->unbind();
 	}
 
-	void VertexArray::drawElements(uint count, BeginMode mode) const {
-		array->drawElements(count, mode);
+	void VertexArray::drawElements(uint count, BeginMode mode, const void *indices) const {
+		array->drawElements(count, mode, indices);
 	}
 
 	void VertexArray::drawArrays(uint count, BeginMode mode) const {
@@ -56,7 +56,7 @@ namespace xe {
 	}
 
 	VertexBuffer *VertexArray::popBuffer() {
-		return 	array->popBuffer();
+		return array->popBuffer();
 	}
 
 }

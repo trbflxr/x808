@@ -11,7 +11,7 @@ public:
 			Application(config, L"XE Editor"),
 			ui(nullptr) {
 
-		ui = new UILayer();
+		ui = new xe::UILayer();
 
 		pushLayer(ui);
 	}
@@ -21,7 +21,7 @@ public:
 	}
 
 private:
-	UILayer *ui;
+	xe::UILayer *ui;
 };
 
 int main() {

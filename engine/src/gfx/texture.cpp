@@ -14,7 +14,10 @@
 
 namespace xe {
 
-	Texture::Texture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) {
+	Texture::Texture(const string &name, uint width, uint height, uint depth,
+	                 const TextureParameters &params, bool flip) :
+			flipped(flip) {
+
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OpenGL: {
 				texture = new internal::GLTexture(name, width, height, depth, params);
@@ -29,7 +32,9 @@ namespace xe {
 		}
 	}
 
-	Texture::Texture(const string &name, const wstring &path, const TextureParameters &params) {
+	Texture::Texture(const string &name, const wstring &path,
+	                 const TextureParameters &params, bool flip) :
+			flipped(flip) {
 
 		switch (Context::getRenderAPI()) {
 			case RenderAPI::OpenGL: {

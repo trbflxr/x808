@@ -22,7 +22,7 @@ namespace xe {
 		void bind() const;
 		void unbind() const;
 
-		void drawElements(uint count, BeginMode mode) const;
+		void drawElements(uint count, BeginMode mode, const void *indices = nullptr) const;
 		void drawArrays(uint count, BeginMode mode) const;
 		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const;
 

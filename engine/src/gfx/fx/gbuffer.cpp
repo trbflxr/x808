@@ -53,13 +53,13 @@ namespace xe { namespace fx {
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;
 
-		depthStencilTexture = new Texture("GBufferDepthStencil", width, height, 0, params);
+		depthStencilTexture = new Texture("GBufferDepthStencil", width, height, 0, params, true);
 
 		///
 		params.internalFormat = PixelInternalFormat::Rgba16f;
 		params.format = PixelFormat::Rgba;
 
-		diffuseTexture = new Texture("GBufferDiffuse", width, height, 0, params);
+		diffuseTexture = new Texture("GBufferDiffuse", width, height, 0, params, true);
 		lightDiffuseTexture = new Texture("GBufferLightDiffuse", width, height, 0, params);
 		lightSpecularTexture = new Texture("GBufferLightSpecular", width, height, 0, params);
 
@@ -67,13 +67,13 @@ namespace xe { namespace fx {
 		params.internalFormat = PixelInternalFormat::Rgba16;
 		params.format = PixelFormat::Rgba;
 
-		specularTexture = new Texture("GBufferSpecular", width, height, 0, params);
+		specularTexture = new Texture("GBufferSpecular", width, height, 0, params, true);
 
 		///
 		params.internalFormat = PixelInternalFormat::Rgba32f;
 		params.format = PixelFormat::Rgba;
 
-		normalDepthTexture = new Texture("GBufferNormalDepth", width, height, 0, params);
+		normalDepthTexture = new Texture("GBufferNormalDepth", width, height, 0, params, true);
 	}
 
 	void GBuffer::createShaders() {

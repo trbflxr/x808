@@ -15,7 +15,7 @@ namespace xe { namespace internal {
 		void bind() const override;
 		void unbind() const override;
 
-		void drawElements(uint count, BeginMode mode) const override;
+		void drawElements(uint count, BeginMode mode, const void *indices) const override;
 		void drawArrays(uint count, BeginMode mode) const override;
 		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const override;
 

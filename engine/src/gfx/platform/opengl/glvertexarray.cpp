@@ -16,8 +16,8 @@ namespace xe { namespace internal {
 		buffers.front()->unbind();
 	}
 
-	void GLVertexArray::drawElements(uint count, BeginMode mode) const {
-		glCall(glDrawElements(beginModeToGL(mode), count, GL_UNSIGNED_INT, nullptr));
+	void GLVertexArray::drawElements(uint count, BeginMode mode, const void *indices) const {
+		glCall(glDrawElements(beginModeToGL(mode), count, GL_UNSIGNED_INT, indices));
 	}
 
 	void GLVertexArray::drawArrays(uint count, BeginMode mode) const {

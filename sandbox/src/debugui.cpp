@@ -89,19 +89,19 @@ DebugUI::DebugUI() :
 	//buffers
 	sp0 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp0->setVisible(false);
-	sp0->transformation({spWidth / 2.0f + offset, spY}, 180.0f);
+	sp0->move({spWidth / 2.0f + offset, spY});
 
 	sp1 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp1->setVisible(false);
-	sp1->transformation({sp0->getPosition().x + offset + spWidth, spY}, 180.0f);
+	sp1->move({sp0->getPosition().x + offset + spWidth, spY});
 
 	sp2 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp2->setVisible(false);
-	sp2->transformation({sp1->getPosition().x + offset + spWidth, spY}, 180.0f);
+	sp2->move({sp1->getPosition().x + offset + spWidth, spY});
 
 	sp3 = new RectangleShape({spWidth, spHeight}, 0.0f);
 	sp3->setVisible(false);
-	sp3->transformation({sp2->getPosition().x + offset + spWidth, spY}, 180.0f);
+	sp3->move({sp2->getPosition().x + offset + spWidth, spY});
 }
 
 DebugUI::~DebugUI() {

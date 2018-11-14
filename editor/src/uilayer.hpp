@@ -8,28 +8,39 @@
 
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/framebuffer.hpp>
+#include <xe/gfx/batchrenderer2d.hpp>
 
-class UILayer : public xe::Layer {
-public:
-	explicit UILayer();
-	~UILayer() override;
+namespace xe {
 
-	void render() override;
+	class UILayer : public Layer {
+	public:
+		explicit UILayer();
+		~UILayer() override;
 
-	void update(float delta) override;
+		void render() override;
 
-	void input(xe::Event &event) override;
+		void update(float delta) override;
 
-private:
-	void initImGui();
+		void input(Event &event) override;
 
-private:
-	void *dockContext;
+	private:
+		void initImGui();
 
-	//framebuffer
-	xe::FrameBuffer *renderWindow;
-	xe::Texture *renderTexture;
-};
+		void renderPreview();
+
+	private:
+		//framebuffer
+		FrameBuffer *renderWindow;
+		Texture *renderTexture;
+
+		//test
+		Camera *camera;
+		BatchRenderer2D *renderer;
+
+		std::vector<IRenderable2D *> renderables;
+	};
+
+}
 
 
 #endif //X808_UILAYER_HPP

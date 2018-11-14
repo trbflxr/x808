@@ -107,6 +107,7 @@ namespace xe {
 			submitInternal(t);
 		}
 
+		updateCamera();
 		releaseBuffer();
 		flush();
 	}
@@ -144,7 +145,14 @@ namespace xe {
 
 		for (uint i = 0; i < count; ++i) {
 			buffer->vertex = mat4::translateXY(transform, vertices[i].pos);
-			buffer->uv = vertices[i].uv;
+
+			//todo: refactor
+			if (texture && texture->isFlipped()) {
+				buffer->uv = vertices[count - i - 1].uv;
+			} else {
+				buffer->uv = vertices[i].uv;
+			}
+
 			buffer->tid = textureSlot;
 			buffer->color = color;
 			buffer++;

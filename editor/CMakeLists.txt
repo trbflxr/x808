@@ -6,6 +6,8 @@ set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS} -D XEE_DEBUG")
 
+add_definitions(-D GLEW_STATIC)
+
 link_directories(${XE_DIRS})
 include_directories(${XE_INCLUDE_DIRS})
 include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
@@ -15,6 +17,7 @@ include_directories(imgui)
 #sandbox
 file(GLOB XEE_SRC
         imgui/*.cpp
+        imgui/*.c
         src/*.cpp)
 
 add_executable(xee ${XEE_SRC})

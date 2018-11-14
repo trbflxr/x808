@@ -21,8 +21,9 @@ namespace xe { namespace internal {
 	void GLVertexBuffer::resize(uint size) {
 		GLVertexBuffer::size = size;
 
-		glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
+		bind();
 		glCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, bufferUsageToGL(usage)));
+		unbind();
 	}
 
 	void GLVertexBuffer::setLayout(const BufferLayout &layout) {
@@ -39,8 +40,9 @@ namespace xe { namespace internal {
 	}
 
 	void GLVertexBuffer::setData(uint size, const void *data) {
-		glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
+		bind();
 		glCall(glBufferData(GL_ARRAY_BUFFER, size, data, bufferUsageToGL(usage)));
+		unbind();
 	}
 
 	void GLVertexBuffer::releasePointer() {

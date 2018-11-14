@@ -37,7 +37,7 @@ namespace xe {
 	}
 
 	void BatchRenderer2D::renderSprites() {
-		renderer->updateCamera();
+		if (targets.empty() && transparentTargets.empty()) return;
 
 		Renderer::enableDepthTesting(true);
 
@@ -63,7 +63,7 @@ namespace xe {
 	}
 
 	void BatchRenderer2D::renderText() {
-		textRenderer->updateCamera();
+		if (text.empty()) return;
 
 		Renderer::enableDepthTesting(false);
 

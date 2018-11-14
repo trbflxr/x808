@@ -70,11 +70,12 @@ namespace xe {
 
 	class XE_API Texture {
 	public:
-		explicit Texture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
+		explicit Texture(const string &name, uint width, uint height, uint depth,
+		                 const TextureParameters &params, bool flip = false);
 
 		explicit Texture(const string &name,
 		                 const wstring &path,
-		                 const TextureParameters &params);
+		                 const TextureParameters &params, bool flip = false);
 
 		~Texture();
 
@@ -102,10 +103,15 @@ namespace xe {
 
 		uint getMaxMipMap() const;
 
+		inline bool isFlipped() const { return flipped; }
+		inline void setFlip(bool flip) { flipped = flip; }
+
 		static uint getMaxMipMap(uint width, uint height);
 
 	private:
 		internal::PlatformTexture *texture;
+
+		bool flipped;
 	};
 
 }

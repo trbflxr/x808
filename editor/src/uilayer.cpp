@@ -6,131 +6,185 @@
 #include <xe/utils/log.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/renderer.hpp>
+#include <GL/glew.h>
+#include <xe/utils/random.hpp>
+#include <xe/gfx/rectangleshape.hpp>
 #include "uilayer.hpp"
 
-using namespace xe;
+namespace xe {
 
-UILayer::UILayer() {
-	initImGui();
+	static uint w = 512;
+	static uint h = 512;
 
-	TextureParameters params;
+	UILayer::UILayer() {
+		initImGui();
+
+		TextureParameters params;
 //	renderTexture = new Texture("a", L"assets/textures/test1.png", params);
-	renderTexture = new Texture("renderTexture", 512, 512, 0, params);
+		renderTexture = new Texture("renderTexture", w, h, 0, params, true);
 
-	renderWindow = new FrameBuffer("renderWindow");
-	renderWindow->load({std::make_pair(Attachment::Color0, renderTexture)});
-}
+		renderWindow = new FrameBuffer("renderWindow");
+		renderWindow->load({std::make_pair(Attachment::Color0, renderTexture)});
 
-UILayer::~UILayer() {
-	ImGui::SaveDock("dock.ini");
-
-	ImGui::xe::shutdown();
-
-	ImGui::DestroyDockContext((ImGui::DockContext *) dockContext);
-
-	delete renderTexture;
-	delete renderWindow;
-}
-
-void UILayer::initImGui() {
-	ImGui::xe::init(window);
-
-	ImGui::StyleColorsDark();
-
-	dockContext = ImGui::CreateDockContext();
-	ImGui::SetCurrentDockContext((ImGui::DockContext *) dockContext);
-
-	ImGui::LoadDock("dock.ini");
-}
-
-void UILayer::render() {
-	//ImGui::ShowDemoWindow(&show_demo_window);
-
-	renderWindow->bindDraw(Attachment::Color0);
-	Renderer::setViewport(0, 0, 512, 512);
-	Renderer::setClearColor(color::GREEN);
-	Renderer::clear(RendererBufferColor);
-
-//	glColor3f(1, 0, 1);
-//	glBegin(GL_TRIANGLES);
-//	glVertex2f(0, 0);
-//	glVertex2f(1, 0);
-//	glVertex2f(1, 1);
-//	glEnd();
-
-	renderWindow->unbind();
+		//test
+		camera = new Camera(mat4::ortho(0.0f, w, 0.0f, h, -1.0f, 1000.0f));
+		renderer = new BatchRenderer2D(w, h, camera);
 
 
-	// Fullscreen (without visual artifacts):
-	ImGui::SetNextWindowPos({0, 0});
-	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+		Texture *tex = new Texture("a", L"assets/textures/test1.png", params);
 
-	const ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove |
-	                               ImGuiWindowFlags_NoBringToFrontOnFocus |
-	                               ImGuiWindowFlags_NoResize |
-	                               ImGuiWindowFlags_NoScrollbar |
-	                               ImGuiWindowFlags_NoSavedSettings |
-	                               ImGuiWindowFlags_NoTitleBar;
 
-	const float oldWindowRounding = ImGui::GetStyle().WindowRounding;
+		for (int32 x = 0; x < 512; x += 15) {
+			for (int32 y = 0; y < 512; y += 15) {
+				RectangleShape *s = new RectangleShape({10.0f, 10.0f}, 0.0f);
+				s->setTexture(tex);
+				s->transformation(vec2(x, y));
 
-	ImGui::GetStyle().WindowRounding = 0;
-
-	const bool visible = ImGui::Begin("imguidock window", nullptr, {0, 0}, 1.0f, flags);
-
-	ImGui::GetStyle().WindowRounding = oldWindowRounding;
-
-	if (visible) {
-		ImGui::BeginDockspace();
-		static char tmp[128];
-		for (int i = 0; i < 10; i++) {
-			sprintf(tmp, "Dock %d", i);
-
-			if (i == 8) {
-				ImGui::SetNextDock(ImGuiDockSlot_Right);// optional
-
-				if (ImGui::BeginDock(tmp)) {
-					ImGui::Text("Render window");
-
-					ImGui::Image((void *) renderTexture->getHandle(), {512, 512});
-				}
-				ImGui::EndDock();
-
-				continue;
+				renderables.push_back(s);
 			}
-
-			if (i == 9) {
-				ImGui::SetNextDock(ImGuiDockSlot_Bottom);// optional
-
-				if (ImGui::BeginDock(tmp)) {
-					ImGui::Text("Content of dock window %d goes here", i);
-
-					ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-					            ImGui::GetIO().Framerate);
-				}
-				ImGui::EndDock();
-
-				continue;
-			}
-
-			if (ImGui::BeginDock(tmp)) {
-				ImGui::Text("Content of dock window %d goes here", i);
-			}
-			ImGui::EndDock();
 		}
-		ImGui::EndDockspace();
 	}
-	ImGui::End();
+
+	UILayer::~UILayer() {
+		ImGui::xe::shutdown();
+
+		delete renderTexture;
+		delete renderWindow;
+
+		//test
+		delete camera;
+		delete renderer;
+
+		for (const auto &r : renderables) {
+			delete r;
+		}
+	}
+
+	void UILayer::initImGui() {
+		ImGui::xe::init(window);
+
+		ImGui::StyleColorsDark();
+	}
+
+	void UILayer::renderPreview() {
+		renderWindow->bindDraw(Attachment::Color0);
+		Renderer::setViewport(0, 0, w, h);
+
+		Renderer::setClearColor(color::GREEN);
+		Renderer::clear(RendererBufferColor);
 
 
-	ImGui::xe::render();
-}
+		for (const auto &r : renderables) {
+			((RectangleShape *) r)->rotate(0.5f);
+			renderer->submit(r);
+		}
 
-void UILayer::update(float delta) {
-	ImGui::xe::update(window, delta);
+		renderer->renderSprites();
 
-}
+		renderer->clear();
 
-void UILayer::input(xe::Event &event) {
-	ImGui::xe::processEvent(event);
+//		glColor3f(1, 0, 1);
+//		glBegin(GL_TRIANGLES);
+//		glVertex2f(0.0f, 0.5f);
+//		glVertex2f(-0.5f, -0.5f);
+//		glVertex2f(0.5f, -0.5f);
+//		glEnd();
+
+
+		renderWindow->unbind();
+	}
+
+	void UILayer::render() {
+		renderPreview();
+
+		Renderer::setClearColor(color::BLACK);
+
+		static bool open = true;
+		static bool opt_fullscreen_persistant = true;
+		static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
+		bool opt_fullscreen = opt_fullscreen_persistant;
+
+
+		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+		// because it would be confusing to have two docking targets within each others.
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		if (opt_fullscreen) {
+			ImGuiViewport *viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->Pos);
+			ImGui::SetNextWindowSize(viewport->Size);
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
+			                ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		}
+
+		// When using ImGuiDockNodeFlags_PassthruDockspace, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
+		if (opt_flags & ImGuiDockNodeFlags_PassthruDockspace) {
+			window_flags |= ImGuiWindowFlags_NoBackground;
+		}
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace Demo", &open, window_flags);
+		ImGui::PopStyleVar();
+
+		if (opt_fullscreen) {
+			ImGui::PopStyleVar(2);
+		}
+
+		// Dockspace
+		ImGuiIO &io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
+			ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
+
+			ImGui::ShowDemoWindow(&open);
+
+
+			ImGui::Begin("Render window");
+			ImGui::Text("Preview");
+			ImGui::Image((void *) renderTexture->getHandle(), {512, 512}, {1, 1}, {0, 0});
+			ImGui::End();
+		}
+
+		if (ImGui::BeginMenuBar()) {
+			if (ImGui::BeginMenu("Docking")) {
+				// Disabling fullscreen would allow the window to be moved to the front of other windows,
+				// which we can't undo at the moment without finer window depth/z control.
+				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
+
+				if (ImGui::MenuItem("Flag: NoSplit", "", (opt_flags & ImGuiDockNodeFlags_NoSplit) != 0))
+					opt_flags ^= ImGuiDockNodeFlags_NoSplit;
+				if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "",
+				                    (opt_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0))
+					opt_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode;
+				if (ImGui::MenuItem("Flag: PassthruDockspace", "",
+				                    (opt_flags & ImGuiDockNodeFlags_PassthruDockspace) != 0))
+					opt_flags ^= ImGuiDockNodeFlags_PassthruDockspace;
+
+				ImGui::Separator();
+				if (ImGui::MenuItem("Close DockSpace", nullptr, false, &open)) {
+					open = false;
+				}
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMenuBar();
+		}
+
+		ImGui::End();
+
+		ImGui::xe::render();
+	}
+
+	void UILayer::update(float delta) {
+		ImGui::xe::update(window, delta);
+
+	}
+
+	void UILayer::input(xe::Event &event) {
+		ImGui::xe::processEvent(event);
+	}
+
 }

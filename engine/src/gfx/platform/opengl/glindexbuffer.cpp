@@ -42,7 +42,7 @@ namespace xe { namespace internal {
 
 		bind();
 		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint16), data, GL_STATIC_DRAW));
-
+		unbind();
 	}
 
 	void GLIndexBuffer::setData(const uint *data, uint count) {
@@ -50,6 +50,7 @@ namespace xe { namespace internal {
 
 		bind();
 		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint), data, GL_STATIC_DRAW));
+		unbind();
 	}
 
 }}

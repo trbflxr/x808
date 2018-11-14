@@ -43,6 +43,7 @@ Test3D::Test3D(DebugUI *ui) :
 Test3D::~Test3D() {
 	delete scene;
 	delete camera;
+	delete renderer;
 
 	delete player;
 }
