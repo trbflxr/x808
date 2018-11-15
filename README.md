@@ -28,17 +28,19 @@ Check out CMakeLists.txt in **sandbox** project.
 Fully functional shell with command history and autocompletion.
 ![sh0](/shell0.png)
 
-**Adding command**
+**Adding shell command**
 
+```c++
+Shell &shell = app.getShell();
 
+auto func = [&](const std::vector<string> &args, bool hint) -> string {
+  if (hint) return "Command description";
+  string r = "Hello " + args[0];
+  return r;
+};
 
-Result:
-
-![sh1](/shell1.png)
-
-**Filter**
-
-![sh2](/shell2.png)
+shell.addCommand("cmd", func);
+```
 
 #### Screenshots
 
