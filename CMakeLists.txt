@@ -51,7 +51,7 @@ else ()
             "\n"
             "#must be 'ogl'. v330 for 2d and v430 for 3d\n"
             "renderApi=ogl\n"
-            "apiVersion=330\n"
+            "apiVersion=430\n"
             "\n"
             "#0 - auto\n"
             "maxTextureUnits=0\n")

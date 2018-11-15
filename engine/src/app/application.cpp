@@ -56,7 +56,7 @@ namespace xe {
 		FontManager::init();
 		TextureManager::init();
 
-		systemDeque.push_back(new Shell());
+		pushSystem(new Shell());
 	}
 
 	void Application::start() {
@@ -214,7 +214,7 @@ namespace xe {
 				if (event.handled && event.type != Event::Closed) break;
 			}
 
-			if (!event.handled && event.type != Event::Closed) {
+			if (!event.handled || event.type == Event::Closed) {
 				for (int32 i = (int32) layerStack.size() - 1; i >= 0; --i) {
 					layerStack[i]->input(event);
 					if (event.handled && event.type != Event::Closed) break;

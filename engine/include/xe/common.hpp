@@ -21,6 +21,13 @@
 
 #define BIT(x) (1 << (x))
 
+#if defined(__clang__) || defined(__GNUC__)
+	#define XE_FMT_ARGS(fmt) __attribute__((format(printf, fmt, fmt + 1)))
+	#define XE_FMT_LIST(fmt) __attribute__((format(printf, fmt, 0)))
+#else
+	#define XE_FMT_ARGS(fmt)
+	#define XE_FMT_LIST(fmt)
+#endif
 
 enum class RenderAPI {
 	OpenGL, Direct3D, Invalid

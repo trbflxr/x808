@@ -107,7 +107,6 @@ namespace xe {
 			submitInternal(t);
 		}
 
-		updateCamera();
 		releaseBuffer();
 		flush();
 	}

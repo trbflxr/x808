@@ -46,6 +46,8 @@ namespace xe {
 	}
 
 	UILayer::~UILayer() {
+		ImGui::SaveIniSettingsToDisk("imgui.ini");
+
 		ImGui::xe::shutdown();
 
 		delete renderTexture;

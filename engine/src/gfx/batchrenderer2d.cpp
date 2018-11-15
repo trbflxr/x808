@@ -39,6 +39,8 @@ namespace xe {
 	void BatchRenderer2D::renderSprites() {
 		if (targets.empty() && transparentTargets.empty()) return;
 
+		renderer->updateCamera();
+
 		Renderer::enableDepthTesting(true);
 
 		std::sort(targets.begin(), targets.end(),
@@ -64,6 +66,8 @@ namespace xe {
 
 	void BatchRenderer2D::renderText() {
 		if (text.empty()) return;
+
+		textRenderer->updateCamera();
 
 		Renderer::enableDepthTesting(false);
 
