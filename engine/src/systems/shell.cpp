@@ -12,6 +12,7 @@ namespace xe {
 	Shell::Shell() :
 			shouldClose(false),
 			scrollToBottom(false),
+			focusInput(true),
 			historyPos(-1) {
 		createDefaultCommands();
 
@@ -117,8 +118,9 @@ namespace xe {
 
 
 		ImGui::SetItemDefaultFocus();
-		if (reclaimFocus) {
+		if (reclaimFocus || focusInput) {
 			ImGui::SetKeyboardFocusHere(-1);
+			focusInput = false;
 		}
 
 		ImGui::End();
@@ -155,6 +157,7 @@ namespace xe {
 					active = false;
 				} else {
 					active = true;
+					focusInput = true;
 				}
 				event.handled = true;
 			}
@@ -166,7 +169,9 @@ namespace xe {
 		}
 	}
 
-	bool Shell::addCommand(const string &command, const std::function<string(const string &, bool)> &callback) {
+	bool Shell::addCommand(const string &command,
+	                       const std::function<string(const std::vector<string> &, bool)> &callback) {
+
 		auto &&it = commands.find(command);
 		if (it == commands.end()) {
 			commands[command] = callback;
@@ -178,27 +183,31 @@ namespace xe {
 	}
 
 	void Shell::createDefaultCommands() {
-		commands["hello"] = [&](const string &body, bool hint) -> string {
-			if (hint) return "Prints 'Hello'.";
-			return "Hello";
+		commands["help"] = [&](const std::vector<string> &args, bool hint) -> string {
+			if (hint) return "Help";
+
+			addLog(ShellItemType::Info, "Commands:");
+			for (const auto &c : commands) {
+				addLog(ShellItemType::Info, "  - %s", c.first.c_str());
+			}
+
+			return "";
 		};
 
-		commands["clear"] = [&](const string &body, bool hint) -> string {
+		commands["clear"] = [&](const std::vector<string> &args, bool hint) -> string {
 			if (hint) return "Clears console.";
 			clear();
 			return "";
 		};
 
-		commands["args"] = [&](const string &body, bool hint) -> string {
+		commands["args"] = [&](const std::vector<string> &args, bool hint) -> string {
 			if (hint) return "Prints args.";
 
-			std::vector<string> tokens = utils::tokenize(body);
 			string r;
-
-			for (size_t i = 1; i < tokens.size() - 1; ++i) {
-				r += "- " + tokens[i] + "\n  ";
+			for (size_t i = 0; i < args.size() - 1; ++i) {
+				r += "- " + args[i] + "\n  ";
 			}
-			r += "- " + tokens[tokens.size() - 1];
+			r += "- " + args[args.size() - 1];
 
 			return r;
 		};
@@ -223,10 +232,24 @@ namespace xe {
 				hint = tokens[1] == "-h";
 			}
 
-			string res = it->second(command, hint);
+			tokens.erase(tokens.begin());
+			string res = it->second(tokens, hint);
 
 			if (!res.empty()) {
-				addLog(ShellItemType::Info, "  %s\n", res.c_str());
+				ShellItemType type = ShellItemType::Info;
+
+				if (utils::startsWith(res, "[W]")) {
+					res.erase(res.begin(), res.begin() + 3);
+					type = ShellItemType::Warn;
+				} else if (utils::startsWith(res, "[E]")) {
+					res.erase(res.begin(), res.begin() + 3);
+					type = ShellItemType::Error;
+				} else if (utils::startsWith(res, "[F]")) {
+					res.erase(res.begin(), res.begin() + 3);
+					type = ShellItemType::Fatal;
+				}
+
+				addLog(type, "  %s\n", res.c_str());
 			}
 
 		} else {
@@ -284,7 +307,7 @@ namespace xe {
 					data->DeleteChars((int32) (wordStart - data->Buf), (int32) (wordEnd - wordStart));
 					data->InsertChars(data->CursorPos, candidates[0].c_str());
 				} else {
-					//dm = dummy1 && dummy2
+					//du = dummy1 && dummy2
 					int32 matchLen = (int32) (wordEnd - wordStart);
 					for (;;) {
 						int32 c = 0;

@@ -26,7 +26,7 @@ namespace xe {
 		ShellItemType type;
 	};
 
-	class Shell : public System {
+	class XE_API Shell : public System {
 	public:
 		explicit Shell();
 		~Shell() override;
@@ -40,7 +40,8 @@ namespace xe {
 
 		void executeCommand(const string &command);
 
-		bool addCommand(const string &command, const std::function<string(const string &, bool)> &callback);
+		bool addCommand(const string &command,
+		                const std::function<string(const std::vector<string> &, bool)> &callback);
 
 	private:
 		void createDefaultCommands();
@@ -56,17 +57,16 @@ namespace xe {
 		bool shouldClose;
 
 		bool scrollToBottom;
+		bool focusInput;
 
 		static constexpr byte HISTORY_SIZE = 10;
-
-		string currentCommand;
 
 		char inputBuffer[256];
 		std::vector<ShellItem> items;
 		std::deque<string> history;
 		int32 historyPos;
 
-		std::unordered_map<string, std::function<string(const string &, bool)>> commands;
+		std::unordered_map<string, std::function<string(const std::vector<string> &, bool)>> commands;
 	};
 
 }

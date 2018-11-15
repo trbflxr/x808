@@ -16,6 +16,7 @@ namespace xe {
 
 	class Layer;
 	class System;
+	class Shell;
 
 	class XE_API Application {
 	public:
@@ -42,6 +43,9 @@ namespace xe {
 		inline Window &getWindow() { return window; }
 		inline const Window &getWindow() const { return window; }
 
+		inline Shell &getShell() { return *shell; }
+		inline const Shell &getShell() const { return *shell; }
+
 		inline const Config &getConfig() const { return config; }
 
 		inline vec2 getWindowSize() const { return window.getSize(); }
@@ -66,6 +70,7 @@ namespace xe {
 	private:
 		Config config;
 		Window window;
+		Shell *shell;
 
 		bool running;
 		bool suspend_;

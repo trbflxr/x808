@@ -23,13 +23,35 @@ x808 is completely free and open source under the MIT license.
 
 Check out CMakeLists.txt in **sandbox** project.
 
+#### Shell
+
+Fully functional shell with command history and autocompletion.
+![sh0](/shell0.png)
+
+**Adding command**
+
+
+
+Result:
+
+![sh1](/shell1.png)
+
+**Filter**
+
+![sh2](/shell2.png)
+
 #### Screenshots
 
 Sandbox 2D: Performance test.
+
 ![2d](/2d.png)
 
 Sandbox 3D: Sponza test.
+
 ![3d0](/3d.png)
+
 ![3d1](/3dwireframe.png)
+
 ![3d2](/3dlightvolumes.png)
+
 ![3d3](/3dbuffers.png)

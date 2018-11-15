@@ -56,7 +56,9 @@ namespace xe {
 		FontManager::init();
 		TextureManager::init();
 
-		pushSystem(new Shell());
+		shell = new Shell();
+
+		pushSystem(shell);
 	}
 
 	void Application::start() {

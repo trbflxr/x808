@@ -22,6 +22,9 @@ public:
 	void input(xe::Event &event) override;
 
 private:
+	void addShellCommands();
+
+private:
 	xe::Camera *camera;
 	xe::BatchRenderer2D *renderer;
 
