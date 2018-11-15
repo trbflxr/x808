@@ -333,16 +333,7 @@ void Test2D::input(xe::Event &event) {
 }
 
 void Test2D::addShellCommands() {
-
 	Shell &shell = app.getShell();
-
-	auto func = [&](const std::vector<string> &args, bool hint) -> string {
-		if (hint) return "Command description";
-		string r = "Hello " + args[0];
-		return r;
-	};
-
-	shell.addCommand("cmd", func);
 
 	shell.addCommand("r2d_wireframe", [&](const std::vector<string> &args, bool hint) -> string {
 		if (hint) return "Enable / disable wireframe for renderer2d.\n  Example: r2d_wireframe (0 || 1)";

@@ -12,8 +12,6 @@ using namespace xe;
 DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
-	XE_INFO(Context::getInfo());
-
 	//create camera
 	const float w = app.getConfig().width;
 	const float h = app.getConfig().height;

@@ -193,28 +193,6 @@ namespace xe { namespace internal {
 		return buffer;
 	}
 
-	template<>
-	inline const wchar_t *to_wstring<GAPIInfo>(const GAPIInfo &t) {
-		swprintf(buffer, L"Context:\n"
-		                 L"\t - Vendor:            %s\n"
-		                 L"\t - Version:           %s\n"
-		                 L"\t - Renderer:          %s\n"
-		                 L"\t - Shading language:  %s\n"
-		                 L"\t - Max texture size:  %i\n"
-		                 L"\t - Max texture units: %i\n"
-		                 L"\t - Max image units:   %i\n",
-		         t.vendor,
-		         t.version,
-		         t.renderer,
-		         t.shadingLevel,
-		         t.maxTexSize,
-		         t.maxTexUnits,
-		         t.maxTexImgUnits);
-
-		return buffer;
-	}
-
-
 	template<typename First>
 	static void print_log_internal(wchar_t *buffer, uint &position, First &&first) {
 		const std::wstring formatted = xe::internal::to_wstring<First>(first);

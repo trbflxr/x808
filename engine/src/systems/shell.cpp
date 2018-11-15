@@ -2,7 +2,9 @@
 // Created by FLXR on 11/14/2018.
 //
 
+#include <sstream>
 #include <xe/systems/shell.hpp>
+#include <xe/gfx/context.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/utils/log.hpp>
 #include <imgui/impl/imgui_impl_xe_gl.hpp>
@@ -182,37 +184,6 @@ namespace xe {
 		}
 	}
 
-	void Shell::createDefaultCommands() {
-		commands["help"] = [&](const std::vector<string> &args, bool hint) -> string {
-			if (hint) return "Help";
-
-			addLog(ShellItemType::Info, "Commands:");
-			for (const auto &c : commands) {
-				addLog(ShellItemType::Info, "  - %s", c.first.c_str());
-			}
-
-			return "";
-		};
-
-		commands["clear"] = [&](const std::vector<string> &args, bool hint) -> string {
-			if (hint) return "Clears console.";
-			clear();
-			return "";
-		};
-
-		commands["args"] = [&](const std::vector<string> &args, bool hint) -> string {
-			if (hint) return "Prints args.";
-
-			string r;
-			for (size_t i = 0; i < args.size() - 1; ++i) {
-				r += "- " + args[i] + "\n  ";
-			}
-			r += "- " + args[args.size() - 1];
-
-			return r;
-		};
-	}
-
 	void Shell::executeCommand(const string &command) {
 		addLog(ShellItemType::Command, "# %s\n", command.c_str());
 
@@ -358,6 +329,56 @@ namespace xe {
 			default: break;
 		}
 		return 0;
+	}
+
+	void Shell::createDefaultCommands() {
+		commands["help"] = [&](const std::vector<string> &args, bool hint) -> string {
+			if (hint) return "Help";
+
+			addLog(ShellItemType::Info, "Commands:");
+			for (const auto &c : commands) {
+				addLog(ShellItemType::Info, "  - %s", c.first.c_str());
+			}
+
+			return "";
+		};
+
+		commands["info"] = [&](const std::vector<string> &args, bool hint) -> string {
+			if (hint) return "Displays info.";
+
+			const GAPIInfo info = Context::getInfo();
+
+			std::stringstream ss;
+
+			ss << "Context: \n";
+			ss << "  - Vendor: " << info.vendor << "\n";
+			ss << "  - Version: " << info.version << "\n";
+			ss << "  - Renderer: " << info.renderer << "\n";
+			ss << "  - Shading language: " << info.shadingLevel << "\n";
+			ss << "  - Max texture size: " << info.maxTexSize << "\n";
+			ss << "  - Max texture units: " << info.maxTexUnits << "\n";
+			ss << "  - Max image units: " << info.maxTexImgUnits;
+
+			return ss.str();
+		};
+
+		commands["clear"] = [&](const std::vector<string> &args, bool hint) -> string {
+			if (hint) return "Clears console.";
+			clear();
+			return "";
+		};
+
+		commands["args"] = [&](const std::vector<string> &args, bool hint) -> string {
+			if (hint) return "Prints args.";
+
+			std::stringstream ss;
+			for (size_t i = 0; i < args.size() - 1; ++i) {
+				ss << "- " << args[i] << "\n  ";
+			}
+			ss << "- " << args[args.size() - 1];
+
+			return ss.str();
+		};
 	}
 
 }
