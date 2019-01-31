@@ -38,6 +38,7 @@ include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
 #engine
 file(GLOB ENGINE_SRC
         src/app/*.cpp
+        src/core/*.cpp
         src/ecs/*.cpp
         src/ecs/components/*.cpp
         src/ecs/systems/*.cpp
@@ -62,6 +63,7 @@ file(GLOB ENGINE_SRC
 
 #win32
 file(GLOB ENGINE_WIN32_SRC
+        src/core/platform/win32/*.cpp
         src/utils/platform/win32/*.cpp
         src/window/platform/win32/*.cpp)
 

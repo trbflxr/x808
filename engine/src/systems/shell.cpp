@@ -335,12 +335,14 @@ namespace xe {
 		commands["help"] = [&](const std::vector<string> &args, bool hint) -> string {
 			if (hint) return "Help";
 
-			addLog(ShellItemType::Info, "Commands:");
+			std::stringstream ss;
+
+			ss << "Commands: \n";
 			for (const auto &c : commands) {
-				addLog(ShellItemType::Info, "  - %s", c.first.c_str());
+				ss << "  - " << c.first << "\n";
 			}
 
-			return "";
+			return ss.str();
 		};
 
 		commands["info"] = [&](const std::vector<string> &args, bool hint) -> string {
@@ -362,6 +364,26 @@ namespace xe {
 			return ss.str();
 		};
 
+		commands["config"] = [&](const std::vector<string> &args, bool hint) -> string {
+			if (hint) return "Displays engine config.";
+
+			std::stringstream ss;
+
+			ss << "Config: \n";
+			ss << "  - Width: " << gConfig.width << "\n";
+			ss << "  - Height: " << gConfig.height << "\n";
+			ss << "  - Fullscreen: " << gConfig.fullScreen << "\n";
+			ss << "  - Vsync: " << gConfig.vSync << "\n";
+			ss << "  - Target FPS: " << gConfig.fps << "\n";
+			ss << "  - Target UPS: " << gConfig.ups << "\n";
+			ss << "  - Use SRGB: " << gConfig.useSRGB << "\n";
+			ss << "  - Render API: " << renderApiToString(gConfig.renderApi) << "\n";
+			ss << "  - Render API version: " << gConfig.apiVersion << "\n";
+			ss << "  - Texture units: " << gConfig.maxTextureUnits << "\n";
+
+			return ss.str();
+		};
+
 		commands["clear"] = [&](const std::vector<string> &args, bool hint) -> string {
 			if (hint) return "Clears console.";
 			clear();
@@ -372,6 +394,12 @@ namespace xe {
 			if (hint) return "Prints args.";
 
 			std::stringstream ss;
+
+			if (args.empty()) {
+				ss << "No arguments given.";
+				return ss.str();
+			}
+
 			for (size_t i = 0; i < args.size() - 1; ++i) {
 				ss << "- " << args[i] << "\n  ";
 			}

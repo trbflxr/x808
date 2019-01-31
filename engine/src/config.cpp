@@ -4,7 +4,8 @@
 
 #include <cstring>
 #include <cstdlib>
-#include <cstdio>
+//#include <cstdio>
+#include <xe/core/filesystem.hpp>
 #include <xe/config.hpp>
 
 namespace xe {
@@ -36,31 +37,53 @@ namespace xe {
 	}
 
 	bool Config::load(Config &config, const char *path) {
-		FILE *cfgFile = fopen(path, "rb");
+//		FILE *cfgFile = fopen(path, "rb");
+//
+//		if (!cfgFile) {
+//			fclose(cfgFile);
+//			return false;
+//		}
+//
+//		char *key;
+//		char *value;
+//		const char *search = "=";
+//
+//		char line[128];
+//		while (fgets(line, sizeof(line), cfgFile) != nullptr) {
+//			if (line[0] == '#' || line[0] == '\n') continue;
+//
+//			key = strtok(line, search);
+//			value = strtok(nullptr, search);
+//
+//			if (!value) continue;
+//			value[strcspn(value, "\r\n")] = 0;
+//
+//			writeKeyValue(config, key, value);
+//		}
+//
+//		fclose(cfgFile);
+//
+//		gConfig = config;
+//
+//		return true;
 
-		if (!cfgFile) {
-			fclose(cfgFile);
-			return false;
-		}
+		int64 size = FileSystem::size(L"xeconfig");
+		if (size == -1) return false;
 
-		char *key;
-		char *value;
-		const char *search = "=";
+		string cfg(size, '\0');
 
-		char line[128];
-		while (fgets(line, sizeof(line), cfgFile) != nullptr) {
-			if (line[0] == '#' || line[0] == '\n') continue;
+		bool r = FileSystem::read(L"xeconfig", &cfg[0], size);
+		if (!r) return false;
 
-			key = strtok(line, search);
-			value = strtok(nullptr, search);
+		std::vector<string> lines= utils::splitString(cfg, "\n\r");
 
-			if (!value) continue;
-			value[strcspn(value, "\r\n")] = 0;
+		const char* search = "=";
+		for (auto&& l : lines) {
+			char* key = strtok(&l[0], search);
+			char* value = strtok(nullptr, search);
 
 			writeKeyValue(config, key, value);
 		}
-
-		fclose(cfgFile);
 
 		gConfig = config;
 
