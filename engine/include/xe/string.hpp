@@ -1,23 +1,19 @@
 //
-// Created by FLXR on 7/4/2018.
+// Created by FLXR on 1/31/2019.
 //
 
-#ifndef X808_STRING1_HPP
-#define X808_STRING1_HPP
+#ifndef X808_STRING_HPP
+#define X808_STRING_HPP
 
 
-#include <string>
-#include <cstring>
 #include <vector>
-#include <xe/common.hpp>
+#include <tinyutf8.h>
+
 #include <xe/xeint.hpp>
+#include <xe/common.hpp>
 
 namespace xe {
-	typedef std::string string;
-	typedef std::wstring wstring;
-}
-
-namespace xe { namespace utils {
+	typedef utf8_string string;
 
 	const char XE_API *findToken(const char *str, const string &token);
 	const char XE_API *findToken(const string &str, const string &token);
@@ -32,19 +28,16 @@ namespace xe { namespace utils {
 	std::vector<string> XE_API tokenize(const string &str);
 	std::vector<string> XE_API splitString(const string &str, const string &delimiters);
 	std::vector<string> XE_API splitString(const string &str, char delimiter);
-	std::vector<wstring> XE_API splitString(const wstring &str, wchar_t delimiter);
 	std::vector<string> XE_API getLines(const string &str);
 
 	bool XE_API startsWith(const string &str, const string &start);
 
-	wstring XE_API toWstring(const char *str);
-	wstring XE_API toWstring(const string &str);
+#ifdef XE_PLATFORM_WINDOWS
+	std::wstring XE_API toWstring(const char *str);
+	std::wstring XE_API toWstring(const string &str);
+#endif
 
-}}
-
-//unicode
-namespace xe {
-
+	//unicode
 	template<uint N>
 	struct utf;
 
@@ -107,7 +100,7 @@ namespace xe {
 	};
 
 	typedef utf<16> utf16;
-
 }
 
-#endif //X808_STRING1_HPP
+
+#endif //X808_STRING_HPP

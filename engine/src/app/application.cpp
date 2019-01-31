@@ -14,7 +14,6 @@
 #include <xe/resources/soundmanager.hpp>
 #include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
-#include <xe/core/vfs.hpp>
 
 namespace xe {
 
@@ -23,10 +22,6 @@ namespace xe {
 	Application::Application(const Config &config, const wstring &title) :
 			config(config),
 			frameTime(0.0f) {
-
-#ifdef UNICODE
-		_setmode(_fileno(stdout), _O_U16TEXT);
-#endif
 
 		//init random
 		random::nextInt32(0, 1);
@@ -38,13 +33,7 @@ namespace xe {
 		init(title);
 	}
 
-	Application::~Application() {
-		VFS::shutdown();
-	}
-
 	void Application::init(const wstring &title) {
-		VFS::init();
-
 		if (config.fullScreen) {
 			window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
 

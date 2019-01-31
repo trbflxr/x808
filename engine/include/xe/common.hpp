@@ -29,11 +29,18 @@
 	#define XE_FMT_LIST(fmt)
 #endif
 
-enum class RenderAPI {
-	OpenGL, Direct3D, Invalid
-};
+namespace xe {
 
-XE_API const char *renderApiToString(RenderAPI api);
-XE_API RenderAPI stringToRenderApi(const char *api);
+	enum class RenderAPI {
+		OpenGL, Direct3D, Invalid
+	};
+
+	XE_API const char *renderApiToString(RenderAPI api);
+	XE_API RenderAPI stringToRenderApi(const char *api);
+
+	XE_API void initialize();
+	XE_API void shutdown();
+
+}
 
 #endif //X808_COMMON_HPP

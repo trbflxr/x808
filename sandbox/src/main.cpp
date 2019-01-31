@@ -5,6 +5,9 @@
 #include "debugui.hpp"
 #include "testb2d.hpp"
 
+#include <iostream>
+#include <windows.h>
+
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
@@ -40,11 +43,19 @@ private:
 };
 
 int main() {
+	xe::initialize();
+
 	xe::Config config{ };
 	xe::Config::load(config);
 
-	Test test(config);
-	test.start();
+	printf(u8"test тест がんばつて 🌍 ☄ ☝ ☯☯☯⛛\n");
+
+//	Test test(config);
+//	test.start();
+
+//	MessageBox(nullptr, s.utf8_str(), u8"test", MB_ICONINFORMATION);
+
+	xe::shutdown();
 
 	return 0;
 }

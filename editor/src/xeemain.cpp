@@ -25,11 +25,15 @@ private:
 };
 
 int main() {
+	xe::initialize();
+
 	xe::Config config{ };
 	xe::Config::load(config);
 
 	Editor editor(config);
 	editor.start();
+
+	xe::shutdown();
 
 	return 0;
 }
