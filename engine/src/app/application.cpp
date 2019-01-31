@@ -14,6 +14,7 @@
 #include <xe/resources/soundmanager.hpp>
 #include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
+#include <xe/core/vfs.hpp>
 
 namespace xe {
 
@@ -37,7 +38,13 @@ namespace xe {
 		init(title);
 	}
 
+	Application::~Application() {
+		VFS::shutdown();
+	}
+
 	void Application::init(const wstring &title) {
+		VFS::init();
+
 		if (config.fullScreen) {
 			window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
 

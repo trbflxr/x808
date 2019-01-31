@@ -99,6 +99,26 @@ namespace xe { namespace utils {
 		return result;
 	}
 
+	std::vector<wstring> splitString(const wstring &str, wchar_t delimiter) {
+		size_t start = 0;
+		size_t end = str.find_first_of(delimiter);
+
+		std::vector<wstring> result;
+
+		while (end <= wstring::npos) {
+			wstring token = str.substr(start, end - start);
+			if (!token.empty())
+				result.push_back(token);
+
+			if (end == wstring::npos) break;
+
+			start = end + 1;
+			end = str.find_first_of(delimiter, start);
+		}
+
+		return result;
+	}
+
 	std::vector<string> splitString(const string &str, char delimiter) {
 		return splitString(str, string(1, delimiter));
 	}

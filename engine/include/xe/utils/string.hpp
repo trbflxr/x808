@@ -32,6 +32,7 @@ namespace xe { namespace utils {
 	std::vector<string> XE_API tokenize(const string &str);
 	std::vector<string> XE_API splitString(const string &str, const string &delimiters);
 	std::vector<string> XE_API splitString(const string &str, char delimiter);
+	std::vector<wstring> XE_API splitString(const wstring &str, wchar_t delimiter);
 	std::vector<string> XE_API getLines(const string &str);
 
 	bool XE_API startsWith(const string &str, const string &start);

@@ -12,7 +12,7 @@ public:
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr),
-			tb2d(nullptr){
+			tb2d(nullptr) {
 
 		ui = new DebugUI();
 //		t3d = new Test3D(ui);
