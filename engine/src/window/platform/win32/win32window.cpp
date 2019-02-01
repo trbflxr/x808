@@ -430,13 +430,16 @@ namespace xe { namespace internal {
 
 			case WM_CHAR: {
 				if (keyRepeatEnabled || ((lParam & (1 << 30)) == 0)) {
+
+					static std::wstring_convert<std::codecvt_utf8<wchar_t >> c;
+
 					uint character = static_cast<uint>(wParam);
 
 					Event event{ };
 					event.type = Event::TextEntered;
 
-					WideCharToMultiByte(CP_UTF8, 0, (const wchar_t *) &character, -1,
-					                    (char *) &event.text.unicode, 1, nullptr, nullptr);
+					string s = c.to_bytes(character);
+					memcpy(&event.text.unicode, s.data(), s.size());
 
 					pushEvent(event);
 

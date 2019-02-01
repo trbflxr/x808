@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <xe/gfx/texture.hpp>
 #include <xe/utils/log.hpp>
+#include <embedded/embedded.hpp>
 #include "imgui/impl/imgui_impl_xe_gl.hpp"
 
 static bool windowHasFocus = false;
@@ -175,7 +176,7 @@ namespace ImGui { namespace xe {
 
 				case ::xe::Event::TextEntered:
 					if (event.text.unicode > 0 && event.text.unicode < 0x10000) {
-						io.AddInputCharacter(static_cast<ImWchar>(event.text.unicode));
+						io.AddInputCharactersUTF8((const char *) &event.text.unicode);
 					}
 					break;
 
@@ -239,7 +240,16 @@ namespace ImGui { namespace xe {
 		byte *pixels;
 		int32 width, height;
 
+		ImFontConfig cfg = ImFontConfig();
+		cfg.FontDataOwnedByAtlas = false;
+		cfg.MergeMode = false;
+		cfg.SizePixels = 16.0f;
+		io.Fonts->AddFontFromMemoryTTF(::xe::internal::DEFAULT_FONT_DATA,
+		                               ::xe::internal::DEFAULT_FONT_DATA_SIZE,
+		                               16.0f, &cfg, io.Fonts->GetGlyphRangesCyrillic());
+
 		io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
+
 
 		delete fontTexture;
 		fontTexture = new ::xe::Texture("ImGuiFont", width, height, 1, params);

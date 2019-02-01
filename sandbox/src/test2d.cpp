@@ -319,11 +319,15 @@ void Test2D::input(xe::Event &event) {
 		case Event::TextEntered: {
 			if (event.text.unicode == 8) {
 				if (!inputText->getString().empty()) {
-					inputText->getString().erase(inputText->getString().end() - 1);
+					string &utf8 = inputText->getString();
+					char* cp = utf8.data() + utf8.size();
+					while (--cp >= utf8.data() && ((*cp & 0b10000000) && !(*cp & 0b01000000)));
+					if (cp >= utf8.data()) {
+						utf8.resize(cp - utf8.data());
+					}
 				}
 			} else {
-				printf("u: %c\n", event.text.unicode);
-				inputText->getString() += event.text.unicode;
+				inputText->getString() += (const char *) &event.text.unicode;
 			}
 
 			break;
