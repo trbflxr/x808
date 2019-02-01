@@ -189,7 +189,7 @@ Test2D::Test2D() {
 	string s = std::to_string(sprites);
 	s += " sprites drawn with ";
 	s += std::to_string(texCount);
-	s += " different textures 🌍 тест";
+	s += " different textures🌍";
 
 	Text *t4 = new Text(s, GETFONT("consolata32"));
 	t4->setTextColor(color::RED);
@@ -322,6 +322,7 @@ void Test2D::input(xe::Event &event) {
 					inputText->getString().erase(inputText->getString().end() - 1);
 				}
 			} else {
+				printf("u: %c\n", event.text.unicode);
 				inputText->getString() += event.text.unicode;
 			}
 

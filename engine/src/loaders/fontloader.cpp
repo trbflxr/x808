@@ -31,7 +31,7 @@ namespace xe {
 
 		fclose(file);
 
-		font->atlas = texture_atlas_new(atlasSize, atlasSize, 2);
+		font->atlas = texture_atlas_new(atlasSize, atlasSize, 1);
 		font->font = texture_font_new_from_memory(static_cast<texture_atlas_t *>(font->atlas),
 		                                          size, font->fontData, fileSize);
 
@@ -46,7 +46,7 @@ namespace xe {
 		font->fontData = new byte[dataSize];
 		memcpy(font->fontData, data, dataSize);
 
-		font->atlas = texture_atlas_new(atlasSize, atlasSize, 2);
+		font->atlas = texture_atlas_new(atlasSize, atlasSize, 1);
 		font->font = texture_font_new_from_memory(static_cast<texture_atlas_t *>(font->atlas),
 		                                          size, font->fontData, dataSize);
 

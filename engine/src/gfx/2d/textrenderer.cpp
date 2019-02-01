@@ -3,6 +3,7 @@
 //
 
 #include <freetype-gl/freetype-gl.h>
+#include <freetype-gl/utf8-utils.h>
 #include <xe/resources/shadermanager.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
@@ -123,7 +124,7 @@ namespace xe {
 		float y = 0.0f;
 
 		if (outlineThickness > 0.001f) {
-			font->setOutlineType(2);
+			font->setRenderMode(Font::RenderMode::OutlineEdge);
 			font->setOutlineThickness(outlineThickness);
 
 			submitString(string, font, outlineColor, tid, scale, transform, x, y);
@@ -131,7 +132,7 @@ namespace xe {
 			x = 0.0f;
 		}
 
-		font->setOutlineType(0);
+		font->setRenderMode(Font::RenderMode::Normal);
 		font->setOutlineThickness(0.0f);
 
 		submitString(string, font, color, tid, scale, transform, x, y);
@@ -141,12 +142,12 @@ namespace xe {
 	                                float scale, const mat4 &transform, float &x, float &y) {
 
 		for (uint i = 0; i < str.length(); i++) {
-			const ftgl::texture_glyph_t *glyph = static_cast<ftgl::texture_glyph_t *>(font->getGlyph(str[i]));
+			const ftgl::texture_glyph_t *glyph = static_cast<ftgl::texture_glyph_t *>(font->getGlyph(&str[i]));
 
 			if (!glyph) continue;
 
 			if (i > 0) {
-				const float kerning = font->getKerning((void *) glyph, str[i - 1]);
+				const float kerning = font->getKerning((void *) glyph, &str[i - 1]);
 				x += kerning * scale;
 			}
 

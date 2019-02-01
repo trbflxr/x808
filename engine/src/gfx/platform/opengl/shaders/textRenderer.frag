@@ -11,7 +11,7 @@ void main() {
 
   if (tid0 > 0.0) {
     int tid = int(tid0 - 0.5);
-    final = color0 * texture(textures[tid], uv0);
+    final = color0 * texture(textures[tid], uv0).a;
   }
 
   color = final;

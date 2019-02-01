@@ -13,6 +13,11 @@ namespace xe {
 
 	class XE_API Font {
 	public:
+		enum class RenderMode {
+			Normal, OutlineEdge, SignedDistanceField
+		};
+
+	public:
 		explicit Font(const string &name, const string &path, float size);
 		explicit Font(const string &name, const byte *data, uint dataSize, float size, bool deleteData = true);
 		~Font();
@@ -23,12 +28,13 @@ namespace xe {
 
 		const Texture *getTexture() const;
 
-		void *getGlyph(int32 code) const;
+		void *getGlyph(const char *code) const;
 
-		float getKerning(void *glyph, int32 c) const;
+		float getKerning(void *glyph, const char *c) const;
 
 		void setOutlineThickness(float thickness) const;
-		void setOutlineType(int32 type) const;
+
+		void setRenderMode(RenderMode mode) const;
 
 	private:
 		void updateAtlas() const;

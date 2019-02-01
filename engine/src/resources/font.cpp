@@ -10,6 +10,15 @@
 
 namespace xe {
 
+	static ftgl::rendermode_t renderModeToFTGL(Font::RenderMode mode) {
+		switch (mode) {
+			case Font::RenderMode::Normal: return ftgl::RENDER_NORMAL;
+			case Font::RenderMode::OutlineEdge: return ftgl::RENDER_OUTLINE_EDGE;
+			case Font::RenderMode::SignedDistanceField: return ftgl::RENDER_SIGNED_DISTANCE_FIELD;
+			default: return ftgl::RENDER_NORMAL;
+		}
+	}
+
 	Font::Font(const string &name, const string &path, float size) :
 			name(name),
 			path(path),
@@ -56,8 +65,8 @@ namespace xe {
 	void Font::createAtlas(uint size) {
 		//create texture
 		static TextureParameters params(TextureTarget::Tex2D,
-		                                PixelInternalFormat::LuminanceAlpha,
-		                                PixelFormat::LuminanceAlpha,
+		                                PixelInternalFormat::Alpha,
+		                                PixelFormat::Alpha,
 		                                PixelType::UnsignedByte);
 
 		texture = new Texture(name + "_FontTexture", size, size, 0, params);
@@ -78,20 +87,20 @@ namespace xe {
 		}
 	}
 
-	void *Font::getGlyph(int32 code) const {
-		return texture_font_get_glyph(static_cast<ftgl::texture_font_t *>(font), code);
+	void *Font::getGlyph(const char *code) const {
+		return ftgl::texture_font_get_glyph(static_cast<ftgl::texture_font_t *>(font), code);
 	}
 
-	float Font::getKerning(void *glyph, int32 c) const {
-		return texture_glyph_get_kerning(static_cast<ftgl::texture_glyph_t *>(glyph), c);
+	float Font::getKerning(void *glyph, const char *c) const {
+		return ftgl::texture_glyph_get_kerning(static_cast<ftgl::texture_glyph_t *>(glyph), c);
 	}
 
 	void Font::setOutlineThickness(float thickness) const {
 		static_cast<ftgl::texture_font_t *>(font)->outline_thickness = thickness;
 	}
 
-	void Font::setOutlineType(int32 type) const {
-		static_cast<ftgl::texture_font_t *>(font)->outline_type = type;
+	void Font::setRenderMode(RenderMode mode) const {
+		static_cast<ftgl::texture_font_t *>(font)->rendermode = renderModeToFTGL(mode);
 	}
 
 	uint Font::computeAtlasSize(float fontSize) {
