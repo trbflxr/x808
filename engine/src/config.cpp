@@ -37,50 +37,20 @@ namespace xe {
 	}
 
 	bool Config::load(Config &config, const char *path) {
-//		FILE *cfgFile = fopen(path, "rb");
-//
-//		if (!cfgFile) {
-//			fclose(cfgFile);
-//			return false;
-//		}
-//
-//		char *key;
-//		char *value;
-//		const char *search = "=";
-//
-//		char line[128];
-//		while (fgets(line, sizeof(line), cfgFile) != nullptr) {
-//			if (line[0] == '#' || line[0] == '\n') continue;
-//
-//			key = strtok(line, search);
-//			value = strtok(nullptr, search);
-//
-//			if (!value) continue;
-//			value[strcspn(value, "\r\n")] = 0;
-//
-//			writeKeyValue(config, key, value);
-//		}
-//
-//		fclose(cfgFile);
-//
-//		gConfig = config;
-//
-//		return true;
-
-		int64 size = FileSystem::size("xeconfig");
+		int64 size = FileSystem::size(path);
 		if (size == -1) return false;
 
 		string cfg(size, '\0');
 
-		bool r = FileSystem::read("xeconfig", &cfg[0], size);
+		bool r = FileSystem::read(path, &cfg[0], size);
 		if (!r) return false;
 
-		std::vector<string> lines= splitString(cfg, "\n\r");
+		std::vector<string> lines = splitString(cfg, "\n\r");
 
-		const char* search = "=";
-		for (auto&& l : lines) {
-			char* key = strtok(&l[0], search);
-			char* value = strtok(nullptr, search);
+		const char *search = "=";
+		for (auto &&l : lines) {
+			char *key = strtok(&l[0], search);
+			char *value = strtok(nullptr, search);
 
 			writeKeyValue(config, key, value);
 		}

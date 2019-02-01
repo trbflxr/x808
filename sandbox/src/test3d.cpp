@@ -17,8 +17,8 @@ Test3D::Test3D(DebugUI *ui) :
 
 	TextureParameters params;
 
-	TextureManager::add(new Texture("rock", "assets/textures/rock.png", params));
-	TextureManager::add(new Texture("bgr", "assets/textures/bgr.jfif", params));
+	TextureManager::add(new Texture("rock", "rock.png", params));
+	TextureManager::add(new Texture("bgr", "bgr.jfif", params));
 
 	//move player
 	camera = new Camera(mat4::perspective(75.0f, width / height, 0.1f, 1000.0f));

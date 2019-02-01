@@ -12,7 +12,7 @@ namespace xe {
 
 	static HANDLE openFileForReading(const string &path) {
 		return CreateFile(toWstring(path).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
-		                   FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, nullptr);
+		                  FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, nullptr);
 	}
 
 	static int64 getFileSizeInternal(HANDLE file) {
@@ -42,19 +42,24 @@ namespace xe {
 		return result;
 	}
 
-	byte *FileSystem::read(const string &file) {
+	byte *FileSystem::read(const string &file, int64 *outSize) {
 		HANDLE handle = openFileForReading(file);
 		int64 size = getFileSizeInternal(handle);
 		byte *buffer = new byte[size];
 
-		bool result = readFileInternal(handle, buffer, size);
+		bool success = readFileInternal(handle, buffer, size);
 		CloseHandle(handle);
 
-		if (!result) {
+		if (!success) {
 			delete[] buffer;
+			return nullptr;
 		}
 
-		return result ? buffer : nullptr;
+		if (outSize) {
+			*outSize = size;
+		}
+
+		return buffer;
 	}
 
 	bool FileSystem::read(const string &file, void *buff, int64 size) {
@@ -65,13 +70,13 @@ namespace xe {
 			size = getFileSizeInternal(handle);
 		}
 
-		bool result = readFileInternal(handle, buff, size);
+		bool success = readFileInternal(handle, buff, size);
 		CloseHandle(handle);
 
-		return result;
+		return success;
 	}
 
-	string FileSystem::readText(const string &file) {
+	bool FileSystem::readText(const string &file, string &outString) {
 		HANDLE handle = openFileForReading(file);
 		int64 size = getFileSizeInternal(handle);
 		string buffer(static_cast<uint64>(size), '\0');
@@ -81,14 +86,16 @@ namespace xe {
 
 		if (success) {
 			buffer.erase(std::remove(buffer.begin(), buffer.end(), '\r'), buffer.end());
+			outString = buffer;
+			return true;
+		} else {
+			return false;
 		}
-
-		return success ? buffer : string();
 	}
 
 	bool FileSystem::write(const string &file, void *buff) {
 		HANDLE handle = CreateFile(toWstring(file).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW | OPEN_EXISTING,
-		                            FILE_ATTRIBUTE_NORMAL, nullptr);
+		                           FILE_ATTRIBUTE_NORMAL, nullptr);
 		if (handle == INVALID_HANDLE_VALUE) return false;
 
 		int64 size = getFileSizeInternal(handle);

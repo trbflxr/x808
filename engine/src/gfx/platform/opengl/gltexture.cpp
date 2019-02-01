@@ -169,7 +169,7 @@ namespace xe { namespace internal {
 			params.internalFormat = PixelInternalFormat::Rgb;
 		} else {
 			if (bits != 24 && bits != 32) {
-				XE_FATAL(L"[GLTexture]: ", name, L" Unsupported image bit-depth! ('", bits, L"')");
+				XE_FATAL("[GLTexture]: ", name, " Unsupported image bit-depth! ('", bits, "')");
 			}
 
 			if (bits == 24) {

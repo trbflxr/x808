@@ -14,15 +14,15 @@ TestB2D::TestB2D() {
 
 	TextureParameters params;
 
-	TextureManager::add(new Texture("0", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("1", "assets/textures/jdm.png", params));
-	TextureManager::add(new Texture("2", "assets/textures/star.png", params));
-	TextureManager::add(new Texture("3", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("4", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture("5", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("0", "enemyspotted.png", params));
+	TextureManager::add(new Texture("1", "jdm.png", params));
+	TextureManager::add(new Texture("2", "star.png", params));
+	TextureManager::add(new Texture("3", "test1.png", params));
+	TextureManager::add(new Texture("4", "test6.png", params));
+	TextureManager::add(new Texture("5", "test8.png", params));
 
 	params.wrap = TextureWrap::Repeat;
-	TextureManager::add(new Texture("6", "assets/textures/sp0.png", params));
+	TextureManager::add(new Texture("6", "sp0.png", params));
 
 
 	//create camera

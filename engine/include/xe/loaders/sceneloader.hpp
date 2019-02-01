@@ -20,6 +20,8 @@ struct aiNode;
 
 namespace xe {
 
+	//todo: create normal loader
+
 	struct XE_API SceneLoader : NonCopyable {
 		static bool load(const string &folder, const string &name,
 		                 std::vector<Material *> &outMaterials,

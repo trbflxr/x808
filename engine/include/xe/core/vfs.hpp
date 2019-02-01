@@ -15,12 +15,13 @@ namespace xe {
 	class XE_API VFS {
 	public:
 		static void mount(const string &virtualPath, const string &physicalPath);
-		static void unmount(const string &path);
+		static void unmount(const string &virtualPath, const string &physicalPath);
+		static void unmount(const string &virtualPath);
 
 		static bool resolvePhysicalPath(const string &path, string &outPhysicalPath);
 
-		static byte *readFile(const string &path);
-		static string readTextFile(const string &path);
+		static byte *readFile(const string &path, int64 *outSize = nullptr);
+		static bool readTextFile(const string &path, string &outString);
 
 		static bool writeFile(const string &path, byte *buffer);
 

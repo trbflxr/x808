@@ -1,5 +1,6 @@
 #include <xe/app/application.hpp>
 #include <xe/utils/log.hpp>
+#include <xe/core/vfs.hpp>
 #include "test2d.hpp"
 #include "test3d.hpp"
 #include "debugui.hpp"
@@ -13,6 +14,9 @@ public:
 			t2d(nullptr),
 			t3d(nullptr),
 			tb2d(nullptr) {
+
+		xe::VFS::mount("fonts", "assets/fonts/");
+		xe::VFS::mount("textures", "assets/textures/");
 
 		ui = new DebugUI();
 //		t3d = new Test3D(ui);

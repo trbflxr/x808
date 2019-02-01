@@ -13,9 +13,13 @@
 
 namespace xe {
 
-	struct XE_API ImageLoader : NonCopyable {
-		static byte *load(const char *path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
-		static byte *load(const string &path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+	class XE_API ImageLoader : NonCopyable {
+	public:
+		static byte *load(const char *file, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+		static byte *load(const string &file, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+
+	private:
+		static constexpr const char *basePath = u8"/textures/";
 	};
 
 }

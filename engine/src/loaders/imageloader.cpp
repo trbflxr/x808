@@ -6,20 +6,28 @@
 #include <stb_image.h>
 
 #include <xe/utils/log.hpp>
+#include <xe/core/vfs.hpp>
 #include <xe/loaders/imageloader.hpp>
 
 namespace xe {
 
-	byte *ImageLoader::load(const char *path, uint *width, uint *height, uint *bits) {
+	byte *ImageLoader::load(const char *file, uint *width, uint *height, uint *bits) {
+		string path(basePath);
+		path += file;
+
+		int64 memorySize;
+		byte *memory = VFS::readFile(path, &memorySize);
+
+		if (!memory) {
+			XE_ERROR("[ImageLoader]: unable to load image: '", path, "'");
+			return nullptr;
+		}
+
 		int32 w;
 		int32 h;
 		int32 bpp;
 
-		FILE *file = fopen(path, "rb");
-
-		byte *data = stbi_load_from_file(file, &w, &h, &bpp, 0);
-
-		fclose(file);
+		byte *data = stbi_load_from_memory(memory, memorySize, &w, &h, &bpp, 0);
 
 		*width = (uint) w;
 		*height = (uint) h;
@@ -28,8 +36,8 @@ namespace xe {
 		return data;
 	}
 
-	byte *ImageLoader::load(const string &path, uint *width, uint *height, uint *bits) {
-		return load(path.c_str(), width, height, bits);
+	byte *ImageLoader::load(const string &file, uint *width, uint *height, uint *bits) {
+		return load(file.c_str(), width, height, bits);
 	}
 
 }

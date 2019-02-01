@@ -24,62 +24,62 @@ Test2D::Test2D() {
 
 	TextureParameters params;
 
-	TextureManager::add(new Texture("0", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("1", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture("2", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture("3", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture("4", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture("5", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture("6", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture("7", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("0", "test1.png", params));
+	TextureManager::add(new Texture("1", "test2.png", params));
+	TextureManager::add(new Texture("2", "test3.png", params));
+	TextureManager::add(new Texture("3", "test4.png", params));
+	TextureManager::add(new Texture("4", "test5.png", params));
+	TextureManager::add(new Texture("5", "test6.png", params));
+	TextureManager::add(new Texture("6", "test7.png", params));
+	TextureManager::add(new Texture("7", "test8.png", params));
 
-	TextureManager::add(new Texture("8", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("9", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture("10", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture("11", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture("12", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture("13", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture("14", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture("15", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("8", "test1.png", params));
+	TextureManager::add(new Texture("9", "test2.png", params));
+	TextureManager::add(new Texture("10", "test3.png", params));
+	TextureManager::add(new Texture("11", "test4.png", params));
+	TextureManager::add(new Texture("12", "test5.png", params));
+	TextureManager::add(new Texture("13", "test6.png", params));
+	TextureManager::add(new Texture("14", "test7.png", params));
+	TextureManager::add(new Texture("15", "test8.png", params));
 
-	TextureManager::add(new Texture("16", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("17", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture("18", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture("19", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture("20", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture("21", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture("22", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture("23", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("16", "test1.png", params));
+	TextureManager::add(new Texture("17", "test2.png", params));
+	TextureManager::add(new Texture("18", "test3.png", params));
+	TextureManager::add(new Texture("19", "test4.png", params));
+	TextureManager::add(new Texture("20", "test5.png", params));
+	TextureManager::add(new Texture("21", "test6.png", params));
+	TextureManager::add(new Texture("22", "test7.png", params));
+	TextureManager::add(new Texture("23", "test8.png", params));
 
-	TextureManager::add(new Texture("24", "assets/textures/test1.png", params));
-	TextureManager::add(new Texture("25", "assets/textures/test2.png", params));
-	TextureManager::add(new Texture("26", "assets/textures/test3.png", params));
-	TextureManager::add(new Texture("27", "assets/textures/test4.png", params));
-	TextureManager::add(new Texture("28", "assets/textures/test5.png", params));
-	TextureManager::add(new Texture("29", "assets/textures/test6.png", params));
-	TextureManager::add(new Texture("30", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture("31", "assets/textures/error.png", params));
+	TextureManager::add(new Texture("24", "test1.png", params));
+	TextureManager::add(new Texture("25", "test2.png", params));
+	TextureManager::add(new Texture("26", "test3.png", params));
+	TextureManager::add(new Texture("27", "test4.png", params));
+	TextureManager::add(new Texture("28", "test5.png", params));
+	TextureManager::add(new Texture("29", "test6.png", params));
+	TextureManager::add(new Texture("30", "test7.png", params));
+	TextureManager::add(new Texture("31", "error.png", params));
 
-	TextureManager::add(new Texture("32", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("33", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("34", "assets/textures/enemyspotted.png", params));
-	TextureManager::add(new Texture("35", "assets/textures/jdm.png", params));
-	TextureManager::add(new Texture("36", "assets/textures/star.png", params));
-	TextureManager::add(new Texture("37", "assets/textures/cosmic.png", params));
-	TextureManager::add(new Texture("38", "assets/textures/test7.png", params));
-	TextureManager::add(new Texture("39", "assets/textures/test8.png", params));
+	TextureManager::add(new Texture("32", "enemyspotted.png", params));
+	TextureManager::add(new Texture("33", "enemyspotted.png", params));
+	TextureManager::add(new Texture("34", "enemyspotted.png", params));
+	TextureManager::add(new Texture("35", "jdm.png", params));
+	TextureManager::add(new Texture("36", "star.png", params));
+	TextureManager::add(new Texture("37", "cosmic.png", params));
+	TextureManager::add(new Texture("38", "test7.png", params));
+	TextureManager::add(new Texture("39", "test8.png", params));
 
 
 	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
 
 
-	FontManager::add(new Font("consolata72", "assets/fonts/consolata.otf", 72.0f));
-	FontManager::add(new Font("consolata32", "assets/fonts/consolata.otf", 32.0f));
-	FontManager::add(new Font("fogsans72", "assets/fonts/fogsans.otf", 72.0f));
-	FontManager::add(new Font("fogsansit72", "assets/fonts/fogsansit.otf", 72.0f));
-	FontManager::add(new Font("robotoregular72", "assets/fonts/robotoregular.ttf", 72.0f));
-	FontManager::add(new Font("robotobold72", "assets/fonts/robotobold.ttf", 72.0f));
+	FontManager::add(new Font("consolata72", "consolata.otf", 72.0f));
+	FontManager::add(new Font("consolata32", "consolata.otf", 32.0f));
+	FontManager::add(new Font("fogsans72", "fogsans.otf", 72.0f));
+	FontManager::add(new Font("fogsansit72", "fogsansit.otf", 72.0f));
+	FontManager::add(new Font("robotoregular72", "robotoregular.ttf", 72.0f));
+	FontManager::add(new Font("robotobold72", "robotobold.ttf", 72.0f));
 
 	uint texCount = 40;
 

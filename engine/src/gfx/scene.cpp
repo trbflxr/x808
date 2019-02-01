@@ -16,7 +16,7 @@ namespace xe {
 
 		lightManager = new LightManager();
 
-		SceneLoader::load(folder.c_str(), name.c_str(), materials, meshes, lightManager->getLights());
+		SceneLoader::load(folder, name, materials, meshes, lightManager->getLights());
 	}
 
 	Scene::~Scene() {

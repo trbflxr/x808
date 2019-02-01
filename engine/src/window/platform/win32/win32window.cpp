@@ -432,21 +432,14 @@ namespace xe { namespace internal {
 				if (keyRepeatEnabled || ((lParam & (1 << 30)) == 0)) {
 					uint character = static_cast<uint>(wParam);
 
-					if ((character >= 0xD800) && (character <= 0xDBFF)) {
-						surrogate = static_cast<uint16>(character);
-					} else {
-						if ((character >= 0xDC00) && (character <= 0xDFFF)) {
-							uint16 utf16[] = {surrogate, static_cast<uint16>(character)};
-							utf16::toUtf32(utf16, utf16 + 2, &character);
+					Event event{ };
+					event.type = Event::TextEntered;
 
-							surrogate = 0;
-						}
+					WideCharToMultiByte(CP_UTF8, 0, (const wchar_t *) &character, -1,
+					                    (char *) &event.text.unicode, 1, nullptr, nullptr);
 
-						Event event{ };
-						event.type = Event::TextEntered;
-						event.text.unicode = character;
-						pushEvent(event);
-					}
+					pushEvent(event);
+
 				}
 				break;
 			}

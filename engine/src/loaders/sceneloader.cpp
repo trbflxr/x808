@@ -12,6 +12,7 @@
 #include <xe/loaders/sceneloader.hpp>
 #include <xe/gfx/lights/spotlight.hpp>
 #include <xe/gfx/lights/pointlight.hpp>
+#include <xe/core/vfs.hpp>
 
 namespace xe {
 
@@ -72,10 +73,14 @@ namespace xe {
 			return false;
 		}
 
+		xe::VFS::mount("textures", folder + "/");
+
 		//load xe scene
 		loadMaterials(folder, scene, outMaterials);
 		loadMeshes(scene, scene->mRootNode, outMeshes, outMaterials);
 		loadLights(paths[1], scene, outLights);
+
+		xe::VFS::unmount("textures", folder + "/");
 
 		return true;
 	}
@@ -258,14 +263,9 @@ namespace xe {
 		                                MIP_MAP_AUTO,
 		                                ANISOTROPY_AUTO);
 
-		char path[1024];
-		strcpy(path, folder.c_str());
-		strcat(path, "/");
-		strcat(path, file.data());
-
 		string textureName = getFileName(file, false);
 
-		Texture *texture = new Texture(textureName, path, params);
+		Texture *texture = new Texture(textureName, file, params);
 		if (!TextureManager::add(texture)) {
 			return GETTEXTURE(textureName);
 		}
