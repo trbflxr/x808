@@ -40,27 +40,27 @@ DebugUI::DebugUI() :
 	const GAPIInfo info = Context::getInfo();
 
 	//text
-	gpuText = new Text(L"gpu: " + utils::toWstring(info.renderer), GETFONT("default"), 0.25f);
+	gpuText = new Text(string("gpu: ") + info.renderer, GETFONT("default"), 0.25f);
 	gpuText->setPosition({offset + offset, h - textOffset});
 	gpuText->setOutlineColor(color::BLACK);
 	gpuText->setOutlineThickness(outline);
 
-	fpsText = new Text(L"fps: ", GETFONT("default"), 0.25f);
+	fpsText = new Text("fps: ", GETFONT("default"), 0.25f);
 	fpsText->setPosition({offset + offset, gpuText->getPosition().y - lw});
 	fpsText->setOutlineColor(color::BLACK);
 	fpsText->setOutlineThickness(outline);
 
-	upsText = new Text(L"ups: ", GETFONT("default"), 0.25f);
+	upsText = new Text("ups: ", GETFONT("default"), 0.25f);
 	upsText->setPosition({offset + offset, fpsText->getPosition().y - lw});
 	upsText->setOutlineColor(color::BLACK);
 	upsText->setOutlineThickness(outline);
 
-	frameTimeText = new Text(L"frame time: ", GETFONT("default"), 0.25f);
+	frameTimeText = new Text("frame time: ", GETFONT("default"), 0.25f);
 	frameTimeText->setPosition({offset + offset, upsText->getPosition().y - lw});
 	frameTimeText->setOutlineColor(color::BLACK);
 	frameTimeText->setOutlineThickness(outline);
 
-	dcText = new Text(L"dc: ", GETFONT("default"), 0.25f);
+	dcText = new Text("dc: ", GETFONT("default"), 0.25f);
 	dcText->setPosition({offset + offset, frameTimeText->getPosition().y - lw});
 	dcText->setOutlineColor(color::BLACK);
 	dcText->setOutlineThickness(outline);
@@ -70,12 +70,12 @@ DebugUI::DebugUI() :
 	infoRect->setPosition({offset + irw / 2.0f, h - irh / 2.0f - offset});
 
 	//tracked
-	tePosText = new Text(L"position: ", GETFONT("default"), 0.25f);
+	tePosText = new Text("position: ", GETFONT("default"), 0.25f);
 	tePosText->setPosition({offset + offset, dcText->getPosition().y - offset * 4.0f - (offset / 2.0f)});
 	tePosText->setOutlineColor(color::BLACK);
 	tePosText->setOutlineThickness(outline);
 
-	teDirText = new Text(L"direction: ", GETFONT("default"), 0.25f);
+	teDirText = new Text("direction: ", GETFONT("default"), 0.25f);
 	teDirText->setPosition({offset + offset, tePosText->getPosition().y - lw});
 	teDirText->setOutlineColor(color::BLACK);
 	teDirText->setOutlineThickness(outline);
@@ -164,10 +164,10 @@ void DebugUI::lateUpdate(float delta) {
 
 	if (s >= 0.1f) {
 		s = 0;
-		fpsText->setString(L"fps: " + std::to_wstring(app.getFPS()));
-		upsText->setString(L"ups: " + std::to_wstring(app.getUPS()));
-		frameTimeText->setString(L"frame time: " + std::to_wstring(app.getFrameTime()));
-		dcText->setString(L"dc: " + std::to_wstring(Renderer::getDC()));
+		fpsText->setString("fps: " + std::to_string(app.getFPS()));
+		upsText->setString("ups: " + std::to_string(app.getUPS()));
+		frameTimeText->setString("frame time: " + std::to_string(app.getFrameTime()));
+		dcText->setString("dc: " + std::to_string(Renderer::getDC()));
 
 		displayEntityInfo();
 	}
@@ -215,17 +215,17 @@ void DebugUI::untrackEntity() {
 void DebugUI::displayEntityInfo() {
 	if (!trackedTransform) return;
 
-	std::wstringstream ss;
+	std::stringstream ss;
 	ss.precision(2);
 
 	vec3 p = trackedTransform->getPosition();
 	vec3 d = trackedTransform->getRotation().getForward();
 
-	ss << std::fixed << L"pos: (" << p.x << ", " << p.y << ", " << p.z << ")";
+	ss << std::fixed << "pos: (" << p.x << ", " << p.y << ", " << p.z << ")";
 	tePosText->setString(ss.str());
-	ss.str(L"");
+	ss.str("");
 
-	ss << std::fixed << L"dir: (" << d.x << ", " << d.y << ", " << d.z << ")";
+	ss << std::fixed << "dir: (" << d.x << ", " << d.y << ", " << d.z << ")";
 	teDirText->setString(ss.str());
-	ss.str(L"");
+	ss.str("");
 }

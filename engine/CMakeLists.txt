@@ -30,8 +30,6 @@ include_directories(external/box2d)
 add_subdirectory(external/freetype-gl)
 include_directories(external/freetype-gl/include)
 
-include_directories(external/tinyutf8)
-
 #includes and libs
 include_directories(src)
 link_directories(${XE_DIRS})
@@ -40,8 +38,6 @@ include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
 
 #engine
 file(GLOB ENGINE_SRC
-        external/tinyutf8/tinyutf8.cpp
-
         src/app/*.cpp
         src/core/*.cpp
         src/ecs/*.cpp

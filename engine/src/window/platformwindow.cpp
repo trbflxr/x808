@@ -14,7 +14,7 @@ typedef xe::internal::PlatformWindowWin32 PlatformWindowType;
 
 namespace xe { namespace internal {
 
-	PlatformWindow *PlatformWindow::create(VideoMode mode, const wstring &title, uint style) {
+	PlatformWindow *PlatformWindow::create(VideoMode mode, const string &title, uint style) {
 		return new PlatformWindowType(mode, title, style);
 	}
 

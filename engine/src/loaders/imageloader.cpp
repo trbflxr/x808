@@ -10,12 +10,12 @@
 
 namespace xe {
 
-	byte *ImageLoader::load(const wchar_t *path, uint *width, uint *height, uint *bits) {
+	byte *ImageLoader::load(const char *path, uint *width, uint *height, uint *bits) {
 		int32 w;
 		int32 h;
 		int32 bpp;
 
-		FILE *file = _wfopen(path, L"rb");
+		FILE *file = fopen(path, "rb");
 
 		byte *data = stbi_load_from_file(file, &w, &h, &bpp, 0);
 
@@ -28,7 +28,7 @@ namespace xe {
 		return data;
 	}
 
-	byte *ImageLoader::load(const wstring &path, uint *width, uint *height, uint *bits) {
+	byte *ImageLoader::load(const string &path, uint *width, uint *height, uint *bits) {
 		return load(path.c_str(), width, height, bits);
 	}
 

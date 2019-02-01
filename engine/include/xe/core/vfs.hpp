@@ -7,27 +7,28 @@
 
 
 #include <unordered_map>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/common.hpp>
 
 namespace xe {
 
 	class XE_API VFS {
 	public:
-		static void mount(const wstring &virtualPath, const wstring &physicalPath);
-		static void unmount(const wstring &path);
+		static void mount(const string &virtualPath, const string &physicalPath);
+		static void unmount(const string &path);
 
-		static bool resolvePhysicalPath(const wstring &path, wstring &outPhysicalPath);
+		static bool resolvePhysicalPath(const string &path, string &outPhysicalPath);
 
-		static byte *readFile(const wstring &path);
+		static byte *readFile(const string &path);
+		static string readTextFile(const string &path);
 
-		static bool writeFile(const wstring &path, byte *buffer);
+		static bool writeFile(const string &path, byte *buffer);
 
 		static void init();
 		static void shutdown();
 
 	private:
-		std::unordered_map<wstring, std::vector<wstring>> mountPoints;
+		std::unordered_map<string, std::vector<string>> mountPoints;
 
 		static VFS *instance;
 	};

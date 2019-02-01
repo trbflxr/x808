@@ -3,7 +3,7 @@
 //
 
 #include <xe/gfx/context.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/loaders/shaderloader.hpp>
 #include "glshaderfile.hpp"
 #include "glcommon.hpp"
@@ -17,34 +17,43 @@ namespace xe { namespace internal {
 
 	GLShaderFile::GLShaderFile(ShaderType type, const string &source,
 	                           const std::vector<string> &dependenciesSource,
-	                           const std::vector<string> &extensions) :
+	                           const std::vector<string> &extensions,
+	                           bool fromSource) :
 			type(type) {
 
+		if (fromSource) {
+			createFromSource(source, dependenciesSource, extensions);
+		} else {
+			createFromFile(source, dependenciesSource, extensions);
+		}
+	}
+
+	void GLShaderFile::createFromSource(const string &src,
+	                                    const std::vector<string> &dep,
+	                                    const std::vector<string> &ext) {
 		std::stringstream shaderSource;
 		std::stringstream shaderAdditions;
 
 		appendConstants(shaderAdditions);
-		appendExtensions(shaderAdditions, extensions);
-		appendDependencies(shaderAdditions, dependenciesSource);
+		appendExtensions(shaderAdditions, ext);
+		appendDependencies(shaderAdditions, dep);
 
 		shaderSource << shaderAdditions.str() << "\n";
-		shaderSource << source;
+		shaderSource << src;
 
-		GLShaderFile::source = shaderSource.str();
+		source = shaderSource.str();
 
-		setConstants(GLShaderFile::source);
+		setConstants(source);
 	}
 
-	GLShaderFile::GLShaderFile(ShaderType type, const wstring &path,
-	                           const std::vector<wstring> &dependencies,
-	                           const std::vector<string> &extensions) :
-			type(type) {
+	void GLShaderFile::createFromFile(const string &path,
+	                                  const std::vector<string> &dep,
+	                                  const std::vector<string> &ext) {
 
-		//load from file
-		const string source = ShaderLoader::load(path);
+		const string src = ShaderLoader::load(path);
 
-		std::vector<string> dependenciesSource(dependencies.size());
-		for (const auto &d : dependencies) {
+		std::vector<string> dependenciesSource(dep.size());
+		for (const auto &d : dep) {
 			dependenciesSource.emplace_back(ShaderLoader::load(d));
 		}
 
@@ -52,15 +61,15 @@ namespace xe { namespace internal {
 		std::stringstream shaderAdditions;
 
 		appendConstants(shaderAdditions);
-		appendExtensions(shaderAdditions, extensions);
+		appendExtensions(shaderAdditions, ext);
 		appendDependencies(shaderAdditions, dependenciesSource);
 
 		shaderSource << shaderAdditions.str() << "\n";
-		shaderSource << source;
+		shaderSource << src;
 
-		GLShaderFile::source = shaderSource.str();
+		source = shaderSource.str();
 
-		setConstants(GLShaderFile::source);
+		setConstants(source);
 	}
 
 	void GLShaderFile::setConstants(string &source) {
@@ -151,14 +160,14 @@ namespace xe { namespace internal {
 
 		//structs
 		sourcePtr = source.c_str();
-		while ((token = utils::findToken(sourcePtr, "struct"))) {
-			parseUniformStruct(utils::getBlock(token, &sourcePtr), structs);
+		while ((token = findToken(sourcePtr, "struct"))) {
+			parseUniformStruct(getBlock(token, &sourcePtr), structs);
 		}
 
 		//uniforms
 		sourcePtr = source.c_str();
-		while ((token = utils::findToken(sourcePtr, "uniform"))) {
-			parseUniform(utils::getStatement(token, &sourcePtr), buffers, samplers, structs);
+		while ((token = findToken(sourcePtr, "uniform"))) {
+			parseUniform(getStatement(token, &sourcePtr), buffers, samplers, structs);
 		}
 	}
 
@@ -167,7 +176,7 @@ namespace xe { namespace internal {
 	                                ShaderSamplerVec &samplers,
 	                                ShaderStructVec &structs) {
 
-		std::vector<string> tokens = utils::tokenize(statement);
+		std::vector<string> tokens = tokenize(statement);
 		uint index = 0;
 
 		index++; // "uniform"
@@ -219,7 +228,7 @@ namespace xe { namespace internal {
 	}
 
 	void GLShaderFile::parseUniformStruct(const string &block, ShaderStructVec &structs) {
-		std::vector<string> tokens = utils::tokenize(block);
+		std::vector<string> tokens = tokenize(block);
 
 		uint index = 1; // struct
 

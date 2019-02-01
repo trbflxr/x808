@@ -67,15 +67,15 @@ namespace xe {
 //
 //		return true;
 
-		int64 size = FileSystem::size(L"xeconfig");
+		int64 size = FileSystem::size("xeconfig");
 		if (size == -1) return false;
 
 		string cfg(size, '\0');
 
-		bool r = FileSystem::read(L"xeconfig", &cfg[0], size);
+		bool r = FileSystem::read("xeconfig", &cfg[0], size);
 		if (!r) return false;
 
-		std::vector<string> lines= utils::splitString(cfg, "\n\r");
+		std::vector<string> lines= splitString(cfg, "\n\r");
 
 		const char* search = "=";
 		for (auto&& l : lines) {

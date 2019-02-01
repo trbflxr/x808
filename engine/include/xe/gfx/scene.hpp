@@ -14,7 +14,7 @@ namespace xe {
 
 	class XE_API Scene {
 	public:
-		explicit Scene(const wstring &folder, const wstring &name);
+		explicit Scene(const string &folder, const string &name);
 		~Scene();
 
 		void update(const Transform &cameraTransform, float delta);
@@ -31,8 +31,8 @@ namespace xe {
 		const std::vector<Light *> &getLights() const { return lightManager->getLights(); }
 
 	private:
-		wstring folder;
-		wstring name;
+		string folder;
+		string name;
 
 		LightManager *lightManager;
 		std::vector<UniqueMesh *> meshes;

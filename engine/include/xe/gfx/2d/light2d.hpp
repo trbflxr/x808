@@ -7,7 +7,7 @@
 
 
 #include <xe/common.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/math/vec2.hpp>
 #include <xe/math/vec3.hpp>
 

@@ -14,7 +14,7 @@ namespace xe {
 
 	class Text : public ITransformable2D {
 	public:
-		explicit Text(const wstring &string, const Font *font = GETFONT("default"), float scale = 1.0f) noexcept :
+		explicit Text(const string &string, const Font *font = GETFONT("default"), float scale = 1.0f) noexcept :
 				font(font),
 				string(string),
 				textColor(color::WHITE),
@@ -25,9 +25,9 @@ namespace xe {
 		inline const Font *getFont() const { return font; }
 		inline void setFont(const Font *font) { Text::font = font; }
 
-		inline wstring &getString() { return string; }
-		inline const wstring &getString() const { return string; }
-		inline void setString(const wstring &string) { Text::string = string; }
+		inline string &getString() { return string; }
+		inline const string &getString() const { return string; }
+		inline void setString(const string &string) { Text::string = string; }
 
 		inline uint getTextColor() const { return textColor; }
 		inline void setTextColor(uint textColor) { Text::textColor = textColor; }
@@ -43,7 +43,7 @@ namespace xe {
 
 	private:
 		const Font *font;
-		wstring string;
+		string string;
 		uint textColor;
 		uint outlineColor;
 		float outlineThickness;

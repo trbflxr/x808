@@ -9,7 +9,7 @@
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>
 #include <xe/gfx/enums.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
 
@@ -74,7 +74,7 @@ namespace xe {
 		                 const TextureParameters &params, bool flip = false);
 
 		explicit Texture(const string &name,
-		                 const wstring &path,
+		                 const string &path,
 		                 const TextureParameters &params, bool flip = false);
 
 		~Texture();
@@ -90,7 +90,7 @@ namespace xe {
 		void copyTo(const Texture *texture) const;
 
 		const string &getName() const;
-		const wstring &getFilePath() const;
+		const string &getFilePath() const;
 
 		uint getWidth() const;
 		uint getHeight() const;

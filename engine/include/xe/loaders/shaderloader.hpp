@@ -7,14 +7,14 @@
 
 
 #include <xe/common.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 namespace xe {
 
 	struct XE_API ShaderLoader : NonCopyable {
-		static string load(const wstring &path);
-		static string load(const wchar_t *path);
+		static string load(const string &path);
+		static string load(const char *path);
 	};
 
 }

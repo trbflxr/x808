@@ -7,16 +7,16 @@
 
 namespace xe {
 
-	string ShaderLoader::load(const wstring &path) {
+	string ShaderLoader::load(const string &path) {
 		return load(path.c_str());
 	}
 
-	string ShaderLoader::load(const wchar_t *path) {
-		FILE *file = _wfopen(path, L"rb");
+	string ShaderLoader::load(const char *path) {
+		FILE *file = fopen(path, "rb");
 
 		if (!file) {
 			fclose(file);
-			XE_FATAL(L"[ShaderFile]: file '", path, L"' not found.");
+			XE_FATAL("[ShaderFile]: file '", path, "' not found.");
 			return "";
 		}
 

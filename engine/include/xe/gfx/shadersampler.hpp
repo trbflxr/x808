@@ -7,7 +7,7 @@
 
 
 #include <vector>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/xeint.hpp>
 
 namespace xe {

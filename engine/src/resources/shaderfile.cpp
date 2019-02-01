@@ -21,12 +21,12 @@ namespace xe {
 		}
 	}
 
-	ShaderFile *ShaderFile::fromFile(ShaderType type, const wstring &path,
-	                                 const std::vector<wstring> &dependencies,
+	ShaderFile *ShaderFile::fromFile(ShaderType type, const string &path,
+	                                 const std::vector<string> &dependencies,
 	                                 const std::vector<string> &extensions) {
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, path, dependencies, extensions);
+			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, path, dependencies, extensions, false);
 
 			default: return nullptr;
 		}

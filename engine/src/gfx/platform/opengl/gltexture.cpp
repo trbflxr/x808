@@ -14,7 +14,7 @@ namespace xe { namespace internal {
 
 	GLTexture::GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) :
 			name(name),
-			path(L"NULL"),
+			path("NULL"),
 			width(width),
 			height(height),
 			depth(params.target == TextureTarget::TexCubeMap ? 6 : depth),
@@ -23,7 +23,7 @@ namespace xe { namespace internal {
 		handle = load(false);
 	}
 
-	GLTexture::GLTexture(const string &name, const wstring &path, const TextureParameters &params) :
+	GLTexture::GLTexture(const string &name, const string &path, const TextureParameters &params) :
 			name(name),
 			path(path),
 			width(0),
@@ -160,7 +160,7 @@ namespace xe { namespace internal {
 		if (!outPixels) {
 			fail = true;
 			name = "default";
-			path = L"NULL";
+			path = "NULL";
 			width = internal::DEFAULT_TEXTURE_W;
 			height = internal::DEFAULT_TEXTURE_H;
 

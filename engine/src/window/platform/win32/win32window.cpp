@@ -3,9 +3,7 @@
 //
 
 #undef NOGDI
-
 #include <windows.h>
-
 #define NOGDI
 
 #include <dbt.h>
@@ -36,7 +34,7 @@ namespace xe { namespace internal {
 		return result;
 	}
 
-	PlatformWindowWin32::PlatformWindowWin32(VideoMode mode, const wstring &title, uint style) :
+	PlatformWindowWin32::PlatformWindowWin32(VideoMode mode, const string &title, uint style) :
 			handle(nullptr),
 			callback(0),
 			cursorVisible(true),
@@ -79,7 +77,7 @@ namespace xe { namespace internal {
 			height = rectangle.bottom - rectangle.top;
 		}
 
-		handle = CreateWindow(className, title.c_str(), win32Style, left, top, width, height,
+		handle = CreateWindow(className, toWstring(title).c_str(), win32Style, left, top, width, height,
 		                      nullptr, nullptr, GetModuleHandle(nullptr), this);
 
 		DEV_BROADCAST_HDR deviceBroadcastHeader = {sizeof(DEV_BROADCAST_HDR), DBT_DEVTYP_DEVICEINTERFACE, 0};
@@ -177,15 +175,15 @@ namespace xe { namespace internal {
 		SetWindowPos(handle, nullptr, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER);
 	}
 
-	void PlatformWindowWin32::setTitle(const wstring &title) const {
-		SetWindowText(handle, title.c_str());
+	void PlatformWindowWin32::setTitle(const string &title) const {
+		SetWindowText(handle, toWstring(title).c_str());
 	}
 
-	wstring PlatformWindowWin32::getTitle() const {
-		wstring title(128, '\0');
+	string PlatformWindowWin32::getTitle() const {
+		std::wstring title(128, '\0');
 		GetWindowText(handle, &title[0], 128);
 
-		return title;
+		return toString(title);
 	}
 
 	void PlatformWindowWin32::setIcon(uint width, uint height, const byte *pixels) {

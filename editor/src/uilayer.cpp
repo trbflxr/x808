@@ -31,7 +31,7 @@ namespace xe {
 		renderer = new BatchRenderer2D(w, h, camera);
 
 
-		Texture *tex = new Texture("a", L"assets/textures/test1.png", params);
+		Texture *tex = new Texture("a", "assets/textures/test1.png", params);
 
 
 		for (int32 x = 0; x < 512; x += 15) {

@@ -28,7 +28,7 @@ namespace xe {
 	private:
 		void submitInternal(const Text *t);
 
-		void submitString(const wstring &str, const Font *font, uint color, float tid,
+		void submitString(const string &str, const Font *font, uint color, float tid,
 		                  float scale, const mat4 &transform, float &x, float &y);
 
 	private:

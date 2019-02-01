@@ -7,7 +7,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/loaders/sceneloader.hpp>
 #include <xe/gfx/lights/spotlight.hpp>
@@ -15,28 +15,28 @@
 
 namespace xe {
 
-	bool SceneLoader::load(const wchar_t *folder, const wchar_t *name,
+	bool SceneLoader::load(const string &folder, const string &name,
 	                       std::vector<Material *> &outMaterials,
 	                       std::vector<UniqueMesh *> &outMeshes,
 	                       std::vector<Light *> &outLights) {
 
-		wchar_t paths[2][1024];
+		char paths[2][1024];
 
 		//collada path
-		wcscpy(paths[0], folder);
-		wcscat(paths[0], L"/");
-		wcscat(paths[0], name);
-		wcscat(paths[0], L".dae");
+		strcpy(paths[0], folder.c_str());
+		strcat(paths[0], "/");
+		strcat(paths[0], name.c_str());
+		strcat(paths[0], ".dae");
 
 		//lights path
-		wcscpy(paths[1], folder);
-		wcscat(paths[1], L"/");
-		wcscat(paths[1], name);
-		wcscat(paths[1], L".lights");
+		strcpy(paths[1], folder.c_str());
+		strcat(paths[1], "/");
+		strcat(paths[1], name.c_str());
+		strcat(paths[1], ".lights");
 
 
 		//read file to memory
-		FILE *file = _wfopen(paths[0], L"rb");
+		FILE *file = fopen(paths[0], "rb");
 
 		if (!file) {
 			fclose(file);
@@ -80,7 +80,7 @@ namespace xe {
 		return true;
 	}
 
-	void SceneLoader::loadMaterials(const wchar_t *folder, const aiScene *scene, std::vector<Material *> &materials) {
+	void SceneLoader::loadMaterials(const string &folder, const aiScene *scene, std::vector<Material *> &materials) {
 		for (uint i = 0; i < scene->mNumMaterials; ++i) {
 			aiMaterial *material = scene->mMaterials[i];
 
@@ -158,7 +158,7 @@ namespace xe {
 		}
 	}
 
-	void SceneLoader::loadLights(const wchar_t *path, const aiScene *scene, std::vector<Light *> &lights) {
+	void SceneLoader::loadLights(const string &path, const aiScene *scene, std::vector<Light *> &lights) {
 		//info
 		std::vector<string> ids;
 		std::vector<string> types;
@@ -182,7 +182,7 @@ namespace xe {
 			if (line.empty()) continue;
 
 			string key = line.substr(0, 4);
-			std::vector<string> values = utils::splitString(line.substr(4), ' ');
+			std::vector<string> values = splitString(line.substr(4), ' ');
 
 			if (key == "nam ") {
 				std::replace(values[0].begin(), values[0].end(), '.', '_');
@@ -247,7 +247,7 @@ namespace xe {
 		}
 	}
 
-	const Texture *SceneLoader::loadTexture(const wchar_t *folder, const char *file) {
+	const Texture *SceneLoader::loadTexture(const string &folder, const string &file) {
 		static TextureParameters params(TextureTarget::Tex2D,
 		                                PixelInternalFormat::Rgba,
 		                                PixelFormat::Rgba,
@@ -258,14 +258,12 @@ namespace xe {
 		                                MIP_MAP_AUTO,
 		                                ANISOTROPY_AUTO);
 
-		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		char path[1024];
+		strcpy(path, folder.c_str());
+		strcat(path, "/");
+		strcat(path, file.data());
 
-		wchar_t path[1024];
-		wcscpy(path, folder);
-		wcscat(path, L"/");
-		wcscat(path, converter.from_bytes(file).c_str());
-
-		string textureName = utils::getFileName(file, false);
+		string textureName = getFileName(file, false);
 
 		Texture *texture = new Texture(textureName, path, params);
 		if (!TextureManager::add(texture)) {

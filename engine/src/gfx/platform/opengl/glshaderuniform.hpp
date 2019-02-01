@@ -7,7 +7,7 @@
 
 
 #include <xe/gfx/shaderuniform.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe { namespace internal {
 

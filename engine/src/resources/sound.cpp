@@ -6,7 +6,7 @@
 #include <gorilla/gau.h>
 #include <vector>
 #include <xe/resources/sound.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/utils/log.hpp>
 #include <xe/resources/soundmanager.hpp>
 
@@ -19,15 +19,15 @@ namespace xe {
 			playing(false),
 			gain(1.0f) {
 
-		std::vector<string> split = utils::splitString(path, '.');
+		std::vector<string> split = splitString(path, '.');
 		if (split.size() < 2) {
-			XE_ERROR(L"[Sound]: Invalid filename ", path);
+			XE_ERROR("[Sound]: Invalid filename ", path);
 			return;
 		}
 
 		sound = gau_load_sound_file(path.data(), split.back().c_str());
 		if (!sound) {
-			XE_ERROR(L"[Sound]: Could not load file ", path);
+			XE_ERROR("[Sound]: Could not load file ", path);
 		}
 	}
 

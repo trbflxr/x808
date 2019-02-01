@@ -13,19 +13,19 @@ namespace xe {
 
 	class XE_API Font {
 	public:
-		explicit Font(const string &name, const wstring &path, float size);
+		explicit Font(const string &name, const string &path, float size);
 		explicit Font(const string &name, const byte *data, uint dataSize, float size, bool deleteData = true);
 		~Font();
 
 		inline const string &getName() const { return name; }
-		inline const wstring &getPath() const { return path; }
+		inline const string &getPath() const { return path; }
 		inline float getSize() const { return size; }
 
 		const Texture *getTexture() const;
 
-		void *getGlyph(wchar_t code) const;
+		void *getGlyph(int32 code) const;
 
-		float getKerning(void *glyph, wchar_t c) const;
+		float getKerning(void *glyph, int32 c) const;
 
 		void setOutlineThickness(float thickness) const;
 		void setOutlineType(int32 type) const;
@@ -41,7 +41,7 @@ namespace xe {
 		friend struct FontLoader;
 
 		string name;
-		wstring path;
+		string path;
 		float size;
 
 		mutable Texture *texture;

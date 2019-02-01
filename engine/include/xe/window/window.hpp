@@ -11,7 +11,7 @@
 #include <xe/window/cursor.hpp>
 #include <xe/window/videomode.hpp>
 #include <xe/utils/timer.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
 
@@ -33,10 +33,10 @@ namespace xe {
 	public:
 
 		Window();
-		explicit Window(VideoMode mode, const wstring &title, uint style = WindowStyle::Default);
+		explicit Window(VideoMode mode, const string &title, uint style = WindowStyle::Default);
 		~Window() override;
 
-		void create(VideoMode mode, const wstring &title, uint style = WindowStyle::Default);
+		void create(VideoMode mode, const string &title, uint style = WindowStyle::Default);
 
 		void close();
 		bool isOpen() const;
@@ -49,8 +49,8 @@ namespace xe {
 		inline vec2 getSize() const { return size; };
 		void setSize(const vec2 &size);
 
-		void setTitle(const wstring &title) const;
-		wstring getTitle() const;
+		void setTitle(const string &title) const;
+		string getTitle() const;
 
 		void setIcon(uint width, uint height, const byte *pixels) const;
 

@@ -19,7 +19,7 @@ namespace xe {
 
 	Application *Application::instance = nullptr;
 
-	Application::Application(const Config &config, const wstring &title) :
+	Application::Application(const Config &config, const string &title) :
 			config(config),
 			frameTime(0.0f) {
 
@@ -33,7 +33,7 @@ namespace xe {
 		init(title);
 	}
 
-	void Application::init(const wstring &title) {
+	void Application::init(const string &title) {
 		if (config.fullScreen) {
 			window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
 

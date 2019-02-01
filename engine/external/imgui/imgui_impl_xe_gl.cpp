@@ -429,7 +429,7 @@ static bool checkShader(uint handle, const char *desc) {
 	glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLength);
 
 	if (status == GL_FALSE) {
-		fwprintf(stderr, L"ERROR: ImGui_Init: failed to compile %s!\n", desc);
+		fprintf(stderr, "ERROR: ImGui_Init: failed to compile %s!\n", desc);
 
 		if (logLength > 0) {
 			ImVector<char> buf;
@@ -452,7 +452,7 @@ static bool checkProgram(uint handle, const char *desc) {
 	glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &logLength);
 
 	if (status == GL_FALSE) {
-		fwprintf(stderr, L"ERROR: ImGui_Init: failed to link %s!\n", desc);
+		fprintf(stderr, "ERROR: ImGui_Init: failed to link %s!\n", desc);
 
 		if (logLength > 0) {
 			ImVector<char> buf;

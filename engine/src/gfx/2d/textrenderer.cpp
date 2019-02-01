@@ -110,7 +110,7 @@ namespace xe {
 		const Texture *atlas = font->getTexture();
 		const float tid = submitTexture(atlas);
 
-		const wstring &string = t->getString();
+		const string &string = t->getString();
 		const uint color = t->getTextColor();
 		const uint outlineColor = t->getOutlineColor();
 		const float scale = t->getFontScale();
@@ -137,7 +137,7 @@ namespace xe {
 		submitString(string, font, color, tid, scale, transform, x, y);
 	}
 
-	void TextRenderer::submitString(const wstring &str, const Font *font, uint color, float tid,
+	void TextRenderer::submitString(const string &str, const Font *font, uint color, float tid,
 	                                float scale, const mat4 &transform, float &x, float &y) {
 
 		for (uint i = 0; i < str.length(); i++) {

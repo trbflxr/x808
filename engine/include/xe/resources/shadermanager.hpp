@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <xe/gfx/shader.hpp>
 #include <xe/utils/noncopyable.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
 

@@ -8,7 +8,7 @@
 
 #include <unordered_map>
 #include <xe/resources/sound.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 struct gau_Manager;

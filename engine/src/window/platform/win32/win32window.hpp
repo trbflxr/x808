@@ -12,7 +12,7 @@ namespace xe { namespace internal {
 
 	class PlatformWindowWin32 : public PlatformWindow {
 	public:
-		explicit PlatformWindowWin32(VideoMode mode, const wstring &title, uint style);
+		explicit PlatformWindowWin32(VideoMode mode, const string &title, uint style);
 		~PlatformWindowWin32() override;
 
 		void *getHandle() const override;
@@ -23,8 +23,8 @@ namespace xe { namespace internal {
 		vec2 getSize() const override;
 		void setSize(const vec2 &size) const override;
 
-		void setTitle(const wstring &title) const override;
-		wstring getTitle() const override;
+		void setTitle(const string &title) const override;
+		string getTitle() const override;
 
 		void setIcon(uint width, uint height, const byte *pixels) override;
 

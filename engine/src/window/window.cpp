@@ -21,7 +21,7 @@ namespace xe {
 			size(0, 0),
 			frameTimeLimit(0.0f) { }
 
-	Window::Window(VideoMode mode, const wstring &title, uint style) :
+	Window::Window(VideoMode mode, const string &title, uint style) :
 			window(nullptr),
 			size(0, 0),
 			frameTimeLimit(0.0f) {
@@ -33,7 +33,7 @@ namespace xe {
 		close();
 	}
 
-	void Window::create(VideoMode mode, const wstring &title, uint style) {
+	void Window::create(VideoMode mode, const string &title, uint style) {
 		close();
 
 		if (style & WindowStyle::Fullscreen) {
@@ -84,17 +84,17 @@ namespace xe {
 		}
 	}
 
-	void Window::setTitle(const wstring &title) const {
+	void Window::setTitle(const string &title) const {
 		if (window) {
 			window->setTitle(title);
 		}
 	}
 
-	wstring Window::getTitle() const {
+	string Window::getTitle() const {
 		if (window) {
 			return window->getTitle();
 		}
-		return L"NULL";
+		return "NULL";
 	}
 
 	void Window::setIcon(uint width, uint height, const byte *pixels) const {

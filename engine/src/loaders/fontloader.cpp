@@ -11,10 +11,10 @@ namespace xe {
 
 	using namespace ftgl;
 
-	bool FontLoader::load(Font *font, const wchar_t *path, float size, uint atlasSize) {
+	bool FontLoader::load(Font *font, const char *path, float size, uint atlasSize) {
 		size_t fileSize = 0;
 
-		FILE *file = _wfopen(path, L"rb");
+		FILE *file = fopen(path, "rb");
 		if (!file) {
 			fclose(file);
 			XE_ERROR(L"[FontLoader]: unable to load font: '", path, L"'");
@@ -38,7 +38,7 @@ namespace xe {
 		return true;
 	}
 
-	bool FontLoader::load(Font *font, const wstring &path, float size, uint atlasSize) {
+	bool FontLoader::load(Font *font, const string &path, float size, uint atlasSize) {
 		return load(font, path.c_str(), size, atlasSize);
 	}
 

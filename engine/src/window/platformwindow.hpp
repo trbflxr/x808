@@ -7,7 +7,7 @@
 
 
 #include <queue>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/window/videomode.hpp>
 #include <xe/window/cursor.hpp>
 #include <xe/window/event.hpp>
@@ -17,7 +17,7 @@ namespace xe { namespace internal {
 
 	class PlatformWindow : NonCopyable {
 	public:
-		static PlatformWindow *create(VideoMode mode, const wstring &title, uint style);
+		static PlatformWindow *create(VideoMode mode, const string &title, uint style);
 
 		bool popEvent(Event &event, bool block);
 
@@ -29,8 +29,8 @@ namespace xe { namespace internal {
 		virtual vec2 getSize() const = 0;
 		virtual void setSize(const vec2 &size) const = 0;
 
-		virtual void setTitle(const wstring &title) const = 0;
-		virtual wstring getTitle() const = 0;
+		virtual void setTitle(const string &title) const = 0;
+		virtual string getTitle() const = 0;
 
 		virtual void setIcon(uint width, uint height, const byte *pixels) = 0;
 

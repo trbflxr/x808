@@ -10,7 +10,7 @@
 
 namespace xe {
 
-	Font::Font(const string &name, const wstring &path, float size) :
+	Font::Font(const string &name, const string &path, float size) :
 			name(name),
 			path(path),
 			size(size * 1.3f),
@@ -29,7 +29,7 @@ namespace xe {
 
 	Font::Font(const string &name, const byte *data, uint dataSize, float size, bool deleteData) :
 			name(name),
-			path(L"NULL"),
+			path("NULL"),
 			size(size * 1.3f),
 			texture(nullptr),
 			deleteFontData(deleteData),
@@ -78,11 +78,11 @@ namespace xe {
 		}
 	}
 
-	void *Font::getGlyph(wchar_t code) const {
+	void *Font::getGlyph(int32 code) const {
 		return texture_font_get_glyph(static_cast<ftgl::texture_font_t *>(font), code);
 	}
 
-	float Font::getKerning(void *glyph, wchar_t c) const {
+	float Font::getKerning(void *glyph, int32 c) const {
 		return texture_glyph_get_kerning(static_cast<ftgl::texture_glyph_t *>(glyph), c);
 	}
 

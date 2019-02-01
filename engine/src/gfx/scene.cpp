@@ -10,7 +10,7 @@
 
 namespace xe {
 
-	Scene::Scene(const wstring &folder, const wstring &name) :
+	Scene::Scene(const string &folder, const string &name) :
 			folder(folder),
 			name(name) {
 

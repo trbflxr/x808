@@ -9,13 +9,13 @@
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
 #include <xe/utils/noncopyable.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
 
 	struct XE_API ImageLoader : NonCopyable {
-		static byte *load(const wchar_t *path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
-		static byte *load(const wstring &path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+		static byte *load(const char *path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+		static byte *load(const string &path, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
 	};
 
 }

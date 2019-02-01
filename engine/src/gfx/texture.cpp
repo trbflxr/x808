@@ -32,7 +32,7 @@ namespace xe {
 		}
 	}
 
-	Texture::Texture(const string &name, const wstring &path,
+	Texture::Texture(const string &name, const string &path,
 	                 const TextureParameters &params, bool flip) :
 			flipped(flip) {
 
@@ -82,7 +82,7 @@ namespace xe {
 		return texture->getName();
 	}
 
-	const wstring &Texture::getFilePath() const {
+	const string &Texture::getFilePath() const {
 		return texture->getFilePath();
 	}
 

@@ -12,8 +12,8 @@
 namespace xe {
 
 	struct XE_API FontLoader : NonCopyable {
-		static bool load(Font *font, const wchar_t *path, float size, uint atlasSize);
-		static bool load(Font *font, const wstring &path, float size, uint atlasSize);
+		static bool load(Font *font, const char *path, float size, uint atlasSize);
+		static bool load(Font *font, const string &path, float size, uint atlasSize);
 
 		static bool load(Font *font, const byte *data, size_t dataSize, float size, uint atlasSize);
 	};

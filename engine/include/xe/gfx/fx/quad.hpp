@@ -11,7 +11,7 @@
 #include <xe/gfx/vertexarray.hpp>
 #include <xe/gfx/indexbuffer.hpp>
 #include <xe/gfx/enums.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/texture.hpp>
 

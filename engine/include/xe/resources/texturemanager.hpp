@@ -10,7 +10,7 @@
 #include <xe/common.hpp>
 #include <xe/utils/noncopyable.hpp>
 #include <xe/gfx/texture.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
 

@@ -1,9 +1,11 @@
 //
-// Created by FLXR on 1/31/2019.
+// Created by FLXR on 7/4/2018.
 //
 
 #include <cstring>
 #include <libgen.h>
+#include <codecvt>
+#include <locale>
 #include <xe/string.hpp>
 
 #ifdef XE_PLATFORM_WINDOWS
@@ -45,7 +47,7 @@ namespace xe {
 	}
 
 	string getFileName(const string &str, bool includeExt) {
-		string temp = str;
+		std::string temp = str;
 		char *s = basename(temp.data());
 
 		size_t size = strlen(s);
@@ -83,10 +85,7 @@ namespace xe {
 
 	std::vector<string> splitString(const string &str, const string &delimiters) {
 		size_t start = 0;
-
-		char32_t temp[delimiters.size()];
-		delimiters.to_wide_literal(temp);
-		size_t end = str.find_first_of(temp);
+		size_t end = str.find_first_of(delimiters);
 
 		std::vector<string> result;
 
@@ -98,10 +97,7 @@ namespace xe {
 			if (end == string::npos) break;
 
 			start = end + 1;
-
-			char32_t temp[delimiters.size()];
-			delimiters.to_wide_literal(temp);
-			end = str.find_first_of(temp, start);
+			end = str.find_first_of(delimiters, start);
 		}
 
 		return result;
@@ -120,19 +116,26 @@ namespace xe {
 	}
 
 #ifdef XE_PLATFORM_WINDOWS
+
 	std::wstring toWstring(const string &str) {
 		return toWstring(str.c_str());
 	}
 
 	std::wstring toWstring(const char *str) {
-		int32 size = static_cast<int32>(strlen(str));
-
-		std::wstring buff(size, '\0');
-
-		MultiByteToWideChar(CP_UTF8, 0, str, -1, &buff[0], size);
-
-		return buff;
+		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		return converter.from_bytes(str);
 	}
+
+	string toString(const std::wstring &str) {
+		int32 size = static_cast<int32>(str.size()) * 2;
+
+		std::string buffer(size, '\0');
+
+		WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, &buffer[0], size, nullptr, nullptr);
+
+		return buffer;
+	}
+
 #endif
 
 }

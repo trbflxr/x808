@@ -1,19 +1,19 @@
 //
-// Created by FLXR on 1/31/2019.
+// Created by FLXR on 7/4/2018.
 //
 
-#ifndef X808_STRING_HPP
-#define X808_STRING_HPP
+#ifndef X808_STRING1_HPP
+#define X808_STRING1_HPP
 
 
+#include <string>
+#include <cstring>
 #include <vector>
-#include <tinyutf8.h>
-
-#include <xe/xeint.hpp>
 #include <xe/common.hpp>
+#include <xe/xeint.hpp>
 
 namespace xe {
-	typedef utf8_string string;
+	typedef std::string string;
 
 	const char XE_API *findToken(const char *str, const string &token);
 	const char XE_API *findToken(const string &str, const string &token);
@@ -35,9 +35,14 @@ namespace xe {
 #ifdef XE_PLATFORM_WINDOWS
 	std::wstring XE_API toWstring(const char *str);
 	std::wstring XE_API toWstring(const string &str);
+	string XE_API toString(const std::wstring &str);
 #endif
 
-	//unicode
+}
+
+//unicode
+namespace xe {
+
 	template<uint N>
 	struct utf;
 
@@ -100,7 +105,7 @@ namespace xe {
 	};
 
 	typedef utf<16> utf16;
+
 }
 
-
-#endif //X808_STRING_HPP
+#endif //X808_STRING1_HPP

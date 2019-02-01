@@ -18,32 +18,32 @@ namespace xe {
 		delete instance;
 	}
 
-	void VFS::mount(const wstring &virtualPath, const wstring &physicalPath) {
+	void VFS::mount(const string &virtualPath, const string &physicalPath) {
 		XE_ASSERT(instance);
 		instance->mountPoints[virtualPath].push_back(physicalPath);
 	}
 
-	void VFS::unmount(const wstring &path) {
+	void VFS::unmount(const string &path) {
 		XE_ASSERT(instance);
 		instance->mountPoints[path].clear();
 	}
 
-	bool VFS::resolvePhysicalPath(const wstring &path, wstring &outPhysicalPath) {
+	bool VFS::resolvePhysicalPath(const string &path, string &outPhysicalPath) {
 		if (path[0] != '/') {
 			outPhysicalPath = path;
 			return FileSystem::exists(path);
 		}
 
-		std::vector<wstring> dirs = utils::splitString(path, L'/');
-		const wstring &virtualDir = dirs.front();
+		std::vector<string> dirs = splitString(path, L'/');
+		const string &virtualDir = dirs.front();
 
 		if (instance->mountPoints.find(virtualDir) == instance->mountPoints.end() ||
 		    instance->mountPoints[virtualDir].empty())
 			return false;
 
-		wstring remainder = path.substr(virtualDir.size() + 1, path.size() - virtualDir.size());
-		for (const wstring &physicalPath : instance->mountPoints[virtualDir]) {
-			wstring p = physicalPath + remainder;
+		string remainder = path.substr(virtualDir.size() + 1, path.size() - virtualDir.size());
+		for (const string &physicalPath : instance->mountPoints[virtualDir]) {
+			string p = physicalPath + remainder;
 			if (FileSystem::exists(p)) {
 				outPhysicalPath = p;
 				return true;
@@ -52,15 +52,21 @@ namespace xe {
 		return false;
 	}
 
-	byte *VFS::readFile(const wstring &path) {
+	byte *VFS::readFile(const string &path) {
 		XE_ASSERT(instance);
-		wstring physicalPath;
+		string physicalPath;
 		return resolvePhysicalPath(path, physicalPath) ? FileSystem::read(physicalPath) : nullptr;
 	}
 
-	bool VFS::writeFile(const wstring &path, byte *buffer) {
+	string VFS::readTextFile(const string &path) {
 		XE_ASSERT(instance);
-		wstring physicalPath;
+		string physicalPath;
+		return resolvePhysicalPath(path, physicalPath) ? FileSystem::readText(physicalPath) : nullptr;
+	}
+
+	bool VFS::writeFile(const string &path, byte *buffer) {
+		XE_ASSERT(instance);
+		string physicalPath;
 		return resolvePhysicalPath(path, physicalPath) ? FileSystem::write(physicalPath, buffer) : false;
 	}
 

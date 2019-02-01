@@ -13,7 +13,7 @@ namespace xe { namespace internal {
 	class GLTexture : public PlatformTexture {
 	public:
 		explicit GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
-		explicit GLTexture(const string &name, const wstring &path, const TextureParameters &params);
+		explicit GLTexture(const string &name, const string &path, const TextureParameters &params);
 
 		~GLTexture() override;
 
@@ -29,7 +29,7 @@ namespace xe { namespace internal {
 
 		inline uint getHandle() const override { return handle; }
 		inline const string &getName() const override { return name; }
-		inline const wstring &getFilePath() const override { return path; }
+		inline const string &getFilePath() const override { return path; }
 
 		inline uint getWidth() const override { return width; };
 		inline uint getHeight() const override { return height; };
@@ -47,7 +47,7 @@ namespace xe { namespace internal {
 
 	private:
 		string name;
-		wstring path;
+		string path;
 
 		uint width;
 		uint height;

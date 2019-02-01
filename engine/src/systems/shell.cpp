@@ -194,7 +194,7 @@ namespace xe {
 
 		history.push_back(command);
 
-		std::vector<string> tokens = utils::tokenize(command);
+		std::vector<string> tokens = tokenize(command);
 
 		auto &&it = commands.find(tokens[0]);
 		if (it != commands.end()) {
@@ -209,13 +209,13 @@ namespace xe {
 			if (!res.empty()) {
 				ShellItemType type = ShellItemType::Info;
 
-				if (utils::startsWith(res, "[W]")) {
+				if (startsWith(res, "[W]")) {
 					res.erase(res.begin(), res.begin() + 3);
 					type = ShellItemType::Warn;
-				} else if (utils::startsWith(res, "[E]")) {
+				} else if (startsWith(res, "[E]")) {
 					res.erase(res.begin(), res.begin() + 3);
 					type = ShellItemType::Error;
-				} else if (utils::startsWith(res, "[F]")) {
+				} else if (startsWith(res, "[F]")) {
 					res.erase(res.begin(), res.begin() + 3);
 					type = ShellItemType::Fatal;
 				}
@@ -267,7 +267,7 @@ namespace xe {
 
 				std::vector<string> candidates;
 				for (const auto &command : commands) {
-					if (utils::startsWith(command.first, wordStart)) {
+					if (startsWith(command.first, wordStart)) {
 						candidates.push_back(command.first);
 					}
 				}

@@ -12,7 +12,7 @@
 #include <xe/gfx/enums.hpp>
 #include <xe/gfx/shaderuniform.hpp>
 #include <xe/gfx/shadersampler.hpp>
-#include <xe/utils/string.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
 
@@ -40,8 +40,8 @@ namespace xe {
 		                              const std::vector<string> &dependenciesSource = { },
 		                              const std::vector<string> &extensions = { });
 
-		static ShaderFile *fromFile(ShaderType type, const wstring &path,
-		                            const std::vector<wstring> &dependencies = { },
+		static ShaderFile *fromFile(ShaderType type, const string &path,
+		                            const std::vector<string> &dependencies = { },
 		                            const std::vector<string> &extensions = { });
 
 		static const char *typeToString(ShaderType type);

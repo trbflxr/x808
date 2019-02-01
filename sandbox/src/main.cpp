@@ -7,11 +7,12 @@
 
 #include <iostream>
 #include <windows.h>
+#include <xe/core/vfs.hpp>
 
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, L"Sandbox"),
+			Application(config, "Sandbox🌍"),
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr),
@@ -50,8 +51,8 @@ int main() {
 
 	printf(u8"test тест がんばつて 🌍 ☄ ☝ ☯☯☯⛛\n");
 
-//	Test test(config);
-//	test.start();
+	Test test(config);
+	test.start();
 
 //	MessageBox(nullptr, s.utf8_str(), u8"test", MB_ICONINFORMATION);
 
