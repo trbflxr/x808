@@ -5,6 +5,7 @@
 #include <xe/gfx/vertexbuffer.hpp>
 #include <xe/gfx/context.hpp>
 #include <gfx/platform/opengl/glvertexbuffer.hpp>
+#include <xe/utils/log.hpp>
 
 namespace xe {
 
@@ -16,7 +17,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[VertexBuffer]: selected render API is not supported");
+				XE_CORE_FATAL("[VertexBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

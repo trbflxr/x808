@@ -32,7 +32,7 @@ namespace xe {
 		auto &&it = instance().shaders.find(shader->getName());
 
 		if (it != instance().shaders.end()) {
-			XE_ERROR(L"[ShaderManager]: shader '", shader->getName(), L"' already exist and be deleted");
+			XE_CORE_ERROR("[ShaderManager]: shader '{0}' already exist and be deleted", shader->getName());
 
 			delete shader;
 			return false;
@@ -45,7 +45,7 @@ namespace xe {
 	const Shader *ShaderManager::get(const string &name) {
 		auto &&it = instance().shaders.find(name);
 		if (it == instance().shaders.end()) {
-			XE_FATAL(L"[ShaderManager]: shader '", name, L"' not found!");
+			XE_CORE_FATAL("[ShaderManager]: shader '{0}' not found!", name);
 
 			return nullptr;
 		}
@@ -58,7 +58,7 @@ namespace xe {
 
 		auto &&it = instance().sources.find(name);
 		if (it == instance().sources.end()) {
-			XE_FATAL(L"[ShaderManager]: source '", name, L"' not found!");
+			XE_CORE_FATAL("[ShaderManager]: source '{0}' not found!", name);
 			return empty;
 		}
 
@@ -76,7 +76,7 @@ namespace xe {
 			case RenderAPI::OpenGL : createGLShaders();
 				break;
 
-			default: XE_FATAL(L"[ShaderManager]: selected render API is not supported");
+			default: XE_CORE_FATAL("[ShaderManager]: selected render API is not supported");
 				break;
 		}
 	}

@@ -9,7 +9,8 @@
 #include <string>
 #include <vector>
 #include <xe/xeint.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/math/math.hpp>
+#include <xe/utils/assert.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/gfx/gltypes.hpp>
 

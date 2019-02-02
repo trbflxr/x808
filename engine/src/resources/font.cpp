@@ -4,7 +4,7 @@
 
 
 #include <freetype-gl/freetype-gl.h>
-#include <xe/utils/log.hpp>
+#include <xe/utils/assert.hpp>
 #include <xe/loaders/fontloader.hpp>
 #include <xe/resources/font.hpp>
 

@@ -20,7 +20,7 @@ namespace xe {
 		byte *data = VFS::readFile(path, &fileSize);
 
 		if (!data) {
-			XE_ERROR("[FontLoader]: unable to load font: '", path, "'");
+			XE_CORE_ERROR("[FontLoader]: unable to load font: '{0}'", path);
 			return false;
 		}
 

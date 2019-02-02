@@ -13,7 +13,7 @@
 #include <xe/ecs/ecssystem.hpp>
 #include <xe/ecs/ecscomponent.hpp>
 #include <xe/window/event.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/assert.hpp>
 
 namespace xe {
 

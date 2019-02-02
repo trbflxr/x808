@@ -312,11 +312,11 @@ namespace xe { namespace internal {
 		return 0;
 	}
 
-	uint memoryBarrierToGL(MemoryBarrier barrier) noexcept {
+	uint memoryBarrierToGL(MemBarrier barrier) noexcept {
 		switch (barrier) {
-			case MemoryBarrier::ShaderImageAccess: return GL_SHADER_IMAGE_ACCESS_BARRIER_BIT;
-			case MemoryBarrier::ShaderStorage: return GL_SHADER_STORAGE_BARRIER_BIT;
-			case MemoryBarrier::All: return GL_ALL_BARRIER_BITS;
+			case MemBarrier::ShaderImageAccess: return GL_SHADER_IMAGE_ACCESS_BARRIER_BIT;
+			case MemBarrier::ShaderStorage: return GL_SHADER_STORAGE_BARRIER_BIT;
+			case MemBarrier::All: return GL_ALL_BARRIER_BITS;
 		}
 		return 0;
 	}

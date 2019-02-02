@@ -17,8 +17,8 @@ namespace xe {
 		path += file;
 
 		string source;
-		if(!VFS::readTextFile(path, source)) {
-			XE_ERROR("[ShaderFile]: file '", path, "' not found.");
+		if (!VFS::readTextFile(path, source)) {
+			XE_CORE_ERROR("[ShaderFile]: file '{0}' not found.", path);
 		}
 
 		return source;

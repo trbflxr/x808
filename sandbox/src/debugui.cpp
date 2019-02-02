@@ -42,27 +42,27 @@ DebugUI::DebugUI() :
 	//text
 	gpuText = new Text(string("gpu: ") + info.renderer, GETFONT("default"), 0.25f);
 	gpuText->setPosition({offset + offset, h - textOffset});
-	gpuText->setOutlineColor(color::BLACK);
+	gpuText->setOutlineColor(color::Black);
 	gpuText->setOutlineThickness(outline);
 
 	fpsText = new Text("fps: ", GETFONT("default"), 0.25f);
 	fpsText->setPosition({offset + offset, gpuText->getPosition().y - lw});
-	fpsText->setOutlineColor(color::BLACK);
+	fpsText->setOutlineColor(color::Black);
 	fpsText->setOutlineThickness(outline);
 
 	upsText = new Text("ups: ", GETFONT("default"), 0.25f);
 	upsText->setPosition({offset + offset, fpsText->getPosition().y - lw});
-	upsText->setOutlineColor(color::BLACK);
+	upsText->setOutlineColor(color::Black);
 	upsText->setOutlineThickness(outline);
 
 	frameTimeText = new Text("frame time: ", GETFONT("default"), 0.25f);
 	frameTimeText->setPosition({offset + offset, upsText->getPosition().y - lw});
-	frameTimeText->setOutlineColor(color::BLACK);
+	frameTimeText->setOutlineColor(color::Black);
 	frameTimeText->setOutlineThickness(outline);
 
 	dcText = new Text("dc: ", GETFONT("default"), 0.25f);
 	dcText->setPosition({offset + offset, frameTimeText->getPosition().y - lw});
-	dcText->setOutlineColor(color::BLACK);
+	dcText->setOutlineColor(color::Black);
 	dcText->setOutlineThickness(outline);
 
 	infoRect = new RectangleShape({irw, irh}, 10.0f);
@@ -72,12 +72,12 @@ DebugUI::DebugUI() :
 	//tracked
 	tePosText = new Text("position: ", GETFONT("default"), 0.25f);
 	tePosText->setPosition({offset + offset, dcText->getPosition().y - offset * 4.0f - (offset / 2.0f)});
-	tePosText->setOutlineColor(color::BLACK);
+	tePosText->setOutlineColor(color::Black);
 	tePosText->setOutlineThickness(outline);
 
 	teDirText = new Text("direction: ", GETFONT("default"), 0.25f);
 	teDirText->setPosition({offset + offset, tePosText->getPosition().y - lw});
-	teDirText->setOutlineColor(color::BLACK);
+	teDirText->setOutlineColor(color::Black);
 	teDirText->setOutlineThickness(outline);
 
 	teRect = new RectangleShape({ttw, tth}, 10.0f);

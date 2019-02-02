@@ -4,6 +4,7 @@
 
 #include <gfx/platform/opengl/glstoragebuffer.hpp>
 #include <xe/gfx/storagebuffer.hpp>
+#include <xe/utils/log.hpp>
 
 namespace xe {
 
@@ -15,7 +16,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[StorageBuffer]: selected render API is not supported");
+				XE_CORE_FATAL("[StorageBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

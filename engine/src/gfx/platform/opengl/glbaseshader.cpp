@@ -5,6 +5,7 @@
 #include "glbaseshader.hpp"
 #include "glcommon.hpp"
 #include "glshadersampler.hpp"
+#include <xe/utils/assert.hpp>
 
 namespace xe { namespace internal {
 
@@ -23,7 +24,7 @@ namespace xe { namespace internal {
 			shaders[i] = shaderPipeline[i]->compile();
 			if (!shaders[i]) {
 				glCall(glDeleteProgram(handle));
-				XE_FATAL(L"[GLBaseShader]: shader name: ", name);
+				XE_CORE_FATAL("[GLBaseShader]: shader name: '{0}'", name);
 				XE_ASSERT(false);
 				return;
 			}
@@ -96,7 +97,7 @@ namespace xe { namespace internal {
 				break;
 			case GLShaderUniform::Type::Image3D: setUniform1i(field.getLocation(), *(int32 *) &data[offset]);
 				break;
-			default: XE_ASSERT(false, L"Unknown type!");
+			default: XE_ASSERT(false, "Unknown type!");
 		}
 	}
 
@@ -152,9 +153,9 @@ namespace xe { namespace internal {
 		glCall(GLint result = glGetUniformLocation(handle, name.c_str()));
 		if (result == -1) {
 			if (runTime) {
-				XE_ERROR(L"[GLBaseShader]: '", GLBaseShader::name, L"' could not get uniform location '", name, L"'");
+				XE_CORE_ERROR("[GLBaseShader]: '{0}' could not get uniform location '{1}'", GLBaseShader::name, name);
 			} else {
-				XE_WARN(L"[GLBaseShader]: '", GLBaseShader::name, L"' uniform '", name, L"' optimized out");
+				XE_CORE_WARN("[GLBaseShader]: '{0}' uniform '{1}' optimized out", GLBaseShader::name, name);
 			}
 		}
 
@@ -210,7 +211,7 @@ namespace xe { namespace internal {
 				break;
 			case GLShaderUniform::Type::Struct: setUniformStruct(uniform, data, offset);
 				break;
-			default: XE_ASSERT(false, L"Unknown type!");
+			default: XE_ASSERT(false, "Unknown type!");
 		}
 	}
 

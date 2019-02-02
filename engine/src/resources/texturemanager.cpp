@@ -29,7 +29,7 @@ namespace xe {
 		auto &&it = instance().textures.find(texture->getName());
 
 		if (it != instance().textures.end()) {
-			XE_ERROR(L"[TextureManager]: texture '", texture->getName(), L"' already exist and be deleted");
+			XE_CORE_ERROR("[TextureManager]: texture '{0}' already exist and be deleted", texture->getName());
 
 			delete texture;
 			return false;
@@ -43,7 +43,7 @@ namespace xe {
 	const Texture *TextureManager::get(const string &name) {
 		auto &&it = instance().textures.find(name.data());
 		if (it == instance().textures.end()) {
-			XE_ERROR(L"[TextureManager]: texture '", name, L"' not found!");
+			XE_CORE_ERROR("[TextureManager]: texture '{0}' not found!", name);
 
 			return get("default");
 		}

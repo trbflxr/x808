@@ -17,7 +17,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[IndexBuffer]: selected render API is not supported");
+				XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}
@@ -32,7 +32,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[IndexBuffer]: selected render API is not supported");
+				XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}
@@ -47,7 +47,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[IndexBuffer]: selected render API is not supported");
+				XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

@@ -19,7 +19,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[FrameBuffer]: selected render API is not supported");
+				XE_CORE_FATAL("[FrameBuffer]: selected render API is not supported");
 				buffer = nullptr;
 				break;
 			}

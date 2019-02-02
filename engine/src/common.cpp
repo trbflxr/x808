@@ -25,7 +25,7 @@ namespace xe {
 		if (strcmp(api, "ogl") == 0) return RenderAPI::OpenGL;
 		if (strcmp(api, "d3d") == 0) return RenderAPI::Direct3D;
 
-		XE_FATAL(L"[Core]: Invalid render API '", api, L"'");
+		XE_CORE_FATAL("Invalid render API '{0}'", api);
 		return RenderAPI::Invalid;
 	}
 
@@ -35,11 +35,15 @@ namespace xe {
 		setvbuf(stdout, nullptr, _IONBF, 2048);
 #endif
 
+		Log::initialize();
+
 		VFS::init();
 	}
 
 	void shutdown() {
 		VFS::shutdown();
+
+		Log::shutdown();
 	}
 
 }

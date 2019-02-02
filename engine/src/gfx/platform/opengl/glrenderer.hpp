@@ -42,7 +42,7 @@ namespace xe { namespace internal {
 		void setPolygonModeInternal(MaterialFace face, PolygonMode mode) override;
 		void setStencilFuncInternal(StencilFunction func, uint ref, uint mask) override;
 		void setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) override;
-		void setMemoryBarrierInternal(MemoryBarrier barrier) override;
+		void setMemoryBarrierInternal(MemBarrier barrier) override;
 
 	private:
 		GLContext *context;

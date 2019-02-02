@@ -67,7 +67,7 @@ TestB2D::TestB2D() {
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
 
 	//polygons
-	poly0 = new Polygon(4.0f);
+	poly0 = new xe::Polygon(4.0f);
 	poly0->setTexture(GETTEXTURE("6"));
 
 //	polyCollider0 = new PolygonCollider2D(world, ColliderType::Static, poly0);
@@ -167,7 +167,7 @@ void TestB2D::input(xe::Event &event) {
 				polyPoints.push_back(pos);
 
 				RectangleShape *rs = new RectangleShape({5.0f, 5.0f}, poly0->getLayer() + 0.1f);
-				rs->setColor(color::GREEN);
+				rs->setColor(color::Green);
 				rs->transformation(pos);
 				points.push_back(rs);
 

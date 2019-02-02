@@ -179,7 +179,7 @@ namespace xe {
 			commands[command] = callback;
 			return true;
 		} else {
-			XE_ERROR(L"[Shell]: Command '", command, "' already exists");
+			XE_CORE_ERROR("[Shell]: Command '{0}' already exists", command);
 			return false;
 		}
 	}

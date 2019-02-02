@@ -17,8 +17,8 @@ namespace xe {
 		explicit Text(const string &string, const Font *font = GETFONT("default"), float scale = 1.0f) noexcept :
 				font(font),
 				string(string),
-				textColor(color::WHITE),
-				outlineColor(color::TRANSPARENT),
+				textColor(color::White),
+				outlineColor(color::Transparent),
 				outlineThickness(0.0f),
 				scale(scale) { }
 

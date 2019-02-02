@@ -17,7 +17,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[BaseShader]: selected render API is not supported");
+				XE_CORE_FATAL("[BaseShader]: selected render API is not supported");
 				base = nullptr;
 				break;
 			}
@@ -68,7 +68,7 @@ namespace xe {
 			}
 		}
 
-		XE_FATAL(L"[Shader]: Uniform '", name, L"' not found!");
+		XE_CORE_FATAL("[Shader]: Uniform '{0}' not found!", name);
 	}
 
 	uint Shader::getSampler(const string &name) const {

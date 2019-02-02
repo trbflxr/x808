@@ -12,6 +12,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #directories
 set(XE_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/spdlog
         CACHE STRING "XE include dirs" FORCE)
 
 set(XE_DIRS

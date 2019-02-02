@@ -30,6 +30,8 @@ include_directories(external/box2d)
 add_subdirectory(external/freetype-gl)
 include_directories(external/freetype-gl/include)
 
+include_directories(external/spdlog)
+
 #includes and libs
 include_directories(src)
 link_directories(${XE_DIRS})

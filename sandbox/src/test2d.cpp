@@ -148,40 +148,40 @@ Test2D::Test2D() {
 
 	timer.reset();
 
-	XE_INFO("size: ", sprites);
-	XE_INFO("elapsed: ", timer.elapsedMillis(), " ms");
+	XE_INFO("size: {0}", sprites);
+	XE_INFO("elapsed: {0} ms", timer.elapsedMillis());
 
 	inputText = new Text("consolata72", GETFONT("consolata72"));
-	inputText->setTextColor(color::WHITE);
-	inputText->setOutlineColor(color::BLACK);
+	inputText->setTextColor(color::White);
+	inputText->setOutlineColor(color::Black);
 	inputText->setOutlineThickness(3.0f);
 	inputText->setPosition({50.0f, 500.0f});
 	text.push_back(inputText);
 
 	Text *t0 = new Text("fogsans72", GETFONT("fogsans72"));
-	t0->setTextColor(color::WHITE);
-	t0->setOutlineColor(color::BLACK);
+	t0->setTextColor(color::White);
+	t0->setOutlineColor(color::Black);
 	t0->setOutlineThickness(3.0f);
 	t0->setPosition({50.0f, 400.0f});
 	text.push_back(t0);
 
 	Text *t1 = new Text("fogsansit72", GETFONT("fogsansit72"));
-	t1->setTextColor(color::WHITE);
-	t1->setOutlineColor(color::BLACK);
+	t1->setTextColor(color::White);
+	t1->setOutlineColor(color::Black);
 	t1->setOutlineThickness(3.0f);
 	t1->setPosition({50.0f, 300.0f});
 	text.push_back(t1);
 
 	Text *t2 = new Text("robotoregular72", GETFONT("robotoregular72"));
-	t2->setTextColor(color::WHITE);
-	t2->setOutlineColor(color::BLACK);
+	t2->setTextColor(color::White);
+	t2->setOutlineColor(color::Black);
 	t2->setOutlineThickness(3.0f);
 	t2->setPosition({50.0f, 200.0f});
 	text.push_back(t2);
 
 	Text *t3 = new Text("robotobold72", GETFONT("robotobold72"));
-	t3->setTextColor(color::WHITE);
-	t3->setOutlineColor(color::BLACK);
+	t3->setTextColor(color::White);
+	t3->setOutlineColor(color::Black);
 	t3->setOutlineThickness(3.0f);
 	t3->setPosition({50.0f, 100.0f});
 	text.push_back(t3);
@@ -192,8 +192,8 @@ Test2D::Test2D() {
 	s += " different textures🌍";
 
 	Text *t4 = new Text(s, GETFONT("consolata32"));
-	t4->setTextColor(color::RED);
-	t4->setOutlineColor(color::BLACK);
+	t4->setTextColor(color::Red);
+	t4->setOutlineColor(color::Black);
 	t4->setOutlineThickness(3.0f);
 	t4->setPosition({10.0f, height - 50.0f});
 	text.push_back(t4);
@@ -320,7 +320,7 @@ void Test2D::input(xe::Event &event) {
 			if (event.text.unicode == 8) {
 				if (!inputText->getString().empty()) {
 					string &utf8 = inputText->getString();
-					char* cp = utf8.data() + utf8.size();
+					char *cp = utf8.data() + utf8.size();
 					while (--cp >= utf8.data() && ((*cp & 0b10000000) && !(*cp & 0b01000000)));
 					if (cp >= utf8.data()) {
 						utf8.resize(cp - utf8.data());

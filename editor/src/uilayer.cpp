@@ -72,7 +72,7 @@ namespace xe {
 		renderWindow->bindDraw(Attachment::Color0);
 		Renderer::setViewport(0, 0, w, h);
 
-		Renderer::setClearColor(color::GREEN);
+		Renderer::setClearColor(color::Green);
 		Renderer::clear(RendererBufferColor);
 
 
@@ -99,7 +99,7 @@ namespace xe {
 	void UILayer::render() {
 		renderPreview();
 
-		Renderer::setClearColor(color::BLACK);
+		Renderer::setClearColor(color::Black);
 
 		static bool open = true;
 		static bool opt_fullscreen_persistant = true;

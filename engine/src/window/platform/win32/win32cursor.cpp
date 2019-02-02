@@ -10,6 +10,7 @@
 
 #include <xe/window/cursor.hpp>
 #include <xe/utils/log.hpp>
+#include <xe/utils/assert.hpp>
 
 namespace xe {
 
@@ -19,7 +20,7 @@ namespace xe {
 		release();
 
 		BITMAPV5HEADER bitmapHeader;
-		std::memset(&bitmapHeader, 0, sizeof(BITMAPV5HEADER));
+		memset(&bitmapHeader, 0, sizeof(BITMAPV5HEADER));
 
 		bitmapHeader.bV5Size = sizeof(BITMAPV5HEADER);
 		bitmapHeader.bV5Width = static_cast<LONG>(size.x);
@@ -46,7 +47,7 @@ namespace xe {
 		ReleaseDC(nullptr, screenDC);
 
 		if (!color) {
-			XE_ERROR(L"[Win32Cursor]: Failed to create cursor color bitmap");
+			XE_CORE_ERROR("[Win32Cursor]: Failed to create cursor color bitmap");
 			XE_ASSERT(color);
 		}
 
@@ -56,12 +57,12 @@ namespace xe {
 
 		if (!mask) {
 			DeleteObject(color);
-			XE_ERROR(L"[Win32Cursor]: Failed to create cursor mask bitmap");
+			XE_CORE_ERROR("[Win32Cursor]: Failed to create cursor mask bitmap");
 			XE_ASSERT(mask);
 		}
 
 		ICONINFO cursorInfo;
-		std::memset(&cursorInfo, 0, sizeof(ICONINFO));
+		memset(&cursorInfo, 0, sizeof(ICONINFO));
 
 		cursorInfo.fIcon = FALSE;
 		cursorInfo.xHotspot = hotspot.x;
@@ -75,7 +76,7 @@ namespace xe {
 		DeleteObject(mask);
 
 		if (!cursor) {
-			XE_ERROR(L"[Win32Cursor]: Failed to create cursor from bitmaps");
+			XE_CORE_ERROR("[Win32Cursor]: Failed to create cursor from bitmaps");
 			XE_ASSERT(cursor);
 		}
 	}
@@ -118,7 +119,7 @@ namespace xe {
 		cursor = CopyCursor(LoadCursor(nullptr, shape));
 
 		if (!cursor) {
-			XE_ERROR(L"[Win32Cursor]: Could not create copy of a system cursor");
+			XE_CORE_ERROR("[Win32Cursor]: Could not create copy of a system cursor");
 			XE_ASSERT(cursor);
 		}
 	}

@@ -73,7 +73,7 @@ namespace xe { namespace internal {
 
 	void GLTexture::setData2D(const void *pixels) const {
 		if (params.format == PixelFormat::DepthComponent) {
-			XE_ERROR(L"[GLTexture]: ", name, L" 'SetData' is unavailable for depth texture!");
+			XE_CORE_ERROR("[GLTexture]: '{0}' 'SetData' is unavailable for depth texture!", name);
 			return;
 		}
 
@@ -169,7 +169,7 @@ namespace xe { namespace internal {
 			params.internalFormat = PixelInternalFormat::Rgb;
 		} else {
 			if (bits != 24 && bits != 32) {
-				XE_FATAL("[GLTexture]: ", name, " Unsupported image bit-depth! ('", bits, "')");
+				XE_CORE_FATAL("[GLTexture]: {0} Unsupported image bit-depth! ({1})", name, bits);
 			}
 
 			if (bits == 24) {

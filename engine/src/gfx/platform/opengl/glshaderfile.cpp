@@ -5,6 +5,7 @@
 #include <xe/gfx/context.hpp>
 #include <xe/string.hpp>
 #include <xe/loaders/shaderloader.hpp>
+#include <xe/utils/assert.hpp>
 #include "glshaderfile.hpp"
 #include "glcommon.hpp"
 #include "glenums.hpp"
@@ -140,9 +141,9 @@ namespace xe { namespace internal {
 			}
 			uint lineNumber = std::stoul(line) - addedLines;
 
-			XE_FATAL(L"[GLShaderFile]: Failed to compile ", typeToString(type), L" shader.");
-			XE_FATAL(L"[GLShaderFile]: Line: ", lineNumber);
-			XE_FATAL(L"[GLShaderFile]: ", errorMessage);
+			XE_CORE_FATAL("[GLShaderFile]: Failed to compile {0} shader.", typeToString(type));
+			XE_CORE_FATAL("[GLShaderFile]: Line: {0}", lineNumber);
+			XE_CORE_FATAL("[GLShaderFile]: {0}", errorMessage);
 
 			glCall(glDeleteShader(id));
 			return 0;
@@ -217,7 +218,7 @@ namespace xe { namespace internal {
 					}
 				}
 
-				XE_ASSERT(s, L"[GLShaderFile]: Could not find struct: ", typeStr, L" ", name);
+				XE_ASSERT(s, "[GLShaderFile]: Could not find struct: {0} {2}", typeStr, name);
 				uniform = new GLShaderUniform(s, name, count);
 			} else {
 				uniform = new GLShaderUniform(t, name, count);

@@ -30,7 +30,7 @@ namespace xe {
 		auto &&it = instance().fonts.find(font->getName());
 
 		if (it != instance().fonts.end()) {
-			XE_ERROR(L"[FontManager]: font '", font->getName(), L"' already exist and be deleted");
+			XE_CORE_ERROR("[FontManager]: font '{0}' already exist and be deleted", font->getName());
 
 			delete font;
 			return false;
@@ -43,7 +43,7 @@ namespace xe {
 	const Font *FontManager::get(const string &name) {
 		auto &&it = instance().fonts.find(name);
 		if (it == instance().fonts.end()) {
-			XE_ERROR(L"[FontManager]: font '", name, L"' not found! Default font loaded instead.");
+			XE_CORE_ERROR("[FontManager]: font '{0}' not found! Default font loaded instead.", name);
 
 			return get("default");
 		}

@@ -11,6 +11,10 @@
 #include <xe/utils/log.hpp>
 #include "win32window.hpp"
 
+//temp
+#include <locale>
+#include <codecvt>
+
 namespace {
 	uint windowCount = 0;
 	uint handleCount = 0;
@@ -90,10 +94,10 @@ namespace xe { namespace internal {
 
 		if (pixelFormat) {
 			if (!SetPixelFormat(screenDC, pixelFormat, &pfd)) {
-				XE_FATAL(L"[PlatformWindowWin32]: Failed setting pixel format!");
+				XE_CORE_FATAL("[PlatformWindowWin32]: Failed setting pixel format!");
 			}
 		} else {
-			XE_FATAL(L"[PlatformWindowWin32]: Failed choosing pixel format!");
+			XE_CORE_FATAL("[PlatformWindowWin32]: Failed choosing pixel format!");
 		}
 		ReleaseDC(handle, screenDC);
 
@@ -205,7 +209,7 @@ namespace xe { namespace internal {
 			SendMessage(handle, WM_SETICON, ICON_BIG, (LPARAM) icon);
 			SendMessage(handle, WM_SETICON, ICON_SMALL, (LPARAM) icon);
 		} else {
-			XE_ERROR(L"[PlatformWindowWin32]: Failed to set the window's icon");
+			XE_CORE_ERROR("[PlatformWindowWin32]: Failed to set the window's icon");
 		}
 	}
 
@@ -294,7 +298,7 @@ namespace xe { namespace internal {
 		devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT | DM_BITSPERPEL;
 
 		if (ChangeDisplaySettingsW(&devMode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL) {
-			XE_ERROR(L"[PlatformWindowWin32]: Failed to change display mode for fullscreen");
+			XE_CORE_ERROR("[PlatformWindowWin32]: Failed to change display mode for fullscreen");
 			return;
 		}
 

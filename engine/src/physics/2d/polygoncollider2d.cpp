@@ -5,8 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <xe/physics/2d/physicsworld2d.hpp>
 #include <xe/physics/2d/polygoncollider2d.hpp>
-
-#include <xe/utils/log.hpp>
+#include <xe/utils/assert.hpp>
 
 namespace xe {
 

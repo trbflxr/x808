@@ -20,7 +20,7 @@ namespace xe { namespace internal {
 		if (error != GL_NO_ERROR) {
 			char buffer[1024 * 10];
 			sprintf(buffer, "[OpenGL Error] (%u): %s, %s: %u", error, function, file, line);
-			XE_FATAL(buffer);
+			XE_CORE_FATAL(buffer);
 			return false;
 		}
 		return true;

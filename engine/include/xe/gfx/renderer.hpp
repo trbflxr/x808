@@ -68,7 +68,7 @@ namespace xe {
 			instance->setStencilOpSeparateInternal(face, sFail, dpFail, dpPass);
 		}
 
-		static void setMemoryBarrier(MemoryBarrier barrier) {
+		static void setMemoryBarrier(MemBarrier barrier) {
 			instance->setMemoryBarrierInternal(barrier);
 		}
 
@@ -106,7 +106,7 @@ namespace xe {
 		virtual void setPolygonModeInternal(MaterialFace face, PolygonMode mode) = 0;
 		virtual void setStencilFuncInternal(StencilFunction func, uint ref, uint mask) = 0;
 		virtual void setStencilOpSeparateInternal(StencilFace face, StencilOp sf, StencilOp dpf, StencilOp dpp) = 0;
-		virtual void setMemoryBarrierInternal(MemoryBarrier barrier) = 0;
+		virtual void setMemoryBarrierInternal(MemBarrier barrier) = 0;
 
 	private:
 		static Renderer *instance;

@@ -27,14 +27,14 @@ namespace xe { namespace internal {
 
 		if (hrc) {
 			if (!wglMakeCurrent(hDc, hrc)) {
-				XE_FATAL(L"Failed setting OpenGL context!");
+				XE_CORE_FATAL("Failed setting OpenGL context!");
 			}
 		} else {
-			XE_FATAL(L"Failed creating OpenGL context!");
+			XE_CORE_FATAL("Failed creating OpenGL context!");
 		}
 
 		if (glewInit() != GLEW_OK) {
-			XE_FATAL(L"Could not initialize GLEW!");
+			XE_CORE_FATAL("Could not initialize GLEW!");
 		}
 
 		if (gConfig.useSRGB) {

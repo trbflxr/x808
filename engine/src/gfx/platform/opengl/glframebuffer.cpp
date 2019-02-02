@@ -5,6 +5,7 @@
 #include "glcommon.hpp"
 #include "glenums.hpp"
 #include "glframebuffer.hpp"
+#include <xe/utils/assert.hpp>
 
 namespace xe { namespace internal {
 
@@ -28,7 +29,7 @@ namespace xe { namespace internal {
 		}
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_FATAL(L"[GLFrameBuffer]: '", name, L"' creation fail");
+			XE_CORE_FATAL("[GLFrameBuffer]: '{0}' creation failed", name);
 			XE_ASSERT(false);
 		}
 
@@ -52,7 +53,7 @@ namespace xe { namespace internal {
 		uint mode = attachmentToGL(attachment);
 
 		if (mode == GL_DEPTH_ATTACHMENT || mode == GL_STENCIL_ATTACHMENT) {
-			XE_ERROR(L"[GLFrameBuffer]: Can't read depth or stencil attachments.");
+			XE_CORE_ERROR("[GLFrameBuffer]: Can't read depth or stencil attachments.");
 			return;
 		}
 
@@ -82,7 +83,7 @@ namespace xe { namespace internal {
 		glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(attachment), texture->getHandle(), 0));
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_FATAL(L"[GLFrameBuffer]: setting texture failed");
+			XE_CORE_FATAL("[GLFrameBuffer]: setting texture failed");
 			XE_ASSERT(false);
 		}
 	}

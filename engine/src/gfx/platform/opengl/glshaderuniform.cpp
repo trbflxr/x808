@@ -3,6 +3,7 @@
 //
 
 #include <xe/utils/log.hpp>
+#include <xe/utils/assert.hpp>
 #include "glshaderuniform.hpp"
 
 namespace xe { namespace internal {

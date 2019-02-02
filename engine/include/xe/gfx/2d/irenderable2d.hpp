@@ -45,7 +45,7 @@ namespace xe {
 	protected:
 		explicit IRenderable2D(float layer) :
 				layer(layer),
-				color(color::WHITE),
+				color(color::White),
 				visible(true) { }
 
 	protected:

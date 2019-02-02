@@ -5,6 +5,7 @@
 #include <xe/gfx/context.hpp>
 #include <xe/gfx/vertexarray.hpp>
 #include <gfx/platform/opengl/glvertexarray.hpp>
+#include <xe/utils/log.hpp>
 
 namespace xe {
 
@@ -16,7 +17,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_FATAL(L"[VertexArray]: selected render API is not supported");
+				XE_CORE_FATAL("[VertexArray]: selected render API is not supported");
 				array = nullptr;
 				break;
 			}

@@ -40,7 +40,7 @@ namespace xe { namespace internal {
 	uint stencilFuncToGL(StencilFunction func) noexcept;
 	uint stencilFaceToGL(StencilFace face) noexcept;
 
-	uint memoryBarrierToGL(MemoryBarrier barrier) noexcept;
+	uint memoryBarrierToGL(MemBarrier barrier) noexcept;
 
 }}
 

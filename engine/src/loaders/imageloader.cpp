@@ -19,7 +19,7 @@ namespace xe {
 		byte *memory = VFS::readFile(path, &memorySize);
 
 		if (!memory) {
-			XE_ERROR("[ImageLoader]: unable to load image: '", path, "'");
+			XE_CORE_ERROR("[ImageLoader]: unable to load image: '{0}'", path);
 			return nullptr;
 		}
 
