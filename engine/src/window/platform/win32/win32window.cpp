@@ -11,10 +11,6 @@
 #include <xe/utils/log.hpp>
 #include "win32window.hpp"
 
-//temp
-#include <locale>
-#include <codecvt>
-
 namespace {
 	uint windowCount = 0;
 	uint handleCount = 0;
@@ -47,7 +43,6 @@ namespace xe { namespace internal {
 			keyRepeatEnabled(true),
 			lastSize(mode.width, mode.height),
 			resizing(false),
-			surrogate(0),
 			mouseInside(false),
 			fullscreen((style & WindowStyle::Fullscreen) != 0),
 			cursorGrabbed(fullscreen) {
@@ -348,8 +343,6 @@ namespace xe { namespace internal {
 		if (!handle) return;
 
 		switch (message) {
-			default: break;
-
 			case WM_DESTROY: {
 				cleanup();
 				break;
@@ -434,16 +427,12 @@ namespace xe { namespace internal {
 
 			case WM_CHAR: {
 				if (keyRepeatEnabled || ((lParam & (1 << 30)) == 0)) {
-
-					static std::wstring_convert<std::codecvt_utf8<wchar_t >> c;
-
-					uint character = static_cast<uint>(wParam);
+					uint ch = static_cast<uint>(wParam);
 
 					Event event{ };
 					event.type = Event::TextEntered;
 
-					string s = c.to_bytes(character);
-					memcpy(&event.text.unicode, s.data(), s.size());
+					wcharToUTF8(ch, event.text.unicode);
 
 					pushEvent(event);
 
@@ -629,6 +618,8 @@ namespace xe { namespace internal {
 				pushEvent(event);
 				break;
 			}
+
+			default: break;
 		}
 	}
 

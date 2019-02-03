@@ -70,7 +70,6 @@ namespace xe { namespace internal {
 		bool keyRepeatEnabled;
 		vec2 lastSize;
 		bool resizing;
-		uint16 surrogate;
 		bool mouseInside;
 		bool fullscreen;
 		bool cursorGrabbed;

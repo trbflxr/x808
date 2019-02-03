@@ -138,4 +138,24 @@ namespace xe {
 
 #endif
 
+	void wcharToUTF8(const uint &wchar, uint &utf8) {
+		char *c = (char *) &utf8;
+
+		if (wchar < 0x80) {
+			utf8 = wchar;
+		} else if (wchar < 0x800) {
+			c[0] = static_cast<char>((wchar >> 6) | 0xC0);
+			c[1] = static_cast<char>((wchar & 0x3F) | 0x80);
+		} else if (wchar < 0x10000) {
+			c[0] = static_cast<char>((wchar >> 12) | 0xE0);
+			c[1] = static_cast<char>(((wchar >> 6) & 0x3F) | 0x80);
+			c[2] = static_cast<char>((wchar & 0x3F) | 0x80);
+		} else if (wchar < 0x110000) {
+			c[0] = static_cast<char>((wchar >> 18) | 0xF0);
+			c[1] = static_cast<char>(((wchar >> 12) & 0x3F) | 0x80);
+			c[2] = static_cast<char>(((wchar >> 6) & 0x3F) | 0x80);
+			c[3] = static_cast<char>((wchar & 0x3F) | 0x80);
+		}
+	}
+
 }

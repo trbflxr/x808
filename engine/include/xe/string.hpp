@@ -2,8 +2,8 @@
 // Created by FLXR on 7/4/2018.
 //
 
-#ifndef X808_STRING1_HPP
-#define X808_STRING1_HPP
+#ifndef X808_STRING_HPP
+#define X808_STRING_HPP
 
 
 #include <string>
@@ -38,6 +38,7 @@ namespace xe {
 	string XE_API toString(const std::wstring &str);
 #endif
 
+	void XE_API wcharToUTF8(const uint &wchar, uint &utf8);
 }
 
-#endif //X808_STRING1_HPP
+#endif //X808_STRING_HPP
