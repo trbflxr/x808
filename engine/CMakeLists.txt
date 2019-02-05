@@ -17,10 +17,12 @@ add_definitions(
         -D NOGDI
         -D UNICODE
         -D _UNICODE
-        -D XE_STATIC
-        -D GLEW_STATIC)
+        -D XE_STATIC)
 
 #external libs
+add_subdirectory(external/glew)
+include_directories(external/glew)
+
 add_subdirectory(external/imgui)
 include_directories(external/imgui)
 
@@ -72,7 +74,6 @@ file(GLOB ENGINE_WIN32_SRC
 
 #opengl
 file(GLOB ENGINE_GL_SRC
-        external/glew/glew.c
         external/imgui/imgui_impl_xe_gl.cpp
         src/gfx/platform/opengl/*.cpp)
 
@@ -102,7 +103,7 @@ target_link_libraries(xe
 
 #link opengl libs
 if (XE_PLATFORM_GL)
-    target_link_libraries(xe ${OPENGL_LIBRARIES})
+    target_link_libraries(xe glew)
 endif ()
 
 #link win32 libs
