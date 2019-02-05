@@ -7,7 +7,7 @@
 #include <vector>
 #include <xe/resources/sound.hpp>
 #include <xe/string.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/resources/soundmanager.hpp>
 
 namespace xe {
@@ -21,13 +21,13 @@ namespace xe {
 
 		std::vector<string> split = splitString(path, '.');
 		if (split.size() < 2) {
-			XE_CORE_ERROR("[Sound]: Invalid filename {0}", path);
+			XE_CORE_ERROR("[Sound]: Invalid filename '", path, "'");
 			return;
 		}
 
 		sound = gau_load_sound_file(path.data(), split.back().c_str());
 		if (!sound) {
-			XE_CORE_ERROR("[Sound]: Could not load file {0}", path);
+			XE_CORE_ERROR("[Sound]: Could not load file '", path, "'");
 		}
 	}
 

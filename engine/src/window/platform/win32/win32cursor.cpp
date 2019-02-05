@@ -9,7 +9,7 @@
 #define NOGDI
 
 #include <xe/window/cursor.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/utils/assert.hpp>
 
 namespace xe {

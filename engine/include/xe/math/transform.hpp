@@ -6,7 +6,10 @@
 #define X808_TRANSFORM_HPP
 
 
-#include <xe/math/math.hpp>
+#include <xe/math/vec2.hpp>
+#include <xe/math/vec4.hpp>
+#include <xe/math/quat.hpp>
+#include <xe/math/mat4.hpp>
 
 namespace xe {
 

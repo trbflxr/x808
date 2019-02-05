@@ -4,7 +4,7 @@
 
 #include <gfx/platform/opengl/glstoragebuffer.hpp>
 #include <xe/gfx/storagebuffer.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 

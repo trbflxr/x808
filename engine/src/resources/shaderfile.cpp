@@ -4,7 +4,7 @@
 
 #include <gfx/platform/opengl/glshaderfile.hpp>
 #include <xe/gfx/context.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/resources/shaderfile.hpp>
 
 namespace xe {

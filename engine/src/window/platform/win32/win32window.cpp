@@ -8,7 +8,7 @@
 
 #include <dbt.h>
 #include <xe/window/window.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include "win32window.hpp"
 
 namespace {

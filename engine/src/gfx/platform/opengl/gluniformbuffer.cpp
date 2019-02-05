@@ -2,6 +2,7 @@
 // Created by FLXR on 8/7/2018.
 //
 
+#include <GL/glew.h>
 #include "glcommon.hpp"
 #include "glenums.hpp"
 #include "gluniformbuffer.hpp"

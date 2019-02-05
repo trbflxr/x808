@@ -2,7 +2,7 @@
 // Created by FLXR on 7/6/2018.
 //
 
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/utils/assert.hpp>
 #include "glshaderuniform.hpp"
 

@@ -4,8 +4,6 @@
 
 #include <cstring>
 #include <libgen.h>
-#include <codecvt>
-#include <locale>
 #include <xe/string.hpp>
 
 #ifdef XE_PLATFORM_WINDOWS
@@ -122,14 +120,18 @@ namespace xe {
 	}
 
 	std::wstring toWstring(const char *str) {
-		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		return converter.from_bytes(str);
+		int32 size = MultiByteToWideChar(CP_UTF8, 0, str, -1, NULL, 0);
+		std::wstring buffer(static_cast<size_t>(size), L'\0');
+
+		MultiByteToWideChar(CP_UTF8, 0, str, -1, buffer.data(), size);
+
+		return buffer;
 	}
 
 	string toString(const std::wstring &str) {
 		int32 size = static_cast<int32>(str.size()) * 2;
 
-		std::string buffer(size, '\0');
+		string buffer(size, '\0');
 
 		WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, &buffer[0], size, nullptr, nullptr);
 

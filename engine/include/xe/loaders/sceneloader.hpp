@@ -7,9 +7,8 @@
 
 
 #include <vector>
-#include <string>
-
 #include <xe/common.hpp>
+#include <xe/string.hpp>
 #include <xe/xeint.hpp>
 #include <xe/utils/noncopyable.hpp>
 #include <xe/gfx/uniquemesh.hpp>

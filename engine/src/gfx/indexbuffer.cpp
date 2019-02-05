@@ -3,7 +3,7 @@
 //
 
 #include <xe/gfx/context.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/gfx/indexbuffer.hpp>
 #include <gfx/platform/opengl/glindexbuffer.hpp>
 

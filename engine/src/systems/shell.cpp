@@ -6,7 +6,7 @@
 #include <xe/systems/shell.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/gfx/renderer.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <imgui/impl/imgui_impl_xe_gl.hpp>
 
 namespace xe {
@@ -179,7 +179,7 @@ namespace xe {
 			commands[command] = callback;
 			return true;
 		} else {
-			XE_CORE_ERROR("[Shell]: Command '{0}' already exists", command);
+			XE_CORE_ERROR("[Shell]: Command '", command, "' already exists");
 			return false;
 		}
 	}

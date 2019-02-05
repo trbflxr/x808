@@ -7,7 +7,7 @@
 #include <xe/gfx/renderer.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/utils/sleep.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <window/platformwindow.hpp>
 
 namespace {

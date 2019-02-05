@@ -3,7 +3,7 @@
 //
 
 #include <xe/gfx/sprite.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 

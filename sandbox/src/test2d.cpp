@@ -9,7 +9,7 @@
 #include <xe/resources/soundmanager.hpp>
 #include <xe/utils/random.hpp>
 #include <xe/gfx/indexedmodel.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/gfx/circleshape.hpp>
 #include <xe/systems/shell.hpp>
 #include "test2d.hpp"
@@ -148,8 +148,8 @@ Test2D::Test2D() {
 
 	timer.reset();
 
-	XE_INFO("size: {0}", sprites);
-	XE_INFO("elapsed: {0} ms", timer.elapsedMillis());
+	XE_INFO("size: ", sprites);
+	XE_INFO("elapsed: ", timer.elapsedMillis(), "ms");
 
 	inputText = new Text("consolata72", GETFONT("consolata72"));
 	inputText->setTextColor(color::White);

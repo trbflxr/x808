@@ -5,7 +5,7 @@
 #include <xe/gfx/context.hpp>
 #include <xe/gfx/vertexarray.hpp>
 #include <gfx/platform/opengl/glvertexarray.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 

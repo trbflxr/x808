@@ -5,7 +5,7 @@
 #include <xe/gfx/vertexbuffer.hpp>
 #include <xe/gfx/context.hpp>
 #include <gfx/platform/opengl/glvertexbuffer.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 

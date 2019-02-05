@@ -6,14 +6,14 @@
 #define X808_ASSERT_HPP
 
 
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 #ifdef XE_DEBUG
 #define XE_ASSERT(x, ...) \
         if (!(x)) {\
             XE_CORE_FATAL("ASSERTION FAILED"); \
-            XE_CORE_FATAL("{0}: {1}", __FILE__, __LINE__); \
-            XE_CORE_FATAL("Condition: {0}", #x); \
+            XE_CORE_FATAL(__FILE__, __LINE__); \
+            XE_CORE_FATAL("Condition: ", #x); \
             XE_CORE_FATAL(#__VA_ARGS__); \
             __debugbreak(); \
         }

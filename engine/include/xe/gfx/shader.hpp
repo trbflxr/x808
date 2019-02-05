@@ -21,10 +21,7 @@ namespace xe {
 		uint size;
 
 		UniformData() = default;
-		explicit UniformData(uint size) : size(size) {
-			buffer = new byte[size];
-			memset(buffer, 0, size);
-		}
+		explicit UniformData(uint size);
 	};
 
 	struct Uniform {

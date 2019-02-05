@@ -3,7 +3,8 @@
 //
 
 
-#include <xe/utils/log.hpp>
+#include <GL/glew.h>
+#include <xe/utils/logger.hpp>
 #include <xe/loaders/imageloader.hpp>
 #include "embedded/embedded.hpp"
 #include "gltexture.hpp"
@@ -73,7 +74,7 @@ namespace xe { namespace internal {
 
 	void GLTexture::setData2D(const void *pixels) const {
 		if (params.format == PixelFormat::DepthComponent) {
-			XE_CORE_ERROR("[GLTexture]: '{0}' 'SetData' is unavailable for depth texture!", name);
+			XE_CORE_ERROR("[GLTexture]: '", name, "' 'SetData' is unavailable for depth texture!");
 			return;
 		}
 
@@ -169,7 +170,7 @@ namespace xe { namespace internal {
 			params.internalFormat = PixelInternalFormat::Rgb;
 		} else {
 			if (bits != 24 && bits != 32) {
-				XE_CORE_FATAL("[GLTexture]: {0} Unsupported image bit-depth! ({1})", name, bits);
+				XE_CORE_FATAL("[GLTexture]: '", name, "' Unsupported image bit-depth! ", bits);
 			}
 
 			if (bits == 24) {

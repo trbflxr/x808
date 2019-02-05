@@ -3,7 +3,7 @@
 //
 
 #include <freetype-gl/freetype-gl.h>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/core/vfs.hpp>
 #include <xe/loaders/fontloader.hpp>
 #include <embedded/embedded.hpp>
@@ -20,7 +20,7 @@ namespace xe {
 		byte *data = VFS::readFile(path, &fileSize);
 
 		if (!data) {
-			XE_CORE_ERROR("[FontLoader]: unable to load font: '{0}'", path);
+			XE_CORE_ERROR("[FontLoader]: unable to load font: '", path, "'");
 			return false;
 		}
 

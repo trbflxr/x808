@@ -3,7 +3,7 @@
 //
 
 #include <Box2D/Box2D.h>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
 

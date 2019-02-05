@@ -2,8 +2,9 @@
 // Created by FLXR on 7/6/2018.
 //
 
-#include "glindexbuffer.hpp"
+#include <GL/glew.h>
 #include "glcommon.hpp"
+#include "glindexbuffer.hpp"
 
 namespace xe { namespace internal {
 

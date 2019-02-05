@@ -5,7 +5,7 @@
 #include <xe/ecs/ecs.hpp>
 
 #include "xe/ecs/ecs.hpp"
-#include "xe/utils/log.hpp"
+#include "xe/utils/logger.hpp"
 
 namespace xe {
 
@@ -30,7 +30,7 @@ namespace xe {
 
 		for (uint i = 0; i < numComponents; i++) {
 			if (!BaseECSComponent::isTypeValid(componentIDs[i])) {
-				XE_CORE_FATAL("[ECS]: '{0}' is not a valid component type", componentIDs[i]);
+				XE_CORE_FATAL("[ECS]: '", componentIDs[i], "' is not a valid component type");
 
 				delete newEntity;
 				return nullptr;

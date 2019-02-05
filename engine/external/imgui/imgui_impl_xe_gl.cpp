@@ -5,7 +5,7 @@
 
 #include <GL/glew.h>
 #include <xe/gfx/texture.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <embedded/embedded.hpp>
 #include "imgui/impl/imgui_impl_xe_gl.hpp"
 

@@ -2,7 +2,7 @@
 // Created by FLXR on 9/29/2018.
 //
 
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/core/vfs.hpp>
 #include <xe/loaders/shaderloader.hpp>
 
@@ -18,7 +18,7 @@ namespace xe {
 
 		string source;
 		if (!VFS::readTextFile(path, source)) {
-			XE_CORE_ERROR("[ShaderFile]: file '{0}' not found.", path);
+			XE_CORE_ERROR("[ShaderFile]: file '", path, "' not found.");
 		}
 
 		return source;

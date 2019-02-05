@@ -2,6 +2,7 @@
 // Created by FLXR on 7/6/2018.
 //
 
+#include <GL/glew.h>
 #include "glcommon.hpp"
 #include "glenums.hpp"
 #include "glvertexarray.hpp"

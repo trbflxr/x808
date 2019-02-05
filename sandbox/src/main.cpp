@@ -1,5 +1,5 @@
 #include <xe/app/application.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/core/vfs.hpp>
 #include "test2d.hpp"
 #include "test3d.hpp"

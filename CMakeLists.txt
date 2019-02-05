@@ -24,7 +24,6 @@ set(XE_EXTERNAL_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/external/include
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/stb
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/glew
-        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/json
         ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/imgui
         CACHE STRING "XE external include dirs" FORCE)
 

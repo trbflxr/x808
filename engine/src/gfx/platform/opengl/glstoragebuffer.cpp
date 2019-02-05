@@ -2,6 +2,7 @@
 // Created by FLXR on 9/1/2018.
 //
 
+#include <GL/glew.h>
 #include "glcommon.hpp"
 #include "glstoragebuffer.hpp"
 

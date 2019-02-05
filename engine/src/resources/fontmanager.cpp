@@ -2,7 +2,7 @@
 // Created by FLXR on 7/3/2018.
 //
 
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <embedded/embedded.hpp>
 #include <xe/resources/fontmanager.hpp>
 
@@ -30,7 +30,7 @@ namespace xe {
 		auto &&it = instance().fonts.find(font->getName());
 
 		if (it != instance().fonts.end()) {
-			XE_CORE_ERROR("[FontManager]: font '{0}' already exist and be deleted", font->getName());
+			XE_CORE_ERROR("[FontManager]: font '", font->getName(), "' already exist and be deleted");
 
 			delete font;
 			return false;
@@ -43,7 +43,7 @@ namespace xe {
 	const Font *FontManager::get(const string &name) {
 		auto &&it = instance().fonts.find(name);
 		if (it == instance().fonts.end()) {
-			XE_CORE_ERROR("[FontManager]: font '{0}' not found! Default font loaded instead.", name);
+			XE_CORE_ERROR("[FontManager]: font '", name, "' not found! Default font loaded instead.");
 
 			return get("default");
 		}

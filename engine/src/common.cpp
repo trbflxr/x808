@@ -3,7 +3,7 @@
 //
 
 #include <cstring>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/common.hpp>
 #include <xe/core/vfs.hpp>
 
@@ -25,7 +25,7 @@ namespace xe {
 		if (strcmp(api, "ogl") == 0) return RenderAPI::OpenGL;
 		if (strcmp(api, "d3d") == 0) return RenderAPI::Direct3D;
 
-		XE_CORE_FATAL("Invalid render API '{0}'", api);
+		XE_CORE_FATAL("Invalid render API '", api, "'");
 		return RenderAPI::Invalid;
 	}
 
@@ -34,16 +34,13 @@ namespace xe {
 		SetConsoleOutputCP(CP_UTF8);
 		setvbuf(stdout, nullptr, _IONBF, 2048);
 #endif
-
-		Log::initialize();
+		Logger::get();
 
 		VFS::init();
 	}
 
 	void shutdown() {
 		VFS::shutdown();
-
-		Log::shutdown();
 	}
 
 }

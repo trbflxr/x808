@@ -13,7 +13,7 @@
 #include <xe/gfx/lights/spotlight.hpp>
 #include <xe/gfx/lights/pointlight.hpp>
 #include <xe/core/vfs.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 
@@ -42,7 +42,7 @@ namespace xe {
 
 		if (!file) {
 			fclose(file);
-			XE_CORE_FATAL("[SceneLoader]: unable to read file '{0}'", paths[0]);
+			XE_CORE_FATAL("[SceneLoader]: unable to read file '",paths[0],"'");
 			XE_ASSERT(false);
 			return false;
 		}
@@ -69,7 +69,7 @@ namespace xe {
 		delete[] buff;
 
 		if (!scene) {
-			XE_CORE_FATAL("[SceneLoader]: unable to load scene '{0}'", paths[0]);
+			XE_CORE_FATAL("[SceneLoader]: unable to load scene '",paths[0],"'");
 			XE_ASSERT(false);
 			return false;
 		}
@@ -179,7 +179,7 @@ namespace xe {
 		std::ifstream file(path);
 		if (!file.good()) {
 			file.close();
-			XE_CORE_WARN("[SceneLoader]: .lights file '{0}' not found", path);
+			XE_CORE_WARN("[SceneLoader]: .lights file '", path, "' not found");
 			return;
 		}
 

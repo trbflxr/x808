@@ -4,7 +4,7 @@
 
 #include <algorithm>
 #include <xe/core/vfs.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/utils/assert.hpp>
 #include <xe/core/filesystem.hpp>
 

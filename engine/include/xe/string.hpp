@@ -7,7 +7,6 @@
 
 
 #include <string>
-#include <cstring>
 #include <vector>
 #include <xe/common.hpp>
 #include <xe/xeint.hpp>

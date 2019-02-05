@@ -3,7 +3,7 @@
 //
 
 #include <xe/resources/texturemanager.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <embedded/embedded.hpp>
 
 namespace xe {
@@ -29,7 +29,7 @@ namespace xe {
 		auto &&it = instance().textures.find(texture->getName());
 
 		if (it != instance().textures.end()) {
-			XE_CORE_ERROR("[TextureManager]: texture '{0}' already exist and be deleted", texture->getName());
+			XE_CORE_ERROR("[TextureManager]: texture '", texture->getName(), "' already exist and be deleted");
 
 			delete texture;
 			return false;
@@ -43,7 +43,7 @@ namespace xe {
 	const Texture *TextureManager::get(const string &name) {
 		auto &&it = instance().textures.find(name.data());
 		if (it == instance().textures.end()) {
-			XE_CORE_ERROR("[TextureManager]: texture '{0}' not found!", name);
+			XE_CORE_ERROR("[TextureManager]: texture '", name, "' not found!");
 
 			return get("default");
 		}

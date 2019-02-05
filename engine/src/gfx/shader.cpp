@@ -1,13 +1,20 @@
 //
 // Created by FLXR on 8/11/2018.
 //
+
+#include <cstring>
 #include <xe/gfx/context.hpp>
 #include <gfx/platform/opengl/glbaseshader.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/resources/shadermanager.hpp>
 #include <xe/gfx/shader.hpp>
 
 namespace xe {
+
+	UniformData::UniformData(uint size) : size(size) {
+		buffer = new byte[size];
+		memset(buffer, 0, size);
+	}
 
 	Shader::Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline) {
 		switch (Context::getRenderAPI()) {
@@ -68,7 +75,7 @@ namespace xe {
 			}
 		}
 
-		XE_CORE_FATAL("[Shader]: Uniform '{0}' not found!", name);
+		XE_CORE_FATAL("[Shader]: Uniform '", name,"' not found!");
 	}
 
 	uint Shader::getSampler(const string &name) const {

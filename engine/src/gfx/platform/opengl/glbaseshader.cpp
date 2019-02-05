@@ -2,6 +2,7 @@
 // Created by FLXR on 7/6/2018.
 //
 
+#include <GL/glew.h>
 #include "glbaseshader.hpp"
 #include "glcommon.hpp"
 #include "glshadersampler.hpp"
@@ -24,7 +25,7 @@ namespace xe { namespace internal {
 			shaders[i] = shaderPipeline[i]->compile();
 			if (!shaders[i]) {
 				glCall(glDeleteProgram(handle));
-				XE_CORE_FATAL("[GLBaseShader]: shader name: '{0}'", name);
+				XE_CORE_FATAL("[GLBaseShader]: shader name: '", name, "'");
 				XE_ASSERT(false);
 				return;
 			}
@@ -153,9 +154,9 @@ namespace xe { namespace internal {
 		glCall(GLint result = glGetUniformLocation(handle, name.c_str()));
 		if (result == -1) {
 			if (runTime) {
-				XE_CORE_ERROR("[GLBaseShader]: '{0}' could not get uniform location '{1}'", GLBaseShader::name, name);
+				XE_CORE_ERROR("[GLBaseShader]: '", GLBaseShader::name, "' could not get uniform location '", name, "'");
 			} else {
-				XE_CORE_WARN("[GLBaseShader]: '{0}' uniform '{1}' optimized out", GLBaseShader::name, name);
+				XE_CORE_WARN("[GLBaseShader]: '", GLBaseShader::name, "' uniform '", name, "' optimized out");
 			}
 		}
 

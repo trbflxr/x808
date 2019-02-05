@@ -3,7 +3,7 @@
 //
 
 #include <xetools/spak.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/resources/shadermanager.hpp>
 
@@ -32,7 +32,7 @@ namespace xe {
 		auto &&it = instance().shaders.find(shader->getName());
 
 		if (it != instance().shaders.end()) {
-			XE_CORE_ERROR("[ShaderManager]: shader '{0}' already exist and be deleted", shader->getName());
+			XE_CORE_ERROR("[ShaderManager]: shader '", shader->getName(), "' already exist and be deleted");
 
 			delete shader;
 			return false;
@@ -45,7 +45,7 @@ namespace xe {
 	const Shader *ShaderManager::get(const string &name) {
 		auto &&it = instance().shaders.find(name);
 		if (it == instance().shaders.end()) {
-			XE_CORE_FATAL("[ShaderManager]: shader '{0}' not found!", name);
+			XE_CORE_FATAL("[ShaderManager]: shader '", name, "' not found!");
 
 			return nullptr;
 		}
@@ -58,7 +58,7 @@ namespace xe {
 
 		auto &&it = instance().sources.find(name);
 		if (it == instance().sources.end()) {
-			XE_CORE_FATAL("[ShaderManager]: source '{0}' not found!", name);
+			XE_CORE_FATAL("[ShaderManager]: source '", name, "' not found!");
 			return empty;
 		}
 

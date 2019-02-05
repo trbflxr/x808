@@ -5,7 +5,7 @@
 #include <xe/gfx/uniformbuffer.hpp>
 #include <xe/gfx/context.hpp>
 #include <gfx/platform/opengl/gluniformbuffer.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 

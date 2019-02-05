@@ -3,16 +3,16 @@
 //
 
 #undef NOGDI
-
 #include <windows.h>
-
 #define NOGDI
+
+#include <cstdio>
 
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
 #include <xe/config.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 #include "glcommon.hpp"
 #include "glcontext.hpp"

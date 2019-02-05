@@ -3,7 +3,7 @@
 //
 
 #include <imgui/impl/imgui_impl_xe_gl.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <GL/glew.h>

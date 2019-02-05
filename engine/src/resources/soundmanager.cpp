@@ -7,7 +7,7 @@
 #include <gorilla/ga.h>
 #include <gorilla/gau.h>
 #include <xe/resources/soundmanager.hpp>
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 
@@ -33,7 +33,7 @@ namespace xe {
 		auto &&it = instance().sounds.find(sound->getName());
 
 		if (it != instance().sounds.end()) {
-			XE_CORE_ERROR("[SoundManager]: sound '{0}' already exist and be deleted", sound->getName());
+			XE_CORE_ERROR("[SoundManager]: sound '", sound->getName(), "' already exist and be deleted");
 
 			delete sound;
 			return false;

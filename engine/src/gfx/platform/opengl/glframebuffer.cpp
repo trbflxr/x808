@@ -2,6 +2,7 @@
 // Created by FLXR on 8/8/2018.
 //
 
+#include <GL/glew.h>
 #include "glcommon.hpp"
 #include "glenums.hpp"
 #include "glframebuffer.hpp"
@@ -29,7 +30,7 @@ namespace xe { namespace internal {
 		}
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_CORE_FATAL("[GLFrameBuffer]: '{0}' creation failed", name);
+			XE_CORE_FATAL("[GLFrameBuffer]: '", name,"' creation failed");
 			XE_ASSERT(false);
 		}
 

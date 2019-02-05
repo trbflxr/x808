@@ -2,6 +2,7 @@
 // Created by FLXR on 8/6/2018.
 //
 
+#include <GL/glew.h>
 #include <xe/gfx/context.hpp>
 #include <xe/string.hpp>
 #include <xe/loaders/shaderloader.hpp>
@@ -141,9 +142,9 @@ namespace xe { namespace internal {
 			}
 			uint lineNumber = std::stoul(line) - addedLines;
 
-			XE_CORE_FATAL("[GLShaderFile]: Failed to compile {0} shader.", typeToString(type));
-			XE_CORE_FATAL("[GLShaderFile]: Line: {0}", lineNumber);
-			XE_CORE_FATAL("[GLShaderFile]: {0}", errorMessage);
+			XE_CORE_FATAL("[GLShaderFile]: Failed to compile ", typeToString(type), " shader.");
+			XE_CORE_FATAL("[GLShaderFile]: Line: ", lineNumber);
+			XE_CORE_FATAL("[GLShaderFile]: ", errorMessage);
 
 			glCall(glDeleteShader(id));
 			return 0;
@@ -218,7 +219,7 @@ namespace xe { namespace internal {
 					}
 				}
 
-				XE_ASSERT(s, "[GLShaderFile]: Could not find struct: {0} {2}", typeStr, name);
+				XE_ASSERT(s, "[GLShaderFile]: Could not find struct: %s %s", typeStr.c_str(), name.c_str());
 				uniform = new GLShaderUniform(s, name, count);
 			} else {
 				uniform = new GLShaderUniform(t, name, count);

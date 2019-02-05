@@ -5,7 +5,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#include <xe/utils/log.hpp>
+#include <xe/utils/logger.hpp>
 #include <xe/core/vfs.hpp>
 #include <xe/loaders/imageloader.hpp>
 
@@ -19,7 +19,7 @@ namespace xe {
 		byte *memory = VFS::readFile(path, &memorySize);
 
 		if (!memory) {
-			XE_CORE_ERROR("[ImageLoader]: unable to load image: '{0}'", path);
+			XE_CORE_ERROR("[ImageLoader]: unable to load image: '", path, "'");
 			return nullptr;
 		}
 
