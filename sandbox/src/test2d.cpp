@@ -148,8 +148,8 @@ Test2D::Test2D() {
 
 	timer.reset();
 
-	XE_INFO("size: ", sprites);
-	XE_INFO("elapsed: ", timer.elapsedMillis(), "ms");
+	XE_TRACE("size: ", sprites);
+	XE_TRACE("elapsed: ", timer.elapsedMillis(), "ms");
 
 	inputText = new Text("consolata72", GETFONT("consolata72"));
 	inputText->setTextColor(color::White);

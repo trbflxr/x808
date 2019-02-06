@@ -153,7 +153,7 @@ namespace xe {
 		}
 
 		if (event.type == Event::KeyPressed) {
-			if (event.key.code == Keyboard::Tilde) {
+			if (event.key.code == Keyboard::Tilde && event.key.control) {
 				if (active) {
 					shouldClose = true;
 					active = false;

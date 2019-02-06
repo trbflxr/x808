@@ -21,6 +21,7 @@
 
 #define BIT(x) (1 << (x))
 
+
 #if defined(__clang__) || defined(__GNUC__)
 	#define XE_FMT_ARGS(fmt) __attribute__((format(printf, fmt, fmt + 1)))
 	#define XE_FMT_LIST(fmt) __attribute__((format(printf, fmt, 0)))
@@ -28,6 +29,20 @@
 	#define XE_FMT_ARGS(fmt)
 	#define XE_FMT_LIST(fmt)
 #endif
+
+
+//logger
+#define XE_LOG_LEVEL_FATAL  0
+#define XE_LOG_LEVEL_ERROR  1
+#define XE_LOG_LEVEL_WARN   2
+#define XE_LOG_LEVEL_INFO   3
+#define XE_LOG_LEVEL_TRACE  4
+
+#define XE_LOG_LEVEL XE_LOG_LEVEL_TRACE
+
+
+#define XE_CORE   BIT(0)
+#define XE_CLIENT BIT(1)
 
 namespace xe {
 
