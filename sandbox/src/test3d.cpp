@@ -28,7 +28,7 @@ Test3D::Test3D(DebugUI *ui) :
 
 	ui->trackEntity(&camera->transform);
 
-	scene = new Scene("assets/scenes/sponza", "sponza");
+	scene = new Scene("xe_sandbox_assets/scenes/sponza", "sponza");
 
 	renderer = new DeferredRenderer(width, height);
 

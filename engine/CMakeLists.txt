@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(xe)
 
-
 option(XE_PLATFORM_WIN32 "Win32" ON)
 option(XE_PLATFORM_GL "OpenGL" ON)
 
@@ -9,9 +8,20 @@ set(XE_DEBUG_FLAGS "-D XE_DEBUG -Wall -Wno-unused-function -Wno-class-memaccess"
         CACHE STRING "xe_debug defines, compile options")
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS}")
+
+set(XE_INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        CACHE STRING "XE include dirs" FORCE)
+
+set(XE_STATIC_LIB_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/static/libs-mingw/x64 #todo: platform
+        CACHE STRING "XE static lib dirs" FORCE)
+
+set(XE_STATIC_LIB_INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/static/include
+        CACHE STRING "XE static lib include dirs" FORCE)
 
 add_definitions(
         -D NOGDI
@@ -20,24 +30,29 @@ add_definitions(
         -D XE_STATIC)
 
 #external libs
-add_subdirectory(external/glew)
-include_directories(external/glew)
-
-add_subdirectory(external/imgui)
-include_directories(external/imgui)
-
 add_subdirectory(external/box2d)
 include_directories(external/box2d)
+
+add_subdirectory(external/glew)
+include_directories(external/glew)
 
 add_subdirectory(external/freetype-gl)
 include_directories(external/freetype-gl/include)
 
+include_directories(external/stb)
 
-#includes and libs
-include_directories(src)
-link_directories(${XE_DIRS})
+#static
+include_directories(${XE_STATIC_LIB_INCLUDE_DIRS})
+link_directories(${XE_STATIC_LIB_DIRS})
+
+#tools
+add_subdirectory(tools)
+include_directories(tools/include)
+
+
+#includes
 include_directories(${XE_INCLUDE_DIRS})
-include_directories(${XE_EXTERNAL_INCLUDE_DIRS})
+include_directories(src)
 
 #engine
 file(GLOB ENGINE_SRC
@@ -60,6 +75,7 @@ file(GLOB ENGINE_SRC
         src/objects/*.cpp
         src/resources/*.cpp
         src/systems/*.cpp
+        src/ui/imgui/*.cpp
         src/utils/*.cpp
         src/window/*.cpp
         src/*.cpp)
@@ -73,7 +89,7 @@ file(GLOB ENGINE_WIN32_SRC
 
 #opengl
 file(GLOB ENGINE_GL_SRC
-        external/imgui/imgui_impl_xe_gl.cpp
+        src/ui/platform/opengl/*.cpp
         src/gfx/platform/opengl/*.cpp)
 
 #total platform files
@@ -84,7 +100,6 @@ if (XE_PLATFORM_WIN32)
 endif ()
 
 if (XE_PLATFORM_GL)
-    find_package(OpenGL REQUIRED)
     list(APPEND PLATFORM_SRC ${ENGINE_GL_SRC})
 endif ()
 
@@ -93,12 +108,12 @@ endif ()
 add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
 
 target_link_libraries(xe
-        spak
+        spk
         freetype-gl freetype bz2 png libz
         assimp irrxml
         gorilla openal32
         box2d
-        imgui)
+        glew)
 
 #link opengl libs
 if (XE_PLATFORM_GL)

@@ -6,8 +6,8 @@ set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS} -D S2D_DEBUG")
 
-link_directories(${XE_DIRS})
 include_directories(${XE_INCLUDE_DIRS})
+link_directories(${XE_STATIC_LIB_DIRS})
 
 #sandbox
 set(SANDBOX_SRC
@@ -20,3 +20,10 @@ set(SANDBOX_SRC
 add_executable(sandbox ${SANDBOX_SRC})
 
 target_link_libraries(sandbox xe)
+
+file(COPY
+        xe_sandbox_assets
+        xeconfig
+        pack001.pak
+
+        DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

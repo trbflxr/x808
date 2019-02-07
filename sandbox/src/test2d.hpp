@@ -17,6 +17,8 @@ public:
 
 	void render() override;
 
+	void renderImGui() override;
+
 	void update(float delta) override;
 
 	void input(xe::Event &event) override;

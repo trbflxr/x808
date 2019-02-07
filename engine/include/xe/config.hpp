@@ -11,7 +11,7 @@
 
 namespace xe {
 
-	struct XE_API Config {
+	struct Config {
 		uint width;
 		uint height;
 		bool fullScreen;
@@ -25,8 +25,6 @@ namespace xe {
 		RenderAPI renderApi;
 		uint apiVersion;
 		uint maxTextureUnits;
-
-		static bool load(Config &config, const char *path = "xeconfig");
 	};
 
 	extern Config gConfig;

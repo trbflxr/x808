@@ -12,7 +12,7 @@
 
 namespace xe {
 
-	class FileSystem : NonCopyable {
+	class XE_API FileSystem : NonCopyable {
 	public:
 		static bool exists(const string &file);
 		static int64 size(const string &file);

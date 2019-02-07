@@ -21,7 +21,7 @@ namespace xe {
 	class XE_API Application {
 	public:
 		explicit Application(const Config &config, const string &title);
-		virtual ~Application() = default;
+		virtual ~Application();
 
 		void pushLayer(Layer *layer);
 		Layer *popLayer();
@@ -54,6 +54,8 @@ namespace xe {
 
 	private:
 		void init(const string &title);
+
+		void shutdown();
 
 		void run();
 

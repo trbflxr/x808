@@ -2,11 +2,11 @@
 // Created by FLXR on 9/7/2018.
 //
 
-#include <imgui/impl/imgui_impl_xe_gl.hpp>
+#include <GL/glew.h>
+#include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include <xe/utils/logger.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/renderer.hpp>
-#include <GL/glew.h>
 #include <xe/utils/random.hpp>
 #include <xe/gfx/rectangleshape.hpp>
 #include "uilayer.hpp"
@@ -17,10 +17,8 @@ namespace xe {
 	static uint h = 512;
 
 	UILayer::UILayer() {
-		initImGui();
-
 		TextureParameters params;
-//	renderTexture = new Texture("a", L"assets/textures/test1.png", params);
+//	    renderTexture = new Texture("a", L"xe_sandbox_assets/textures/test1.png", params);
 		renderTexture = new Texture("renderTexture", w, h, 0, params, true);
 
 		renderWindow = new FrameBuffer("renderWindow");
@@ -46,10 +44,6 @@ namespace xe {
 	}
 
 	UILayer::~UILayer() {
-		ImGui::SaveIniSettingsToDisk("imgui.ini");
-
-		ImGui::xe::shutdown();
-
 		delete renderTexture;
 		delete renderWindow;
 
@@ -60,12 +54,6 @@ namespace xe {
 		for (const auto &r : renderables) {
 			delete r;
 		}
-	}
-
-	void UILayer::initImGui() {
-		ImGui::xe::init(window);
-
-		ImGui::StyleColorsDark();
 	}
 
 	void UILayer::renderPreview() {
@@ -111,7 +99,7 @@ namespace xe {
 		// because it would be confusing to have two docking targets within each others.
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		if (opt_fullscreen) {
-			ImGuiViewport *viewport = ImGui::GetMainViewport();
+			const ImGuiViewport *viewport = ImGui::GetMainViewport();
 			ImGui::SetNextWindowPos(viewport->Pos);
 			ImGui::SetNextWindowSize(viewport->Size);
 			ImGui::SetNextWindowViewport(viewport->ID);
@@ -177,16 +165,16 @@ namespace xe {
 
 		ImGui::End();
 
-		ImGui::xe::render();
+//		ImGui::xe::render();
 	}
 
 	void UILayer::update(float delta) {
-		ImGui::xe::update(window, delta);
+//		ImGui::xe::update(window, delta);
 
 	}
 
 	void UILayer::input(xe::Event &event) {
-		ImGui::xe::processEvent(event);
+//		ImGui::xe::processEvent(event);
 	}
 
 }

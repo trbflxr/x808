@@ -24,8 +24,6 @@ namespace xe {
 		void input(Event &event) override;
 
 	private:
-		void initImGui();
-
 		void renderPreview();
 
 	private:

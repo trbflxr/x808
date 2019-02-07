@@ -6,15 +6,19 @@
 #include <cstring>
 #include <xetools/spak.hpp>
 
-int main(int argc, char **argv) {
-	static const char *defaultGLSrc = "engine/src/gfx/platform/opengl/shaders";
-	static const char *defaultDest = "pack001.pak";
+static const char *defaultGLSrc = "engine/src/gfx/platform/opengl/shaders";
+static const char *defaultDest = "pack001.pak";
 
+void printUsage() {
+	printf("Usage:\n");
+	printf("\tDefault for OpenGL: spak_exec.exe -gl\n");
+	printf("\tsrc = '%s', dest = '%s'\n\n", defaultGLSrc, defaultDest);
+	printf("\tCustom: spak_exec.exe <shader dir> (<dest dir>)\n");
+}
+
+int main(int argc, char **argv) {
 	if (argc <= 1) {
-		printf("Usage:\n");
-		printf("\tDefault for OpenGL: spak_exec.exe -gl\n");
-		printf("\tsrc = '%s', dest = '%s'\n\n", defaultGLSrc, defaultDest);
-		printf("\tCustom: spak_exec.exe <shader folder> <dest file>\n");
+		printUsage();
 		return 0;
 	}
 
@@ -24,9 +28,15 @@ int main(int argc, char **argv) {
 	if (strcmp(argv[1], "-gl") == 0) {
 		src = defaultGLSrc;
 		dest = defaultDest;
-	} else {
+	} else if (argc == 2) {
+		src = argv[1];
+		dest = defaultDest;
+	} else if (argc == 3) {
 		src = argv[1];
 		dest = argv[2];
+	} else {
+		printUsage();
+		return 0;
 	}
 
 	printf("src: %s\n", src);

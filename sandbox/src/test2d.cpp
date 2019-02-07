@@ -12,6 +12,7 @@
 #include <xe/utils/logger.hpp>
 #include <xe/gfx/circleshape.hpp>
 #include <xe/systems/shell.hpp>
+#include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include "test2d.hpp"
 
 using namespace xe;
@@ -73,8 +74,8 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("repeat", "sp0.png", params));
 
 
-	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
-	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
+	SoundManager::add(new Sound("test", "xe_sandbox_assets/sounds/test.wav"));
+	SoundManager::add(new Sound("orunec", "xe_sandbox_assets/sounds/orunec.wav"));
 
 
 	FontManager::add(new Font("consolata72", "consolata.otf", 72.0f));
@@ -262,6 +263,12 @@ void Test2D::render() {
 	renderer->clear();
 }
 
+void Test2D::renderImGui() {
+	ImGui::Begin("test", nullptr);
+	ImGui::Text("test");
+	ImGui::End();
+}
+
 void Test2D::update(float delta) {
 	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
 
@@ -340,9 +347,7 @@ void Test2D::input(xe::Event &event) {
 
 			break;
 		}
-
 	}
-
 }
 
 void Test2D::addShellCommands() {

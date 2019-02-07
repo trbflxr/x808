@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <xe/utils/logger.hpp>
 #include <xe/loaders/imageloader.hpp>
-#include "embedded/embedded.hpp"
+#include <embedded/embedded.hpp>
 #include "gltexture.hpp"
 #include "glcommon.hpp"
 #include "glenums.hpp"

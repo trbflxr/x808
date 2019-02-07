@@ -6,8 +6,8 @@
 #include <GL/glew.h>
 #include <xe/gfx/texture.hpp>
 #include <xe/utils/logger.hpp>
+#include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include <embedded/embedded.hpp>
-#include "imgui/impl/imgui_impl_xe_gl.hpp"
 
 static bool windowHasFocus = false;
 static bool mousePressed[3] = {false, false, false};
@@ -99,7 +99,7 @@ namespace ImGui { namespace xe {
 
 
 		if (glewInit() != GLEW_OK) {
-			wprintf(L"Could not initialize GLEW!");
+			printf("Could not initialize GLEW!");
 		}
 
 
@@ -221,7 +221,9 @@ namespace ImGui { namespace xe {
 		}
 
 		assert(io.Fonts->Fonts.Size > 0);
+	}
 
+	void newFrame() {
 		ImGui::NewFrame();
 	}
 

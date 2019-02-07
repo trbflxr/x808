@@ -14,6 +14,7 @@
 #include <xe/resources/soundmanager.hpp>
 #include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
+#include <xe/ui/imgui/imgui_impl_xe.hpp>
 
 namespace xe {
 
@@ -23,6 +24,8 @@ namespace xe {
 			config(config),
 			frameTime(0.0f) {
 
+		gConfig = config;
+
 		//init random
 		random::nextInt32(0, 1);
 
@@ -31,6 +34,10 @@ namespace xe {
 		instance = this;
 
 		init(title);
+	}
+
+	Application::~Application() {
+		delete shell;
 	}
 
 	void Application::init(const string &title) {
@@ -52,9 +59,22 @@ namespace xe {
 		FontManager::init();
 		TextureManager::init();
 
-		shell = new Shell();
 
-		pushSystem(shell);
+		ImGui::xe::init(window);
+		ImGui::StyleColorsDark();
+
+
+		shell = new Shell();
+		shell->init();
+	}
+
+	void Application::shutdown() {
+		ImGui::SaveIniSettingsToDisk("imgui.ini");
+		ImGui::xe::shutdown();
+
+		FontManager::clean();
+		TextureManager::clean();
+		ShaderManager::clean();
 	}
 
 	void Application::start() {
@@ -135,9 +155,7 @@ namespace xe {
 			if (!window.isOpen()) running = false;
 		}
 
-		FontManager::clean();
-		TextureManager::clean();
-		ShaderManager::clean();
+		shutdown();
 	}
 
 	void Application::tick() {
@@ -153,6 +171,10 @@ namespace xe {
 	}
 
 	void Application::update(float delta) {
+		ImGui::xe::update(window, delta);
+
+		shell->update(delta);
+
 		for (auto &&system : systemDeque) {
 			system->update(delta);
 		}
@@ -189,9 +211,15 @@ namespace xe {
 	}
 
 	void Application::render() {
+		ImGui::xe::newFrame();
+
 		for (auto &&layer : layerStack) {
 			if (layer->isVisible()) {
 				layer->render();
+
+				if (!shell->isActive()) {
+					layer->renderImGui();
+				}
 			}
 		}
 
@@ -200,12 +228,20 @@ namespace xe {
 				systemDeque[i]->render();
 			}
 		}
+
+		shell->render();
+
+		ImGui::xe::render();
 	}
 
 	void Application::processEvents() {
 		xe::Event event{ };
 
 		while (window.pollEvent(event)) {
+
+			ImGui::xe::processEvent(event);
+
+			shell->input(event);
 
 			for (const auto &system : systemDeque) {
 				system->input(event);

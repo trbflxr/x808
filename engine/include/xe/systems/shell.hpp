@@ -31,8 +31,6 @@ namespace xe {
 		explicit Shell();
 		~Shell() override;
 
-		void init() override;
-
 		void render() override;
 
 		void update(float delta) override;

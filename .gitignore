@@ -4,7 +4,7 @@ cmake-build-release
 .idea
 
 #xe files
+spak.exe
 xeconfig
 pack001.pak
 imgui.ini
-dock.ini

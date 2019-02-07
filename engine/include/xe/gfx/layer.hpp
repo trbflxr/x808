@@ -22,6 +22,8 @@ namespace xe {
 
 		virtual void render() { }
 
+		virtual void renderImGui() { }
+
 		virtual void tick() { }
 
 		virtual void update(float delta) { }

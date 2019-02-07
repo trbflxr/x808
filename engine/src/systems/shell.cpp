@@ -7,7 +7,7 @@
 #include <xe/gfx/context.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/utils/logger.hpp>
-#include <imgui/impl/imgui_impl_xe_gl.hpp>
+#include <xe/ui/imgui/imgui_impl_xe.hpp>
 
 namespace xe {
 
@@ -23,17 +23,10 @@ namespace xe {
 
 	Shell::~Shell() {
 		clear();
-
-		ImGui::SaveIniSettingsToDisk("imgui.ini");
-		ImGui::xe::shutdown();
-	}
-
-	void Shell::init() {
-		ImGui::xe::init(window);
-		ImGui::StyleColorsDark();
 	}
 
 	void Shell::render() {
+		if(!active) return;
 
 		static ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoCollapse |
 		                                      ImGuiWindowFlags_NoResize |
@@ -41,7 +34,6 @@ namespace xe {
 		                                      ImGuiWindowFlags_NoBringToFrontOnFocus |
 		                                      ImGuiWindowFlags_NoNavFocus |
 		                                      ImGuiWindowFlags_NoDocking;
-
 
 		const ImGuiViewport *viewport = ImGui::GetMainViewport();
 		ImGui::SetNextWindowPos(viewport->Pos);
@@ -126,18 +118,12 @@ namespace xe {
 		}
 
 		ImGui::End();
-
-		ImGui::xe::render();
 	}
 
 	void Shell::update(float delta) {
 		if (shouldClose) {
 			shouldClose = false;
 		}
-
-		if (!active) return;
-
-		ImGui::xe::update(window, delta);
 	}
 
 	void Shell::input(Event &event) {
@@ -147,8 +133,6 @@ namespace xe {
 		}
 
 		if (active) {
-			ImGui::xe::processEvent(event);
-
 			event.handled = true;
 		}
 

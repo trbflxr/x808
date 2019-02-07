@@ -9,57 +9,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 
-#directories
-set(XE_INCLUDE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/engine/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/spdlog
-        CACHE STRING "XE include dirs" FORCE)
-
-set(XE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/libs-mingw/x64 #todo: platform
-        CACHE STRING "XE library dirs" FORCE)
-
-set(XE_EXTERNAL_INCLUDE_DIRS
-        ${CMAKE_CURRENT_SOURCE_DIR}/tools/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/stb
-        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/glew
-        ${CMAKE_CURRENT_SOURCE_DIR}/engine/external/imgui
-        CACHE STRING "XE external include dirs" FORCE)
-
-#copy files
-file(COPY
-        assets
-        pack001.pak
-
-        DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-#copy/gen config
-if (EXISTS "xeconfig")
-    file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-else ()
-    file(WRITE xeconfig
-            "width=1280\n"
-            "height=720\n"
-            "fullScreen=0\n"
-            "vSync=0\n"
-            "\n"
-            "ups=30\n"
-            "fps=0\n"
-            "\n"
-            "srgb=1\n"
-            "\n"
-            "#must be 'ogl'. v330 for 2d and v430 for 3d\n"
-            "renderApi=ogl\n"
-            "apiVersion=430\n"
-            "\n"
-            "#0 - auto\n"
-            "maxTextureUnits=0\n")
-
-    file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-endif ()
-
 add_subdirectory(engine)
 add_subdirectory(sandbox)
 add_subdirectory(editor)
-add_subdirectory(tools)
