@@ -17,6 +17,8 @@ namespace xe {
 		inline const vec2 &getSize() const { return size; }
 		void setSize(const vec2 &size);
 
+		bool contains(const vec2 &point) const;
+
 		inline bool isSizeChanged() const { return sizeChanged; }
 		inline void setSizeChanged(bool changed) { sizeChanged = changed; }
 

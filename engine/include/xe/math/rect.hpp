@@ -35,9 +35,9 @@ namespace xe {
 		rect(const vec2 &position, const vec2 &size);
 		rect(float x, float y, float width, float height);
 
-		bool intersects(const rect &other);
-		bool contains(const vec2 &point);
-		bool contains(const vec3 &point);
+		bool intersects(const rect &other) const;
+		bool contains(const vec2 &point) const;
+		bool contains(const vec3 &point) const;
 
 		inline vec2 getMinBound() const { return position - size; }
 		inline vec2 getMaxBound() const { return position + size; }

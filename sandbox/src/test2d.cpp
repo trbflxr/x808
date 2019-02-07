@@ -69,6 +69,9 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("38", "test7.png", params));
 	TextureManager::add(new Texture("39", "test8.png", params));
 
+	params.wrap = TextureWrap::Repeat;
+	TextureManager::add(new Texture("repeat", "sp0.png", params));
+
 
 	SoundManager::add(new Sound("test", "assets/sounds/test.wav"));
 	SoundManager::add(new Sound("orunec", "assets/sounds/orunec.wav"));
@@ -206,6 +209,11 @@ Test2D::Test2D() {
 	s1->setTexture(GETTEXTURE("37"));
 	s1->transformation({640.0f, 350.0f});
 
+	RectangleShape *bg = new RectangleShape({width, height}, 0.0f);
+	bg->setTexture(GETTEXTURE("repeat"));
+	bg->transformation({width + width / 2.0f, height / 2.0f});
+	bg->setTextureRect({0.0f, 0.0f, width, height});
+
 	star = new RectangleShape({100.0f, 100.0f}, 3.0f);
 	star->setTexture(GETTEXTURE("36"));
 	star->transformation({640.0f, 350.0f});
@@ -213,7 +221,7 @@ Test2D::Test2D() {
 	renderables.push_back(s0);
 	renderables.push_back(s1);
 	renderables.push_back(star);
-
+	renderables.push_back(bg);
 
 	//circle test
 	CircleShape *c0 = new CircleShape(50.0f, 2.0f);

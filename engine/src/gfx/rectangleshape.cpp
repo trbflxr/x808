@@ -34,4 +34,8 @@ namespace xe {
 		}
 	}
 
+	bool RectangleShape::contains(const vec2 &point) const {
+		return point > getPosition() - size / 2.0f && point < getPosition() + size / 2.0f;
+	}
+
 }
