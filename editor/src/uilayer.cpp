@@ -56,7 +56,7 @@ namespace xe {
 		}
 	}
 
-	void UILayer::renderPreview() {
+	void UILayer::render() {
 		renderWindow->bindDraw(Attachment::Color0);
 		Renderer::setViewport(0, 0, w, h);
 
@@ -80,13 +80,10 @@ namespace xe {
 //		glVertex2f(0.5f, -0.5f);
 //		glEnd();
 
-
 		renderWindow->unbind();
 	}
 
-	void UILayer::render() {
-		renderPreview();
-
+	void UILayer::renderImGui() {
 		Renderer::setClearColor(color::Black);
 
 		static bool open = true;
@@ -164,17 +161,10 @@ namespace xe {
 		}
 
 		ImGui::End();
-
-//		ImGui::xe::render();
 	}
 
-	void UILayer::update(float delta) {
-//		ImGui::xe::update(window, delta);
+	void UILayer::update(float delta) {	}
 
-	}
-
-	void UILayer::input(xe::Event &event) {
-//		ImGui::xe::processEvent(event);
-	}
+	void UILayer::input(xe::Event &event) { }
 
 }

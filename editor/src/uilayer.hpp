@@ -19,12 +19,11 @@ namespace xe {
 
 		void render() override;
 
+		void renderImGui() override;
+
 		void update(float delta) override;
 
 		void input(Event &event) override;
-
-	private:
-		void renderPreview();
 
 	private:
 		//framebuffer
