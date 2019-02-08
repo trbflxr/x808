@@ -33,12 +33,19 @@ TestL2D::TestL2D() {
 	camera = new Camera(mat4::ortho(0, width, 0, height, -1, 1000));
 	renderer = new BatchRenderer2D(width, height, camera, lightShader);
 
-	box0 = new RectangleShape({100.0f, 100.0f}, 1.0f);
+
+	RectangleShape *bg = new RectangleShape({width, height}, 0.0f);
+	bg->setTexture(GETTEXTURE("bg"));
+	bg->transformation({width / 2.0f, height / 2.0f});
+	bg->setTextureRect({0.0f, 0.0f, width, height});
+	renderables.push_back(bg);
+
+	box0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
 	box0->setTexture(GETTEXTURE("0"));
 	box0->transformation({640.0f, 350.0f});
 	renderables.push_back(box0);
 
-	box1 = new RectangleShape({100.0f, 100.0f}, 1.0f);
+	box1 = new RectangleShape({100.0f, 100.0f}, 2.0f);
 	box1->setTexture(GETTEXTURE("5"));
 	box1->transformation({340.0f, 350.0f});
 	renderables.push_back(box1);
@@ -58,6 +65,12 @@ TestL2D::~TestL2D() {
 }
 
 void TestL2D::render() {
+	vec2 mousePos = Mouse::getPosition(window);
+	vec4 lightColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	lightShader->setUniform("lightPosition", &mousePos, sizeof(vec2));
+	lightShader->setUniform("lightColor", &lightColor, sizeof(vec4));
+
 	for (const auto &r : renderables) {
 		renderer->submit(r);
 	}
