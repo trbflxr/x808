@@ -264,8 +264,40 @@ void Test2D::render() {
 }
 
 void Test2D::renderImGui() {
-	ImGui::Begin("test", nullptr);
-	ImGui::Text("test");
+	ImGui::Begin("UI", nullptr);
+
+	//debug
+	ImGui::Text("info");
+	ImGui::Text("fps: %i", app.getFPS());
+	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Separator();
+	ImGui::Dummy({10.0f, 0.0f});
+
+
+	//sound section
+	ImGui::Text("Sound test");
+
+	if (ImGui::Button("test")) {
+		GETSOUND("test")->play();
+		GETSOUND("test")->setGain(0.2f);
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("orunec")) {
+		GETSOUND("orunec")->play();
+		GETSOUND("orunec")->setGain(0.2f);
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("orunec looped")) {
+		if (!GETSOUND("orunec")->isPlaying()) {
+			GETSOUND("orunec")->loop();
+			GETSOUND("orunec")->setGain(0.2f);
+		} else {
+			GETSOUND("orunec")->stop();
+		}
+	}
+
 	ImGui::End();
 }
 
@@ -299,25 +331,7 @@ void Test2D::input(xe::Event &event) {
 		default: break;
 
 		case Event::KeyPressed: {
-			if (event.key.code == Keyboard::Num0) {
-				GETSOUND("orunec")->play();
-				GETSOUND("orunec")->setGain(0.2f);
-				event.handled = true;
-			}
-			if (event.key.code == Keyboard::Num9) {
-				GETSOUND("test")->play();
-				GETSOUND("test")->setGain(0.2f);
-				event.handled = true;
-			}
-			if (event.key.code == Keyboard::Num8) {
-				if (!GETSOUND("orunec")->isPlaying()) {
-					GETSOUND("orunec")->loop();
-					GETSOUND("orunec")->setGain(0.2f);
-				} else {
-					GETSOUND("orunec")->stop();
-				}
-				event.handled = true;
-			}
+
 			break;
 		}
 
