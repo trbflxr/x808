@@ -15,7 +15,7 @@ namespace xe {
 
 	class XE_API Renderer2D : public IRenderer2D {
 	public:
-		explicit Renderer2D(uint width, uint height, Camera *camera);
+		explicit Renderer2D(uint width, uint height, Camera *camera, Shader *customShader = nullptr);
 
 		void submit(const IRenderable2D *target);
 

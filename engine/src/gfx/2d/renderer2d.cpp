@@ -9,11 +9,11 @@
 
 namespace xe {
 
-	Renderer2D::Renderer2D(uint width, uint height, Camera *camera) :
+	Renderer2D::Renderer2D(uint width, uint height, Camera *camera, Shader *customShader) :
 			IRenderer2D(width, height, camera),
 			enableWireframe_(false) {
 
-		shader = GETSHADER("dRenderer2D");
+		shader = customShader ? customShader : GETSHADER("dRenderer2D");
 	}
 
 	void Renderer2D::begin() {

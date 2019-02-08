@@ -6,6 +6,7 @@
 #include "test3d.hpp"
 #include "debugui.hpp"
 #include "testb2d.hpp"
+#include "testl2d.hpp"
 
 
 static void writeKeyValue(xe::Config &config, const char *key, const char *value) {
@@ -62,18 +63,22 @@ public:
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr),
-			tb2d(nullptr) {
+			tb2d(nullptr) ,
+			tl2d(nullptr) {
 
 		xe::VFS::mount("fonts", "xe_sandbox_assets/fonts/");
 		xe::VFS::mount("textures", "xe_sandbox_assets/textures/");
+		xe::VFS::mount("shaders", "/");
 
 		ui = new DebugUI();
 //		t3d = new Test3D(ui);
-		t2d = new Test2D();
+//		t2d = new Test2D();
+		tl2d = new TestL2D();
 //		tb2d = new TestB2D();
 
 //		pushLayer(tb2d);
-		pushLayer(t2d);
+		pushLayer(tl2d);
+//		pushLayer(t2d);
 //		pushLayer(t3d);
 		pushLayer(ui);
 	}
@@ -83,6 +88,7 @@ public:
 		delete t2d;
 		delete t3d;
 		delete tb2d;
+		delete tl2d;
 	}
 
 private:
@@ -90,6 +96,7 @@ private:
 	Test2D *t2d;
 	Test3D *t3d;
 	TestB2D *tb2d;
+	TestL2D *tl2d;
 };
 
 int main() {

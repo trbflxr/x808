@@ -8,10 +8,14 @@
 
 namespace xe {
 
-	BatchRenderer2D::BatchRenderer2D(uint width, uint height, Camera *camera) :
+	BatchRenderer2D::BatchRenderer2D(uint width, uint height, Camera *camera,
+	                                 Shader *customShader,
+	                                 Shader *customTextShader) :
 			camera(camera) {
 
-		renderer = new Renderer2D(width, height, camera);
+		XE_ASSERT(!customTextShader, "Not implemented yet...");
+
+		renderer = new Renderer2D(width, height, camera, customShader);
 		textRenderer = new TextRenderer(width, height, camera);
 	}
 

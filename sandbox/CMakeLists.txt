@@ -15,6 +15,7 @@ set(SANDBOX_SRC
         src/test2d.cpp
         src/test3d.cpp
         src/testb2d.cpp
+        src/testl2d.cpp
         src/debugui.cpp)
 
 add_executable(sandbox ${SANDBOX_SRC})

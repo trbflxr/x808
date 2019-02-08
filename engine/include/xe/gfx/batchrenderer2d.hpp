@@ -6,6 +6,7 @@
 #define X808_BATCHRENDERER2D_HPP
 
 
+#include <xe/gfx/shader.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 
@@ -13,7 +14,9 @@ namespace xe {
 
 	class XE_API BatchRenderer2D {
 	public:
-		explicit BatchRenderer2D(uint width, uint height, Camera *camera);
+		explicit BatchRenderer2D(uint width, uint height, Camera *camera,
+		                         Shader *customShader = nullptr,
+		                         Shader *customTextShader = nullptr);
 		~BatchRenderer2D();
 
 		void submit(const IRenderable2D *target);
