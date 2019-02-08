@@ -102,7 +102,7 @@ namespace xe { namespace fx {
 		luminosityShader->setUniform("sampler1", &unit1, sizeof(int32));
 
 		Renderer::dispatchCompute(sceneTexture->getWidth() / wgSize, sceneTexture->getHeight() / wgSize, 1);
-		Renderer::setMemoryBarrier(MemBarrier::ShaderImageAccess);
+		Renderer::setMemoryBarrier(MemoryBarrier::ShaderImageAccess);
 
 		luminosityTexture->generateMipMaps(TextureTarget::Tex2D);
 
@@ -123,7 +123,7 @@ namespace xe { namespace fx {
 		luminosityTexture->bind(aeSampler0);
 
 		Renderer::dispatchCompute(1, 1, 1);
-		Renderer::setMemoryBarrier(MemBarrier::ShaderStorage);
+		Renderer::setMemoryBarrier(MemoryBarrier::ShaderStorage);
 
 		luminosityTexture->unbind(aeSampler0);
 

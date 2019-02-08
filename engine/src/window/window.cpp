@@ -197,6 +197,7 @@ namespace xe {
 	void Window::init() {
 		Context::create(getHandle());
 		Renderer::init();
+		Renderer::setClearColor(color::Black);
 
 		setVisible(true);
 		setMouseCursorVisible(true);

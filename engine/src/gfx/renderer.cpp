@@ -3,13 +3,14 @@
 //
 
 #include <xe/gfx/context.hpp>
-#include <xe/gfx/renderer.hpp>
 #include <gfx/platform/opengl/glrenderer.hpp>
+#include <xe/gfx/renderer.hpp>
 
 namespace xe {
 
 	Renderer *Renderer::instance = nullptr;
 	uint Renderer::dc = 0;
+	uint Renderer::clearColor = color::Transparent;
 
 	void Renderer::init() {
 		dc = 0;

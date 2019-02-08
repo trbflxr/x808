@@ -239,7 +239,7 @@ namespace xe {
 		FrontAndBack
 	};
 
-	enum class MemBarrier {
+	enum class MemoryBarrier {
 		ShaderImageAccess,
 		ShaderStorage,
 		All

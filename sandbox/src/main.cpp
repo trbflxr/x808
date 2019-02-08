@@ -56,6 +56,38 @@ static bool loadConfig(xe::Config &config, const char *path) {
 }
 
 
+#include <xe/systems/system.hpp>
+class S0 : public xe::System {
+public:
+	void render() override {
+		XE_TRACE("s0 render");
+	}
+
+	void update(float delta) override {
+		XE_TRACE("s0 update");
+	}
+};
+class S1 : public xe::System {
+public:
+	void render() override {
+		XE_TRACE("S1 render");
+	}
+
+	void update(float delta) override {
+		XE_TRACE("S1 update");
+	}
+};
+class S2 : public xe::System {
+public:
+	void render() override {
+		XE_TRACE("S2 render");
+	}
+
+	void update(float delta) override {
+		XE_TRACE("S2 update");
+	}
+};
+
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
@@ -63,7 +95,7 @@ public:
 			ui(nullptr),
 			t2d(nullptr),
 			t3d(nullptr),
-			tb2d(nullptr) ,
+			tb2d(nullptr),
 			tl2d(nullptr) {
 
 		xe::VFS::mount("fonts", "xe_sandbox_assets/fonts/");
@@ -80,16 +112,19 @@ public:
 		pushLayer(tl2d);
 //		pushLayer(t2d);
 //		pushLayer(t3d);
-		pushLayer(ui);
+		pushOverlay(ui);
+
+
+		S0 *s0 = new S0();
+		S1 *s1 = new S1();
+		S2 *s2 = new S2();
+
+		pushSystem(s0);
+		pushSystem(s1);
+		pushSystem(s2);
 	}
 
-	~Test() override {
-		delete ui;
-		delete t2d;
-		delete t3d;
-		delete tb2d;
-		delete tl2d;
-	}
+	~Test() override { }
 
 private:
 	DebugUI *ui;

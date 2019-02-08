@@ -16,9 +16,8 @@ DebugUI::DebugUI() :
 	const float w = app.getConfig().width;
 	const float h = app.getConfig().height;
 
-	camera = new Camera(mat4::ortho(0, w, 0, h, -1, 1000));
-
-	renderer = new BatchRenderer2D(window.getSize().x, window.getSize().y, camera);
+	camera = new Camera(mat4::ortho(0, w, 0, h, -1, 10.0f));
+	renderer = new BatchRenderer2D(w, h, camera);
 
 	const float offset = 10.0f;
 	const float textOffset = 32.0f;
@@ -65,7 +64,7 @@ DebugUI::DebugUI() :
 	dcText->setOutlineColor(color::Black);
 	dcText->setOutlineThickness(outline);
 
-	infoRect = new RectangleShape({irw, irh}, 10.0f);
+	infoRect = new RectangleShape({irw, irh}, 0.0f);
 	infoRect->setColor(color::rgba(0, 0, 0, 0.6f));
 	infoRect->setPosition({offset + irw / 2.0f, h - irh / 2.0f - offset});
 
@@ -80,7 +79,7 @@ DebugUI::DebugUI() :
 	teDirText->setOutlineColor(color::Black);
 	teDirText->setOutlineThickness(outline);
 
-	teRect = new RectangleShape({ttw, tth}, 10.0f);
+	teRect = new RectangleShape({ttw, tth}, 0.0f);
 	teRect->setColor(color::rgba(0, 0, 0, 0.6f));
 	teRect->setPosition({offset + ttw / 2.0f, infoRect->getPosition().y - irh / 2.0f - (offset * 4.0f)});
 
@@ -125,8 +124,6 @@ DebugUI::~DebugUI() {
 }
 
 void DebugUI::render() {
-	Renderer::clear(RendererBufferDepth);
-
 	//render sprites and text
 	renderer->submit(sp0);
 	renderer->submit(sp1);

@@ -123,7 +123,7 @@ namespace xe { namespace internal {
 		glCall(glStencilOpSeparate(stencilFaceToGL(face), stencilOpToGL(sf), stencilOpToGL(dpf), stencilOpToGL(dpp)));
 	}
 
-	void GLRenderer::setMemoryBarrierInternal(MemBarrier barrier) {
+	void GLRenderer::setMemoryBarrierInternal(MemoryBarrier barrier) {
 		glCall(glMemoryBarrier(memoryBarrierToGL(barrier)));
 	}
 

@@ -28,16 +28,18 @@ namespace xe {
 
 		inline bool isActive() const { return active; }
 		inline void setActive(bool active) { System::active = active; }
-		
+
 	protected:
 		explicit System() :
 				app(Application::get()),
 				window(app.getWindow()),
-				active(false) { }
+				active(true) { }
 
-		virtual bool resize(int32 width, int32 height) { return false; }
+		virtual void resize(int32 width, int32 height) { }
 
 	protected:
+		friend class SystemStack;
+
 		Application &app;
 		Window &window;
 

@@ -46,6 +46,8 @@ namespace xe {
 		inline uint getHeight() const { return height; }
 		inline void setHeight(uint height) { IRenderer2D::height = height; }
 
+		inline const Shader *getShader() const { return shader; }
+
 	protected:
 		void updateCamera();
 		void updateIndexBuffer();

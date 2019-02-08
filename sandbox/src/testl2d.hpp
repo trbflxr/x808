@@ -32,6 +32,8 @@ private:
 	xe::RectangleShape *box0;
 	xe::RectangleShape *box1;
 
+	std::vector<xe::Light2D *> lights;
+
 	std::vector<xe::IRenderable2D *> renderables;
 };
 

@@ -8,12 +8,13 @@
 
 #include <xe/window/event.hpp>
 #include <xe/app/application.hpp>
+#include <xe/gfx/framebuffer.hpp>
 
 namespace xe {
 
-	class Layer {
+	class XE_API Layer {
 	public:
-		virtual ~Layer() = default;
+		virtual ~Layer();
 
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { Layer::visible = visible; }
@@ -33,17 +34,27 @@ namespace xe {
 		virtual void input(Event &event) { }
 
 	protected:
-		explicit Layer() :
-				app(Application::get()),
-				window(app.getWindow()),
-				visible(true) { }
+		explicit Layer();
 
-		virtual bool resize(int32 width, int32 height) { return false; }
+		virtual void resize(int32 width, int32 height) { }
+
+	private:
+		void renderBegin();
+		void renderEnd();
+
+		inline const Texture *getRenderTexture() const { return renderTexture; }
 
 	protected:
 		Application &app;
 		Window &window;
 		bool visible;
+
+	private:
+		friend class LayerStack;
+
+		xe::FrameBuffer *buffer;
+		xe::Texture *depth;
+		xe::Texture *renderTexture;
 	};
 
 }

@@ -2,18 +2,16 @@
 // Created by FLXR on 6/29/2018.
 //
 
-#include <fcntl.h>
 #include <xe/utils/random.hpp>
 #include <xe/gfx/renderer.hpp>
-#include <xe/gfx/layer.hpp>
-#include <xe/systems/system.hpp>
-#include <embedded/embedded.hpp>
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/resources/shadermanager.hpp>
 #include <xe/resources/soundmanager.hpp>
 #include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
+#include <app/layerstack.hpp>
+#include <app/systemstack.hpp>
 #include <xe/ui/imgui/imgui_impl_xe.hpp>
 
 namespace xe {
@@ -38,6 +36,8 @@ namespace xe {
 
 	Application::~Application() {
 		delete shell;
+		delete layerStack;
+		delete systemStack;
 	}
 
 	void Application::init(const string &title) {
@@ -63,9 +63,11 @@ namespace xe {
 		ImGui::xe::init(window);
 		ImGui::StyleColorsDark();
 
-
 		shell = new Shell();
 		shell->init();
+
+		layerStack = new LayerStack(this);
+		systemStack = new SystemStack();
 	}
 
 	void Application::shutdown() {
@@ -159,15 +161,8 @@ namespace xe {
 	}
 
 	void Application::tick() {
-		for (auto &&system : systemDeque) {
-			system->tick();
-		}
-
-		for (auto &&layer : layerStack) {
-			if (layer->isVisible()) {
-				layer->tick();
-			}
-		}
+		systemStack->tick();
+		layerStack->tick();
 	}
 
 	void Application::update(float delta) {
@@ -175,59 +170,25 @@ namespace xe {
 
 		shell->update(delta);
 
-		for (auto &&system : systemDeque) {
-			system->update(delta);
-		}
-
-		for (auto &&layer : layerStack) {
-			if (layer->isVisible()) {
-				layer->update(delta);
-			}
-		}
+		systemStack->update(delta);
+		layerStack->update(delta);
 	}
 
 	void Application::lateUpdate(float delta) {
-		for (auto &&system : systemDeque) {
-			system->lateUpdate(delta);
-		}
-
-		for (auto &&layer : layerStack) {
-			if (layer->isVisible()) {
-				layer->lateUpdate(delta);
-			}
-		}
+		systemStack->lateUpdate(delta);
+		layerStack->lateUpdate(delta);
 	}
 
 	void Application::fixedUpdate(float delta) {
-		for (auto &&system : systemDeque) {
-			system->fixedUpdate(delta);
-		}
-
-		for (auto &&layer : layerStack) {
-			if (layer->isVisible()) {
-				layer->fixedUpdate(delta);
-			}
-		}
+		systemStack->fixedUpdate(delta);
+		layerStack->fixedUpdate(delta);
 	}
 
 	void Application::render() {
 		ImGui::xe::newFrame();
 
-		for (auto &&layer : layerStack) {
-			if (layer->isVisible()) {
-				layer->render();
-
-				if (!shell->isActive()) {
-					layer->renderImGui();
-				}
-			}
-		}
-
-		for (int32 i = (int32) systemDeque.size() - 1; i >= 0; --i) {
-			if (systemDeque[i]->isActive()) {
-				systemDeque[i]->render();
-			}
-		}
+		layerStack->render(!shell->isActive());
+		systemStack->render();
 
 		shell->render();
 
@@ -243,17 +204,8 @@ namespace xe {
 
 			shell->input(event);
 
-			for (const auto &system : systemDeque) {
-				system->input(event);
-				if (event.handled && event.type != Event::Closed) break;
-			}
-
-			if (!event.handled || event.type == Event::Closed) {
-				for (int32 i = (int32) layerStack.size() - 1; i >= 0; --i) {
-					layerStack[i]->input(event);
-					if (event.handled && event.type != Event::Closed) break;
-				}
-			}
+			systemStack->input(event);
+			layerStack->input(event);
 
 			if (event.type == Event::Closed) {
 				window.close();
@@ -263,45 +215,27 @@ namespace xe {
 	}
 
 	void Application::pushLayer(Layer *layer) {
-		layerStack.push_back(layer);
-		layer->init();
+		layerStack->pushLayer(layer);
 	}
 
 	Layer *Application::popLayer() {
-		Layer *layer = layerStack.back();
-		layerStack.pop_back();
-		return layer;
+		return layerStack->popLayer();
 	}
 
-	Layer *Application::popLayer(Layer *layer) {
-		for (uint i = 0; i < layerStack.size(); i++) {
-			if (layerStack[i] == layer) {
-				layerStack.erase(layerStack.begin() + i);
-				break;
-			}
-		}
-		return layer;
+	void Application::pushOverlay(Layer *overlay) {
+		layerStack->pushOverlay(overlay);
+	}
+
+	Layer *Application::popOverlay() {
+		return layerStack->popOverlay();
 	}
 
 	void Application::pushSystem(System *system) {
-		systemDeque.push_back(system);
-		system->init();
+		systemStack->pushSystem(system);
 	}
 
 	System *Application::popSystem() {
-		System *system = systemDeque.back();
-		systemDeque.pop_back();
-		return system;
-	}
-
-	System *Application::popSystem(System *system) {
-		for (uint i = 0; i < systemDeque.size(); i++) {
-			if (systemDeque[i] == system) {
-				systemDeque.erase(systemDeque.begin() + i);
-				break;
-			}
-		}
-		return system;
+		return systemStack->popSystem();
 	}
 
 }

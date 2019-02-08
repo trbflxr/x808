@@ -19,15 +19,17 @@ namespace xe {
 			vec2 position;
 			vec3 color;
 			float intensity;
+			float distance;
 
-			Data(const vec2 &pos, const vec3 &color, float intensity) :
-					position(pos), color(color), intensity(intensity) { }
+			Data(const vec2 &pos, const vec3 &color, float intensity, float distance) :
+					position(pos), color(color), intensity(intensity), distance(distance) { }
 		};
 
 	public:
-		inline explicit Light2D(const string &name, const vec2 &pos, const vec3 &color, float intensity) :
+		inline explicit Light2D(const string &name, const vec2 &pos,
+		                        const vec3 &color, float intensity, float distance) :
 				name(name),
-				data(pos, color, intensity) { }
+				data(pos, color, intensity, distance) { }
 
 		inline void move(const vec2 &dir) { data.position += dir; }
 
@@ -41,6 +43,9 @@ namespace xe {
 
 		inline float getIntensity() const { return data.intensity; }
 		inline void setIntensity(float intensity) { data.intensity = intensity; }
+
+		inline float getDistance() const { return data.distance; }
+		inline void setDistance(float distance) { data.distance = distance; }
 
 		inline const void *getData() const { return &data; }
 		inline static uint getDataSize() { return sizeof(Data); }
