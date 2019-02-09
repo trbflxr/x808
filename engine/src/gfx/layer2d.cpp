@@ -42,4 +42,8 @@ namespace xe {
 		renderer->clear();
 	}
 
+	void Layer2D::setAmbientLight(const vec3 &light) {
+		renderer->setAmbientLight(light);
+	}
+
 }

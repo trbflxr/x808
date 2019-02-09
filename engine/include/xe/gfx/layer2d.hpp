@@ -29,6 +29,8 @@ namespace xe {
 		void submit(Text *text);
 		void submit(Light2D *light);
 
+		void setAmbientLight(const vec3 &light);
+
 		Camera *getCamera() { return camera; }
 		const Camera *getCamera() const { return camera; }
 

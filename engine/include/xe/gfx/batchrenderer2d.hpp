@@ -24,8 +24,9 @@ namespace xe {
 
 		void submit(const IRenderable2D *target);
 		void submit(const Text *text);
-
 		void submit(const Light2D *light);
+
+		void setAmbientLight(const vec3 &color);
 
 		void render();
 
@@ -50,11 +51,12 @@ namespace xe {
 		Texture *renderTexture;
 
 		bool enableLighting;
-		std::vector<const Light2D *> lights;
+		vec3 ambient;
+		Shader *lightShader;
 
+		std::vector<const Light2D *> lights;
 		std::vector<const IRenderable2D *> targets;
 		std::vector<const IRenderable2D *> transparentTargets;
-
 		std::vector<const Text *> text;
 	};
 

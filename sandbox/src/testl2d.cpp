@@ -29,6 +29,7 @@ TestL2D::TestL2D() {
 
 	createCamera(width, height, -1.0f, 1000.0f);
 	createRenderer(width, height, true);
+	setAmbientLight({0.1f, 0.1f, 0.1f});
 
 
 	RectangleShape *bg = new RectangleShape({width * 0.8f, height * 0.8f}, 0.5f);
@@ -54,11 +55,11 @@ TestL2D::TestL2D() {
 	renderables.push_back(box1);
 
 
-	Light2D *l0 = new Light2D("l0", {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 15.0f, 100.0f);
+	Light2D *l0 = new Light2D("l0", {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 150.0f, 100.0f);
 	lights.push_back(l0);
 
 	for (int i = 1; i < 21; ++i) {
-		Light2D *l = new Light2D("l" + std::to_string(i), {i * 65.0f, 150.0f}, {1, 0, 1}, 10.0f, 50.0f);
+		Light2D *l = new Light2D("l" + std::to_string(i), {i * 65.0f, 150.0f}, {1, 0, 1}, 100.0f, 500.0f);
 		lights.push_back(l);
 	}
 }

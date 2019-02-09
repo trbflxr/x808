@@ -9,25 +9,21 @@ uniform sampler2D textures[@MAX_TEXTURES];
 uniform vec3 lightColor;
 uniform vec2 lightPosition;
 uniform vec2 intensityDistance;
+uniform vec3 ambient;
 
 void main() {
   vec4 diffuse = color0;
 
   if (tid0 > 0.0) {
     int tid = int(tid0 - 0.5);
-      diffuse = texture(textures[tid], uv0);
+    diffuse = texture(textures[tid], uv0);
   }
 
-  vec3 ambient = vec3(0.5, 0.5, 0.5);
+  float distance = distance(lightPosition.xy, gl_FragCoord.xy);
+  float d = 0.0;
+  if(distance <= intensityDistance.x){
+    d = 1.0 - abs(distance / intensityDistance.x);
+  }
 
-  vec2 lightDir = vec2(lightPosition.xy - gl_FragCoord.xy);
-  float distance = 1.0 / length(lightPosition - gl_FragCoord.xy) * intensityDistance.x;
-
-  float atten = 1.0 - length(lightDir) / intensityDistance.y;
-
-  vec3 i = ambient + lightColor * atten;
-
-  vec3 lf = vec3(distance * atten * lightColor);
-
-  color = vec4(diffuse.xyz * lf, diffuse.a) * color0;
+  color = min(diffuse* ((vec4(lightColor * d, 1.0)) + vec4(ambient, 1.0)), diffuse);
 }

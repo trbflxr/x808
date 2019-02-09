@@ -17,13 +17,18 @@ namespace xe {
 
 		XE_ASSERT(!customTextShader, "Not implemented yet...");
 
-		if (enableLighting) { //fixme
-			Shader *lightShader = new Shader("lightShader", {
-					ShaderFile::fromFile(ShaderType::Vert, "light2d.vert"),
-					ShaderFile::fromFile(ShaderType::Frag, "light2d.frag")
-			});
+		if (enableLighting) {
+			if (customShader) {
+				lightShader = customShader;
+				renderer = new Renderer2D(width, height, camera, customShader);
+			} else {
+				lightShader = new Shader("lightShader", {//fixme
+						ShaderFile::fromFile(ShaderType::Vert, "light2d.vert"),
+						ShaderFile::fromFile(ShaderType::Frag, "light2d.frag")
+				});
+				renderer = new Renderer2D(width, height, camera, lightShader);
+			}
 
-			renderer = new Renderer2D(width, height, camera, lightShader);
 		} else {
 			renderer = new Renderer2D(width, height, camera, customShader);
 		}
@@ -81,6 +86,14 @@ namespace xe {
 		lights.push_back(light);
 	}
 
+	void BatchRenderer2D::setAmbientLight(const vec3 &color) {
+		XE_ASSERT(enableLighting, "Have to create renderer with lighting support for use it");
+		ambient = color;
+
+		lightShader->setUniform("ambient", &ambient, sizeof(vec3));
+		lightShader->updateUniforms();
+	}
+
 	void BatchRenderer2D::render() {
 		if (targets.empty() && transparentTargets.empty()) return;
 
@@ -97,6 +110,8 @@ namespace xe {
 
 
 		if (enableLighting) {
+			Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
+
 			for (const auto &l : lights) {
 				vec2 lightPos = l->getPosition();
 				vec3 lightColor = l->getColor();
