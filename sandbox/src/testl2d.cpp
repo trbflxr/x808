@@ -5,6 +5,7 @@
 #include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
+#include <xe/utils/random.hpp>
 #include "testl2d.hpp"
 
 using namespace xe;
@@ -29,13 +30,13 @@ TestL2D::TestL2D() {
 
 	createCamera(width, height, -1.0f, 1000.0f);
 	createRenderer(width, height, true);
-	setAmbientLight({0.1f, 0.1f, 0.1f});
+	setAmbientLight({0.05f, 0.05f, 0.05f});
 
 
-	RectangleShape *bg = new RectangleShape({width * 0.8f, height * 0.8f}, 0.5f);
+	RectangleShape *bg = new RectangleShape({width * 4, height * 4}, 0.5f);
 	bg->setTexture(GETTEXTURE("bg0"));
-	bg->transformation({width / 2.0f, height / 2.0f});
-	bg->setTextureRect({0.0f, 0.0f, width, height});
+	bg->transformation({width * 4 / 2.0f, height * 4 / 2.0f});
+	bg->setTextureRect({0.0f, 0.0f, width * 8, height * 8});
 	renderables.push_back(bg);
 
 	RectangleShape *jdm = new RectangleShape({100.0f, 100.0f}, 1.0f);
@@ -55,13 +56,31 @@ TestL2D::TestL2D() {
 	renderables.push_back(box1);
 
 
-	Light2D *l0 = new Light2D("l0", {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 150.0f, 100.0f);
+	Light2D *l0 = new Light2D("l0", {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 150.0f);
 	lights.push_back(l0);
 
-	for (int i = 1; i < 21; ++i) {
-		Light2D *l = new Light2D("l" + std::to_string(i), {i * 65.0f, 150.0f}, {1, 0, 1}, 100.0f, 500.0f);
+	for (int i = 1; i < 50; ++i) {
+		const float x = random::nextFloat(50, 4000);
+		const float y = random::nextFloat(50, 2000);
+
+		const float r = random::nextFloat(0, 1);
+		const float g = random::nextFloat(0, 1);
+		const float b = random::nextFloat(0, 1);
+
+		const float s = random::nextFloat(50, 200);
+
+		Light2D *l = new Light2D("l" + std::to_string(i), {x, y}, {r, g, b}, s);
 		lights.push_back(l);
 	}
+
+//	Light2D *l1 = new Light2D("l1", {150.0f, 150.0f}, {1, 0, 0}, 100.0f);
+//	lights.push_back(l1);
+//
+//	Light2D *l2 = new Light2D("l2", {640.0f, 320.0f}, {0.5f, 0.5f, 0.5f}, 50.0f);
+//	lights.push_back(l2);
+//
+//	Light2D *l3 = new Light2D("l3", {640.0f, 600.0f}, {1, 1, 0}, 100.0f);
+//	lights.push_back(l3);
 }
 
 TestL2D::~TestL2D() {
@@ -75,8 +94,8 @@ TestL2D::~TestL2D() {
 }
 
 void TestL2D::renderScene() {
-	vec2 mousePos = Mouse::getPosition(window);
-	lights[0]->setPosition(mousePos);
+	vec2 pos = Mouse::getPosition(window) + vec2(getCamera()->transform.getPosition());
+	lights[0]->setPosition(pos);
 
 	for (const auto &r : renderables) {
 		submit(r);

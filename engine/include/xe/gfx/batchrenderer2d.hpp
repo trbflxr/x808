@@ -8,6 +8,7 @@
 
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/framebuffer.hpp>
+#include <xe/gfx/uniformbuffer.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 #include <xe/gfx/2d/light2d.hpp>
@@ -18,8 +19,8 @@ namespace xe {
 	public:
 		explicit BatchRenderer2D(uint width, uint height, Camera *camera,
 		                         bool enableLighting = false,
-		                         Shader *customShader = nullptr,
-		                         Shader *customTextShader = nullptr);
+		                         const Shader *customShader = nullptr,
+		                         const Shader *customTextShader = nullptr);
 		~BatchRenderer2D();
 
 		void submit(const IRenderable2D *target);
@@ -52,7 +53,7 @@ namespace xe {
 
 		bool enableLighting;
 		vec3 ambient;
-		Shader *lightShader;
+		UniformBuffer *lightUBO;
 
 		std::vector<const Light2D *> lights;
 		std::vector<const IRenderable2D *> targets;

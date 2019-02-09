@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <xe/gfx/context.hpp>
 #include <xe/string.hpp>
+#include <xe/config.hpp>
 #include <xe/loaders/shaderloader.hpp>
 #include <xe/utils/assert.hpp>
 #include "glshaderfile.hpp"
@@ -12,7 +13,6 @@
 #include "glenums.hpp"
 #include "glshadersampler.hpp"
 #include "glshaderuniform.hpp"
-
 
 namespace xe { namespace internal {
 
@@ -75,11 +75,11 @@ namespace xe { namespace internal {
 	}
 
 	void GLShaderFile::setConstants(string &source) {
-		const string str = "@MAX_TEXTURES";
-		const size_t pos = source.find(str);
-		if (pos != string::npos) {
-			source.replace(pos, str.size(), std::to_string(Context::getMaxTextureUnits()));
-		}
+		const string str0 = "@MAX_TEXTURES";
+		const string str1 = "@MAX_PLIGHTS";
+
+		replaceAll(source, str0, std::to_string(Context::getMaxTextureUnits()));
+		replaceAll(source, str1, std::to_string(gConfig.maxPointLights2D));
 	}
 
 	void GLShaderFile::appendConstants(std::stringstream &stream) {

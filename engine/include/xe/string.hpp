@@ -31,6 +31,8 @@ namespace xe {
 
 	bool XE_API startsWith(const string &str, const string &start);
 
+	void XE_API replaceAll(string &src, const string &oldVal, const string &newVal);
+
 #ifdef XE_PLATFORM_WINDOWS
 	std::wstring XE_API toWstring(const char *str);
 	std::wstring XE_API toWstring(const string &str);

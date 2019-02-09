@@ -3,37 +3,39 @@
 //
 
 #include <algorithm>
+#include <xe/config.hpp>
 #include <xe/gfx/batchrenderer2d.hpp>
 #include <xe/gfx/renderer.hpp>
+#include <xe/resources/shadermanager.hpp>
 
 namespace xe {
 
 	BatchRenderer2D::BatchRenderer2D(uint width, uint height, Camera *camera,
 	                                 bool enableLighting,
-	                                 Shader *customShader,
-	                                 Shader *customTextShader) :
+	                                 const Shader *customShader,
+	                                 const Shader *customTextShader) :
 			camera(camera),
 			enableLighting(enableLighting) {
 
 		XE_ASSERT(!customTextShader, "Not implemented yet...");
 
 		if (enableLighting) {
+			BufferLayout l;
+			l.push<vec4>("position");
+			l.push<vec4>("color");
+
+			lightUBO = new UniformBuffer(BufferStorage::Dynamic, 2, l, gConfig.maxPointLights2D);
+
 			if (customShader) {
-				lightShader = customShader;
 				renderer = new Renderer2D(width, height, camera, customShader);
 			} else {
-				lightShader = new Shader("lightShader", {//fixme
-						ShaderFile::fromFile(ShaderType::Vert, "light2d.vert"),
-						ShaderFile::fromFile(ShaderType::Frag, "light2d.frag")
-				});
-				renderer = new Renderer2D(width, height, camera, lightShader);
+				renderer = new Renderer2D(width, height, camera, GETSHADER("dLightRenderer"));
 			}
 
 		} else {
 			renderer = new Renderer2D(width, height, camera, customShader);
 		}
 
-//		renderer = new Renderer2D(width, height, camera, customShader);
 		textRenderer = new TextRenderer(width, height, camera);
 
 		static TextureParameters params(TextureTarget::Tex2D);
@@ -83,6 +85,11 @@ namespace xe {
 	}
 
 	void BatchRenderer2D::submit(const Light2D *light) {
+		if (lights.size() + 1 > gConfig.maxPointLights2D) {
+			XE_CORE_ERROR("Maximum 2d lights reached (", gConfig.maxPointLights2D, ")");
+			return;
+		}
+
 		lights.push_back(light);
 	}
 
@@ -90,9 +97,10 @@ namespace xe {
 		XE_ASSERT(enableLighting, "Have to create renderer with lighting support for use it");
 		ambient = color;
 
-		lightShader->setUniform("ambient", &ambient, sizeof(vec3));
-		lightShader->updateUniforms();
+		renderer->getShader()->setUniform("ambient", &ambient, sizeof(vec3));
+		renderer->getShader()->updateUniforms();
 	}
+
 
 	void BatchRenderer2D::render() {
 		if (targets.empty() && transparentTargets.empty()) return;
@@ -110,21 +118,23 @@ namespace xe {
 
 
 		if (enableLighting) {
-			Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
+			if (!lights.empty()) {
+				int32 size = static_cast<int32>(lights.size());
 
-			for (const auto &l : lights) {
-				vec2 lightPos = l->getPosition();
-				vec3 lightColor = l->getColor();
-				vec2 id = vec2(l->getIntensity(), l->getDistance());
-
-				renderer->getShader()->setUniform("lightPosition", &lightPos, sizeof(vec2));
-				renderer->getShader()->setUniform("lightColor", &lightColor, sizeof(vec3));
-				renderer->getShader()->setUniform("intensityDistance", &id, sizeof(vec2));
-
+				renderer->getShader()->setUniform("lightsSize", &size, sizeof(int32));
 				renderer->getShader()->updateUniforms();
-
-				renderSpritesInternal();
 			}
+
+			for (uint i = 0; i < lights.size(); ++i) {
+				vec4 lightPos = vec4(lights[i]->getPosition().x, lights[i]->getPosition().y, 0.0f, 0.0f);
+				vec4 lightColor = vec4(lights[i]->getColor(), lights[i]->getIntensity());
+
+				lightUBO->update(&lightPos, 0, i);
+				lightUBO->update(&lightColor, 1, i);
+			}
+
+			renderSpritesInternal();
+
 			lights.clear();
 
 		} else {

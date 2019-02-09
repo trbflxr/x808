@@ -30,6 +30,8 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
 		config.apiVersion = (uint) atoi(value);
 	} else if (strcmp(key, "maxTextureUnits") == 0) {
 		config.maxTextureUnits = (uint) atoi(value);
+	} else if (strcmp(key, "maxPointLights2D") == 0) {
+		config.maxPointLights2D = (uint) atoi(value);
 	}
 }
 

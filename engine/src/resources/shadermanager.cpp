@@ -97,6 +97,11 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["textRenderer_frag"])
 		}));
 
+		shaders.emplace("dLightRenderer", new Shader("dLightRenderer", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["light2D_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["light2D_frag"])
+		}));
+
 
 		///gl420 shaders
 		if (Context::getRenderAPIVersion() >= 420) {

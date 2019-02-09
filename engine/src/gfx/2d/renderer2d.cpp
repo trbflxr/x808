@@ -9,7 +9,7 @@
 
 namespace xe {
 
-	Renderer2D::Renderer2D(uint width, uint height, Camera *camera, Shader *customShader) :
+	Renderer2D::Renderer2D(uint width, uint height, Camera *camera, const Shader *customShader) :
 			IRenderer2D(width, height, camera),
 			enableWireframe_(false) {
 

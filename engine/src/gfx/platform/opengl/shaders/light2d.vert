@@ -9,11 +9,13 @@ uniform mat4 view;
 out vec2 uv0;
 out vec4 color0;
 out float tid0;
+out vec4 position0;
 
 void main() {
-  gl_Position = (projection * view) * position;
-
   uv0 = uv;
   tid0 = tid;
   color0 = color;
+  position0 =  position * view;
+
+  gl_Position = (projection * view) * position;
 }

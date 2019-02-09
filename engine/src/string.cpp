@@ -113,6 +113,14 @@ namespace xe {
 		return str.find(start) == 0;
 	}
 
+	void replaceAll(string &src, const string &oldVal, const string &newVal){
+		size_t start = 0;
+		while((start = src.find(oldVal, start)) != std::string::npos) {
+			src.replace(start, oldVal.length(), newVal);
+			start += newVal.length();
+		}
+	}
+
 #ifdef XE_PLATFORM_WINDOWS
 
 	std::wstring toWstring(const string &str) {
