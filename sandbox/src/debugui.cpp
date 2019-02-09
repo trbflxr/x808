@@ -13,11 +13,11 @@ DebugUI::DebugUI() :
 		trackedTransform(nullptr) {
 
 	//create camera
-	const float w = app.getConfig().width;
-	const float h = app.getConfig().height;
+	const float w = app.getWindowSize().x;
+	const float h = app.getWindowSize().y;
 
-	camera = new Camera(mat4::ortho(0, w, 0, h, -1, 10.0f));
-	renderer = new BatchRenderer2D(w, h, camera);
+	createCamera(w, h, -1.0f, 1000.0f);
+	createRenderer(w, h);
 
 	const float offset = 10.0f;
 	const float textOffset = 32.0f;
@@ -102,10 +102,6 @@ DebugUI::DebugUI() :
 }
 
 DebugUI::~DebugUI() {
-	delete camera;
-
-	delete renderer;
-
 	delete sp0;
 	delete sp1;
 	delete sp2;
@@ -123,32 +119,26 @@ DebugUI::~DebugUI() {
 	delete teRect;
 }
 
-void DebugUI::render() {
+void DebugUI::renderScene() {
 	//render sprites and text
-	renderer->submit(sp0);
-	renderer->submit(sp1);
-	renderer->submit(sp2);
-	renderer->submit(sp3);
+	submit(sp0);
+	submit(sp1);
+	submit(sp2);
+	submit(sp3);
 
-	renderer->submit(gpuText);
-	renderer->submit(fpsText);
-	renderer->submit(upsText);
-	renderer->submit(frameTimeText);
-	renderer->submit(dcText);
+	submit(gpuText);
+	submit(fpsText);
+	submit(upsText);
+	submit(frameTimeText);
+	submit(dcText);
 
-	renderer->submit(infoRect);
+	submit(infoRect);
 
 	if (trackedTransform) {
-		renderer->submit(tePosText);
-		renderer->submit(teDirText);
-		renderer->submit(teRect);
+		submit(tePosText);
+		submit(teDirText);
+		submit(teRect);
 	}
-
-
-	renderer->renderSprites();
-	renderer->renderText();
-
-	renderer->clear();
 }
 
 void DebugUI::update(float delta) {

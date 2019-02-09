@@ -10,7 +10,6 @@ namespace xe {
 
 	Renderer *Renderer::instance = nullptr;
 	uint Renderer::dc = 0;
-	uint Renderer::clearColor = color::Transparent;
 
 	void Renderer::init() {
 		dc = 0;

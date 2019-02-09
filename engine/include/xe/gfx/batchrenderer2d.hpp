@@ -6,7 +6,6 @@
 #define X808_BATCHRENDERER2D_HPP
 
 
-#include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
@@ -18,6 +17,7 @@ namespace xe {
 	class XE_API BatchRenderer2D {
 	public:
 		explicit BatchRenderer2D(uint width, uint height, Camera *camera,
+		                         bool enableLighting = false,
 		                         Shader *customShader = nullptr,
 		                         Shader *customTextShader = nullptr);
 		~BatchRenderer2D();
@@ -27,13 +27,14 @@ namespace xe {
 
 		void submit(const Light2D *light);
 
-		void renderSprites();
-		void renderText();
+		void render();
 
 		void clear();
 
 		inline Renderer2D *getRenderer2D() const { return renderer; }
 		inline void enableWireframe(bool flag) { renderer->enableWireframe(flag); }
+
+		inline const Texture *getRenderTexture() const { return renderTexture; }
 
 	private:
 		void renderSpritesInternal();
@@ -44,12 +45,11 @@ namespace xe {
 		Renderer2D *renderer;
 		TextRenderer *textRenderer;
 
-	public: //fixme
-		xe::FrameBuffer *buffer;
-		xe::Texture *depth;
-		xe::Texture *diffuse;
-		xe::fx::Quad *quad;
+		FrameBuffer *buffer;
+		Texture *depth;
+		Texture *renderTexture;
 
+		bool enableLighting;
 		std::vector<const Light2D *> lights;
 
 		std::vector<const IRenderable2D *> targets;

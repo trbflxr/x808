@@ -55,83 +55,32 @@ static bool loadConfig(xe::Config &config, const char *path) {
 	return true;
 }
 
-
-#include <xe/systems/system.hpp>
-class S0 : public xe::System {
-public:
-	void render() override {
-		XE_TRACE("s0 render");
-	}
-
-	void update(float delta) override {
-		XE_TRACE("s0 update");
-	}
-};
-class S1 : public xe::System {
-public:
-	void render() override {
-		XE_TRACE("S1 render");
-	}
-
-	void update(float delta) override {
-		XE_TRACE("S1 update");
-	}
-};
-class S2 : public xe::System {
-public:
-	void render() override {
-		XE_TRACE("S2 render");
-	}
-
-	void update(float delta) override {
-		XE_TRACE("S2 update");
-	}
-};
-
 class Test : public xe::Application {
 public:
 	explicit Test(const xe::Config &config) :
-			Application(config, "Sandbox🌍"),
-			ui(nullptr),
-			t2d(nullptr),
-			t3d(nullptr),
-			tb2d(nullptr),
-			tl2d(nullptr) {
+			Application(config, "Sandbox🌍") {
 
 		xe::VFS::mount("fonts", "xe_sandbox_assets/fonts/");
 		xe::VFS::mount("textures", "xe_sandbox_assets/textures/");
 		xe::VFS::mount("shaders", "/");
 
-		ui = new DebugUI();
-//		t3d = new Test3D(ui);
-//		t2d = new Test2D();
-		tl2d = new TestL2D();
-//		tb2d = new TestB2D();
+		DebugUI *ui = new DebugUI();
+//		Test3D *t3d = new Test3D(ui);
+//		Test2D *t2d = new Test2D();
+		TestL2D *tl2d = new TestL2D();
+//		TestB2D *tb2d = new TestB2D();
 
 //		pushLayer(tb2d);
 		pushLayer(tl2d);
 //		pushLayer(t2d);
 //		pushLayer(t3d);
 		pushOverlay(ui);
-
-
-		S0 *s0 = new S0();
-		S1 *s1 = new S1();
-		S2 *s2 = new S2();
-
-		pushSystem(s0);
-		pushSystem(s1);
-		pushSystem(s2);
 	}
 
 	~Test() override { }
 
 private:
-	DebugUI *ui;
-	Test2D *t2d;
-	Test3D *t3d;
-	TestB2D *tb2d;
-	TestL2D *tl2d;
+
 };
 
 int main() {

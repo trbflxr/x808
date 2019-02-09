@@ -18,6 +18,7 @@ namespace xe { namespace internal {
 	protected:
 		void initInternal() override;
 
+		void clearBufferFInternal(Attachment buffer, const float color[4]) override;
 		void clearInternal(uint buffer) override;
 		void flushInternal() override;
 

@@ -17,10 +17,14 @@ namespace xe {
 	public:
 		static void init();
 
+		static void clearBufferF(Attachment buffer, const float color[4]) {
+			instance->clearBufferFInternal(buffer, color);
+		}
+
 		static void clear(uint buffer) { instance->clearInternal(buffer); }
 		static void flush() { instance->flushInternal(); }
 
-		static inline void setClearColor(uint color) { clearColor = color; }
+		static void setClearColor(uint color) { instance->setClearColorInternal(color::decode(color)); }
 
 		static void enableVsync(bool enabled) { instance->enableVsyncInternal(enabled); }
 		static void enableDepthTesting(bool enabled) { instance->enableDepthTestingInternal(enabled); }
@@ -70,8 +74,6 @@ namespace xe {
 			instance->setMemoryBarrierInternal(barrier);
 		}
 
-		static inline uint getClearColor() { return clearColor; }
-
 		static inline uint getDC() { return dc; }
 		static inline void resetDC() { dc = 0; }
 		static inline void incDC() { ++dc; }
@@ -81,6 +83,7 @@ namespace xe {
 
 		virtual void initInternal() = 0;
 
+		virtual void clearBufferFInternal(Attachment buffer, const float color[4]) = 0;
 		virtual void clearInternal(uint buffer) = 0;
 		virtual void flushInternal() = 0;
 
@@ -112,7 +115,6 @@ namespace xe {
 		friend class LayerStack;
 
 		static Renderer *instance;
-		static uint clearColor;
 		static uint dc;
 	};
 

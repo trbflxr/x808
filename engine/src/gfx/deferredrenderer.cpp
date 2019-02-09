@@ -61,6 +61,9 @@ namespace xe {
 		gBuffer->passLightAccumulation(quad, final->getFinalFBO());
 
 		final->render(quad);
+
+		Renderer::enableDepthMask(true);
+		Renderer::enableDepthTesting(false);
 	}
 
 }

@@ -8,13 +8,13 @@
 
 #include <xe/window/event.hpp>
 #include <xe/app/application.hpp>
-#include <xe/gfx/framebuffer.hpp>
+#include <xe/gfx/texture.hpp>
 
 namespace xe {
 
 	class XE_API Layer {
 	public:
-		virtual ~Layer();
+		virtual ~Layer() = default;
 
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { Layer::visible = visible; }
@@ -33,16 +33,15 @@ namespace xe {
 
 		virtual void input(Event &event) { }
 
+		virtual const Texture *getRenderTexture() const = 0;
+
 	protected:
-		explicit Layer();
+		explicit Layer() :
+				app(Application::get()),
+				window(app.getWindow()),
+				visible(true) { }
 
 		virtual void resize(int32 width, int32 height) { }
-
-	private:
-		void renderBegin();
-		void renderEnd();
-
-		inline const Texture *getRenderTexture() const { return renderTexture; }
 
 	protected:
 		Application &app;
@@ -51,10 +50,6 @@ namespace xe {
 
 	private:
 		friend class LayerStack;
-
-		xe::FrameBuffer *buffer;
-		xe::Texture *depth;
-		xe::Texture *renderTexture;
 	};
 
 }

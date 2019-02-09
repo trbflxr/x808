@@ -20,8 +20,8 @@ using namespace xe;
 Test2D::Test2D() {
 	addShellCommands();
 
-	const float width = app.getConfig().width;
-	const float height = app.getConfig().height;
+	const float width = app.getWindowSize().x;
+	const float height = app.getWindowSize().y;
 
 	TextureParameters params;
 
@@ -87,8 +87,8 @@ Test2D::Test2D() {
 
 	uint texCount = 40;
 
-	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
-	renderer = new BatchRenderer2D(width, height, camera);
+	createCamera(width, height, -1.0f, 1000.0f);
+	createRenderer(width, height);
 
 	uint sprites = 0;
 
@@ -205,24 +205,23 @@ Test2D::Test2D() {
 	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
 	s0->setTexture(GETTEXTURE("35"));
 	s0->transformation({640.0f, 420.0f});
+	renderables.push_back(s0);
 
 	RectangleShape *s1 = new RectangleShape({100.0f, 100.0f}, 4.0f);
 	s1->setTexture(GETTEXTURE("37"));
 	s1->transformation({640.0f, 350.0f});
+	renderables.push_back(s1);
 
 	RectangleShape *bg = new RectangleShape({width, height}, 0.0f);
 	bg->setTexture(GETTEXTURE("repeat"));
 	bg->transformation({width + width / 2.0f, height / 2.0f});
 	bg->setTextureRect({0.0f, 0.0f, width, height});
+	renderables.push_back(bg);
 
 	star = new RectangleShape({100.0f, 100.0f}, 3.0f);
 	star->setTexture(GETTEXTURE("36"));
 	star->transformation({640.0f, 350.0f});
-
-	renderables.push_back(s0);
-	renderables.push_back(s1);
 	renderables.push_back(star);
-	renderables.push_back(bg);
 
 	//circle test
 	CircleShape *c0 = new CircleShape(50.0f, 2.0f);
@@ -234,9 +233,6 @@ Test2D::Test2D() {
 }
 
 Test2D::~Test2D() {
-	delete camera;
-	delete renderer;
-
 	for (const auto &r : renderables) {
 		delete r;
 	}
@@ -244,23 +240,17 @@ Test2D::~Test2D() {
 	for (const auto &t : text) {
 		delete t;
 	}
-
 }
 
-void Test2D::render() {
+void Test2D::renderScene() {
 	for (const auto &r : renderables) {
 //		((RectangleShape *) r)->rotate(0.5f);
-		renderer->submit(r);
+		submit(r);
 	}
 
 	for (const auto &t : text) {
-		renderer->submit(t);
+		submit(t);
 	}
-
-	renderer->renderSprites();
-	renderer->renderText();
-
-	renderer->clear();
 }
 
 void Test2D::renderImGui() {
@@ -302,12 +292,12 @@ void Test2D::renderImGui() {
 }
 
 void Test2D::update(float delta) {
-	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(getCamera()->transform.getPosition()));
 
 	star->setPosition(pos);
 
 	///update camera
-	vec3 camPos = camera->transform.getPosition();
+	vec3 camPos = getCamera()->transform.getPosition();
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
 		camPos.x += 1000 * delta;
@@ -321,9 +311,9 @@ void Test2D::update(float delta) {
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
 		camPos.y -= 1000 * delta;
 	}
-	camera->transform.setPosition(camPos);
+	getCamera()->transform.setPosition(camPos);
 
-	camera->update();
+	getCamera()->update();
 }
 
 void Test2D::input(xe::Event &event) {
@@ -379,7 +369,7 @@ void Test2D::addShellCommands() {
 			return "[E]Bad args. Type r2d_wireframe -h for help";
 		}
 
-		renderer->getRenderer2D()->enableWireframe(enable);
+		getRenderer()->getRenderer2D()->enableWireframe(enable);
 
 		return "";
 	});

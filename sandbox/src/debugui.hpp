@@ -6,12 +6,10 @@
 #define X808_TESTUI_HPP
 
 
-#include <xe/ecs/ecs.hpp>
-#include <xe/gfx/layer.hpp>
+#include <xe/gfx/layer2d.hpp>
 #include <xe/gfx/rectangleshape.hpp>
-#include <xe/gfx/batchrenderer2d.hpp>
 
-class DebugUI : public xe::Layer {
+class DebugUI : public xe::Layer2D {
 private:
 	friend class Test3D;
 
@@ -19,7 +17,7 @@ public:
 	explicit DebugUI();
 	~DebugUI() override;
 
-	void render() override;
+	void renderScene() override;
 
 	void update(float delta) override;
 	void lateUpdate(float delta) override;
@@ -37,10 +35,6 @@ public:
 	xe::RectangleShape *sp3;
 
 private:
-	xe::Camera *camera;
-
-	xe::BatchRenderer2D *renderer;
-
 	xe::Text *gpuText;
 	xe::Text *fpsText;
 	xe::Text *upsText;

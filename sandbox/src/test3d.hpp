@@ -21,13 +21,15 @@
 class Test3D : public xe::Layer {
 public:
 	explicit Test3D(DebugUI *ui);
-	~Test3D();
+	~Test3D() override;
 
 	void render() override;
 
 	void update(float delta) override;
 
 	void input(xe::Event &event) override;
+
+	inline const xe::Texture *getRenderTexture() const override { return nullptr; }
 
 private:
 	DebugUI *ui;

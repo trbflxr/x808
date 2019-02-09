@@ -48,11 +48,10 @@ namespace xe {
 	}
 
 	void LayerStack::render(bool renderImGui) {
+
 		for (auto &&layer : layers) {
 			if (layer->isVisible()) {
-				layer->renderBegin();
 				layer->render();
-				layer->renderEnd();
 
 				if (renderImGui) {
 					layer->renderImGui();
@@ -60,25 +59,25 @@ namespace xe {
 			}
 		}
 
-		if (Renderer::getClearColor() != color::Transparent) {
-			Renderer::instance->setClearColorInternal(color::decode(Renderer::clearColor));
-		}
-
-		Renderer::clear(RendererBufferColor | RendererBufferDepth);
-
-		if (Renderer::getClearColor() != color::Transparent) {
-			Renderer::instance->setClearColorInternal(color::decode(color::Transparent));
-		}
-
 		Renderer::enableBlend(true);
 		Renderer::setBlendEquation(BlendEquation::Add);
 		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 
+//		ImGui::Begin("Layers", nullptr);
+
+		Renderer::enableDepthMask(true);
+		Renderer::enableDepthTesting(false);
 		for (auto &&layer : layers) {
-			if (layer->isVisible()) {
+			if (layer->isVisible() && layer->getRenderTexture()) {
 				quad->renderTexture(layer->getRenderTexture());
+//				ImGui::Image(reinterpret_cast<void *>(layer->getRenderTexture()->getHandle()),
+//				             {320, 160}, {0, 1}, {1, 0});
+
 			}
 		}
+		Renderer::enableDepthTesting(true);
+
+//		ImGui::End();
 	}
 
 	void LayerStack::tick() {

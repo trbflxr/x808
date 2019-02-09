@@ -33,7 +33,7 @@ namespace xe {
 		explicit System() :
 				app(Application::get()),
 				window(app.getWindow()),
-				active(true) { }
+				active(false) { }
 
 		virtual void resize(int32 width, int32 height) { }
 

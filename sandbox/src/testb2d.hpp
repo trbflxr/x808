@@ -6,9 +6,7 @@
 #define X808_TESTB2D_HPP
 
 
-#include <xe/gfx/layer.hpp>
-#include <xe/gfx/camera.hpp>
-#include <xe/gfx/batchrenderer2d.hpp>
+#include <xe/gfx/layer2d.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
 #include <xe/physics/2d/boxcollider2d.hpp>
 #include <xe/physics/2d/circlecollider2d.hpp>
@@ -18,12 +16,12 @@
 #include <xe/gfx/polygon.hpp>
 #include <xe/gfx/sprite.hpp>
 
-class TestB2D : public xe::Layer {
+class TestB2D : public xe::Layer2D {
 public:
 	explicit TestB2D();
 	~TestB2D() override;
 
-	void render() override;
+	void renderScene() override;
 
 	void update(float delta) override;
 
@@ -51,7 +49,6 @@ private:
 	xe::Polygon *poly0;
 	xe::PolygonCollider2D *polyCollider0;
 
-	//
 	std::vector<xe::IRenderable2D *> renderables;
 	std::vector<xe::IRenderable2D *> points;
 

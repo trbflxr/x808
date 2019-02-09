@@ -69,7 +69,7 @@ namespace xe {
 			renderer->submit(r);
 		}
 
-		renderer->renderSprites();
+		renderer->render();
 
 		renderer->clear();
 

@@ -9,6 +9,108 @@
 
 namespace xe { namespace internal {
 
+	static void attachmentToDrawBuffer(Attachment attachment, uint &buffer, uint &drawBuffer) {
+		switch (attachment) {
+			case Attachment::Color0: {
+				buffer = GL_COLOR;
+				drawBuffer = 0;
+				break;
+			}
+			case Attachment::Color1: {
+				buffer = GL_COLOR;
+				drawBuffer = 1;
+				break;
+			}
+			case Attachment::Color2: {
+				buffer = GL_COLOR;
+				drawBuffer = 2;
+				break;
+			}
+			case Attachment::Color3: {
+				buffer = GL_COLOR;
+				drawBuffer = 3;
+				break;
+			}
+			case Attachment::Color4: {
+				buffer = GL_COLOR;
+				drawBuffer = 4;
+				break;
+			}
+			case Attachment::Color5: {
+				buffer = GL_COLOR;
+				drawBuffer = 5;
+				break;
+			}
+			case Attachment::Color6: {
+				buffer = GL_COLOR;
+				drawBuffer = 6;
+				break;
+			}
+			case Attachment::Color7: {
+				buffer = GL_COLOR;
+				drawBuffer = 7;
+				break;
+			}
+			case Attachment::Color8: {
+				buffer = GL_COLOR;
+				drawBuffer = 8;
+				break;
+			}
+			case Attachment::Color9: {
+				buffer = GL_COLOR;
+				drawBuffer = 9;
+				break;
+			}
+			case Attachment::Color10: {
+				buffer = GL_COLOR;
+				drawBuffer = 10;
+				break;
+			}
+			case Attachment::Color11: {
+				buffer = GL_COLOR;
+				drawBuffer = 11;
+				break;
+			}
+			case Attachment::Color12: {
+				buffer = GL_COLOR;
+				drawBuffer = 12;
+				break;
+			}
+			case Attachment::Color13: {
+				buffer = GL_COLOR;
+				drawBuffer = 13;
+				break;
+			}
+			case Attachment::Color14: {
+				buffer = GL_COLOR;
+				drawBuffer = 14;
+				break;
+			}
+			case Attachment::Color15: {
+				buffer = GL_COLOR;
+				drawBuffer = 15;
+				break;
+			}
+			case Attachment::Depth: {
+				buffer = GL_DEPTH;
+				drawBuffer = 0;
+				break;
+			}
+			case Attachment::Stencil: {
+				buffer = GL_STENCIL;
+				drawBuffer = 0;
+				break;
+			}
+			case Attachment::DepthStencil: {
+				buffer = GL_DEPTH_STENCIL;
+				drawBuffer = 0;
+				break;
+			}
+
+			default: break;
+		}
+	}
+
 	GLRenderer::GLRenderer() {
 		context = GLContext::get();
 	}
@@ -21,6 +123,13 @@ namespace xe { namespace internal {
 		glCall(glEnable(GL_CULL_FACE));
 		glCall(glFrontFace(GL_CCW));
 		glCall(glCullFace(GL_BACK));
+	}
+
+	void GLRenderer::clearBufferFInternal(Attachment buffer, const float *color) {
+		uint buff;
+		uint drawBuff;
+		attachmentToDrawBuffer(buffer, buff, drawBuff);
+		glCall(glClearBufferfv(buff, drawBuff, color);)
 	}
 
 	void GLRenderer::clearInternal(uint buffer) {

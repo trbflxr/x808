@@ -9,8 +9,8 @@
 using namespace xe;
 
 TestB2D::TestB2D() {
-	const float width = app.getConfig().width;
-	const float height = app.getConfig().height;
+	const float width = app.getWindowSize().x;
+	const float height = app.getWindowSize().y;
 
 	TextureParameters params;
 
@@ -26,9 +26,8 @@ TestB2D::TestB2D() {
 
 
 	//create camera
-	camera = new Camera(mat4::ortho(0, width, 0, height, -1, 1000));
-
-	renderer = new BatchRenderer2D(width, height, camera);
+	createCamera(width, height, -1.0f, 1000.0f);
+	createRenderer(width, height);
 
 	world = new PhysicsWorld2D({0.0f, -9.8f});
 
@@ -83,9 +82,6 @@ TestB2D::TestB2D() {
 }
 
 TestB2D::~TestB2D() {
-	delete camera;
-	delete renderer;
-
 	delete boxCollider;
 	delete groundCollider;
 	delete circleCollider0;
@@ -99,19 +95,14 @@ TestB2D::~TestB2D() {
 	delete world;
 }
 
-void TestB2D::render() {
+void TestB2D::renderScene() {
 	for (const auto &r : renderables) {
-		renderer->submit(r);
+		submit(r);
 	}
 	for (const auto &p : points) {
-		renderer->submit(p);
+		submit(p);
 	}
-	renderer->submit(poly0);
-
-	renderer->renderSprites();
-	renderer->renderText();
-
-	renderer->clear();
+	submit(poly0);
 }
 
 void TestB2D::update(float delta) {
@@ -129,7 +120,7 @@ void TestB2D::input(xe::Event &event) {
 		case Event::KeyPressed: {
 			if (event.key.code == Keyboard::F1) {
 				static bool wireframe = true;
-				renderer->enableWireframe(wireframe);
+				getRenderer()->enableWireframe(wireframe);
 				wireframe = !wireframe;
 			}
 

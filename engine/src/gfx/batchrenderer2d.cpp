@@ -9,13 +9,26 @@
 namespace xe {
 
 	BatchRenderer2D::BatchRenderer2D(uint width, uint height, Camera *camera,
+	                                 bool enableLighting,
 	                                 Shader *customShader,
 	                                 Shader *customTextShader) :
-			camera(camera) {
+			camera(camera),
+			enableLighting(enableLighting) {
 
 		XE_ASSERT(!customTextShader, "Not implemented yet...");
 
-		renderer = new Renderer2D(width, height, camera, customShader);
+		if (enableLighting) { //fixme
+			Shader *lightShader = new Shader("lightShader", {
+					ShaderFile::fromFile(ShaderType::Vert, "light2d.vert"),
+					ShaderFile::fromFile(ShaderType::Frag, "light2d.frag")
+			});
+
+			renderer = new Renderer2D(width, height, camera, lightShader);
+		} else {
+			renderer = new Renderer2D(width, height, camera, customShader);
+		}
+
+//		renderer = new Renderer2D(width, height, camera, customShader);
 		textRenderer = new TextRenderer(width, height, camera);
 
 		static TextureParameters params(TextureTarget::Tex2D);
@@ -32,16 +45,11 @@ namespace xe {
 
 		params.internalFormat = PixelInternalFormat::Rgba16f;
 		params.format = PixelFormat::Rgba;
-		diffuse = new Texture("r2dDiffuse", width, height, 0, params, true);
-
+		renderTexture = new Texture("r2dRenderTexture", width, height, 0, params, true);
 
 		buffer = new FrameBuffer("r2dBuffer");
-		buffer->load({
-			std::make_pair(Attachment::DepthStencil, depth),
-				             std::make_pair(Attachment::Color0, diffuse)
-		             });
-
-		quad = new fx::Quad(width, height);
+		buffer->load({std::make_pair(Attachment::DepthStencil, depth),
+		              std::make_pair(Attachment::Color0, renderTexture)});
 	}
 
 	BatchRenderer2D::~BatchRenderer2D() {
@@ -49,9 +57,8 @@ namespace xe {
 		delete textRenderer;
 
 		delete buffer;
-		delete diffuse;
+		delete renderTexture;
 		delete depth;
-		delete quad;
 	}
 
 	void BatchRenderer2D::submit(const IRenderable2D *target) {
@@ -74,33 +81,53 @@ namespace xe {
 		lights.push_back(light);
 	}
 
-	void BatchRenderer2D::renderSprites() {
+	void BatchRenderer2D::render() {
 		if (targets.empty() && transparentTargets.empty()) return;
 
 		renderer->updateCamera();
 
+		static constexpr float color[4] = {0, 0, 0, 0};
+		static constexpr float depth[4] = {1, 1, 1, 1};
 
 		//buffer
-//		buffer->bindDraw(Attachment::Color0);
-
-//		Renderer::setViewport(0, 0, renderer->getWidth(), renderer->getHeight());
-//		Renderer::clear(RendererBufferColor | RendererBufferDepth);
-//		Renderer::clear(RendererBufferColor );
-
-		renderSpritesInternal();
-
-//		buffer->unbind();
+		buffer->bindDraw(Attachment::Color0);
+		Renderer::setViewport(0, 0, renderer->getWidth(), renderer->getHeight());
+		Renderer::clearBufferF(Attachment::Color0, color);
+		Renderer::clearBufferF(Attachment::Depth, depth);
 
 
+		if (enableLighting) {
+			for (const auto &l : lights) {
+				vec2 lightPos = l->getPosition();
+				vec3 lightColor = l->getColor();
+				vec2 id = vec2(l->getIntensity(), l->getDistance());
 
-		//screen
-//		Renderer::clear( RendererBufferDepth);
+				renderer->getShader()->setUniform("lightPosition", &lightPos, sizeof(vec2));
+				renderer->getShader()->setUniform("lightColor", &lightColor, sizeof(vec3));
+				renderer->getShader()->setUniform("intensityDistance", &id, sizeof(vec2));
 
-//		quad->renderTexture(diffuse);
+				renderer->getShader()->updateUniforms();
 
-		lights.clear();
+				renderSpritesInternal();
+			}
+			lights.clear();
+
+		} else {
+			renderSpritesInternal();
+		}
+
+		if (!text.empty()) {
+			textRenderer->updateCamera();
+
+			Renderer::enableDepthMask(true);
+			Renderer::enableDepthTesting(false);
+			textRenderer->render(text);
+
+			text.clear();
+		}
+
+		buffer->unbind();
 	}
-
 
 	void BatchRenderer2D::renderSpritesInternal() {
 		std::sort(targets.begin(), targets.end(),
@@ -124,21 +151,11 @@ namespace xe {
 		}
 	}
 
-	void BatchRenderer2D::renderText() {
-		if (text.empty()) return;
-
-		textRenderer->updateCamera();
-
-		Renderer::enableDepthTesting(false);
-
-		textRenderer->render(text);
-		text.clear();
-	}
-
 	void BatchRenderer2D::clear() {
 		transparentTargets.clear();
 		targets.clear();
 		text.clear();
+		lights.clear();
 	}
 
 }
