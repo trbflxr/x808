@@ -9,23 +9,17 @@
 class Editor : public xe::Application {
 public:
 	explicit Editor(const xe::Config &config) :
-			Application(config, "XE Editor"),
-			ui(nullptr) {
+			Application(config, "XE Editor") {
 
 		xe::VFS::mount("fonts", "xe_sandbox_assets/fonts/");
 		xe::VFS::mount("textures", "xe_sandbox_assets/textures/");
 
-		ui = new xe::UILayer();
+		xe::UILayer *ui = new xe::UILayer();
 
 		pushLayer(ui);
 	}
 
-	~Editor() override {
-		delete ui;
-	}
-
-private:
-	xe::UILayer *ui;
+	~Editor() override { }
 };
 
 int main() {

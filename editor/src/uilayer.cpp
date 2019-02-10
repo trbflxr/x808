@@ -2,7 +2,6 @@
 // Created by FLXR on 9/7/2018.
 //
 
-#include <GL/glew.h>
 #include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include <xe/utils/logger.hpp>
 #include <xe/gfx/color.hpp>
@@ -18,11 +17,12 @@ namespace xe {
 
 	UILayer::UILayer() {
 		TextureParameters params;
-//	    renderTexture = new Texture("a", L"xe_sandbox_assets/textures/test1.png", params);
 		renderTexture = new Texture("renderTexture", w, h, 0, params, true);
 
 		renderWindow = new FrameBuffer("renderWindow");
 		renderWindow->load({std::make_pair(Attachment::Color0, renderTexture)});
+
+		quad = new fx::Quad(w, h);
 
 		//test
 		camera = new Camera(mat4::ortho(0.0f, w, 0.0f, h, -1.0f, 1000.0f));
@@ -30,7 +30,6 @@ namespace xe {
 
 
 		Texture *tex = new Texture("a", "test1.png", params);
-
 
 		for (int32 x = 0; x < 512; x += 15) {
 			for (int32 y = 0; y < 512; y += 15) {
@@ -57,28 +56,23 @@ namespace xe {
 	}
 
 	void UILayer::render() {
-		renderWindow->bindDraw(Attachment::Color0);
-		Renderer::setViewport(0, 0, w, h);
-
-		Renderer::setClearColor(color::Green);
-		Renderer::clear(RendererBufferColor);
-
-
 		for (const auto &r : renderables) {
 			((RectangleShape *) r)->rotate(0.5f);
 			renderer->submit(r);
 		}
 
 		renderer->render();
-
 		renderer->clear();
 
-//		glColor3f(1, 0, 1);
-//		glBegin(GL_TRIANGLES);
-//		glVertex2f(0.0f, 0.5f);
-//		glVertex2f(-0.5f, -0.5f);
-//		glVertex2f(0.5f, -0.5f);
-//		glEnd();
+
+		//render to buffer
+		renderWindow->bindDraw(Attachment::Color0);
+		Renderer::setViewport(0, 0, w, h);
+
+		static constexpr float color[4] = {0, 1, 0, 1};
+		Renderer::clearBufferF(Attachment::Color0, color);
+
+		quad->renderTexture(renderer->getRenderTexture());
 
 		renderWindow->unbind();
 	}
@@ -131,7 +125,7 @@ namespace xe {
 
 			ImGui::Begin("Render window");
 			ImGui::Text("Preview");
-			ImGui::Image((void *) renderTexture->getHandle(), {512, 512}, {1, 1}, {0, 0});
+			ImGui::Image(reinterpret_cast<void *>(renderTexture->getHandle()), {512, 512}, {1, 1}, {0, 0});
 			ImGui::End();
 		}
 
@@ -151,7 +145,7 @@ namespace xe {
 					opt_flags ^= ImGuiDockNodeFlags_PassthruDockspace;
 
 				ImGui::Separator();
-				if (ImGui::MenuItem("Close DockSpace", nullptr, false, &open)) {
+				if (ImGui::MenuItem("Close DockSpace", nullptr, false)) {
 					open = false;
 				}
 				ImGui::EndMenu();
@@ -163,7 +157,7 @@ namespace xe {
 		ImGui::End();
 	}
 
-	void UILayer::update(float delta) {	}
+	void UILayer::update(float delta) { }
 
 	void UILayer::input(xe::Event &event) { }
 

@@ -7,6 +7,7 @@
 
 
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/batchrenderer2d.hpp>
 
@@ -25,10 +26,13 @@ namespace xe {
 
 		void input(Event &event) override;
 
+		inline const Texture *getRenderTexture() const override { return nullptr; }
+
 	private:
 		//framebuffer
 		FrameBuffer *renderWindow;
 		Texture *renderTexture;
+		fx::Quad *quad;
 
 		//test
 		Camera *camera;
