@@ -18,6 +18,7 @@ namespace xe {
 		void setSize(const vec2 &size);
 
 		bool contains(const vec2 &point) const;
+		bool intersects(const RectangleShape &other) const;
 
 		inline bool isSizeChanged() const { return sizeChanged; }
 		inline void setSizeChanged(bool changed) { sizeChanged = changed; }

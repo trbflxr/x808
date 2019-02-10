@@ -22,9 +22,31 @@ add_executable(sandbox ${SANDBOX_SRC})
 
 target_link_libraries(sandbox xe)
 
-file(COPY
-        xe_sandbox_assets
-        xeconfig
-        pack001.pak
+#shaders
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/pack001.pak")
+    file(COPY pack001.pak DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+else ()
+    message(FATAL_ERROR "You have to build shaders first using spak")
+endif ()
 
-        DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+#config
+if (EXISTS "xeconfig")
+    file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+else ()
+    file(WRITE xeconfig
+            "width=1280\n"
+            "height=720\n"
+            "fullScreen=0\n"
+            "vSync=0\n"
+            "ups=30\n"
+            "fps=0\n"
+            "srgb=1\n"
+            "renderApi=ogl\n"
+            "apiVersion=430\n"
+            "maxTextureUnits=0\n"
+            "maxPointLights2D=50\n")
+
+    file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+endif ()
+
+file(COPY xe_sandbox_assets DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

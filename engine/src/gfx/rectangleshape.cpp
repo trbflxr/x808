@@ -38,4 +38,9 @@ namespace xe {
 		return point > getPosition() - size / 2.0f && point < getPosition() + size / 2.0f;
 	}
 
+	bool RectangleShape::intersects(const RectangleShape &other) const {
+		return (size > other.getPosition() && getPosition() < other.size) ||
+		       (getPosition() > other.size && size < other.getPosition());
+	}
+
 }

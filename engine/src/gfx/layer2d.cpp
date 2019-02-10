@@ -23,18 +23,23 @@ namespace xe {
 	}
 
 	void Layer2D::submit(IRenderable2D *renderable) {
+		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
 		renderer->submit(renderable);
 	}
 
 	void Layer2D::submit(Text *text) {
+		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
 		renderer->submit(text);
 	}
 
 	void Layer2D::submit(Light2D *light) {
+		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
 		renderer->submit(light);
 	}
 
 	void Layer2D::render() {
+		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
+
 		renderScene();
 
 		renderer->render();
@@ -43,6 +48,7 @@ namespace xe {
 	}
 
 	void Layer2D::setAmbientLight(const vec3 &light) {
+		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
 		renderer->setAmbientLight(light);
 	}
 

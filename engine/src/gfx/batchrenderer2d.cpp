@@ -20,17 +20,21 @@ namespace xe {
 		XE_ASSERT(!customTextShader, "Not implemented yet...");
 
 		if (enableLighting) {
+			static constexpr uint lightsUboLocation = 2;
+
 			BufferLayout l;
 			l.push<vec4>("position");
 			l.push<vec4>("color");
 
-			lightUBO = new UniformBuffer(BufferStorage::Dynamic, 2, l, gConfig.maxPointLights2D);
+			lightUBO = new UniformBuffer(BufferStorage::Dynamic, lightsUboLocation, l, gConfig.maxPointLights2D);
 
 			if (customShader) {
 				renderer = new Renderer2D(width, height, camera, customShader);
 			} else {
 				renderer = new Renderer2D(width, height, camera, GETSHADER("dLightRenderer"));
 			}
+
+			renderer->getShader()->bindUniformBlock("Lights", lightsUboLocation);
 
 		} else {
 			renderer = new Renderer2D(width, height, camera, customShader);

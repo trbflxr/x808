@@ -103,6 +103,35 @@ namespace xe {
 		}));
 
 
+		///----- render texture shaders -----///
+		//render texture 1d
+		shaders.emplace("dRenderTexture1D", new Shader("dRenderTexture1D", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture1D_frag"])
+		}));
+
+
+		//render texture 2d
+		shaders.emplace("dRenderTexture2D", new Shader("dRenderTexture2D", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2D_frag"])
+		}));
+
+
+		//render texture 2d array
+		shaders.emplace("dRenderTexture2DArray", new Shader("dRenderTexture2DArray", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2DArray_frag"])
+		}));
+
+
+		//render texture 3d
+		shaders.emplace("dRenderTexture3D", new Shader("dRenderTexture3D", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture3D_frag"])
+		}));
+
+
 		///gl420 shaders
 		if (Context::getRenderAPIVersion() >= 420) {
 			///----- final fx shader -----///
@@ -176,34 +205,6 @@ namespace xe {
 
 
 			///----- render texture shaders -----///
-			//render texture 1d
-			shaders.emplace("dRenderTexture1D", new Shader("dRenderTexture1D", {
-					ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
-					ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture1D_frag"])
-			}));
-
-
-			//render texture 2d
-			shaders.emplace("dRenderTexture2D", new Shader("dRenderTexture2D", {
-					ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
-					ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2D_frag"])
-			}));
-
-
-			//render texture 2d array
-			shaders.emplace("dRenderTexture2DArray", new Shader("dRenderTexture2DArray", {
-					ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
-					ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2DArray_frag"])
-			}));
-
-
-			//render texture 3d
-			shaders.emplace("dRenderTexture3D", new Shader("dRenderTexture3D", {
-					ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
-					ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture3D_frag"])
-			}));
-
-
 			//render texture cube
 			shaders.emplace("dRenderTextureCube", new Shader("dRenderTextureCube", {
 					ShaderFile::fromSource(ShaderType::Vert, sources["renderTextureCube_vert"],

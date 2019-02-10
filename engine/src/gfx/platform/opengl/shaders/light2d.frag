@@ -10,7 +10,7 @@ struct Light {
   vec4 color;
 };
 
-layout (std140, binding = 2) uniform Lights {
+layout (std140) uniform Lights {
   Light light[@MAX_PLIGHTS];
 };
 
