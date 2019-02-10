@@ -56,6 +56,7 @@ include_directories(src)
 
 #engine
 file(GLOB ENGINE_SRC
+        src/animation/*.cpp
         src/app/*.cpp
         src/core/*.cpp
         src/ecs/*.cpp

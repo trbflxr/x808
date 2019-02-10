@@ -8,6 +8,7 @@
 
 #include <xe/gfx/layer2d.hpp>
 #include <xe/gfx/rectangleshape.hpp>
+#include <xe/animation/spriteanimation.hpp>
 
 class TestL2D : public xe::Layer2D {
 public:
@@ -25,6 +26,9 @@ public:
 private:
 	xe::RectangleShape *box0;
 	xe::RectangleShape *box1;
+
+	xe::SpriteAnimation *playerAnimation;
+	xe::RectangleShape *player;
 
 	std::vector<xe::Light2D *> lights;
 	std::vector<xe::IRenderable2D *> renderables;

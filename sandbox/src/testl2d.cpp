@@ -22,6 +22,7 @@ TestL2D::TestL2D() {
 	TextureManager::add(new Texture("3", "test6.png", params));
 	TextureManager::add(new Texture("cosm", "cosmic.png", params));
 	TextureManager::add(new Texture("star", "star.png", params));
+	TextureManager::add(new Texture("anim0", "anim0.png", params));
 
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("bg0", "feelsconflictedman.jpg", params));
@@ -55,6 +56,14 @@ TestL2D::TestL2D() {
 	box1->setColor(color::Yellow);
 	renderables.push_back(box1);
 
+	///animation test
+	playerAnimation = new SpriteAnimation(GETTEXTURE("anim0"), {4, 8}, 1.0f);
+
+	player = new RectangleShape({150.0f, 150.0f}, 3.0f);
+	player->setTexture(GETTEXTURE("anim0"));
+	player->setTextureRect(playerAnimation->getTextureRect());
+	renderables.push_back(player);
+
 
 	Light2D *l0 = new Light2D("l0", {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 150.0f);
 	lights.push_back(l0);
@@ -73,14 +82,6 @@ TestL2D::TestL2D() {
 		lights.push_back(l);
 	}
 
-//	Light2D *l1 = new Light2D("l1", {150.0f, 150.0f}, {1, 0, 0}, 100.0f);
-//	lights.push_back(l1);
-//
-//	Light2D *l2 = new Light2D("l2", {640.0f, 320.0f}, {0.5f, 0.5f, 0.5f}, 50.0f);
-//	lights.push_back(l2);
-//
-//	Light2D *l3 = new Light2D("l3", {640.0f, 600.0f}, {1, 1, 0}, 100.0f);
-//	lights.push_back(l3);
 }
 
 TestL2D::~TestL2D() {
@@ -91,6 +92,8 @@ TestL2D::~TestL2D() {
 	for (const auto &l : lights) {
 		delete l;
 	}
+
+	delete playerAnimation;
 }
 
 void TestL2D::renderScene() {
@@ -114,6 +117,12 @@ void TestL2D::renderImGui() {
 }
 
 void TestL2D::update(float delta) {
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(getCamera()->transform.getPosition()));
+	player->setPosition(pos);
+
+	playerAnimation->update(delta, 0, true);
+	player->setTextureRect(playerAnimation->getTextureRect());
+
 	///update camera
 	vec3 camPos = getCamera()->transform.getPosition();
 
