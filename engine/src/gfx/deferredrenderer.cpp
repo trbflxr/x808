@@ -31,10 +31,12 @@ namespace xe {
 	}
 
 	void DeferredRenderer::updateUBO(const mat4 &view, const mat4 &proj, const vec3 &pos, const vec3 &look) const {
+		cameraUBO->bind();
 		cameraUBO->update(&view, 0);
 		cameraUBO->update(&proj, 1);
 		cameraUBO->update(&pos, 2);
 		cameraUBO->update(&look, 3);
+		cameraUBO->unbind();
 	}
 
 	void DeferredRenderer::render(const Scene *scene, Camera *camera) const {

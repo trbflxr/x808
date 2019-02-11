@@ -26,6 +26,8 @@ namespace xe { namespace internal {
 	private:
 		BufferLayout layout;
 		uint handle;
+
+		bool bound;
 	};
 
 }}

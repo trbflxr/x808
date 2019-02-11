@@ -10,7 +10,8 @@
 namespace xe { namespace internal {
 
 	GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) :
-			layout(layout) {
+			layout(layout),
+			bound(false) {
 
 		glCall(glGenBuffers(1, &handle));
 
@@ -26,10 +27,12 @@ namespace xe { namespace internal {
 	}
 
 	void GLUniformBuffer::bind() {
+		bound = true;
 		glCall(glBindBuffer(GL_UNIFORM_BUFFER, handle));
 	}
 
 	void GLUniformBuffer::unbind() {
+		bound = false;
 		glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
 	}
 
@@ -40,7 +43,9 @@ namespace xe { namespace internal {
 		uint offset = l[index].offset + layoutOffset;
 		uint size = l[index].size * l[index].count;
 
-		glCall(glNamedBufferSubData(handle, offset, size, data));
+		XE_ASSERT(bound, "Error: You must call bind() first");
+
+		glCall(glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data));
 	}
 
 }}

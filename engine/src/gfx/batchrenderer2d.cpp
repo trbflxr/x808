@@ -43,7 +43,7 @@ namespace xe {
 		textRenderer = new TextRenderer(width, height, camera);
 
 		static TextureParameters params(TextureTarget::Tex2D);
-		params.internalFormat = PixelInternalFormat::Depth32fStencil8;
+		params.internalFormat = PixelInternalFormat::DepthComponent16;
 		params.format = PixelFormat::DepthComponent;
 		params.pixelType = PixelType::Float;
 		params.minFilter = TextureMinFilter::Nearest;
@@ -59,7 +59,7 @@ namespace xe {
 		renderTexture = new Texture("r2dRenderTexture", width, height, 0, params, true);
 
 		buffer = new FrameBuffer("r2dBuffer");
-		buffer->load({std::make_pair(Attachment::DepthStencil, depth),
+		buffer->load({std::make_pair(Attachment::Depth, depth),
 		              std::make_pair(Attachment::Color0, renderTexture)});
 	}
 
@@ -133,8 +133,10 @@ namespace xe {
 				vec4 lightPos = vec4(lights[i]->getPosition().x, lights[i]->getPosition().y, 0.0f, 0.0f);
 				vec4 lightColor = vec4(lights[i]->getColor(), lights[i]->getIntensity());
 
+				lightUBO->bind();
 				lightUBO->update(&lightPos, 0, i);
 				lightUBO->update(&lightColor, 1, i);
+				lightUBO->unbind();
 			}
 
 			renderSpritesInternal();

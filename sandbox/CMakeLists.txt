@@ -26,7 +26,7 @@ target_link_libraries(sandbox xe)
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/pack001.pak")
     file(COPY pack001.pak DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 else ()
-    message(FATAL_ERROR "You have to build shaders first using spak")
+    message(WARNING "You have to build shaders first using spak")
 endif ()
 
 #config
