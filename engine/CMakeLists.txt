@@ -112,7 +112,6 @@ target_link_libraries(xe
         spk
         freetype-gl freetype bz2 png libz
         assimp irrxml
-        gorilla openal32
         box2d
         glew)
 

@@ -6,7 +6,6 @@
 #include <xe/app/application.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
-#include <xe/resources/soundmanager.hpp>
 #include <xe/utils/random.hpp>
 #include <xe/gfx/indexedmodel.hpp>
 #include <xe/utils/logger.hpp>
@@ -79,8 +78,8 @@ Test2D::Test2D() {
 	timer.reset();
 	XE_TRACE("Tex load elapsed: ", timer.elapsedMillis(), "ms");
 
-	SoundManager::add(new Sound("test", "xe_sandbox_assets/sounds/test.wav"));
-	SoundManager::add(new Sound("orunec", "xe_sandbox_assets/sounds/orunec.wav"));
+//	SoundManager::add(new Sound("test", "xe_sandbox_assets/sounds/test.wav"));
+//	SoundManager::add(new Sound("orunec", "xe_sandbox_assets/sounds/orunec.wav"));
 
 
 	FontManager::add(new Font("consolata72", "consolata.otf", 72.0f));
@@ -274,24 +273,24 @@ void Test2D::renderImGui() {
 	ImGui::Text("Sound test");
 
 	if (ImGui::Button("test")) {
-		GETSOUND("test")->play();
-		GETSOUND("test")->setGain(0.2f);
+//		GETSOUND("test")->play();
+//		GETSOUND("test")->setGain(0.2f);
 	}
 	ImGui::SameLine();
 
 	if (ImGui::Button("orunec")) {
-		GETSOUND("orunec")->play();
-		GETSOUND("orunec")->setGain(0.2f);
+//		GETSOUND("orunec")->play();
+//		GETSOUND("orunec")->setGain(0.2f);
 	}
 	ImGui::SameLine();
 
 	if (ImGui::Button("orunec looped")) {
-		if (!GETSOUND("orunec")->isPlaying()) {
-			GETSOUND("orunec")->loop();
-			GETSOUND("orunec")->setGain(0.2f);
-		} else {
-			GETSOUND("orunec")->stop();
-		}
+//		if (!GETSOUND("orunec")->isPlaying()) {
+//			GETSOUND("orunec")->loop();
+//			GETSOUND("orunec")->setGain(0.2f);
+//		} else {
+//			GETSOUND("orunec")->stop();
+//		}
 	}
 
 	ImGui::End();

@@ -7,7 +7,6 @@
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/resources/shadermanager.hpp>
-#include <xe/resources/soundmanager.hpp>
 #include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
 #include <app/layerstack.hpp>
@@ -55,7 +54,6 @@ namespace xe {
 		Context::setMaxTextureUnits(config.maxTextureUnits);
 
 		ShaderManager::init();
-		SoundManager::init();
 		FontManager::init();
 		TextureManager::init();
 
@@ -73,10 +71,6 @@ namespace xe {
 	void Application::shutdown() {
 		ImGui::SaveIniSettingsToDisk("imgui.ini");
 		ImGui::xe::shutdown();
-
-		FontManager::clean();
-		TextureManager::clean();
-		ShaderManager::clean();
 	}
 
 	void Application::start() {
@@ -137,8 +131,6 @@ namespace xe {
 			frameTime = frameTimer.elapsedMillis();
 
 			window.update();
-
-			SoundManager::update();
 
 			processEvents();
 
