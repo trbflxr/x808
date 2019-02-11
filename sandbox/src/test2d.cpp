@@ -23,6 +23,8 @@ Test2D::Test2D() {
 	const float width = app.getWindowSize().x;
 	const float height = app.getWindowSize().y;
 
+	Timer timer;
+
 	TextureParameters params;
 
 	TextureManager::add(new Texture("0", "test1.png", params));
@@ -73,6 +75,8 @@ Test2D::Test2D() {
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("repeat", "sp0.png", params));
 
+	timer.reset();
+	XE_TRACE("Tex load elapsed: ", timer.elapsedMillis(), "ms");
 
 	SoundManager::add(new Sound("test", "xe_sandbox_assets/sounds/test.wav"));
 	SoundManager::add(new Sound("orunec", "xe_sandbox_assets/sounds/orunec.wav"));
@@ -98,7 +102,7 @@ Test2D::Test2D() {
 	/// 4 - 102480
 #define sp_size 2
 
-	Timer timer;
+	timer.reset();
 
 #if sp_size == 4
 	for (float x = 0.0f; x < 1280; x += 3.0f) {

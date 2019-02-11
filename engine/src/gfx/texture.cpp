@@ -86,6 +86,10 @@ namespace xe {
 		return texture->getFilePath();
 	}
 
+	bool Texture::hasTransparency() const {
+		return texture->hasTransparency();
+	}
+
 	uint Texture::getWidth() const {
 		return texture->getWidth();
 	}

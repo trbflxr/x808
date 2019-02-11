@@ -30,6 +30,8 @@ namespace xe { namespace internal {
 		virtual const string &getName() const = 0;
 		virtual const string &getFilePath() const = 0;
 
+		virtual bool hasTransparency() const = 0;
+
 		virtual uint getWidth() const = 0;
 		virtual uint getHeight() const = 0;
 		virtual uint getDepth() const = 0;

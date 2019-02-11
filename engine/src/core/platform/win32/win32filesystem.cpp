@@ -11,7 +11,7 @@ namespace xe {
 	void CALLBACK fileIOCompletionRoutine(DWORD errorCode, DWORD numberOfBytesTransfered, LPOVERLAPPED overlapped) { }
 
 	static HANDLE openFileForReading(const string &path) {
-		return CreateFile(toWstring(path).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
+		return CreateFileW(toWstring(path).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
 		                  FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, nullptr);
 	}
 
@@ -28,7 +28,7 @@ namespace xe {
 
 
 	bool FileSystem::exists(const string &file) {
-		DWORD result = GetFileAttributes(toWstring(file).c_str());
+		DWORD result = GetFileAttributesW(toWstring(file).c_str());
 		return !(result == INVALID_FILE_ATTRIBUTES && GetLastError() == ERROR_FILE_NOT_FOUND);
 	}
 
@@ -94,7 +94,7 @@ namespace xe {
 	}
 
 	bool FileSystem::write(const string &file, void *buff) {
-		HANDLE handle = CreateFile(toWstring(file).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW | OPEN_EXISTING,
+		HANDLE handle = CreateFileW(toWstring(file).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW | OPEN_EXISTING,
 		                           FILE_ATTRIBUTE_NORMAL, nullptr);
 		if (handle == INVALID_HANDLE_VALUE) return false;
 

@@ -16,6 +16,7 @@ namespace xe { namespace internal {
 	GLTexture::GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params) :
 			name(name),
 			path("NULL"),
+			transparency(false),
 			width(width),
 			height(height),
 			depth(params.target == TextureTarget::TexCubeMap ? 6 : depth),
@@ -27,6 +28,7 @@ namespace xe { namespace internal {
 	GLTexture::GLTexture(const string &name, const string &path, const TextureParameters &params) :
 			name(name),
 			path(path),
+			transparency(false),
 			width(0),
 			height(0),
 			depth(1),
@@ -156,7 +158,7 @@ namespace xe { namespace internal {
 		byte *outPixels = nullptr;
 
 		uint bits;
-		outPixels = ImageLoader::load(path.c_str(), &width, &height, &bits);
+		outPixels = ImageLoader::load(path.c_str(), &width, &height, &bits, &transparency);
 
 		if (!outPixels) {
 			fail = true;
@@ -173,13 +175,8 @@ namespace xe { namespace internal {
 				XE_CORE_FATAL("[GLTexture]: '", name, "' Unsupported image bit-depth! ", bits);
 			}
 
-			if (bits == 24) {
-				params.internalFormat = PixelInternalFormat::Rgb;
-				params.format = PixelFormat::Rgb;
-			} else {
-				params.internalFormat = PixelInternalFormat::Rgba;
-				params.format = PixelFormat::Rgba;
-			}
+			params.internalFormat = PixelInternalFormat::Rgba;
+			params.format = PixelFormat::Rgba;
 		}
 
 		return outPixels;

@@ -15,8 +15,17 @@ namespace xe {
 
 	class XE_API ImageLoader : NonCopyable {
 	public:
-		static byte *load(const char *file, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
-		static byte *load(const string &file, uint *width = nullptr, uint *height = nullptr, uint *bits = nullptr);
+		static byte *load(const char *file,
+		                  uint *width = nullptr,
+		                  uint *height = nullptr,
+		                  uint *bits = nullptr,
+		                  bool *transparency = nullptr);
+
+		static byte *load(const string &file,
+		                  uint *width = nullptr,
+		                  uint *height = nullptr,
+		                  uint *bits = nullptr,
+		                  bool *transparency = nullptr);
 
 	private:
 		static constexpr const char *basePath = u8"/textures/";

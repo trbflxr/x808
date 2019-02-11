@@ -31,6 +31,8 @@ namespace xe { namespace internal {
 		inline const string &getName() const override { return name; }
 		inline const string &getFilePath() const override { return path; }
 
+		inline bool hasTransparency() const override { return transparency; }
+
 		inline uint getWidth() const override { return width; };
 		inline uint getHeight() const override { return height; };
 		inline uint getDepth() const override { return depth; };
@@ -48,6 +50,8 @@ namespace xe { namespace internal {
 	private:
 		string name;
 		string path;
+
+		bool transparency;
 
 		uint width;
 		uint height;

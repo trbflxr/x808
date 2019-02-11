@@ -116,7 +116,7 @@ namespace xe {
 
 		const Texture *texture = target->getTexture();
 
-		if (texture && texture->getParams().format == PixelFormat::Rgba) {
+		if (texture && texture->hasTransparency()) {
 			transparentTargets.push_back(target);
 		} else {
 			targets.push_back(target);

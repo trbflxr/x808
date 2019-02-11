@@ -92,6 +92,8 @@ namespace xe {
 		const string &getName() const;
 		const string &getFilePath() const;
 
+		bool hasTransparency() const;
+
 		uint getWidth() const;
 		uint getHeight() const;
 		uint getDepth() const;
