@@ -29,8 +29,9 @@ namespace xe { namespace internal {
 			glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(a.first), a.second->getHandle(), 0));
 		}
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			XE_CORE_FATAL("[GLFrameBuffer]: '", name,"' creation failed");
+		glCall(uint result = glCheckFramebufferStatus(GL_FRAMEBUFFER));
+		if (result != GL_FRAMEBUFFER_COMPLETE) {
+			XE_CORE_FATAL("[GLFrameBuffer]: '", name, "' creation failed, code: ", result);
 			XE_ASSERT(false);
 		}
 

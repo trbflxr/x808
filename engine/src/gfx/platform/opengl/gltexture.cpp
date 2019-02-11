@@ -168,8 +168,8 @@ namespace xe { namespace internal {
 			height = internal::DEFAULT_TEXTURE_H;
 
 			outPixels = internal::DEFAULT_TEXTURE;
-			params.format = PixelFormat::Rgb;
-			params.internalFormat = PixelInternalFormat::Rgb;
+			params.format = PixelFormat::Rgba;
+			params.internalFormat = PixelInternalFormat::Rgba;
 		} else {
 			if (bits != 24 && bits != 32) {
 				XE_CORE_FATAL("[GLTexture]: '", name, "' Unsupported image bit-depth! ", bits);

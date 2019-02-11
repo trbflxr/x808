@@ -48,7 +48,6 @@ namespace xe {
 		TextRenderer *textRenderer;
 
 		FrameBuffer *buffer;
-		Texture *depth;
 		Texture *renderTexture;
 
 		bool enableLighting;

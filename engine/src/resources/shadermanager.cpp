@@ -131,16 +131,16 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture3D_frag"])
 		}));
 
+		///----- final fx shader -----///
+		shaders.emplace("dFinalFX", new Shader("dFinalFX", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["finalScene_frag"],
+				                       {sources["fxaa_include"]})
+		}));
+
 
 		///gl420 shaders
 		if (Context::getRenderAPIVersion() >= 420) {
-			///----- final fx shader -----///
-			shaders.emplace("dFinalFX", new Shader("dFinalFX", {
-					ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
-					ShaderFile::fromSource(ShaderType::Frag, sources["finalScene_frag"],
-					                       {sources["fxaa_include"]})
-			}));
-
 
 			///----- gbuffer shaders -----///
 			//includes

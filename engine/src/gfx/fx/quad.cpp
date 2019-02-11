@@ -39,8 +39,11 @@ namespace xe { namespace fx {
 		renderTexture2D = GETSHADER("dRenderTexture2D");
 		renderTexture2DArray = GETSHADER("dRenderTexture2DArray");
 		renderTexture3D = GETSHADER("dRenderTexture3D");
-		renderTextureCube = GETSHADER("dRenderTextureCube");
-		renderTextureCubeArray = GETSHADER("dRenderTextureCubeArray");
+
+		if (Context::getRenderAPIVersion() >= 420) {
+			renderTextureCube = GETSHADER("dRenderTextureCube");
+			renderTextureCubeArray = GETSHADER("dRenderTextureCubeArray");
+		}
 	}
 
 	Quad::~Quad() {

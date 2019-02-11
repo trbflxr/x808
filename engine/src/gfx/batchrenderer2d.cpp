@@ -43,24 +43,19 @@ namespace xe {
 		textRenderer = new TextRenderer(width, height, camera);
 
 		static TextureParameters params(TextureTarget::Tex2D);
-		params.internalFormat = PixelInternalFormat::DepthComponent16;
-		params.format = PixelFormat::DepthComponent;
-		params.pixelType = PixelType::Float;
+		params.internalFormat = PixelInternalFormat::Rgba16;
+		params.format = PixelFormat::Rgba;
+		params.pixelType = PixelType::UnsignedByte;
 		params.minFilter = TextureMinFilter::Nearest;
 		params.magFilter = TextureMagFilter::Nearest;
 		params.wrap = TextureWrap::Clamp;
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;
 
-		depth = new Texture("r2dDepthStencil", width, height, 0, params, true);
-
-		params.internalFormat = PixelInternalFormat::Rgba16f;
-		params.format = PixelFormat::Rgba;
 		renderTexture = new Texture("r2dRenderTexture", width, height, 0, params, true);
 
 		buffer = new FrameBuffer("r2dBuffer");
-		buffer->load({std::make_pair(Attachment::Depth, depth),
-		              std::make_pair(Attachment::Color0, renderTexture)});
+		buffer->load({std::make_pair(Attachment::Color0, renderTexture)});
 	}
 
 	BatchRenderer2D::~BatchRenderer2D() {
@@ -69,7 +64,6 @@ namespace xe {
 
 		delete buffer;
 		delete renderTexture;
-		delete depth;
 	}
 
 	void BatchRenderer2D::submit(const IRenderable2D *target) {
