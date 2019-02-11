@@ -98,8 +98,8 @@ namespace xe {
 		}));
 
 		shaders.emplace("dLightRenderer", new Shader("dLightRenderer", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["light2D_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["light2D_frag"])
+				ShaderFile::fromSource(ShaderType::Vert, sources["lightRenderer2D_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["lightRenderer2D_frag"])
 		}));
 
 
