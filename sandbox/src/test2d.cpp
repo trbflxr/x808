@@ -71,6 +71,7 @@ Test2D::Test2D() {
 	TextureManager::add(new Texture("37", "cosmic.png", params));
 	TextureManager::add(new Texture("38", "test7.png", params));
 	TextureManager::add(new Texture("39", "test8.png", params));
+	TextureManager::add(new Texture("translucent0", "translucent0.png", params));
 
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("repeat", "sp0.png", params));
@@ -223,7 +224,8 @@ Test2D::Test2D() {
 	renderables.push_back(bg);
 
 	star = new RectangleShape({100.0f, 100.0f}, 3.0f);
-	star->setTexture(GETTEXTURE("36"));
+//	star->setTexture(GETTEXTURE("36"));
+	star->setTexture(GETTEXTURE("translucent0"));
 	star->transformation({640.0f, 350.0f});
 	renderables.push_back(star);
 

@@ -32,12 +32,14 @@ namespace xe {
 		if (width) *width = (uint) w;
 		if (height) *height = (uint) h;
 		if (bits) *bits = (uint) bpp * 8;
-		if (transparency) *transparency = false;
 
-		for (int32 i = 3; i < w * h; i += 4) {
-			if (data[i] < 1) {
-				if (transparency) *transparency = true;
-				break;
+		if (transparency) {
+			*transparency = false;
+			for (int32 i = 3; i < w * h; i += 4) {
+				if (data[i] < 255) {
+					*transparency = true;
+					break;
+				}
 			}
 		}
 
