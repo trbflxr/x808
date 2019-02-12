@@ -21,6 +21,7 @@ namespace xe {
 	string XE_API getBlock(const string &str, uint offset = 0);
 
 	string XE_API getFileName(const string &str, bool includeExt = true);
+	string XE_API getFileExt(const string &str);
 
 	string XE_API getStatement(const char *str, const char **outPosition = nullptr);
 

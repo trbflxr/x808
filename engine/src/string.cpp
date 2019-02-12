@@ -45,17 +45,17 @@ namespace xe {
 	}
 
 	string getFileName(const string &str, bool includeExt) {
-		std::string temp = str;
+		string temp = str;
 		char *s = basename(temp.data());
 
 		size_t size = strlen(s);
 
 		if (!includeExt) {
-			int lastDot = -1;
+			int32 lastDot = -1;
 
 			for (size_t i = 0; i < size; ++i) {
 				if (s[i] == '.') {
-					lastDot = static_cast<int>(i);
+					lastDot = static_cast<int32>(i);
 				}
 			}
 
@@ -65,6 +65,12 @@ namespace xe {
 		}
 
 		return s;
+	}
+
+	string getFileExt(const string &str) {
+		const char *dot = strrchr(str.c_str(), '.');
+		if(!dot || dot == str) return "";
+		return string(dot + 1);
 	}
 
 	string getStatement(const char *str, const char **outPosition) {
@@ -113,9 +119,9 @@ namespace xe {
 		return str.find(start) == 0;
 	}
 
-	void replaceAll(string &src, const string &oldVal, const string &newVal){
+	void replaceAll(string &src, const string &oldVal, const string &newVal) {
 		size_t start = 0;
-		while((start = src.find(oldVal, start)) != std::string::npos) {
+		while ((start = src.find(oldVal, start)) != std::string::npos) {
 			src.replace(start, oldVal.length(), newVal);
 			start += newVal.length();
 		}

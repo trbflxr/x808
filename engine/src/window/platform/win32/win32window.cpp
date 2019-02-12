@@ -619,6 +619,12 @@ namespace xe { namespace internal {
 				break;
 			}
 
+			case WM_DEVICECHANGE : {
+				//todo: handle
+				printf("device change\n");
+				break;
+			}
+
 			default: break;
 		}
 	}

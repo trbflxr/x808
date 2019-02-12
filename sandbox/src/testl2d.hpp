@@ -9,6 +9,7 @@
 #include <xe/gfx/layer2d.hpp>
 #include <xe/gfx/rectangleshape.hpp>
 #include <xe/animation/spriteanimation.hpp>
+#include <xe/audio/audiosource.hpp>
 
 class TestL2D : public xe::Layer2D {
 public:
@@ -32,6 +33,8 @@ private:
 
 	std::vector<xe::Light2D *> lights;
 	std::vector<xe::IRenderable2D *> renderables;
+
+	xe::AudioSource *as0;
 };
 
 

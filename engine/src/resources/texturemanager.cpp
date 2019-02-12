@@ -41,7 +41,7 @@ namespace xe {
 	}
 
 	const Texture *TextureManager::get(const string &name) {
-		auto &&it = instance().textures.find(name.data());
+		auto &&it = instance().textures.find(name);
 		if (it == instance().textures.end()) {
 			XE_CORE_ERROR("[TextureManager]: texture '", name, "' not found!");
 

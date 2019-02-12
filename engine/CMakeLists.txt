@@ -58,6 +58,7 @@ include_directories(src)
 file(GLOB ENGINE_SRC
         src/animation/*.cpp
         src/app/*.cpp
+        src/audio/*.cpp
         src/core/*.cpp
         src/ecs/*.cpp
         src/ecs/components/*.cpp
@@ -110,6 +111,7 @@ add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
 
 target_link_libraries(xe
         spk
+        openal32
         freetype-gl freetype bz2 png libz
         assimp irrxml
         box2d

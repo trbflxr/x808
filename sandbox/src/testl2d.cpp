@@ -5,6 +5,7 @@
 #include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
+#include <xe/resources/soundmanager.hpp>
 #include <xe/utils/random.hpp>
 #include "testl2d.hpp"
 
@@ -27,6 +28,9 @@ TestL2D::TestL2D() {
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("bg0", "feelsconflictedman.jpg", params));
 	TextureManager::add(new Texture("bg1", "sp0.png", params));
+
+	SoundManager::add(new Sound("test", "test.wav"));
+	SoundManager::add(new Sound("orunec", "orunec.wav"));
 
 
 	createCamera(width, height, -1.0f, 1000.0f);
@@ -82,6 +86,8 @@ TestL2D::TestL2D() {
 		lights.push_back(l);
 	}
 
+	as0 = new AudioSource("as0", GETSOUND("test"));
+
 }
 
 TestL2D::~TestL2D() {
@@ -94,6 +100,8 @@ TestL2D::~TestL2D() {
 	}
 
 	delete playerAnimation;
+
+	delete as0;
 }
 
 void TestL2D::renderScene() {
@@ -110,10 +118,13 @@ void TestL2D::renderScene() {
 }
 
 void TestL2D::renderImGui() {
-//	ImGui::Begin("Lights", nullptr);
-//
-//
-//	ImGui::End();
+	ImGui::Begin("Audio test");
+
+	if (ImGui::Button("test")) {
+		as0->play();
+	}
+
+	ImGui::End();
 }
 
 void TestL2D::update(float delta) {
