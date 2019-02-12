@@ -6,6 +6,7 @@
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/resources/soundmanager.hpp>
+#include <xe/audio/audiomaster.hpp>
 #include <xe/utils/random.hpp>
 #include "testl2d.hpp"
 
@@ -87,6 +88,10 @@ TestL2D::TestL2D() {
 	}
 
 	as0 = new AudioSource("as0", GETSOUND("test"));
+	as0->setGain(10.0f);
+	as0->setReferenceDistance(10.0f);
+	as0->setRolloffFactor(10.0f);
+//	as0->setMaxDistance(1.0f);
 
 }
 
@@ -124,6 +129,67 @@ void TestL2D::renderImGui() {
 		as0->play();
 	}
 
+	if (ImGui::Button("test loop")) {
+		static bool l = true;
+		as0->setLooping(l);
+		l = !l;
+		XE_TRACE(as0->isLooped());
+	}
+
+	if (ImGui::Button("test stop")) {
+		as0->stop();
+	}
+
+	if (ImGui::Button("test play/pause")) {
+		if (as0->isPlaying()) {
+			as0->pause();
+		} else {
+			as0->play();
+		}
+	}
+
+	if (ImGui::Button("test offset")) {
+		as0->setOffset(0.1f);
+	}
+
+	static uint model = 0;
+	if (ImGui::Button("distance model")) {
+		if (model == 0) {
+			AudioMaster::setDistanceModel(DistanceModel::Inverse);
+		} else if (model == 1) {
+			AudioMaster::setDistanceModel(DistanceModel::InverseClamped);
+		} else if (model == 2) {
+			AudioMaster::setDistanceModel(DistanceModel::Linear);
+		} else if (model == 3) {
+			AudioMaster::setDistanceModel(DistanceModel::LinearClamped);
+		} else if (model == 4) {
+			AudioMaster::setDistanceModel(DistanceModel::Exponent);
+		} else if (model == 5) {
+			AudioMaster::setDistanceModel(DistanceModel::ExponentClamped);
+		}
+
+		++model;
+		if (model == 5) model = 0;
+	}
+
+	static float refDistance = 0.0f;
+	if (ImGui::DragFloat("ref distance", &refDistance, 0.1f)) {
+		if (refDistance < 0.0f) refDistance = 0.0f;
+		as0->setReferenceDistance(refDistance);
+	}
+
+	static float rolloff = 0.0f;
+	if (ImGui::DragFloat("rolloff", &rolloff, 0.1f)) {
+		if (rolloff < 0.0f) rolloff = 0.0f;
+		as0->setRolloffFactor(rolloff);
+	}
+
+	static float maxDistance = 0.0f;
+	if (ImGui::DragFloat("max distance", &maxDistance, 0.1f)) {
+		if (maxDistance < 0.0f) maxDistance = 0.0f;
+		as0->setMaxDistance(maxDistance);
+	}
+
 	ImGui::End();
 }
 
@@ -133,6 +199,9 @@ void TestL2D::update(float delta) {
 
 	playerAnimation->update(delta, 0, true);
 	player->setTextureRect(playerAnimation->getTextureRect());
+
+	static vec2 halfScreen = app.getWindowSize() / 2.0f;
+	as0->setPosition(vec3((halfScreen - pos) * -1, 50.0f));
 
 	///update camera
 	vec3 camPos = getCamera()->transform.getPosition();

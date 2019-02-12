@@ -17,6 +17,39 @@ namespace xe {
 		virtual ~AudioSource();
 
 		void play() const;
+		void pause() const;
+		void stop() const;
+		void rewind() const;
+
+		int32 state() const;
+
+		bool isPlaying() const;
+		bool isPaused() const;
+		bool isStopped() const;
+
+		void setPosition(const vec3 &position) const;
+		vec3 getPosition() const;
+
+		void setOffset(float sec) const;
+		float getOffset() const;
+
+		void setPitch(float pitch) const;
+		float getPitch() const;
+
+		void setGain(float gain) const;
+		float getGain() const;
+
+		void setReferenceDistance(float distance) const;
+		float getReferenceDistance() const;
+
+		void setRolloffFactor(float factor) const;
+		float getRolloffFactor() const;
+
+		void setMaxDistance(float distance) const;
+		float getMaxDistance() const;
+
+		void setLooping(bool loop) const;
+		bool isLooped() const;
 
 		void bindSound(const Sound *sound) const;
 
