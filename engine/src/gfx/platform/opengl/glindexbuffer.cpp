@@ -35,7 +35,9 @@ namespace xe { namespace internal {
 	}
 
 	void GLIndexBuffer::unbind() const {
+#ifdef XE_DEBUG
 		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+#endif
 	}
 
 	void GLIndexBuffer::setData(const uint16 *data, uint count) {
@@ -43,7 +45,8 @@ namespace xe { namespace internal {
 
 		bind();
 		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint16), data, GL_STATIC_DRAW));
-		unbind();
+
+		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
 	void GLIndexBuffer::setData(const uint *data, uint count) {
@@ -51,7 +54,8 @@ namespace xe { namespace internal {
 
 		bind();
 		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint), data, GL_STATIC_DRAW));
-		unbind();
+
+		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
 }}

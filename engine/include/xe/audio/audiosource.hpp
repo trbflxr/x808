@@ -30,6 +30,9 @@ namespace xe {
 		void setPosition(const vec3 &position) const;
 		vec3 getPosition() const;
 
+		void setVelocity(const vec3 &velocity) const;
+		vec3 getVelocity() const;
+
 		void setOffset(float sec) const;
 		float getOffset() const;
 

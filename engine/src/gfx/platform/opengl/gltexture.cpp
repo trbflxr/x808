@@ -70,8 +70,10 @@ namespace xe { namespace internal {
 	void GLTexture::unbind(uint slot) const {
 		static uint target = textureTargetToGL(params.target);
 
+#ifdef XE_DEBUG
 		glCall(glActiveTexture(GL_TEXTURE0 + slot));
 		glCall(glBindTexture(target, 0));
+#endif
 	}
 
 	void GLTexture::setData2D(const void *pixels) const {

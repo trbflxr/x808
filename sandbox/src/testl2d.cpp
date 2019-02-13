@@ -190,6 +190,11 @@ void TestL2D::renderImGui() {
 		as0->setMaxDistance(maxDistance);
 	}
 
+	static float v[3];
+	if (ImGui::DragFloat3("velocity", v, 0.1f)) {
+		as0->setVelocity({v[0], v[1], v[2]});
+	}
+
 	ImGui::End();
 }
 
@@ -201,7 +206,7 @@ void TestL2D::update(float delta) {
 	player->setTextureRect(playerAnimation->getTextureRect());
 
 	static vec2 halfScreen = app.getWindowSize() / 2.0f;
-	as0->setPosition(vec3((halfScreen - pos) * -1, 50.0f));
+	as0->setPosition(vec3((halfScreen - pos) * -1, 150.0f));
 
 	///update camera
 	vec3 camPos = getCamera()->transform.getPosition();

@@ -9,7 +9,7 @@
 #include <xe/resources/shadermanager.hpp>
 #include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
-#include <xe/audio/audiocontext.hpp>
+#include <xe/audio/audiomaster.hpp>
 #include <app/layerstack.hpp>
 #include <app/systemstack.hpp>
 #include <xe/ui/imgui/imgui_impl_xe.hpp>
@@ -58,7 +58,7 @@ namespace xe {
 		FontManager::init();
 		TextureManager::init();
 
-		AudioContext::create();
+		AudioMaster::initialize();
 
 		ImGui::xe::init(window);
 		ImGui::StyleColorsDark();

@@ -11,6 +11,9 @@
 	#include <windows.h>
 #endif
 
+extern "C" { XE_API uint64 NvOptimusEnablement = 0x00000001; }
+extern "C" { XE_API int32 AmdPowerXpressRequestHighPerformance = 1; }
+
 namespace xe {
 
 	const char *renderApiToString(RenderAPI api) {

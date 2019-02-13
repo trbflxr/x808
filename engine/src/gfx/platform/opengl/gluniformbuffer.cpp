@@ -17,7 +17,8 @@ namespace xe { namespace internal {
 
 		GLUniformBuffer::bind();
 		glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride() * size, nullptr, bufferStorageToGL(storage)));
-		unbind();
+
+		glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
 
 		glCall(glBindBufferBase(GL_UNIFORM_BUFFER, bind, handle));
 	}
@@ -33,7 +34,9 @@ namespace xe { namespace internal {
 
 	void GLUniformBuffer::unbind() {
 		bound = false;
+#ifdef XE_DEBUG
 		glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
+#endif
 	}
 
 	void GLUniformBuffer::update(const void *data, uint index, uint layoutIndex) {

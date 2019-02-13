@@ -66,7 +66,9 @@ namespace xe { namespace internal {
 	}
 
 	void GLBaseShader::unbind() const {
+#ifdef XE_DEBUG
 		glCall(glUseProgram(0));
+#endif
 	}
 
 	void GLBaseShader::setUniformBuffer(byte *data, uint size, uint slot) const {
@@ -147,7 +149,7 @@ namespace xe { namespace internal {
 			}
 		}
 
-		unbind();
+		glCall(glUseProgram(0));
 	}
 
 	uint GLBaseShader::getUniformLocation(const string &name, bool runTime) const {

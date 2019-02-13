@@ -70,6 +70,16 @@ namespace xe {
 		return position;
 	}
 
+	void AudioSource::setVelocity(const vec3 &velocity) const {
+		alCall(alSource3f(handle, AL_VELOCITY, velocity.x, velocity.y, velocity.z));
+	}
+
+	vec3 AudioSource::getVelocity() const {
+		vec3 velocity;
+		alCall(alGetSource3f(handle, AL_VELOCITY, &velocity.x, &velocity.y, &velocity.z));
+		return velocity;
+	}
+
 	void AudioSource::setOffset(float sec) const {
 		alCall(alSourcef(handle, AL_SEC_OFFSET, sec));
 	}
