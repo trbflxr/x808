@@ -54,8 +54,13 @@ namespace xe {
 
 		renderTexture = new Texture("r2dRenderTexture", width, height, 0, params, true);
 
+		params.internalFormat = PixelInternalFormat::DepthComponent16;
+		params.format = PixelFormat::DepthComponent;
+		depthTexture = new Texture("r2dDepthTexture", width, height, 0, params, true);
+
 		buffer = new FrameBuffer("r2dBuffer");
-		buffer->load({std::make_pair(Attachment::Color0, renderTexture)});
+		buffer->load({std::make_pair(Attachment::Color0, renderTexture),
+		              std::make_pair(Attachment::Depth, depthTexture)});
 	}
 
 	BatchRenderer2D::~BatchRenderer2D() {
@@ -64,6 +69,7 @@ namespace xe {
 
 		delete buffer;
 		delete renderTexture;
+		delete depthTexture;
 	}
 
 	void BatchRenderer2D::submit(const IRenderable2D *target) {

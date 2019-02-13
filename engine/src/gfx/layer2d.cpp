@@ -15,8 +15,11 @@ namespace xe {
 		camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
 	}
 
-	void Layer2D::createRenderer(uint width, uint height, bool enableLighting,
-	                             Shader *customShader, Shader *customTextShader) {
+	void Layer2D::createRenderer(uint width, uint height,
+	                             bool enableLighting,
+	                             const Shader *customShader,
+	                             const Shader *customTextShader) {
+
 		XE_ASSERT(camera, "Error: 'createCamera' must be called first!")
 
 		renderer = new BatchRenderer2D(width, height, camera, enableLighting, customShader, customTextShader);

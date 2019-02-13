@@ -49,6 +49,7 @@ namespace xe {
 
 		FrameBuffer *buffer;
 		Texture *renderTexture;
+		Texture *depthTexture;
 
 		bool enableLighting;
 		vec3 ambient;

@@ -268,31 +268,6 @@ void Test2D::renderImGui() {
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
 
-
-	//sound section
-	ImGui::Text("Sound test");
-
-	if (ImGui::Button("test")) {
-//		GETSOUND("test")->play();
-//		GETSOUND("test")->setGain(0.2f);
-	}
-	ImGui::SameLine();
-
-	if (ImGui::Button("orunec")) {
-//		GETSOUND("orunec")->play();
-//		GETSOUND("orunec")->setGain(0.2f);
-	}
-	ImGui::SameLine();
-
-	if (ImGui::Button("orunec looped")) {
-//		if (!GETSOUND("orunec")->isPlaying()) {
-//			GETSOUND("orunec")->loop();
-//			GETSOUND("orunec")->setGain(0.2f);
-//		} else {
-//			GETSOUND("orunec")->stop();
-//		}
-	}
-
 	ImGui::End();
 }
 

@@ -22,8 +22,10 @@ namespace xe {
 
 		void createCamera(uint width, uint height, float near, float far);
 
-		void createRenderer(uint width, uint height, bool enableLighting = false,
-		                    Shader *customShader = nullptr, Shader *customTextShader = nullptr);
+		void createRenderer(uint width, uint height,
+		                    bool enableLighting = false,
+		                    const Shader *customShader = nullptr,
+		                    const Shader *customTextShader = nullptr);
 
 		void submit(IRenderable2D *renderable);
 		void submit(Text *text);
