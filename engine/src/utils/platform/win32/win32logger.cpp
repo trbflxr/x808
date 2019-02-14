@@ -2,8 +2,11 @@
 // Created by FLXR on 2/5/2019.
 //
 
-#include <cstdio>
+#ifndef WIN32_LEAN_AND_MEAN
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
+#include <cstdio>
 #include <xe/utils/logger.hpp>
 
 namespace xe {

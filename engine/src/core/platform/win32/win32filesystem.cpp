@@ -2,8 +2,11 @@
 // Created by FLXR on 1/31/2019.
 //
 
-#include <algorithm>
+#ifndef WIN32_LEAN_AND_MEAN
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
+#include <algorithm>
 #include <xe/core/filesystem.hpp>
 
 namespace xe {

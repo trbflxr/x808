@@ -39,5 +39,5 @@ void main() {
     acc += light[i].color.rgb * d;
   }
 
-  color = vec4(diffuse.rgb * acc, diffuse.a);
+  color = vec4(diffuse.rgb * acc, diffuse.a) * color0;
 }

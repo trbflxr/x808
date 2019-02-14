@@ -5,6 +5,9 @@
 #ifndef X808_WIN32WINDOW_HPP
 #define X808_WIN32WINDOW_HPP
 
+#ifndef WIN32_LEAN_AND_MEAN
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 #include <window/platformwindow.hpp>
 

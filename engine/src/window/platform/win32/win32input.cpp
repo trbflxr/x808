@@ -2,6 +2,9 @@
 // Created by FLXR on 7/14/2018.
 //
 
+#ifndef WIN32_LEAN_AND_MEAN
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 #include <xe/window/window.hpp>
 #include <xe/window/keyboard.hpp>

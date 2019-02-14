@@ -2,8 +2,11 @@
 // Created by FLXR on 7/5/2018.
 //
 
-#include <new>
+#ifndef WIN32_LEAN_AND_MEAN
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
+#include <new>
 #include <xe/utils/timer.hpp>
 
 namespace xe {
