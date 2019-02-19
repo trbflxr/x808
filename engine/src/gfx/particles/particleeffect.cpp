@@ -29,14 +29,17 @@ namespace xe {
 
 			s->setColor(color::Red);
 			s->setSize({100, 100});
-			s->setVisible(true);
+			s->setPosition(getPosition());
+			s->spawn(100.0f);
 		}
 	}
 
 	void ParticleEffect::update(float delta) {
-//		for (auto &&p : particles) {
-//			dynamic_cast<Shape *>(p)->rotate(10 * delta);
-//		}
+		for (auto &&p : particles) {
+			if (p->isVisible()) {
+				dynamic_cast<Particle *>(p)->update(delta);
+			}
+		}
 	}
 
 }

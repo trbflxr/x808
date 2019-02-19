@@ -14,11 +14,18 @@ namespace xe {
 	public:
 		explicit Particle(const vec2 &size, float layer);
 
-		
+		void spawn(float maxTime);
+
+		void update(float delta);
 
 	private:
 		float time;
 		float maxTime;
+
+		//todo: multiple states
+		vec2 targetPos;
+		float targetRot;
+		float targetScale;
 	};
 
 }

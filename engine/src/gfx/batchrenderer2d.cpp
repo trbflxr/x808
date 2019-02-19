@@ -197,9 +197,7 @@ namespace xe {
 		          });
 
 		for (const auto &e : effects) {
-			renderer->push(e->toMatrix(), true);
 			renderer->render(e->getRenderables());
-			renderer->pop();
 		}
 
 		effects.clear();
