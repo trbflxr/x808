@@ -7,6 +7,7 @@
 #include "debugui.hpp"
 #include "testb2d.hpp"
 #include "testl2d.hpp"
+#include "testp2d.hpp"
 
 
 static void writeKeyValue(xe::Config &config, const char *key, const char *value) {
@@ -67,17 +68,19 @@ public:
 		xe::VFS::mount("audio", "xe_sandbox_assets/audio/");
 		xe::VFS::mount("shaders", "/");
 
-		DebugUI *ui = new DebugUI();
+//		DebugUI *ui = new DebugUI();
 //		Test3D *t3d = new Test3D(ui);
-		Test2D *t2d = new Test2D();
+//		Test2D *t2d = new Test2D();
 //		TestL2D *tl2d = new TestL2D();
+		TestP2D *tp2d = new TestP2D();
 //		TestB2D *tb2d = new TestB2D();
 
 //		pushLayer(tb2d);
+		pushLayer(tp2d);
 //		pushLayer(tl2d);
-		pushLayer(t2d);
+//		pushLayer(t2d);
 //		pushLayer(t3d);
-		pushOverlay(ui);
+//		pushOverlay(ui);
 	}
 
 	~Test() override { }

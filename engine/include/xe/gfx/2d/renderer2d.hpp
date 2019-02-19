@@ -24,6 +24,7 @@ namespace xe {
 		void flush() override;
 
 		void render(const std::vector<const IRenderable2D *> &targets);
+		void render(const std::vector<IRenderable2D *> &targets);
 
 		inline void enableWireframe(bool flag) { Renderer2D::enableWireframe_ = flag; }
 

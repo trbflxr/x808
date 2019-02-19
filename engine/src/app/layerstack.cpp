@@ -63,21 +63,14 @@ namespace xe {
 		Renderer::setBlendEquation(BlendEquation::Add);
 		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
 
-//		ImGui::Begin("Layers", nullptr);
-
 		Renderer::enableDepthMask(true);
 		Renderer::enableDepthTesting(false);
 		for (auto &&layer : layers) {
 			if (layer->isVisible() && layer->getRenderTexture()) {
 				quad->renderTexture(layer->getRenderTexture());
-//				ImGui::Image(reinterpret_cast<void *>(layer->getRenderTexture()->getHandle()),
-//				             {320, 160}, {0, 1}, {1, 0});
-
 			}
 		}
 		Renderer::enableDepthTesting(true);
-
-//		ImGui::End();
 	}
 
 	void LayerStack::tick() {

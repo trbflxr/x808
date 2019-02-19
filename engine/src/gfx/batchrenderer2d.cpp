@@ -52,14 +52,14 @@ namespace xe {
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;
 
-		renderTexture = new Texture("r2dRenderTexture", width, height, 0, params, true);
+		colorTexture = new Texture("r2dColorTexture", width, height, 0, params, true);
 
 		params.internalFormat = PixelInternalFormat::DepthComponent16;
 		params.format = PixelFormat::DepthComponent;
 		depthTexture = new Texture("r2dDepthTexture", width, height, 0, params, true);
 
 		buffer = new FrameBuffer("r2dBuffer");
-		buffer->load({std::make_pair(Attachment::Color0, renderTexture),
+		buffer->load({std::make_pair(Attachment::Color0, colorTexture),
 		              std::make_pair(Attachment::Depth, depthTexture)});
 	}
 
@@ -68,7 +68,7 @@ namespace xe {
 		delete textRenderer;
 
 		delete buffer;
-		delete renderTexture;
+		delete colorTexture;
 		delete depthTexture;
 	}
 
@@ -97,6 +97,10 @@ namespace xe {
 		lights.push_back(light);
 	}
 
+	void BatchRenderer2D::submit(const ParticleEffect *effect) {
+		effects.push_back(effect);
+	}
+
 	void BatchRenderer2D::setAmbientLight(const vec3 &color) {
 		XE_ASSERT(enableLighting, "Have to create renderer with lighting support for use it");
 		ambient = color;
@@ -107,7 +111,6 @@ namespace xe {
 
 
 	void BatchRenderer2D::render() {
-		if (targets.empty() && transparentTargets.empty()) return;
 
 		renderer->updateCamera();
 
@@ -120,31 +123,36 @@ namespace xe {
 		Renderer::clearBufferF(Attachment::Color0, color);
 		Renderer::clearBufferF(Attachment::Depth, depth);
 
+		if (!targets.empty() || transparentTargets.empty()) {
+			if (enableLighting) {
+				if (!lights.empty()) {
+					int32 size = static_cast<int32>(lights.size());
 
-		if (enableLighting) {
-			if (!lights.empty()) {
-				int32 size = static_cast<int32>(lights.size());
+					renderer->getShader()->setUniform("lightsSize", &size, sizeof(int32));
+					renderer->getShader()->updateUniforms();
+				}
 
-				renderer->getShader()->setUniform("lightsSize", &size, sizeof(int32));
-				renderer->getShader()->updateUniforms();
+				for (uint i = 0; i < lights.size(); ++i) {
+					vec4 lightPos = vec4(lights[i]->getPosition().x, lights[i]->getPosition().y, 0.0f, 0.0f);
+					vec4 lightColor = vec4(lights[i]->getColor(), lights[i]->getIntensity());
+
+					lightUBO->bind();
+					lightUBO->update(&lightPos, 0, i);
+					lightUBO->update(&lightColor, 1, i);
+					lightUBO->unbind();
+				}
+
+				renderSpritesInternal();
+
+				lights.clear();
+
+			} else {
+				renderSpritesInternal();
 			}
+		}
 
-			for (uint i = 0; i < lights.size(); ++i) {
-				vec4 lightPos = vec4(lights[i]->getPosition().x, lights[i]->getPosition().y, 0.0f, 0.0f);
-				vec4 lightColor = vec4(lights[i]->getColor(), lights[i]->getIntensity());
-
-				lightUBO->bind();
-				lightUBO->update(&lightPos, 0, i);
-				lightUBO->update(&lightColor, 1, i);
-				lightUBO->unbind();
-			}
-
-			renderSpritesInternal();
-
-			lights.clear();
-
-		} else {
-			renderSpritesInternal();
+		if (!effects.empty()) {
+			renderEffects();
 		}
 
 		if (!text.empty()) {
@@ -180,6 +188,21 @@ namespace xe {
 			renderer->render(transparentTargets);
 			transparentTargets.clear();
 		}
+	}
+
+	void BatchRenderer2D::renderEffects() {
+		std::sort(effects.begin(), effects.end(),
+		          [](const ParticleEffect *a, const ParticleEffect *b) {
+			          return a->getZ() < b->getZ();
+		          });
+
+		for (const auto &e : effects) {
+			renderer->push(e->toMatrix(), true);
+			renderer->render(e->getRenderables());
+			renderer->pop();
+		}
+
+		effects.clear();
 	}
 
 	void BatchRenderer2D::clear() {

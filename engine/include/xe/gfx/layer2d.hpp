@@ -30,6 +30,7 @@ namespace xe {
 		void submit(IRenderable2D *renderable);
 		void submit(Text *text);
 		void submit(Light2D *light);
+		void submit(ParticleEffect *effect);
 
 		void setAmbientLight(const vec3 &light);
 

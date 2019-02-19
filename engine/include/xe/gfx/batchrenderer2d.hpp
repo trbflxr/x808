@@ -12,6 +12,7 @@
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/textrenderer.hpp>
 #include <xe/gfx/2d/light2d.hpp>
+#include <xe/gfx/particles/particleeffect.hpp>
 
 namespace xe {
 
@@ -26,6 +27,7 @@ namespace xe {
 		void submit(const IRenderable2D *target);
 		void submit(const Text *text);
 		void submit(const Light2D *light);
+		void submit(const ParticleEffect *effect);
 
 		void setAmbientLight(const vec3 &color);
 
@@ -36,10 +38,12 @@ namespace xe {
 		inline Renderer2D *getRenderer2D() const { return renderer; }
 		inline void enableWireframe(bool flag) { renderer->enableWireframe(flag); }
 
-		inline const Texture *getRenderTexture() const { return renderTexture; }
+		inline const Texture *getRenderTexture() const { return colorTexture; }
 
 	private:
 		void renderSpritesInternal();
+
+		void renderEffects();
 
 	private:
 		Camera *camera;
@@ -48,7 +52,7 @@ namespace xe {
 		TextRenderer *textRenderer;
 
 		FrameBuffer *buffer;
-		Texture *renderTexture;
+		Texture *colorTexture;
 		Texture *depthTexture;
 
 		bool enableLighting;
@@ -59,6 +63,7 @@ namespace xe {
 		std::vector<const IRenderable2D *> targets;
 		std::vector<const IRenderable2D *> transparentTargets;
 		std::vector<const Text *> text;
+		std::vector<const ParticleEffect *> effects;
 	};
 
 }

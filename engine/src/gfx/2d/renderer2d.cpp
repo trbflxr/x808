@@ -104,7 +104,22 @@ namespace xe {
 		begin();
 
 		for (const auto &t: targets) {
-			submitInternal(t);
+			if (t->isVisible()) {
+				submitInternal(t);
+			}
+		}
+
+		releaseBuffer();
+		flush();
+	}
+
+	void Renderer2D::render(const std::vector<IRenderable2D *> &targets) {
+		begin();
+
+		for (const auto &t: targets) {
+			if (t->isVisible()) {
+				submitInternal(t);
+			}
 		}
 
 		releaseBuffer();
@@ -133,7 +148,7 @@ namespace xe {
 		const uint color = target->getColor();
 		const Texture *texture = target->getTexture();
 
-		const mat4 transform = *transformationBack * target->getTransformation();
+		const mat4 transform = target->getTransformation() * *transformationBack;
 
 		float textureSlot = 0.0f;
 		if (texture) {

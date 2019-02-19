@@ -3,6 +3,7 @@
 //
 
 #include <xe/gfx/layer2d.hpp>
+#include <xe/gfx/particles/particleeffect.hpp>
 
 namespace xe {
 
@@ -38,6 +39,11 @@ namespace xe {
 	void Layer2D::submit(Light2D *light) {
 		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
 		renderer->submit(light);
+	}
+
+	void Layer2D::submit(ParticleEffect *effect) {
+		XE_ASSERT(renderer, "Error: 'createRenderer' must be called first!")
+		renderer->submit(effect);
 	}
 
 	void Layer2D::render() {
