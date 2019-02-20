@@ -102,11 +102,6 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["lightRenderer2D_frag"])
 		}));
 
-		shaders.emplace("dParticles", new Shader("dParticles", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["particles_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["particles_frag"])
-		}));
-
 
 		///----- render texture shaders -----///
 		//render texture 1d
