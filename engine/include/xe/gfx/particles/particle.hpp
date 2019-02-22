@@ -9,6 +9,7 @@
 #include <vector>
 #include <xe/xeint.hpp>
 #include <xe/gfx/rectangleshape.hpp>
+#include <xe/timeline/ramp.hpp>
 
 namespace xe {
 
@@ -17,27 +18,27 @@ namespace xe {
 	class Particle : public RectangleShape {
 	public:
 		explicit Particle(ParticleEffect *effect, float layer);
+		~Particle() override;
 
-		void spawn(float maxTime);
+		void spawn(float lifeTime);
 
 		void update(float delta);
 
-		void setPositionStates(const std::vector<std::pair<float, vec2>> &states);
-		void setRotationStates(const std::vector<std::pair<float, float>> &states);
-		void setSizeStates(const std::vector<std::pair<float, vec2>> &states);
-		void setColorStates(const std::vector<std::pair<float, vec4>> &states);
+		inline void setRotationRamp(Ramp<float> *ramp) { rotationRamp = ramp; }
+		inline void setTranslationRamp(Ramp<vec2> *ramp) { translationRamp = ramp; }
+		inline void setSizeRamp(Ramp<vec2> *ramp) { sizeRamp = ramp; }
+		inline void setColorRamp(Ramp<vec4> *ramp) { colorRamp = ramp; }
 
 	private:
 		ParticleEffect *effect;
 
 		float time;
-		float maxTime;
+		float lifeTime;
 
-		std::vector<std::pair<float, vec2>> positionStates;
-		std::vector<std::pair<float, float>> rotationStates;
-		std::vector<std::pair<float, vec2>> sizeStates;
-		std::vector<std::pair<float, vec4>> colorStates;
-
+		Ramp<float> *rotationRamp;
+		Ramp<vec2> *translationRamp;
+		Ramp<vec2> *sizeRamp;
+		Ramp<vec4> *colorRamp;
 	};
 
 }

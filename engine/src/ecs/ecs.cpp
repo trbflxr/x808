@@ -3,9 +3,7 @@
 //
 
 #include <xe/ecs/ecs.hpp>
-
-#include "xe/ecs/ecs.hpp"
-#include "xe/utils/logger.hpp"
+#include <xe/utils/logger.hpp>
 
 namespace xe {
 

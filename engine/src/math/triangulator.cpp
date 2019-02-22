@@ -2,7 +2,7 @@
 // Created by FLXR on 9/20/2018.
 //
 
-#include <xe/math/math.hpp>
+#include <xe/math/mathfunc.hpp>
 #include <xe/math/triangulator.hpp>
 
 namespace xe {

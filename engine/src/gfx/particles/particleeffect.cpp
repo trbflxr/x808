@@ -3,6 +3,7 @@
 //
 
 #include <xe/gfx/particles/particleeffect.hpp>
+#include <xe/timeline/ramp.hpp>
 
 namespace xe {
 
@@ -27,29 +28,55 @@ namespace xe {
 		for (auto &&p : particles) {
 			Particle *s = dynamic_cast<Particle *>(p);
 
-			s->setColor(color::Red);
-			s->setSize({100, 100});
-			s->setPosition(getPosition());
+			float duration = 10.0f;
 
-			s->setColorStates({std::make_pair(0.0f, vec4(1, 1, 1, 1)),
-			                   std::make_pair(0.5f, vec4(1, 0, 1, 1)),
-			                   std::make_pair(1.0f, vec4(1, 0, 0, 1))});
 
-			s->setRotationStates({std::make_pair(0.0f, 0.0f),
-			                      std::make_pair(0.5f, 15.0f),
-			                      std::make_pair(1.0f, 45.0f)});
+			Ramp<float> *rotation = new Ramp<float>({std::make_pair(0.0f, 45.0f),
+			                                         std::make_pair(0.5f, 90.0f),
+			                                         std::make_pair(1.0f, -90.0f)},
+			                                        [&](const float &s, const float &e, float t) -> float {
+				                                        return (1.0f - t) * s + t * e;
+			                                        },
+			                                        duration);
 
-			s->setPositionStates({std::make_pair(0.0f, vec2(0.0f, 0.0f)),
-			                      std::make_pair(0.2f, vec2(20.0f, 20.0f)),
-			                      std::make_pair(0.5f, vec2(50.0f, 50.0f)),
-			                      std::make_pair(1.0f, vec2(100.0f, 100.0f))});
+			Ramp<vec2> *translation = new Ramp<vec2>({std::make_pair(0.0f, vec2(100.0f, 200.0f)),
+			                                          std::make_pair(0.2f, vec2(200.0f, 200.0f)),
+			                                          std::make_pair(0.6f, vec2(600.0f, 200.0f)),
+			                                          std::make_pair(1.0f, vec2(200.0f, 100.0f))},
+			                                         [&](const vec2 &s, const vec2 &e, float t) -> vec2 {
+				                                         const float mt = (1.0f - t);
+				                                         return vec2(mt * s.x + t * e.x, mt * s.y + t * e.y);
+			                                         },
+			                                         duration);
 
-			s->setSizeStates({std::make_pair(0.0f, vec2(100.0f, 100.0f)),
-			                  std::make_pair(0.2f, vec2(20.0f, 20.0f)),
-			                  std::make_pair(0.5f, vec2(50.0f, 50.0f)),
-			                  std::make_pair(1.0f, vec2(100.0f, 100.0f))});
+			Ramp<vec2> *size = new Ramp<vec2>({std::make_pair(0.0f, vec2(100.0f, 100.0f)),
+			                                   std::make_pair(0.2f, vec2(200.0f, 200.0f)),
+			                                   std::make_pair(0.5f, vec2(600.0f, 200.0f)),
+			                                   std::make_pair(1.0f, vec2(100.0f, 100.0f))},
+			                                  [&](const vec2 &s, const vec2 &e, float t) -> vec2 {
+				                                  const float mt = (1.0f - t);
+				                                  return vec2(mt * s.x + t * e.x, mt * s.y + t * e.y);
+			                                  },
+			                                  duration);
 
-			s->spawn(3.0f);
+			Ramp<vec4> *color = new Ramp<vec4>({std::make_pair(0.0f, vec4(1.0f, 1.0f, 1.0f, 1.0f)),
+			                                    std::make_pair(0.3f, vec4(1.0f, 0.0f, 0.0f, 1.0f)),
+			                                    std::make_pair(1.0f, vec4(0.0f, 1.0f, 0.0f, 1.0f))},
+			                                   [&](const vec4 &s, const vec4 &e, float t) -> vec4 {
+				                                   const float mt = (1.0f - t);
+				                                   return vec4(mt * s.x + t * e.x,
+				                                               mt * s.y + t * e.y,
+				                                               mt * s.z + t * e.z,
+				                                               mt * s.w + t * e.w);
+			                                   },
+			                                   duration);
+
+			s->setRotationRamp(rotation);
+			s->setTranslationRamp(translation);
+			s->setSizeRamp(size);
+			s->setColorRamp(color);
+
+			s->spawn(duration);
 		}
 	}
 

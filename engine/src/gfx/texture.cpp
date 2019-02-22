@@ -6,7 +6,7 @@
 
 #include <xe/gfx/texture.hpp>
 #include <xe/gfx/context.hpp>
-#include <xe/math/math.hpp>
+#include <xe/math/mathfunc.hpp>
 #include <xe/utils/logger.hpp>
 
 #include "gfx/platform/platformtexture.hpp"

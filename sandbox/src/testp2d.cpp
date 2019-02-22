@@ -26,7 +26,7 @@ TestP2D::TestP2D() {
 	bg->setTextureRect({0.0f, 0.0f, width * 8, height * 8});
 	renderables.push_back(bg);
 
-	effect = new ParticleEffect(10, 10.0f);
+	effect = new ParticleEffect(1, 10.0f);
 	effect->setPosition({width / 2, height / 3});
 	effect->generate();
 }
