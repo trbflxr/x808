@@ -148,7 +148,7 @@ namespace xe {
 		const uint color = target->getColor();
 		const Texture *texture = target->getTexture();
 
-		const mat4 transform = target->getTransformation() * *transformationBack;
+		const mat4 transform = *transformationBack * target->getTransformation();
 
 		float textureSlot = 0.0f;
 		if (texture) {

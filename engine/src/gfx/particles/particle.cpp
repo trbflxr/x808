@@ -35,28 +35,33 @@ namespace xe {
 		time = 0.0f;
 
 		if (rotationRamp) {
+			rotationRamp->reset(lifeTime);
 			setRotation(rotationRamp->getValue());
 		}
 
 		if (translationRamp) {
+			translationRamp->reset(lifeTime);
 			setPosition(translationRamp->getValue());
 		}
 
 		if (sizeRamp) {
+			sizeRamp->reset(lifeTime);
 			setSize(sizeRamp->getValue());
 		}
 
 		if (colorRamp) {
+			colorRamp->reset(lifeTime);
 			setColor(color::encode(colorRamp->getValue()));
 		}
 	}
 
 	void Particle::update(float delta) {
-		time += delta;
-
 		if (time >= lifeTime) {
-//			setVisible(false);
+			setVisible(false);
+			return;
 		}
+
+		time += delta;
 
 		if (rotationRamp && rotationRamp->update(delta)) {
 			setRotation(rotationRamp->getValue());
@@ -73,7 +78,6 @@ namespace xe {
 		if (colorRamp && colorRamp->update(delta)) {
 			setColor(color::encode(colorRamp->getValue()));
 		}
-
 	}
 
 }

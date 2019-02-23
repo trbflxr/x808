@@ -7,9 +7,14 @@
 
 namespace xe {
 
-	ParticleEffect::ParticleEffect(uint count, float z) :
+	ParticleEffect::ParticleEffect(float duration, float change, uint count, bool looped, float z) :
+			duration(duration),
+			change(change),
+			looped(looped),
+			finished(true),
 			count(count),
-			z(z) {
+			z(z),
+			texture(nullptr) {
 
 		for (uint i = 0; i < count; ++i) {
 			Particle *p = new Particle(this, z);
@@ -24,56 +29,81 @@ namespace xe {
 		}
 	}
 
-	void ParticleEffect::generate() {
-		rotationStates.emplace_back(0.0f, 45.0f, 10.0f);
-		rotationStates.emplace_back(0.5f, 90.0f, 20.0f);
-		rotationStates.emplace_back(1.0f, -90.0f, 10.0f);
-
-
-		translationStates.emplace_back(0.0f, vec2(100.0f, 200.0f), vec2(10.0f, 10.0f));
-		translationStates.emplace_back(0.2f, vec2(200.0f, 200.0f), vec2(10.0f, 10.0f));
-		translationStates.emplace_back(0.6f, vec2(600.0f, 200.0f), vec2(10.0f, 10.0f));
-		translationStates.emplace_back(1.0f, vec2(200.0f, 100.0f), vec2(10.0f, 10.0f));
-
-
-		sizeStates.emplace_back(0.0f, vec2(100.0f, 100.0f), vec2(10.0f, 10.0f));
-		sizeStates.emplace_back(0.2f, vec2(200.0f, 200.0f), vec2(10.0f, 10.0f));
-		sizeStates.emplace_back(0.6f, vec2(600.0f, 200.0f), vec2(10.0f, 10.0f));
-		sizeStates.emplace_back(1.0f, vec2(100.0f, 100.0f), vec2(10.0f, 10.0f));
-
-		colorStates.emplace_back(0.0f, vec4(1.0f, 0.0f, 0.0f, 1.0f));
-		colorStates.emplace_back(0.5f, vec4(0.0f, 1.0f, 0.0f, 1.0f));
-		colorStates.emplace_back(1.0f, vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-
+	void ParticleEffect::create() {
 		for (auto &&p : particles) {
 			Particle *s = dynamic_cast<Particle *>(p);
 
-			float duration = 10.0f;
-
-			s->setSize({100, 100});
-			s->setPosition({100, 100});
-
-
-			Ramp<float> *rotation = new Ramp<float>(rotationStates, Ramp<float>::lerp, duration);
-			Ramp<vec2> *translation = new Ramp<vec2>(translationStates, Ramp<vec2>::lerp, duration);
-			Ramp<vec2> *size = new Ramp<vec2>(sizeStates, Ramp<vec2>::lerp, duration);
-			Ramp<vec4> *color = new Ramp<vec4>(colorStates, Ramp<vec4>::lerp, duration);
+			Ramp<float> *rotation = new Ramp<float>(rotationStates, Ramp<float>::lerp);
+			Ramp<vec2> *translation = new Ramp<vec2>(translationStates, Ramp<vec2>::lerp);
+			Ramp<vec2> *size = new Ramp<vec2>(sizeStates, Ramp<vec2>::lerp);
+			Ramp<vec4> *color = new Ramp<vec4>(colorStates, Ramp<vec4>::lerp);
 
 			s->setRotationRamp(rotation);
 			s->setTranslationRamp(translation);
 			s->setSizeRamp(size);
 			s->setColorRamp(color);
 
-			s->spawn(duration);
+			s->setTexture(texture);
 		}
 	}
 
 	void ParticleEffect::update(float delta) {
+		if (finished) return;
+
 		for (auto &&p : particles) {
 			if (p->isVisible()) {
-				dynamic_cast<Particle *>(p)->update(delta);
+				Particle *s = dynamic_cast<Particle *>(p);
+
+				s->update(delta);
+				if (!s->isVisible()) {
+					spawnQueue.push(s);
+
+					if (spawnQueue.size() == count) {
+						finished = true;
+					}
+				}
 			}
+		}
+
+		if (looped) {
+			if (!spawnQueue.empty()) {
+				const float d = random::next<float>(duration - change, duration + change);
+
+				Particle *p = spawnQueue.front();
+				spawnQueue.pop();
+				p->spawn(d);
+			}
+		}
+	}
+
+	void ParticleEffect::play() {
+		if (!finished) return;
+
+		finished = false;
+
+		for (auto &&p : particles) {
+			Particle *s = dynamic_cast<Particle *>(p);
+			const float d = random::next<float>(duration - change, duration + change);
+
+			s->spawn(d);
+		}
+
+		while (!spawnQueue.empty()) {
+			spawnQueue.pop();
+		}
+	}
+
+	void ParticleEffect::stop() {
+		if (finished) return;
+
+		finished = true;
+
+		for (auto &&p : particles) {
+			p->setVisible(false);
+		}
+
+		while (!spawnQueue.empty()) {
+			spawnQueue.pop();
 		}
 	}
 

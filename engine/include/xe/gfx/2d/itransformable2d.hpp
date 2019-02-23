@@ -6,7 +6,9 @@
 #define X808_ITRANSFORMABLE2D_HPP
 
 
-#include <xe/math/math.hpp>
+#include <xe/math/vec2.hpp>
+#include <xe/math/mat4.hpp>
+#include <xe/math/mathfunc.hpp>
 
 namespace xe {
 
@@ -17,7 +19,8 @@ namespace xe {
 				rotation(0.0f),
 				scale_(1.0f, 1.0f),
 				origin(0.0f, 0.0f),
-				dirty(true) { }
+				dirty(true),
+				model(mat4::identity()) { }
 
 
 		inline explicit ITransformable2D(const vec2 &position, float rotationDeg = 0.0f) :
@@ -25,7 +28,8 @@ namespace xe {
 				rotation(rotationDeg),
 				scale_(1.0f, 1.0f),
 				origin(0.0f, 0.0f),
-				dirty(true) { }
+				dirty(true),
+				model(mat4::identity()) { }
 
 		inline void transformation(const vec2 &position, float angleDeg = 0.0f);
 

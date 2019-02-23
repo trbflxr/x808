@@ -6,6 +6,7 @@
 #define X808_SPRITE_HPP
 
 
+#include <xe/math/rect.hpp>
 #include <xe/gfx/texture.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/2d/irenderable2d.hpp>

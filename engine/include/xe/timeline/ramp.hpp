@@ -18,25 +18,21 @@ namespace xe {
 	class Ramp {
 	public:
 		explicit Ramp(const std::vector<std::tuple<float, T, T>> &states,
-		              const std::function<T(const T &, const T &, float)> &transitionFunction,
-		              float duration) :
+		              const std::function<T(const T &, const T &, float)> &transitionFunction) :
 				hasChange(true),
 				hasStates(states.size() > 1),
-				duration(duration),
+				duration(0.0f),
 				transitionFunction(transitionFunction),
 				states(states) {
 
 			XE_ASSERT(!states.empty(), "Must have at least one state!");
-
-			reset();
 		}
 
 		explicit Ramp(const std::vector<std::pair<float, T>> &states,
-		              const std::function<T(const T &, const T &, float)> &transitionFunction,
-		              float duration) :
+		              const std::function<T(const T &, const T &, float)> &transitionFunction) :
 				hasChange(false),
 				hasStates(states.size() > 1),
-				duration(duration),
+				duration(0.0f),
 				transitionFunction(transitionFunction) {
 
 			XE_ASSERT(!states.empty(), "Must have at least one state!");
@@ -44,11 +40,10 @@ namespace xe {
 			for (const auto &s : states) {
 				Ramp::states.emplace_back(s.first, s.second, s.second);
 			}
-
-			reset();
 		}
 
-		void reset() {
+		void reset(float duration) {
+			Ramp::duration = duration;
 			time = 0.0f;
 			totalTime = 0.0f;
 			targetTime = 0.0f;

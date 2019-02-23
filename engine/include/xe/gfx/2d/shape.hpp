@@ -6,6 +6,7 @@
 #define X808_SHAPE_HPP
 
 
+#include <xe/math/rect.hpp>
 #include <xe/gfx/2d/irenderable2d.hpp>
 #include <xe/gfx/2d/itransformable2d.hpp>
 
