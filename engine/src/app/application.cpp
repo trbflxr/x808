@@ -25,7 +25,7 @@ namespace xe {
 		gConfig = config;
 
 		//init random
-		random::nextInt32(0, 1);
+		random::next<int32>(0, 1);
 
 		Context::setRenderAPI(config.renderApi, config.apiVersion);
 

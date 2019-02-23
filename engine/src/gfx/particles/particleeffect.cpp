@@ -25,51 +25,40 @@ namespace xe {
 	}
 
 	void ParticleEffect::generate() {
+		rotationStates.emplace_back(0.0f, 45.0f, 10.0f);
+		rotationStates.emplace_back(0.5f, 90.0f, 20.0f);
+		rotationStates.emplace_back(1.0f, -90.0f, 10.0f);
+
+
+		translationStates.emplace_back(0.0f, vec2(100.0f, 200.0f), vec2(10.0f, 10.0f));
+		translationStates.emplace_back(0.2f, vec2(200.0f, 200.0f), vec2(10.0f, 10.0f));
+		translationStates.emplace_back(0.6f, vec2(600.0f, 200.0f), vec2(10.0f, 10.0f));
+		translationStates.emplace_back(1.0f, vec2(200.0f, 100.0f), vec2(10.0f, 10.0f));
+
+
+		sizeStates.emplace_back(0.0f, vec2(100.0f, 100.0f), vec2(10.0f, 10.0f));
+		sizeStates.emplace_back(0.2f, vec2(200.0f, 200.0f), vec2(10.0f, 10.0f));
+		sizeStates.emplace_back(0.6f, vec2(600.0f, 200.0f), vec2(10.0f, 10.0f));
+		sizeStates.emplace_back(1.0f, vec2(100.0f, 100.0f), vec2(10.0f, 10.0f));
+
+		colorStates.emplace_back(0.0f, vec4(1.0f, 0.0f, 0.0f, 1.0f));
+		colorStates.emplace_back(0.5f, vec4(0.0f, 1.0f, 0.0f, 1.0f));
+		colorStates.emplace_back(1.0f, vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+
 		for (auto &&p : particles) {
 			Particle *s = dynamic_cast<Particle *>(p);
 
 			float duration = 10.0f;
 
+			s->setSize({100, 100});
+			s->setPosition({100, 100});
 
-			Ramp<float> *rotation = new Ramp<float>({std::make_pair(0.0f, 45.0f),
-			                                         std::make_pair(0.5f, 90.0f),
-			                                         std::make_pair(1.0f, -90.0f)},
-			                                        [&](const float &s, const float &e, float t) -> float {
-				                                        return (1.0f - t) * s + t * e;
-			                                        },
-			                                        duration);
 
-			Ramp<vec2> *translation = new Ramp<vec2>({std::make_pair(0.0f, vec2(100.0f, 200.0f)),
-			                                          std::make_pair(0.2f, vec2(200.0f, 200.0f)),
-			                                          std::make_pair(0.6f, vec2(600.0f, 200.0f)),
-			                                          std::make_pair(1.0f, vec2(200.0f, 100.0f))},
-			                                         [&](const vec2 &s, const vec2 &e, float t) -> vec2 {
-				                                         const float mt = (1.0f - t);
-				                                         return vec2(mt * s.x + t * e.x, mt * s.y + t * e.y);
-			                                         },
-			                                         duration);
-
-			Ramp<vec2> *size = new Ramp<vec2>({std::make_pair(0.0f, vec2(100.0f, 100.0f)),
-			                                   std::make_pair(0.2f, vec2(200.0f, 200.0f)),
-			                                   std::make_pair(0.5f, vec2(600.0f, 200.0f)),
-			                                   std::make_pair(1.0f, vec2(100.0f, 100.0f))},
-			                                  [&](const vec2 &s, const vec2 &e, float t) -> vec2 {
-				                                  const float mt = (1.0f - t);
-				                                  return vec2(mt * s.x + t * e.x, mt * s.y + t * e.y);
-			                                  },
-			                                  duration);
-
-			Ramp<vec4> *color = new Ramp<vec4>({std::make_pair(0.0f, vec4(1.0f, 1.0f, 1.0f, 1.0f)),
-			                                    std::make_pair(0.3f, vec4(1.0f, 0.0f, 0.0f, 1.0f)),
-			                                    std::make_pair(1.0f, vec4(0.0f, 1.0f, 0.0f, 1.0f))},
-			                                   [&](const vec4 &s, const vec4 &e, float t) -> vec4 {
-				                                   const float mt = (1.0f - t);
-				                                   return vec4(mt * s.x + t * e.x,
-				                                               mt * s.y + t * e.y,
-				                                               mt * s.z + t * e.z,
-				                                               mt * s.w + t * e.w);
-			                                   },
-			                                   duration);
+			Ramp<float> *rotation = new Ramp<float>(rotationStates, Ramp<float>::lerp, duration);
+			Ramp<vec2> *translation = new Ramp<vec2>(translationStates, Ramp<vec2>::lerp, duration);
+			Ramp<vec2> *size = new Ramp<vec2>(sizeStates, Ramp<vec2>::lerp, duration);
+			Ramp<vec4> *color = new Ramp<vec4>(colorStates, Ramp<vec4>::lerp, duration);
 
 			s->setRotationRamp(rotation);
 			s->setTranslationRamp(translation);

@@ -68,7 +68,7 @@ public:
 		xe::VFS::mount("audio", "xe_sandbox_assets/audio/");
 		xe::VFS::mount("shaders", "/");
 
-//		DebugUI *ui = new DebugUI();
+		DebugUI *ui = new DebugUI();
 //		Test3D *t3d = new Test3D(ui);
 //		Test2D *t2d = new Test2D();
 //		TestL2D *tl2d = new TestL2D();
@@ -80,7 +80,7 @@ public:
 //		pushLayer(tl2d);
 //		pushLayer(t2d);
 //		pushLayer(t3d);
-//		pushOverlay(ui);
+		pushOverlay(ui);
 	}
 
 	~Test() override { }

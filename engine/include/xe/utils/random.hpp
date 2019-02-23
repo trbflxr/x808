@@ -7,35 +7,19 @@
 
 
 #include <random>
-#include <ctime>
 #include <xe/xeint.hpp>
 
 namespace xe {
 
 	class random {
 	public:
-		static int32 nextInt32(int32 low, int32 high) {
-			auto bounds = std::uniform_int_distribution<int32>(low, high);
-			return bounds(get().mt);
-		}
-
-		static uint nextUint(uint low, uint high) {
-			auto bounds = std::uniform_int_distribution<uint>(low, high);
-			return bounds(get().mt);
-		}
-
-		static float nextFloat(float low, float high) {
-			auto bounds = std::uniform_real_distribution<float>(low, high);
-			return bounds(get().mt);
-		}
+		template<typename T>
+		static T next(const T &low, const T &high);
 
 	private:
-		random() : mt(static_cast<uint64>(time(nullptr))) { }
+		random();
 
-		static random &get() {
-			static random r;
-			return r;
-		}
+		static random &get();
 
 	private:
 		std::mt19937_64 mt;

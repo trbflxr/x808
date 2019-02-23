@@ -78,6 +78,7 @@ file(GLOB ENGINE_SRC
         src/objects/*.cpp
         src/resources/*.cpp
         src/systems/*.cpp
+        src/timeline/*.cpp
         src/ui/imgui/*.cpp
         src/utils/*.cpp
         src/window/*.cpp

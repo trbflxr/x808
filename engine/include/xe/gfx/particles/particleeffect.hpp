@@ -6,7 +6,6 @@
 #define X808_PARTICLEEFFECT_HPP
 
 
-#include <vector>
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
 #include <xe/gfx/2d/itransformable2d.hpp>
@@ -32,6 +31,11 @@ namespace xe {
 		float z;
 
 		std::vector<IRenderable2D *> particles;
+
+		std::vector<std::tuple<float, float, float>> rotationStates;
+		std::vector<std::tuple<float, vec2, vec2>> translationStates;
+		std::vector<std::tuple<float, vec2, vec2>> sizeStates;
+		std::vector<std::pair<float, vec4>> colorStates;
 	};
 
 }

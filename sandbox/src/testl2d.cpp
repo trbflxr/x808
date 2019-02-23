@@ -74,14 +74,14 @@ TestL2D::TestL2D() {
 	lights.push_back(l0);
 
 	for (int i = 1; i < 50; ++i) {
-		const float x = random::nextFloat(50, 4000);
-		const float y = random::nextFloat(50, 2000);
+		const float x = random::next<float>(50, 4000);
+		const float y = random::next<float>(50, 2000);
 
-		const float r = random::nextFloat(0, 1);
-		const float g = random::nextFloat(0, 1);
-		const float b = random::nextFloat(0, 1);
+		const float r = random::next<float>(0, 1);
+		const float g = random::next<float>(0, 1);
+		const float b = random::next<float>(0, 1);
 
-		const float s = random::nextFloat(50, 200);
+		const float s = random::next<float>(50, 200);
 
 		Light2D *l = new Light2D("l" + std::to_string(i), {x, y}, {r, g, b}, s);
 		lights.push_back(l);

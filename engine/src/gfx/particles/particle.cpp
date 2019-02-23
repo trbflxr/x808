@@ -16,13 +16,16 @@ namespace xe {
 			lifeTime(0.0f),
 			rotationRamp(nullptr),
 			translationRamp(nullptr),
-			sizeRamp(nullptr) {
+			sizeRamp(nullptr),
+			colorRamp(nullptr) {
 
 	}
 
 	Particle::~Particle() {
 		delete rotationRamp;
 		delete translationRamp;
+		delete sizeRamp;
+		delete colorRamp;
 	}
 
 
@@ -30,6 +33,22 @@ namespace xe {
 		setVisible(true);
 		Particle::lifeTime = lifeTime;
 		time = 0.0f;
+
+		if (rotationRamp) {
+			setRotation(rotationRamp->getValue());
+		}
+
+		if (translationRamp) {
+			setPosition(translationRamp->getValue());
+		}
+
+		if (sizeRamp) {
+			setSize(sizeRamp->getValue());
+		}
+
+		if (colorRamp) {
+			setColor(color::encode(colorRamp->getValue()));
+		}
 	}
 
 	void Particle::update(float delta) {
@@ -39,26 +58,22 @@ namespace xe {
 //			setVisible(false);
 		}
 
-		if (rotationRamp) {
-			rotationRamp->update(delta);
+		if (rotationRamp && rotationRamp->update(delta)) {
 			setRotation(rotationRamp->getValue());
 		}
 
-		if (translationRamp) {
-			translationRamp->update(delta);
+		if (translationRamp && translationRamp->update(delta)) {
 			setPosition(translationRamp->getValue());
 		}
 
-		if (sizeRamp) {
-			sizeRamp->update(delta);
+		if (sizeRamp && sizeRamp->update(delta)) {
 			setSize(sizeRamp->getValue());
 		}
 
-		if (colorRamp) {
-			colorRamp->update(delta);
+		if (colorRamp && colorRamp->update(delta)) {
 			setColor(color::encode(colorRamp->getValue()));
 		}
-		
+
 	}
 
 }

@@ -108,7 +108,7 @@ Test2D::Test2D() {
 	for (float x = 0.0f; x < 1280; x += 3.0f) {
 		for (float y = 0.0f; y < 720; y += 3.0f) {
 			RectangleShape *s = new RectangleShape({2.5f, 2.5f}, 0.0f);
-			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation({x, y});
 
 			renderables.push_back(s);
@@ -120,7 +120,7 @@ Test2D::Test2D() {
 	for (float x = 0.0f; x < 1280; x += 3.9f) {
 		for (float y = 0.0f; y < 720; y += 3.9f) {
 			RectangleShape *s = new RectangleShape({3.4f, 3.4f}, 0.0f);
-			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation({x, y});
 
 			renderables.push_back(s);
@@ -132,7 +132,7 @@ Test2D::Test2D() {
 	for (uint x = 0; x < 1280; x += 8) {
 		for (uint y = 0; y < 720; y += 8) {
 			RectangleShape *s = new RectangleShape({6.0f, 6.0f}, 0.0f);
-			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation(vec2(x + 3.0f, y + 3.0f));
 
 			renderables.push_back(s);
@@ -144,7 +144,7 @@ Test2D::Test2D() {
 	for (int32 x = 0; x < 1280; x += 20) {
 		for (int32 y = 0; y < 720; y += 20) {
 			RectangleShape *s = new RectangleShape({15.0f, 15.0f}, 0.0f);
-			s->setTexture(GETTEXTURE(std::to_string(random::nextUint(0, texCount - 1))));
+			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation(vec2(x + 7.5f, y + 7.5f));
 
 			renderables.push_back(s);

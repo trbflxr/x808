@@ -7,57 +7,119 @@
 
 
 #include <vector>
+#include <tuple>
 #include <functional>
+#include <xe/utils/random.hpp>
+#include <xe/utils/assert.hpp>
 
 namespace xe {
 
-	template<class T>
+	template<typename T>
 	class Ramp {
 	public:
-		explicit Ramp(const std::vector<std::pair<float, T>> &states,
+		explicit Ramp(const std::vector<std::tuple<float, T, T>> &states,
 		              const std::function<T(const T &, const T &, float)> &transitionFunction,
 		              float duration) :
-
+				hasChange(true),
+				hasStates(states.size() > 1),
 				duration(duration),
-				totalTime(0.0f),
-				time(0.0f),
-				targetTime(0.0f),
-				currentState(0),
-				targetState(1),
 				transitionFunction(transitionFunction),
 				states(states) {
 
-			value = states[currentState].second;
+			XE_ASSERT(!states.empty(), "Must have at least one state!");
 
-			if (states.size() > 1) {
-				targetTime = states[targetState].first * duration;
+			reset();
+		}
+
+		explicit Ramp(const std::vector<std::pair<float, T>> &states,
+		              const std::function<T(const T &, const T &, float)> &transitionFunction,
+		              float duration) :
+				hasChange(false),
+				hasStates(states.size() > 1),
+				duration(duration),
+				transitionFunction(transitionFunction) {
+
+			XE_ASSERT(!states.empty(), "Must have at least one state!");
+
+			for (const auto &s : states) {
+				Ramp::states.emplace_back(s.first, s.second, s.second);
+			}
+
+			reset();
+		}
+
+		void reset() {
+			time = 0.0f;
+			totalTime = 0.0f;
+			targetTime = 0.0f;
+			index = 0;
+
+			if (hasChange) {
+				const T cv = std::get<1>(states[index]);
+				const T cc = std::get<2>(states[index]);
+
+				value = random::next<T>(cv - cc, cv + cc);
+				currentValue = value;
+
+				if (states.size() > 1) {
+					targetTime = std::get<0>(states[index + 1]) * duration;
+
+					const T tv = std::get<1>(states[index + 1]);
+					const T tc = std::get<2>(states[index + 1]);
+
+					targetValue = random::next<T>(tv - tc, tv + tc);
+				}
+			} else {
+				value = std::get<1>(states[index]);
+				currentValue = value;
+
+				if (states.size() > 1) {
+					targetTime = std::get<0>(states[index + 1]) * duration;
+					targetValue = std::get<1>(states[index + 1]);
+				}
 			}
 		}
 
-		void update(float delta) {
-			if (states.size() == 1 || totalTime >= duration) return;
+		bool update(float delta) {
+			if (!hasStates || states.size() == 1 || totalTime >= duration) return false;
 
 			totalTime += delta;
 
 			if (time <= 1.0f) {
 				time += delta / targetTime;
 
-				value = transitionFunction(states[currentState].second, states[targetState].second, time);
+				value = transitionFunction(currentValue, targetValue, time);
 
 			} else {
-				if (states.size() > targetState + 1) {
-					currentState = targetState;
-					targetState++;
+				if (states.size() > index + 2) {
+					index++;
 
-					targetTime = states[targetState].first * duration - totalTime;
+					targetTime = std::get<0>(states[index + 1]) * duration - totalTime;
 					time = 0.0f;
+
+					currentValue = targetValue;
+					if (hasChange) {
+						const T tv = std::get<1>(states[index + 1]);
+						const T tc = std::get<2>(states[index + 1]);
+
+						targetValue = random::next<T>(tv - tc, tv + tc);
+					} else {
+						targetValue = std::get<1>(states[index + 1]);
+					}
 				}
 			}
+
+			return true;
 		}
 
 		inline const T &getValue() const { return value; }
 
+		static T lerp(const T &s, const T &e, float t);
+
 	private:
+		bool hasChange;
+		bool hasStates;
+
 		float duration;
 		float totalTime;
 
@@ -66,11 +128,13 @@ namespace xe {
 
 		T value;
 
-		size_t currentState;
-		size_t targetState;
+		T currentValue;
+		T targetValue;
+
+		size_t index;
 
 		std::function<T(const T &, const T &, float)> transitionFunction;
-		std::vector<std::pair<float, T>> states;
+		std::vector<std::tuple<float, T, T>> states;
 	};
 
 }
