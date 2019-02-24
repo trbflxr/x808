@@ -7,7 +7,7 @@
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/utils/random.hpp>
-#include <xe/gfx/rectangleshape.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
 #include "uilayer.hpp"
 
 namespace xe {
@@ -26,14 +26,14 @@ namespace xe {
 
 		//test
 		camera = new Camera(mat4::ortho(0.0f, w, 0.0f, h, -1.0f, 1000.0f));
-		renderer = new BatchRenderer2D(w, h, camera);
+		renderer = new Renderer2D(w, h, camera);
 
 
 		Texture *tex = new Texture("a", "test1.png", params);
 
 		for (int32 x = 0; x < 512; x += 15) {
 			for (int32 y = 0; y < 512; y += 15) {
-				RectangleShape *s = new RectangleShape({10.0f, 10.0f}, 0.0f);
+				RectangleShape *s = new RectangleShape({10.0f, 10.0f});
 				s->setTexture(tex);
 				s->transformation(vec2(x, y));
 
@@ -56,15 +56,6 @@ namespace xe {
 	}
 
 	void UILayer::render() {
-		for (const auto &r : renderables) {
-			((RectangleShape *) r)->rotate(0.5f);
-			renderer->submit(r);
-		}
-
-		renderer->render();
-		renderer->clear();
-
-
 		//render to buffer
 		renderWindow->bindDraw(Attachment::Color0);
 		Renderer::setViewport(0, 0, w, h);
@@ -72,7 +63,17 @@ namespace xe {
 		static constexpr float color[4] = {0, 1, 0, 1};
 		Renderer::clearBufferF(Attachment::Color0, color);
 
-		quad->renderTexture(renderer->getRenderTexture());
+
+		renderer->begin();
+
+		for (const auto &r : renderables) {
+			((RectangleShape *) r)->rotate(0.5f);
+			renderer->submit(r);
+		}
+
+		renderer->end();
+		renderer->flush();
+
 
 		renderWindow->unbind();
 	}

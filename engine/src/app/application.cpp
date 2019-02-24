@@ -52,8 +52,6 @@ namespace xe {
 		window.setFramerateLimit(config.fps);
 		window.setVerticalSyncEnabled(config.vSync);
 
-		Context::setMaxTextureUnits(config.maxTextureUnits);
-
 		ShaderManager::init();
 		FontManager::init();
 		TextureManager::init();

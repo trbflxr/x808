@@ -6,7 +6,7 @@
 #define X808_POLYGONCOLLIDER2D_HPP
 
 
-#include <xe/gfx/polygon.hpp>
+#include <xe/gfx/2d/polygon.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 
 class b2PolygonShape;

@@ -6,15 +6,16 @@
 #define X808_TEST2D_HPP
 
 
-#include <xe/gfx/layer2d.hpp>
-#include <xe/gfx/rectangleshape.hpp>
+#include <xe/gfx/layer.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
 
-class Test2D : public xe::Layer2D {
+class Test2D : public xe::Layer {
 public:
 	explicit Test2D();
 	~Test2D() override;
 
-	void renderScene() override;
+	void render() override;
 
 	void renderImGui() override;
 
@@ -26,6 +27,9 @@ private:
 	void addShellCommands();
 
 private:
+	xe::Camera *camera;
+	xe::Renderer2D *renderer;
+
 	xe::RectangleShape *star;
 	xe::Text *inputText;
 

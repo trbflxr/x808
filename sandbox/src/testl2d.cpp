@@ -34,28 +34,27 @@ TestL2D::TestL2D() {
 	SoundManager::add(new Sound("orunec", "orunec.wav"));
 
 
-	createCamera(width, height, -1.0f, 1000.0f);
-	createRenderer(width, height, true);
-	setAmbientLight({0.05f, 0.05f, 0.05f});
+	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
+	renderer = new Renderer2D(width, height, camera, true);
+	renderer->setAmbientLight({0.1f, 0.1f, 0.1f});
 
-
-	RectangleShape *bg = new RectangleShape({width * 4, height * 4}, 0.5f);
+	RectangleShape *bg = new RectangleShape({width * 4, height * 4});
 	bg->setTexture(GETTEXTURE("bg0"));
 	bg->transformation({width * 4 / 2.0f, height * 4 / 2.0f});
 	bg->setTextureRect({0.0f, 0.0f, width * 8, height * 8});
 	renderables.push_back(bg);
 
-	RectangleShape *jdm = new RectangleShape({100.0f, 100.0f}, 1.0f);
+	RectangleShape *jdm = new RectangleShape({100.0f, 100.0f});
 	jdm->setTexture(GETTEXTURE("star"));
 	jdm->transformation({800.0f, 350.0f});
 	renderables.push_back(jdm);
 
-	box0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
+	box0 = new RectangleShape({100.0f, 100.0f});
 	box0->setTexture(GETTEXTURE("jdm"));
 	box0->transformation({640.0f, 350.0f});
 	renderables.push_back(box0);
 
-	box1 = new RectangleShape({100.0f, 100.0f}, 2.0f);
+	box1 = new RectangleShape({100.0f, 100.0f});
 	box1->setTexture(GETTEXTURE("cosm"));
 	box1->transformation({340.0f, 350.0f});
 	box1->setColor(color::Yellow);
@@ -64,7 +63,7 @@ TestL2D::TestL2D() {
 	///animation test
 	playerAnimation = new SpriteAnimation(GETTEXTURE("anim0"), {4, 8}, 1.0f);
 
-	player = new RectangleShape({150.0f, 150.0f}, 3.0f);
+	player = new RectangleShape({150.0f, 150.0f});
 	player->setTexture(GETTEXTURE("anim0"));
 	player->setTextureRect(playerAnimation->getTextureRect());
 	renderables.push_back(player);
@@ -96,6 +95,9 @@ TestL2D::TestL2D() {
 }
 
 TestL2D::~TestL2D() {
+	delete camera;
+	delete renderer;
+
 	for (const auto &r : renderables) {
 		delete r;
 	}
@@ -109,17 +111,22 @@ TestL2D::~TestL2D() {
 	delete as0;
 }
 
-void TestL2D::renderScene() {
-	vec2 pos = Mouse::getPosition(window) + vec2(getCamera()->transform.getPosition());
+void TestL2D::render() {
+	vec2 pos = Mouse::getPosition(window) + vec2(camera->transform.getPosition());
 	lights[0]->setPosition(pos);
 
-	for (const auto &r : renderables) {
-		submit(r);
+	for (const auto &l : lights) {
+		renderer->useLight(l);
 	}
 
-	for (const auto &l : lights) {
-		submit(l);
+	renderer->begin();
+
+	for (auto &&r : renderables) {
+		renderer->submit(r);
 	}
+
+	renderer->end();
+	renderer->flush();
 }
 
 void TestL2D::renderImGui() {
@@ -199,7 +206,7 @@ void TestL2D::renderImGui() {
 }
 
 void TestL2D::update(float delta) {
-	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(getCamera()->transform.getPosition()));
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
 	player->setPosition(pos);
 
 	playerAnimation->update(delta, 0, true);
@@ -209,7 +216,7 @@ void TestL2D::update(float delta) {
 	as0->setPosition(vec3((halfScreen - pos) * -1, 150.0f));
 
 	///update camera
-	vec3 camPos = getCamera()->transform.getPosition();
+	vec3 camPos = camera->transform.getPosition();
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
 		camPos.x += 1000 * delta;
@@ -223,9 +230,9 @@ void TestL2D::update(float delta) {
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
 		camPos.y -= 1000 * delta;
 	}
-	getCamera()->transform.setPosition(camPos);
+	camera->transform.setPosition(camPos);
 
-	getCamera()->update();
+	camera->update();
 }
 
 void TestL2D::input(xe::Event &event) { }

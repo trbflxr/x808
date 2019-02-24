@@ -7,17 +7,16 @@
 
 namespace xe {
 
-	ParticleEffect::ParticleEffect(float duration, float change, uint count, bool looped, float z) :
+	ParticleEffect::ParticleEffect(float duration, float change, uint count, bool looped) :
 			duration(duration),
 			change(change),
 			looped(looped),
 			finished(true),
 			count(count),
-			z(z),
 			texture(nullptr) {
 
 		for (uint i = 0; i < count; ++i) {
-			Particle *p = new Particle(this, z);
+			Particle *p = new Particle(this);
 			p->setVisible(false);
 			particles.push_back(p);
 		}

@@ -75,10 +75,8 @@ namespace xe { namespace internal {
 	}
 
 	void GLShaderFile::setConstants(string &source) {
-		const string str0 = "@MAX_TEXTURES";
 		const string str1 = "@MAX_PLIGHTS";
 
-		replaceAll(source, str0, std::to_string(Context::getMaxTextureUnits()));
 		replaceAll(source, str1, std::to_string(gConfig.maxPointLights2D));
 	}
 

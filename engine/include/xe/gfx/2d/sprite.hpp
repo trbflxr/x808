@@ -16,7 +16,7 @@ namespace xe {
 
 	class XE_API Sprite : public IRenderable2D, public ITransformable2D {
 	public:
-		explicit Sprite(const Texture *texture, float layer = 0.0f);
+		explicit Sprite(const Texture *texture);
 		~Sprite() override;
 
 		inline const Texture *getTexture() const override { return texture; }
@@ -30,8 +30,6 @@ namespace xe {
 
 		inline uint getIndicesCount() const override { return 6; }
 		inline const uint *getIndices() const override { return indices; }
-
-		void setLayer(float layer) override;
 
 		inline const mat4 &getTransformation() const override { return toMatrix(); }
 

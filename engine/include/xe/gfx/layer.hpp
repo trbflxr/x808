@@ -33,8 +33,6 @@ namespace xe {
 
 		virtual void input(Event &event) { }
 
-		virtual const Texture *getRenderTexture() const = 0;
-
 	protected:
 		explicit Layer() :
 				app(Application::get()),

@@ -33,9 +33,6 @@ namespace xe {
 			Context::apiVersion = version;
 		}
 
-		static inline uint getMaxTextureUnits() { return maxTextureUnits; }
-		static void setMaxTextureUnits(uint size);
-
 		static GAPIInfo getInfo() { return context->getInfoInternal(); }
 
 	protected:
@@ -47,8 +44,6 @@ namespace xe {
 		static Context *context;
 		static RenderAPI api;
 		static uint apiVersion;
-
-		static uint maxTextureUnits;
 	};
 
 }

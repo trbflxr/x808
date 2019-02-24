@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <xe/xeint.hpp>
-#include <xe/gfx/rectangleshape.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
 #include <xe/timeline/ramp.hpp>
 
 namespace xe {
@@ -17,7 +17,7 @@ namespace xe {
 
 	class Particle : public RectangleShape {
 	public:
-		explicit Particle(ParticleEffect *effect, float layer);
+		explicit Particle(ParticleEffect *effect);
 		~Particle() override;
 
 		void spawn(float lifeTime);

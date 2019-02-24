@@ -14,8 +14,8 @@ namespace xe {
 
 	class XE_API Polygon : public IRenderable2D, public ITransformable2D {
 	public:
-		explicit Polygon(float layer = 0.0f);
-		explicit Polygon(const std::vector<vec2> &points, float layer = 0.0f);
+		explicit Polygon();
+		explicit Polygon(const std::vector<vec2> &points);
 
 		void reshape(const std::vector<vec2> &points);
 
@@ -35,8 +35,6 @@ namespace xe {
 		inline const uint *getIndices() const override { return indices.data(); }
 
 		inline const vec2 *getRawPoints() const { return points.data(); }
-
-		void setLayer(float layer) override;
 
 		inline const mat4 &getTransformation() const override { return toMatrix(); }
 

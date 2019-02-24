@@ -7,9 +7,8 @@
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/utils/random.hpp>
-#include <xe/gfx/indexedmodel.hpp>
 #include <xe/utils/logger.hpp>
-#include <xe/gfx/circleshape.hpp>
+#include <xe/gfx/2d/circleshape.hpp>
 #include <xe/systems/shell.hpp>
 #include <xe/ui/imgui/imgui_impl_xe.hpp>
 #include "test2d.hpp"
@@ -78,10 +77,6 @@ Test2D::Test2D() {
 	timer.reset();
 	XE_TRACE("Tex load elapsed: ", timer.elapsedMillis(), "ms");
 
-//	SoundManager::add(new Sound("test", "xe_sandbox_assets/sounds/test.wav"));
-//	SoundManager::add(new Sound("orunec", "xe_sandbox_assets/sounds/orunec.wav"));
-
-
 	FontManager::add(new Font("consolata72", "consolata.otf", 72.0f));
 	FontManager::add(new Font("consolata32", "consolata.otf", 32.0f));
 	FontManager::add(new Font("fogsans72", "fogsans.otf", 72.0f));
@@ -89,10 +84,10 @@ Test2D::Test2D() {
 	FontManager::add(new Font("robotoregular72", "robotoregular.ttf", 72.0f));
 	FontManager::add(new Font("robotobold72", "robotobold.ttf", 72.0f));
 
-	uint texCount = 40;
+	uint texCount = 1;
 
-	createCamera(width, height, -1.0f, 1000.0f);
-	createRenderer(width, height);
+	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
+	renderer = new Renderer2D(width, height, camera);
 
 	uint sprites = 0;
 
@@ -107,7 +102,7 @@ Test2D::Test2D() {
 #if sp_size == 4
 	for (float x = 0.0f; x < 1280; x += 3.0f) {
 		for (float y = 0.0f; y < 720; y += 3.0f) {
-			RectangleShape *s = new RectangleShape({2.5f, 2.5f}, 0.0f);
+			RectangleShape *s = new RectangleShape({2.5f, 2.5f});
 			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation({x, y});
 
@@ -119,7 +114,7 @@ Test2D::Test2D() {
 #elif sp_size == 3
 	for (float x = 0.0f; x < 1280; x += 3.9f) {
 		for (float y = 0.0f; y < 720; y += 3.9f) {
-			RectangleShape *s = new RectangleShape({3.4f, 3.4f}, 0.0f);
+			RectangleShape *s = new RectangleShape({3.4f, 3.4f});
 			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation({x, y});
 
@@ -131,7 +126,7 @@ Test2D::Test2D() {
 #elif sp_size == 2
 	for (uint x = 0; x < 1280; x += 8) {
 		for (uint y = 0; y < 720; y += 8) {
-			RectangleShape *s = new RectangleShape({6.0f, 6.0f}, 0.0f);
+			RectangleShape *s = new RectangleShape({6.0f, 6.0f});
 			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation(vec2(x + 3.0f, y + 3.0f));
 
@@ -143,7 +138,7 @@ Test2D::Test2D() {
 #elif sp_size == 1
 	for (int32 x = 0; x < 1280; x += 20) {
 		for (int32 y = 0; y < 720; y += 20) {
-			RectangleShape *s = new RectangleShape({15.0f, 15.0f}, 0.0f);
+			RectangleShape *s = new RectangleShape({15.0f, 15.0f});
 			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
 			s->transformation(vec2(x + 7.5f, y + 7.5f));
 
@@ -206,30 +201,30 @@ Test2D::Test2D() {
 	t4->setPosition({10.0f, height - 50.0f});
 	text.push_back(t4);
 
-	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f}, 2.0f);
+	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f});
 	s0->setTexture(GETTEXTURE("35"));
 	s0->transformation({640.0f, 420.0f});
 	renderables.push_back(s0);
 
-	RectangleShape *s1 = new RectangleShape({100.0f, 100.0f}, 4.0f);
+	RectangleShape *s1 = new RectangleShape({100.0f, 100.0f});
 	s1->setTexture(GETTEXTURE("37"));
 	s1->transformation({640.0f, 350.0f});
 	renderables.push_back(s1);
 
-	RectangleShape *bg = new RectangleShape({width, height}, 0.0f);
+	RectangleShape *bg = new RectangleShape({width, height});
 	bg->setTexture(GETTEXTURE("repeat"));
 	bg->transformation({width + width / 2.0f, height / 2.0f});
 	bg->setTextureRect({0.0f, 0.0f, width, height});
 	renderables.push_back(bg);
 
-	star = new RectangleShape({100.0f, 100.0f}, 3.0f);
+	star = new RectangleShape({100.0f, 100.0f});
 //	star->setTexture(GETTEXTURE("36"));
 	star->setTexture(GETTEXTURE("translucent0"));
 	star->transformation({640.0f, 350.0f});
 	renderables.push_back(star);
 
 	//circle test
-	CircleShape *c0 = new CircleShape(50.0f, 2.0f);
+	CircleShape *c0 = new CircleShape(50.0f);
 	c0->setTexture(GETTEXTURE("1"));
 	c0->transformation({710.0f, 350.0f});
 	renderables.push_back(c0);
@@ -238,6 +233,9 @@ Test2D::Test2D() {
 }
 
 Test2D::~Test2D() {
+	delete camera;
+	delete renderer;
+
 	for (const auto &r : renderables) {
 		delete r;
 	}
@@ -247,15 +245,21 @@ Test2D::~Test2D() {
 	}
 }
 
-void Test2D::renderScene() {
+void Test2D::render() {
+	//sprites
+	renderer->begin();
+
 	for (const auto &r : renderables) {
 //		((RectangleShape *) r)->rotate(0.5f);
-		submit(r);
+		renderer->submit(r);
 	}
 
 	for (const auto &t : text) {
-		submit(t);
+		renderer->submit(t);
 	}
+
+	renderer->end();
+	renderer->flush();
 }
 
 void Test2D::renderImGui() {
@@ -272,12 +276,12 @@ void Test2D::renderImGui() {
 }
 
 void Test2D::update(float delta) {
-	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(getCamera()->transform.getPosition()));
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
 
 	star->setPosition(pos);
 
 	///update camera
-	vec3 camPos = getCamera()->transform.getPosition();
+	vec3 camPos = camera->transform.getPosition();
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
 		camPos.x += 1000 * delta;
@@ -291,9 +295,9 @@ void Test2D::update(float delta) {
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
 		camPos.y -= 1000 * delta;
 	}
-	getCamera()->transform.setPosition(camPos);
+	camera->transform.setPosition(camPos);
 
-	getCamera()->update();
+	camera->update();
 }
 
 void Test2D::input(xe::Event &event) {
@@ -349,7 +353,7 @@ void Test2D::addShellCommands() {
 			return "[E]Bad args. Type r2d_wireframe -h for help";
 		}
 
-		getRenderer()->getRenderer2D()->enableWireframe(enable);
+		renderer->enableWireframe(enable);
 
 		return "";
 	});

@@ -26,23 +26,23 @@ TestB2D::TestB2D() {
 
 
 	//create camera
-	createCamera(width, height, -1.0f, 1000.0f);
-	createRenderer(width, height);
+	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
+	renderer = new Renderer2D(width, height, camera);
 
 	world = new PhysicsWorld2D({0.0f, -9.8f});
 
 	//rectangles
-	box = new RectangleShape({50.0f, 50.0f}, 1.0f);
+	box = new RectangleShape({50.0f, 50.0f});
 	box->setTexture(GETTEXTURE("0"));
 	box->transformation({400.0f, 400.0f});
 	renderables.push_back(box);
 
-	ground = new RectangleShape({500.0f, 5.0f}, 0.1f);
+	ground = new RectangleShape({500.0f, 5.0f});
 	ground->setTexture(GETTEXTURE("3"));
 	ground->transformation({400.0f, 50.0f}, 20.0f);
 	renderables.push_back(ground);
 
-	jdm = new RectangleShape({50.0f, 50.0f}, 2.0f);
+	jdm = new RectangleShape({50.0f, 50.0f});
 	jdm->setTexture(GETTEXTURE("1"));
 	jdm->transformation({400.0f, 400.0f});
 	renderables.push_back(jdm);
@@ -56,7 +56,7 @@ TestB2D::TestB2D() {
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
 
 	//circles
-	circle0 = new CircleShape(100.0f, 0.3f);
+	circle0 = new CircleShape(100.0f);
 	circle0->setTexture(GETTEXTURE("5"));
 	circle0->setTextureRect({100, 100, 400, 400});
 	circle0->transformation({370.0f, 200.0f});
@@ -66,13 +66,13 @@ TestB2D::TestB2D() {
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
 
 	//polygons
-	poly0 = new xe::Polygon(4.0f);
+	poly0 = new Polygon();
 	poly0->setTexture(GETTEXTURE("6"));
 
 //	polyCollider0 = new PolygonCollider2D(world, ColliderType::Static, poly0);
 
 	//sprites
-	Sprite *sp0 = new Sprite(GETTEXTURE("4"), 5.0f);
+	Sprite *sp0 = new Sprite(GETTEXTURE("4"));
 	sp0->transformation({20.0f, 20.0f});
 	sp0->setTextureRect(rect(150, 130, 300, 320));
 	sp0->setScale({0.3f, 0.3f});
@@ -82,6 +82,9 @@ TestB2D::TestB2D() {
 }
 
 TestB2D::~TestB2D() {
+	delete camera;
+	delete renderer;
+
 	delete boxCollider;
 	delete groundCollider;
 	delete circleCollider0;
@@ -95,14 +98,21 @@ TestB2D::~TestB2D() {
 	delete world;
 }
 
-void TestB2D::renderScene() {
-	for (const auto &r : renderables) {
-		submit(r);
+void TestB2D::render() {
+	renderer->begin();
+
+	for (auto &&r : renderables) {
+		renderer->submit(r);
 	}
+
 	for (const auto &p : points) {
-		submit(p);
+		renderer->submit(p);
 	}
-	submit(poly0);
+
+	renderer->submit(poly0);
+
+	renderer->end();
+	renderer->flush();
 }
 
 void TestB2D::update(float delta) {
@@ -120,7 +130,7 @@ void TestB2D::input(xe::Event &event) {
 		case Event::KeyPressed: {
 			if (event.key.code == Keyboard::F1) {
 				static bool wireframe = true;
-				getRenderer()->enableWireframe(wireframe);
+				renderer->enableWireframe(wireframe);
 				wireframe = !wireframe;
 			}
 
@@ -157,7 +167,7 @@ void TestB2D::input(xe::Event &event) {
 				const vec2 pos = {event.mouseButton.x, event.mouseButton.y};
 				polyPoints.push_back(pos);
 
-				RectangleShape *rs = new RectangleShape({5.0f, 5.0f}, poly0->getLayer() + 0.1f);
+				RectangleShape *rs = new RectangleShape({5.0f, 5.0f});
 				rs->setColor(color::Green);
 				rs->transformation(pos);
 				points.push_back(rs);

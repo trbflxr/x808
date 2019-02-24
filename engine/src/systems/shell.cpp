@@ -363,7 +363,6 @@ namespace xe {
 			ss << "  - Use SRGB: " << gConfig.useSRGB << "\n";
 			ss << "  - Render API: " << renderApiToString(gConfig.renderApi) << "\n";
 			ss << "  - Render API version: " << gConfig.apiVersion << "\n";
-			ss << "  - Texture units: " << gConfig.maxTextureUnits << "\n";
 
 			return ss.str();
 		};

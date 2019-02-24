@@ -29,8 +29,6 @@ public:
 
 	void input(xe::Event &event) override;
 
-	inline const xe::Texture *getRenderTexture() const override { return nullptr; }
-
 private:
 	DebugUI *ui;
 

@@ -92,12 +92,7 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["renderer2D_frag"])
 		}));
 
-		shaders.emplace("dTextRenderer", new Shader("dTextRenderer", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["textRenderer_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["textRenderer_frag"])
-		}));
-
-		shaders.emplace("dLightRenderer", new Shader("dLightRenderer", {
+		shaders.emplace("dLightRenderer2D", new Shader("dLightRenderer2D", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["lightRenderer2D_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["lightRenderer2D_frag"])
 		}));

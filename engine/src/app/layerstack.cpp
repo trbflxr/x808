@@ -2,8 +2,6 @@
 // Created by FLXR on 2/8/2019.
 //
 
-#include <xe/gfx/renderer.hpp>
-#include <xe/gfx/fx/quad.hpp>
 #include "layerstack.hpp"
 
 namespace xe {
@@ -12,17 +10,12 @@ namespace xe {
 			app(*app) {
 
 		layerInsert = layers.begin();
-
-		quad = new fx::Quad(static_cast<uint>(app->getWindowSize().x),
-		                    static_cast<uint>(app->getWindowSize().y));
 	}
 
 	LayerStack::~LayerStack() {
 		for (const auto &l : layers) {
 			delete l;
 		}
-
-		delete quad;
 	}
 
 	void LayerStack::pushLayer(Layer *layer) {
@@ -58,19 +51,6 @@ namespace xe {
 				}
 			}
 		}
-
-		Renderer::enableBlend(true);
-		Renderer::setBlendEquation(BlendEquation::Add);
-		Renderer::setBlendFunction(BlendFunction::SourceAlpha, BlendFunction::OneMinusSourceAlpha);
-
-		Renderer::enableDepthMask(true);
-		Renderer::enableDepthTesting(false);
-		for (auto &&layer : layers) {
-			if (layer->isVisible() && layer->getRenderTexture()) {
-				quad->renderTexture(layer->getRenderTexture());
-			}
-		}
-		Renderer::enableDepthTesting(true);
 	}
 
 	void LayerStack::tick() {

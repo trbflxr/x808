@@ -12,10 +12,6 @@
 
 namespace xe {
 
-	namespace fx {
-		class Quad;
-	}
-
 	class Application;
 
 	class LayerStack : NonCopyable {
@@ -44,8 +40,6 @@ namespace xe {
 
 	private:
 		Application &app;
-
-		fx::Quad *quad;
 
 		std::vector<Layer *> layers;
 		std::vector<Layer *>::iterator layerInsert;

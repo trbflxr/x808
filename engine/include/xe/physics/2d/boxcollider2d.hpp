@@ -6,7 +6,7 @@
 #define X808_BOXCOLLIDER2D_HPP
 
 
-#include <xe/gfx/rectangleshape.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 
 class b2PolygonShape;

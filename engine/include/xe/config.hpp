@@ -24,7 +24,6 @@ namespace xe {
 
 		RenderAPI renderApi;
 		uint apiVersion;
-		uint maxTextureUnits;
 
 		uint maxPointLights2D;
 	};

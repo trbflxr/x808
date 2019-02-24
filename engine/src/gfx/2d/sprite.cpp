@@ -2,13 +2,13 @@
 // Created by FLXR on 9/12/2018.
 //
 
-#include <xe/gfx/sprite.hpp>
+#include <xe/gfx/2d/sprite.hpp>
 #include <xe/utils/logger.hpp>
 
 namespace xe {
 
-	Sprite::Sprite(const Texture *texture, float layer) :
-			IRenderable2D(layer) {
+	Sprite::Sprite(const Texture *texture) :
+			IRenderable2D() {
 
 		vertices = new Vertex2D[4];
 		indices = new uint[6];
@@ -44,15 +44,6 @@ namespace xe {
 		}
 	}
 
-	void Sprite::setLayer(float layer) {
-		IRenderable2D::layer = layer;
-
-		vertices[0].pos.z = layer;
-		vertices[1].pos.z = layer;
-		vertices[2].pos.z = layer;
-		vertices[3].pos.z = layer;
-	}
-
 	void Sprite::update() {
 		//bounds
 		const float width = fabsf(textureRect.width);
@@ -60,10 +51,10 @@ namespace xe {
 		const rect bounds(0.f, 0.0f, width, height);
 
 		//positions
-		vertices[0].pos = vec3(0.0f, 0.0f, layer);
-		vertices[1].pos = vec3(bounds.width, 0.0f, layer);
-		vertices[2].pos = vec3(bounds.width, bounds.height, layer);
-		vertices[3].pos = vec3(0.0f, bounds.height, layer);
+		vertices[0].pos = vec2(0.0f, 0.0f);
+		vertices[1].pos = vec2(bounds.width, 0.0f);
+		vertices[2].pos = vec2(bounds.width, bounds.height);
+		vertices[3].pos = vec2(0.0f, bounds.height);
 
 		//uvs
 		if (texture) {

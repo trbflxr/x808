@@ -2,12 +2,12 @@
 // Created by FLXR on 9/17/2018.
 //
 
-#include <xe/gfx/circleshape.hpp>
+#include <xe/gfx/2d/circleshape.hpp>
 
 namespace xe {
 
-	CircleShape::CircleShape(float radius, float layer, uint pointCount) :
-			Shape(layer),
+	CircleShape::CircleShape(float radius, uint pointCount) :
+			Shape(),
 			radius(radius),
 			pointCount(pointCount),
 			radiusChanged(true) {

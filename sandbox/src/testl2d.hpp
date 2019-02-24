@@ -6,17 +6,18 @@
 #define X808_TESTL2D_HPP
 
 
-#include <xe/gfx/layer2d.hpp>
-#include <xe/gfx/rectangleshape.hpp>
+#include <xe/gfx/layer.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
 #include <xe/animation/spriteanimation.hpp>
 #include <xe/audio/audiosource.hpp>
 
-class TestL2D : public xe::Layer2D {
+class TestL2D : public xe::Layer {
 public:
 	explicit TestL2D();
 	~TestL2D() override;
 
-	void renderScene() override;
+	void render() override;
 
 	void renderImGui() override;
 
@@ -25,6 +26,9 @@ public:
 	void input(xe::Event &event) override;
 
 private:
+	xe::Camera *camera;
+	xe::Renderer2D *renderer;
+
 	xe::RectangleShape *box0;
 	xe::RectangleShape *box1;
 

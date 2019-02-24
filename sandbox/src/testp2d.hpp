@@ -6,14 +6,16 @@
 #define X808_TESTP2D_HPP
 
 
-#include <xe/gfx/layer2d.hpp>
+#include <xe/gfx/layer.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
 
-class TestP2D : public xe::Layer2D {
+class TestP2D : public xe::Layer {
 public:
 	explicit TestP2D();
 	~TestP2D() override;
 
-	void renderScene() override;
+	void render() override;
 
 	void renderImGui() override;
 
@@ -22,10 +24,17 @@ public:
 	void input(xe::Event &event) override;
 
 private:
-	xe::ParticleEffect *effect;
+	xe::Camera *camera;
+	xe::Renderer2D *renderer;
+
+//	xe::ParticleEffect *effect;
 
 	xe::RectangleShape *bg;
+	xe::RectangleShape *s0;
+	xe::RectangleShape *s1;
 	std::vector<xe::IRenderable2D *> renderables;
+
+	std::vector<xe::Text *> text;
 };
 
 

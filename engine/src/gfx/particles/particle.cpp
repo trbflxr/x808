@@ -9,8 +9,8 @@
 
 namespace xe {
 
-	Particle::Particle(ParticleEffect *effect, float layer) :
-			RectangleShape({1.0f, 1.0f}, layer),
+	Particle::Particle(ParticleEffect *effect) :
+			RectangleShape({1.0f, 1.0f}),
 			effect(effect),
 			time(0.0f),
 			lifeTime(0.0f),

@@ -44,7 +44,6 @@ else ()
             "srgb=1\n"
             "renderApi=ogl\n"
             "apiVersion=430\n"
-            "maxTextureUnits=0\n"
             "maxPointLights2D=50\n")
 
     file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

@@ -16,7 +16,7 @@ namespace xe {
 
 	class XE_API ParticleEffect : public ITransformable2D {
 	public:
-		explicit ParticleEffect(float duration, float change, uint count, bool looped, float z);
+		explicit ParticleEffect(float duration, float change, uint count, bool looped);
 		virtual ~ParticleEffect();
 
 		void create();
@@ -30,8 +30,6 @@ namespace xe {
 		inline void setLooped(bool looped) { ParticleEffect::looped = looped; }
 
 		inline bool isFinished() const { return finished; }
-
-		inline float getZ() const { return z; }
 
 		inline const std::vector<IRenderable2D *> &getRenderables() const { return particles; }
 
@@ -53,7 +51,7 @@ namespace xe {
 			sizeStates = states;
 		}
 
-		inline void setColorStates(const std::vector<std::pair<float, vec4>> &states) {
+		inline void setColorStates(const std::vector<std::tuple<float, vec4, vec4>> &states) {
 			colorStates = states;
 		}
 
@@ -65,7 +63,6 @@ namespace xe {
 		bool finished;
 
 		uint count;
-		float z;
 
 		const Texture *texture;
 		rect textureRect;
@@ -76,7 +73,7 @@ namespace xe {
 		std::vector<std::tuple<float, float, float>> rotationStates;
 		std::vector<std::tuple<float, vec2, vec2>> translationStates;
 		std::vector<std::tuple<float, vec2, vec2>> sizeStates;
-		std::vector<std::pair<float, vec4>> colorStates;
+		std::vector<std::tuple<float, vec4, vec4>> colorStates;
 	};
 
 }

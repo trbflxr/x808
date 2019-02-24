@@ -6,20 +6,10 @@
 
 namespace xe {
 
-	Shape::Shape(float layer) :
-			IRenderable2D(layer),
+	Shape::Shape() :
+			IRenderable2D(),
 			texture(nullptr) { }
 
-
-	void Shape::setLayer(float layer) {
-		IRenderable2D::layer = layer;
-
-		if (!vertices.empty() && vertices[0].pos.z != layer) {
-			for (auto &&v : vertices) {
-				v.pos.z = layer;
-			}
-		}
-	}
 
 	void Shape::setTexture(const xe::Texture *texture) {
 		Shape::texture = texture;
@@ -46,7 +36,7 @@ namespace xe {
 		vertices.resize(count);
 
 		//positions
-		vertices[0].pos = vec3(getPoint(0), layer);
+		vertices[0].pos = getPoint(0);
 
 		//bounds
 		float left = vertices[0].pos.x;
@@ -56,7 +46,7 @@ namespace xe {
 
 		//positions
 		for (uint i = 1; i < count; ++i) {
-			vertices[i].pos = vec3(getPoint(i), layer);
+			vertices[i].pos = getPoint(i);
 
 			if (vertices[i].pos.x < left) {
 				left = vertices[i].pos.x;

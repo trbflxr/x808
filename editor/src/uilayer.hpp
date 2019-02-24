@@ -9,7 +9,7 @@
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/fx/quad.hpp>
 #include <xe/gfx/framebuffer.hpp>
-#include <xe/gfx/batchrenderer2d.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
 
 namespace xe {
 
@@ -26,8 +26,6 @@ namespace xe {
 
 		void input(Event &event) override;
 
-		inline const Texture *getRenderTexture() const override { return nullptr; }
-
 	private:
 		//framebuffer
 		FrameBuffer *renderWindow;
@@ -36,7 +34,7 @@ namespace xe {
 
 		//test
 		Camera *camera;
-		BatchRenderer2D *renderer;
+		Renderer2D *renderer;
 
 		std::vector<IRenderable2D *> renderables;
 	};

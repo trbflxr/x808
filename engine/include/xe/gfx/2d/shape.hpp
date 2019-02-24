@@ -24,12 +24,10 @@ namespace xe {
 		inline const uint *getIndices() const override { return &indices[0]; }
 		inline uint getIndicesCount() const override { return (uint) indices.size(); }
 
-		void setLayer(float layer) override;
-
 		inline const mat4 &getTransformation() const override { return toMatrix(); };
 
 	protected:
-		explicit Shape(float layer);
+		explicit Shape();
 
 		void update();
 

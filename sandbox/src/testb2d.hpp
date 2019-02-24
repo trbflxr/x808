@@ -6,22 +6,23 @@
 #define X808_TESTB2D_HPP
 
 
-#include <xe/gfx/layer2d.hpp>
+#include <xe/gfx/layer.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
 #include <xe/physics/2d/boxcollider2d.hpp>
 #include <xe/physics/2d/circlecollider2d.hpp>
 #include <xe/physics/2d/polygoncollider2d.hpp>
-#include <xe/gfx/rectangleshape.hpp>
-#include <xe/gfx/circleshape.hpp>
-#include <xe/gfx/polygon.hpp>
-#include <xe/gfx/sprite.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
+#include <xe/gfx/2d/circleshape.hpp>
+#include <xe/gfx/2d/polygon.hpp>
+#include <xe/gfx/2d/sprite.hpp>
 
-class TestB2D : public xe::Layer2D {
+class TestB2D : public xe::Layer {
 public:
 	explicit TestB2D();
 	~TestB2D() override;
 
-	void renderScene() override;
+	void render() override;
 
 	void update(float delta) override;
 
@@ -29,8 +30,7 @@ public:
 
 private:
 	xe::Camera *camera;
-
-	xe::BatchRenderer2D *renderer;
+	xe::Renderer2D *renderer;
 
 	//rectangles
 	xe::PhysicsWorld2D *world;

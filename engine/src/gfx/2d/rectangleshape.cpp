@@ -2,13 +2,13 @@
 // Created by FLXR on 9/13/2018.
 //
 
-#include <xe/gfx/sprite.hpp>
-#include <xe/gfx/rectangleshape.hpp>
+#include <xe/gfx/2d/sprite.hpp>
+#include <xe/gfx/2d/rectangleshape.hpp>
 
 namespace xe {
 
-	RectangleShape::RectangleShape(const vec2 &size, float layer) :
-			Shape(layer),
+	RectangleShape::RectangleShape(const vec2 &size) :
+			Shape(),
 			size(size),
 			sizeChanged(true) {
 

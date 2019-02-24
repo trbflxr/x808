@@ -3,18 +3,18 @@
 //
 
 #include <xe/math/triangulator.hpp>
-#include <xe/gfx/polygon.hpp>
+#include <xe/gfx/2d/polygon.hpp>
 #include <algorithm>
 
 namespace xe {
 
-	Polygon::Polygon(float layer) :
-			IRenderable2D(layer),
+	Polygon::Polygon() :
+			IRenderable2D(),
 			pointsChanged(false),
 			texture(nullptr) { }
 
-	Polygon::Polygon(const std::vector<vec2> &points, float layer) :
-			IRenderable2D(layer),
+	Polygon::Polygon(const std::vector<vec2> &points) :
+			IRenderable2D(),
 			points(points),
 			pointsChanged(true),
 			texture(nullptr) {
@@ -34,7 +34,7 @@ namespace xe {
 
 		vertices.resize(points.size());
 		for (uint i = 0; i < points.size(); ++i) {
-			vertices[i].pos = vec3(points[i], layer);
+			vertices[i].pos = points[i];
 		}
 
 		updateUVs();
@@ -50,16 +50,6 @@ namespace xe {
 
 		if (texture) {
 			setTextureRect(rect(0.0f, 0.0f, texture->getWidth(), texture->getHeight()));
-		}
-	}
-
-	void Polygon::setLayer(float layer) {
-		IRenderable2D::layer = layer;
-
-		if (!vertices.empty() && vertices[0].pos.z != layer) {
-			for (auto &&v : vertices) {
-				v.pos.z = layer;
-			}
 		}
 	}
 

@@ -16,8 +16,8 @@ DebugUI::DebugUI() :
 	const float w = app.getWindowSize().x;
 	const float h = app.getWindowSize().y;
 
-	createCamera(w, h, -1.0f, 1000.0f);
-	createRenderer(w, h);
+	camera = new Camera(mat4::ortho(0.0f, w, 0.0f, h, -1.0f, 1000.0f));
+	renderer = new Renderer2D(w, h, camera);
 
 	const float offset = 10.0f;
 	const float textOffset = 32.0f;
@@ -64,7 +64,7 @@ DebugUI::DebugUI() :
 	dcText->setOutlineColor(color::Black);
 	dcText->setOutlineThickness(outline);
 
-	infoRect = new RectangleShape({irw, irh}, 0.0f);
+	infoRect = new RectangleShape({irw, irh});
 	infoRect->setColor(color::rgba(0, 0, 0, 0.6f));
 	infoRect->setPosition({offset + irw / 2.0f, h - irh / 2.0f - offset});
 
@@ -79,29 +79,32 @@ DebugUI::DebugUI() :
 	teDirText->setOutlineColor(color::Black);
 	teDirText->setOutlineThickness(outline);
 
-	teRect = new RectangleShape({ttw, tth}, 0.0f);
+	teRect = new RectangleShape({ttw, tth});
 	teRect->setColor(color::rgba(0, 0, 0, 0.6f));
 	teRect->setPosition({offset + ttw / 2.0f, infoRect->getPosition().y - irh / 2.0f - (offset * 4.0f)});
 
 	//buffers
-	sp0 = new RectangleShape({spWidth, spHeight}, 0.0f);
+	sp0 = new RectangleShape({spWidth, spHeight});
 	sp0->setVisible(false);
 	sp0->move({spWidth / 2.0f + offset, spY});
 
-	sp1 = new RectangleShape({spWidth, spHeight}, 0.0f);
+	sp1 = new RectangleShape({spWidth, spHeight});
 	sp1->setVisible(false);
 	sp1->move({sp0->getPosition().x + offset + spWidth, spY});
 
-	sp2 = new RectangleShape({spWidth, spHeight}, 0.0f);
+	sp2 = new RectangleShape({spWidth, spHeight});
 	sp2->setVisible(false);
 	sp2->move({sp1->getPosition().x + offset + spWidth, spY});
 
-	sp3 = new RectangleShape({spWidth, spHeight}, 0.0f);
+	sp3 = new RectangleShape({spWidth, spHeight});
 	sp3->setVisible(false);
 	sp3->move({sp2->getPosition().x + offset + spWidth, spY});
 }
 
 DebugUI::~DebugUI() {
+	delete camera;
+	delete renderer;
+
 	delete sp0;
 	delete sp1;
 	delete sp2;
@@ -119,26 +122,34 @@ DebugUI::~DebugUI() {
 	delete teRect;
 }
 
-void DebugUI::renderScene() {
-	//render sprites and text
-	submit(sp0);
-	submit(sp1);
-	submit(sp2);
-	submit(sp3);
+void DebugUI::render() {
+	//sprites
+	renderer->begin();
 
-	submit(gpuText);
-	submit(fpsText);
-	submit(upsText);
-	submit(frameTimeText);
-	submit(dcText);
-
-	submit(infoRect);
+	renderer->submit(infoRect);
+	renderer->submit(sp0);
+	renderer->submit(sp1);
+	renderer->submit(sp2);
+	renderer->submit(sp3);
 
 	if (trackedTransform) {
-		submit(tePosText);
-		submit(teDirText);
-		submit(teRect);
+		renderer->submit(teRect);
 	}
+
+	//text
+	renderer->submit(gpuText);
+	renderer->submit(fpsText);
+	renderer->submit(upsText);
+	renderer->submit(frameTimeText);
+	renderer->submit(dcText);
+
+	if (trackedTransform) {
+		renderer->submit(tePosText);
+		renderer->submit(teDirText);
+	}
+
+	renderer->end();
+	renderer->flush();
 }
 
 void DebugUI::update(float delta) {

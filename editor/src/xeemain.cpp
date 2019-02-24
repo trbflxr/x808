@@ -35,7 +35,6 @@ int main() {
 	config.useSRGB = true;
 	config.renderApi = xe::RenderAPI::OpenGL;
 	config.apiVersion = 430;
-	config.maxTextureUnits = 0;
 	config.maxPointLights2D = 50;
 
 	Editor editor(config);
