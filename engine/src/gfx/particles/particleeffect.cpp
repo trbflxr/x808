@@ -4,6 +4,7 @@
 
 #include <xe/gfx/particles/particleeffect.hpp>
 #include <xe/timeline/ramp.hpp>
+#include <xe/gfx/2d/renderer2d.hpp>
 
 namespace xe {
 
@@ -104,6 +105,16 @@ namespace xe {
 		while (!spawnQueue.empty()) {
 			spawnQueue.pop();
 		}
+	}
+
+	void ParticleEffect::render(Renderer2D *renderer) {
+		renderer->push(toMatrix());
+
+		for (auto &&p : particles) {
+			renderer->submit(p);
+		}
+
+		renderer->pop();
 	}
 
 }

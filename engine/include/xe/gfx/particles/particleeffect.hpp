@@ -14,6 +14,8 @@
 
 namespace xe {
 
+	class Renderer2D;
+
 	class XE_API ParticleEffect : public ITransformable2D {
 	public:
 		explicit ParticleEffect(float duration, float change, uint count, bool looped);
@@ -26,12 +28,12 @@ namespace xe {
 		void play();
 		void stop();
 
+		void render(Renderer2D *renderer);
+
 		inline bool isLooped() const { return looped; }
 		inline void setLooped(bool looped) { ParticleEffect::looped = looped; }
 
 		inline bool isFinished() const { return finished; }
-
-		inline const std::vector<IRenderable2D *> &getRenderables() const { return particles; }
 
 		inline const Texture *getTexture() const { return texture; }
 		inline void setTexture(const Texture *texture) { ParticleEffect::texture = texture; }

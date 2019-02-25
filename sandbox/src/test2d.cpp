@@ -25,57 +25,22 @@ Test2D::Test2D() {
 
 	TextureParameters params;
 
-	TextureManager::add(new Texture("0", "test1.png", params));
-	TextureManager::add(new Texture("1", "test2.png", params));
-	TextureManager::add(new Texture("2", "test3.png", params));
-	TextureManager::add(new Texture("3", "test4.png", params));
-	TextureManager::add(new Texture("4", "test5.png", params));
-	TextureManager::add(new Texture("5", "test6.png", params));
-	TextureManager::add(new Texture("6", "test7.png", params));
-	TextureManager::add(new Texture("7", "test8.png", params));
-
-	TextureManager::add(new Texture("8", "test1.png", params));
-	TextureManager::add(new Texture("9", "test2.png", params));
-	TextureManager::add(new Texture("10", "test3.png", params));
-	TextureManager::add(new Texture("11", "test4.png", params));
-	TextureManager::add(new Texture("12", "test5.png", params));
-	TextureManager::add(new Texture("13", "test6.png", params));
-	TextureManager::add(new Texture("14", "test7.png", params));
-	TextureManager::add(new Texture("15", "test8.png", params));
-
-	TextureManager::add(new Texture("16", "test1.png", params));
-	TextureManager::add(new Texture("17", "test2.png", params));
-	TextureManager::add(new Texture("18", "test3.png", params));
-	TextureManager::add(new Texture("19", "test4.png", params));
-	TextureManager::add(new Texture("20", "test5.png", params));
-	TextureManager::add(new Texture("21", "test6.png", params));
-	TextureManager::add(new Texture("22", "test7.png", params));
-	TextureManager::add(new Texture("23", "test8.png", params));
-
-	TextureManager::add(new Texture("24", "test1.png", params));
-	TextureManager::add(new Texture("25", "test2.png", params));
-	TextureManager::add(new Texture("26", "test3.png", params));
-	TextureManager::add(new Texture("27", "test4.png", params));
-	TextureManager::add(new Texture("28", "test5.png", params));
-	TextureManager::add(new Texture("29", "test6.png", params));
-	TextureManager::add(new Texture("30", "test7.png", params));
-	TextureManager::add(new Texture("31", "error.png", params));
-
-	TextureManager::add(new Texture("32", "enemyspotted.png", params));
-	TextureManager::add(new Texture("33", "enemyspotted.png", params));
-	TextureManager::add(new Texture("34", "enemyspotted.png", params));
-	TextureManager::add(new Texture("35", "jdm.png", params));
-	TextureManager::add(new Texture("36", "star.png", params));
-	TextureManager::add(new Texture("37", "cosmic.png", params));
-	TextureManager::add(new Texture("38", "test7.png", params));
-	TextureManager::add(new Texture("39", "test8.png", params));
-	TextureManager::add(new Texture("translucent0", "translucent0.png", params));
+	TextureManager::add(new Texture("atlas", "testatlas.png", params));
 
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("repeat", "sp0.png", params));
 
 	timer.reset();
 	XE_TRACE("Tex load elapsed: ", timer.elapsedMillis(), "ms");
+
+	std::vector<rect> rects;
+	for (uint i = 0; i < 8; ++i) {
+		float x = 512.0f * i;
+
+		rects.emplace_back(x, 0.0f, 512.0f, 512.0f);
+	}
+
+	rects.emplace_back(0.0f, 512.0f, 512.0f, 512.0f); //1
 
 	FontManager::add(new Font("consolata72", "consolata.otf", 72.0f));
 	FontManager::add(new Font("consolata32", "consolata.otf", 32.0f));
@@ -84,7 +49,7 @@ Test2D::Test2D() {
 	FontManager::add(new Font("robotoregular72", "robotoregular.ttf", 72.0f));
 	FontManager::add(new Font("robotobold72", "robotobold.ttf", 72.0f));
 
-	uint texCount = 1;
+	uint texCount = 8;
 
 	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
 	renderer = new Renderer2D(width, height, camera);
@@ -127,7 +92,8 @@ Test2D::Test2D() {
 	for (uint x = 0; x < 1280; x += 8) {
 		for (uint y = 0; y < 720; y += 8) {
 			RectangleShape *s = new RectangleShape({6.0f, 6.0f});
-			s->setTexture(GETTEXTURE(std::to_string(random::next<uint>(0, texCount - 1))));
+			s->setTexture(GETTEXTURE("atlas"));
+			s->setTextureRect(rects[random::next<uint>(0, texCount - 1)]);
 			s->transformation(vec2(x + 3.0f, y + 3.0f));
 
 			renderables.push_back(s);
@@ -202,12 +168,14 @@ Test2D::Test2D() {
 	text.push_back(t4);
 
 	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f});
-	s0->setTexture(GETTEXTURE("35"));
+	s0->setTexture(GETTEXTURE("atlas"));
+	s0->setTextureRect(rects[0]);
 	s0->transformation({640.0f, 420.0f});
 	renderables.push_back(s0);
 
 	RectangleShape *s1 = new RectangleShape({100.0f, 100.0f});
-	s1->setTexture(GETTEXTURE("37"));
+	s1->setTexture(GETTEXTURE("atlas"));
+	s1->setTextureRect(rects[0]);
 	s1->transformation({640.0f, 350.0f});
 	renderables.push_back(s1);
 
@@ -218,15 +186,16 @@ Test2D::Test2D() {
 	renderables.push_back(bg);
 
 	star = new RectangleShape({100.0f, 100.0f});
-//	star->setTexture(GETTEXTURE("36"));
-	star->setTexture(GETTEXTURE("translucent0"));
+	star->setTexture(GETTEXTURE("atlas"));
+	star->setTextureRect(rects[0]);
 	star->transformation({640.0f, 350.0f});
 	renderables.push_back(star);
 
 	//circle test
 	CircleShape *c0 = new CircleShape(50.0f);
-	c0->setTexture(GETTEXTURE("1"));
+	c0->setTexture(GETTEXTURE("atlas"));
 	c0->transformation({710.0f, 350.0f});
+	c0->setTextureRect(rects[0]);
 	renderables.push_back(c0);
 
 	Renderer::setClearColor(0xff57513c);

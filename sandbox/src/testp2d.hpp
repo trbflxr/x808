@@ -9,6 +9,7 @@
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
+#include <xe/gfx/particles/particleeffect.hpp>
 
 class TestP2D : public xe::Layer {
 public:
@@ -27,14 +28,10 @@ private:
 	xe::Camera *camera;
 	xe::Renderer2D *renderer;
 
-//	xe::ParticleEffect *effect;
+	xe::ParticleEffect *effect;
 
 	xe::RectangleShape *bg;
-	xe::RectangleShape *s0;
-	xe::RectangleShape *s1;
 	std::vector<xe::IRenderable2D *> renderables;
-
-	std::vector<xe::Text *> text;
 };
 
 

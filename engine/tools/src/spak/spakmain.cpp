@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 	printf("src: %s\n", src);
 	printf("dest: %s\n", dest);
 
-	xe::spak::pack(src, dest);
+	xe::spak::packShaders(src, dest);
 
 	time_t rawTime;
 	struct tm *timeInfo;

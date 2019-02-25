@@ -13,11 +13,15 @@ add_executable(img_to_bin ${I2B_SRC})
 
 
 #spak
-set(SPAK_SRC src/spak/spak.cpp)
+set(SPAK_SRC
+        src/spak/spak.cpp
+        src/spak/shaderpacker.cpp
+        src/spak/texturepacker.cpp)
 
 #shared
 add_library(spk SHARED ${SPAK_SRC})
 target_link_libraries(spk libstdc++fs.a)
 
+#shader packer
 add_executable(spak src/spak/spakmain.cpp ${SPAK_SRC})
 target_link_libraries(spak libstdc++fs.a)

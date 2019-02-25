@@ -10,7 +10,7 @@
 namespace xe {
 
 	ShaderManager::ShaderManager() {
-		sources = spak::unpack("pack001.pak");
+		sources = spak::unpackShaders("pack001.pak");
 
 		createDefaultShaders();
 	}

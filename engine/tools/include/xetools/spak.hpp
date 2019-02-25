@@ -9,30 +9,56 @@
 #include <string>
 #include <unordered_map>
 #include <xe/xeint.hpp>
+#include <xe/common.hpp>
 
-namespace xe { namespace spak {
+namespace xe {
 
-	struct Stamp {
-		const byte x = 0xDE;
-		const byte y = 0xAD;
-		const byte z = 0x22;
-		uint64 count;
+	class XE_API spak {
+	private:
+		enum class FileType {
+			Shaders,
+			Textures,
+			Invalid
+		};
+
+		struct Stamp {
+			byte x;
+			byte y;
+			byte z;
+			uint64 count;
+		};
+
+		struct ShaderStamp {
+			const byte x = 0xDE;
+			const byte y = 0xAD;
+			const byte z = 0x22;
+			uint64 count;
+		};
+
+		struct TextureStamp {
+			const byte x = 0xDE;
+			const byte y = 0xAD;
+			const byte z = 0x21;
+			uint64 count;
+		};
+
+		struct ShaderEntry {
+			uint64 nameSize;
+			uint64 dataSize;
+		};
+
+	public:
+		static std::unordered_map<std::string, std::string> unpackShaders(const std::string &path);
+		static void packShaders(const std::string &srcPath, const std::string &destPath);
+
+		static void test();
+
+	private:
+		static FileType checkStamp(const Stamp &stamp);
+
+		static std::string getFileName(const std::string &str, bool includeExt);
 	};
-
-	struct ShaderEntry {
-		uint64 nameSize;
-		uint64 dataSize;
-	};
-
-	inline bool checkStamp(const Stamp &stamp) {
-		return stamp.x == 0xDE && stamp.y == 0xAD && stamp.z == 0x22;
-	}
-
-	std::unordered_map<std::string, std::string> unpack(const std::string &path);
-
-	void pack(const std::string &srcPath, const std::string &destPath);
-
-}}
+}
 
 
 #endif //X808_SPAK_HPP
