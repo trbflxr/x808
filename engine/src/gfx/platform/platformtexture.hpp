@@ -21,6 +21,7 @@ namespace xe { namespace internal {
 		virtual void unbind(uint slot) const = 0;
 
 		virtual void setData2D(const void *pixels) const = 0;
+		virtual byte *getData2D() const = 0;
 
 		virtual void generateMipMaps(const TextureTarget &target) = 0;
 

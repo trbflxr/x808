@@ -25,4 +25,10 @@ namespace xe {
 		return contains(vec2(point));
 	}
 
+	bool rect::contains(const rect &other) const {
+		return x >= other.x && y >= other.y &&
+		       x + width <= other.x + other.width &&
+		       y + height <= other.y + other.height;
+	}
+
 }

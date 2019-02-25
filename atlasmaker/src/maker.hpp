@@ -8,8 +8,11 @@
 
 #include <unordered_map>
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/sprite.hpp>
+#include <xe/utils/rectpack.hpp>
+#include <xe/gfx/fx/quad.hpp>
 
 namespace xe {
 
@@ -26,12 +29,23 @@ namespace xe {
 		void input(Event &event) override;
 
 	private:
-		xe::Camera *camera;
-		xe::Renderer2D *renderer;
+		void create();
 
-		xe::Texture *texture;
+		FreeRectChoice chooseBestFit(std::vector<const Texture *> &textures, const vec2 &size) const;
 
-		std::unordered_map<string, xe::Sprite *> sprites;
+	private:
+		Camera *camera;
+		Renderer2D *renderer;
+
+		FrameBuffer *buffer;
+		Texture *renderTexture;
+		fx::Quad *quad;
+
+		vec2 atlasSize;
+
+		std::vector<const Texture *> textures;
+
+		std::vector<Sprite *> sprites;
 	};
 
 }

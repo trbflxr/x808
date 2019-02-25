@@ -22,6 +22,7 @@ namespace xe { namespace internal {
 		void unbind(uint slot) const override;
 
 		void setData2D(const void *pixels) const override;
+		byte *getData2D() const override;
 
 		void generateMipMaps(const TextureTarget &target) override;
 

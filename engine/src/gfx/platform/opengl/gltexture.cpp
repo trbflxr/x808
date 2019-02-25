@@ -87,6 +87,16 @@ namespace xe { namespace internal {
 		                       GL_UNSIGNED_BYTE, pixels));
 	}
 
+	byte *GLTexture::getData2D() const {
+		byte *data = new byte[width*height*4];
+
+		glCall(glBindTexture(GL_TEXTURE_2D, handle));
+		glCall(glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+		glCall(glBindTexture(GL_TEXTURE_2D, 0));
+
+		return data;
+	}
+
 	void GLTexture::generateMipMaps(const TextureTarget &target) {
 		glCall(glGenerateMipmap(textureTargetToGL(target)));
 	}

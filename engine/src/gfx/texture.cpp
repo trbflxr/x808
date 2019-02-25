@@ -70,6 +70,10 @@ namespace xe {
 		texture->setData2D(pixels);
 	}
 
+	byte *Texture::getData2D() const {
+		return texture->getData2D();
+	}
+
 	void Texture::generateMipMaps(const TextureTarget &target) {
 		texture->generateMipMaps(target);
 	}

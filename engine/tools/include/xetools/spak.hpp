@@ -51,7 +51,7 @@ namespace xe {
 		static std::unordered_map<std::string, std::string> unpackShaders(const std::string &path);
 		static void packShaders(const std::string &srcPath, const std::string &destPath);
 
-		static void test();
+		static void packAtlas(const std::string &outPath, int32 width, int32 height, byte *data, bool flip);
 
 	private:
 		static FileType checkStamp(const Stamp &stamp);

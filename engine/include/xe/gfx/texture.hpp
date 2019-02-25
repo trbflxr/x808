@@ -84,6 +84,7 @@ namespace xe {
 		void unbind(uint slot) const;
 
 		void setData2D(const void *pixels) const;
+		byte *getData2D() const;
 
 		void generateMipMaps(const TextureTarget &target);
 
