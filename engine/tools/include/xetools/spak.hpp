@@ -7,11 +7,15 @@
 
 
 #include <string>
+#include <vector>
 #include <unordered_map>
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
+#include <xe/string.hpp>
 
 namespace xe {
+
+	struct rect;
 
 	class XE_API spak {
 	private:
@@ -47,11 +51,17 @@ namespace xe {
 			uint64 dataSize;
 		};
 
+		struct AtlasEntry {
+			uint64 nameSize;
+			const uint64 dataSize = 4;
+		};
+
 	public:
 		static std::unordered_map<std::string, std::string> unpackShaders(const std::string &path);
 		static void packShaders(const std::string &srcPath, const std::string &destPath);
 
-		static void packAtlas(const std::string &outPath, int32 width, int32 height, byte *data, bool flip);
+		static void packAtlas(const std::string &outPath, int32 width, int32 height,
+		                      const std::vector<std::pair<string, rect>> &sprites, byte *data, bool flip);
 
 	private:
 		static FileType checkStamp(const Stamp &stamp);

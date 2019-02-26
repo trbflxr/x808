@@ -4,6 +4,7 @@
 
 #include <xe/utils/logger.hpp>
 #include <xe/core/vfs.hpp>
+#include <xe/core/filesystem.hpp>
 #include <xe/loaders/imageloader.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -12,8 +13,11 @@
 namespace xe {
 
 	byte *ImageLoader::load(const char *file, uint *width, uint *height, uint *bits, bool *transparency) {
-		string path(basePath);
-		path += file;
+		string path(file);
+
+		if (!FileSystem::exists(path)) {
+			path.insert(0, basePath);
+		}
 
 		int64 memorySize;
 		byte *memory = VFS::readFile(path, &memorySize);

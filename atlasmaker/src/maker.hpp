@@ -46,6 +46,7 @@ namespace xe {
 		std::vector<const Texture *> textures;
 
 		std::vector<Sprite *> sprites;
+		std::vector<std::pair<string, rect>> pairs;
 	};
 
 }

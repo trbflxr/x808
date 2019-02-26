@@ -8,6 +8,7 @@
 #include <xe/math/vec4.hpp>
 #include <xe/math/quat.hpp>
 #include <xe/math/mat4.hpp>
+#include <xe/math/rect.hpp>
 #include <xe/utils/logger.hpp>
 
 namespace xe {
@@ -124,6 +125,12 @@ namespace xe {
 		        t.elements[4], t.elements[5], t.elements[6], t.elements[7],
 		        t.elements[8], t.elements[9], t.elements[10], t.elements[11],
 		        t.elements[12], t.elements[13], t.elements[14], t.elements[15]);
+		return buffer;
+	}
+
+	template<>
+	XE_API const char *Logger::toString<rect>(const rect &t) {
+		sprintf(buffer, "rect(%f, %f, %f, %f)", t.x, t.y, t.width, t.height);
 		return buffer;
 	}
 
