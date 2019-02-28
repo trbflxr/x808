@@ -23,7 +23,7 @@ namespace xe {
 		static byte *readFile(const string &path, int64 *outSize = nullptr);
 		static bool readTextFile(const string &path, string &outString);
 
-		static bool writeFile(const string &path, byte *buffer);
+		static bool writeFile(const string &path, byte *buffer, uint64 size);
 
 		static void init();
 		static void shutdown();

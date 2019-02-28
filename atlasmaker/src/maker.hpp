@@ -12,7 +12,6 @@
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/sprite.hpp>
 #include <xe/utils/rectpack.hpp>
-#include <xe/gfx/fx/quad.hpp>
 
 namespace xe {
 
@@ -28,20 +27,31 @@ namespace xe {
 
 		void input(Event &event) override;
 
+	protected:
+		void resize(int32 width, int32 height) override;
+
 	private:
 		void create();
+
+		void store();
 
 		FreeRectChoice chooseBestFit(std::vector<const Texture *> &textures, const vec2 &size) const;
 
 	private:
+		bool renderToTexture;
+		bool showFileDialog;
+
 		Camera *camera;
+		Camera *renderCamera;
 		Renderer2D *renderer;
 
 		FrameBuffer *buffer;
 		Texture *renderTexture;
-		fx::Quad *quad;
+
+		Sprite *atlas;
 
 		vec2 atlasSize;
+		vec2 screenSize;
 
 		std::vector<const Texture *> textures;
 

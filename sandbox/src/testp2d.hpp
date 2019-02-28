@@ -7,6 +7,7 @@
 
 
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/textureatlas.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
 #include <xe/gfx/particles/particleeffect.hpp>
@@ -29,6 +30,8 @@ private:
 	xe::Renderer2D *renderer;
 
 	xe::ParticleEffect *effect;
+
+	xe::TextureAtlas *atlas;
 
 	xe::RectangleShape *bg;
 	std::vector<xe::IRenderable2D *> renderables;

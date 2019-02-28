@@ -7,6 +7,7 @@
 
 
 #include <xe/gfx/layer.hpp>
+#include <xe/gfx/textureatlas.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 
@@ -35,6 +36,8 @@ private:
 
 	std::vector<xe::IRenderable2D *> renderables;
 	std::vector<xe::Text *> text;
+
+	xe::TextureAtlas *atlas;
 };
 
 

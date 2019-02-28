@@ -21,7 +21,21 @@ namespace xe {
 		static bool read(const string &file, void *buff, int64 size = -1);
 		static bool readText(const string &file, string &outString);
 
-		static bool write(const string &file, void *buff);
+		static bool write(const string &file, void *buff, uint64 size);
+
+		static string getWorkingDirectory();
+
+		static std::vector<string> getLogicalDrives();
+
+		static void updateVolumes() { get().shouldUpdateVolumes = true; }
+
+	private:
+		explicit FileSystem();
+
+		static FileSystem &get();
+
+	private:
+		bool shouldUpdateVolumes;
 	};
 
 }

@@ -3,7 +3,7 @@
 //
 
 #ifndef WIN32_LEAN_AND_MEAN
-	#define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #endif
 #include <windows.h>
 #include <algorithm>
@@ -15,7 +15,7 @@ namespace xe {
 
 	static HANDLE openFileForReading(const string &path) {
 		return CreateFileW(toWstring(path).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
-		                  FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, nullptr);
+		                   FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, nullptr);
 	}
 
 	static int64 getFileSizeInternal(HANDLE file) {
@@ -29,6 +29,13 @@ namespace xe {
 		return (bool) ReadFileEx(file, buffer, static_cast<DWORD>(size), &ol, fileIOCompletionRoutine);
 	}
 
+	FileSystem::FileSystem() :
+			shouldUpdateVolumes(true) { }
+
+	FileSystem &FileSystem::get() {
+		static FileSystem fs;
+		return fs;
+	}
 
 	bool FileSystem::exists(const string &file) {
 		DWORD result = GetFileAttributesW(toWstring(file).c_str());
@@ -96,17 +103,47 @@ namespace xe {
 		}
 	}
 
-	bool FileSystem::write(const string &file, void *buff) {
-		HANDLE handle = CreateFileW(toWstring(file).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW | OPEN_EXISTING,
-		                           FILE_ATTRIBUTE_NORMAL, nullptr);
+	bool FileSystem::write(const string &file, void *buff, uint64 size) {
+		DWORD mode = exists(file) ? OPEN_EXISTING : CREATE_NEW;
+		HANDLE handle = CreateFileW(toWstring(file).c_str(), GENERIC_WRITE, 0,
+		                            nullptr, mode, FILE_ATTRIBUTE_NORMAL, nullptr);
+
 		if (handle == INVALID_HANDLE_VALUE) return false;
 
-		int64 size = getFileSizeInternal(handle);
 		DWORD written;
 		int32 result = ::WriteFile(handle, buff, static_cast<DWORD>(size), &written, nullptr);
+
 		CloseHandle(handle);
 
 		return static_cast<bool>(result);
+	}
+
+	string FileSystem::getWorkingDirectory() {
+		static constexpr uint maxSize = 512;
+
+		wchar_t buffer[maxSize];
+		GetCurrentDirectoryW(maxSize, buffer);
+
+		return toString(buffer);
+	}
+
+	std::vector<string> FileSystem::getLogicalDrives() {
+		static std::vector<string> drives;
+
+		if (get().shouldUpdateVolumes) {
+			get().shouldUpdateVolumes = false;
+
+			drives.clear();
+
+			DWORD d = GetLogicalDrives();
+			for (uint i = 0; i < 26; ++i) { //A-Z
+				if ((d & (1 << i))) {
+					char r[] = {static_cast<char>('A' + i), ':', '/', '\0'};
+					drives.emplace_back(r);
+				}
+			}
+		}
+		return drives;
 	}
 
 }

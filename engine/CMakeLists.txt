@@ -41,6 +41,7 @@ add_subdirectory(external/freetype-gl)
 include_directories(external/freetype-gl/include)
 
 include_directories(external/stb)
+include_directories(external/dirent)
 
 #static
 include_directories(${XE_STATIC_LIB_INCLUDE_DIRS})

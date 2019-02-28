@@ -88,10 +88,10 @@ namespace xe {
 		}
 	}
 
-	bool VFS::writeFile(const string &path, byte *buffer) {
+	bool VFS::writeFile(const string &path, byte *buffer, uint64 size) {
 		XE_ASSERT(instance);
 		string physicalPath;
-		return resolvePhysicalPath(path, physicalPath) ? FileSystem::write(physicalPath, buffer) : false;
+		return resolvePhysicalPath(path, physicalPath) ? FileSystem::write(physicalPath, buffer, size) : false;
 	}
 
 }

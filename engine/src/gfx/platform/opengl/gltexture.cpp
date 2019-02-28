@@ -37,6 +37,18 @@ namespace xe { namespace internal {
 		handle = load(true);
 	}
 
+	GLTexture::GLTexture(const string &name, byte *data, uint width, uint height, const TextureParameters &params) :
+			name(name),
+			path("NULL_ATLAS"),
+			transparency(false),
+			width(width),
+			height(height),
+			depth(0),
+			params(params) {
+
+		handle = load(false, data);
+	}
+
 	GLTexture::~GLTexture() {
 		glCall(glDeleteTextures(1, &handle));
 	}
@@ -88,7 +100,7 @@ namespace xe { namespace internal {
 	}
 
 	byte *GLTexture::getData2D() const {
-		byte *data = new byte[width*height*4];
+		byte *data = new byte[width * height * 4];
 
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 		glCall(glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
@@ -107,8 +119,8 @@ namespace xe { namespace internal {
 		                          width, height, 1));
 	}
 
-	uint GLTexture::load(bool fromFile) {
-		byte *pixels = nullptr;
+	uint GLTexture::load(bool fromFile, byte *data) {
+		byte *pixels = data;
 		bool fail = false;
 
 		if (fromFile) {
@@ -161,7 +173,9 @@ namespace xe { namespace internal {
 
 		glCall(glBindTexture(textureTargetToGL(params.target), 0));
 
-		if (!fail) delete[] pixels;
+		if (!fail && fromFile) {
+			delete[] pixels;
+		}
 
 		return handle;
 	}

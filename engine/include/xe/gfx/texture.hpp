@@ -77,7 +77,10 @@ namespace xe {
 		                 const string &path,
 		                 const TextureParameters &params, bool flip = false);
 
-		~Texture();
+		explicit Texture(const string &name, byte *data, uint width, uint height,
+		                 const TextureParameters &params, bool flip = false);
+
+		virtual ~Texture();
 
 		void bind(uint slot) const;
 		void bindImageUnit(uint index, TextureAccess access, uint level = 0, uint layer = 0) const;

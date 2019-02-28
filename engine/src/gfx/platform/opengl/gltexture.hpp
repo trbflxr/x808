@@ -14,6 +14,7 @@ namespace xe { namespace internal {
 	public:
 		explicit GLTexture(const string &name, uint width, uint height, uint depth, const TextureParameters &params);
 		explicit GLTexture(const string &name, const string &path, const TextureParameters &params);
+		explicit GLTexture(const string &name, byte *data, uint width, uint height, const TextureParameters &params);
 
 		~GLTexture() override;
 
@@ -44,7 +45,7 @@ namespace xe { namespace internal {
 		inline uint getMaxMipMap() const override { return Texture::getMaxMipMap(width, height); }
 
 	private:
-		uint load(bool fromFile);
+		uint load(bool fromFile, byte *data = nullptr);
 		byte *loadFromFile(bool &fail);
 		void setTextureParams(const TextureTarget &target);
 

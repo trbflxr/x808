@@ -25,6 +25,8 @@ Test2D::Test2D() {
 
 	TextureParameters params;
 
+	atlas = new TextureAtlas("a", "test.atlas", params);
+
 	TextureManager::add(new Texture("atlas", "testatlas.png", params));
 
 	params.wrap = TextureWrap::Repeat;
@@ -34,13 +36,9 @@ Test2D::Test2D() {
 	XE_TRACE("Tex load elapsed: ", timer.elapsedMillis(), "ms");
 
 	std::vector<rect> rects;
-	for (uint i = 0; i < 8; ++i) {
-		float x = 512.0f * i;
-
-		rects.emplace_back(x, 0.0f, 512.0f, 512.0f);
+	for (const auto &a : atlas->getAreas()) {
+		rects.push_back(a.second);
 	}
-
-	rects.emplace_back(0.0f, 512.0f, 512.0f, 512.0f); //1
 
 	FontManager::add(new Font("consolata72", "consolata.otf", 72.0f));
 	FontManager::add(new Font("consolata32", "consolata.otf", 32.0f));
@@ -49,7 +47,7 @@ Test2D::Test2D() {
 	FontManager::add(new Font("robotoregular72", "robotoregular.ttf", 72.0f));
 	FontManager::add(new Font("robotobold72", "robotobold.ttf", 72.0f));
 
-	uint texCount = 8;
+	uint texCount = rects.size();
 
 	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
 	renderer = new Renderer2D(width, height, camera);
@@ -92,7 +90,7 @@ Test2D::Test2D() {
 	for (uint x = 0; x < 1280; x += 8) {
 		for (uint y = 0; y < 720; y += 8) {
 			RectangleShape *s = new RectangleShape({6.0f, 6.0f});
-			s->setTexture(GETTEXTURE("atlas"));
+			s->setTexture(atlas->getTexture());
 			s->setTextureRect(rects[random::next<uint>(0, texCount - 1)]);
 			s->transformation(vec2(x + 3.0f, y + 3.0f));
 

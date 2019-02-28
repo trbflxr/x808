@@ -13,6 +13,7 @@
 #include <xe/window/window.hpp>
 #include <xe/utils/logger.hpp>
 #include <xe/audio/audiomaster.hpp>
+#include <xe/core/filesystem.hpp>
 #include "win32window.hpp"
 
 namespace {
@@ -632,6 +633,16 @@ namespace xe { namespace internal {
 							static const GUID audioGUID = {1771351300, 37871, 4560,
 							                               {163, 204, 0, 160, 201, 34, 49, 150}};
 							if (pInter->dbcc_classguid == audioGUID) { }
+						} else if (pDev->dbch_devicetype == DBT_DEVTYP_VOLUME) {
+							FileSystem::updateVolumes();
+						}
+					}
+				}
+				if (wParam == DBT_DEVICEREMOVECOMPLETE) {
+					auto pDev = reinterpret_cast<PDEV_BROADCAST_HDR>(lParam);
+					if (pDev) {
+						if (pDev->dbch_devicetype == DBT_DEVTYP_VOLUME) {
+							FileSystem::updateVolumes();
 						}
 					}
 				}

@@ -14,9 +14,7 @@ add_executable(img_to_bin ${I2B_SRC})
 
 #spak
 set(SPAK_SRC
-        src/spak/spak.cpp
-        src/spak/shaderpacker.cpp
-        src/spak/texturepacker.cpp)
+        src/spak/spak.cpp)
 
 #shared
 add_library(spk SHARED ${SPAK_SRC})

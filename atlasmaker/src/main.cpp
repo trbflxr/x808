@@ -1,6 +1,5 @@
 #include <xe/app/application.hpp>
 #include <xe/core/vfs.hpp>
-#include "debugui.hpp"
 #include "maker.hpp"
 
 using namespace xe;
@@ -12,11 +11,9 @@ public:
 
 		VFS::mount("textures", "xe_sandbox_assets/textures/");
 
-		DebugUI *ui = new DebugUI();
 		Maker *m = new Maker();
 
 		pushLayer(m);
-		pushOverlay(ui);
 	}
 
 	~AtlasMaker() override { }
@@ -33,7 +30,7 @@ int main() {
 	config.height = 720;
 	config.fullScreen = false;
 	config.vSync = true;
-	config.ups = 30;
+	config.ups = 0;
 	config.fps = 90;
 	config.useSRGB = true;
 	config.renderApi = RenderAPI::OpenGL;

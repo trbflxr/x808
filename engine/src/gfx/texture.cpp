@@ -50,6 +50,24 @@ namespace xe {
 		}
 	}
 
+	Texture::Texture(const string &name, byte *data, uint width, uint height,
+	                 const TextureParameters &params, bool flip) :
+			flipped(flip) {
+
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OpenGL: {
+				texture = new internal::GLTexture(name, data, width, height, params);
+				break;
+			}
+
+			default: {
+				XE_CORE_FATAL("[Texture]: selected render API is not supported");
+				texture = nullptr;
+				break;
+			}
+		}
+	}
+
 	Texture::~Texture() {
 		delete texture;
 	}

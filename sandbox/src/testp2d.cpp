@@ -18,6 +18,8 @@ TestP2D::TestP2D() {
 
 	TextureParameters params;
 
+	atlas = new TextureAtlas("test_atlas", "test.atlas", params);
+
 	TextureManager::add(new Texture("p0", "jdm.png", params));
 	TextureManager::add(new Texture("p1", "star.png", params));
 
@@ -26,11 +28,16 @@ TestP2D::TestP2D() {
 
 	bg = new RectangleShape({width * 4, height * 4});
 	bg->setTexture(GETTEXTURE("pepe_bg"));
-	bg->transformation({width * 4 / 2.0f, height * 4 / 2.0f});
 	bg->setTextureRect({0.0f, 0.0f, width * 8, height * 8});
+	bg->transformation({width * 4 / 2.0f, height * 4 / 2.0f});
 
 	renderables.push_back(bg);
 
+	RectangleShape *r = new RectangleShape({100, 100});
+	r->setPosition({200, 100});
+	r->setTexture(atlas->getTexture());
+	r->setTextureRect(atlas->getRect("s0"));
+	renderables.push_back(r);
 
 	effect = new ParticleEffect(1.0f, 0.5f, 100, true);
 	effect->setPosition({width / 2, height / 3});
@@ -55,6 +62,8 @@ TestP2D::TestP2D() {
 }
 
 TestP2D::~TestP2D() {
+	delete atlas;
+
 	delete effect;
 
 	delete camera;
