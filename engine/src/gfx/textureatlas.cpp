@@ -10,6 +10,7 @@ namespace xe {
 
 	TextureAtlas::TextureAtlas(const string &name, const string &path, const TextureParameters &params) :
 			path(path),
+			deleteTexture(true),
 			texture(nullptr) {
 
 		uint width;
@@ -20,6 +21,12 @@ namespace xe {
 
 		delete[] data;
 	}
+
+	TextureAtlas::TextureAtlas(const Texture *texture, const std::vector<std::pair<string, rect>> &areas) :
+			path("NULL"),
+			deleteTexture(false),
+			texture(texture),
+			areas(areas) { }
 
 	TextureAtlas::~TextureAtlas() {
 		delete texture;
@@ -33,6 +40,13 @@ namespace xe {
 		}
 
 		XE_CORE_ERROR("[TextureAtlas]: Area '", name, "' not found!");
+
+		if (!areas.empty()) {
+			if (areas[0].first == "error") {
+				return areas[0].second;
+			}
+		}
+
 		static rect zero;
 		return zero;
 	}

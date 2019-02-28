@@ -25,9 +25,7 @@ Test2D::Test2D() {
 
 	TextureParameters params;
 
-	atlas = new TextureAtlas("a", "test.atlas", params);
-
-	TextureManager::add(new Texture("atlas", "testatlas.png", params));
+	TextureManager::add(new TextureAtlas("atlas", "test.atlas", params));
 
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("repeat", "sp0.png", params));
@@ -36,7 +34,7 @@ Test2D::Test2D() {
 	XE_TRACE("Tex load elapsed: ", timer.elapsedMillis(), "ms");
 
 	std::vector<rect> rects;
-	for (const auto &a : atlas->getAreas()) {
+	for (const auto &a : GETATLAS("atlas")->getAreas()) {
 		rects.push_back(a.second);
 	}
 
@@ -90,7 +88,7 @@ Test2D::Test2D() {
 	for (uint x = 0; x < 1280; x += 8) {
 		for (uint y = 0; y < 720; y += 8) {
 			RectangleShape *s = new RectangleShape({6.0f, 6.0f});
-			s->setTexture(atlas->getTexture());
+			s->setTexture(GETATLAS("atlas")->getTexture());
 			s->setTextureRect(rects[random::next<uint>(0, texCount - 1)]);
 			s->transformation(vec2(x + 3.0f, y + 3.0f));
 
@@ -166,34 +164,34 @@ Test2D::Test2D() {
 	text.push_back(t4);
 
 	RectangleShape *s0 = new RectangleShape({100.0f, 100.0f});
-	s0->setTexture(GETTEXTURE("atlas"));
-	s0->setTextureRect(rects[0]);
+	s0->setTexture(GETATLAS("atlas")->getTexture());
+	s0->setTextureRect(GETATLAS("atlas")->getArea("test2.png"));
 	s0->transformation({640.0f, 420.0f});
 	renderables.push_back(s0);
 
 	RectangleShape *s1 = new RectangleShape({100.0f, 100.0f});
-	s1->setTexture(GETTEXTURE("atlas"));
-	s1->setTextureRect(rects[0]);
+	s1->setTexture(GETATLAS("atlas")->getTexture());
+	s1->setTextureRect(GETATLAS("atlas")->getArea("translucent.png"));
 	s1->transformation({640.0f, 350.0f});
 	renderables.push_back(s1);
 
 	RectangleShape *bg = new RectangleShape({width, height});
 	bg->setTexture(GETTEXTURE("repeat"));
-	bg->transformation({width + width / 2.0f, height / 2.0f});
 	bg->setTextureRect({0.0f, 0.0f, width, height});
+	bg->transformation({width + width / 2.0f, height / 2.0f});
 	renderables.push_back(bg);
 
 	star = new RectangleShape({100.0f, 100.0f});
-	star->setTexture(GETTEXTURE("atlas"));
-	star->setTextureRect(rects[0]);
+	star->setTexture(GETATLAS("atlas")->getTexture());
+	star->setTextureRect(GETATLAS("atlas")->getArea("star.png"));
 	star->transformation({640.0f, 350.0f});
 	renderables.push_back(star);
 
 	//circle test
 	CircleShape *c0 = new CircleShape(50.0f);
-	c0->setTexture(GETTEXTURE("atlas"));
+	c0->setTexture(GETATLAS("atlas")->getTexture());
+	c0->setTextureRect(GETATLAS("atlas")->getArea("test1.png"));
 	c0->transformation({710.0f, 350.0f});
-	c0->setTextureRect(rects[0]);
 	renderables.push_back(c0);
 
 	Renderer::setClearColor(0xff57513c);

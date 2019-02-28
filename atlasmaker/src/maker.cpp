@@ -176,7 +176,7 @@ namespace xe {
 	}
 
 	void Maker::renderImGui() {
-		ImGui::Begin("UI");
+		ImGui::Begin("Atlas maker");
 
 		ImGui::Text("fps: %i", app.getFPS());
 		ImGui::Text("frame time: %.3f", app.getFrameTime());

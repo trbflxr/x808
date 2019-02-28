@@ -40,12 +40,38 @@ namespace xe {
 		return true;
 	}
 
+	bool TextureManager::add(TextureAtlas *atlas) {
+		auto &&it = instance().atlases.find(atlas->getName());
+
+		if (it != instance().atlases.end()) {
+			XE_CORE_ERROR("[TextureManager]: atlas '", atlas->getName(), "' already exist and be deleted");
+
+			delete atlas;
+			return false;
+		}
+
+		instance().atlases.emplace(atlas->getName(), atlas);
+
+		return true;
+	}
+
 	const Texture *TextureManager::get(const string &name) {
 		auto &&it = instance().textures.find(name);
 		if (it == instance().textures.end()) {
 			XE_CORE_ERROR("[TextureManager]: texture '", name, "' not found!");
 
 			return get("default");
+		}
+
+		return it->second;
+	}
+
+	const TextureAtlas *TextureManager::getAtlas(const string &name) {
+		auto &&it = instance().atlases.find(name);
+		if (it == instance().atlases.end()) {
+			XE_CORE_ERROR("[TextureManager]: atlas '", name, "' not found!");
+
+			return getAtlas("default");
 		}
 
 		return it->second;
@@ -70,6 +96,11 @@ namespace xe {
 		errorTexture->setData2D(internal::DEFAULT_TEXTURE);
 
 		textures.emplace("default", errorTexture);
+
+		const rect e = rect(0, 0, errorTexture->getWidth(), errorTexture->getHeight());
+		TextureAtlas *ea = new TextureAtlas(errorTexture, {std::make_pair("error", e)});
+
+		atlases.emplace("default", ea);
 	}
 
 }

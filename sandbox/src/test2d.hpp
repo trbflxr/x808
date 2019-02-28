@@ -36,8 +36,6 @@ private:
 
 	std::vector<xe::IRenderable2D *> renderables;
 	std::vector<xe::Text *> text;
-
-	xe::TextureAtlas *atlas;
 };
 
 

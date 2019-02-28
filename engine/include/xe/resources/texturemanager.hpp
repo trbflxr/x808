@@ -10,6 +10,7 @@
 #include <xe/common.hpp>
 #include <xe/utils/noncopyable.hpp>
 #include <xe/gfx/texture.hpp>
+#include <xe/gfx/textureatlas.hpp>
 #include <xe/string.hpp>
 
 namespace xe {
@@ -21,7 +22,10 @@ namespace xe {
 		static void init();
 
 		static bool add(Texture *texture);
+		static bool add(TextureAtlas *atlas);
+
 		static const Texture *get(const string &name);
+		static const TextureAtlas *getAtlas(const string &name);
 
 		static void clean();
 
@@ -34,11 +38,13 @@ namespace xe {
 
 	private:
 		std::unordered_map<string, const Texture *> textures;
+		std::unordered_map<string, const TextureAtlas *> atlases;
 	};
 
 }
 
 #define GETTEXTURE(name) xe::TextureManager::get(name)
+#define GETATLAS(name)   xe::TextureManager::getAtlas(name)
 
 
 #endif //X808_TEXTUREMANAGER_HPP

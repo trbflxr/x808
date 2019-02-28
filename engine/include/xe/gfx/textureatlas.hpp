@@ -15,6 +15,8 @@ namespace xe {
 	class XE_API TextureAtlas {
 	public:
 		explicit TextureAtlas(const string &name, const string &path, const TextureParameters &params);
+		explicit TextureAtlas(const Texture *texture, const std::vector<std::pair<string, rect>> &areas);
+
 		virtual ~TextureAtlas();
 
 		const rect &getArea(const string &name) const;
@@ -28,6 +30,7 @@ namespace xe {
 
 	private:
 		string path;
+		bool deleteTexture;
 		const Texture *texture;
 
 		std::vector<std::pair<string, rect>> areas;
