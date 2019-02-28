@@ -177,7 +177,7 @@ namespace xe {
 		ImGui::Separator();
 
 		ImVec2 size = ImGui::GetContentRegionMax() - ImVec2(0.0f, 152.0f);
-		ImGui::BeginChild("##FileDialog_FileList", size);
+		ImGui::BeginChild("##fileDialog_fileList", size);
 
 		for (auto &&info : files) {
 			string s;
@@ -228,7 +228,6 @@ namespace xe {
 
 					logic(this, info);
 				}
-				break;
 			}
 		}
 
@@ -246,7 +245,7 @@ namespace xe {
 
 		const float width = ImGui::GetContentRegionAvailWidth();
 		ImGui::PushItemWidth(width);
-		ImGui::InputText("##FileName", fileNameBuffer, MAX_FILE_DIALOG_NAME_BUFFER);
+		ImGui::InputText("##fileDialog_fileName", fileNameBuffer, MAX_FILE_DIALOG_NAME_BUFFER);
 		ImGui::PopItemWidth();
 
 		ImGui::Separator();
