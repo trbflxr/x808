@@ -41,7 +41,6 @@ namespace xe {
 	}
 
 	void LayerStack::render(bool renderImGui) {
-
 		for (auto &&layer : layers) {
 			if (layer->isVisible()) {
 				layer->render();

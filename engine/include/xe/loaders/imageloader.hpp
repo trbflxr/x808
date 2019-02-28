@@ -9,8 +9,8 @@
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
 #include <xe/string.hpp>
+#include <xe/math/rect.hpp>
 #include <xe/utils/noncopyable.hpp>
-#include <xe/gfx/textureatlas.hpp>
 
 namespace xe {
 

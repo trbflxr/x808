@@ -17,7 +17,7 @@ namespace xe {
 		explicit TextureAtlas(const string &name, const string &path, const TextureParameters &params);
 		virtual ~TextureAtlas();
 
-		const rect &getRect(const string &name) const;
+		const rect &getArea(const string &name) const;
 
 		inline const string &getName() const { return texture->getName(); }
 		inline const string &getPath() const { return path; }

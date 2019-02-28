@@ -23,23 +23,32 @@ namespace xe {
 		void render() override;
 		void renderImGui() override;
 
-		void update(float delta) override;
-
 		void input(Event &event) override;
 
 	protected:
 		void resize(int32 width, int32 height) override;
 
 	private:
-		void create();
+		void create(int32 size);
+
+		void pack();
 
 		void store();
 
-		FreeRectChoice chooseBestFit(std::vector<const Texture *> &textures, const vec2 &size) const;
+		void renderSizeCombo();
+		void renderTextureList();
+
+		FreeRectChoice chooseBestFit() const;
 
 	private:
+		const TextureParameters params;
+
 		bool renderToTexture;
 		bool showFileDialog;
+		bool mouseGrabbed;
+		bool allowDrag;
+		bool uiFocused;
+		bool updateTextureList;
 
 		Camera *camera;
 		Camera *renderCamera;
@@ -52,6 +61,7 @@ namespace xe {
 
 		vec2 atlasSize;
 		vec2 screenSize;
+		float scale;
 
 		std::vector<const Texture *> textures;
 

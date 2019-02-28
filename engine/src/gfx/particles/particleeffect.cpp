@@ -44,6 +44,7 @@ namespace xe {
 			s->setColorRamp(color);
 
 			s->setTexture(texture);
+			s->setTextureRect(textureRect);
 		}
 	}
 

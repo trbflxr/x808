@@ -72,6 +72,14 @@ namespace xe {
 			}
 		}
 
+		//working dir
+		ImGui::SameLine();
+		if (ImGui::Button("Working dir")) {
+			pathClicked = true;
+			currentPath = FileSystem::getWorkingDirectory();
+			currentPathDecomposition.clear();
+		}
+
 		ImGui::Separator();
 
 		//current path
@@ -246,7 +254,7 @@ namespace xe {
 
 			FileInfo info;
 			info.name = e->d_name;
-			info.path = currentPath + e->d_name;
+			info.path = currentPath + "/" + e->d_name;
 
 			switch (e->d_type) {
 				case DT_REG: info.type = EntryType::File;

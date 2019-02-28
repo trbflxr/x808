@@ -36,7 +36,7 @@ TestP2D::TestP2D() {
 	RectangleShape *r = new RectangleShape({100, 100});
 	r->setPosition({200, 100});
 	r->setTexture(atlas->getTexture());
-	r->setTextureRect(atlas->getRect("s0"));
+	r->setTextureRect(atlas->getArea("test1.png"));
 	renderables.push_back(r);
 
 	effect = new ParticleEffect(1.0f, 0.5f, 100, true);
@@ -56,7 +56,8 @@ TestP2D::TestP2D() {
 	                        std::make_tuple(1.0f, vec4(1.0f, 0.8f, 0.0f, 0.95f), vec4(0.0f, 0.2f, 0.0f, 0.0f))});
 
 
-//	effect->setTexture(GETTEXTURE("p0"));
+//	effect->setTexture(atlas->getTexture());
+//	effect->setTextureRect(atlas->getArea("test1.png"));
 
 	effect->create();
 }

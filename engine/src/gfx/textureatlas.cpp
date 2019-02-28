@@ -25,7 +25,7 @@ namespace xe {
 		delete texture;
 	}
 
-	const rect &TextureAtlas::getRect(const string &name) const {
+	const rect &TextureAtlas::getArea(const string &name) const {
 		for (const auto &a : areas) {
 			if (a.first == name) {
 				return a.second;

@@ -2,6 +2,7 @@
 // Created by FLXR on 2/25/2019.
 //
 
+#include <new>
 #include <xe/gfx/renderer.hpp>
 #include <xe/ui/imgui/imgui.h>
 #include <xe/ui/imgui/Imgui_file_dialog.hpp>
@@ -11,45 +12,31 @@
 
 namespace xe {
 
-	const uint W = 2048;
-	const uint H = 2048;
-
 	Maker::Maker() :
+			params(TextureTarget::Tex2D, PixelInternalFormat::Rgba, PixelFormat::Rgba, PixelType::UnsignedByte),
 			renderToTexture(false),
-			showFileDialog(false) {
+			showFileDialog(false),
+			mouseGrabbed(false),
+			allowDrag(false),
+			uiFocused(false),
+			updateTextureList(true),
+			renderTexture(nullptr),
+			atlas(nullptr),
+			atlasSize(0.0f),
+			scale(1.0f) {
 
-		atlasSize = vec2(W, H);
 		screenSize = vec2(app.getWindowSize().x, app.getWindowSize().y);
 
-		TextureParameters params;
+		camera = new Camera(mat4::ortho(0.0f, screenSize.x, 0.0f, screenSize.y, -1.0f, 1.0f));
+		renderCamera = new Camera(mat4::ortho(0.0f, screenSize.x, 0.0f, screenSize.y, -1.0f, 1.0f));
+		renderer = new Renderer2D(static_cast<uint>(screenSize.x), static_cast<uint>(screenSize.y), camera);
 
-		camera = new Camera(mat4::ortho(0.0f, screenSize.x, 0.0f, screenSize.y, -1.0f, 1000.0f));
-		renderCamera = new Camera(mat4::ortho(0.0f, atlasSize.x, 0.0f, atlasSize.y, -1.0f, 1000.0f));
-		renderer = new Renderer2D(static_cast<uint>(atlasSize.x), static_cast<uint>(atlasSize.y), camera);
+		renderTexture = new Texture("rt", 1, 1, 0, params);
 
-		renderTexture = new Texture("rt", W, H, 0, params, true);
 		buffer = new FrameBuffer("rb");
 		buffer->load({std::make_pair(Attachment::Color0, renderTexture)});
 
 		atlas = new Sprite(renderTexture);
-
-		Texture *t0 = new Texture("s0", "test1.png", params);
-		Texture *t1 = new Texture("s1", "test2.png", params);
-		Texture *t2 = new Texture("s2", "test3.png", params);
-		Texture *t3 = new Texture("s3", "test4.png", params);
-		Texture *sp0 = new Texture("sp0", "sp0.png", params);
-		Texture *star = new Texture("star", "star.png", params);
-		Texture *pepe = new Texture("pepe", "feelsconflictedman.jpg", params);
-
-		textures.push_back(t0);
-		textures.push_back(t1);
-		textures.push_back(t2);
-		textures.push_back(t3);
-		textures.push_back(sp0);
-		textures.push_back(star);
-		textures.push_back(pepe);
-
-		create();
 	}
 
 	Maker::~Maker() {
@@ -70,10 +57,32 @@ namespace xe {
 		}
 	}
 
-	void Maker::create() {
-		RectPack pack(static_cast<int32>(atlasSize.x), static_cast<int32>(atlasSize.y), false);
+	void Maker::create(int32 size) {
+		atlasSize = vec2(size, size);
 
-		const FreeRectChoice best = chooseBestFit(textures, atlasSize);
+		renderCamera->setProjection(mat4::ortho(0.0f, atlasSize.x, 0.0f, atlasSize.y, -1.0f, 1.0f));
+
+
+		renderTexture->~Texture();
+		renderTexture = new(renderTexture) Texture("rt", static_cast<uint>(atlasSize.x),
+		                                           static_cast<uint>(atlasSize.y), 0, params, true);
+
+		atlas->setTexture(renderTexture);
+		buffer->load({std::make_pair(Attachment::Color0, renderTexture)});
+
+		pack();
+	}
+
+	void Maker::pack() {
+		for (const auto &s : sprites) {
+			delete s;
+		}
+		sprites.clear();
+
+		pairs.clear();
+
+		const FreeRectChoice best = chooseBestFit();
+		RectPack pack(atlasSize.x, atlasSize.y, false);
 
 		for (const auto &t : textures) {
 			rect packed = pack.insert(t->getWidth(), t->getHeight(), best);
@@ -93,7 +102,7 @@ namespace xe {
 		renderToTexture = true;
 	}
 
-	FreeRectChoice Maker::chooseBestFit(std::vector<const Texture *> &textures, const vec2 &size) const {
+	FreeRectChoice Maker::chooseBestFit() const {
 		static std::vector<FreeRectChoice> heu = {FreeRectChoice::BestShortSideFit,
 		                                          FreeRectChoice::BestLongSideFit,
 		                                          FreeRectChoice::BestAreaFit,
@@ -105,7 +114,7 @@ namespace xe {
 		float max = 0.0f;
 
 		for (const auto &h : heu) {
-			pack.init(static_cast<int32>(size.x), static_cast<int32>(size.y));
+			pack.init(static_cast<int32>(atlasSize.x), static_cast<int32>(atlasSize.y));
 
 			for (const auto &s : textures) {
 				pack.insert(s->getWidth(), s->getHeight(), h);
@@ -157,7 +166,9 @@ namespace xe {
 
 		renderer->begin();
 
-		renderer->submit(atlas);
+		if (atlas) {
+			renderer->submit(atlas);
+		}
 
 		renderer->end();
 		renderer->flush();
@@ -166,10 +177,10 @@ namespace xe {
 	void Maker::renderImGui() {
 		ImGui::Begin("UI");
 
-		ImGui::Text("info");
 		ImGui::Text("fps: %i", app.getFPS());
 		ImGui::Text("frame time: %.3f", app.getFrameTime());
 		ImGui::Text("draw calls: %i", Renderer::getDC());
+		ImGui::Text("scale: %.2f", scale);
 		ImGui::Separator();
 		ImGui::Dummy({10.0f, 0.0f});
 
@@ -179,10 +190,11 @@ namespace xe {
 			delete[] data;
 		}
 
+		renderSizeCombo();
+
 		if (ImGui::Button("Open File Dialog")) {
 			showFileDialog = true;
 		}
-
 
 		if (showFileDialog) {
 			if (ImGuiFileDialog::open("Select files")) {
@@ -190,45 +202,156 @@ namespace xe {
 				auto files = ImGuiFileDialog::getFiles();
 				ImGuiFileDialog::reset();
 
+				updateTextureList = true;
+
 				for (const auto &f : files) {
-					XE_CORE_TRACE(f.path);
+					bool found = false;
+					for (const auto &t : textures) {
+						if (t->getFilePath() == f.path) {
+							found = true;
+							break;
+						}
+					}
+
+					if (!found) {
+						textures.push_back(new Texture(f.name, f.path, params));
+					}
 				}
 
 				showFileDialog = false;
 			}
 		}
 
+		renderTextureList();
+
 		ImGui::End();
+
+		uiFocused = ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard;
 	}
 
-	void Maker::update(float delta) {
-		///update camera
-		vec3 camPos = camera->transform.getPosition();
+	void Maker::renderSizeCombo() {
+		static const uint n = 4;
+		static const char *sizes[n] = {"512", "1024", "2048", "4096"};
+		static const char *selectedSize = "512";
 
-		if (Keyboard::isKeyPressed(Keyboard::Key::D)) {
-			camPos.x += 1000 * delta;
+		ImGui::PushItemWidth(70);
+		if (ImGui::BeginCombo("##sizeCombo", selectedSize)) {
+			for (auto &&s : sizes) {
+				bool selected = selectedSize == s;
+				if (ImGui::Selectable(s, selected)) {
+					selectedSize = s;
+				}
+				if (selected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Key::A)) {
-			camPos.x -= 1000 * delta;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Key::W)) {
-			camPos.y += 1000 * delta;
-		}
-		if (Keyboard::isKeyPressed(Keyboard::Key::S)) {
-			camPos.y -= 1000 * delta;
-		}
-		camera->transform.setPosition(camPos);
+		ImGui::PopItemWidth();
 
-		camera->update();
+		ImGui::SameLine();
+		if (ImGui::Button("Create")) {
+			if (!textures.empty()) {
+				create(atoi(selectedSize));
+			}
+		}
+	}
+
+	void Maker::renderTextureList() {
+		ImGui::Separator();
+
+		static std::vector<string> tl;
+
+		if (updateTextureList) {
+			updateTextureList = false;
+			tl.clear();
+
+			for (const auto &t : textures) {
+				tl.emplace_back(t->getName());
+			}
+		}
+
+		static int32 selected = -1;
+		ImGui::PushItemWidth(ImGui::GetWindowWidth());
+		ImGui::ListBoxHeader("", static_cast<int32>(tl.size()));
+		for (int32 i = 0; i < static_cast<int32>(tl.size()); ++i) {
+			if (ImGui::Selectable(tl[i].c_str(), selected == i)) {
+				selected = i;
+			}
+		}
+		ImGui::ListBoxFooter();
+
+		if (selected != -1 && ImGui::IsKeyDown(Keyboard::Delete)) {
+			tl.erase(tl.begin() + selected);
+			textures.erase(textures.begin() + selected);
+			selected = -1;
+			pack();
+		}
 	}
 
 	void Maker::input(Event &event) {
+		static vec2 lastMousePos = Mouse::getPosition(window);
 
+		if (event.type == Event::MouseButtonPressed) {
+			if (event.mouseButton.button == Mouse::Button::Left) {
+				lastMousePos = Mouse::getPosition(window);
+				mouseGrabbed = true;
+				event.handled = true;
+				return;
+			}
+		}
+		if (event.type == Event::MouseButtonReleased) {
+			if (event.mouseButton.button == Mouse::Button::Left) {
+				mouseGrabbed = false;
+				event.handled = true;
+				return;
+			}
+		}
+
+		if (event.type == Event::MouseLeft) {
+			allowDrag = false;
+			event.handled = true;
+			return;
+		}
+
+		if (event.type == Event::MouseEntered) {
+			allowDrag = true;
+			event.handled = true;
+			return;
+		}
+
+		if (event.type == Event::MouseMoved) {
+			if (mouseGrabbed && allowDrag && !uiFocused) {
+				const vec2 newPos = vec2(event.mouseMove.x, event.mouseMove.y);
+				const vec2 change = lastMousePos - newPos;
+
+				camera->transform.move(vec3(change));
+
+				camera->update();
+
+				lastMousePos = newPos;
+
+				event.handled = true;
+				return;
+			}
+		}
+
+		if (event.type == Event::MouseWheelMoved && !uiFocused) {
+			static constexpr float speed = 0.1f;
+			scale += event.mouseWheel.delta * speed;
+			if (scale < 0.1f) {
+				scale = 0.1f;
+			}
+
+			atlas->setScale({scale, scale});
+			event.handled = true;
+			return;
+		}
 	}
 
 	void Maker::resize(int32 width, int32 height) {
 		screenSize = vec2(width, height);
-		camera->setProjection(mat4::ortho(0.0f, screenSize.x, 0.0f, screenSize.y, -1.0f, 1000.0f));
+		camera->setProjection(mat4::ortho(0.0f, screenSize.x, 0.0f, screenSize.y, -1.0f, 1.0f));
 		renderer->setWidth(width);
 		renderer->setHeight(height);
 	}
