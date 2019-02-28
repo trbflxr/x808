@@ -15,7 +15,8 @@ namespace xe {
 	Maker::Maker() :
 			params(TextureTarget::Tex2D, PixelInternalFormat::Rgba, PixelFormat::Rgba, PixelType::UnsignedByte),
 			renderToTexture(false),
-			showFileDialog(false),
+			openFileDialog(false),
+			saveFileDialog(false),
 			mouseGrabbed(false),
 			allowDrag(false),
 			uiFocused(false),
@@ -184,19 +185,17 @@ namespace xe {
 		ImGui::Separator();
 		ImGui::Dummy({10.0f, 0.0f});
 
-		if (ImGui::Button("save")) {
-			byte *data = renderTexture->getData2D();
-			ImageLoader::packAtlas("test.atlas", atlasSize.x, atlasSize.y, pairs, data, true);
-			delete[] data;
-		}
-
 		renderSizeCombo();
 
-		if (ImGui::Button("Open File Dialog")) {
-			showFileDialog = true;
+		if (ImGui::Button("Open File Dialog") && !saveFileDialog) {
+			openFileDialog = true;
 		}
 
-		if (showFileDialog) {
+		if (ImGui::Button("Save File Dialog") && !openFileDialog) {
+			saveFileDialog = true;
+		}
+
+		if (openFileDialog) {
 			if (ImGuiFileDialog::open("Select files")) {
 
 				auto files = ImGuiFileDialog::getFiles();
@@ -218,7 +217,24 @@ namespace xe {
 					}
 				}
 
-				showFileDialog = false;
+				openFileDialog = false;
+			}
+		}
+
+		if (saveFileDialog) {
+			if (ImGuiFileDialog::save("Save file")) {
+				string path = ImGuiFileDialog::getSavePath();
+				ImGuiFileDialog::reset();
+
+				if (!path.empty()) {
+					if (!sprites.empty()) {
+						byte *data = renderTexture->getData2D();
+						ImageLoader::packAtlas(path, atlasSize.x, atlasSize.y, pairs, data, true);
+						delete[] data;
+					}
+				}
+
+				saveFileDialog = false;
 			}
 		}
 

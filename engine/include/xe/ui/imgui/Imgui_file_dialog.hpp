@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <functional>
 #include <xe/string.hpp>
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
@@ -33,8 +34,10 @@ namespace xe {
 		static void reset();
 
 		static bool open(const char *title);
+		static bool save(const char *title);
 
 		inline static const std::vector<FileInfo> &getFiles() { return get().selectedFiles; }
+		inline static string getSavePath() { return get().savePath; }
 
 	private:
 		explicit ImGuiFileDialog();
@@ -44,6 +47,10 @@ namespace xe {
 		void resetInternal();
 
 		bool openInternal(const char *title);
+		bool saveInternal(const char *title);
+
+		void fileDialogBaseBegin(const char *title, const std::function<void(void *, const FileInfo &)> &logic);
+		void fileDialogBaseEnd();
 
 		void composeNewPath(std::vector<string>::iterator it);
 
@@ -57,6 +64,8 @@ namespace xe {
 		std::vector<string> currentPathDecomposition;
 
 		std::vector<FileInfo> files;
+
+		string savePath;
 	};
 
 }

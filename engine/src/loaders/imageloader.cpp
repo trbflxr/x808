@@ -113,16 +113,18 @@ namespace xe {
 	byte *ImageLoader::loadAtlas(const string &file, uint *outWidth, uint *outHeight,
 	                             std::vector<std::pair<string, rect>> &outAreas, bool flip) {
 
-		if (!FileSystem::exists(file)) {
-			XE_CORE_ERROR("[ImageLoader]: File does not exists '", file, "'");
-			return nullptr;
+		string path(file);
+
+		if (!FileSystem::exists(path)) {
+			path.insert(0, basePath);
 		}
 
+		int64 memorySize;
 		uint64 index = 0;
-		byte *buffer = FileSystem::read(file);
+		byte *buffer = VFS::readFile(path, &memorySize);
 
 		if (!buffer) {
-			XE_CORE_ERROR("[ImageLoader]: Unable to read file '", file, "'");
+			XE_CORE_ERROR("[ImageLoader]: unable to load image: '", path, "'");
 			return nullptr;
 		}
 

@@ -44,7 +44,8 @@ namespace xe {
 		const TextureParameters params;
 
 		bool renderToTexture;
-		bool showFileDialog;
+		bool openFileDialog;
+		bool saveFileDialog;
 		bool mouseGrabbed;
 		bool allowDrag;
 		bool uiFocused;

@@ -47,17 +47,98 @@ namespace xe {
 		files.clear();
 		currentPathDecomposition.clear();
 		currentPath = "";
+		savePath = "";
 	}
 
 	bool ImGuiFileDialog::open(const char *title) {
 		return get().openInternal(title);
 	}
 
+	bool ImGuiFileDialog::save(const char *title) {
+		return get().saveInternal(title);
+	}
+
+	bool ImGuiFileDialog::saveInternal(const char *title) {
+		bool r = false;
+
+		auto logic = [&](void *fd, const FileInfo &info) {
+			ImGuiFileDialog *d = (ImGuiFileDialog *) fd;
+			if (d->selectedFiles.empty()) {
+				d->selectedFiles.push_back(info);
+			} else {
+				d->selectedFiles.pop_back();
+				d->selectedFiles.push_back(info);
+			}
+		};
+
+		fileDialogBaseBegin(title, logic);
+		if (ImGui::Button("Save")) {
+			if (fileNameBuffer[0] != '\0' && !currentPath.empty()) {
+				savePath = currentPath + "/" + fileNameBuffer;
+			} else {
+				savePath = "";
+			}
+
+			r = true;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel")) {
+			r = true;
+			selectedFiles.clear();
+		}
+		fileDialogBaseEnd();
+
+		return r;
+	}
+
 	bool ImGuiFileDialog::openInternal(const char *title) {
+		bool r = false;
+
+		auto logic = [&](void *fd, const FileInfo &info) {
+			ImGuiFileDialog *d = (ImGuiFileDialog *) fd;
+
+			if (ImGui::GetIO().KeyCtrl) {
+				int32 found = -1;
+				for (size_t i = 0; i < d->selectedFiles.size(); ++i) {
+					if (d->selectedFiles[i].name == info.name) {
+						found = static_cast<int32>(i);
+						break;
+					}
+				}
+
+				if (found != -1) {
+					d->selectedFiles.erase(d->selectedFiles.begin() + found);
+				} else {
+					d->selectedFiles.push_back(info);
+				}
+
+			} else {
+				d->selectedFiles.clear();
+				d->selectedFiles.push_back(info);
+			}
+		};
+
+		fileDialogBaseBegin(title, logic);
+		if (ImGui::Button("Open")) {
+			r = true;
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel")) {
+			r = true;
+			selectedFiles.clear();
+		}
+		fileDialogBaseEnd();
+
+		return r;
+	}
+
+	void ImGuiFileDialog::fileDialogBaseBegin(const char *title,
+	                                          const std::function<void(void *, const FileInfo &)> &logic) {
+
 		static ImGuiWindowFlags flags = ImGuiWindowFlags_NoCollapse |
 		                                ImGuiWindowFlags_NoDocking;
-
-		bool r = false;
 
 		ImGui::Begin(title, nullptr, flags);
 
@@ -145,25 +226,7 @@ namespace xe {
 					fileNameBuffer[0] = '\0';
 					strcpy(fileNameBuffer, info.name.c_str());
 
-					if (ImGui::GetIO().KeyCtrl) {
-						int32 found = -1;
-						for (size_t i = 0; i < selectedFiles.size(); ++i) {
-							if (selectedFiles[i].name == info.name) {
-								found = static_cast<int32>(i);
-								break;
-							}
-						}
-
-						if (found != -1) {
-							selectedFiles.erase(selectedFiles.begin() + found);
-						} else {
-							selectedFiles.push_back(info);
-						}
-
-					} else {
-						selectedFiles.clear();
-						selectedFiles.push_back(info);
-					}
+					logic(this, info);
 				}
 				break;
 			}
@@ -187,20 +250,10 @@ namespace xe {
 		ImGui::PopItemWidth();
 
 		ImGui::Separator();
+	}
 
-		if (ImGui::Button("Open")) {
-			r = true;
-		}
-
-		ImGui::SameLine();
-		if (ImGui::Button("Cancel")) {
-			r = true;
-			selectedFiles.clear();
-		}
-
+	void ImGuiFileDialog::fileDialogBaseEnd() {
 		ImGui::End();
-
-		return r;
 	}
 
 	void ImGuiFileDialog::composeNewPath(std::vector<string>::iterator it) {
