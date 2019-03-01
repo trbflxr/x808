@@ -23,6 +23,7 @@ public:
 	~TestB2D() override;
 
 	void render() override;
+	void renderImGui() override;
 
 	void update(float delta) override;
 

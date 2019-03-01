@@ -48,13 +48,3 @@ shell.addCommand("cmd", func);
 Sandbox 2D: Performance test.
 
 ![2d](/_md/2d.png)
-
-Sandbox 3D: Sponza test.
-
-![3d0](/_md/3d.png)
-
-![3d1](/_md/3dwireframe.png)
-
-![3d2](/_md/3dlightvolumes.png)
-
-![3d3](/_md/3dbuffers.png)

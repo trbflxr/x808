@@ -26,25 +26,17 @@ namespace xe { namespace fx {
 		void renderBlend() const;
 		void renderFullQuad() const;
 		void renderFullQuadBlend() const;
-		void render3D(uint depth) const;
 
-		void renderTexture(const Texture *texture, float size = 1.0f,
-		                   int32 pos = 0, int32 layer = 0, int32 channel = -1);
+		void renderTexture(const Texture *texture, float size = 1.0f, int32 pos = 0, int32 channel = -1);
 
 	private:
-		void renderTexture(const Shader *shader, const Texture *texture,
-		                   int32 data, const char *uniform, bool fullQuad);
+		void renderTexture(const Shader *shader, const Texture *texture, int32 channel, bool fullQuad);
 
 	private:
 		VertexArray *vao;
 		IndexBuffer *ibo;
 
-		const Shader *renderTexture1D;
 		const Shader *renderTexture2D;
-		const Shader *renderTexture2DArray;
-		const Shader *renderTexture3D;
-		const Shader *renderTextureCube;
-		const Shader *renderTextureCubeArray;
 	};
 
 }}

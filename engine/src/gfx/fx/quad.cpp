@@ -24,7 +24,7 @@ namespace xe { namespace fx {
 
 		VertexBuffer *buffer = new VertexBuffer();
 		BufferLayout layout;
-		layout.push<vec3>("POSITION");
+		layout.push<vec3>("pos");
 
 		buffer->setLayout(layout);
 		buffer->setData(4 * sizeof(vec3), positions);
@@ -33,17 +33,7 @@ namespace xe { namespace fx {
 
 		ibo = new IndexBuffer(indices, 6);
 
-
-		//texture shaders
-		renderTexture1D = GETSHADER("dRenderTexture1D");
 		renderTexture2D = GETSHADER("dRenderTexture2D");
-		renderTexture2DArray = GETSHADER("dRenderTexture2DArray");
-		renderTexture3D = GETSHADER("dRenderTexture3D");
-
-		if (Context::getRenderAPIVersion() >= 420) {
-			renderTextureCube = GETSHADER("dRenderTextureCube");
-			renderTextureCubeArray = GETSHADER("dRenderTextureCubeArray");
-		}
 	}
 
 	Quad::~Quad() {
@@ -95,70 +85,27 @@ namespace xe { namespace fx {
 		Renderer::enableBlend(false);
 	}
 
-	void Quad::render3D(uint depth) const {
-		vao->bind();
-		ibo->bind();
-
-		vao->drawArraysInstanced(3, depth, BeginMode::Triangles);
-
-		ibo->unbind();
-		vao->unbind();
-
-		Renderer::incDC();
-	}
-
-	void Quad::renderTexture(const Texture *texture, float size, int32 pos, int32 layer, int32 channel) {
+	void Quad::renderTexture(const Texture *texture, float size, int32 pos, int32 channel) {
 		const float sizeX = width * size;
 		const float sizeY = height * size;
 
 		const float posX = width - sizeX;
 		const float posY = sizeY * pos;
 
-		const int32 l = static_cast<const int32>(math::clampf(layer, 0, texture->getDepth()));
 		const int32 c = static_cast<const int32>(math::clampf(channel, -1, 3));
 
 		Renderer::setViewport((uint) posX, (uint) posY, (uint) sizeX, (uint) sizeY);
 
-		switch (texture->getTarget()) {
-			case TextureTarget::Tex1D: {
-				renderTexture(renderTexture1D, texture, 0, "", false);
-				break;
-			}
-
-			case TextureTarget::Tex2D: {
-				renderTexture(renderTexture2D, texture, c, "channel", false);
-				break;
-			}
-
-			case TextureTarget::Tex3D: {
-				renderTexture(renderTexture3D, texture, l, "layer", false);
-				break;
-			}
-
-			case TextureTarget::Tex2DArray: {
-				renderTexture(renderTexture2DArray, texture, l, "layer", false);
-				break;
-			}
-
-			case TextureTarget::TexCubeMap: {
-				renderTexture(renderTextureCube, texture, 0, "", true);
-				break;
-			}
-
-			case TextureTarget::TexCubeMapArray: {
-				renderTexture(renderTextureCubeArray, texture, l, "layer", true);
-				break;
-			}
+		if (texture->getTarget() == TextureTarget::Tex2D) {
+			renderTexture(renderTexture2D, texture, c, false);
 		}
 	}
 
-	void Quad::renderTexture(const Shader *shader, const Texture *texture, int32 data, const char *uniform, bool fullQuad) {
+	void Quad::renderTexture(const Shader *shader, const Texture *texture, int32 channel, bool fullQuad) {
 		shader->bind();
 
-		if (strlen(uniform) > 0) {
-			shader->setUniform(uniform, &data, sizeof(int32));
-			shader->updateUniforms();
-		}
+		shader->setUniform("channel", &channel, sizeof(int32));
+		shader->updateUniforms();
 
 		const uint slot = shader->getSampler("sampler0");
 

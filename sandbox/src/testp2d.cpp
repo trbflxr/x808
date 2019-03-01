@@ -91,6 +91,11 @@ void TestP2D::render() {
 void TestP2D::renderImGui() {
 	ImGui::Begin("Particle test");
 
+	ImGui::Text("fps: %i", app.getFPS());
+	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("draw calls: %i", Renderer::getDC());
+	ImGui::Separator();
+	ImGui::Dummy({10.0f, 0.0f});
 
 	if (ImGui::Button("play")) {
 		effect->play();

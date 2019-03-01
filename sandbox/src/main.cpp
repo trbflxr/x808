@@ -3,8 +3,6 @@
 #include <xe/core/vfs.hpp>
 #include <xe/core/filesystem.hpp>
 #include "test2d.hpp"
-#include "test3d.hpp"
-#include "debugui.hpp"
 #include "testb2d.hpp"
 #include "testl2d.hpp"
 #include "testp2d.hpp"
@@ -66,8 +64,6 @@ public:
 		xe::VFS::mount("audio", "xe_sandbox_assets/audio/");
 		xe::VFS::mount("shaders", "/");
 
-		DebugUI *ui = new DebugUI();
-//		Test3D *t3d = new Test3D(ui);
 //		Test2D *t2d = new Test2D();
 //		TestL2D *tl2d = new TestL2D();
 		TestP2D *tp2d = new TestP2D();
@@ -77,8 +73,6 @@ public:
 		pushLayer(tp2d);
 //		pushLayer(tl2d);
 //		pushLayer(t2d);
-//		pushLayer(t3d);
-		pushOverlay(ui);
 	}
 
 	~Test() override { }

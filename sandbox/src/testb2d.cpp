@@ -4,6 +4,7 @@
 
 #include <xe/resources/texturemanager.hpp>
 #include <xe/gfx/renderer.hpp>
+#include <xe/ui/imgui/imgui.h>
 #include "testb2d.hpp"
 
 using namespace xe;
@@ -115,6 +116,19 @@ void TestB2D::render() {
 	renderer->flush();
 }
 
+void TestB2D::renderImGui() {
+	ImGui::Begin("Test Box2D", nullptr);
+
+	//debug
+	ImGui::Text("fps: %i", app.getFPS());
+	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("draw calls: %i", Renderer::getDC());
+	ImGui::Separator();
+	ImGui::Dummy({10.0f, 0.0f});
+
+	ImGui::End();
+}
+
 void TestB2D::update(float delta) {
 	if (Mouse::isButtonPressed(Mouse::Right)) {
 		const vec2 p = Mouse::getPosition(window);
@@ -180,4 +194,3 @@ void TestB2D::input(xe::Event &event) {
 		default: break;
 	}
 }
-

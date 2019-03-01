@@ -10,14 +10,8 @@ include_directories(${XE_INCLUDE_DIRS})
 link_directories(${XE_STATIC_LIB_DIRS})
 
 #sandbox
-set(SANDBOX_SRC
-        src/main.cpp
-        src/test2d.cpp
-        src/test3d.cpp
-        src/testb2d.cpp
-        src/testl2d.cpp
-        src/testp2d.cpp
-        src/debugui.cpp)
+file(GLOB SANDBOX_SRC
+        src/*.cpp)
 
 add_executable(sandbox ${SANDBOX_SRC})
 

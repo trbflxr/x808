@@ -132,6 +132,12 @@ void TestL2D::render() {
 void TestL2D::renderImGui() {
 	ImGui::Begin("Audio test");
 
+	ImGui::Text("fps: %i", app.getFPS());
+	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("draw calls: %i", Renderer::getDC());
+	ImGui::Separator();
+	ImGui::Dummy({10.0f, 0.0f});
+
 	if (ImGui::Button("test")) {
 		as0->play();
 	}
@@ -236,3 +242,10 @@ void TestL2D::update(float delta) {
 }
 
 void TestL2D::input(xe::Event &event) { }
+
+
+void TestL2D::resize(int32 width, int32 height) {
+	camera->setProjection(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
+	renderer->setWidth(width);
+	renderer->setHeight(height);
+}

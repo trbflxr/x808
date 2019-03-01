@@ -25,6 +25,9 @@ public:
 
 	void input(xe::Event &event) override;
 
+protected:
+	void resize(int32 width, int32 height) override;
+
 private:
 	xe::Camera *camera;
 	xe::Renderer2D *renderer;

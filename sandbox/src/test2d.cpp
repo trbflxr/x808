@@ -228,12 +228,12 @@ void Test2D::render() {
 }
 
 void Test2D::renderImGui() {
-	ImGui::Begin("UI", nullptr);
+	ImGui::Begin("Test2D", nullptr);
 
 	//debug
-	ImGui::Text("info");
 	ImGui::Text("fps: %i", app.getFPS());
 	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
 
