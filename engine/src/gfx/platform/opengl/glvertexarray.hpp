@@ -12,6 +12,8 @@ namespace xe { namespace internal {
 
 	class GLVertexArray : public PlatformVertexArray {
 	public:
+		~GLVertexArray() override;
+
 		void bind() const override;
 		void unbind() const override;
 
@@ -21,11 +23,7 @@ namespace xe { namespace internal {
 
 		inline VertexBuffer *getBuffer(uint index) override { return buffers[index]; }
 		inline void pushBuffer(VertexBuffer *buffer) override { buffers.push_back(buffer); }
-		inline VertexBuffer *popBuffer() override {
-			VertexBuffer *buffer = buffers.back();
-			buffers.pop_back();
-			return buffer;
-		}
+		VertexBuffer *popBuffer() override;
 
 	private:
 		std::vector<VertexBuffer *> buffers;
