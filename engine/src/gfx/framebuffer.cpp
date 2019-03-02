@@ -30,7 +30,7 @@ namespace xe {
 		delete buffer;
 	}
 
-	void FrameBuffer::load(const std::unordered_map<Attachment, Texture *> &attachments) {
+	void FrameBuffer::load(const std::unordered_map<Attachment, const Texture *> &attachments) {
 		buffer->load(attachments);
 	}
 
@@ -62,7 +62,7 @@ namespace xe {
 		buffer->unbind();
 	}
 
-	void FrameBuffer::bindTexture(Attachment attachment, Texture *texture) const {
+	void FrameBuffer::bindTexture(Attachment attachment, const Texture *texture) const {
 		buffer->bindTexture(attachment, texture);
 	}
 
@@ -74,7 +74,7 @@ namespace xe {
 		return buffer->getName();
 	}
 
-	Texture *FrameBuffer::getTexture(Attachment attachment) const {
+	const Texture *FrameBuffer::getTexture(Attachment attachment) const {
 		return buffer->getTexture(attachment);
 	}
 

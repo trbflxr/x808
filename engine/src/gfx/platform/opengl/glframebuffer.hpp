@@ -15,7 +15,7 @@ namespace xe { namespace internal {
 		explicit GLFrameBuffer(const std::string_view &name);
 		~GLFrameBuffer() override;
 
-		void load(const std::unordered_map<Attachment, Texture *> &attachments) override;
+		void load(const std::unordered_map<Attachment, const Texture *> &attachments) override;
 
 		void bindDrawAttachment(Attachment attachment) const override;
 		void bindDrawAttachments(Attachment *attachments, uint size) const override;
@@ -26,17 +26,17 @@ namespace xe { namespace internal {
 		void bindRead(Attachment attachment) const override;
 		void unbind() override;
 
-		void bindTexture(Attachment attachment, Texture *texture) const override;
+		void bindTexture(Attachment attachment, const Texture *texture) const override;
 
 		inline uint getHandle() const override { return handle; }
 		inline const string &getName() const override { return name; }
-		inline Texture *getTexture(Attachment attachment) override { return attachments[attachment]; }
+		inline const Texture *getTexture(Attachment attachment) override { return attachments[attachment]; }
 
 	private:
 		uint handle;
 		string name;
 
-		std::unordered_map<Attachment, Texture *> attachments;
+		std::unordered_map<Attachment, const Texture *> attachments;
 	};
 
 }}

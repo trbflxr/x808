@@ -21,7 +21,7 @@ namespace xe {
 
 		void useFXAA(bool enabled) const;
 
-		void render(Quad *quad) const;
+		void render(const Quad *quad) const;
 
 		inline const FrameBuffer *getFinalFBO() const { return finalFBO; }
 		inline const Texture *getFinalTexture() const { return finalTexture; }

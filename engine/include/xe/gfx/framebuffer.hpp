@@ -20,7 +20,7 @@ namespace xe {
 		explicit FrameBuffer(const string &name);
 		~FrameBuffer();
 
-		void load(const std::unordered_map<Attachment, Texture *> &attachments);
+		void load(const std::unordered_map<Attachment, const Texture *> &attachments);
 
 		void bindDrawAttachment(Attachment attachment) const;
 		void bindDrawAttachments(Attachment *attachments, uint size) const;
@@ -31,11 +31,11 @@ namespace xe {
 		void bindRead(Attachment attachment) const;
 		void unbind() const;
 
-		void bindTexture(Attachment attachment, Texture *texture) const;
+		void bindTexture(Attachment attachment, const Texture *texture) const;
 
 		uint getHandle() const;
 		const string &getName() const;
-		Texture *getTexture(Attachment attachment) const;
+		const Texture *getTexture(Attachment attachment) const;
 
 	private:
 		internal::PlatformFrameBuffer *buffer;

@@ -9,7 +9,6 @@
 
 namespace xe {
 
-
 	GBuffer::GBuffer(uint width, uint height) :
 			width(width),
 			height(height),
@@ -126,6 +125,40 @@ namespace xe {
 		geometry->unbind();
 
 		buffer->unbind();
+	}
+
+	void GBuffer::passLightAccumulation(const Quad *quad, const FrameBuffer *final) const {
+		final->bindDraw(Attachment::Color0);
+
+		Renderer::clear(RendererBufferColor);
+		Renderer::setViewport(0, 0, width, height);
+
+		accumulation->bind();
+
+		vec3 am(0.05f, 0.05f, 0.05f);
+		int32 e = 1;
+		accumulation->setUniform("ambientPass", &e, sizeof(int32));
+		accumulation->setUniform("ambient", &am, sizeof(vec3));
+
+		const uint p = accumulation->getSampler("sampler0");
+		const uint n = accumulation->getSampler("sampler1");
+		const uint a = accumulation->getSampler("sampler2");
+
+		position->bind(p);
+		normals->bind(n);
+		albedo->bind(a);
+
+		accumulation->updateUniforms();
+
+		quad->render();
+
+		position->unbind(p);
+		normals->unbind(n);
+		albedo->unbind(a);
+
+		accumulation->unbind();
+
+		final->unbind();
 	}
 
 }

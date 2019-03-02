@@ -20,7 +20,7 @@ namespace xe { namespace internal {
 		glCall(glDeleteFramebuffers(1, &handle));
 	}
 
-	void GLFrameBuffer::load(const std::unordered_map<Attachment, Texture *> &attachments) {
+	void GLFrameBuffer::load(const std::unordered_map<Attachment, const Texture *> &attachments) {
 		GLFrameBuffer::attachments = attachments;
 
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, handle));
@@ -81,7 +81,7 @@ namespace xe { namespace internal {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
-	void GLFrameBuffer::bindTexture(Attachment attachment, Texture *texture) const {
+	void GLFrameBuffer::bindTexture(Attachment attachment, const Texture *texture) const {
 		glCall(glFramebufferTexture(GL_FRAMEBUFFER, attachmentToGL(attachment), texture->getHandle(), 0));
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {

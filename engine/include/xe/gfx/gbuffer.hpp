@@ -9,6 +9,7 @@
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/model.hpp>
+#include <xe/gfx/quad.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 namespace xe {
@@ -19,6 +20,7 @@ namespace xe {
 		~GBuffer() override;
 
 		void passGeometry(const std::vector<Model *> &models) const;
+		void passLightAccumulation(const Quad *quad, const FrameBuffer *final) const;
 
 		inline const Texture *getDepth() const { return depth; }
 		inline const Texture *getPosition() const { return position; }
@@ -39,10 +41,10 @@ namespace xe {
 		const Texture *defaultNormal;
 		const Texture *defaultSpecular;
 
-		Texture *depth;
-		Texture *position;
-		Texture *normals;
-		Texture *albedo;
+		const Texture *depth;
+		const Texture *position;
+		const Texture *normals;
+		const Texture *albedo;
 
 		FrameBuffer *buffer;
 

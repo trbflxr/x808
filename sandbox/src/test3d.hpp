@@ -16,6 +16,7 @@
 #include <xe/gfx/uniformbuffer.hpp>
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/quad.hpp>
+#include <xe/gfx/finalfx.hpp>
 
 class Test3D : public xe::Layer {
 public:
@@ -40,7 +41,7 @@ private:
 	xe::UniformBuffer *cameraUBO;
 
 	xe::GBuffer *gBuffer;
-
+	xe::FinalFX *final;
 	xe::Quad *quad;
 };
 

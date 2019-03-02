@@ -34,6 +34,7 @@ Test3D::Test3D() {
 	gBuffer = new GBuffer(width, height);
 
 	quad = new Quad(width, height);
+	final = new FinalFX(width, height);
 
 	BufferLayout cl;
 	cl.push<mat4>("view");
@@ -61,9 +62,19 @@ void Test3D::render() {
 	cameraUBO->update(&camera->getInvertedView(), 2);
 	cameraUBO->unbind();
 
+	Renderer::enableDepthTesting(true);
+	Renderer::enableCullFace(true);
+	Renderer::enableBlend(false);
+	Renderer::setCullFace(CullFace::Back);
+
 	gBuffer->passGeometry({model});
 
-	quad->renderTexture(gBuffer->getAlbedo());
+	gBuffer->passLightAccumulation(quad, final->getFinalFBO());
+
+	Renderer::enableDepthTesting(false);
+	Renderer::enableBlend(true);
+
+	final->render(quad);
 }
 
 void Test3D::renderImGui() {

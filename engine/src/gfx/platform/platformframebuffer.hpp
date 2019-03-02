@@ -15,7 +15,7 @@ namespace xe { namespace internal {
 	public:
 		virtual ~PlatformFrameBuffer() = default;
 
-		virtual void load(const std::unordered_map<Attachment, Texture *> &attachments) = 0;
+		virtual void load(const std::unordered_map<Attachment, const Texture *> &attachments) = 0;
 
 		virtual void bindDrawAttachment(Attachment attachment) const = 0;
 		virtual void bindDrawAttachments(Attachment *attachments, uint size) const = 0;
@@ -26,11 +26,11 @@ namespace xe { namespace internal {
 		virtual void bindRead(Attachment attachment) const = 0;
 		virtual void unbind() = 0;
 
-		virtual void bindTexture(Attachment attachment, Texture *texture) const = 0;
+		virtual void bindTexture(Attachment attachment, const Texture *texture) const = 0;
 
 		virtual uint getHandle() const = 0;
 		virtual const string &getName() const = 0;
-		virtual Texture *getTexture(Attachment attachment) = 0;
+		virtual const Texture *getTexture(Attachment attachment) = 0;
 	};
 
 }}

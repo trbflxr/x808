@@ -113,7 +113,7 @@ namespace xe {
 		}));
 
 		shaders.emplace("dAccumulation", new Shader("dAccumulation", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["accumulation_vert"]),
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["accumulation_frag"],
 				                       {sources["1_camera_ubo"]})
 		}));

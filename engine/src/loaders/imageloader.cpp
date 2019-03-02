@@ -37,6 +37,8 @@ namespace xe {
 		stbi_set_flip_vertically_on_load(flip);
 		byte *data = stbi_load_from_memory(memory, memorySize, &w, &h, &bpp, STBI_rgb_alpha);
 
+		delete[] memory;
+
 		if (width) *width = (uint) w;
 		if (height) *height = (uint) h;
 		if (bits) *bits = (uint) bpp * 8;

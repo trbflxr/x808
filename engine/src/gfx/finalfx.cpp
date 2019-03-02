@@ -42,12 +42,12 @@ namespace xe {
 
 	void FinalFX::useFXAA(bool enabled) const {
 		fxaa = enabled;
-		int32 use = fxaa ? 1 : 0;
+		const int32 use = fxaa ? 1 : 0;
 
 		finalShader->setUniform("useFXAA", &use, sizeof(int32));
 	}
 
-	void FinalFX::render(Quad *quad) const {
+	void FinalFX::render(const Quad *quad) const {
 		Renderer::clear(RendererBufferColor);
 		Renderer::setViewport(0, 0, width, height);
 

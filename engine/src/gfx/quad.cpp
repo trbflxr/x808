@@ -20,8 +20,6 @@ namespace xe {
 
 		uint indices[] = {0, 1, 2, 0, 2, 3};
 
-		vao = new VertexArray();
-
 		VertexBuffer *buffer = new VertexBuffer();
 		BufferLayout layout;
 		layout.push<vec3>("pos");
@@ -29,6 +27,7 @@ namespace xe {
 		buffer->setLayout(layout);
 		buffer->setData(4 * sizeof(vec3), positions);
 
+		vao = new VertexArray();
 		vao->pushBuffer(buffer);
 
 		ibo = new IndexBuffer(indices, 6);
@@ -45,7 +44,7 @@ namespace xe {
 		vao->bind();
 		ibo->bind();
 
-		vao->drawArrays(3, BeginMode::Triangles);
+		vao->drawElements(3, BeginMode::Triangles);
 
 		ibo->unbind();
 		vao->unbind();
@@ -67,7 +66,7 @@ namespace xe {
 		vao->bind();
 		ibo->bind();
 
-		vao->drawArrays(6, BeginMode::Triangles);
+		vao->drawElements(6, BeginMode::Triangles);
 
 		ibo->unbind();
 		vao->unbind();
