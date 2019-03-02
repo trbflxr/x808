@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <xe/gfx/mesh.hpp>
+#include <xe/gfx/material.hpp>
 #include <xe/math/itransformable.hpp>
 
 namespace xe {
@@ -18,8 +19,14 @@ namespace xe {
 		explicit Model(const string &name, const string &file);
 		~Model() override;
 
+		inline Material *getMaterial() { return material; }
+		inline const Material *getMaterial() const { return material; }
+		inline void setMaterial(Material *material) { Model::material = material; }
+
 	private:
 		friend class ModelLoader;
+
+		Material *material;
 	};
 
 }

@@ -197,10 +197,6 @@ namespace xe { namespace internal {
 			params.format = PixelFormat::Rgba;
 			params.internalFormat = PixelInternalFormat::Rgba;
 		} else {
-			if (bits != 24 && bits != 32) {
-				XE_CORE_FATAL("[GLTexture]: '", name, "' Unsupported image bit-depth! ", bits);
-			}
-
 			params.internalFormat = PixelInternalFormat::Rgba;
 			params.format = PixelFormat::Rgba;
 		}

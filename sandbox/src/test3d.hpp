@@ -31,7 +31,7 @@ private:
 	//test
 	xe::Model *model;
 	xe::Shader *shader;
-	xe::Texture *texture;
+	xe::Material *material;
 };
 
 
