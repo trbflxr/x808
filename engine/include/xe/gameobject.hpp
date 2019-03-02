@@ -6,17 +6,16 @@
 #define X808_GAMEOBJECT_HPP
 
 
-#include <xe/math/transform.hpp>
+#include <xe/math/itransformable.hpp>
 
 namespace xe {
 
-	struct GameObject {
-		Transform transform;
-
+	class GameObject : public ITransformable {
+	public:
 		GameObject() = default;
 
 		explicit GameObject(const mat4 &transformation) :
-				transform(transformation) { }
+				ITransformable(transformation) { }
 
 		virtual ~GameObject() = default;
 	};

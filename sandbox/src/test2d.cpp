@@ -241,12 +241,12 @@ void Test2D::renderImGui() {
 }
 
 void Test2D::update(float delta) {
-	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->getPosition()));
 
 	star->setPosition(pos);
 
 	///update camera
-	vec3 camPos = camera->transform.getPosition();
+	vec3 camPos = camera->getPosition();
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
 		camPos.x += 1000 * delta;
@@ -260,7 +260,7 @@ void Test2D::update(float delta) {
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
 		camPos.y -= 1000 * delta;
 	}
-	camera->transform.setPosition(camPos);
+	camera->setPosition(camPos);
 
 	camera->update();
 }

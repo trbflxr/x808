@@ -8,8 +8,9 @@
 
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/camera.hpp>
-#include <xe/gfx/mesh.hpp>
+#include <xe/gfx/model.hpp>
 #include <xe/gfx/shader.hpp>
+#include "dummyplayer.hpp"
 
 class Test3D : public xe::Layer {
 public:
@@ -24,10 +25,11 @@ public:
 	void input(xe::Event &event) override;
 
 private:
+	DummyPlayer *player;
 	xe::Camera *camera;
 
 	//test
-	xe::Mesh *mesh;
+	xe::Model *model;
 	xe::Shader *shader;
 	xe::Texture *texture;
 };

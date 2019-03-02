@@ -2,8 +2,8 @@
 // Created by FLXR on 7/13/2018.
 //
 
-#ifndef X808_TRANSFORM_HPP
-#define X808_TRANSFORM_HPP
+#ifndef X808_ITRANSFORMABLE_HPP
+#define X808_ITRANSFORMABLE_HPP
 
 
 #include <xe/math/vec2.hpp>
@@ -13,42 +13,44 @@
 
 namespace xe {
 
-	class Transform {
+	class ITransformable {
 	public:
-		inline Transform() :
+		inline ITransformable() :
 				transformation(mat4::identity()),
 				dirty(true),
 				position(0.0f, 0.0f, 0.0f),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
 				scale(1.0f, 1.0f, 1.0f) { }
 
-		inline explicit Transform(const mat4 &transformation) :
+		inline explicit ITransformable(const mat4 &transformation) :
 				transformation(transformation),
 				dirty(false),
 				position(transformation.getTranslation()),
 				rotation(transformation.getRotation()),
 				scale(transformation.getScale()) { }
 
-		inline explicit Transform(const vec3 &translation) :
+		inline explicit ITransformable(const vec3 &translation) :
 				transformation(mat4::identity()),
 				dirty(true),
 				position(translation),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
 				scale(1.0f, 1.0f, 1.0f) { }
 
-		inline explicit Transform(const quat &rotation) :
+		inline explicit ITransformable(const quat &rotation) :
 				transformation(mat4::identity()),
 				dirty(true),
 				position(0.0f, 0.0f, 0.0f),
 				rotation(rotation),
-				scale(1.0f, 1.0f, 1.0f){ }
+				scale(1.0f, 1.0f, 1.0f) { }
 
-		inline explicit Transform(const vec3 &translation, const quat &rotation, const vec3 &scale) :
+		inline explicit ITransformable(const vec3 &translation, const quat &rotation, const vec3 &scale) :
 				transformation(mat4::identity()),
 				dirty(true),
 				position(translation),
 				rotation(rotation),
 				scale(scale) { }
+
+		virtual ~ITransformable() = default;
 
 		inline const mat4 &toMatrix() const;
 
@@ -60,24 +62,24 @@ namespace xe {
 		inline vec3 getScale() const { return scale; }
 
 		inline void set(const vec3 &position, const quat &rotation, const vec3 &scale) {
-			Transform::position = position;
-			Transform::rotation = rotation;
-			Transform::scale = scale;
+			ITransformable::position = position;
+			ITransformable::rotation = rotation;
+			ITransformable::scale = scale;
 			dirty = true;
 		}
 
 		inline void setPosition(const vec3 &position) {
-			Transform::position = position;
+			ITransformable::position = position;
 			dirty = true;
 		}
 
 		inline void setRotation(const quat &rotation) {
-			Transform::rotation = rotation;
+			ITransformable::rotation = rotation;
 			dirty = true;
 		}
 
 		inline void setScale(const vec3 &scale) {
-			Transform::scale = scale;
+			ITransformable::scale = scale;
 			dirty = true;
 		}
 
@@ -85,12 +87,12 @@ namespace xe {
 		inline void rotate(const quat &rotation);
 		inline void move(const vec3 &dir);
 
-		inline Transform operator+(const Transform &other) const;
-		inline Transform operator+=(const Transform &other);
-		inline Transform operator*(const Transform &other) const;
-		inline Transform operator*=(const Transform &other);
-		inline Transform operator*(float other) const;
-		inline Transform operator*=(float other);
+		inline ITransformable operator+(const ITransformable &other) const;
+		inline ITransformable operator+=(const ITransformable &other);
+		inline ITransformable operator*(const ITransformable &other) const;
+		inline ITransformable operator*=(const ITransformable &other);
+		inline ITransformable operator*(float other) const;
+		inline ITransformable operator*=(float other);
 
 	private:
 		mutable mat4 transformation;
@@ -101,7 +103,7 @@ namespace xe {
 		vec3 scale;
 	};
 
-	inline const mat4 &Transform::toMatrix() const {
+	inline const mat4 &ITransformable::toMatrix() const {
 		if (dirty) {
 			transformation = mat4::transform(position, rotation, scale);
 			dirty = false;
@@ -109,25 +111,25 @@ namespace xe {
 		return transformation;
 	}
 
-	inline void Transform::rotate(const vec3 &axis, float angleDeg) {
+	inline void ITransformable::rotate(const vec3 &axis, float angleDeg) {
 		rotate(quat(axis, angleDeg));
 	}
 
-	inline void Transform::rotate(const quat &rotation) {
-		Transform::rotation = quat::normalize(rotation * Transform::rotation);
+	inline void ITransformable::rotate(const quat &rotation) {
+		ITransformable::rotation = quat::normalize(rotation * ITransformable::rotation);
 		dirty = true;
 	}
 
-	inline void Transform::move(const vec3 &dir) {
+	inline void ITransformable::move(const vec3 &dir) {
 		position += dir;
 		dirty = true;
 	}
 
-	Transform Transform::operator+(const Transform &other) const {
-		return Transform(position + other.position, rotation + other.rotation, scale + other.scale);
+	ITransformable ITransformable::operator+(const ITransformable &other) const {
+		return ITransformable(position + other.position, rotation + other.rotation, scale + other.scale);
 	}
 
-	Transform Transform::operator+=(const Transform &other) {
+	ITransformable ITransformable::operator+=(const ITransformable &other) {
 		position += other.position;
 		rotation += other.rotation;
 		scale += other.scale;
@@ -135,11 +137,11 @@ namespace xe {
 		return *this;
 	}
 
-	Transform Transform::operator*(const Transform &other) const {
-		return Transform(position * other.position, rotation * other.rotation, scale * other.scale);
+	ITransformable ITransformable::operator*(const ITransformable &other) const {
+		return ITransformable(position * other.position, rotation * other.rotation, scale * other.scale);
 	}
 
-	Transform Transform::operator*=(const Transform &other) {
+	ITransformable ITransformable::operator*=(const ITransformable &other) {
 		position *= other.position;
 		rotation *= other.rotation;
 		scale *= other.scale;
@@ -147,11 +149,11 @@ namespace xe {
 		return *this;
 	}
 
-	Transform Transform::operator*(float other) const {
-		return Transform(position * other, rotation * other, scale * other);
+	ITransformable ITransformable::operator*(float other) const {
+		return ITransformable(position * other, rotation * other, scale * other);
 	}
 
-	Transform Transform::operator*=(float other) {
+	ITransformable ITransformable::operator*=(float other) {
 		position *= other;
 		rotation *= other;
 		scale *= other;
@@ -162,4 +164,4 @@ namespace xe {
 }
 
 
-#endif //X808_TRANSFORM_HPP
+#endif //X808_ITRANSFORMABLE_HPP

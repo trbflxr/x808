@@ -6,28 +6,28 @@
 #define X808_CAMERA_HPP
 
 
-#include <cstring>
-#include <xe/common.hpp>
-#include <xe/xeint.hpp>
 #include <xe/gameobject.hpp>
 
 namespace xe {
 
-	class XE_API Camera : public GameObject {
+	class Camera : public ITransformable {
 	public:
 		explicit Camera(const mat4 &projection) :
 				projection(projection), view(1.0f), entity(nullptr) { }
 
+		~Camera() override = default;
+
 		virtual void update() {
 			if (entity) {
-				memcpy(&transform, &entity->transform, sizeof(Transform));
+				const mat4 rotation = quat::conjugate(entity->getRotation()).toMatrix();
+				const mat4 translation = mat4::translation(-entity->getPosition());
+				view = rotation * translation;
+			} else {
+				const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
+				const mat4 translation = mat4::translation(-getPosition());
+				view = rotation * translation;
 			}
-
-			const mat4 rotation = quat::conjugate(transform.getRotation()).toMatrix();
-			const mat4 translation = mat4::translation(-transform.getPosition());
-			view = rotation * translation;
-
-			transform.setDirty(false);
+			setDirty(false);
 		}
 
 		inline void hookEntity(GameObject *entity) {
@@ -43,14 +43,14 @@ namespace xe {
 		inline void setProjection(const mat4 &matrix) { projection = matrix; }
 
 		inline const mat4 &getView() {
-			if (transform.isDirty()) {
+			if (isDirty()) {
 				update();
 			}
 			return view;
 		}
 
 		inline mat4 getViewProjection() {
-			if (transform.isDirty()) {
+			if (isDirty()) {
 				update();
 			}
 			return projection * view;

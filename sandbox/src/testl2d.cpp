@@ -112,7 +112,7 @@ TestL2D::~TestL2D() {
 }
 
 void TestL2D::render() {
-	vec2 pos = Mouse::getPosition(window) + vec2(camera->transform.getPosition());
+	vec2 pos = Mouse::getPosition(window) + vec2(camera->getPosition());
 	lights[0]->setPosition(pos);
 
 	for (const auto &l : lights) {
@@ -212,7 +212,7 @@ void TestL2D::renderImGui() {
 }
 
 void TestL2D::update(float delta) {
-	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->transform.getPosition()));
+	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->getPosition()));
 	player->setPosition(pos);
 
 	playerAnimation->update(delta, 0, true);
@@ -222,7 +222,7 @@ void TestL2D::update(float delta) {
 	as0->setPosition(vec3((halfScreen - pos) * -1, 150.0f));
 
 	///update camera
-	vec3 camPos = camera->transform.getPosition();
+	vec3 camPos = camera->getPosition();
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
 		camPos.x += 1000 * delta;
@@ -236,7 +236,7 @@ void TestL2D::update(float delta) {
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
 		camPos.y -= 1000 * delta;
 	}
-	camera->transform.setPosition(camPos);
+	camera->setPosition(camPos);
 
 	camera->update();
 }
