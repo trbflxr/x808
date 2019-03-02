@@ -105,6 +105,25 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2D_frag"])
 		}));
 
+		///----- gbuffer shaders -----///
+		shaders.emplace("dGBuffer", new Shader("dGBuffer", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["gbuffer_vert"],
+				                       {sources["1_camera_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Frag, sources["gbuffer_frag"])
+		}));
+
+		shaders.emplace("dAccumulation", new Shader("dAccumulation", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["accumulation_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["accumulation_frag"],
+				                       {sources["1_camera_ubo"]})
+		}));
+
+		///----- final fx shader -----///
+		shaders.emplace("dFinalFX", new Shader("dFinalFX", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["final_frag"],
+				                       {sources["fxaa_include"]})
+		}));
 	}
 
 }

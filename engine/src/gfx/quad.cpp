@@ -3,11 +3,11 @@
 //
 
 
-#include <xe/gfx/fx/quad.hpp>
+#include <xe/gfx/quad.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/shadermanager.hpp>
 
-namespace xe { namespace fx {
+namespace xe {
 
 	Quad::Quad(uint width, uint height) :
 			RenderEffect(width, height) {
@@ -118,4 +118,4 @@ namespace xe { namespace fx {
 		shader->unbind();
 	}
 
-}}
+}

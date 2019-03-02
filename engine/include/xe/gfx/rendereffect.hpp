@@ -8,7 +8,7 @@
 
 #include <xe/xeint.hpp>
 
-namespace xe { namespace fx {
+namespace xe {
 
 	class RenderEffect {
 	public:
@@ -30,7 +30,7 @@ namespace xe { namespace fx {
 		uint height;
 	};
 
-}}
+}
 
 
 #endif //X808_RENDEREFFECT_HPP

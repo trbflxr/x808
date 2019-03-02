@@ -84,23 +84,41 @@ namespace xe {
 	}
 
 	void TextureManager::createDefaultTextures() {
-		static TextureParameters params(TextureTarget::Tex2D,
-		                                PixelInternalFormat::Rgb,
-		                                PixelFormat::Rgb,
-		                                PixelType::UnsignedByte,
-		                                TextureMinFilter::Linear,
-		                                TextureMagFilter::Linear);
+		TextureParameters params(TextureTarget::Tex2D,
+		                         PixelInternalFormat::Rgba,
+		                         PixelFormat::Rgba,
+		                         PixelType::UnsignedByte,
+		                         TextureMinFilter::Linear,
+		                         TextureMagFilter::Linear);
 
-		Texture *errorTexture = new Texture("default", internal::DEFAULT_TEXTURE_W,
-		                                    internal::DEFAULT_TEXTURE_H, 0, params);
+		const Texture *errorTexture = new Texture("default", internal::DEFAULT_TEXTURE_W,
+		                                          internal::DEFAULT_TEXTURE_H, 0, params);
 		errorTexture->setData2D(internal::DEFAULT_TEXTURE);
 
 		textures.emplace("default", errorTexture);
 
+		//error atlas
 		const rect e = rect(0, 0, errorTexture->getWidth(), errorTexture->getHeight());
 		TextureAtlas *ea = new TextureAtlas(errorTexture, {std::make_pair("error", e)});
 
 		atlases.emplace("default", ea);
+
+		//default textures
+		params.minFilter = TextureMinFilter::Nearest;
+		params.magFilter = TextureMagFilter::Nearest;
+		params.mipMapLevels = 0;
+		params.anisotropy = 0;
+
+		const byte normalData[] = {128, 127, 255, 255};
+		const byte specularData[] = {255, 255, 255, 255};
+
+		const Texture *normal = new Texture("defaultNormal", 1, 1, 0, params);
+		normal->setData2D(normalData);
+		textures.emplace("defaultNormal", normal);
+
+		const Texture *specular = new Texture("defaultSpecular", 1, 1, 0, params);
+		specular->setData2D(specularData);
+		textures.emplace("defaultSpecular", specular);
 	}
 
 }

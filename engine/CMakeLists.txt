@@ -70,7 +70,6 @@ file(GLOB ENGINE_SRC
         src/gfx/particles/*.cpp
         src/gfx/platform/*.cpp
         src/gfx/camera/*.cpp
-        src/gfx/fx/*.cpp
         src/gfx/layers/*.cpp
         src/gfx/lights/*.cpp
         src/gfx/*.cpp

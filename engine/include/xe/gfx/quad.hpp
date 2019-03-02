@@ -7,15 +7,13 @@
 
 
 #include <xe/common.hpp>
-#include <xe/gfx/fx/rendereffect.hpp>
+#include <xe/gfx/rendereffect.hpp>
 #include <xe/gfx/vertexarray.hpp>
 #include <xe/gfx/indexbuffer.hpp>
-#include <xe/gfx/enums.hpp>
-#include <xe/string.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/texture.hpp>
 
-namespace xe { namespace fx {
+namespace xe {
 
 	class XE_API Quad : public RenderEffect {
 	public:
@@ -39,7 +37,7 @@ namespace xe { namespace fx {
 		const Shader *renderTexture2D;
 	};
 
-}}
+}
 
 
 #endif //X808_QUAD_HPP

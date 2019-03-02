@@ -75,7 +75,8 @@ namespace xe {
 		Rgb32f,
 		Rgba16f,
 		Rgb16f,
-		Rg32f
+		Rg32f,
+		Rgb10A2
 	};
 
 	enum class PixelFormat {

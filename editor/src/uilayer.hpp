@@ -7,7 +7,7 @@
 
 
 #include <xe/gfx/layer.hpp>
-#include <xe/gfx/fx/quad.hpp>
+#include <xe/gfx/quad.hpp>
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 

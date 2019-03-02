@@ -16,11 +16,6 @@ Test3D::Test3D() {
 	camera = new Camera(mat4::perspective(60.0f, width / height, 0.1f, 1000.0f));
 	camera->setPosition({0.0f, 0.0f, 10.0f});
 
-	shader = new Shader("mesh", {
-			ShaderFile::fromFile(ShaderType::Vert, "mesh.vert"),
-			ShaderFile::fromFile(ShaderType::Frag, "mesh.frag")
-	});
-
 	TextureParameters params;
 	TextureManager::add(new Texture("diffuse", "bricks.jpg", params));
 	TextureManager::add(new Texture("disp", "bricksDisp.png", params));
@@ -35,33 +30,40 @@ Test3D::Test3D() {
 	model->setMaterial(material);
 
 	player = new DummyPlayer(camera);
+
+	gBuffer = new GBuffer(width, height);
+
+	quad = new Quad(width, height);
+
+	BufferLayout cl;
+	cl.push<mat4>("view");
+	cl.push<mat4>("projection");
+	cl.push<mat4>("invertedView");
+
+	cameraUBO = new UniformBuffer(BufferStorage::Dynamic, 1, cl);
 }
 
 Test3D::~Test3D() {
 	delete player;
 	delete camera;
 
-	delete shader;
+	delete gBuffer;
+	delete cameraUBO;
 
 	delete model;
 	delete material;
 }
 
 void Test3D::render() {
-	shader->bind();
-	const uint sampler0 = shader->getSampler("sampler0");
-	model->getMaterial()->diffuse->bind(sampler0);
+	cameraUBO->bind();
+	cameraUBO->update(&camera->getView(), 0);
+	cameraUBO->update(&camera->getProjection(), 1);
+	cameraUBO->update(&camera->getInvertedView(), 2);
+	cameraUBO->unbind();
 
-	shader->setUniform("model", model->toMatrix().elements, sizeof(mat4));
-	shader->setUniform("view", camera->getView().elements, sizeof(mat4));
-	shader->setUniform("projection", camera->getProjection().elements, sizeof(mat4));
+	gBuffer->passGeometry({model});
 
-	shader->updateUniforms();
-
-	model->render(BeginMode::Triangles);
-
-	model->getMaterial()->diffuse->unbind(sampler0);
-	shader->unbind();
+	quad->renderTexture(gBuffer->getAlbedo());
 }
 
 void Test3D::renderImGui() {
@@ -72,6 +74,11 @@ void Test3D::renderImGui() {
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
+
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getDepth()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getPosition()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getNormals()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getAlbedo()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 
 	ImGui::End();
 }

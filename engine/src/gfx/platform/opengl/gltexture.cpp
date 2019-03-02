@@ -96,7 +96,7 @@ namespace xe { namespace internal {
 
 		glCall(glBindTexture(GL_TEXTURE_2D, handle));
 		glCall(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, pixelFormatToGL(params.format),
-		                       GL_UNSIGNED_BYTE, pixels));
+		                       pixelTypeToGL(params.pixelType), pixels));
 	}
 
 	byte *GLTexture::getData2D() const {

@@ -91,6 +91,7 @@ namespace xe { namespace internal {
 			case PixelInternalFormat::Rgba16f: return GL_RGBA16F;
 			case PixelInternalFormat::Rgb16f: return GL_RGB16F;
 			case PixelInternalFormat::Rg32f: return GL_RG32F;
+			case PixelInternalFormat::Rgb10A2: return GL_RGB10_A2;
 		}
 		return 0;
 	}

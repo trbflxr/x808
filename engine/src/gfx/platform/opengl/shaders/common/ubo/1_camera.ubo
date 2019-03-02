@@ -1,0 +1,5 @@
+layout(std140, row_major) uniform Camera {
+  mat4 view;
+  mat4 projection;
+  vec3 inversedView;
+};

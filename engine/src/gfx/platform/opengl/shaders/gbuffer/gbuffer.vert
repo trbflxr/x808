@@ -4,19 +4,18 @@ layout(location = 2) in vec3 tangent;
 layout(location = 3) in vec2 uv;
 
 uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
 
-out vec2 uv0;
+out vec3 position0;
 out vec3 normal0;
+out vec2 uv0;
 out mat3 tbn0;
 
 void main() {
   gl_Position = (projection * view * model) * vec4(position, 1.0);
 
-  uv0 = uv;
-
+  position0 = vec3(view * model * vec4(position, 1.0));
   normal0 = mat3(transpose(inverse(view * model))) * normal;
+  uv0 = uv;
 
   vec3 T = normalize(vec3(view * model * vec4(tangent.xyz, 0.0)));
   vec3 B = normalize(vec3(view * model * vec4(tangent.xyz, 0.0)));

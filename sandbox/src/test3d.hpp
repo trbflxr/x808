@@ -10,7 +10,12 @@
 #include <xe/gfx/camera.hpp>
 #include <xe/gfx/model.hpp>
 #include <xe/gfx/shader.hpp>
+#include <xe/gfx/gbuffer.hpp>
 #include "dummyplayer.hpp"
+
+#include <xe/gfx/uniformbuffer.hpp>
+#include <xe/gfx/framebuffer.hpp>
+#include <xe/gfx/quad.hpp>
 
 class Test3D : public xe::Layer {
 public:
@@ -30,8 +35,13 @@ private:
 
 	//test
 	xe::Model *model;
-	xe::Shader *shader;
 	xe::Material *material;
+
+	xe::UniformBuffer *cameraUBO;
+
+	xe::GBuffer *gBuffer;
+
+	xe::Quad *quad;
 };
 
 
