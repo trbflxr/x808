@@ -476,7 +476,7 @@ namespace xe {
 
 	mat4 mat4::transform(const vec3 &translation, float rotationDeg) {
 		mat4 t = mat4::translation(translation);
-		mat4 r = mat4::rotation(rotationDeg, vec3::UnitZ);
+		mat4 r = mat4::rotation(rotationDeg, vec3::UnitZ());
 
 		return t * r;
 	}

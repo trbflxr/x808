@@ -76,7 +76,7 @@ namespace xe {
 	}
 
 	IndexedModel &IndexedModel::getConeModel() {
-		static const quat r = quat::rotation(90.0f, vec3::UnitX);
+		static const quat r = quat::rotation(90.0f, vec3::UnitX());
 
 		static IndexedModel model;
 		static bool initialized = false;
@@ -102,7 +102,7 @@ namespace xe {
 	}
 
 	IndexedModel &IndexedModel::getIcosphereModel() {
-		static const quat r = quat::rotation(90.0f, vec3::UnitX);
+		static const quat r = quat::rotation(90.0f, vec3::UnitX());
 
 		static IndexedModel model;
 		static bool initialized = false;

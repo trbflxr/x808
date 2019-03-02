@@ -71,7 +71,7 @@ void Test3D::renderImGui() {
 void Test3D::update(float delta) {
 	player->update(delta);
 
-	model->rotate(vec3::UnitY, 30 * delta);
+	model->rotate(vec3::UnitY(), 30 * delta);
 }
 
 void Test3D::input(Event &event) {

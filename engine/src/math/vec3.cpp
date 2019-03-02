@@ -7,11 +7,6 @@
 
 namespace xe {
 
-	const vec3 vec3::UnitX(1.0f, 0.0f, 0.0f);
-	const vec3 vec3::UnitY(0.0f, 1.0f, 0.0f);
-	const vec3 vec3::UnitZ(0.0f, 0.0f, 1.0f);
-	const vec3 vec3::Zero(0.0f, 0.0f, 0.0f);
-
 	vec3::vec3() : x(0), y(0), z(0) { }
 	vec3::vec3(float val) : x(val), y(val), z(val) { }
 	vec3::vec3(float x, float y, float z) : x(x), y(y), z(z) { }
@@ -75,6 +70,41 @@ namespace xe {
 		res.z = r1.z / r1.w;
 
 		return res;
+	}
+
+	const vec3 &vec3::UnitX() {
+		static const vec3 u = vec3(1.0f, 0.0f, 0.0f);
+		return u;
+	}
+
+	const vec3 &vec3::UnitY() {
+		static const vec3 u = vec3(0.0f, 1.0f, 0.0f);
+		return u;
+	}
+
+	const vec3 &vec3::UnitZ() {
+		static const vec3 u = vec3(0.0f, 0.0f, 1.0f);
+		return u;
+	}
+
+	const vec3 &vec3::UnitXN() {
+		static const vec3 u = vec3(-1.0f, 0.0f, 0.0f);
+		return u;
+	}
+
+	const vec3 &vec3::UnitYN() {
+		static const vec3 u = vec3(0.0f, -1.0f, 0.0f);
+		return u;
+	}
+
+	const vec3 &vec3::UnitZN() {
+		static const vec3 u = vec3(0.0f, 0.0f, -1.0f);
+		return u;
+	}
+
+	const vec3 &vec3::Zero() {
+		static const vec3 u = vec3(0.0f, 0.0f, 0.0f);
+		return u;
 	}
 
 

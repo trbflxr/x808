@@ -16,17 +16,18 @@ public:
 	                     float sprint = 4.0f,
 	                     float sensitivity = 0.15f) :
 			mouseLocked(false),
+			window(xe::Application::get().getWindow()),
 			camera(camera),
 			mouseSensitivity(sensitivity),
 			speed(speed),
-			sprintSpeed(speed * sprint) { }
+			sprintSpeed(speed * sprint) {
+
+		windowSize = window.getSize();
+		windowCenter = windowSize / 2.0f;
+		lastMousePosition = windowCenter;
+	}
 
 	void update(float delta) {
-		static xe::Window &window = xe::Application::get().getWindow();
-		static xe::vec2 windowSize = window.getSize();
-		static xe::vec2 windowCenter = windowSize / 2.0f;
-		static xe::vec2 lastMousePosition = xe::Mouse::getPosition();
-
 		if (mouseLocked) {
 			window.setMouseCursorGrabbed(true);
 			window.setMouseCursorVisible(false);
@@ -36,14 +37,14 @@ public:
 		}
 
 		if (window.isMouseCursorGrabbed()) {
-			xe::vec2 mouseChange = xe::Mouse::getPosition() - lastMousePosition;
+			xe::vec2 mouseChange = xe::Mouse::getPosition(window) - lastMousePosition;
 
 			//rotate
-			camera->rotate(-xe::vec3::UnitY, mouseChange.x * mouseSensitivity);
-			camera->rotate(camera->getRotation().getLeft(), mouseChange.y * mouseSensitivity);
+			camera->rotate(xe::vec3::UnitYN(), mouseChange.x * mouseSensitivity);
+			camera->rotate(camera->getRotation().getRight(), mouseChange.y * mouseSensitivity);
 
 			xe::Mouse::setPosition(windowCenter, window);
-			lastMousePosition = xe::Mouse::getPosition();
+			lastMousePosition = xe::Mouse::getPosition(window);
 
 			//move
 			float speed = xe::Keyboard::isKeyPressed(xe::Keyboard::LControl) ? sprintSpeed : DummyPlayer::speed;
@@ -62,10 +63,10 @@ public:
 			}
 
 			if (xe::Keyboard::isKeyPressed(xe::Keyboard::Space)) {
-				move(xe::vec3::UnitY, speed * delta);
+				move(xe::vec3::UnitY(), speed * delta);
 			}
 			if (xe::Keyboard::isKeyPressed(xe::Keyboard::LShift)) {
-				move(-xe::vec3::UnitY, speed * delta);
+				move(xe::vec3::UnitYN(), speed * delta);
 			}
 
 			camera->update();
@@ -81,6 +82,9 @@ public:
 		if (event.type == xe::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == xe::Mouse::Right) {
 				mouseLocked = !mouseLocked;
+				if (mouseLocked) {
+					xe::Mouse::setPosition(windowCenter, window);
+				}
 			}
 			event.handled = true;
 		}
@@ -99,6 +103,10 @@ private:
 
 private:
 	bool mouseLocked;
+	xe::Window &window;
+	xe::vec2 windowSize;
+	xe::vec2 windowCenter;
+	xe::vec2 lastMousePosition;
 
 	xe::Camera *camera;
 
