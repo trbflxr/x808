@@ -36,6 +36,11 @@ namespace xe {
 		static Mesh *spotLightMesh(const string &name);
 		static Mesh *pointLightMesh(const string &name);
 
+	protected:
+		explicit Mesh(const string &name);
+
+		void init(const IndexedModel &model);
+
 	private:
 		string name;
 

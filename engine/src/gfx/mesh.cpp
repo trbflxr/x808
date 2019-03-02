@@ -12,6 +12,20 @@ namespace xe {
 			vao(nullptr),
 			ibo(nullptr) {
 
+		init(model);
+	}
+
+	Mesh::Mesh(const string &name) :
+			name(name),
+			vao(nullptr),
+			ibo(nullptr) { }
+
+	Mesh::~Mesh() {
+		delete ibo;
+		delete vao;
+	}
+
+	void Mesh::init(const IndexedModel &model) {
 		VertexBuffer *buffer = new VertexBuffer(BufferUsage::StaticDraw);
 
 		BufferLayout layout;
@@ -39,11 +53,6 @@ namespace xe {
 
 		const size_t indicesSize = model.indices.size();
 		ibo = new IndexBuffer(&model.indices[0], indicesSize);
-	}
-
-	Mesh::~Mesh() {
-		delete ibo;
-		delete vao;
 	}
 
 	Mesh *Mesh::spotLightMesh(const string &name) {

@@ -3,27 +3,22 @@
 //
 
 #include <xe/gfx/model.hpp>
+#include <xe/loaders/modelloader.hpp>
 
 namespace xe {
 
-	Model::Model(const std::vector<const Mesh *> &meshes) :
-			meshes(meshes) { }
 
-	Model::Model(const Mesh *mesh) {
-		meshes.push_back(mesh);
-	}
+	Model::Model(const string &name, const IndexedModel &model) :
+			Mesh(name, model) { }
 
-	Model::~Model() {
-		for (const auto &m : meshes) {
-			delete m;
-		}
-		meshes.clear();
-	}
+	Model::Model(const string &name, const string &file) :
+			Mesh(name) {
 
-	void Model::render(BeginMode mode) const {
-		for (const auto &m : meshes) {
-			m->render(mode);
+		if (!ModelLoader::loadModel(this, file)) {
+			init(IndexedModel::getIcosphereModel());
 		}
 	}
+
+	Model::~Model() { }
 
 }

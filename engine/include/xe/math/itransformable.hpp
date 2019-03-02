@@ -68,6 +68,13 @@ namespace xe {
 			dirty = true;
 		}
 
+		inline void set(const mat4 &transformation) {
+			position = transformation.getTranslation();
+			rotation = transformation.getRotation();
+			scale = transformation.getScale();
+			dirty = true;
+		}
+
 		inline void setPosition(const vec3 &position) {
 			ITransformable::position = position;
 			dirty = true;

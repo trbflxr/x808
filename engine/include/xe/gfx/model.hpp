@@ -12,18 +12,14 @@
 
 namespace xe {
 
-	class XE_API Model : public ITransformable {
+	class XE_API Model : public Mesh, public ITransformable {
 	public:
-		explicit Model(const std::vector<const Mesh *> &meshes);
-		explicit Model(const Mesh *mesh);
+		explicit Model(const string &name, const IndexedModel &model);
+		explicit Model(const string &name, const string &file);
 		~Model() override;
 
-		void render(BeginMode mode) const;
-
-		inline const std::vector<const Mesh *> &getMeshes() const { return meshes; }
-
 	private:
-		std::vector<const Mesh *> meshes;
+		friend class ModelLoader;
 	};
 
 }

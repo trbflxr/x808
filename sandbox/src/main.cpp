@@ -63,6 +63,7 @@ public:
 		xe::VFS::mount("fonts", "xe_sandbox_assets/fonts/");
 		xe::VFS::mount("textures", "xe_sandbox_assets/textures/");
 		xe::VFS::mount("audio", "xe_sandbox_assets/audio/");
+		xe::VFS::mount("models", "xe_sandbox_assets/models/");
 		xe::VFS::mount("shaders", "/");
 
 //		pushLayer(new Test2D());

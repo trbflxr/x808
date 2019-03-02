@@ -44,7 +44,7 @@ namespace xe {
 		uint computeAtlasSize(float fontSize);
 
 	private:
-		friend struct FontLoader;
+		friend class FontLoader;
 
 		string name;
 		string path;

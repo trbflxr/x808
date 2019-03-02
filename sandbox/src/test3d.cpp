@@ -17,7 +17,7 @@ Test3D::Test3D() {
 
 	player = new DummyPlayer(camera);
 
-	model = new Model(Mesh::spotLightMesh("sl0"));
+	model = new Model("tm0", "rock.obj");
 
 	TextureParameters params;
 	texture = new Texture("test1", "test1.png", params);
@@ -49,7 +49,7 @@ void Test3D::render() {
 
 	shader->updateUniforms();
 
-	model->render(BeginMode::LineStrip);
+	model->render(BeginMode::Triangles);
 
 	texture->unbind(sampler0);
 	shader->unbind();
