@@ -75,7 +75,7 @@ namespace xe {
 			}
 		}
 
-		XE_CORE_FATAL("[Shader]: Uniform '", name,"' not found!");
+		XE_CORE_FATAL("[Shader]: '", base->getName(), "' uniform '", name, "' not found!");
 	}
 
 	uint Shader::getSampler(const string &name) const {

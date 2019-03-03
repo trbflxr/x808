@@ -57,9 +57,9 @@ namespace xe {
 		inline bool isDirty() const { return dirty; }
 		inline void setDirty(bool isDirty) { dirty = isDirty; }
 
-		inline vec3 getPosition() const { return position; }
-		inline quat getRotation() const { return rotation; }
-		inline vec3 getScale() const { return scale; }
+		inline const vec3 &getPosition() const { return position; }
+		inline const quat &getRotation() const { return rotation; }
+		inline const vec3 &getScale() const { return scale; }
 
 		inline void set(const vec3 &position, const quat &rotation, const vec3 &scale) {
 			ITransformable::position = position;

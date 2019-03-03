@@ -35,6 +35,8 @@ private:
 	xe::Camera *camera;
 
 	//test
+	std::vector<xe::Model *> models;
+	std::vector<xe::Light *> lights;
 	xe::Model *model;
 	xe::Material *material;
 

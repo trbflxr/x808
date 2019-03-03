@@ -106,16 +106,30 @@ namespace xe {
 		}));
 
 		///----- gbuffer shaders -----///
-		shaders.emplace("dGBuffer", new Shader("dGBuffer", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["gbuffer_vert"],
+		//includes
+		const std::vector<string> geomInclude{sources["1_camera_ubo"],
+		                                      sources["gbufferFunctions_include"],
+		                                      sources["linearDepth_include"]};
+
+
+		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferGeometry_vert"],
 				                       {sources["1_camera_ubo"]}),
-				ShaderFile::fromSource(ShaderType::Frag, sources["gbuffer_frag"])
+				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferGeometry_frag"],
+				                       {geomInclude})
 		}));
 
+		//gbuffer stencil shader
+		shaders.emplace("dStencil", new Shader("dStencil", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferStencil_vert"],
+				                       {sources["1_camera_ubo"]})
+		}));
+
+
+		//gbuffer light accumulation shader
 		shaders.emplace("dAccumulation", new Shader("dAccumulation", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["accumulation_frag"],
-				                       {sources["1_camera_ubo"]})
+				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferAccumulation_frag"])
 		}));
 
 		///----- final fx shader -----///
