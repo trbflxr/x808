@@ -115,6 +115,8 @@ namespace xe {
 		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferGeometry_vert"],
 				                       {sources["1_camera_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Geom, sources["gbufferGeometry_geom"],
+				                       {sources["1_camera_ubo"]}),
 				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferGeometry_frag"],
 				                       {geomInclude})
 		}));

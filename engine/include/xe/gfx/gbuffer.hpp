@@ -54,6 +54,7 @@ namespace xe {
 	private:
 		uint width;
 		uint height;
+		vec2 renderSize;
 
 		mutable bool cullTest;
 		mutable bool drawWireframe;

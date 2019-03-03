@@ -12,6 +12,7 @@ namespace xe {
 	GBuffer::GBuffer(uint width, uint height) :
 			width(width),
 			height(height),
+			renderSize(width, height),
 			cullTest(true),
 			drawWireframe(false),
 			drawLightObjects(false),
@@ -161,6 +162,7 @@ namespace xe {
 
 //		static constexpr int32 disabled = 0;
 //		const int32 ct = cullTest ? 1 : 0;
+		const int32 wf = drawWireframe ? 1 : 0;
 
 		gBuffer->bindDraw(attachments, 3);
 
@@ -170,6 +172,8 @@ namespace xe {
 		geometryShader->bind();
 
 //		geometryShader->setUniform("cullTest", &ct, sizeof(int32));
+		geometryShader->setUniform("enableWireframe", &wf, sizeof(int32));
+		geometryShader->setUniform("renderSize", &renderSize, sizeof(vec2));
 
 		renderModels(BeginMode::Triangles, geometryShader, models);
 
