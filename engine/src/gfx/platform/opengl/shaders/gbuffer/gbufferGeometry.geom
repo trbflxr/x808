@@ -16,14 +16,17 @@ out vec3 g_tangent0;
 out vec4 g_position0;
 noperspective out vec3 g_wireframeDistance0;
 
+uniform int cullTest;
 uniform vec2 renderSize;
 
 const float wfScale = 1.2;
 
 void main() {
+  vec4[3] positions;
   vec2[3] wireframePoints;
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 3; ++i) {
+    positions[i] = v_position0[i];
     wireframePoints[i] = (renderSize * wfScale) * v_position0[i].xy / v_position0[i].w;
   }
 
@@ -33,20 +36,26 @@ void main() {
 
   vec3 chooser[3] = vec3[3](vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0));
 
-  // Output triangle
-  for (int i = 0; i < 3; i++) {
-    g_wireframeDistance0 = vec3(area / length(v[i])) * chooser[i];
-
-    g_uv0 = v_uv0[i];
-    g_worldPosition0 = v_worldPosition0[i];
-    g_viewPosition0 = v_viewPosition0[i];
-    g_normal0 = v_normal0[i];
-    g_tangent0 = v_tangent0[i];
-    g_position0 = v_position0[i];
-
-    gl_Position = v_position0[i];
-    EmitVertex();
+  bool cull = true;
+  if (cullTest > 0) {
+    cull = frustumCullTest(positions);
   }
 
-  EndPrimitive();
+  if (cull) {
+    for (int i = 0; i < 3; ++i) {
+      g_wireframeDistance0 = vec3(area / length(v[i])) * chooser[i];
+
+      g_uv0 = v_uv0[i];
+      g_worldPosition0 = v_worldPosition0[i];
+      g_viewPosition0 = v_viewPosition0[i];
+      g_normal0 = v_normal0[i];
+      g_tangent0 = v_tangent0[i];
+      g_position0 = v_position0[i];
+
+      gl_Position = v_position0[i];
+      EmitVertex();
+    }
+
+    EndPrimitive();
+  }
 }

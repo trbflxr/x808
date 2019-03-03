@@ -26,11 +26,30 @@ Test3D::Test3D() {
 
 	model = new Model("tm0", "rock.obj");
 	model->setMaterial(material);
+	models.push_back(model);
+
+	float step = 6.0f;
+	float z = -step;
+	float x = 0.0f;
+	for (int32 i = 0; i < 9; ++i) {
+		if (i != 0 && i % 3 == 0) {
+			z -= step;
+			x = 0.0f;
+		}
+
+		Model *m = new Model("tm0", "rock.obj");
+		m->setPosition({x, 0, z});
+		m->setMaterial(material);
+		models.push_back(m);
+
+		x += step;
+	}
 
 	player = new DummyPlayer(camera);
 
 	gBuffer = new GBuffer(width, height);
 	gBuffer->enableLightObjects(true);
+	gBuffer->enableCullTest(true);
 
 	quad = new Quad(width, height);
 	final = new FinalFX(width, height);
@@ -43,7 +62,6 @@ Test3D::Test3D() {
 
 	cameraUBO = new UniformBuffer(BufferStorage::Dynamic, 1, cl);
 
-	models.push_back(model);
 
 	SpotLight *l = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
 	l->setPosition({25, 3, 0});
@@ -70,8 +88,15 @@ Test3D::~Test3D() {
 	delete gBuffer;
 	delete cameraUBO;
 
-	delete model;
 	delete material;
+
+	for (const auto &m : models) {
+		delete m;
+	}
+
+	for (const auto &l : lights) {
+		delete l;
+	}
 }
 
 void Test3D::render() {
@@ -128,7 +153,7 @@ void Test3D::renderImGui() {
 		gBuffer->enableWireframe(wireframe);
 	}
 
-	static bool cull = false;
+	static bool cull = true;
 	if (ImGui::Checkbox("Cull test", &cull)) {
 		gBuffer->enableCullTest(cull);
 	}

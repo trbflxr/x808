@@ -1,0 +1,11 @@
+// Frustum Culling
+bool edgeInFrustum(vec4 p, vec4 q) {
+  return !((p.x < -p.w && q.x < -q.w) || (p.x > p.w && q.x > q.w) || (p.z < -p.w && q.z < -q.w) ||
+           (p.z > p.w && q.z > q.w));
+}
+
+bool frustumCullTest(vec4 vertexPosition[3]) {
+  return (edgeInFrustum(vertexPosition[1], vertexPosition[0]) ||
+          edgeInFrustum(vertexPosition[2], vertexPosition[0]) ||
+          edgeInFrustum(vertexPosition[2], vertexPosition[1]));
+}

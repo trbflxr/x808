@@ -160,8 +160,8 @@ namespace xe {
 		                                    Attachment::Color1,
 		                                    Attachment::Color2};
 
-//		static constexpr int32 disabled = 0;
-//		const int32 ct = cullTest ? 1 : 0;
+		static constexpr int32 disabled = 0;
+		const int32 ct = cullTest ? 1 : 0;
 		const int32 wf = drawWireframe ? 1 : 0;
 
 		gBuffer->bindDraw(attachments, 3);
@@ -171,14 +171,14 @@ namespace xe {
 
 		geometryShader->bind();
 
-//		geometryShader->setUniform("cullTest", &ct, sizeof(int32));
+		geometryShader->setUniform("cullTest", &ct, sizeof(int32));
 		geometryShader->setUniform("enableWireframe", &wf, sizeof(int32));
 		geometryShader->setUniform("renderSize", &renderSize, sizeof(vec2));
 
 		renderModels(BeginMode::Triangles, geometryShader, models);
 
 		if (drawLightObjects) {
-//			geometryShader->setUniform("cullTest", &disabled, sizeof(int32));
+			geometryShader->setUniform("cullTest", &disabled, sizeof(int32));
 			renderLights(BeginMode::Triangles, geometryShader, lights);
 		}
 
