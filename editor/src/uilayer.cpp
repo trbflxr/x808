@@ -22,7 +22,7 @@ namespace xe {
 		renderWindow = new FrameBuffer("renderWindow");
 		renderWindow->load({std::make_pair(Attachment::Color0, renderTexture)});
 
-		quad = new fx::Quad(w, h);
+		quad = new Quad(w, h);
 
 		//test
 		camera = new Camera(mat4::ortho(0.0f, w, 0.0f, h, -1.0f, 1000.0f));

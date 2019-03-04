@@ -1,10 +1,10 @@
 layout(location = 0) out vec4 diffuse;
-layout(location = 1) out vec4 normalDepth;
+layout(location = 1) out vec3 normal;
 layout(location = 2) out vec4 specular;
+layout(location = 3) out vec3 position;
 
 in vec2 g_uv0;
 in vec3 g_worldPosition0;
-in vec3 g_viewPosition0;
 in vec3 g_normal0;
 in vec3 g_tangent0;
 in vec4 g_position0;
@@ -66,12 +66,9 @@ void main() {
     diffuse.xyz = lineColorInner + lineColorOuter;
   }
 
-  // Normal Mapping + Linear Depth
-  float depth = length(g_viewPosition0);
-  normalDepth = vec4(g_normal0, depth);
+  normal = g_normal0;
   if (enableNormalTexture > 0) {
-    vec3 normalMap = calcNormalMapping(normalTexture, uv, TBN);
-    normalDepth = vec4(normalMap, depth);
+    normal = calcNormalMapping(normalTexture, uv, TBN);
   }
 
   // Specular Mapping
@@ -81,4 +78,7 @@ void main() {
     specularColorFinal = texture(specularTexture, uv).xyz;
   }
   specular = vec4(specularColorFinal, specularShininessFinal);
+
+  // Position
+  position = g_worldPosition0;
 }

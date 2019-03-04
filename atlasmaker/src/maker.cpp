@@ -341,7 +341,7 @@ namespace xe {
 				const vec2 newPos = vec2(event.mouseMove.x, event.mouseMove.y);
 				const vec2 change = lastMousePos - newPos;
 
-				camera->transform.move(vec3(change));
+				camera->move(vec3(change));
 
 				camera->update();
 

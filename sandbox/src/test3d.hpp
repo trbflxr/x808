@@ -35,10 +35,17 @@ private:
 	xe::Camera *camera;
 
 	//test
+	bool hook = false;
+	bool hook2 = false;
+	bool rock = false;
+
 	std::vector<xe::Model *> models;
 	std::vector<xe::Light *> lights;
 	xe::Model *model;
 	xe::Material *material;
+	xe::Material *material1;
+	xe::SpotLight *sl;
+	xe::PointLight *pl;
 
 	xe::UniformBuffer *cameraUBO;
 

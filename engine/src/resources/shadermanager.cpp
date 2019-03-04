@@ -105,12 +105,11 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2D_frag"])
 		}));
 
+
 		///----- gbuffer shaders -----///
 		//includes
-		const std::vector<string> geomInclude{sources["1_camera_ubo"],
-		                                      sources["gbufferFunctions_include"],
-		                                      sources["linearDepth_include"]};
-
+		const std::vector<string> geomInclude{sources["1_camera_ubo"], sources["gbufferFunctions_include"]};
+		const std::vector<string> lightingInclude{sources["1_camera_ubo"], sources["lightingFunctions_include"]};
 
 		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferGeometry_vert"],
@@ -121,10 +120,29 @@ namespace xe {
 				                       {geomInclude})
 		}));
 
+
 		//gbuffer stencil shader
 		shaders.emplace("dStencil", new Shader("dStencil", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferStencil_vert"],
 				                       {sources["1_camera_ubo"]})
+		}));
+
+
+		//gbuffer spot light shader
+		shaders.emplace("dSpotLight", new Shader("dSpotLight", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferStencil_vert"],
+				                       {sources["1_camera_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferLightingSpot_frag"],
+				                       {lightingInclude})
+		}));
+
+
+		//gbuffer point light shader
+		shaders.emplace("dPointLight", new Shader("dPointLight", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferStencil_vert"],
+				                       {sources["1_camera_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferLightingPoint_frag"],
+				                       {lightingInclude})
 		}));
 
 
@@ -133,6 +151,7 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferAccumulation_frag"])
 		}));
+
 
 		///----- final fx shader -----///
 		shaders.emplace("dFinalFX", new Shader("dFinalFX", {

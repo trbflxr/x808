@@ -24,8 +24,9 @@ namespace xe {
 		gBuffer = new FrameBuffer("GBuffer");
 		gBuffer->load({std::make_pair(Attachment::DepthStencil, depthStencilTexture),
 		               std::make_pair(Attachment::Color0, diffuseTexture),
-		               std::make_pair(Attachment::Color1, normalDepthTexture),
+		               std::make_pair(Attachment::Color1, normalTexture),
 		               std::make_pair(Attachment::Color2, specularTexture),
+		               std::make_pair(Attachment::Color3, positionTexture),
 		               std::make_pair(Attachment::Color6, lightDiffuseTexture),
 		               std::make_pair(Attachment::Color7, lightSpecularTexture)});
 	}
@@ -33,8 +34,9 @@ namespace xe {
 	GBuffer::~GBuffer() {
 		delete depthStencilTexture;
 		delete diffuseTexture;
-		delete normalDepthTexture;
+		delete normalTexture;
 		delete specularTexture;
+		delete positionTexture;
 		delete lightDiffuseTexture;
 		delete lightSpecularTexture;
 
@@ -52,36 +54,32 @@ namespace xe {
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;
 
-		depthStencilTexture = new Texture("GBufferDepthStencil", width, height, 0, params, true);
+		depthStencilTexture = new Texture("GBufferDepthStencil", width, height, 0, params);
 
-		///
 		params.internalFormat = PixelInternalFormat::Rgba16f;
 		params.format = PixelFormat::Rgba;
-
-		diffuseTexture = new Texture("GBufferDiffuse", width, height, 0, params, true);
+		diffuseTexture = new Texture("GBufferDiffuse", width, height, 0, params);
 		lightDiffuseTexture = new Texture("GBufferLightDiffuse", width, height, 0, params);
 		lightSpecularTexture = new Texture("GBufferLightSpecular", width, height, 0, params);
+		specularTexture = new Texture("GBufferSpecular", width, height, 0, params);
 
-		///
-		params.internalFormat = PixelInternalFormat::Rgba16;
-		params.format = PixelFormat::Rgba;
-
-		specularTexture = new Texture("GBufferSpecular", width, height, 0, params, true);
-
-		///
-		params.internalFormat = PixelInternalFormat::Rgba32f;
-		params.format = PixelFormat::Rgba;
-
-		normalDepthTexture = new Texture("GBufferNormalDepth", width, height, 0, params, true);
+		params.internalFormat = PixelInternalFormat::Rgb16f;
+		params.format = PixelFormat::Rgb;
+		normalTexture = new Texture("GBufferNormal", width, height, 0, params);
+		positionTexture = new Texture("GBufferPosition", width, height, 0, params);
 	}
 
 	void GBuffer::createShaders() {
 		geometryShader = GETSHADER("dGeomShader");
 		stencilShader = GETSHADER("dStencil");
 		accumulationShader = GETSHADER("dAccumulation");
+		spotShader = GETSHADER("dSpotLight");
+		pointShader = GETSHADER("dPointLight");
 
 		geometryShader->bindUniformBlock("Camera", 1);
 		stencilShader->bindUniformBlock("Camera", 1);
+		spotShader->bindUniformBlock("Camera", 1);
+		pointShader->bindUniformBlock("Camera", 1);
 	}
 
 	void GBuffer::passGeometry(const std::vector<Model *> &models, const std::vector<Light *> &lights) const {
@@ -105,13 +103,13 @@ namespace xe {
 			switch (light->getType()) {
 				case LightType::Spot: {
 					passStencil(light);
-//					passSpotLight(dynamic_cast<const SpotLight *>(light));
+					passSpotLight(dynamic_cast<const SpotLight *>(light));
 					break;
 				}
 
 				case LightType::Point: {
 					passStencil(light);
-//					passPointLight(dynamic_cast<const PointLight *>(light));
+					passPointLight(dynamic_cast<const PointLight *>(light));
 					break;
 				}
 
@@ -156,15 +154,16 @@ namespace xe {
 	}
 
 	void GBuffer::passGeometryInternal(const std::vector<Model *> &models, const std::vector<Light *> &lights) const {
-		static Attachment attachments[3] = {Attachment::Color0,
+		static Attachment attachments[4] = {Attachment::Color0,
 		                                    Attachment::Color1,
-		                                    Attachment::Color2};
+		                                    Attachment::Color2,
+		                                    Attachment::Color3};
 
 		static constexpr int32 disabled = 0;
 		const int32 ct = cullTest ? 1 : 0;
 		const int32 wf = drawWireframe ? 1 : 0;
 
-		gBuffer->bindDraw(attachments, 3);
+		gBuffer->bindDraw(attachments, 4);
 
 		Renderer::clear(RendererBufferColor | RendererBufferDepth);
 		Renderer::setViewport(0, 0, width, height);
@@ -202,6 +201,96 @@ namespace xe {
 		renderLightBounds(stencilShader, light);
 
 		stencilShader->unbind();
+	}
+
+	void GBuffer::passSpotLight(const SpotLight *light) const {
+		static Attachment attachments[2] = {Attachment::Color6,
+		                                    Attachment::Color7};
+
+		gBuffer->bindDrawAttachments(attachments, 2);
+
+		Renderer::setStencilFunc(StencilFunction::Notequal, 0, 0xFF);
+
+		Renderer::enableDepthTesting(false);
+		Renderer::enableCullFace(true);
+		Renderer::setCullFace(CullFace::Front);
+
+		spotShader->bind();
+		const uint n = spotShader->getSampler("sampler0");
+		const uint s = spotShader->getSampler("sampler1");
+		const uint p = spotShader->getSampler("sampler2");
+
+		normalTexture->bind(n);
+		specularTexture->bind(s);
+		positionTexture->bind(p);
+
+		const vec3 &pos = light->getPosition();
+		const vec3 &look = light->getRotation().getForward();
+		const vec3 &color = light->getColor();
+		const float intensity = light->getIntensity();
+		const float falloff = light->getFalloff();
+		const float spotAngle = light->getSpotAngle();
+		const float spotBlur = light->getSpotBlur();
+
+		//light uniforms
+		spotShader->setUniform("lightPosition", &pos, sizeof(vec3));
+		spotShader->setUniform("lightColor", &color, sizeof(vec3));
+		spotShader->setUniform("lightIntensity", &intensity, sizeof(float));
+		spotShader->setUniform("lightFalloff", &falloff, sizeof(float));
+
+		//spot light uniforms
+		spotShader->setUniform("lightDirection", &look, sizeof(vec3));
+		spotShader->setUniform("lightSpotAngle", &spotAngle, sizeof(float));
+		spotShader->setUniform("lightSpotBlur", &spotBlur, sizeof(float));
+
+		renderLightBounds(spotShader, light);
+
+		specularTexture->unbind(s);
+		normalTexture->unbind(n);
+		positionTexture->unbind(p);
+
+		spotShader->unbind();
+	}
+
+	void GBuffer::passPointLight(const PointLight *light) const {
+		static Attachment attachments[2] = {Attachment::Color6,
+		                                    Attachment::Color7};
+
+		gBuffer->bindDrawAttachments(attachments, 2);
+
+		Renderer::setStencilFunc(StencilFunction::Notequal, 0, 0xFF);
+
+		Renderer::enableDepthTesting(false);
+		Renderer::enableCullFace(true);
+		Renderer::setCullFace(CullFace::Back);
+
+		pointShader->bind();
+		const uint n = pointShader->getSampler("sampler0");
+		const uint s = pointShader->getSampler("sampler1");
+		const uint p = pointShader->getSampler("sampler2");
+
+		normalTexture->bind(n);
+		specularTexture->bind(s);
+		positionTexture->bind(p);
+
+		const vec3 &pos = light->getPosition();
+		const vec3 &color = light->getColor();
+		const float intensity = light->getIntensity();
+		const float falloff = light->getFalloff();
+
+		//light uniforms
+		pointShader->setUniform("lightPosition", &pos, sizeof(vec3));
+		pointShader->setUniform("lightColor", &color, sizeof(vec3));
+		pointShader->setUniform("lightIntensity", &intensity, sizeof(float));
+		pointShader->setUniform("lightFalloff", &falloff, sizeof(float));
+
+		renderLightBounds(pointShader, light);
+
+		specularTexture->unbind(s);
+		normalTexture->unbind(n);
+		positionTexture->unbind(p);
+
+		pointShader->unbind();
 	}
 
 	void GBuffer::renderModels(BeginMode mode, const Shader *shader, const std::vector<Model *> &models) const {

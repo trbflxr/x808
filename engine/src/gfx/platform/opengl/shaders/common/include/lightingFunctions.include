@@ -1,0 +1,166 @@
+// Specular Functions
+// Based on https://github.com/stackgl/glsl-specular-ward
+float wardSpecular(vec3 lightDirection, vec3 viewDirection, vec3 surfaceNormal, vec2 slope) {
+  float NdotL = dot(surfaceNormal, lightDirection);
+  float NdotR = dot(surfaceNormal, viewDirection);
+
+  if (NdotL < 0.0 || NdotR < 0.0) {
+    return 0.0;
+  }
+
+  vec3 H = normalize(lightDirection + viewDirection);
+
+  vec3 fiberParallel = normalize(cross(viewDirection, surfaceNormal));
+  vec3 fiberPerpendicular = normalize(cross(fiberParallel, surfaceNormal));
+
+  float NdotH = dot(surfaceNormal, H);
+  float XdotH = dot(fiberParallel, H);
+  float YdotH = dot(fiberPerpendicular, H);
+
+  float coeff = sqrt(NdotL / NdotR) / (4.0 * MATH_PI * slope.x * slope.y);
+  float theta = (pow(XdotH / slope.x, 2.0) + pow(YdotH / slope.y, 2.0)) / (1.0 + NdotH);
+
+  // float F = pow(1.0 - dot(viewDirection,H), 0.3);
+
+  return coeff * exp(-2.0 * theta);
+}
+
+// Based on https://github.com/stackgl/glsl-specular-beckmann
+float beckmannDistribution(float x, float roughness) {
+  float NdotH = max(x, 0.0001);
+  float cos2Alpha = NdotH * NdotH;
+  float tan2Alpha = (cos2Alpha - 1.0) / cos2Alpha;
+  float roughness2 = roughness * roughness;
+  float denom = MATH_PI * roughness2 * cos2Alpha * cos2Alpha;
+  return exp(tan2Alpha / roughness2) / denom;
+}
+
+// Based on https://github.com/stackgl/glsl-specular-cook-torrance
+float cookTorranceSpecular(vec3 lightDirection, vec3 viewDirection, vec3 surfaceNormal, float roughness,
+                           float fresnel) {
+  float VdotN = max(dot(viewDirection, surfaceNormal), 0.0);
+  float LdotN = max(dot(lightDirection, surfaceNormal), 0.0);
+
+  // Half angle vector
+  vec3 H = normalize(lightDirection + viewDirection);
+
+  // Geometric term
+  float NdotH = max(dot(surfaceNormal, H), 0.0);
+  float VdotH = max(dot(viewDirection, H), 0.000001);
+  float LdotH = max(dot(lightDirection, H), 0.000001);
+  float G1 = (2.0 * NdotH * VdotN) / VdotH;
+  float G2 = (2.0 * NdotH * LdotN) / LdotH;
+  float G = min(1.0, min(G1, G2));
+
+  // Distribution term
+  float D = beckmannDistribution(NdotH, roughness);
+
+  // Fresnel term
+  float F = max(pow(1.0 - VdotN, fresnel), 0.000001);
+
+  // Multiply terms and done
+  return G * F * D / max(MATH_PI * VdotN, 0.000001);
+}
+
+// Diffuse Functions
+// Based on https://github.com/stackgl/glsl-diffuse-oren-nayar
+float orenNayarDiffuse(vec3 lightDirection, vec3 viewDirection, vec3 surfaceNormal, float roughness, float albedo) {
+  float LdotV = dot(lightDirection, viewDirection);
+  float NdotL = dot(lightDirection, surfaceNormal);
+  float NdotV = dot(surfaceNormal, viewDirection);
+
+  float s = LdotV - NdotL * NdotV;
+  float t = mix(1.0, max(NdotL, NdotV), step(0.0, s));
+
+  float sigma2 = roughness * roughness;
+  float A = 1.0 + sigma2 * (albedo / (sigma2 + 0.13) + 0.5 / (sigma2 + 0.33));
+  float B = 0.45 * sigma2 / (sigma2 + 0.09);
+
+  return albedo * max(0.0, NdotL) * (A + B * s / t) / MATH_PI;
+}
+
+vec3 calcRimLighting(vec3 N, vec3 E, float lightIntensity) {
+  float f = 1.0 - dot(E, N);
+
+  f = smoothstep(0.0, 1.0, f);
+  f = pow(f, 40.0);
+
+  return f * vec3(lightIntensity);
+}
+
+// Lighting Calculation
+float calcSpotLightCone(vec3 L, vec3 lightDirection, float outerAngle, float blurAmount) {
+  // Add tiny bit to outer angle so it's rounded
+  float spotAngleOuter = outerAngle - 0.35;
+
+  // Amount to blur the edge of the cone
+  float spotBlur = blurAmount * (spotAngleOuter / MATH_HALF_PI);
+
+  float spotAngleInner = spotAngleOuter + spotBlur;
+  float spotAngle = acos(dot(lightDirection, -L));
+
+  float spotAngleDifference = spotAngleInner - spotAngleOuter;
+  float spotLightBlur = (-spotAngle + spotAngleOuter) / spotAngleDifference;
+
+  return clamp(spotLightBlur, 0.0, 1.0);
+}
+
+float calcAttenuation(float lightIntensity, float lightFalloff, vec3 lightPosition, vec3 worldPosition, out vec3 L) {
+  // Light to Object Vector
+  vec3 lightToObject = (lightPosition - worldPosition);
+
+  // Light to Object Distance Squared
+  float lightDistance2 = dot(lightToObject, lightToObject);
+
+  // Light to Object Distance
+  float lightDistance = sqrt(lightDistance2);
+
+  // Light to Object Direction
+  L = lightToObject / lightDistance;
+
+  float lightFalloff2 = lightFalloff * lightFalloff;
+
+  float attenuation = max(1.0 - lightDistance2 / lightFalloff2, 0.0);
+  attenuation *= attenuation;
+  attenuation *= attenuation;
+  attenuation *= lightIntensity;
+  return attenuation;
+}
+
+void calcLighting(vec2 uv, vec3 worldPosition, vec3 worldNormal, vec3 camPosition, vec3 lightPosition, vec3 lightColor,
+                  float lightIntensity, float lightFalloff, vec4 specularProperties, out vec3 L, out vec4 diffuseOut,
+                  out vec4 specularOut) {
+  // Normal
+  vec3 N = normalize(worldNormal);
+  // vec3 N = worldNormal;
+  // View Direction
+  // vec3 E = normalize(-camPosition - worldPosition);
+  vec3 E = normalize(worldPosition - camPosition);
+  // Light to Object Direction
+  L = vec3(0.0);
+
+  // Attenuation
+  float attenuation = calcAttenuation(lightIntensity, lightFalloff, lightPosition, worldPosition, L);
+
+  // Angle of Inclination
+  float angleOfInc = dot(L, N);
+  float maxInc = max(angleOfInc, 1.0);
+
+  // Diffuse
+  vec4 diffuse = vec4(lightColor * maxInc, 1.0);
+  diffuse *= orenNayarDiffuse(L, E, N, 0.1, 1.0);
+  // diffuse.xyz += calcRimLighting(N, E, lightIntensity) * max(dot(L, N)+0.3, 0.0);
+
+  // Specular
+  vec3 specularColor = specularProperties.xyz;
+  float specularShininess = specularProperties.a;
+
+  // vec2 slope = vec2(specularShininess);
+  // float gaussianTerm = wardSpecular(L, E, N, slope);
+  float gaussianTerm = cookTorranceSpecular(L, E, N, specularShininess, 0.9);
+
+  vec4 specular = vec4(lightColor * (lightIntensity / 10.0) * (gaussianTerm * maxInc) * specularColor, 1.0);
+
+  diffuseOut = diffuse * attenuation;
+  specularOut = specular * attenuation;
+}

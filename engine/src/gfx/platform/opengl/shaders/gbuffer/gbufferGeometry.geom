@@ -5,12 +5,10 @@ in vec2 v_uv0[];
 in vec3 v_normal0[];
 in vec3 v_tangent0[];
 in vec4 v_position0[];
-in vec3 v_viewPosition0[];
 in vec3 v_worldPosition0[];
 
 out vec2 g_uv0;
 out vec3 g_worldPosition0;
-out vec3 g_viewPosition0;
 out vec3 g_normal0;
 out vec3 g_tangent0;
 out vec4 g_position0;
@@ -47,7 +45,6 @@ void main() {
 
       g_uv0 = v_uv0[i];
       g_worldPosition0 = v_worldPosition0[i];
-      g_viewPosition0 = v_viewPosition0[i];
       g_normal0 = v_normal0[i];
       g_tangent0 = v_tangent0[i];
       g_position0 = v_position0[i];

@@ -20,35 +20,56 @@ Test3D::Test3D() {
 	TextureManager::add(new Texture("diffuse", "sponza_floor_diff.jpg", params));
 	TextureManager::add(new Texture("specular", "sponza_floor_spec.jpg", params));
 
+	TextureManager::add(new Texture("diffuse1", "Fabric_Padded_diffuse.jpg", params));
+	TextureManager::add(new Texture("normal1", "Fabric_Padded_normal.jpg", params));
+
 	material = new Material("material");
 	material->setDiffuse(GETTEXTURE("diffuse"));
 	material->setSpecular(GETTEXTURE("specular"));
+
+	material1 = new Material("material1");
+	material1->setDiffuse(GETTEXTURE("diffuse1"));
+	material1->setNormal(GETTEXTURE("normal1"));
+	material1->setSpecularShininess(0.01f);
 
 	model = new Model("tm0", "rock.obj");
 	model->setMaterial(material);
 	models.push_back(model);
 
-	float step = 6.0f;
-	float z = -step;
-	float x = 0.0f;
-	for (int32 i = 0; i < 9; ++i) {
-		if (i != 0 && i % 3 == 0) {
-			z -= step;
-			x = 0.0f;
-		}
+	Model *monkey = new Model("tm0", "monkey3.obj");
+	monkey->setMaterial(material);
+	monkey->setPosition({-5, 2, 5});
+	models.push_back(monkey);
 
-		Model *m = new Model("tm0", "rock.obj");
-		m->setPosition({x, 0, z});
-		m->setMaterial(material);
-		models.push_back(m);
+	Model *plane = new Model("tm0", "plane0.obj");
+	plane->setMaterial(material1);
+	plane->setPosition({-10, 0, 0});
+//	plane->rotate(vec3::UnitY(), 180.0f);
+//	plane->rotate(vec3::UnitZ(), -45.0f);
+	models.push_back(plane);
 
-		x += step;
-	}
+//	float step = 6.0f;
+//	float z = -step;
+//	float x = 0.0f;
+//	for (int32 i = 0; i < 9; ++i) {
+//		if (i != 0 && i % 3 == 0) {
+//			z -= step;
+//			x = 0.0f;
+//		}
+//
+//		Model *m = new Model("tm0", "rock.obj");
+//		m->setPosition({x, 0, z});
+//		m->setMaterial(material);
+//		models.push_back(m);
+//
+//		x += step;
+//	}
 
 	player = new DummyPlayer(camera);
 
 	gBuffer = new GBuffer(width, height);
 	gBuffer->enableLightObjects(true);
+	gBuffer->enableLightBounds(true);
 	gBuffer->enableCullTest(true);
 
 	quad = new Quad(width, height);
@@ -63,22 +84,24 @@ Test3D::Test3D() {
 	cameraUBO = new UniformBuffer(BufferStorage::Dynamic, 1, cl);
 
 
-	SpotLight *l = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
-	l->setPosition({25, 3, 0});
-	l->rotate(vec3::UnitY(), 90);
-	l->setColor({0.5f, 0.8f, 0.1f});
-	l->setIntensity(50);
-	l->setFalloff(30.0f);
-	l->update();
-	lights.push_back(l);
+	sl = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
+	sl->setPosition({-12, 11, 10.0});
+	sl->rotate(vec3::UnitX(), -45);
+	sl->rotate(vec3::UnitZ(), -10);
+	sl->setColor({1.0f, 0.9f, 0.8f});
+	sl->setSpotAngle(40.0f);
+	sl->setIntensity(30);
+	sl->setFalloff(20.0f);
+	sl->update();
+	lights.push_back(sl);
 
-	PointLight *l1 = new PointLight("l1", Mesh::pointLightMesh("l1_m"));
-	l1->setPosition({0, 3, 8});
-	l1->setColor({0.5f, 0.8f, 0.8f});
-	l1->setIntensity(20);
-	l1->setFalloff(10.0f);
-	l1->update();
-	lights.push_back(l1);
+	pl = new PointLight("l1", Mesh::pointLightMesh("l1_m"));
+	pl->setPosition({0, 3, 8});
+	pl->setColor({0.5f, 0.8f, 0.8f});
+	pl->setIntensity(20);
+	pl->setFalloff(10.0f);
+	pl->update();
+	lights.push_back(pl);
 }
 
 Test3D::~Test3D() {
@@ -100,7 +123,7 @@ Test3D::~Test3D() {
 }
 
 void Test3D::render() {
-	const vec4 p = vec4(camera->getPosition(), 1.0f);
+	const vec4 p = vec4(camera->getPosition(), 0.0f);
 	const vec4 l = vec4(camera->getRotation().getForward(), 1.0f);
 
 	cameraUBO->bind();
@@ -128,6 +151,7 @@ void Test3D::render() {
 
 void Test3D::renderImGui() {
 	const vec3 &cp = camera->getPosition();
+	const vec3 &cl = camera->getRotation().getForward();
 
 	ImGui::Begin("Test3D");
 
@@ -135,6 +159,7 @@ void Test3D::renderImGui() {
 	ImGui::Text("frame time: %.3f", app.getFrameTime());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Text("camera: (%.1f, %.1f, %.1f)", cp.x, cp.y, cp.z);
+	ImGui::Text("look: (%.1f, %.1f, %.1f)", cl.x, cl.y, cl.z);
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
 
@@ -143,7 +168,7 @@ void Test3D::renderImGui() {
 		gBuffer->enableLightObjects(lightObjects);
 	}
 
-	static bool lightBounds = false;
+	static bool lightBounds = true;
 	if (ImGui::Checkbox("Light bounds", &lightBounds)) {
 		gBuffer->enableLightBounds(lightBounds);
 	}
@@ -158,16 +183,22 @@ void Test3D::renderImGui() {
 		gBuffer->enableCullTest(cull);
 	}
 
-	ImGui::Separator();
-	ImGui::Dummy({10.0f, 0.0f});
+	ImGui::End();
 
+	ImGui::Begin("Buffers");
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getDepthStencilTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getNormalDepthTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getPositionTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getNormalTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getLightDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
-
 	ImGui::End();
 }
 
@@ -175,8 +206,32 @@ void Test3D::update(float delta) {
 	player->update(delta);
 
 	model->rotate(vec3::UnitY(), 30 * delta);
+
+	if (hook) {
+		sl->setRotation(camera->getRotation());
+		sl->setPosition(camera->getPosition());
+	}
+	if (hook2) {
+		pl->setPosition(camera->getPosition());
+	}
+
+	if (rock) {
+		model->setPosition(camera->getPosition());
+	}
 }
 
 void Test3D::input(Event &event) {
 	player->input(event);
+
+	if (event.type == Event::KeyPressed) {
+		if (event.key.code == Keyboard::F) {
+			hook = !hook;
+		}
+		if (event.key.code == Keyboard::G) {
+			hook2 = !hook2;
+		}
+		if (event.key.code == Keyboard::R) {
+			rock = !rock;
+		}
+	}
 }

@@ -30,7 +30,7 @@ namespace xe {
 		//framebuffer
 		FrameBuffer *renderWindow;
 		Texture *renderTexture;
-		fx::Quad *quad;
+		Quad *quad;
 
 		//test
 		Camera *camera;

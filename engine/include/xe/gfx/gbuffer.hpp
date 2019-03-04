@@ -33,8 +33,9 @@ namespace xe {
 
 		inline const Texture *getDepthStencilTexture() const { return depthStencilTexture; }
 		inline const Texture *getDiffuseTexture() const { return diffuseTexture; }
-		inline const Texture *getNormalDepthTexture() const { return normalDepthTexture; }
+		inline const Texture *getNormalTexture() const { return normalTexture; }
 		inline const Texture *getSpecularTexture() const { return specularTexture; }
+		inline const Texture *getPositionTexture() const { return positionTexture; }
 		inline const Texture *getLightDiffuseTexture() const { return lightDiffuseTexture; }
 		inline const Texture *getLightSpecularTexture() const { return lightSpecularTexture; }
 
@@ -48,6 +49,8 @@ namespace xe {
 
 		void passGeometryInternal(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
 		void passStencil(const Light *light) const;
+		void passSpotLight(const SpotLight *light) const;
+		void passPointLight(const PointLight *light) const;
 
 		int32 setTexture(const Shader *shader, const Texture *t, const char *sampler, const char *enable) const;
 
@@ -66,11 +69,14 @@ namespace xe {
 		const Shader *geometryShader;
 		const Shader *stencilShader;
 		const Shader *accumulationShader;
+		const Shader *spotShader;
+		const Shader *pointShader;
 
 		const Texture *depthStencilTexture;
 		const Texture *diffuseTexture;
-		const Texture *normalDepthTexture;
+		const Texture *normalTexture;
 		const Texture *specularTexture;
+		const Texture *positionTexture;
 		const Texture *lightDiffuseTexture;
 		const Texture *lightSpecularTexture;
 	};
