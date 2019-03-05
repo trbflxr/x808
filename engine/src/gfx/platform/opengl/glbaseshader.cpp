@@ -11,11 +11,39 @@
 namespace xe { namespace internal {
 
 	GLBaseShader::GLBaseShader(const string &name, const std::vector<ShaderFile *> &shaderPipeline) :
-			name(name) {
+			name(name),
+			handle(0) {
 
 		uniformBuffers.push_back(new GLShaderUniformBuffer("GLOBAL"));
 
-		glCall(handle = glCreateProgram());
+		recompile(shaderPipeline);
+	}
+
+	GLBaseShader::~GLBaseShader() {
+		for (auto &&s : structs) {
+			delete s;
+		}
+		for (auto &&s : samplers) {
+			delete s;
+		}
+		for (auto &&u : uniformBuffers) {
+			delete u;
+		}
+		glCall(glDeleteProgram(handle));
+	}
+
+	bool GLBaseShader::recompile(const std::vector<ShaderFile *> &shaderPipeline) {
+		if (!handle) {
+			glCall(handle = glCreateProgram());
+		}
+
+		sources.clear();
+		samplers.clear();
+		structs.clear();
+
+		for (auto &&ub : uniformBuffers) {
+			ub->clear();
+		}
 
 		uint shaders[shaderPipeline.size()];
 
@@ -27,7 +55,8 @@ namespace xe { namespace internal {
 				glCall(glDeleteProgram(handle));
 				XE_CORE_FATAL("[GLBaseShader]: shader name: '", name, "'");
 				XE_ASSERT(false);
-				return;
+				handle = 0;
+				return false;
 			}
 			shaderPipeline[i]->parse(uniformBuffers, samplers, structs);
 
@@ -46,19 +75,8 @@ namespace xe { namespace internal {
 
 			delete shaderPipeline[i];
 		}
-	}
 
-	GLBaseShader::~GLBaseShader() {
-		for (auto &&s : structs) {
-			delete s;
-		}
-		for (auto &&s : samplers) {
-			delete s;
-		}
-		for (auto &&u : uniformBuffers) {
-			delete u;
-		}
-		glCall(glDeleteProgram(handle));
+		return true;
 	}
 
 	void GLBaseShader::bind() const {

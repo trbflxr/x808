@@ -2,12 +2,12 @@
 // Created by FLXR on 8/11/2018.
 //
 
-#include <cstring>
+#include <xe/gfx/shader.hpp>
 #include <xe/gfx/context.hpp>
 #include <gfx/platform/opengl/glbaseshader.hpp>
 #include <xe/utils/logger.hpp>
 #include <xe/resources/shadermanager.hpp>
-#include <xe/gfx/shader.hpp>
+#include <cstring>
 
 namespace xe {
 
@@ -24,7 +24,7 @@ namespace xe {
 			}
 
 			default: {
-				XE_CORE_FATAL("[BaseShader]: selected render API is not supported");
+				XE_CORE_FATAL("[Shader]: selected render API is not supported");
 				base = nullptr;
 				break;
 			}
@@ -39,6 +39,10 @@ namespace xe {
 		}
 
 		delete base;
+	}
+
+	bool Shader::recompile(const std::vector<ShaderFile *> &shaderPipeline) {
+		return base->recompile(shaderPipeline);
 	}
 
 	void Shader::init() {

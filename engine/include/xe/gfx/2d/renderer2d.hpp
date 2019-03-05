@@ -32,9 +32,7 @@ namespace xe {
 		};
 
 	public:
-		explicit Renderer2D(uint width, uint height, Camera *camera,
-		                    bool enableLighting = false,
-		                    const Shader *customShader = nullptr);
+		explicit Renderer2D(uint width, uint height, Camera *camera, uint maxLights = 0);
 		virtual ~Renderer2D();
 
 		void submit(const IRenderable2D *target);
@@ -63,6 +61,11 @@ namespace xe {
 
 		inline void enableWireframe(bool flag) { Renderer2D::enableWireframe_ = flag; }
 
+		inline bool isLightingEnabled() const { return enableLighting; }
+
+		inline uint getMaxLights() const { return maxLights; }
+		void setMaxLights(uint lights);
+
 	private:
 		void beginInternal();
 
@@ -85,7 +88,7 @@ namespace xe {
 		uint height;
 
 		Camera *camera;
-		const Shader *shader;
+		Shader *shader;
 
 		IndexBuffer *indexBuffer;
 		uint *indices;
@@ -106,7 +109,9 @@ namespace xe {
 
 		//light stuff
 		bool enableLighting;
+		uint maxLights;
 		vec3 ambient;
+		BufferLayout lightLayout;
 		UniformBuffer *lightUBO;
 
 		std::vector<const Light2D *> lights;

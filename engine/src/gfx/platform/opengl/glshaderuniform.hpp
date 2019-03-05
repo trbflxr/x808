@@ -61,6 +61,8 @@ namespace xe { namespace internal {
 
 		void pushUniform(GLShaderUniform *uniform);
 
+		void clear() override { uniforms.clear(); }
+
 		inline const string &getName() const override { return name; }
 		inline int32 getLocation() const override { return location; }
 		inline uint getSize() const override { return size; }

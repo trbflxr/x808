@@ -39,6 +39,8 @@ namespace xe {
 		explicit Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
 		virtual ~Shader();
 
+		bool recompile(const std::vector<ShaderFile *> &shaderPipeline);
+
 		void updateUniforms() const;
 		void setUniform(const string &name, const void *data, size_t size) const;
 
@@ -61,7 +63,7 @@ namespace xe {
 		void init();
 
 	protected:
-		const internal::PlatformBaseShader *base;
+		internal::PlatformBaseShader *base;
 
 		std::vector<Uniform> uniforms;
 		std::vector<UniformData> uniformData;

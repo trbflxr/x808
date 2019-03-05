@@ -28,8 +28,6 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
 		config.renderApi = xe::stringToRenderApi(value);
 	} else if (strcmp(key, "apiVersion") == 0) {
 		config.apiVersion = (uint) atoi(value);
-	} else if (strcmp(key, "maxPointLights2D") == 0) {
-		config.maxPointLights2D = (uint) atoi(value);
 	}
 }
 

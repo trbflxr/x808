@@ -44,8 +44,6 @@ namespace xe { namespace internal {
 		shaderSource << src;
 
 		source = shaderSource.str();
-
-		setConstants(source);
 	}
 
 	void GLShaderFile::createFromFile(const string &path,
@@ -70,14 +68,6 @@ namespace xe { namespace internal {
 		shaderSource << src;
 
 		source = shaderSource.str();
-
-		setConstants(source);
-	}
-
-	void GLShaderFile::setConstants(string &source) {
-		const string str1 = "@MAX_PLIGHTS";
-
-		replaceAll(source, str1, std::to_string(gConfig.maxPointLights2D));
 	}
 
 	void GLShaderFile::appendConstants(std::stringstream &stream) {

@@ -35,8 +35,7 @@ TestL2D::TestL2D() {
 
 
 	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
-	renderer = new Renderer2D(width, height, camera, true);
-	renderer->setAmbientLight({0.1f, 0.1f, 0.1f});
+	renderer = new Renderer2D(width, height, camera, 50);
 
 	RectangleShape *bg = new RectangleShape({width * 4, height * 4});
 	bg->setTexture(GETTEXTURE("bg0"));
@@ -206,6 +205,11 @@ void TestL2D::renderImGui() {
 	static float v[3];
 	if (ImGui::DragFloat3("velocity", v, 0.1f)) {
 		as0->setVelocity({v[0], v[1], v[2]});
+	}
+
+	static int32 maxLights = renderer->getMaxLights();
+	if (ImGui::DragInt("max lights", &maxLights, 0.1f, 1, 50)) {
+		renderer->setMaxLights(maxLights);
 	}
 
 	ImGui::End();

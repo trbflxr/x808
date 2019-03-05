@@ -7,7 +7,6 @@
 #include <freetype-gl/utf8-utils.h>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/shadermanager.hpp>
-#include <xe/config.hpp>
 
 namespace xe {
 
@@ -17,16 +16,20 @@ namespace xe {
 #define R2D_BUFFER_SIZE     (R2D_SPRITE_SIZE * XE_R2D_MAX_SPRITES)
 #define R2D_INDICES_SIZE    (XE_R2D_MAX_SPRITES * 6)
 
-	Renderer2D::Renderer2D(uint width, uint height, Camera *camera, bool enableLighting, const Shader *customShader) :
+	Renderer2D::Renderer2D(uint width, uint height, Camera *camera, uint maxLights) :
 			width(width),
 			height(height),
 			camera(camera),
+			shader(nullptr),
 			indicesSize(0),
 			indicesOffset(0),
 			sampler0(0),
 			activeTexture(nullptr),
 			enableWireframe_(false),
-			enableLighting(enableLighting) {
+			enableLighting(maxLights > 0),
+			maxLights(0),
+			ambient(0.1f),
+			lightUBO(nullptr) {
 
 		transformationStack.emplace_back(1.0f);
 		transformationBack = &transformationStack.back();
@@ -35,20 +38,12 @@ namespace xe {
 		indexBuffer = new IndexBuffer();
 
 		if (enableLighting) {
-			static constexpr uint lightsUboLocation = 2;
+			lightLayout.push<vec4>("position");
+			lightLayout.push<vec4>("color");
 
-			BufferLayout l;
-			l.push<vec4>("position");
-			l.push<vec4>("color");
-
-			lightUBO = new UniformBuffer(BufferStorage::Dynamic, lightsUboLocation, l, gConfig.maxPointLights2D);
-
-			shader = customShader ? customShader : GETSHADER("dLightRenderer2D");
-
-			shader->bindUniformBlock("Lights", lightsUboLocation);
-
+			setMaxLights(maxLights);
 		} else {
-			shader = customShader ? customShader : GETSHADER("dRenderer2D");
+			shader = const_cast<Shader *>(GETSHADER("dRenderer2D"));
 		}
 
 		sampler0 = shader->getSampler("sampler0");
@@ -57,10 +52,43 @@ namespace xe {
 	}
 
 	Renderer2D::~Renderer2D() {
+		if (enableLighting && maxLights > 0) {
+			delete shader;
+		}
+
 		delete indexBuffer;
 		delete vertexArray;
 
 		delete[] indices;
+	}
+
+	void Renderer2D::setMaxLights(uint lights) {
+		XE_ASSERT(enableLighting, "You have to create renderer with lighting support for use it");
+		if (!enableLighting || maxLights == lights) return;
+
+		maxLights = lights;
+
+		//set max lights
+		string ubo = ShaderManager::getSource("0_light2D_ubo");
+		replaceAll(ubo, "@MAX_PLIGHTS", std::to_string(maxLights));
+
+		auto *vert = ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("lightRenderer2D_vert"));
+		auto *frag = ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("lightRenderer2D_frag"), {ubo});
+
+		if (!shader) {
+			shader = new Shader("dLightRenderer2D", {vert, frag});
+		} else {
+			shader->recompile({vert, frag});
+		}
+
+		//set back ambient
+		setAmbientLight(ambient);
+
+		//create and bind uniform buffer
+		delete lightUBO;
+		lightUBO = new UniformBuffer(BufferStorage::Dynamic, 0, lightLayout, maxLights);
+
+		shader->bindUniformBlock("Lights", 0);
 	}
 
 	void Renderer2D::setupBuffer() {
@@ -145,8 +173,9 @@ namespace xe {
 	}
 
 	void Renderer2D::useLight(const Light2D *light) {
-		if (lights.size() + 1 > gConfig.maxPointLights2D) {
-			XE_CORE_ERROR("Maximum 2d lights reached (", gConfig.maxPointLights2D, ")");
+		XE_ASSERT(enableLighting, "You have to create renderer with lighting support for use it");
+		if (lights.size() + 1 > maxLights) {
+			XE_CORE_ERROR("Maximum 2d lights reached (", maxLights, ")");
 			return;
 		}
 
@@ -154,11 +183,10 @@ namespace xe {
 	}
 
 	void Renderer2D::setAmbientLight(const vec3 &color) {
-		XE_ASSERT(enableLighting, "Have to create renderer with lighting support for use it");
+		XE_ASSERT(enableLighting, "You have to create renderer with lighting support for use it");
 		ambient = color;
 
 		shader->setUniform("ambient", &ambient, sizeof(vec3));
-		shader->updateUniforms();
 	}
 
 	void Renderer2D::begin() {

@@ -1,0 +1,9 @@
+struct Light {
+  vec4 position;
+  vec4 color;
+};
+
+const int MAX_PLIGHTS = @MAX_PLIGHTS;
+layout(std140) uniform Lights {
+  Light light[MAX_PLIGHTS];
+};

@@ -24,8 +24,6 @@ namespace xe {
 
 		RenderAPI renderApi;
 		uint apiVersion;
-
-		uint maxPointLights2D;
 	};
 
 	extern Config gConfig;

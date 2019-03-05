@@ -45,9 +45,6 @@ namespace xe {
 		                            const std::vector<string> &extensions = { });
 
 		static const char *typeToString(ShaderType type);
-
-	protected:
-		virtual void setConstants(string &source) { }
 	};
 
 }

@@ -18,6 +18,8 @@ namespace xe { namespace internal {
 		explicit GLBaseShader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
 		~GLBaseShader() override;
 
+		bool recompile(const std::vector<ShaderFile *> &shaderPipeline) override;
+
 		void bind() const override;
 		void unbind() const override;
 

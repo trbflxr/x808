@@ -13,9 +13,8 @@
 
 namespace xe {
 
-	class XE_API ShaderUniform {
+	class ShaderUniform {
 	private:
-		friend class BaseShader;
 		friend class ShaderStruct;
 
 	public:
@@ -32,7 +31,7 @@ namespace xe {
 
 
 	///---------------------------///
-	class XE_API ShaderUniformBuffer {
+	class ShaderUniformBuffer {
 	public:
 		virtual ~ShaderUniformBuffer() = default;
 		virtual const string &getName() const = 0;
@@ -41,15 +40,14 @@ namespace xe {
 		virtual const ShaderUniformVec &getUniforms() const = 0;
 
 		virtual ShaderUniform *findUniform(const string &name) = 0;
+
+		virtual void clear() = 0;
 	};
 	typedef std::vector<ShaderUniformBuffer *> ShaderUniformBufferVec;
 
 
 	///---------------------------///
 	class ShaderStruct {
-	private:
-		friend class BaseShader;
-
 	public:
 		explicit ShaderStruct(const string &name) : name(name), size(0), offset(0) { }
 		virtual ~ShaderStruct() = default;

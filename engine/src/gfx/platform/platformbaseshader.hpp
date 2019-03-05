@@ -10,12 +10,15 @@
 #include <xe/xeint.hpp>
 #include <xe/gfx/shadersampler.hpp>
 #include <xe/gfx/shaderuniform.hpp>
+#include <xe/resources/shaderfile.hpp>
 
 namespace xe { namespace internal {
 
 	class PlatformBaseShader {
 	public:
 		virtual ~PlatformBaseShader() = default;
+
+		virtual bool recompile(const std::vector<ShaderFile *> &shaderPipeline) = 0;
 
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;

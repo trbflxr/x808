@@ -37,8 +37,7 @@ else ()
             "fps=0\n"
             "srgb=1\n"
             "renderApi=ogl\n"
-            "apiVersion=330\n"
-            "maxPointLights2D=50\n")
+            "apiVersion=330\n")
 
     file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif ()

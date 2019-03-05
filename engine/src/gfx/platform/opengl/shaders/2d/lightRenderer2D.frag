@@ -6,15 +6,6 @@ in vec4 position0;
 flat in int useTexture0;
 flat in int text0;
 
-struct Light {
-  vec4 position;
-  vec4 color;
-};
-
-layout(std140) uniform Lights {
-  Light light[@MAX_PLIGHTS];
-};
-
 uniform vec3 ambient;
 uniform int lightsSize;
 
@@ -30,7 +21,7 @@ void main() {
   }
 
   vec3 acc = ambient;
-  int size = lightsSize < @MAX_PLIGHTS ? lightsSize : @MAX_PLIGHTS;
+  int size = lightsSize < MAX_PLIGHTS ? lightsSize : MAX_PLIGHTS;
   for (int i = 0; i < size; i++) {
     float distance = distance(light[i].position.xy, position0.xy);
     float d = 0.0;

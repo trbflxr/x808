@@ -34,9 +34,6 @@ namespace xe { namespace internal {
 
 		void parseUniformStruct(const string &block, ShaderStructVec &structs) override;
 
-	protected:
-		void setConstants(string &source) override;
-
 	private:
 		void appendConstants(std::stringstream &stream);
 		void appendExtensions(std::stringstream &stream, const std::vector<string> &extensions);
