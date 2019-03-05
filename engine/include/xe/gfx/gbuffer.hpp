@@ -15,18 +15,15 @@
 
 namespace xe {
 
+	class DeferredRenderer;
+
 	class XE_API GBuffer : NonCopyable {
 	public:
-		explicit GBuffer(uint width, uint height);
+		explicit GBuffer(uint width, uint height, DeferredRenderer *renderer);
 		~GBuffer() override;
 
 		void passGeometry(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
 		void passLightAccumulation(const Quad *quad, const FrameBuffer *final) const;
-
-		inline void enableCullTest(bool enabled) const { cullTest = enabled; }
-		inline void enableWireframe(bool enabled) const { drawWireframe = enabled; }
-		inline void enableLightObjects(bool enabled) const { drawLightObjects = enabled; }
-		inline void enableLightBounds(bool enabled) const { drawLightBounds = enabled; }
 
 		inline uint getWidth() const { return width; }
 		inline uint getHeight() const { return height; }
@@ -39,30 +36,36 @@ namespace xe {
 		inline const Texture *getLightDiffuseTexture() const { return lightDiffuseTexture; }
 		inline const Texture *getLightSpecularTexture() const { return lightSpecularTexture; }
 
+		inline void enableCullTest(bool enabled) { cullTest = enabled; }
+		inline void enableWireframe(bool enabled) { drawWireframe = enabled; }
+		inline void enableLightObjects(bool enabled) { drawLightObjects = enabled; }
+		inline void enableLightBounds(bool enabled) { drawLightBounds = enabled; }
+
+		inline bool cullTestEnabled() const { return cullTest; }
+		inline bool drawWireframeEnabled() const { return drawWireframe; }
+		inline bool drawLightObjectsEnabled() const { return drawLightObjects; }
+		inline bool drawLightBoundsEnabled() const { return drawLightBounds; }
+
 	private:
 		void createTextures();
 		void createShaders();
-
-		void renderModels(BeginMode mode, const Shader *shader, const std::vector<Model *> &models) const;
-		void renderLights(BeginMode mode, const Shader *shader, const std::vector<Light *> &lights) const;
-		void renderLightBounds(const Shader *shader, const Light *light) const;
 
 		void passGeometryInternal(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
 		void passStencil(const Light *light) const;
 		void passSpotLight(const SpotLight *light) const;
 		void passPointLight(const PointLight *light) const;
 
-		int32 setTexture(const Shader *shader, const Texture *t, const char *sampler, const char *enable) const;
-
 	private:
 		uint width;
 		uint height;
 		vec2 renderSize;
 
-		mutable bool cullTest;
-		mutable bool drawWireframe;
-		mutable bool drawLightObjects;
-		mutable bool drawLightBounds;
+		DeferredRenderer *renderer;
+
+		bool cullTest;
+		bool drawWireframe;
+		bool drawLightObjects;
+		bool drawLightBounds;
 
 		FrameBuffer *gBuffer;
 

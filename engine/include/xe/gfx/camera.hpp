@@ -22,12 +22,10 @@ namespace xe {
 				const mat4 rotation = quat::conjugate(entity->getRotation()).toMatrix();
 				const mat4 translation = mat4::translation(-entity->getPosition());
 				view = rotation * translation;
-				invertedView = mat4::invert(view);
 			} else {
 				const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
 				const mat4 translation = mat4::translation(-getPosition());
 				view = rotation * translation;
-				invertedView = mat4::invert(view);
 			}
 			setDirty(false);
 		}
@@ -51,13 +49,6 @@ namespace xe {
 			return view;
 		}
 
-		inline const mat4 &getInvertedView() {
-			if (isDirty()) {
-				update();
-			}
-			return invertedView;
-		}
-
 		inline mat4 getViewProjection() {
 			if (isDirty()) {
 				update();
@@ -68,7 +59,6 @@ namespace xe {
 	private:
 		mat4 projection;
 		mat4 view;
-		mat4 invertedView;
 
 		GameObject *entity;
 	};

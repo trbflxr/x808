@@ -16,6 +16,10 @@ Test3D::Test3D() {
 	camera = new Camera(mat4::perspective(60.0f, width / height, 0.1f, 1000.0f));
 	camera->setPosition({4.0f, 3.0f, 20.0f});
 
+	renderer = new DeferredRenderer(width, height, camera);
+	renderer->enableLightObjects(true);
+	renderer->enableLightBounds(true);
+
 	TextureParameters params;
 	TextureManager::add(new Texture("diffuse", "sponza_floor_diff.jpg", params));
 	TextureManager::add(new Texture("specular", "sponza_floor_spec.jpg", params));
@@ -69,22 +73,6 @@ Test3D::Test3D() {
 
 	player = new DummyPlayer(camera);
 
-	gBuffer = new GBuffer(width, height);
-	gBuffer->enableLightObjects(true);
-	gBuffer->enableLightBounds(true);
-	gBuffer->enableCullTest(true);
-
-	quad = new Quad(width, height);
-	final = new FinalFX(width, height);
-
-	BufferLayout cl;
-	cl.push<mat4>("view");
-	cl.push<mat4>("projection");
-	cl.push<vec4>("camPosition");
-	cl.push<vec4>("camLook");
-
-	cameraUBO = new UniformBuffer(BufferStorage::Dynamic, 1, cl);
-
 
 	sl = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
 	sl->setPosition({12, 11, 10.0});
@@ -109,9 +97,7 @@ Test3D::Test3D() {
 Test3D::~Test3D() {
 	delete player;
 	delete camera;
-
-	delete gBuffer;
-	delete cameraUBO;
+	delete renderer;
 
 	delete material;
 
@@ -125,30 +111,7 @@ Test3D::~Test3D() {
 }
 
 void Test3D::render() {
-	const vec4 p = vec4(camera->getPosition(), 1.0f);
-	const vec4 l = vec4(camera->getRotation().getForward(), 0.0f);
-
-	cameraUBO->bind();
-	cameraUBO->update(&camera->getView(), 0);
-	cameraUBO->update(&camera->getProjection(), 1);
-	cameraUBO->update(&p, 2);
-	cameraUBO->update(&l, 3);
-	cameraUBO->unbind();
-
-	Renderer::enableDepthMask(true);
-	Renderer::enableDepthTesting(true);
-	Renderer::enableCullFace(true);
-	Renderer::setCullFace(CullFace::Back);
-
-	gBuffer->passGeometry(models, lights);
-
-	Renderer::enableDepthTesting(false);
-	gBuffer->passLightAccumulation(quad, final->getFinalFBO());
-
-	Renderer::enableDepthMask(true);
-	Renderer::enableDepthTesting(false);
-
-	final->render(quad);
+	renderer->render(models, lights);
 }
 
 void Test3D::renderImGui() {
@@ -167,22 +130,22 @@ void Test3D::renderImGui() {
 
 	static bool lightObjects = true;
 	if (ImGui::Checkbox("Light objects", &lightObjects)) {
-		gBuffer->enableLightObjects(lightObjects);
+		renderer->enableLightObjects(lightObjects);
 	}
 
 	static bool lightBounds = true;
 	if (ImGui::Checkbox("Light bounds", &lightBounds)) {
-		gBuffer->enableLightBounds(lightBounds);
+		renderer->enableLightBounds(lightBounds);
 	}
 
 	static bool wireframe = false;
 	if (ImGui::Checkbox("Wireframe", &wireframe)) {
-		gBuffer->enableWireframe(wireframe);
+		renderer->enableWireframe(wireframe);
 	}
 
 	static bool cull = true;
 	if (ImGui::Checkbox("Cull test", &cull)) {
-		gBuffer->enableCullTest(cull);
+		renderer->enableCullTest(cull);
 	}
 
 	static bool m1n = true;
@@ -211,24 +174,26 @@ void Test3D::renderImGui() {
 
 	ImGui::End();
 
+	const GBuffer *buffer = renderer->getGBuffer();
+
 	ImGui::Begin("Buffers");
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getDepthStencilTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getDepthStencilTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getPositionTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getPositionTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getNormalTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getLightDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getLightDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::End();
 
 	ImGui::Begin("Test");
-	ImGui::Image(reinterpret_cast<void *>(gBuffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
 	ImGui::End();
 }
 

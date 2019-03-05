@@ -3,16 +3,18 @@
 //
 
 #include <xe/gfx/gbuffer.hpp>
+#include <xe/gfx/renderer.hpp>
+#include <xe/gfx/deferredrenderer.hpp>
 #include <xe/resources/shadermanager.hpp>
 #include <xe/resources/texturemanager.hpp>
-#include <xe/gfx/renderer.hpp>
 
 namespace xe {
 
-	GBuffer::GBuffer(uint width, uint height) :
+	GBuffer::GBuffer(uint width, uint height, DeferredRenderer *renderer) :
 			width(width),
 			height(height),
 			renderSize(width, height),
+			renderer(renderer),
 			cullTest(true),
 			drawWireframe(false),
 			drawLightObjects(false),
@@ -88,6 +90,7 @@ namespace xe {
 
 		gBuffer->bindDraw(attachments, 2);
 
+		Renderer::setViewport(0, 0, width, height);
 		Renderer::clear(RendererBufferColor);
 
 		//fill gbuffer
@@ -117,11 +120,6 @@ namespace xe {
 			}
 		}
 
-		Renderer::enableBlend(false);
-		Renderer::enableStencilTest(false);
-		Renderer::enableCullFace(true);
-		Renderer::setCullFace(CullFace::Back);
-
 		gBuffer->unbind();
 	}
 
@@ -129,7 +127,6 @@ namespace xe {
 		final->bindDraw(Attachment::Color0);
 
 		Renderer::clear(RendererBufferColor);
-		Renderer::setViewport(0, 0, width, height);
 
 		accumulationShader->bind();
 
@@ -166,7 +163,6 @@ namespace xe {
 		gBuffer->bindDraw(attachments, 4);
 
 		Renderer::clear(RendererBufferColor | RendererBufferDepth);
-		Renderer::setViewport(0, 0, width, height);
 
 		geometryShader->bind();
 
@@ -174,11 +170,11 @@ namespace xe {
 		geometryShader->setUniform("enableWireframe", &wf, sizeof(int32));
 		geometryShader->setUniform("renderSize", &renderSize, sizeof(vec2));
 
-		renderModels(BeginMode::Triangles, geometryShader, models);
+		renderer->renderModels(BeginMode::Triangles, geometryShader, models);
 
 		if (drawLightObjects) {
 			geometryShader->setUniform("cullTest", &disabled, sizeof(int32));
-			renderLights(BeginMode::Triangles, geometryShader, lights);
+			renderer->renderLights(BeginMode::Triangles, geometryShader, lights);
 		}
 
 		geometryShader->unbind();
@@ -198,7 +194,7 @@ namespace xe {
 
 		stencilShader->bind();
 
-		renderLightBounds(stencilShader, light);
+		renderer->renderLightBounds(stencilShader, light);
 
 		stencilShader->unbind();
 	}
@@ -243,7 +239,7 @@ namespace xe {
 		spotShader->setUniform("lightSpotAngle", &spotAngle, sizeof(float));
 		spotShader->setUniform("lightSpotBlur", &spotBlur, sizeof(float));
 
-		renderLightBounds(spotShader, light);
+		renderer->renderLightBounds(spotShader, light);
 
 		specularTexture->unbind(s);
 		normalTexture->unbind(n);
@@ -284,130 +280,13 @@ namespace xe {
 		pointShader->setUniform("lightIntensity", &intensity, sizeof(float));
 		pointShader->setUniform("lightFalloff", &falloff, sizeof(float));
 
-		renderLightBounds(pointShader, light);
+		renderer->renderLightBounds(pointShader, light);
 
 		specularTexture->unbind(s);
 		normalTexture->unbind(n);
 		positionTexture->unbind(p);
 
 		pointShader->unbind();
-	}
-
-	void GBuffer::renderModels(BeginMode mode, const Shader *shader, const std::vector<Model *> &models) const {
-		for (const auto &m : models) {
-			const mat4 &model = m->toMatrix();
-
-			//world matrix
-			shader->setUniform("model", &model, sizeof(mat4));
-
-			const Material *mt = m->getMaterial();
-
-			const vec3 &diffuseColor = mt->getDiffuseColor();
-			const vec3 &specularColor = mt->getSpecularColor();
-			const float emission = mt->getEmission();
-			const float specularShininess = mt->getSpecularShininess();
-			const float displacementStrength = mt->getDisplacementStrength();
-
-
-			//set mesh uniforms
-			shader->setUniform("diffuseColor", &diffuseColor, sizeof(vec3));
-			shader->setUniform("emissionStrength", &emission, sizeof(float));
-			shader->setUniform("specularColor", &specularColor, sizeof(vec3));
-			shader->setUniform("specularShininess", &specularShininess, sizeof(float));
-			shader->setUniform("displacementStrength", &displacementStrength, sizeof(float));
-
-			//textures
-			int32 df = setTexture(shader, mt->getDiffuse(), "diffuseTexture", "enableDiffuseTexture");
-			int32 sp = setTexture(shader, mt->getSpecular(), "specularTexture", "enableSpecularTexture");
-			int32 nr = setTexture(shader, mt->getNormal(), "normalTexture", "enableNormalTexture");
-			int32 ds = setTexture(shader, mt->getDisplacement(), "dispTexture", "enableDispTexture");
-			int32 pr = setTexture(shader, mt->getParallax(), "parallaxTexture", "enableParallaxTexture");
-
-			shader->updateUniforms();
-			m->render(mode);
-
-			if (df != -1) mt->getDiffuse()->unbind(df);
-			if (sp != -1) mt->getSpecular()->unbind(sp);
-			if (nr != -1) mt->getNormal()->unbind(nr);
-			if (ds != -1) mt->getDisplacement()->unbind(ds);
-			if (pr != -1) mt->getParallax()->unbind(pr);
-		}
-	}
-
-	void GBuffer::renderLights(BeginMode mode, const Shader *shader, const std::vector<Light *> &lights) const {
-		static constexpr int32 disabled = 0;
-
-		for (const auto &light : lights) {
-			if (!light->getMesh()) continue;
-
-			//transform
-			const mat4 model = light->toMatrix();
-			shader->setUniform("model", &model, sizeof(mat4));
-
-			//values
-			shader->setUniform("diffuseColor", &light->getColor(), sizeof(vec3));
-			shader->setUniform("emissionStrength", &disabled, sizeof(float));
-			shader->setUniform("specularColor", &vec3::Zero(), sizeof(vec3));
-			shader->setUniform("specularShininess", &disabled, sizeof(float));
-			shader->setUniform("displacementStrength", &disabled, sizeof(float));
-
-			//disable textures
-			shader->setUniform("enableDiffuseTexture", &disabled, sizeof(int32));
-			shader->setUniform("enableSpecularTexture", &disabled, sizeof(int32));
-			shader->setUniform("enableNormalTexture", &disabled, sizeof(int32));
-			shader->setUniform("enableDispTexture", &disabled, sizeof(int32));
-			shader->setUniform("enableParallaxTexture", &disabled, sizeof(int32));
-
-			//set cull face for light object
-			if (light->getType() == LightType::Spot) {
-				Renderer::setCullFace(CullFace::Back);
-			} else {
-				Renderer::setCullFace(CullFace::Front);
-			}
-
-			//render
-			shader->updateUniforms();
-			light->getMesh()->render(mode);
-
-			//display bounds
-			if (drawLightBounds) {
-				Renderer::enableCullFace(false);
-				Renderer::setPolygonMode(MaterialFace::FrontAndBack, PolygonMode::Line);
-
-				renderLightBounds(shader, light);
-
-				Renderer::setPolygonMode(MaterialFace::FrontAndBack, PolygonMode::Fill);
-				Renderer::enableCullFace(true);
-			}
-		}
-
-		Renderer::setCullFace(CullFace::Back);
-	}
-
-	void GBuffer::renderLightBounds(const Shader *shader, const Light *light) const {
-		const mat4 &model = light->toMatrix().clearScale() * light->getBoundsMatrix();
-
-		shader->setUniform("model", &model, sizeof(mat4));
-		shader->updateUniforms();
-
-		light->getMesh()->render(BeginMode::Triangles);
-	}
-
-	int32 GBuffer::setTexture(const Shader *shader, const Texture *t, const char *sampler, const char *enable) const {
-		static constexpr int32 enabled = 1;
-		static constexpr int32 disabled = 0;
-
-		if (!t) {
-			shader->setUniform(enable, &disabled, sizeof(int32));
-			return -1;
-		}
-
-		shader->setUniform(enable, &enabled, sizeof(int32));
-
-		const uint slot = shader->getSampler(sampler);
-		t->bind(slot);
-
-		return slot;
 	}
 
 }

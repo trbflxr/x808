@@ -11,7 +11,7 @@ vec3 calcNormalMapping(sampler2D normalTexture, vec2 uv, mat3 TBN) {
 }
 
 vec2 calcParallaxMapping(sampler2D parallaxTexture, vec2 uv, mat3 TBN, vec3 cameraPosition, vec3 worldPosition) {
-  float height_scale = 0.02;
+  float heightScale = 0.02;
 
   mat3 tTBN = transpose(TBN);
 
@@ -28,7 +28,7 @@ vec2 calcParallaxMapping(sampler2D parallaxTexture, vec2 uv, mat3 TBN, vec3 came
 
   float currentLayerDepth = 0.0;
 
-  vec2 P = viewDir.xy / viewDir.z * height_scale;
+  vec2 P = viewDir.xy / viewDir.z * heightScale;
   vec2 deltaTexCoords = P / numLayers;
 
   vec2 currentTexCoords = uv;

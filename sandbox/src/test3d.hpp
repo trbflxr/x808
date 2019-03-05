@@ -10,13 +10,9 @@
 #include <xe/gfx/camera.hpp>
 #include <xe/gfx/model.hpp>
 #include <xe/gfx/shader.hpp>
-#include <xe/gfx/gbuffer.hpp>
+#include <xe/gfx/deferredrenderer.hpp>
 #include "dummyplayer.hpp"
 
-#include <xe/gfx/uniformbuffer.hpp>
-#include <xe/gfx/framebuffer.hpp>
-#include <xe/gfx/quad.hpp>
-#include <xe/gfx/finalfx.hpp>
 
 class Test3D : public xe::Layer {
 public:
@@ -47,11 +43,7 @@ private:
 	xe::SpotLight *sl;
 	xe::PointLight *pl;
 
-	xe::UniformBuffer *cameraUBO;
-
-	xe::GBuffer *gBuffer;
-	xe::FinalFX *final;
-	xe::Quad *quad;
+	xe::DeferredRenderer *renderer;
 };
 
 
