@@ -19,6 +19,6 @@ void main() {
   v_uv0 = uv;
   v_normal0 = normalize((model * n).xyz);
   v_tangent0 = normalize((model * t).xyz);
-  v_worldPosition0 = (model * p).xyz;
   v_position0 = (projection * view * model) * p;
+  v_worldPosition0 = (model * p).xyz;
 }

@@ -59,14 +59,14 @@ namespace xe {
 		params.internalFormat = PixelInternalFormat::Rgba16f;
 		params.format = PixelFormat::Rgba;
 		diffuseTexture = new Texture("GBufferDiffuse", width, height, 0, params);
-		lightDiffuseTexture = new Texture("GBufferLightDiffuse", width, height, 0, params);
-		lightSpecularTexture = new Texture("GBufferLightSpecular", width, height, 0, params);
 		specularTexture = new Texture("GBufferSpecular", width, height, 0, params);
+		lightSpecularTexture = new Texture("GBufferLightSpecular", width, height, 0, params);
 
 		params.internalFormat = PixelInternalFormat::Rgb16f;
 		params.format = PixelFormat::Rgb;
 		normalTexture = new Texture("GBufferNormal", width, height, 0, params);
 		positionTexture = new Texture("GBufferPosition", width, height, 0, params);
+		lightDiffuseTexture = new Texture("GBufferLightDiffuse", width, height, 0, params);
 	}
 
 	void GBuffer::createShaders() {

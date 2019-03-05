@@ -15,10 +15,10 @@ namespace xe {
 	public:
 		explicit Material(const string &name) :
 				name(name),
-				diffuseColor(0.5f),
+				diffuseColor(1.0f),
 				emission(1.0f),
-				specularColor(0.1f),
-				specularShininess(0.2f),
+				specularColor(1.0f),
+				specularShininess(0.0f),
 				displacementStrength(0.5f),
 				diffuse(nullptr),
 				specular(nullptr),

@@ -4,10 +4,10 @@ layout(location = 2) out vec4 specular;
 layout(location = 3) out vec3 position;
 
 in vec2 g_uv0;
-in vec3 g_worldPosition0;
 in vec3 g_normal0;
 in vec3 g_tangent0;
 in vec4 g_position0;
+in vec3 g_worldPosition0;
 noperspective in vec3 g_wireframeDistance0;
 
 uniform int enableWireframe;
@@ -66,6 +66,7 @@ void main() {
     diffuse.xyz = lineColorInner + lineColorOuter;
   }
 
+  // Normals
   normal = g_normal0;
   if (enableNormalTexture > 0) {
     normal = calcNormalMapping(normalTexture, uv, TBN);
@@ -73,11 +74,10 @@ void main() {
 
   // Specular Mapping
   vec3 specularColorFinal = specularColor;
-  float specularShininessFinal = max(0.05, 0.9 - (log2(specularShininess) / 9.0));
   if (enableSpecularTexture > 0) {
     specularColorFinal = texture(specularTexture, uv).xyz;
   }
-  specular = vec4(specularColorFinal, specularShininessFinal);
+  specular = vec4(specularColorFinal, max(0.0001, specularShininess));
 
   // Position
   position = g_worldPosition0;

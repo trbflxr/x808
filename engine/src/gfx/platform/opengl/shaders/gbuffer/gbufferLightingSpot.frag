@@ -1,4 +1,4 @@
-layout(location = 0) out vec4 diffuse;
+layout(location = 0) out vec3 diffuse;
 layout(location = 1) out vec4 specular;
 
 uniform sampler2D sampler0;  // Normal
@@ -22,17 +22,14 @@ void main() {
   vec3 worldPosition = texture(sampler2, uv).xyz;
 
   vec3 L;
-  vec4 tempDiffuse;
+  vec3 tempDiffuse;
   vec4 tempSpecular;
 
-  calcLighting(uv, worldPosition, normal.xyz, camPosition.xyz, lightPosition, lightColor, lightIntensity,
-               lightFalloff, specularProperties, L, tempDiffuse, tempSpecular);
+  calcLighting(worldPosition, normal, camPosition.xyz, lightPosition, lightColor, lightIntensity, lightFalloff,
+               specularProperties, L, tempDiffuse, tempSpecular);
 
   float visibility = calcSpotLightCone(L, lightDirection, lightSpotAngle, lightSpotBlur);
 
-  // diffuse = vec4(worldPosition, 1.0);
-  diffuse = tempDiffuse;
-  // diffuse = tempDiffuse * visibility;
-  // specular = tempSpecular * visibility;
-  specular = vec4(0, 0, 0, 0);
+  diffuse = tempDiffuse * visibility;
+  specular = tempSpecular * visibility;
 }

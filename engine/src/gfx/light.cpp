@@ -13,8 +13,8 @@ namespace xe {
 			enabled(true),
 			shadowed(true),
 			color(1.0f),
-			intensity(5.0f),
-			falloff(15.0f),
+			intensity(0.5f),
+			falloff(10.0f),
 			boundsMatrix(mat4::identity()) { }
 
 	///----- Spot Light -----///

@@ -22,48 +22,50 @@ Test3D::Test3D() {
 
 	TextureManager::add(new Texture("diffuse1", "Fabric_Padded_diffuse.jpg", params));
 	TextureManager::add(new Texture("normal1", "Fabric_Padded_normal.jpg", params));
+//	TextureManager::add(new Texture("disp1", "pebble-d.bmp", params));
 
 	material = new Material("material");
 	material->setDiffuse(GETTEXTURE("diffuse"));
 	material->setSpecular(GETTEXTURE("specular"));
+	material->setSpecularShininess(0.15f);
 
 	material1 = new Material("material1");
 	material1->setDiffuse(GETTEXTURE("diffuse1"));
 	material1->setNormal(GETTEXTURE("normal1"));
-	material1->setSpecularShininess(0.01f);
+//	material1->setDisplacement(GETTEXTURE("disp1"));
 
 	model = new Model("tm0", "rock.obj");
 	model->setMaterial(material);
 	models.push_back(model);
 
 	Model *monkey = new Model("tm0", "monkey3.obj");
-	monkey->setMaterial(material);
+	monkey->setMaterial(material1);
 	monkey->setPosition({-5, 2, 5});
 	models.push_back(monkey);
 
 	Model *plane = new Model("tm0", "plane0.obj");
-	plane->setMaterial(material1);
+	plane->setMaterial(material);
 	plane->setPosition({-10, 0, 0});
 //	plane->rotate(vec3::UnitY(), 180.0f);
 //	plane->rotate(vec3::UnitZ(), -45.0f);
 	models.push_back(plane);
 
-//	float step = 6.0f;
-//	float z = -step;
-//	float x = 0.0f;
-//	for (int32 i = 0; i < 9; ++i) {
-//		if (i != 0 && i % 3 == 0) {
-//			z -= step;
-//			x = 0.0f;
-//		}
-//
-//		Model *m = new Model("tm0", "rock.obj");
-//		m->setPosition({x, 0, z});
-//		m->setMaterial(material);
-//		models.push_back(m);
-//
-//		x += step;
-//	}
+	float step = 6.0f;
+	float z = -step;
+	float x = 0.0f;
+	for (int32 i = 0; i < 9; ++i) {
+		if (i != 0 && i % 3 == 0) {
+			z -= step;
+			x = 0.0f;
+		}
+
+		Model *m = new Model("tm0", "rock.obj");
+		m->setPosition({x, 0, z});
+		m->setMaterial(material1);
+		models.push_back(m);
+
+		x += step;
+	}
 
 	player = new DummyPlayer(camera);
 
@@ -85,20 +87,20 @@ Test3D::Test3D() {
 
 
 	sl = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
-	sl->setPosition({-12, 11, 10.0});
+	sl->setPosition({12, 11, 10.0});
 	sl->rotate(vec3::UnitX(), -45);
 	sl->rotate(vec3::UnitZ(), -10);
 	sl->setColor({1.0f, 0.9f, 0.8f});
 	sl->setSpotAngle(40.0f);
-	sl->setIntensity(30);
+	sl->setIntensity(15);
 	sl->setFalloff(20.0f);
 	sl->update();
 	lights.push_back(sl);
 
 	pl = new PointLight("l1", Mesh::pointLightMesh("l1_m"));
-	pl->setPosition({0, 3, 8});
+	pl->setPosition({-10, 2, 0});
 	pl->setColor({0.5f, 0.8f, 0.8f});
-	pl->setIntensity(20);
+	pl->setIntensity(4.0f);
 	pl->setFalloff(10.0f);
 	pl->update();
 	lights.push_back(pl);
@@ -123,8 +125,8 @@ Test3D::~Test3D() {
 }
 
 void Test3D::render() {
-	const vec4 p = vec4(camera->getPosition(), 0.0f);
-	const vec4 l = vec4(camera->getRotation().getForward(), 1.0f);
+	const vec4 p = vec4(camera->getPosition(), 1.0f);
+	const vec4 l = vec4(camera->getRotation().getForward(), 0.0f);
 
 	cameraUBO->bind();
 	cameraUBO->update(&camera->getView(), 0);
@@ -183,6 +185,30 @@ void Test3D::renderImGui() {
 		gBuffer->enableCullTest(cull);
 	}
 
+	static bool m1n = true;
+	if (ImGui::Checkbox("M1 normals", &m1n)) {
+		if (m1n) {
+			material1->setNormal(GETTEXTURE("normal1"));
+		} else {
+			material1->setNormal(nullptr);
+		}
+	}
+
+	const float width = ImGui::GetContentRegionAvailWidth();
+	ImGui::PushItemWidth(width);
+	static float intensity = pl->getIntensity();
+	if (ImGui::SliderFloat("I", &intensity, 0.1f, 100.0f, "%.2f", 1.5f)) {
+		pl->setIntensity(intensity);
+	}
+
+	static float spec = material->getSpecularShininess();
+	ImGui::Text("Specular shininess");
+	if (ImGui::SliderFloat("S", &spec, 0.0f, 1.0f, "%.3f")) {
+		material->setSpecularShininess(spec);
+	}
+	ImGui::PopItemWidth();
+
+
 	ImGui::End();
 
 	ImGui::Begin("Buffers");
@@ -199,6 +225,10 @@ void Test3D::renderImGui() {
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getLightDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(gBuffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::End();
+
+	ImGui::Begin("Test");
+	ImGui::Image(reinterpret_cast<void *>(gBuffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
 	ImGui::End();
 }
 
