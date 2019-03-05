@@ -14,10 +14,10 @@
 
 namespace xe {
 
-	class XE_API DeferredRenderer {
+	class XE_API DeferredRenderer : NonCopyable {
 	public:
 		explicit DeferredRenderer(uint width, uint height, Camera *camera);
-		~DeferredRenderer();
+		~DeferredRenderer() override;
 
 		void render(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
 

@@ -93,6 +93,12 @@ namespace xe {
 		Renderer::setViewport(0, 0, width, height);
 		Renderer::clear(RendererBufferColor);
 
+		Renderer::enableBlend(false);
+		Renderer::enableDepthMask(true);
+		Renderer::enableDepthTesting(true);
+		Renderer::enableCullFace(true);
+		Renderer::setCullFace(CullFace::Back);
+
 		//fill gbuffer
 		passGeometryInternal(models, lights);
 
@@ -119,6 +125,8 @@ namespace xe {
 				default: break;
 			}
 		}
+
+		Renderer::enableStencilTest(false);
 
 		gBuffer->unbind();
 	}

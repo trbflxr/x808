@@ -11,6 +11,7 @@
 #include <xe/gfx/model.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/deferredrenderer.hpp>
+#include <xe/gfx/shadowmap.hpp>
 #include "dummyplayer.hpp"
 
 
@@ -44,6 +45,8 @@ private:
 	xe::PointLight *pl;
 
 	xe::DeferredRenderer *renderer;
+
+	xe::ShadowMap *sm;
 };
 
 

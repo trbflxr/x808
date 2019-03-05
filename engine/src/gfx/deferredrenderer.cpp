@@ -35,17 +35,7 @@ namespace xe {
 	void DeferredRenderer::render(const std::vector<Model *> &models, const std::vector<Light *> &lights) const {
 		updateCamera();
 
-		Renderer::enableDepthMask(true);
-		Renderer::enableDepthTesting(true);
-		Renderer::enableCullFace(true);
-		Renderer::setCullFace(CullFace::Back);
-
 		gBuffer->passGeometry(models, lights);
-
-		Renderer::enableBlend(false);
-		Renderer::enableDepthTesting(false);
-		Renderer::enableStencilTest(false);
-		Renderer::setCullFace(CullFace::Back);
 
 		gBuffer->passLightAccumulation(quad, final->getFinalFBO());
 

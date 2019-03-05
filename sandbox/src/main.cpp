@@ -66,11 +66,11 @@ public:
 		xe::VFS::mount("models", "xe_sandbox_assets/models/");
 		xe::VFS::mount("shaders", "/");
 
+		pushLayer(new Test3D());
 //		pushLayer(new Test2D());
 //		pushLayer(new TestL2D());
 //		pushLayer(new TestP2D());
 //		pushLayer(new TestB2D());
-		pushLayer(new Test3D());
 	}
 
 	~Test() override { }

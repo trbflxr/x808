@@ -42,7 +42,7 @@ namespace xe {
 		Application &app;
 
 		std::vector<Layer *> layers;
-		std::vector<Layer *>::iterator layerInsert;
+		size_t index;
 	};
 
 }

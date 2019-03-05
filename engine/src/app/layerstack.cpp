@@ -7,10 +7,8 @@
 namespace xe {
 
 	LayerStack::LayerStack(Application *app) :
-			app(*app) {
-
-		layerInsert = layers.begin();
-	}
+			app(*app),
+			index(0) { }
 
 	LayerStack::~LayerStack() {
 		for (const auto &l : layers) {
@@ -19,14 +17,15 @@ namespace xe {
 	}
 
 	void LayerStack::pushLayer(Layer *layer) {
-		layerInsert = layers.emplace(layerInsert, layer);
+		layers.emplace(layers.begin() + index, layer);
+		++index;
 		layer->init();
 	}
 
 	Layer *LayerStack::popLayer() {
-		Layer *layer = *layerInsert;
-		layers.erase(layerInsert);
-		--layerInsert;
+		Layer *layer = layers[index];
+		layers.erase(layers.begin() + index);
+		--index;
 		return layer;
 	}
 

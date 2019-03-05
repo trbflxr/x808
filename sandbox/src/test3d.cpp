@@ -92,6 +92,9 @@ Test3D::Test3D() {
 	pl->setFalloff(10.0f);
 	pl->update();
 	lights.push_back(pl);
+
+	///---
+	sm = new ShadowMap(512);
 }
 
 Test3D::~Test3D() {
@@ -108,10 +111,14 @@ Test3D::~Test3D() {
 	for (const auto &l : lights) {
 		delete l;
 	}
+
+	delete sm;
 }
 
 void Test3D::render() {
 	renderer->render(models, lights);
+
+	sm->render(models, true);
 }
 
 void Test3D::renderImGui() {
@@ -127,6 +134,11 @@ void Test3D::renderImGui() {
 	ImGui::Text("look: (%.1f, %.1f, %.1f)", cl.x, cl.y, cl.z);
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
+
+	static bool fxaa = true;
+	if (ImGui::Checkbox("FXAA", &fxaa)) {
+		renderer->useFXAA(fxaa);
+	}
 
 	static bool lightObjects = true;
 	if (ImGui::Checkbox("Light objects", &lightObjects)) {
@@ -193,7 +205,8 @@ void Test3D::renderImGui() {
 	ImGui::End();
 
 	ImGui::Begin("Test");
-	ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
+//	ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
+	ImGui::Image(reinterpret_cast<void *>(sm->getTexture()->getHandle()), {512, 512}, {0, 1}, {1, 0});
 	ImGui::End();
 }
 

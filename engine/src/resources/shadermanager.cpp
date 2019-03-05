@@ -153,6 +153,14 @@ namespace xe {
 		}));
 
 
+		///----- shadow map vsm -----///
+		shaders.emplace("dVsm", new Shader("dVsm", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["vsm_vert"],
+				                       {sources["1_camera_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Frag, sources["vsm_frag"])
+		}));
+
+
 		///----- final fx shader -----///
 		shaders.emplace("dFinalFX", new Shader("dFinalFX", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
