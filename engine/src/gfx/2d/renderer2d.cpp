@@ -41,6 +41,8 @@ namespace xe {
 			lightLayout.push<vec4>("position");
 			lightLayout.push<vec4>("color");
 
+			shader = const_cast<Shader *>(GETSHADER("dLightRenderer2D"));
+
 			setMaxLights(maxLights);
 		} else {
 			shader = const_cast<Shader *>(GETSHADER("dRenderer2D"));
@@ -52,10 +54,6 @@ namespace xe {
 	}
 
 	Renderer2D::~Renderer2D() {
-		if (enableLighting && maxLights > 0) {
-			delete shader;
-		}
-
 		delete indexBuffer;
 		delete vertexArray;
 
@@ -68,18 +66,7 @@ namespace xe {
 
 		maxLights = lights;
 
-		//set max lights
-		string ubo = ShaderManager::getSource("0_light2D_ubo");
-		replaceAll(ubo, "@MAX_PLIGHTS", std::to_string(maxLights));
-
-		auto *vert = ShaderFile::fromSource(ShaderType::Vert, ShaderManager::getSource("lightRenderer2D_vert"));
-		auto *frag = ShaderFile::fromSource(ShaderType::Frag, ShaderManager::getSource("lightRenderer2D_frag"), {ubo});
-
-		if (!shader) {
-			shader = new Shader("dLightRenderer2D", {vert, frag});
-		} else {
-			shader->recompile({vert, frag});
-		}
+		shader->setSourceConstant(ShaderType::Frag, "@MAX_PLIGHTS", std::to_string(maxLights));
 
 		//set back ambient
 		setAmbientLight(ambient);

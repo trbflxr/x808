@@ -22,6 +22,7 @@ namespace xe {
 
 		virtual ShaderType getType() const = 0;
 		virtual const string &getSource() const = 0;
+		virtual const string &getRawSource() const = 0;
 
 		virtual uint compile() = 0;
 
@@ -35,6 +36,8 @@ namespace xe {
 		                          ShaderStructVec &structs) = 0;
 
 		virtual void parseUniformStruct(const string &block, ShaderStructVec &structs) = 0;
+
+		static ShaderFile *fromPreparedSource(ShaderType type, const string &source);
 
 		static ShaderFile *fromSource(ShaderType type, const string &source,
 		                              const std::vector<string> &dependenciesSource = { },

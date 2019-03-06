@@ -6,7 +6,6 @@
 #define X808_SHADOWS_HPP
 
 
-#include <vector>
 #include <xe/gfx/shadowmap.hpp>
 #include <xe/utils/noncopyable.hpp>
 
@@ -44,8 +43,7 @@ namespace xe {
 	private:
 		ShadowParameters params;
 
-		uint spotShadowsIndex;
-		std::vector<std::pair<int32, ShadowMap *>> spotShadows;
+		ShadowMap *spotShadows;
 	};
 
 }

@@ -9,8 +9,9 @@
 
 namespace xe {
 
-	ShadowMap::ShadowMap(uint size) :
-			size(size) {
+	ShadowMap::ShadowMap(uint size, uint layers) :
+			size(size),
+			layers(layers) {
 
 		TextureParameters params(TextureTarget::Tex2D);
 		params.internalFormat = PixelInternalFormat::Rg16f;

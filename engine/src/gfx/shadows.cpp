@@ -8,24 +8,17 @@
 namespace xe {
 
 	Shadows::Shadows(ShadowParameters params) :
-			params(params),
-			spotShadowsIndex(0) {
+			params(params) {
 
-		spotShadows.reserve(params.spotCount);
-		for (uint i = 0; i < params.spotCount; ++i) {
-			spotShadows.emplace_back(-1, new ShadowMap(params.spotSize));
-		}
+		spotShadows = new ShadowMap(params.spotSize, params.spotCount);
 	}
 
 	Shadows::~Shadows() {
-		for (const auto &ssm : spotShadows) {
-			delete ssm.second;
-		}
-		spotShadows.clear();
+		delete spotShadows;
 	}
 
 	void Shadows::render(const Scene *scene) {
-		spotShadowsIndex = 0;
+		/*spotShadowsIndex = 0;
 
 		for (const auto &light : scene->getLights()) {
 			if (!light->isShadowed() || light->getShadowId() == -1) continue;
@@ -41,24 +34,24 @@ namespace xe {
 
 				default: break;
 			}
-		}
+		}*/
 	}
 
 	void Shadows::renderSpotShadows(const SpotLight *light, const Scene *scene) {
-		if (spotShadowsIndex == params.spotCount) return;
+		/*if (spotShadowsIndex == params.spotCount) return;
 
 		const int32 sid = light->getShadowId();
 
 		spotShadows[spotShadowsIndex].first = sid;
 		spotShadows[spotShadowsIndex].second->render(scene, light->getView(), light->getProjection());
 
-		++spotShadowsIndex;
+		++spotShadowsIndex;*/
 	}
 
 	const Texture *Shadows::getSpotShadows(int32 id) const {
-		for (const auto &ss : spotShadows) {
+		/*for (const auto &ss : spotShadows) {
 			if (ss.first == id) return ss.second->getTexture();
-		}
+		}*/
 		return nullptr;
 	}
 

@@ -16,6 +16,14 @@
 
 namespace xe { namespace internal {
 
+	GLShaderFile::GLShaderFile(ShaderType type, const string &source) :
+			type(type),
+			source(source) {
+
+		rawSource = source;
+
+		setDefaultConstants(GLShaderFile::source);
+	}
 
 	GLShaderFile::GLShaderFile(ShaderType type, const string &source,
 	                           const std::vector<string> &dependenciesSource,
@@ -44,6 +52,9 @@ namespace xe { namespace internal {
 		shaderSource << src;
 
 		source = shaderSource.str();
+		rawSource = source;
+
+		setDefaultConstants(source);
 	}
 
 	void GLShaderFile::createFromFile(const string &path,
@@ -68,6 +79,9 @@ namespace xe { namespace internal {
 		shaderSource << src;
 
 		source = shaderSource.str();
+		rawSource = source;
+
+		setDefaultConstants(source);
 	}
 
 	void GLShaderFile::appendConstants(std::stringstream &stream) {
@@ -101,6 +115,10 @@ namespace xe { namespace internal {
 				stream << "\n" << d;
 			}
 		}
+	}
+
+	void GLShaderFile::setDefaultConstants(string &source) {
+		replaceAll(source, "@MAX_PLIGHTS", std::to_string(1));
 	}
 
 	uint GLShaderFile::compile() {

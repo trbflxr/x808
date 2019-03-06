@@ -16,7 +16,34 @@ namespace xe { namespace internal {
 
 		uniformBuffers.push_back(new GLShaderUniformBuffer("GLOBAL"));
 
-		recompile(shaderPipeline);
+		glCall(handle = glCreateProgram());
+
+		for (const auto &s : shaderPipeline) {
+			ShaderType type = s->getType();
+			sources.emplace(type, s->getRawSource());
+
+			shaders[type] = s->compile();
+			if (!shaders[type]) {
+				glCall(glDeleteProgram(handle));
+				XE_CORE_FATAL("[GLBaseShader]: shader name: '", name, "'");
+				XE_ASSERT(false);
+			}
+			s->parse(uniformBuffers, samplers, structs);
+
+			glCall(glAttachShader(handle, shaders[type]));
+		}
+
+		glCall(glLinkProgram(handle));
+		glCall(glValidateProgram(handle));
+
+		resolveUniforms();
+
+		//cleanup
+		for (const auto &s : shaderPipeline) {
+			ShaderType type = s->getType();
+			glCall(glDetachShader(handle, shaders[type]));
+			delete s;
+		}
 	}
 
 	GLBaseShader::~GLBaseShader() {
@@ -32,51 +59,32 @@ namespace xe { namespace internal {
 		glCall(glDeleteProgram(handle));
 	}
 
-	bool GLBaseShader::recompile(const std::vector<ShaderFile *> &shaderPipeline) {
-		if (!handle) {
-			glCall(handle = glCreateProgram());
+	void GLBaseShader::setSourceConstant(ShaderType type, const string &valueName, const string &value) {
+		string src = sources[type];
+		replaceAll(src, valueName, value);
+
+		ShaderFile *sf = ShaderFile::fromPreparedSource(type, src);
+
+		uint id = sf->compile();
+		if (!id) {
+			XE_CORE_ERROR("[GLBaseShader]: failed to set constant '", valueName, "' to shader '", name, "'");
+			return;
 		}
 
-		sources.clear();
-		samplers.clear();
-		structs.clear();
+		shaders[type] = id;
 
-		for (auto &&ub : uniformBuffers) {
-			ub->clear();
-		}
-
-		uint shaders[shaderPipeline.size()];
-
-		for (uint i = 0; i < shaderPipeline.size(); ++i) {
-			sources.emplace(shaderTypeToString(shaderPipeline[i]->getType()), shaderPipeline[i]->getSource());
-
-			shaders[i] = shaderPipeline[i]->compile();
-			if (!shaders[i]) {
-				glCall(glDeleteProgram(handle));
-				XE_CORE_FATAL("[GLBaseShader]: shader name: '", name, "'");
-				XE_ASSERT(false);
-				handle = 0;
-				return false;
-			}
-			shaderPipeline[i]->parse(uniformBuffers, samplers, structs);
-
-			glCall(glAttachShader(handle, shaders[i]));
+		for (auto &&s : shaders) {
+			glCall(glAttachShader(handle, s.second));
 		}
 
 		glCall(glLinkProgram(handle));
 		glCall(glValidateProgram(handle));
 
-		resolveUniforms();
-
-		//cleanup
-		for (uint i = 0; i < shaderPipeline.size(); ++i) {
-			glCall(glDetachShader(handle, shaders[i]));
-			glCall(glDeleteShader(shaders[i]));
-
-			delete shaderPipeline[i];
+		for (auto &&s : shaders) {
+			glCall(glDetachShader(handle, s.second));
 		}
 
-		return true;
+		delete sf;
 	}
 
 	void GLBaseShader::bind() const {

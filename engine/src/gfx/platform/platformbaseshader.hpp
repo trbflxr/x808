@@ -18,7 +18,7 @@ namespace xe { namespace internal {
 	public:
 		virtual ~PlatformBaseShader() = default;
 
-		virtual bool recompile(const std::vector<ShaderFile *> &shaderPipeline) = 0;
+		virtual void setSourceConstant(ShaderType type, const string &valueName, const string &value) = 0;
 
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
@@ -31,7 +31,7 @@ namespace xe { namespace internal {
 		virtual const ShaderSamplerVec &getSamplers() const = 0;
 		virtual const string &getName() const = 0;
 		virtual uint getHandle() const = 0;
-		virtual const std::unordered_map<string, string> &getSources() const = 0;
+		virtual const std::unordered_map<ShaderType, string> &getSources() const = 0;
 	};
 
 }}

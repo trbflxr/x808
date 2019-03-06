@@ -9,6 +9,15 @@
 
 namespace xe {
 
+	ShaderFile *ShaderFile::fromPreparedSource(ShaderType type, const string &source) {
+		switch (Context::getRenderAPI()) {
+			case RenderAPI::OpenGL :
+				return new internal::GLShaderFile(type, source);
+
+			default: return nullptr;
+		}
+	}
+
 	ShaderFile *ShaderFile::fromSource(ShaderType type, const string &source,
 	                                   const std::vector<string> &dependenciesSource,
 	                                   const std::vector<string> &extensions) {

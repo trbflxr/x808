@@ -8,7 +8,7 @@ namespace xe {
 
 	CascadedShadowMap::CascadedShadowMap(uint size) {
 		for (uint i = 0; i < Count; ++i) {
-			cascades[i] = new ShadowMap(size);
+			cascades[i] = new ShadowMap(size, 0);
 		}
 	}
 

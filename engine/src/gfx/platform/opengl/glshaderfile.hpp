@@ -13,6 +13,8 @@ namespace xe { namespace internal {
 
 	class GLShaderFile : public ShaderFile {
 	public:
+		explicit GLShaderFile(ShaderType type, const string &source);
+
 		explicit GLShaderFile(ShaderType type, const string &source,
 		                      const std::vector<string> &dependenciesSource,
 		                      const std::vector<string> &extensions,
@@ -20,6 +22,7 @@ namespace xe { namespace internal {
 
 		inline ShaderType getType() const override { return type; }
 		inline const string &getSource() const override { return source; }
+		inline const string &getRawSource() const override { return rawSource; }
 
 		uint compile() override;
 
@@ -42,10 +45,13 @@ namespace xe { namespace internal {
 		void createFromSource(const string &src, const std::vector<string> &dep, const std::vector<string> &ext);
 		void createFromFile(const string &path, const std::vector<string> &dep, const std::vector<string> &ext);
 
+		void setDefaultConstants(string &source);
+
 	private:
 		ShaderType type;
 
 		string source;
+		string rawSource;
 		uint addedLines;
 	};
 

@@ -41,8 +41,8 @@ namespace xe {
 		delete base;
 	}
 
-	bool Shader::recompile(const std::vector<ShaderFile *> &shaderPipeline) {
-		return base->recompile(shaderPipeline);
+	void Shader::setSourceConstant(ShaderType type, const string &valueName, const string &value) {
+		base->setSourceConstant(type, valueName, value);
 	}
 
 	void Shader::init() {
@@ -115,7 +115,7 @@ namespace xe {
 		return base->getUniforms();
 	}
 
-	const std::unordered_map<string, string> &Shader::getSources() const {
+	const std::unordered_map<ShaderType, string> &Shader::getSources() const {
 		return base->getSources();
 	}
 

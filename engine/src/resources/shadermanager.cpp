@@ -93,6 +93,12 @@ namespace xe {
 		}));
 
 
+		shaders.emplace("dLightRenderer2D", new Shader("dLightRenderer2D", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["lightRenderer2D_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["lightRenderer2D_frag"], {sources["0_light2D_ubo"]})
+		}));
+
+
 		///----- render texture shaders -----///
 		//render texture 2d
 		shaders.emplace("dRenderTexture2D", new Shader("dRenderTexture2D", {
