@@ -32,10 +32,10 @@ namespace xe {
 		delete cameraUBO;
 	}
 
-	void DeferredRenderer::render(const std::vector<Model *> &models, const std::vector<Light *> &lights) const {
+	void DeferredRenderer::render(const Scene* scene) const {
 		updateCamera();
 
-		gBuffer->passGeometry(models, lights);
+		gBuffer->passGeometry(scene);
 
 		gBuffer->passLightAccumulation(quad, final->getFinalFBO());
 

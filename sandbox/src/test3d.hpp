@@ -36,8 +36,10 @@ private:
 	bool hook2 = false;
 	bool rock = false;
 
-	std::vector<xe::Model *> models;
-	std::vector<xe::Light *> lights;
+	xe::Scene *scene;
+
+	xe::ShadowMap *sm;
+
 	xe::Model *model;
 	xe::Material *material;
 	xe::Material *material1;
@@ -45,8 +47,6 @@ private:
 	xe::PointLight *pl;
 
 	xe::DeferredRenderer *renderer;
-
-	xe::ShadowMap *sm;
 };
 
 

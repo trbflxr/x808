@@ -28,6 +28,8 @@ Test3D::Test3D() {
 	TextureManager::add(new Texture("normal1", "Fabric_Padded_normal.jpg", params));
 //	TextureManager::add(new Texture("disp1", "pebble-d.bmp", params));
 
+scene = new Scene();
+
 	material = new Material("material");
 	material->setDiffuse(GETTEXTURE("diffuse"));
 	material->setSpecular(GETTEXTURE("specular"));
@@ -40,19 +42,19 @@ Test3D::Test3D() {
 
 	model = new Model("tm0", "rock.obj");
 	model->setMaterial(material);
-	models.push_back(model);
+	scene->add(model);
 
 	Model *monkey = new Model("tm0", "monkey3.obj");
 	monkey->setMaterial(material1);
 	monkey->setPosition({-5, 2, 5});
-	models.push_back(monkey);
+	scene->add(monkey);
 
 	Model *plane = new Model("tm0", "plane0.obj");
 	plane->setMaterial(material);
 	plane->setPosition({-10, 0, 0});
 //	plane->rotate(vec3::UnitY(), 180.0f);
 //	plane->rotate(vec3::UnitZ(), -45.0f);
-	models.push_back(plane);
+	scene->add(plane);
 
 	float step = 6.0f;
 	float z = -step;
@@ -66,7 +68,7 @@ Test3D::Test3D() {
 		Model *m = new Model("tm0", "rock.obj");
 		m->setPosition({x, 0, z});
 		m->setMaterial(material1);
-		models.push_back(m);
+		scene->add(m);
 
 		x += step;
 	}
@@ -83,7 +85,7 @@ Test3D::Test3D() {
 	sl->setIntensity(15);
 	sl->setFalloff(20.0f);
 	sl->update();
-	lights.push_back(sl);
+	scene->add(sl);
 
 	pl = new PointLight("l1", Mesh::pointLightMesh("l1_m"));
 	pl->setPosition({-10, 2, 0});
@@ -91,9 +93,8 @@ Test3D::Test3D() {
 	pl->setIntensity(4.0f);
 	pl->setFalloff(10.0f);
 	pl->update();
-	lights.push_back(pl);
+	scene->add(pl);
 
-	///---
 	sm = new ShadowMap(512);
 }
 
@@ -104,21 +105,15 @@ Test3D::~Test3D() {
 
 	delete material;
 
-	for (const auto &m : models) {
-		delete m;
-	}
-
-	for (const auto &l : lights) {
-		delete l;
-	}
+	delete scene;
 
 	delete sm;
 }
 
 void Test3D::render() {
-	renderer->render(models, lights);
+	sm->render(scene->getModels(), true);
 
-	sm->render(models, true);
+	renderer->render(scene);
 }
 
 void Test3D::renderImGui() {

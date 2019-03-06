@@ -84,7 +84,7 @@ namespace xe {
 		pointShader->bindUniformBlock("Camera", 1);
 	}
 
-	void GBuffer::passGeometry(const std::vector<Model *> &models, const std::vector<Light *> &lights) const {
+	void GBuffer::passGeometry(const Scene *scene) const {
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -100,7 +100,7 @@ namespace xe {
 		Renderer::setCullFace(CullFace::Back);
 
 		//fill gbuffer
-		passGeometryInternal(models, lights);
+		passGeometryInternal(scene);
 
 		//accumulate lighting
 		Renderer::enableStencilTest(true);
@@ -108,7 +108,7 @@ namespace xe {
 		Renderer::setBlendEquation(BlendEquation::Add);
 		Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
 
-		for (const auto &light : lights) {
+		for (const auto &light : scene->getLights()) {
 			switch (light->getType()) {
 				case LightType::Spot: {
 					passStencil(light);
@@ -158,7 +158,7 @@ namespace xe {
 		final->unbind();
 	}
 
-	void GBuffer::passGeometryInternal(const std::vector<Model *> &models, const std::vector<Light *> &lights) const {
+	void GBuffer::passGeometryInternal(const Scene *scene) const {
 		static Attachment attachments[4] = {Attachment::Color0,
 		                                    Attachment::Color1,
 		                                    Attachment::Color2,
@@ -178,11 +178,11 @@ namespace xe {
 		geometryShader->setUniform("enableWireframe", &wf, sizeof(int32));
 		geometryShader->setUniform("renderSize", &renderSize, sizeof(vec2));
 
-		renderer->renderModels(BeginMode::Triangles, geometryShader, models);
+		renderer->renderModels(BeginMode::Triangles, geometryShader, scene->getModels());
 
 		if (drawLightObjects) {
 			geometryShader->setUniform("cullTest", &disabled, sizeof(int32));
-			renderer->renderLights(BeginMode::Triangles, geometryShader, lights);
+			renderer->renderLights(BeginMode::Triangles, geometryShader, scene->getLights());
 		}
 
 		geometryShader->unbind();

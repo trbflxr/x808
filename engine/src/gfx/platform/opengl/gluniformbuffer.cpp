@@ -10,6 +10,7 @@
 namespace xe { namespace internal {
 
 	GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) :
+			location(bind),
 			layout(layout),
 			bound(false) {
 

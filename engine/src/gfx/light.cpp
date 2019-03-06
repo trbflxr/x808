@@ -51,7 +51,7 @@ namespace xe {
 	}
 
 	///----- Directiona lLight -----///
-	DirectionalLight::DirectionalLight(const string &name,  bool shadow) :
+	DirectionalLight::DirectionalLight(const string &name, bool shadow) :
 			Light(name, LightType::Directional, nullptr) {
 
 		falloff = 0.0f;

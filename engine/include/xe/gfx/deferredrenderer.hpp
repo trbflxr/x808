@@ -19,7 +19,7 @@ namespace xe {
 		explicit DeferredRenderer(uint width, uint height, Camera *camera);
 		~DeferredRenderer() override;
 
-		void render(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
+		void render(const Scene* scene) const;
 
 		inline void useFXAA(bool enabled) { final->useFXAA(enabled); }
 		inline void enableCullTest(bool enabled) { gBuffer->enableCullTest(enabled); }

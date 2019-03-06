@@ -11,6 +11,7 @@
 #include <xe/gfx/model.hpp>
 #include <xe/gfx/light.hpp>
 #include <xe/gfx/quad.hpp>
+#include <xe/gfx/scene.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 namespace xe {
@@ -22,7 +23,7 @@ namespace xe {
 		explicit GBuffer(uint width, uint height, DeferredRenderer *renderer);
 		~GBuffer() override;
 
-		void passGeometry(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
+		void passGeometry(const Scene* scene) const;
 		void passLightAccumulation(const Quad *quad, const FrameBuffer *final) const;
 
 		inline uint getWidth() const { return width; }
@@ -50,7 +51,7 @@ namespace xe {
 		void createTextures();
 		void createShaders();
 
-		void passGeometryInternal(const std::vector<Model *> &models, const std::vector<Light *> &lights) const;
+		void passGeometryInternal(const Scene* scene) const;
 		void passStencil(const Light *light) const;
 		void passSpotLight(const SpotLight *light) const;
 		void passPointLight(const PointLight *light) const;
