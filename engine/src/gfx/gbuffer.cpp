@@ -131,7 +131,7 @@ namespace xe {
 		gBuffer->unbind();
 	}
 
-	void GBuffer::passLightAccumulation(const Quad *quad, const FrameBuffer *final) const {
+	void GBuffer::passLightAccumulation(const vec3 &ambient, const Quad *quad, const FrameBuffer *final) const {
 		final->bindDraw(Attachment::Color0);
 
 		Renderer::clear(RendererBufferColor);
@@ -145,6 +145,8 @@ namespace xe {
 		diffuseTexture->bind(d);
 		lightDiffuseTexture->bind(ld);
 		lightSpecularTexture->bind(sl);
+
+		accumulationShader->setUniform("ambient", &ambient, sizeof(vec3));
 
 		accumulationShader->updateUniforms();
 		quad->render();

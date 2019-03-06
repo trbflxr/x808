@@ -25,7 +25,7 @@ namespace xe {
 		~GBuffer() override;
 
 		void passGeometry(const Scene *scene, const Shadows *shadows) const;
-		void passLightAccumulation(const Quad *quad, const FrameBuffer *final) const;
+		void passLightAccumulation(const vec3 &ambient, const Quad *quad, const FrameBuffer *final) const;
 
 		inline uint getWidth() const { return width; }
 		inline uint getHeight() const { return height; }

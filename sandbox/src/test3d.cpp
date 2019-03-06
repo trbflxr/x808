@@ -176,8 +176,7 @@ void Test3D::renderImGui() {
 		sl->setShadowed(sls);
 	}
 
-	const float width = ImGui::GetContentRegionAvailWidth();
-	ImGui::PushItemWidth(width);
+	ImGui::PushItemWidth(-1.0f);
 	static float intensity = pl->getIntensity();
 	if (ImGui::SliderFloat("I", &intensity, 0.1f, 100.0f, "%.2f", 1.5f)) {
 		pl->setIntensity(intensity);
@@ -187,6 +186,12 @@ void Test3D::renderImGui() {
 	ImGui::Text("Specular shininess");
 	if (ImGui::SliderFloat("S", &spec, 0.0f, 1.0f, "%.3f")) {
 		material->setSpecularShininess(spec);
+	}
+
+	static float ambient = 0.1f;
+	ImGui::Text("Ambient");
+	if (ImGui::SliderFloat("A", &ambient, 0.0f, 1.0f, "%.3f")) {
+		renderer->setAmbientLight(vec3(ambient));
 	}
 	ImGui::PopItemWidth();
 

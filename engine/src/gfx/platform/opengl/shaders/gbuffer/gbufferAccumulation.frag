@@ -6,8 +6,9 @@ uniform sampler2D sampler0;  // Diffuse
 uniform sampler2D sampler1;  // Lighting
 uniform sampler2D sampler2;  // Lighting - Specular
 
+uniform vec3 ambient;
+
 void main() {
-  vec3 ambient = vec3(0.1);
   vec4 diffuseTexture = texture(sampler0, uv0);
   vec3 lighting = texture(sampler1, uv0).xyz;
   vec3 lightingSpecular = texture(sampler2, uv0).xyz;

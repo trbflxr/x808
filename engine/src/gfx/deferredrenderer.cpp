@@ -10,7 +10,8 @@ namespace xe {
 	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp) :
 			width(width),
 			height(height),
-			camera(camera) {
+			camera(camera),
+			ambientLight(0.1f) {
 
 		BufferLayout layout;
 		layout.push<mat4>("view");
@@ -41,7 +42,7 @@ namespace xe {
 
 		gBuffer->passGeometry(scene, shadows);
 
-		gBuffer->passLightAccumulation(quad, final->getFinalFBO());
+		gBuffer->passLightAccumulation(ambientLight, quad, final->getFinalFBO());
 
 		//render to screen
 		final->render(quad);

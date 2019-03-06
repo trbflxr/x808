@@ -34,6 +34,9 @@ namespace xe {
 		inline const Camera *getCamera() const { return camera; }
 		inline void setCamera(Camera *camera) { DeferredRenderer::camera = camera; }
 
+		inline const vec3 &getAmbientLight() const { return ambientLight; }
+		inline void setAmbientLight(const vec3 &color) { ambientLight = color; }
+
 		inline const GBuffer *getGBuffer() const { return gBuffer; }
 
 	private:
@@ -52,6 +55,8 @@ namespace xe {
 		uint height;
 		Camera *camera;
 		UniformBuffer *cameraUBO;
+
+		vec3 ambientLight;
 
 		Shadows *shadows;
 		GBuffer *gBuffer;
