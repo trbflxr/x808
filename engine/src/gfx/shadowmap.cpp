@@ -5,6 +5,7 @@
 #include <xe/gfx/shadowmap.hpp>
 #include <xe/resources/shadermanager.hpp>
 #include <xe/gfx/renderer.hpp>
+#include <xe/gfx/scene.hpp>
 
 namespace xe {
 
@@ -15,27 +16,23 @@ namespace xe {
 		params.internalFormat = PixelInternalFormat::Rg16f;
 		params.format = PixelFormat::Rg;
 		params.pixelType = PixelType::Float;
-		params.magFilter = TextureMagFilter::Nearest;
-		params.minFilter = TextureMinFilter::Nearest;
+		params.magFilter = TextureMagFilter::Linear;
+		params.minFilter = TextureMinFilter::Linear;
 		params.wrap = TextureWrap::ClampToEdge;
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;
 
 		texture = new Texture("ShadowMapTexture", size, size, 0, params);
 
-		params.internalFormat = PixelInternalFormat::DepthComponent;
+		params.internalFormat = PixelInternalFormat::DepthComponent16;
 		params.format = PixelFormat::DepthComponent;
 		depthTexture = new Texture("ShadowMapDepthTexture", size, size, 0, params);
 
 		buffer = new FrameBuffer("ShadowMapBuffer");
 		buffer->load({std::make_pair(Attachment::Depth, depthTexture),
-		              std::make_pair(Attachment::Color5, texture)});
-
-//		buffer = new FrameBuffer("ShadowMapBuffer");
-//		buffer->load({std::make_pair(Attachment::Color5, texture)});
+		              std::make_pair(Attachment::Color0, texture)});
 
 		shader = GETSHADER("dVsm");
-		shader->bindUniformBlock("Camera", 1);
 	}
 
 	ShadowMap::~ShadowMap() {
@@ -44,17 +41,26 @@ namespace xe {
 		delete depthTexture;
 	}
 
-	void ShadowMap::render(const std::vector<Model *> &models, bool rawZ) {
-		buffer->bindDraw(Attachment::Color5);
+	void ShadowMap::render(const SpotLight *light, const Scene *scene) {
+		Renderer::enableBlend(false);
+		Renderer::enableDepthTesting(true);
+		Renderer::enableDepthMask(true);
+		Renderer::enableCullFace(true);
+		Renderer::setCullFace(CullFace::Back);
+
+		buffer->bindDraw(Attachment::Color0);
 		Renderer::setViewport(0, 0, size, size);
 		Renderer::clear(RendererBufferColor | RendererBufferDepth);
 
 		shader->bind();
 
-		const int32 rz = rawZ ? 1 : 0;
-		shader->setUniform("rawZ", &rz, sizeof(int32));
+		const mat4 &view = light->getView();
+		const mat4 &proj = light->getProjection();
 
-		for (const auto &m : models) {
+		shader->setUniform("view", &view, sizeof(mat4));
+		shader->setUniform("projection", &proj, sizeof(mat4));
+
+		for (const auto &m : scene->getModels()) {
 			shader->setUniform("model", &m->toMatrix(), sizeof(mat4));
 			shader->updateUniforms();
 

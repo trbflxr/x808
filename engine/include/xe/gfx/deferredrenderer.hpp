@@ -11,15 +11,16 @@
 #include <xe/gfx/gbuffer.hpp>
 #include <xe/gfx/finalfx.hpp>
 #include <xe/gfx/quad.hpp>
+#include <xe/gfx/shadows.hpp>
 
 namespace xe {
 
 	class XE_API DeferredRenderer : NonCopyable {
 	public:
-		explicit DeferredRenderer(uint width, uint height, Camera *camera);
+		explicit DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp);
 		~DeferredRenderer() override;
 
-		void render(const Scene* scene) const;
+		void render(const Scene *scene) const;
 
 		inline void useFXAA(bool enabled) { final->useFXAA(enabled); }
 		inline void enableCullTest(bool enabled) { gBuffer->enableCullTest(enabled); }
@@ -52,6 +53,7 @@ namespace xe {
 		Camera *camera;
 		UniformBuffer *cameraUBO;
 
+		Shadows *shadows;
 		GBuffer *gBuffer;
 		Quad *quad;
 		FinalFX *final;

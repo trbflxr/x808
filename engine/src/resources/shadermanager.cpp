@@ -103,9 +103,14 @@ namespace xe {
 
 		///----- gbuffer shaders -----///
 		//includes
-		const std::vector<string> geomInclude{sources["1_camera_ubo"], sources["gbufferFunctions_include"]};
-		const std::vector<string> lightingInclude{sources["1_camera_ubo"], sources["lightingFunctions_include"]};
+		const std::vector<string> geomInclude{sources["1_camera_ubo"],
+		                                      sources["gbufferFunctions_include"]};
 
+		const std::vector<string> lightingInclude{sources["1_camera_ubo"],
+		                                          sources["lightingFunctions_include"],
+		                                          sources["shadows_include"]};
+
+		//gbuffer geometry shader
 		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferGeometry_vert"],
 				                       {sources["1_camera_ubo"]}),
@@ -150,8 +155,7 @@ namespace xe {
 
 		///----- shadow map vsm -----///
 		shaders.emplace("dVsm", new Shader("dVsm", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["vsm_vert"],
-				                       {sources["1_camera_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Vert, sources["vsm_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["vsm_frag"])
 		}));
 

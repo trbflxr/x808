@@ -6,6 +6,8 @@ layout(location = 3) in vec2 uv;
 out vec4 position0;
 
 uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main() {
   position0 = view * model * vec4(position, 1.0);

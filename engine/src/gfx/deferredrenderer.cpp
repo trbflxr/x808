@@ -7,7 +7,7 @@
 
 namespace xe {
 
-	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera) :
+	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp) :
 			width(width),
 			height(height),
 			camera(camera) {
@@ -20,22 +20,26 @@ namespace xe {
 
 		cameraUBO = new UniformBuffer(BufferStorage::Dynamic, 1, layout);
 
+		shadows = new Shadows(sp);
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
 		final = new FinalFX(width, height);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {
+		delete shadows;
 		delete gBuffer;
 		delete quad;
 		delete final;
 		delete cameraUBO;
 	}
 
-	void DeferredRenderer::render(const Scene* scene) const {
+	void DeferredRenderer::render(const Scene *scene) const {
 		updateCamera();
 
-		gBuffer->passGeometry(scene);
+		shadows->render(scene);
+
+		gBuffer->passGeometry(scene, shadows);
 
 		gBuffer->passLightAccumulation(quad, final->getFinalFBO());
 

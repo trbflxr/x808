@@ -55,7 +55,7 @@ namespace xe {
 		inline const mat4 &toMatrix() const;
 
 		inline bool isDirty() const { return dirty; }
-		inline void setDirty(bool isDirty) { dirty = isDirty; }
+		inline void setDirty(bool isDirty) const { dirty = isDirty; }
 
 		inline const vec3 &getPosition() const { return position; }
 		inline const quat &getRotation() const { return rotation; }

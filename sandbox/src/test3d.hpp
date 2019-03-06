@@ -38,8 +38,6 @@ private:
 
 	xe::Scene *scene;
 
-	xe::ShadowMap *sm;
-
 	xe::Model *model;
 	xe::Material *material;
 	xe::Material *material1;

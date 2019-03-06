@@ -84,7 +84,7 @@ namespace xe {
 		pointShader->bindUniformBlock("Camera", 1);
 	}
 
-	void GBuffer::passGeometry(const Scene *scene) const {
+	void GBuffer::passGeometry(const Scene *scene, const Shadows *shadows) const {
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -112,7 +112,7 @@ namespace xe {
 			switch (light->getType()) {
 				case LightType::Spot: {
 					passStencil(light);
-					passSpotLight(dynamic_cast<const SpotLight *>(light));
+					passSpotLight(dynamic_cast<const SpotLight *>(light), shadows);
 					break;
 				}
 
@@ -207,7 +207,9 @@ namespace xe {
 		stencilShader->unbind();
 	}
 
-	void GBuffer::passSpotLight(const SpotLight *light) const {
+	void GBuffer::passSpotLight(const SpotLight *light, const Shadows *shadows) const {
+		const Texture *shadowTexture = shadows->getSpotShadows(light->getShadowId());
+
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -223,10 +225,14 @@ namespace xe {
 		const uint n = spotShader->getSampler("sampler0");
 		const uint s = spotShader->getSampler("sampler1");
 		const uint p = spotShader->getSampler("sampler2");
+		const uint m = spotShader->getSampler("sampler3");
 
 		normalTexture->bind(n);
 		specularTexture->bind(s);
 		positionTexture->bind(p);
+		if (shadowTexture) {
+			shadowTexture->bind(m);
+		}
 
 		const vec3 &pos = light->getPosition();
 		const vec3 &look = light->getRotation().getForward();
@@ -247,11 +253,27 @@ namespace xe {
 		spotShader->setUniform("lightSpotAngle", &spotAngle, sizeof(float));
 		spotShader->setUniform("lightSpotBlur", &spotBlur, sizeof(float));
 
+		//shadows
+		int32 useShadows = 0;
+		if (shadowTexture) {
+			const mat4 &view = light->getView();
+			const mat4 &proj = light->getProjection();
+			useShadows = 1;
+
+			spotShader->setUniform("lightView", &view, sizeof(mat4));
+			spotShader->setUniform("lightProjection", &proj, sizeof(mat4));
+		}
+		spotShader->setUniform("useShadows", &useShadows, sizeof(int32));
+
+		//render
 		renderer->renderLightBounds(spotShader, light);
 
 		specularTexture->unbind(s);
 		normalTexture->unbind(n);
 		positionTexture->unbind(p);
+		if (shadowTexture) {
+			shadowTexture->bind(m);
+		}
 
 		spotShader->unbind();
 	}

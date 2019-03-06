@@ -22,8 +22,6 @@ namespace xe {
 	public:
 		explicit Light(const string &name, LightType type, const Mesh *mesh);
 
-		virtual void update() = 0;
-
 		inline const string &getName() const { return name; }
 		inline LightType getType() const { return type; }
 
@@ -33,17 +31,34 @@ namespace xe {
 		inline bool isShadowed() const { return shadowed; }
 		inline void setShadowed(bool shadowed) { Light::shadowed = shadowed; }
 
+		inline const int32 getShadowId() const { return shadowId; }
+		inline void setShadowId(int32 id) { shadowId = id; }
+
 		inline const vec3 &getColor() const { return color; }
 		inline void setColor(const vec3 &color) { Light::color = color; }
 
 		inline float getIntensity() const { return intensity; }
-		inline void setIntensity(float intensity) { Light::intensity = intensity; }
+		inline void setIntensity(float intensity) {
+			setDirty(true);
+			Light::intensity = intensity;
+		}
 
 		inline float getFalloff() const { return falloff; }
-		inline void setFalloff(float falloff) { Light::falloff = falloff; }
+		inline void setFalloff(float falloff) {
+			setDirty(true);
+			Light::falloff = falloff;
+		}
 
 		inline const Mesh *getMesh() const { return mesh; }
-		inline const mat4 &getBoundsMatrix() const { return boundsMatrix; }
+		inline const mat4 &getBoundsMatrix() const {
+			if (isDirty()) {
+				update();
+			}
+			return boundsMatrix;
+		}
+
+	protected:
+		virtual void update() const = 0;
 
 	protected:
 		string name;
@@ -52,12 +67,13 @@ namespace xe {
 
 		bool enabled;
 		bool shadowed;
+		int32 shadowId;
 
 		vec3 color;
 		float intensity;
 		float falloff;
 
-		mat4 boundsMatrix;
+		mutable mat4 boundsMatrix;
 	};
 
 
@@ -65,17 +81,38 @@ namespace xe {
 	public:
 		explicit SpotLight(const string &name, const Mesh *mesh);
 
-		void update() override;
-
 		inline float getSpotAngle() const { return spotAngle; }
-		inline void setSpotAngle(float angle) { spotAngle = angle; }
+		inline void setSpotAngle(float angle) {
+			setDirty(true);
+			spotAngle = angle;
+		}
 
 		inline float getSpotBlur() const { return spotBlur; }
 		inline void setSpotBlur(float blur) { spotBlur = blur; }
 
+		inline const mat4 &getView() const {
+			if (isDirty()) {
+				update();
+			}
+			return view;
+		}
+
+		inline const mat4 &getProjection() const {
+			if (isDirty()) {
+				update();
+			}
+			return projection;
+		}
+
+	protected:
+		void update() const override;
+
 	private:
 		float spotAngle;
 		float spotBlur;
+
+		mutable mat4 projection;
+		mutable mat4 view;
 	};
 
 
@@ -83,7 +120,8 @@ namespace xe {
 	public:
 		explicit PointLight(const string &name, const Mesh *mesh);
 
-		void update() override;
+	protected:
+		void update() const override;
 	};
 
 
@@ -91,7 +129,8 @@ namespace xe {
 	public:
 		explicit DirectionalLight(const string &name, bool shadow = true);
 
-		void update() override;
+	protected:
+		void update() const override;
 	};
 }
 

@@ -1,0 +1,25 @@
+float linstep(float min, float max, float v) { return clamp((v - min) / (max - min), 0.0, 1.0); }
+
+float reduceLightBleeding(float pmax, float amount) { return linstep(amount, 1.0, pmax); }
+
+float chebyshevUpperBound(vec2 moments, float t) {
+  // Surface is fully lit if the current fragment is before the light occluder
+  if (t >= (moments.x)) {
+    return 1.0;
+  }
+
+  // Compute variance.
+  float variance = moments.y - (moments.x * moments.x);
+  variance = max(variance, 0.003);
+
+  // Compute probabilistic upper bound.
+  float d = t - moments.x;
+
+  return variance / (variance + d * d);
+}
+
+float shadowContributionSpot(vec2 uv, float distanceToLight, sampler2D shadowMap) {
+  vec2 moments = texture(shadowMap, uv).xy;
+  float pmax = chebyshevUpperBound(moments, distanceToLight);
+  return reduceLightBleeding(pmax, 0.6);
+}

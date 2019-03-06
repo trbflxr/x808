@@ -15,12 +15,15 @@
 
 namespace xe {
 
+	class Scene;
+	class SpotLight;
+
 	class XE_API ShadowMap : NonCopyable {
 	public:
 		explicit ShadowMap(uint size);
 		~ShadowMap() override;
 
-		void render(const std::vector<Model *> &models, bool rawZ);
+		void render(const SpotLight *light, const Scene *scene);
 
 		inline const Texture *getTexture() const { return texture; }
 
@@ -31,7 +34,7 @@ namespace xe {
 		const Texture *depthTexture;
 		const Texture *texture;
 
-		const Shader* shader;
+		const Shader *shader;
 	};
 
 }

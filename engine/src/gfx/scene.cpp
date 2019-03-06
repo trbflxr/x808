@@ -28,4 +28,8 @@ namespace xe {
 		lights.push_back(light);
 	}
 
+	void Scene::updateLights(const Camera *camera) {
+		//todo: sort lights and frustum culling
+	}
+
 }

@@ -11,7 +11,8 @@ namespace xe {
 			type(type),
 			mesh(mesh),
 			enabled(true),
-			shadowed(true),
+			shadowed(false),
+			shadowId(-1),
 			color(1.0f),
 			intensity(0.5f),
 			falloff(10.0f),
@@ -26,7 +27,7 @@ namespace xe {
 		update();
 	}
 
-	void SpotLight::update() {
+	void SpotLight::update() const {
 		const float spotDepth = falloff / 4.0f;
 		const float spotRadius = spotDepth * tanf(to_rad(spotAngle));
 
@@ -34,7 +35,16 @@ namespace xe {
 		const vec3 shifter(0.0f, 0.0f, -falloff);
 
 		boundsMatrix = mat4::translation(shifter) * mat4::scale(scaler);
+
+		const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
+		const mat4 translation = mat4::translation(-getPosition());
+		view = rotation * translation;
+
+		projection = mat4::perspective(spotAngle * 2.0f, 1.0f, 0.1f, 100.0f);
+
+		toMatrix();
 	}
+
 
 	///----- Point Light -----///
 	PointLight::PointLight(const string &name, const Mesh *mesh) :
@@ -43,12 +53,15 @@ namespace xe {
 		update();
 	}
 
-	void PointLight::update() {
+	void PointLight::update() const {
 		const float pointRadius = falloff;
 		const vec3 scaler(pointRadius, pointRadius, pointRadius);
 
 		boundsMatrix = mat4::scale(scaler);
+
+		toMatrix();
 	}
+
 
 	///----- Directiona lLight -----///
 	DirectionalLight::DirectionalLight(const string &name, bool shadow) :
@@ -59,8 +72,8 @@ namespace xe {
 		update();
 	}
 
-	void DirectionalLight::update() {
-
+	void DirectionalLight::update() const {
+		toMatrix();
 	}
 
 }

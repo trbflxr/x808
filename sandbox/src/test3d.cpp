@@ -16,7 +16,8 @@ Test3D::Test3D() {
 	camera = new Camera(mat4::perspective(60.0f, width / height, 0.1f, 1000.0f));
 	camera->setPosition({4.0f, 3.0f, 20.0f});
 
-	renderer = new DeferredRenderer(width, height, camera);
+	ShadowParameters sp;
+	renderer = new DeferredRenderer(width, height, camera, sp);
 	renderer->enableLightObjects(true);
 	renderer->enableLightBounds(true);
 
@@ -28,7 +29,7 @@ Test3D::Test3D() {
 	TextureManager::add(new Texture("normal1", "Fabric_Padded_normal.jpg", params));
 //	TextureManager::add(new Texture("disp1", "pebble-d.bmp", params));
 
-scene = new Scene();
+	scene = new Scene();
 
 	material = new Material("material");
 	material->setDiffuse(GETTEXTURE("diffuse"));
@@ -50,7 +51,7 @@ scene = new Scene();
 	scene->add(monkey);
 
 	Model *plane = new Model("tm0", "plane0.obj");
-	plane->setMaterial(material1);
+	plane->setMaterial(material);
 	plane->setPosition({-10, 0, 0});
 //	plane->rotate(vec3::UnitY(), 180.0f);
 //	plane->rotate(vec3::UnitZ(), -45.0f);
@@ -84,18 +85,28 @@ scene = new Scene();
 	sl->setSpotAngle(40.0f);
 	sl->setIntensity(15);
 	sl->setFalloff(20.0f);
-	sl->update();
+	sl->setShadowed(true);
+	sl->setShadowId(1);
 	scene->add(sl);
+
+	SpotLight *sl1 = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
+	sl1->setPosition({-8, 8, 12.0});
+	sl1->rotate(vec3::UnitX(), -50);
+	sl1->rotate(vec3::UnitY(), -15);
+	sl1->setColor({0.3f, 0.6f, 0.8f});
+	sl1->setSpotAngle(40.0f);
+	sl1->setIntensity(15);
+	sl1->setFalloff(20.0f);
+	sl1->setShadowed(true);
+	sl1->setShadowId(0);
+	scene->add(sl1);
 
 	pl = new PointLight("l1", Mesh::pointLightMesh("l1_m"));
 	pl->setPosition({-10, 2, 0});
 	pl->setColor({0.5f, 0.8f, 0.8f});
 	pl->setIntensity(4.0f);
 	pl->setFalloff(10.0f);
-	pl->update();
 	scene->add(pl);
-
-	sm = new ShadowMap(512);
 }
 
 Test3D::~Test3D() {
@@ -106,13 +117,9 @@ Test3D::~Test3D() {
 	delete material;
 
 	delete scene;
-
-	delete sm;
 }
 
 void Test3D::render() {
-	sm->render(scene->getModels(), true);
-
 	renderer->render(scene);
 }
 
@@ -164,6 +171,11 @@ void Test3D::renderImGui() {
 		}
 	}
 
+	static bool sls = sl->isShadowed();
+	if (ImGui::Checkbox("sl0 shadows", &sls)) {
+		sl->setShadowed(sls);
+	}
+
 	const float width = ImGui::GetContentRegionAvailWidth();
 	ImGui::PushItemWidth(width);
 	static float intensity = pl->getIntensity();
@@ -201,11 +213,13 @@ void Test3D::renderImGui() {
 
 	ImGui::Begin("Test");
 //	ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
-	ImGui::Image(reinterpret_cast<void *>(sm->getTexture()->getHandle()), {512, 512}, {0, 1}, {1, 0});
+//	ImGui::Image(reinterpret_cast<void *>(sm->getTexture()->getHandle()), {512, 512}, {0, 1}, {1, 0});
 	ImGui::End();
 }
 
 void Test3D::update(float delta) {
+	scene->updateLights(camera);
+
 	player->update(delta);
 
 	model->rotate(vec3::UnitY(), 30 * delta);

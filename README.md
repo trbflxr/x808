@@ -69,3 +69,6 @@ Normal map:
 ### Shadows
 
 Work in progress...
+
+Spot light shadows:
+![specularmap](/_md/spotshadows.png)

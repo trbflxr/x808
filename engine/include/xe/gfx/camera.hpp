@@ -17,7 +17,7 @@ namespace xe {
 
 		~Camera() override = default;
 
-		virtual void update() {
+		virtual void update() const {
 			if (entity) {
 				const mat4 rotation = quat::conjugate(entity->getRotation()).toMatrix();
 				const mat4 translation = mat4::translation(-entity->getPosition());
@@ -27,7 +27,7 @@ namespace xe {
 				const mat4 translation = mat4::translation(-getPosition());
 				view = rotation * translation;
 			}
-			setDirty(false);
+			toMatrix();
 		}
 
 		inline void hookEntity(GameObject *entity) {
@@ -37,28 +37,22 @@ namespace xe {
 
 		inline void unhookEntity() {
 			entity = nullptr;
+			update();
 		}
 
 		inline const mat4 &getProjection() const { return projection; }
 		inline void setProjection(const mat4 &matrix) { projection = matrix; }
 
-		inline const mat4 &getView() {
+		inline const mat4 &getView() const {
 			if (isDirty()) {
 				update();
 			}
 			return view;
 		}
 
-		inline mat4 getViewProjection() {
-			if (isDirty()) {
-				update();
-			}
-			return projection * view;
-		}
-
 	private:
-		mat4 projection;
-		mat4 view;
+		mutable mat4 projection;
+		mutable mat4 view;
 
 		GameObject *entity;
 	};

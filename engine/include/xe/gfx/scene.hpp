@@ -11,6 +11,8 @@
 
 namespace xe {
 
+	class Camera;
+
 	class XE_API Scene : NonCopyable {
 	public:
 		explicit Scene();
@@ -18,6 +20,8 @@ namespace xe {
 
 		void add(Model *model);
 		void add(Light *light);
+
+		void updateLights(const Camera *camera);
 
 		inline const std::vector<Model *> &getModels() const { return models; }
 		inline std::vector<Model *> &getModels() { return models; }
