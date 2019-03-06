@@ -48,3 +48,24 @@ shell.addCommand("cmd", func);
 Sandbox 2D: Performance test.
 
 ![2d](/_md/2d.png)
+
+### 3D stuff
+
+GBuffer:
+![gbuffer](/_md/gbuffer.png)
+
+Light volumes:
+![lw](/_md/lights.png)
+
+Wireframe:
+![lw](/_md/wireframe.png)
+
+Specular map:
+![specularmap](/_md/specular.png)
+
+Normal map:
+![specularmap](/_md/normals.png)
+
+### Shadows
+
+Work in progress...

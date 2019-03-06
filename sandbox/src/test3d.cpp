@@ -50,7 +50,7 @@ scene = new Scene();
 	scene->add(monkey);
 
 	Model *plane = new Model("tm0", "plane0.obj");
-	plane->setMaterial(material);
+	plane->setMaterial(material1);
 	plane->setPosition({-10, 0, 0});
 //	plane->rotate(vec3::UnitY(), 180.0f);
 //	plane->rotate(vec3::UnitZ(), -45.0f);
