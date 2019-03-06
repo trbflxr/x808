@@ -41,7 +41,7 @@ namespace xe {
 		delete depthTexture;
 	}
 
-	void ShadowMap::render(const SpotLight *light, const Scene *scene) {
+	void ShadowMap::render(const Scene *scene, const mat4 &view, const mat4 &projection) {
 		Renderer::enableBlend(false);
 		Renderer::enableDepthTesting(true);
 		Renderer::enableDepthMask(true);
@@ -54,11 +54,8 @@ namespace xe {
 
 		shader->bind();
 
-		const mat4 &view = light->getView();
-		const mat4 &proj = light->getProjection();
-
 		shader->setUniform("view", &view, sizeof(mat4));
-		shader->setUniform("projection", &proj, sizeof(mat4));
+		shader->setUniform("projection", &projection, sizeof(mat4));
 
 		for (const auto &m : scene->getModels()) {
 			shader->setUniform("model", &m->toMatrix(), sizeof(mat4));

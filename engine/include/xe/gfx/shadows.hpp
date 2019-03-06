@@ -39,6 +39,7 @@ namespace xe {
 
 	private:
 		void renderSpotShadows(const SpotLight *light, const Scene *scene);
+//		void renderDirectionalShadows(const DirectionLight *light, const Scene *scene);
 
 	private:
 		ShadowParameters params;

@@ -50,7 +50,7 @@ namespace xe {
 		const int32 sid = light->getShadowId();
 
 		spotShadows[spotShadowsIndex].first = sid;
-		spotShadows[spotShadowsIndex].second->render(light, scene);
+		spotShadows[spotShadowsIndex].second->render(scene, light->getView(), light->getProjection());
 
 		++spotShadowsIndex;
 	}

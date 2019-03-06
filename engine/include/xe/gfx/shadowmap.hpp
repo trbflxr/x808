@@ -16,14 +16,13 @@
 namespace xe {
 
 	class Scene;
-	class SpotLight;
 
 	class XE_API ShadowMap : NonCopyable {
 	public:
 		explicit ShadowMap(uint size);
 		~ShadowMap() override;
 
-		void render(const SpotLight *light, const Scene *scene);
+		void render(const Scene *scene, const mat4 &view, const mat4 &projection);
 
 		inline const Texture *getTexture() const { return texture; }
 
