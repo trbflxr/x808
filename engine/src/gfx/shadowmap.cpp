@@ -9,9 +9,8 @@
 
 namespace xe {
 
-	ShadowMap::ShadowMap(uint size, uint layers) :
-			size(size),
-			layers(layers) {
+	ShadowMap::ShadowMap(uint size) :
+			size(size) {
 
 		TextureParameters params(TextureTarget::Tex2D);
 		params.internalFormat = PixelInternalFormat::Rg16f;
@@ -19,9 +18,7 @@ namespace xe {
 		params.pixelType = PixelType::Float;
 		params.magFilter = TextureMagFilter::Linear;
 		params.minFilter = TextureMinFilter::Linear;
-		params.wrap = TextureWrap::ClampToEdge;
-		params.mipMapLevels = 0;
-		params.anisotropy = 0;
+		params.wrap = TextureWrap::Clamp;
 
 		texture = new Texture("ShadowMapTexture", size, size, 0, params);
 

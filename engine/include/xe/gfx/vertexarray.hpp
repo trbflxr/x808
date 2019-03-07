@@ -23,6 +23,7 @@ namespace xe {
 		void unbind() const;
 
 		void drawElements(uint count, BeginMode mode, const void *indices = nullptr) const;
+		void drawElementsInstanced(uint count, BeginMode mode, uint instances, const void *indices = nullptr) const;
 		void drawArrays(uint count, BeginMode mode) const;
 		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const;
 

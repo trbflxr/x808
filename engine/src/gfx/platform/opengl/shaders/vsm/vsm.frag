@@ -8,6 +8,5 @@ void main() {
   float dx = dFdx(d);
   float dy = dFdy(d);
 
-  depth.x = d;
-  depth.y = d * d + 0.25 * (dx * dx + dy * dy);
+  depth = vec2(d, d * d + 0.25 * (dx * dx + dy * dy));
 }

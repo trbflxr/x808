@@ -73,4 +73,14 @@ namespace xe {
 		Renderer::incDC();
 	}
 
+	void Mesh::renderInstanced(BeginMode mode, uint count) const {
+		vao->bind();
+		ibo->bind();
+		vao->drawElementsInstanced(ibo->getCount(), mode, count);
+		ibo->unbind();
+		vao->unbind();
+
+		Renderer::incDC();
+	}
+
 }

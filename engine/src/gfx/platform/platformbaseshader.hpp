@@ -18,7 +18,7 @@ namespace xe { namespace internal {
 	public:
 		virtual ~PlatformBaseShader() = default;
 
-		virtual void setSourceConstant(ShaderType type, const string &valueName, const string &value) = 0;
+		virtual void setSourceConstant(ShaderType type, const string &valueName, const string &value) const = 0;
 
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;

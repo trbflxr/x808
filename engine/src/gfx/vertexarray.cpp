@@ -40,6 +40,10 @@ namespace xe {
 		array->drawElements(count, mode, indices);
 	}
 
+	void VertexArray::drawElementsInstanced(uint count, BeginMode mode, uint instances, const void *indices) const {
+		array->drawElementsInstanced(count, mode, instances, indices);
+	}
+
 	void VertexArray::drawArrays(uint count, BeginMode mode) const {
 		array->drawArrays(count, mode);
 	}

@@ -39,7 +39,7 @@ namespace xe {
 		explicit Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
 		virtual ~Shader();
 
-		void setSourceConstant(ShaderType type, const string &valueName, const string &value);
+		void setSourceConstant(ShaderType type, const string &valueName, const string &value) const;
 
 		void updateUniforms() const;
 		void setUniform(const string &name, const void *data, size_t size) const;

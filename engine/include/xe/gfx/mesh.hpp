@@ -28,6 +28,7 @@ namespace xe {
 		virtual ~Mesh();
 
 		void render(BeginMode mode) const;
+		void renderInstanced(BeginMode mode, uint count) const;
 
 		inline const string &getName() const { return name; }
 		inline const VertexArray *getVao() const { return vao; }

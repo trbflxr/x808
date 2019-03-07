@@ -28,6 +28,10 @@ namespace xe { namespace internal {
 		glCall(glDrawElements(beginModeToGL(mode), count, GL_UNSIGNED_INT, indices));
 	}
 
+	void GLVertexArray::drawElementsInstanced(uint count, BeginMode mode, uint instances, const void *indices) const {
+		glCall(glDrawElementsInstanced(beginModeToGL(mode), count, GL_UNSIGNED_INT, indices, instances));
+	}
+
 	void GLVertexArray::drawArrays(uint count, BeginMode mode) const {
 		glCall(glDrawArrays(beginModeToGL(mode), 0, count));
 	}

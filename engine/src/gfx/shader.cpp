@@ -41,7 +41,7 @@ namespace xe {
 		delete base;
 	}
 
-	void Shader::setSourceConstant(ShaderType type, const string &valueName, const string &value) {
+	void Shader::setSourceConstant(ShaderType type, const string &valueName, const string &value) const {
 		base->setSourceConstant(type, valueName, value);
 	}
 

@@ -19,7 +19,7 @@ namespace xe {
 
 	class XE_API ShadowMap : NonCopyable {
 	public:
-		explicit ShadowMap(uint size, uint layers);
+		explicit ShadowMap(uint size);
 		~ShadowMap() override;
 
 		void render(const Scene *scene, const mat4 &view, const mat4 &projection);
@@ -28,7 +28,6 @@ namespace xe {
 
 	private:
 		uint size;
-		uint layers;
 
 		FrameBuffer *buffer;
 		const Texture *depthTexture;

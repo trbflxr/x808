@@ -41,11 +41,11 @@ namespace xe {
 			lightLayout.push<vec4>("position");
 			lightLayout.push<vec4>("color");
 
-			shader = const_cast<Shader *>(GETSHADER("dLightRenderer2D"));
+			shader = GETSHADER("dLightRenderer2D");
 
 			setMaxLights(maxLights);
 		} else {
-			shader = const_cast<Shader *>(GETSHADER("dRenderer2D"));
+			shader = GETSHADER("dRenderer2D");
 		}
 
 		sampler0 = shader->getSampler("sampler0");

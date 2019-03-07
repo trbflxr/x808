@@ -18,7 +18,7 @@ namespace xe { namespace internal {
 		explicit GLBaseShader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
 		~GLBaseShader() override;
 
-		void setSourceConstant(ShaderType type, const string &valueName, const string &value) override;
+		void setSourceConstant(ShaderType type, const string &valueName, const string &value) const override;
 
 		void bind() const override;
 		void unbind() const override;
@@ -68,8 +68,8 @@ namespace xe { namespace internal {
 	private:
 		string name;
 		uint handle;
-		std::unordered_map<ShaderType, uint> shaders;
 		std::unordered_map<ShaderType, string> sources;
+		mutable std::unordered_map<ShaderType, uint> shaders;
 
 		ShaderUniformBufferVec uniformBuffers;
 		ShaderSamplerVec samplers;

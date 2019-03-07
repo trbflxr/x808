@@ -19,12 +19,12 @@ namespace xe {
 
 	struct ShadowParameters {
 		uint spotSize;
-		uint spotCount;
+		uint maxSpotCount;
 
 		explicit ShadowParameters(uint spotSize = 512,
-		                          uint spotCount = 4) :
+		                          uint maxSpotCount = 4) :
 				spotSize(spotSize),
-				spotCount(spotCount) { }
+				maxSpotCount(maxSpotCount) { }
 	};
 
 	class XE_API Shadows : NonCopyable {
@@ -43,7 +43,8 @@ namespace xe {
 	private:
 		ShadowParameters params;
 
-		ShadowMap *spotShadows;
+		uint spotShadowsIndex;
+		std::vector<std::pair<int32, ShadowMap *>> spotShadows;
 	};
 
 }

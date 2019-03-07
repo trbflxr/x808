@@ -59,8 +59,14 @@ namespace xe { namespace internal {
 		glCall(glDeleteProgram(handle));
 	}
 
-	void GLBaseShader::setSourceConstant(ShaderType type, const string &valueName, const string &value) {
-		string src = sources[type];
+	void GLBaseShader::setSourceConstant(ShaderType type, const string &valueName, const string &value) const {
+		auto &&it = sources.find(type);
+		if (it == sources.end()) {
+			XE_CORE_ERROR("[GLBaseShader]: '", name, "' doesn't have ", shaderTypeToString(type), " attachment!");
+			return;
+		}
+
+		string src = it->second;
 		replaceAll(src, valueName, value);
 
 		ShaderFile *sf = ShaderFile::fromPreparedSource(type, src);

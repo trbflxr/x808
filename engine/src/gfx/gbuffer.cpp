@@ -50,8 +50,8 @@ namespace xe {
 		params.internalFormat = PixelInternalFormat::Depth32fStencil8;
 		params.format = PixelFormat::DepthComponent;
 		params.pixelType = PixelType::Float;
-		params.minFilter = TextureMinFilter::Nearest;
-		params.magFilter = TextureMagFilter::Nearest;
+		params.minFilter = TextureMinFilter::Linear;
+		params.magFilter = TextureMagFilter::Linear;
 		params.wrap = TextureWrap::Clamp;
 		params.mipMapLevels = 0;
 		params.anisotropy = 0;

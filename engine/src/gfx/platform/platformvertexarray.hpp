@@ -18,6 +18,7 @@ namespace xe { namespace internal {
 		virtual void unbind() const = 0;
 
 		virtual void drawElements(uint count, BeginMode mode, const void *indices) const = 0;
+		virtual void drawElementsInstanced(uint count, BeginMode mode, uint instances, const void *indices) const = 0;
 		virtual void drawArrays(uint count, BeginMode mode) const = 0;
 		virtual void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const = 0;
 

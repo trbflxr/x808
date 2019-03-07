@@ -22,6 +22,8 @@ namespace xe {
 	public:
 		explicit Light(const string &name, LightType type, const Mesh *mesh);
 
+		virtual void update() const = 0;
+
 		inline const string &getName() const { return name; }
 		inline LightType getType() const { return type; }
 
@@ -58,9 +60,6 @@ namespace xe {
 		}
 
 	protected:
-		virtual void update() const = 0;
-
-	protected:
 		string name;
 		LightType type;
 		const Mesh *mesh;
@@ -80,6 +79,8 @@ namespace xe {
 	class XE_API SpotLight : public Light {
 	public:
 		explicit SpotLight(const string &name, const Mesh *mesh);
+
+		void update() const override;
 
 		inline float getSpotAngle() const { return spotAngle; }
 		inline void setSpotAngle(float angle) {
@@ -104,9 +105,6 @@ namespace xe {
 			return projection;
 		}
 
-	protected:
-		void update() const override;
-
 	private:
 		float spotAngle;
 		float spotBlur;
@@ -120,7 +118,6 @@ namespace xe {
 	public:
 		explicit PointLight(const string &name, const Mesh *mesh);
 
-	protected:
 		void update() const override;
 	};
 
@@ -129,7 +126,6 @@ namespace xe {
 	public:
 		explicit DirectionalLight(const string &name, bool shadow = true);
 
-	protected:
 		void update() const override;
 	};
 }
