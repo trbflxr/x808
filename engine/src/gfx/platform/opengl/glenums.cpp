@@ -70,8 +70,8 @@ namespace xe { namespace internal {
 		switch (type) {
 			case PixelInternalFormat::DepthComponent: return GL_DEPTH_COMPONENT;
 			case PixelInternalFormat::Alpha: return GL_ALPHA;
-			case PixelInternalFormat::Rgb: return gConfig.useSRGB ? GL_SRGB : GL_RGB;
-			case PixelInternalFormat::Rgba: return gConfig.useSRGB ? GL_SRGB_ALPHA : GL_RGBA;
+			case PixelInternalFormat::Rgb: return Config::get().srgb ? GL_SRGB : GL_RGB;
+			case PixelInternalFormat::Rgba: return Config::get().srgb ? GL_SRGB_ALPHA : GL_RGBA;
 			case PixelInternalFormat::Luminance: return GL_LUMINANCE;
 			case PixelInternalFormat::LuminanceAlpha: return GL_LUMINANCE_ALPHA;
 			case PixelInternalFormat::Rgb8: return GL_RGB8;

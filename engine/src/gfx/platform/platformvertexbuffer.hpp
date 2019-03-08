@@ -16,14 +16,14 @@ namespace xe { namespace internal {
 		virtual ~PlatformVertexBuffer() = default;
 
 		virtual void resize(uint size) = 0;
-		virtual void setLayout(const BufferLayout &layout) = 0;
-		virtual void setData(uint size, const void *data) = 0;
+		virtual void setLayout(const BufferLayout &layout) const = 0;
+		virtual void setData(uint size, const void *data) const = 0;
 
-		virtual void releasePointer() = 0;
-		virtual void *getPointer() = 0;
+		virtual void releasePointer() const = 0;
+		virtual void *getPointer() const = 0;
 
-		virtual void bind() = 0;
-		virtual void unbind() = 0;
+		virtual void bind() const = 0;
+		virtual void unbind() const = 0;
 	};
 
 }}

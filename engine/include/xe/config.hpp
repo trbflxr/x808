@@ -20,13 +20,32 @@ namespace xe {
 		uint ups;
 		uint fps;
 
-		bool useSRGB;
+		bool srgb;
 
 		RenderAPI renderApi;
 		uint apiVersion;
-	};
 
-	extern Config gConfig;
+		uint maxSpotShadows;
+		uint maxPointShadows;
+
+		Config() :
+				width(1),
+				height(1),
+				fullScreen(false),
+				vSync(false),
+				ups(0),
+				fps(0),
+				srgb(true),
+				renderApi(RenderAPI::OpenGL),
+				apiVersion(330),
+				maxSpotShadows(1),
+				maxPointShadows(1) { }
+
+		static const Config &get() {
+			static Config cfg;
+			return cfg;
+		}
+	};
 
 }
 

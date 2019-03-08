@@ -119,7 +119,8 @@ namespace xe { namespace internal {
 
 	void GLShaderFile::setDefaultConstants(string &source) {
 		replaceAll(source, "@MAX_PLIGHTS", "1");
-		replaceAll(source, "@MAX_SSHADOWS", "1");
+		replaceAll(source, "@MAX_SHADOWS_SPOT", std::to_string(Config::get().maxSpotShadows));
+		replaceAll(source, "@MAX_SHADOWS_POINT", std::to_string(Config::get().maxPointShadows));
 	}
 
 	uint GLShaderFile::compile() {

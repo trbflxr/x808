@@ -24,7 +24,6 @@ namespace xe { namespace internal {
 
 		inline VertexBuffer *getBuffer(uint index) override { return buffers[index]; }
 		inline void pushBuffer(VertexBuffer *buffer) override { buffers.push_back(buffer); }
-		VertexBuffer *popBuffer() override;
 
 	private:
 		std::vector<VertexBuffer *> buffers;

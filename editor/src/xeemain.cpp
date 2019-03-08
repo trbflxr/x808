@@ -32,7 +32,7 @@ int main() {
 	config.vSync = false;
 	config.ups = 30;
 	config.fps = 0;
-	config.useSRGB = true;
+	config.srgb = true;
 	config.renderApi = xe::RenderAPI::OpenGL;
 	config.apiVersion = 430;
 	config.maxPointLights2D = 50;

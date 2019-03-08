@@ -1,0 +1,9 @@
+struct SpotShadowData {
+  mat4 view;
+  mat4 projection;
+};
+
+const int MAX_SHADOWS_SPOT = @MAX_SHADOWS_SPOT;
+layout(std140, row_major) uniform SpotShadows {
+  SpotShadowData spotShadows[MAX_SHADOWS_SPOT];
+};

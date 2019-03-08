@@ -22,14 +22,14 @@ namespace xe {
 		~VertexBuffer();
 
 		void resize(uint size);
-		void setLayout(const BufferLayout &layout);
-		void setData(uint size, const void *data);
+		void setLayout(const BufferLayout &layout) const;
+		void setData(uint size, const void *data) const;
 
-		void releasePointer();
-		void *getPointer();
+		void releasePointer() const;
+		void *getPointer() const;
 
-		void bind();
-		void unbind();
+		void bind() const;
+		void unbind() const;
 
 	private:
 		internal::PlatformVertexBuffer *buffer;

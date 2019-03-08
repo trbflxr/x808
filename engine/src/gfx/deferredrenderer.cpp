@@ -85,20 +85,20 @@ namespace xe {
 			shader->setUniform("displacementStrength", &displacementStrength, sizeof(float));
 
 			//textures
-			int32 df = setTexture(shader, mt->getDiffuse(), "diffuseTexture", "enableDiffuseTexture");
-			int32 sp = setTexture(shader, mt->getSpecular(), "specularTexture", "enableSpecularTexture");
-			int32 nr = setTexture(shader, mt->getNormal(), "normalTexture", "enableNormalTexture");
-			int32 ds = setTexture(shader, mt->getDisplacement(), "dispTexture", "enableDispTexture");
-			int32 pr = setTexture(shader, mt->getParallax(), "parallaxTexture", "enableParallaxTexture");
+			uint df = setTexture(shader, mt->getDiffuse(), "diffuseTexture", "enableDiffuseTexture");
+			uint sp = setTexture(shader, mt->getSpecular(), "specularTexture", "enableSpecularTexture");
+			uint nr = setTexture(shader, mt->getNormal(), "normalTexture", "enableNormalTexture");
+			uint ds = setTexture(shader, mt->getDisplacement(), "dispTexture", "enableDispTexture");
+			uint pr = setTexture(shader, mt->getParallax(), "parallaxTexture", "enableParallaxTexture");
 
 			shader->updateUniforms();
 			m->render(mode);
 
-			if (df != -1) mt->getDiffuse()->unbind(df);
-			if (sp != -1) mt->getSpecular()->unbind(sp);
-			if (nr != -1) mt->getNormal()->unbind(nr);
-			if (ds != -1) mt->getDisplacement()->unbind(ds);
-			if (pr != -1) mt->getParallax()->unbind(pr);
+			if (df) mt->getDiffuse()->unbind(df);
+			if (sp) mt->getSpecular()->unbind(sp);
+			if (nr) mt->getNormal()->unbind(nr);
+			if (ds) mt->getDisplacement()->unbind(ds);
+			if (pr) mt->getParallax()->unbind(pr);
 		}
 	}
 
@@ -111,7 +111,8 @@ namespace xe {
 			if (!light->getMesh()) continue;
 
 			//transform
-			const mat4 model = light->toMatrix();
+			light->getBoundsMatrix();
+			const mat4 &model = light->toMatrix();
 			shader->setUniform("model", &model, sizeof(mat4));
 
 			//values
@@ -155,23 +156,21 @@ namespace xe {
 	}
 
 	void DeferredRenderer::renderLightBounds(const Shader *shader, const Light *light) const {
-		const mat4 &model = light->toMatrix().clearScale() * light->getBoundsMatrix();
-
-		shader->setUniform("model", &model, sizeof(mat4));
+		shader->setUniform("model", &light->getBoundsMatrix(), sizeof(mat4));
 		shader->updateUniforms();
 
 		light->getMesh()->render(BeginMode::Triangles);
 	}
 
-	int32 DeferredRenderer::setTexture(const Shader *shader, const Texture *texture,
-	                                   const char *sampler, const char *enable) const {
+	uint DeferredRenderer::setTexture(const Shader *shader, const Texture *texture,
+	                                  const char *sampler, const char *enable) const {
 
 		static constexpr int32 enabled = 1;
 		static constexpr int32 disabled = 0;
 
 		if (!texture) {
 			shader->setUniform(enable, &disabled, sizeof(int32));
-			return -1;
+			return 0;
 		}
 
 		shader->setUniform(enable, &enabled, sizeof(int32));

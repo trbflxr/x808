@@ -127,6 +127,24 @@ namespace xe {
 		explicit DirectionalLight(const string &name, bool shadow = true);
 
 		void update() const override;
+
+		inline const mat4 &getView() const {
+			if (isDirty()) {
+				update();
+			}
+			return view;
+		}
+
+		inline const mat4 &getProjection() const {
+			if (isDirty()) {
+				update();
+			}
+			return projection;
+		}
+
+	private:
+		mutable mat4 projection;
+		mutable mat4 view;
 	};
 }
 

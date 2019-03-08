@@ -46,7 +46,7 @@ namespace xe {
 		void renderLights(BeginMode mode, const Shader *shader, const std::vector<Light *> &lights) const;
 		void renderLightBounds(const Shader *shader, const Light *light) const;
 
-		int32 setTexture(const Shader *shader, const Texture *texture, const char *sampler, const char *enable) const;
+		uint setTexture(const Shader *shader, const Texture *texture, const char *sampler, const char *enable) const;
 
 	private:
 		friend class GBuffer;

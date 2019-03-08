@@ -7,6 +7,7 @@
 namespace xe {
 	///----- Light -----///
 	Light::Light(const string &name, LightType type, const Mesh *mesh) :
+			ITransformable(false),
 			name(name),
 			type(type),
 			mesh(mesh),
@@ -22,10 +23,7 @@ namespace xe {
 	SpotLight::SpotLight(const string &name, const Mesh *mesh) :
 			Light(name, LightType::Spot, mesh),
 			spotAngle(60.0f / 2.0f),
-			spotBlur(0.3f) {
-
-		update();
-	}
+			spotBlur(0.3f) { }
 
 	void SpotLight::update() const {
 		const float spotDepth = falloff / 4.0f;
@@ -34,32 +32,25 @@ namespace xe {
 		const vec3 scaler(spotRadius, spotRadius, spotDepth);
 		const vec3 shifter(0.0f, 0.0f, -falloff);
 
-		boundsMatrix = mat4::translation(shifter) * mat4::scale(scaler);
+		boundsMatrix = toMatrix() * (mat4::translation(shifter) * mat4::scale(scaler));
 
 		const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
 		const mat4 translation = mat4::translation(-getPosition());
 		view = rotation * translation;
 
 		projection = mat4::perspective(spotAngle * 2.0f, 1.0f, 0.1f, 100.0f);
-
-		toMatrix();
 	}
 
 
 	///----- Point Light -----///
 	PointLight::PointLight(const string &name, const Mesh *mesh) :
-			Light(name, LightType::Point, mesh) {
-
-		update();
-	}
+			Light(name, LightType::Point, mesh) { }
 
 	void PointLight::update() const {
 		const float pointRadius = falloff;
 		const vec3 scaler(pointRadius, pointRadius, pointRadius);
 
-		boundsMatrix = mat4::scale(scaler);
-
-		toMatrix();
+		boundsMatrix = toMatrix() * mat4::scale(scaler);
 	}
 
 

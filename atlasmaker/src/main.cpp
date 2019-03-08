@@ -32,10 +32,9 @@ int main() {
 	config.vSync = true;
 	config.ups = 0;
 	config.fps = 90;
-	config.useSRGB = true;
+	config.srgb = true;
 	config.renderApi = RenderAPI::OpenGL;
 	config.apiVersion = 330;
-	config.maxPointLights2D = 1;
 
 	AtlasMaker test(config);
 	test.start();

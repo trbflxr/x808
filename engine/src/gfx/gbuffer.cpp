@@ -82,6 +82,8 @@ namespace xe {
 		stencilShader->bindUniformBlock("Camera", 1);
 		spotShader->bindUniformBlock("Camera", 1);
 		pointShader->bindUniformBlock("Camera", 1);
+
+		spotShader->bindUniformBlock("SpotShadows", 2);
 	}
 
 	void GBuffer::passGeometry(const Scene *scene, const Shadows *shadows) const {
@@ -210,7 +212,7 @@ namespace xe {
 	}
 
 	void GBuffer::passSpotLight(const SpotLight *light, const Shadows *shadows) const {
-		const Texture *shadowTexture = shadows->getSpotShadows(light->getShadowId());
+		const Texture *shadowTexture = shadows->getSpotShadows();
 
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
@@ -232,9 +234,7 @@ namespace xe {
 		normalTexture->bind(n);
 		specularTexture->bind(s);
 		positionTexture->bind(p);
-		if (shadowTexture) {
-			shadowTexture->bind(m);
-		}
+		shadowTexture->bind(m);
 
 		const vec3 &pos = light->getPosition();
 		const vec3 &look = light->getRotation().getForward();
@@ -256,16 +256,8 @@ namespace xe {
 		spotShader->setUniform("lightSpotBlur", &spotBlur, sizeof(float));
 
 		//shadows
-		int32 useShadows = 0;
-		if (shadowTexture) {
-			const mat4 &view = light->getView();
-			const mat4 &proj = light->getProjection();
-			useShadows = 1;
-
-			spotShader->setUniform("lightView", &view, sizeof(mat4));
-			spotShader->setUniform("lightProjection", &proj, sizeof(mat4));
-		}
-		spotShader->setUniform("useShadows", &useShadows, sizeof(int32));
+		int32 shadowId = light->getShadowId();
+		spotShader->setUniform("shadowId", &shadowId, sizeof(int32));
 
 		//render
 		renderer->renderLightBounds(spotShader, light);
@@ -273,9 +265,7 @@ namespace xe {
 		specularTexture->unbind(s);
 		normalTexture->unbind(n);
 		positionTexture->unbind(p);
-		if (shadowTexture) {
-			shadowTexture->bind(m);
-		}
+		shadowTexture->bind(m);
 
 		spotShader->unbind();
 	}

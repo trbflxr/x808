@@ -40,14 +40,4 @@ namespace xe { namespace internal {
 		glCall(glDrawArraysInstanced(beginModeToGL(mode), 0, count, instanceCount));
 	}
 
-	VertexBuffer *GLVertexArray::popBuffer() {
-		if (buffers.empty()) {
-			return nullptr;
-		}
-
-		VertexBuffer *buffer = buffers.back();
-		buffers.pop_back();
-		return buffer;
-	}
-
 }}

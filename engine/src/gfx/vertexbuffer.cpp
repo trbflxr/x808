@@ -32,27 +32,27 @@ namespace xe {
 		buffer->resize(size);
 	}
 
-	void VertexBuffer::setLayout(const BufferLayout &layout) {
+	void VertexBuffer::setLayout(const BufferLayout &layout) const {
 		buffer->setLayout(layout);
 	}
 
-	void VertexBuffer::setData(uint size, const void *data) {
+	void VertexBuffer::setData(uint size, const void *data) const {
 		buffer->setData(size, data);
 	}
 
-	void VertexBuffer::releasePointer() {
+	void VertexBuffer::releasePointer() const {
 		buffer->releasePointer();
 	}
 
-	void *VertexBuffer::getPointer() {
+	void *VertexBuffer::getPointer() const {
 		return buffer->getPointer();
 	}
 
-	void VertexBuffer::bind() {
+	void VertexBuffer::bind() const {
 		buffer->bind();
 	}
 
-	void VertexBuffer::unbind() {
+	void VertexBuffer::unbind() const {
 		buffer->unbind();
 	}
 

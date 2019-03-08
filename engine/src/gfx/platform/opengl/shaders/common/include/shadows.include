@@ -18,7 +18,7 @@ float chebyshevUpperBound(vec2 moments, float t) {
   return variance / (variance + d * d);
 }
 
-float shadowContributionSpot(vec2 uv, float distanceToLight, sampler2D shadowMap) {
+float shadowContributionSpot(vec3 uv, float distanceToLight, sampler2DArray shadowMap) {
   vec2 moments = texture(shadowMap, uv).xy;
   float pmax = chebyshevUpperBound(moments, distanceToLight);
   return reduceLightBleeding(pmax, 0.6);

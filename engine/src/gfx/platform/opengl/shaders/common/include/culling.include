@@ -9,3 +9,9 @@ bool frustumCullTest(vec4 vertexPosition[3]) {
           edgeInFrustum(vertexPosition[2], vertexPosition[0]) ||
           edgeInFrustum(vertexPosition[2], vertexPosition[1]));
 }
+
+bool backfaceCullTest(vec3 worldPosition, vec3 eyePosition, vec3 normal) {
+  vec3 L = normalize(eyePosition - worldPosition);
+  float angle = dot(L, normal);
+  return angle > 0.0;
+}

@@ -3,13 +3,12 @@ layout(location = 1) in vec3 normal;
 layout(location = 2) in vec3 tangent;
 layout(location = 3) in vec2 uv;
 
-out vec4 position0;
+out vec4 v_worldPosition0;
+flat out int id0;
 
 uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
 
 void main() {
-  position0 = view * model * vec4(position, 1.0);
-  gl_Position = projection * position0;
+  v_worldPosition0 = model * vec4(position, 1.0);
+  id0 = gl_InstanceID;
 }

@@ -34,6 +34,10 @@ void main() {
 
   vec3 chooser[3] = vec3[3](vec3(1.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(0.0, 0.0, 1.0));
 
+  // (backfaceCullTest(v_worldPosition0[0], camPosition.xyz, v_normal0[0]) ||
+  //         backfaceCullTest(v_worldPosition0[1], camPosition.xyz, v_normal0[1]) ||
+  //         backfaceCullTest(v_worldPosition0[2], camPosition.xyz, v_normal0[2])) &&
+
   bool cull = true;
   if (cullTest > 0) {
     cull = frustumCullTest(positions);

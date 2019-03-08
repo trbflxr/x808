@@ -4,6 +4,8 @@
 
 #include <xe/gfx/shadows.hpp>
 #include <xe/gfx/scene.hpp>
+#include <xe/resources/shadermanager.hpp>
+#include <xe/gfx/renderer.hpp>
 
 namespace xe {
 
@@ -11,55 +13,86 @@ namespace xe {
 			params(params),
 			spotShadowsIndex(0) {
 
-		spotShadows.reserve(params.maxSpotCount);
-		for (uint i = 0; i < params.maxSpotCount; ++i) {
-			spotShadows.emplace_back(-1, new ShadowMap(params.spotSize));
-		}
+		TextureParameters tp(TextureTarget::Tex2DArray);
+		tp.internalFormat = PixelInternalFormat::Rg16f;
+		tp.format = PixelFormat::Rg;
+		tp.pixelType = PixelType::Float;
+		tp.magFilter = TextureMagFilter::Linear;
+		tp.minFilter = TextureMinFilter::Linear;
+		tp.wrap = TextureWrap::Clamp;
+
+		spotTexture = new Texture("ST", params.spotSize, params.spotSize, params.maxSpotCount, tp);
+
+		tp.internalFormat = PixelInternalFormat::DepthComponent16;
+		tp.format = PixelFormat::DepthComponent;
+		spotDepthTexture = new Texture("SDT", params.spotSize, params.spotSize, params.maxSpotCount, tp);
+
+		spotBuffer = new FrameBuffer("SB");
+		spotBuffer->load({std::make_pair(Attachment::Depth, spotDepthTexture),
+		                  std::make_pair(Attachment::Color0, spotTexture)});
+
+		spotShader = GETSHADER("dSpotShadows");
+		spotShader->bindUniformBlock("SpotShadows", 2);
+
+		BufferLayout layout;
+		layout.push<mat4>("view");
+		layout.push<mat4>("projection");
+
+		spotUBO = new UniformBuffer(BufferStorage::Dynamic, 2, layout, params.maxSpotCount);
 	}
 
 	Shadows::~Shadows() {
-		for (const auto &ssm : spotShadows) {
-			delete ssm.second;
-		}
-		spotShadows.clear();
+		delete spotBuffer;
+		delete spotUBO;
+		delete spotTexture;
+		delete spotDepthTexture;
 	}
 
 	void Shadows::render(const Scene *scene) {
 		spotShadowsIndex = 0;
 
-		for (const auto &light : scene->getLights()) {
-			if (!light->isShadowed() || light->getShadowId() == -1) continue;
 
-			switch (light->getType()) {
-				case LightType::Spot: {
-					renderSpotShadows(dynamic_cast<SpotLight *>(light), scene);
-					break;
-				}
-
-				case LightType::Point: { }
-				case LightType::Directional: { }
-
-				default: break;
+		spotUBO->bind();
+		for (const auto &light : scene->getSpotLights()) {
+			if (!light->isShadowed() || (uint) spotShadowsIndex - 1 == params.maxSpotCount) {
+				light->setShadowId(-1);
+				continue;
 			}
+
+			spotUBO->update(&light->getView(), 0, spotShadowsIndex);
+			spotUBO->update(&light->getProjection(), 1, spotShadowsIndex);
+
+			light->setShadowId(spotShadowsIndex);
+			++spotShadowsIndex;
 		}
+		spotUBO->unbind();
+
+		renderSpotShadows(scene);
 	}
 
-	void Shadows::renderSpotShadows(const SpotLight *light, const Scene *scene) {
-		if (spotShadowsIndex == params.maxSpotCount) return;
+	void Shadows::renderSpotShadows(const Scene *scene) {
+		Renderer::enableBlend(false);
+		Renderer::enableDepthTesting(true);
+		Renderer::enableDepthMask(true);
+		Renderer::enableCullFace(true);
+		Renderer::setCullFace(CullFace::Back);
 
-		const int32 sid = light->getShadowId();
+		spotBuffer->bindDraw(Attachment::Color0);
+		Renderer::setViewport(0, 0, params.spotSize, params.spotSize);
+		Renderer::clear(RendererBufferColor | RendererBufferDepth);
 
-		spotShadows[spotShadowsIndex].first = sid;
-		spotShadows[spotShadowsIndex].second->render(scene, light->getView(), light->getProjection());
+		spotShader->bind();
 
-		++spotShadowsIndex;
-	}
+		for (const auto &m : scene->getModels()) {
+			spotShader->setUniform("model", &m->toMatrix(), sizeof(mat4));
+			spotShader->updateUniforms();
 
-	const Texture *Shadows::getSpotShadows(int32 id) const {
-		for (const auto &ss : spotShadows) {
-			if (ss.first == id) return ss.second->getTexture();
+			m->renderInstanced(BeginMode::Triangles, spotShadowsIndex);
 		}
-		return nullptr;
+
+		spotShader->unbind();
+
+		spotBuffer->unbind();
 	}
 
 }

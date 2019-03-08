@@ -13,6 +13,7 @@ namespace xe {
 	class Camera : public ITransformable {
 	public:
 		explicit Camera(const mat4 &projection) :
+				ITransformable(false),
 				projection(projection), view(1.0f), entity(nullptr) { }
 
 		~Camera() override = default;

@@ -28,7 +28,7 @@ namespace xe { namespace internal {
 		glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
-	void GLVertexBuffer::setLayout(const BufferLayout &layout) {
+	void GLVertexBuffer::setLayout(const BufferLayout &layout) const {
 		GLVertexBuffer::layout = layout;
 		const auto &l = layout.getLayout();
 
@@ -41,27 +41,27 @@ namespace xe { namespace internal {
 		}
 	}
 
-	void GLVertexBuffer::setData(uint size, const void *data) {
-		bind();
+	void GLVertexBuffer::setData(uint size, const void *data) const {
+		glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
 		glCall(glBufferData(GL_ARRAY_BUFFER, size, data, bufferUsageToGL(usage)));
-		unbind();
+		glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
-	void GLVertexBuffer::releasePointer() {
+	void GLVertexBuffer::releasePointer() const {
 		glCall(glUnmapBuffer(GL_ARRAY_BUFFER));
 	}
 
-	void *GLVertexBuffer::getPointer() {
+	void *GLVertexBuffer::getPointer() const {
 		glCall(void *result = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 		return result;
 	}
 
-	void GLVertexBuffer::bind() {
+	void GLVertexBuffer::bind() const {
 		glCall(glBindBuffer(GL_ARRAY_BUFFER, handle));
 		setLayout(layout);
 	}
 
-	void GLVertexBuffer::unbind() {
+	void GLVertexBuffer::unbind() const {
 #ifdef XE_DEBUG
 		glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 #endif

@@ -116,6 +116,9 @@ namespace xe {
 		                                          sources["lightingFunctions_include"],
 		                                          sources["shadows_include"]};
 
+		std::vector<string> lightingSpotInclude = lightingInclude;
+		lightingSpotInclude.push_back(sources["2_spotShadows_ubo"]);
+
 		//gbuffer geometry shader
 		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferGeometry_vert"],
@@ -139,7 +142,7 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Vert, sources["gbufferStencil_vert"],
 				                       {sources["1_camera_ubo"]}),
 				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferLightingSpot_frag"],
-				                       {lightingInclude})
+				                       {lightingSpotInclude})
 		}));
 
 
@@ -159,10 +162,13 @@ namespace xe {
 		}));
 
 
-		///----- shadow map vsm -----///
-		shaders.emplace("dVsm", new Shader("dVsm", {
-				ShaderFile::fromSource(ShaderType::Vert, sources["vsm_vert"]),
-				ShaderFile::fromSource(ShaderType::Frag, sources["vsm_frag"])
+		///----- shadows -----///
+		//spot shadows
+		shaders.emplace("dSpotShadows", new Shader("dSpotShadows", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["shadow_vert"]),
+				ShaderFile::fromSource(ShaderType::Geom, sources["spotShadow_geom"],
+				                       {sources["2_spotShadows_ubo"], sources["culling_include"]}),
+				ShaderFile::fromSource(ShaderType::Frag, sources["spotShadow_frag"])
 		}));
 
 

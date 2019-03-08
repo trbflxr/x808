@@ -23,11 +23,15 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
 	} else if (strcmp(key, "fps") == 0) {
 		config.fps = (uint) atoi(value);
 	} else if (strcmp(key, "srgb") == 0) {
-		config.useSRGB = (bool) atoi(value);
+		config.srgb = (bool) atoi(value);
 	} else if (strcmp(key, "renderApi") == 0) {
 		config.renderApi = xe::stringToRenderApi(value);
 	} else if (strcmp(key, "apiVersion") == 0) {
 		config.apiVersion = (uint) atoi(value);
+	}else if (strcmp(key, "maxSpotShadows") == 0) {
+		config.maxSpotShadows = (uint) atoi(value);
+	}else if (strcmp(key, "maxPointShadows") == 0) {
+		config.maxPointShadows = (uint) atoi(value);
 	}
 }
 

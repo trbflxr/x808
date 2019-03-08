@@ -22,7 +22,7 @@ namespace xe {
 			config(config),
 			frameTime(0.0f) {
 
-		gConfig = config;
+		const_cast<Config &>(Config::get()) = config;
 
 		//init random
 		random::next<int32>(0, 1);

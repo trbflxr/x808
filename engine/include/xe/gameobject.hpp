@@ -17,7 +17,7 @@ namespace xe {
 		explicit GameObject(const mat4 &transformation) :
 				ITransformable(transformation) { }
 
-		virtual ~GameObject() = default;
+		~GameObject() override = default;
 	};
 
 }

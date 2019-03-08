@@ -1,9 +1,9 @@
 layout(location = 0) out vec2 depth;
 
-in vec4 position0;
+in vec4 g_viewPosition0;
 
 void main() {
-  float d = position0.z;
+  float d = g_viewPosition0.z;
 
   float dx = dFdx(d);
   float dy = dFdy(d);

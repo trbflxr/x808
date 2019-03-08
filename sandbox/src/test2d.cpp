@@ -194,7 +194,7 @@ Test2D::Test2D() {
 	c0->transformation({710.0f, 350.0f});
 	renderables.push_back(c0);
 
-	Renderer::setClearColor(0xff57513c);
+//	Renderer::setClearColor(0xff57513c);
 }
 
 Test2D::~Test2D() {

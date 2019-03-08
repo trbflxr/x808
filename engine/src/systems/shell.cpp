@@ -354,15 +354,15 @@ namespace xe {
 			std::stringstream ss;
 
 			ss << "Config: \n";
-			ss << "  - Width: " << gConfig.width << "\n";
-			ss << "  - Height: " << gConfig.height << "\n";
-			ss << "  - Fullscreen: " << gConfig.fullScreen << "\n";
-			ss << "  - Vsync: " << gConfig.vSync << "\n";
-			ss << "  - Target FPS: " << gConfig.fps << "\n";
-			ss << "  - Target UPS: " << gConfig.ups << "\n";
-			ss << "  - Use SRGB: " << gConfig.useSRGB << "\n";
-			ss << "  - Render API: " << renderApiToString(gConfig.renderApi) << "\n";
-			ss << "  - Render API version: " << gConfig.apiVersion << "\n";
+			ss << "  - Width: " << Config::get().width << "\n";
+			ss << "  - Height: " << Config::get().height << "\n";
+			ss << "  - Fullscreen: " << Config::get().fullScreen << "\n";
+			ss << "  - Vsync: " << Config::get().vSync << "\n";
+			ss << "  - Target FPS: " << Config::get().fps << "\n";
+			ss << "  - Target UPS: " << Config::get().ups << "\n";
+			ss << "  - Use SRGB: " << Config::get().srgb << "\n";
+			ss << "  - Render API: " << renderApiToString(Config::get().renderApi) << "\n";
+			ss << "  - Render API version: " << Config::get().apiVersion << "\n";
 
 			return ss.str();
 		};

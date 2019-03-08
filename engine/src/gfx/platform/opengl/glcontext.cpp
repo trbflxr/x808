@@ -40,7 +40,7 @@ namespace xe { namespace internal {
 			XE_CORE_FATAL("Could not initialize GLEW!");
 		}
 
-		if (gConfig.useSRGB) {
+		if (Config::get().srgb) {
 			glCall(glEnable(GL_FRAMEBUFFER_SRGB));
 		} else {
 			glCall(glDisable(GL_FRAMEBUFFER_SRGB));

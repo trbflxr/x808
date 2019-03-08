@@ -459,24 +459,23 @@ namespace xe {
 	}
 
 	mat4 mat4::transpose(const mat4 &m) {
-		return mat4(
-				vec4(m.rows[0].x, m.rows[1].x, m.rows[2].x, m.rows[3].x),
-				vec4(m.rows[0].y, m.rows[1].y, m.rows[2].y, m.rows[3].y),
-				vec4(m.rows[0].z, m.rows[1].z, m.rows[2].z, m.rows[3].z),
-				vec4(m.rows[0].w, m.rows[1].w, m.rows[2].w, m.rows[3].w));
+		return mat4(vec4(m.rows[0].x, m.rows[1].x, m.rows[2].x, m.rows[3].x),
+		            vec4(m.rows[0].y, m.rows[1].y, m.rows[2].y, m.rows[3].y),
+		            vec4(m.rows[0].z, m.rows[1].z, m.rows[2].z, m.rows[3].z),
+		            vec4(m.rows[0].w, m.rows[1].w, m.rows[2].w, m.rows[3].w));
 	}
 
 	mat4 mat4::transform(const vec3 &translation, const quat &rotation, const vec3 &scale) {
-		mat4 t = mat4::translation(translation);
-		mat4 r = mat4::rotation(rotation);
-		mat4 s = mat4::scale(scale);
+		const mat4 t = mat4::translation(translation);
+		const mat4 r = mat4::rotation(rotation);
+		const mat4 s = mat4::scale(scale);
 
 		return t * r * s;
 	}
 
 	mat4 mat4::transform(const vec3 &translation, float rotationDeg) {
-		mat4 t = mat4::translation(translation);
-		mat4 r = mat4::rotation(rotationDeg, vec3::UnitZ());
+		const mat4 t = mat4::translation(translation);
+		const mat4 r = mat4::rotation(rotationDeg, vec3::UnitZ());
 
 		return t * r;
 	}

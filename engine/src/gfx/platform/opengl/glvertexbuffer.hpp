@@ -16,21 +16,21 @@ namespace xe { namespace internal {
 		~GLVertexBuffer() override;
 
 		void resize(uint size) override;
-		void setLayout(const BufferLayout &layout) override;
-		void setData(uint size, const void *data) override;
+		void setLayout(const BufferLayout &layout) const override;
+		void setData(uint size, const void *data) const override;
 
-		void releasePointer() override;
-		void *getPointer() override;
+		void releasePointer() const override;
+		void *getPointer() const override;
 
-		void bind() override;
-		void unbind() override;
+		void bind() const override;
+		void unbind() const override;
 
 	private:
 		uint handle;
 		uint size;
 
 		BufferUsage usage;
-		BufferLayout layout;
+		mutable BufferLayout layout;
 	};
 
 }}

@@ -15,30 +15,34 @@ namespace xe {
 
 	class ITransformable {
 	public:
-		inline ITransformable() :
+		inline explicit ITransformable(bool allowScale = true) :
 				transformation(mat4::identity()),
 				dirty(true),
+				allowScale(allowScale),
 				position(0.0f, 0.0f, 0.0f),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
 				scale(1.0f, 1.0f, 1.0f) { }
 
-		inline explicit ITransformable(const mat4 &transformation) :
+		inline explicit ITransformable(const mat4 &transformation, bool allowScale = true) :
 				transformation(transformation),
 				dirty(false),
+				allowScale(allowScale),
 				position(transformation.getTranslation()),
 				rotation(transformation.getRotation()),
 				scale(transformation.getScale()) { }
 
-		inline explicit ITransformable(const vec3 &translation) :
+		inline explicit ITransformable(const vec3 &translation, bool allowScale = true) :
 				transformation(mat4::identity()),
 				dirty(true),
+				allowScale(allowScale),
 				position(translation),
 				rotation(0.0f, 0.0f, 0.0f, 1.0f),
 				scale(1.0f, 1.0f, 1.0f) { }
 
-		inline explicit ITransformable(const quat &rotation) :
+		inline explicit ITransformable(const quat &rotation, bool allowScale = true) :
 				transformation(mat4::identity()),
 				dirty(true),
+				allowScale(allowScale),
 				position(0.0f, 0.0f, 0.0f),
 				rotation(rotation),
 				scale(1.0f, 1.0f, 1.0f) { }
@@ -46,6 +50,7 @@ namespace xe {
 		inline explicit ITransformable(const vec3 &translation, const quat &rotation, const vec3 &scale) :
 				transformation(mat4::identity()),
 				dirty(true),
+				allowScale(true),
 				position(translation),
 				rotation(rotation),
 				scale(scale) { }
@@ -105,6 +110,7 @@ namespace xe {
 		mutable mat4 transformation;
 		mutable bool dirty;
 
+		bool allowScale;
 		vec3 position;
 		quat rotation;
 		vec3 scale;
@@ -112,7 +118,12 @@ namespace xe {
 
 	inline const mat4 &ITransformable::toMatrix() const {
 		if (dirty) {
-			transformation = mat4::transform(position, rotation, scale);
+			if (allowScale) {
+				transformation = mat4::transform(position, rotation, scale);
+			} else {
+				transformation = mat4::translation(position) * mat4::rotation(rotation);
+			}
+
 			dirty = false;
 		}
 		return transformation;

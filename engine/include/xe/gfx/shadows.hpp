@@ -6,7 +6,9 @@
 #define X808_SHADOWS_HPP
 
 
-#include <xe/gfx/shadowmap.hpp>
+#include <xe/gfx/framebuffer.hpp>
+#include <xe/gfx/uniformbuffer.hpp>
+#include <xe/gfx/shader.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 namespace xe {
@@ -34,17 +36,20 @@ namespace xe {
 
 		void render(const Scene *scene);
 
-		const Texture *getSpotShadows(int32 id) const;
+		inline const Texture *getSpotShadows() const { return spotTexture; }
 
 	private:
-		void renderSpotShadows(const SpotLight *light, const Scene *scene);
-//		void renderDirectionalShadows(const DirectionLight *light, const Scene *scene);
+		void renderSpotShadows(const Scene *scene);
 
 	private:
 		ShadowParameters params;
 
-		uint spotShadowsIndex;
-		std::vector<std::pair<int32, ShadowMap *>> spotShadows;
+		int32 spotShadowsIndex;
+		FrameBuffer *spotBuffer;
+		UniformBuffer *spotUBO;
+		const Texture *spotDepthTexture;
+		const Texture *spotTexture;
+		const Shader *spotShader;
 	};
 
 }
