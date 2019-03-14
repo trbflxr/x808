@@ -11,21 +11,29 @@ namespace xe {
 
 	ShaderManager::ShaderManager() {
 		sources = spak::unpackShaders("pack001.pak");
-
-		createDefaultShaders();
 	}
 
 	ShaderManager::~ShaderManager() {
 		clean();
 	}
 
-	void ShaderManager::init() {
-		instance();
+	void ShaderManager::init(const Config &config) {
+		instance().setConstants(config);
+		instance().createDefaultShaders();
 	}
 
 	ShaderManager &ShaderManager::instance() {
 		static ShaderManager sm;
 		return sm;
+	}
+
+	void ShaderManager::setConstants(const Config &config) {
+		for (auto &&s : sources) {
+			replaceAll(s.second, "@MAX_PLIGHTS", "1");
+			replaceAll(s.second, "@MAX_SHADOWS_SPOT", std::to_string(config.maxSpotShadows));
+			replaceAll(s.second, "@MAX_SHADOWS_POINT", std::to_string(config.maxPointShadows));
+			replaceAll(s.second, "@MAX_DIR_CASCADES", std::to_string(config.maxDirectionalCascades));
+		}
 	}
 
 	bool ShaderManager::add(Shader *shader) {

@@ -6,10 +6,9 @@
 #define X808_SHADERMANAGER_HPP
 
 
-#include <unordered_map>
 #include <xe/gfx/shader.hpp>
 #include <xe/utils/noncopyable.hpp>
-#include <xe/string.hpp>
+#include <xe/config.hpp>
 
 namespace xe {
 
@@ -17,7 +16,7 @@ namespace xe {
 	public:
 		~ShaderManager() override;
 
-		static void init();
+		static void init(const Config &config);
 
 		static bool add(Shader *shader);
 		static const Shader *get(const string &name);
@@ -32,6 +31,8 @@ namespace xe {
 		ShaderManager();
 
 		static ShaderManager &instance();
+
+		void setConstants(const Config &config);
 
 		void createDefaultShaders();
 		void createGLShaders();

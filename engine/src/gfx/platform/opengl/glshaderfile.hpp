@@ -45,8 +45,6 @@ namespace xe { namespace internal {
 		void createFromSource(const string &src, const std::vector<string> &dep, const std::vector<string> &ext);
 		void createFromFile(const string &path, const std::vector<string> &dep, const std::vector<string> &ext);
 
-		void setDefaultConstants(string &source);
-
 	private:
 		ShaderType type;
 
