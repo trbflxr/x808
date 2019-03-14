@@ -72,3 +72,6 @@ Work in progress...
 
 Spot light shadows:
 ![specularmap](/_md/spotshadows.png)
+
+Directional light cascaded shadows:
+![specularmap](/_md/cascadedshadows.png)
