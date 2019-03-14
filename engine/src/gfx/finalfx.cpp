@@ -9,7 +9,7 @@
 namespace xe {
 
 
-	FinalFX::FinalFX(uint width, uint height, bool fxaa) :
+	FinalFX::FinalFX(uint width, uint height) :
 			RenderEffect(width, height) {
 		//fx final
 		finalShader = GETSHADER("dFinalFX");
@@ -30,21 +30,11 @@ namespace xe {
 
 		finalFBO = new FrameBuffer("finalFBO");
 		finalFBO->load({std::make_pair(Attachment::Color0, finalTexture)});
-
-		//send fxaa flag to shader
-		useFXAA(fxaa);
 	}
 
 	FinalFX::~FinalFX() {
 		delete finalFBO;
 		delete finalTexture;
-	}
-
-	void FinalFX::useFXAA(bool enabled) {
-		fxaa = enabled;
-		const int32 use = fxaa ? 1 : 0;
-
-		finalShader->setUniform("useFXAA", &use, sizeof(int32));
 	}
 
 	void FinalFX::render(const Quad *quad) const {

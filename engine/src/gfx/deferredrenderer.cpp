@@ -24,7 +24,7 @@ namespace xe {
 		shadows = new Shadows(sp);
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
-		final = new FinalFX(width, height, false);
+		final = new FinalFX(width, height);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {

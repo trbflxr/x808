@@ -4,8 +4,6 @@ in vec2 uv0;
 
 uniform sampler2D sampler0;
 
-uniform int useFXAA;
-
 vec3 tonemapFilmic(vec3 color) {
   vec3 x = max(vec3(0.0), color - 0.004);
   return (x * (6.2 * x + 0.5)) / (x * (6.2 * x + 1.7) + 0.06);
@@ -47,12 +45,7 @@ vec3 simpleHDR(vec3 color) {
 }
 
 void main() {
-  vec3 scene;
-  if (useFXAA > 0) {
-    scene = fxaa(sampler0, uv0);
-  } else {
-    scene = texture(sampler0, uv0).xyz;
-  }
+  vec3 scene = texture(sampler0, uv0).xyz;
 
   color = vec4(simpleHDR(scene), 1.0);
   // color = vec4(tonemapFilmic(scene), 1.0);

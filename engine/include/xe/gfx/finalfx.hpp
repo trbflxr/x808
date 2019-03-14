@@ -16,10 +16,8 @@ namespace xe {
 
 	class XE_API FinalFX : public RenderEffect {
 	public:
-		explicit FinalFX(uint width, uint height, bool fxaa = true);
+		explicit FinalFX(uint width, uint height);
 		~FinalFX() override;
-
-		void useFXAA(bool enabled);
 
 		void render(const Quad *quad) const;
 
@@ -32,8 +30,6 @@ namespace xe {
 		const Shader *finalShader;
 		FrameBuffer *finalFBO;
 		Texture *finalTexture;
-
-		bool fxaa;
 	};
 
 }

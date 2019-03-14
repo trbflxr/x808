@@ -143,11 +143,6 @@ void Test3D::renderImGui() {
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
 
-	static bool fxaa = false;
-	if (ImGui::Checkbox("FXAA", &fxaa)) {
-		renderer->useFXAA(fxaa);
-	}
-
 	static bool lightObjects = true;
 	if (ImGui::Checkbox("Light objects", &lightObjects)) {
 		renderer->enableLightObjects(lightObjects);

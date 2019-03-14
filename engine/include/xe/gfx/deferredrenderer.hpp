@@ -22,7 +22,6 @@ namespace xe {
 
 		void render(const Scene *scene) const;
 
-		inline void useFXAA(bool enabled) { final->useFXAA(enabled); }
 		inline void enableCullTest(bool enabled) { gBuffer->enableCullTest(enabled); }
 		inline void enableWireframe(bool enabled) { gBuffer->enableWireframe(enabled); }
 		inline void enableLightObjects(bool enabled) { gBuffer->enableLightObjects(enabled); }
