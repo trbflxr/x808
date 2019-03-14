@@ -24,7 +24,7 @@ namespace xe {
 		explicit GBuffer(uint width, uint height, DeferredRenderer *renderer);
 		~GBuffer() override;
 
-		void passGeometry(const Scene *scene, const Shadows *shadows) const;
+		void passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const;
 		void passLightAccumulation(const vec3 &ambient, const Quad *quad, const FrameBuffer *final) const;
 
 		inline uint getWidth() const { return width; }
@@ -56,6 +56,7 @@ namespace xe {
 		void passStencil(const Light *light) const;
 		void passSpotLight(const SpotLight *light, const Shadows *shadows) const;
 		void passPointLight(const PointLight *light) const;
+		void passDirectionalLight(const DirectionalLight *light, const Shadows *shadows, const Quad *quad) const;
 
 	private:
 		uint width;
@@ -76,6 +77,7 @@ namespace xe {
 		const Shader *accumulationShader;
 		const Shader *spotShader;
 		const Shader *pointShader;
+		const Shader *directionalShader;
 
 		const Texture *depthStencilTexture;
 		const Texture *diffuseTexture;

@@ -35,8 +35,8 @@ namespace xe {
 		inline const std::vector<PointLight *> &getPointLights() const { return pointLights; }
 		inline std::vector<PointLight *> &getPointLights() { return pointLights; }
 
-		inline const std::vector<DirectionalLight *> &getDirectionalLights() const { return directionalLights; }
-		inline std::vector<DirectionalLight *> &getDirectionalLights() { return directionalLights; }
+		inline void setDirectionalLight(DirectionalLight *light) { directionalLight = light; }
+		inline const DirectionalLight *getDirectionalLight() const { return directionalLight; }
 
 	private:
 		std::vector<Model *> models;
@@ -44,7 +44,7 @@ namespace xe {
 		std::vector<Light *> lights;
 		std::vector<SpotLight *> spotLights;
 		std::vector<PointLight *> pointLights;
-		std::vector<DirectionalLight *> directionalLights;
+		DirectionalLight *directionalLight;
 	};
 
 }

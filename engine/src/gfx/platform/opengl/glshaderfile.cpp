@@ -121,6 +121,7 @@ namespace xe { namespace internal {
 		replaceAll(source, "@MAX_PLIGHTS", "1");
 		replaceAll(source, "@MAX_SHADOWS_SPOT", std::to_string(Config::get().maxSpotShadows));
 		replaceAll(source, "@MAX_SHADOWS_POINT", std::to_string(Config::get().maxPointShadows));
+		replaceAll(source, "@MAX_DIR_CASCADES", std::to_string(Config::get().maxDirectionalCascades));
 	}
 
 	uint GLShaderFile::compile() {

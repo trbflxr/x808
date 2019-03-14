@@ -107,6 +107,13 @@ namespace xe {
 		}));
 
 
+		//render texture 2d array
+		shaders.emplace("dRenderTexture2DArray", new Shader("dRenderTexture2DArray", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["renderTexture2DArray_frag"])
+		}));
+
+
 		///----- gbuffer shaders -----///
 		//includes
 		const std::vector<string> geomInclude{sources["1_camera_ubo"],
@@ -118,6 +125,9 @@ namespace xe {
 
 		std::vector<string> lightingSpotInclude = lightingInclude;
 		lightingSpotInclude.push_back(sources["2_spotShadows_ubo"]);
+
+		std::vector<string> lightingDirInclude = lightingInclude;
+		lightingDirInclude.push_back(sources["4_dirShadows_ubo"]);
 
 		//gbuffer geometry shader
 		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
@@ -154,6 +164,13 @@ namespace xe {
 				                       {lightingInclude})
 		}));
 
+		//gbuffer directional light shader
+		shaders.emplace("dDirectionalLight", new Shader("dDirectionalLight", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["gbufferLightingDirectional_frag"],
+				                       {lightingDirInclude})
+		}));
+
 
 		//gbuffer light accumulation shader
 		shaders.emplace("dAccumulation", new Shader("dAccumulation", {
@@ -168,7 +185,15 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Vert, sources["shadow_vert"]),
 				ShaderFile::fromSource(ShaderType::Geom, sources["spotShadow_geom"],
 				                       {sources["2_spotShadows_ubo"], sources["culling_include"]}),
-				ShaderFile::fromSource(ShaderType::Frag, sources["spotShadow_frag"])
+				ShaderFile::fromSource(ShaderType::Frag, sources["shadow_frag"])
+		}));
+
+
+		//directional shadows
+		shaders.emplace("dDirectionalShadows", new Shader("dDirectionalShadows", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["shadow_vert"]),
+				ShaderFile::fromSource(ShaderType::Geom, sources["dirShadow_geom"], {sources["4_dirShadows_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Frag, sources["shadow_frag"])
 		}));
 
 

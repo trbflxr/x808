@@ -354,26 +354,22 @@ namespace xe {
 	mat4 mat4::lookAt(const vec3 &camera, const vec3 &object, const vec3 &up) {
 		mat4 m = mat4::identity();
 
-		vec3 vec31 = vec3::normalize(camera - object);
-		vec3 right = vec3::normalize(vec3::cross(up, vec31));
-		vec3 vec32 = vec3::normalize(vec3::cross(vec31, right));
+		const vec3 forward = vec3::normalize(camera - object);
+		const vec3 right = vec3::cross(vec3::normalize(up), forward);
+		const vec3 up_ = vec3::cross(forward, right);
 
 		m.rows[0].x = right.x;
-		m.rows[0].y = vec32.x;
-		m.rows[0].z = vec31.x;
-		m.rows[0].w = 0.0f;
 		m.rows[1].x = right.y;
-		m.rows[1].y = vec32.y;
-		m.rows[1].z = vec31.y;
-		m.rows[1].w = 0.0f;
 		m.rows[2].x = right.z;
-		m.rows[2].y = vec32.z;
-		m.rows[2].z = vec31.z;
-		m.rows[2].w = 0.0f;
-		m.rows[3].x = -(right.x * camera.x + right.y * camera.y + right.z * camera.z);
-		m.rows[3].y = -(vec32.x * camera.x + vec32.y * camera.y + vec32.z * camera.z);
-		m.rows[3].z = -(vec31.x * camera.x + vec31.y * camera.y + vec31.z * camera.z);
-		m.rows[3].w = 1.0f;
+		m.rows[0].y = up_.x;
+		m.rows[1].y = up_.y;
+		m.rows[2].y = up_.z;
+		m.rows[0].z = forward.x;
+		m.rows[1].z = forward.y;
+		m.rows[2].z = forward.z;
+		m.rows[0].w = camera.x;
+		m.rows[1].w = camera.y;
+		m.rows[2].w = camera.z;
 
 		return m;
 	}

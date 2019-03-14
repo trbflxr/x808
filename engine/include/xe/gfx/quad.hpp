@@ -25,16 +25,17 @@ namespace xe {
 		void renderFullQuad() const;
 		void renderFullQuadBlend() const;
 
-		void renderTexture(const Texture *texture, float size = 1.0f, int32 pos = 0, int32 channel = -1);
+		void renderTexture(const Texture *tex, float size = 1.0f, int32 pos = 0, int32 data = 0);
 
 	private:
-		void renderTexture(const Shader *shader, const Texture *texture, int32 channel, bool fullQuad);
+		void renderTexture(const Shader *shader, const Texture *tex, int32 data, bool fullQuad);
 
 	private:
 		VertexArray *vao;
 		IndexBuffer *ibo;
 
 		const Shader *renderTexture2D;
+		const Shader *renderTexture2DArray;
 	};
 
 }

@@ -19,9 +19,13 @@ namespace xe {
 			falloff(10.0f),
 			boundsMatrix(mat4::identity()) { }
 
+	Light::~Light() {
+		delete mesh;
+	}
+
 	///----- Spot Light -----///
-	SpotLight::SpotLight(const string &name, const Mesh *mesh) :
-			Light(name, LightType::Spot, mesh),
+	SpotLight::SpotLight(const string &name) :
+			Light(name, LightType::Spot, Mesh::spotLightMesh(name)),
 			spotAngle(60.0f / 2.0f),
 			spotBlur(0.3f) { }
 
@@ -43,8 +47,8 @@ namespace xe {
 
 
 	///----- Point Light -----///
-	PointLight::PointLight(const string &name, const Mesh *mesh) :
-			Light(name, LightType::Point, mesh) { }
+	PointLight::PointLight(const string &name) :
+			Light(name, LightType::Point, Mesh::pointLightMesh(name)) { }
 
 	void PointLight::update() const {
 		const float pointRadius = falloff;
@@ -54,17 +58,22 @@ namespace xe {
 	}
 
 
-	///----- Directiona lLight -----///
-	DirectionalLight::DirectionalLight(const string &name, bool shadow) :
-			Light(name, LightType::Directional, nullptr) {
+	///----- Directional Light -----///
+	DirectionalLight::DirectionalLight(const string &name, const std::vector<float> &splits) :
+			ITransformable(false),
+			shadowed(true),
+			splits(splits) {
 
-		falloff = 0.0f;
-		shadowed = shadow;
-		update();
+		projection.reserve(splits.size());
+		for (const auto &s : splits) {
+			projection.push_back(mat4::ortho(-s, s, -s, s, -500.0f, 500.0f));
+		}
 	}
 
 	void DirectionalLight::update() const {
-		toMatrix();
+		const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
+		const mat4 translation = mat4::translation(-getPosition());
+		view = rotation * translation;
 	}
 
 }

@@ -14,7 +14,7 @@ uniform float lightFalloff;
 uniform float lightSpotAngle;
 uniform float lightSpotBlur;
 
-uniform int shadowId;
+uniform int sid;
 
 void main() {
   vec2 resolution = textureSize(sampler0, 0);
@@ -29,12 +29,11 @@ void main() {
   vec4 tempSpecular;
 
   float shadowFactor = 1.0;
-  if (shadowId > -1) {
-    float compare = length(lightPosition - worldPosition);
-    vec4 suv = (spotShadows[shadowId].projection * spotShadows[shadowId].view * vec4(worldPosition, 1.0));
+  if (sid > -1) {
+    vec4 suv = spotShadows[sid].projection * spotShadows[sid].view * vec4(worldPosition, 1.0);
     vec2 suvw = (suv.xyz / suv.w).xy * 0.5 + 0.5;
-    float d = (spotShadows[shadowId].view * vec4(worldPosition, 1.0)).z;
-    shadowFactor = shadowContributionSpot(vec3(suvw, shadowId), d, sampler3);
+    float d = (spotShadows[sid].view * vec4(worldPosition, 1.0)).z;
+    shadowFactor = shadowContributionSpot(vec3(suvw, sid), d, sampler3);
   }
 
   calcLighting(worldPosition, normal, camPosition.xyz, lightPosition, lightColor, lightIntensity, lightFalloff,

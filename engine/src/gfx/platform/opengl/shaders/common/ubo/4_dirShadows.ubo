@@ -1,0 +1,10 @@
+const int MAX_DIR_CASCADES = @MAX_DIR_CASCADES;
+
+struct DirectionalShadowData {
+  mat4 view;
+  mat4 projection[MAX_DIR_CASCADES];
+};
+
+layout(std140, row_major) uniform DirectionalShadows {
+  DirectionalShadowData dirShadows;
+};

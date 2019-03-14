@@ -118,9 +118,35 @@ void calcLighting(vec3 worldPosition, vec3 worldNormal, vec3 camPosition, vec3 l
   float specularShininess = specularProperties.a;
 
   float gaussianTerm = cookTorranceSpecular(L, E, N, specularShininess, 0.9);
-  vec4 specular = vec4(lightColor * (lightIntensity / 10.0) * (gaussianTerm * maxInc) * specularColor, 1.0);
+  vec4 specular = vec4(lightColor * lightIntensity * (gaussianTerm * maxInc) * specularColor, 1.0);
 
-  //Out
+  // Out
   diffuseOut = diffuse * attenuation;
   specularOut = specular * attenuation;
+}
+
+void calcLightingDirectional(vec3 worldPosition, vec3 worldNormal, vec3 camPosition, vec3 lightDirection,
+                             vec3 lightColor, float lightIntensity, vec4 specularProperties, out vec3 diffuseOut,
+                             out vec4 specularOut) {
+  // Normal
+  vec3 N = normalize(worldNormal);
+  // View Direction
+  vec3 E = normalize(camPosition - worldPosition);
+  // Light direction
+  vec3 L = normalize(-lightDirection);
+
+  // Diffuse
+  vec3 diffuse = lightColor * lightIntensity;
+  diffuse *= orenNayarDiffuse(L, E, N, 0.1, 1.0);
+
+  // Specular
+  vec3 specularColor = specularProperties.xyz;
+  float specularShininess = specularProperties.a;
+
+  float gaussianTerm = cookTorranceSpecular(L, E, N, specularShininess, 0.9);
+  vec4 specular = vec4(lightColor * (lightIntensity / 2.0) * gaussianTerm * specularColor, 1.0);
+
+  // Out
+  diffuseOut = diffuse;
+  specularOut = specular;
 }

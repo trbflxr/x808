@@ -6,9 +6,8 @@
 
 namespace xe {
 
-	Scene::Scene() {
-
-	}
+	Scene::Scene() :
+			directionalLight(nullptr) { }
 
 	Scene::~Scene() {
 		for (const auto &m : models) {
@@ -18,6 +17,8 @@ namespace xe {
 		for (const auto &l : lights) {
 			delete l;
 		}
+
+		delete directionalLight;
 	}
 
 	void Scene::add(Model *model) {
@@ -35,11 +36,6 @@ namespace xe {
 
 			case LightType::Point: {
 				pointLights.push_back(dynamic_cast<PointLight *>(light));
-				break;
-			}
-
-			case LightType::Directional: {
-				directionalLights.push_back(dynamic_cast<DirectionalLight *>(light));
 				break;
 			}
 

@@ -9,18 +9,19 @@
 #include <xe/string.hpp>
 #include <xe/gfx/mesh.hpp>
 #include <xe/math/itransformable.hpp>
+#include <xe/utils/noncopyable.hpp>
 
 namespace xe {
 
 	enum class LightType {
 		Spot,
-		Point,
-		Directional
+		Point
 	};
 
-	class XE_API Light : public ITransformable {
+	class XE_API Light : public ITransformable, public NonCopyable {
 	public:
 		explicit Light(const string &name, LightType type, const Mesh *mesh);
+		~Light() override;
 
 		virtual void update() const = 0;
 
@@ -78,7 +79,8 @@ namespace xe {
 
 	class XE_API SpotLight : public Light {
 	public:
-		explicit SpotLight(const string &name, const Mesh *mesh);
+		explicit SpotLight(const string &name);
+		~SpotLight() override = default;
 
 		void update() const override;
 
@@ -116,17 +118,32 @@ namespace xe {
 
 	class XE_API  PointLight : public Light {
 	public:
-		explicit PointLight(const string &name, const Mesh *mesh);
+		explicit PointLight(const string &name);
+		~PointLight() override = default;
 
 		void update() const override;
 	};
 
 
-	class XE_API DirectionalLight : public Light {
+	class XE_API DirectionalLight : public ITransformable, public NonCopyable {
 	public:
-		explicit DirectionalLight(const string &name, bool shadow = true);
+		explicit DirectionalLight(const string &name, const std::vector<float> &splits);
+		~DirectionalLight() override = default;
 
-		void update() const override;
+		void update() const;
+
+		inline const string &getName() const { return name; }
+
+		inline bool isShadowed() const { return shadowed; }
+		inline void setShadowed(bool shadowed) { DirectionalLight::shadowed = shadowed; }
+
+		inline const vec3 &getColor() const { return color; }
+		inline void setColor(const vec3 &color) { DirectionalLight::color = color; }
+
+		inline float getIntensity() const { return intensity; }
+		inline void setIntensity(float intensity) { DirectionalLight::intensity = intensity; }
+
+		inline const std::vector<mat4> &getProjection() const { return projection; }
 
 		inline const mat4 &getView() const {
 			if (isDirty()) {
@@ -135,15 +152,16 @@ namespace xe {
 			return view;
 		}
 
-		inline const mat4 &getProjection() const {
-			if (isDirty()) {
-				update();
-			}
-			return projection;
-		}
-
 	private:
-		mutable mat4 projection;
+		string name;
+
+		bool shadowed;
+
+		vec3 color;
+		float intensity;
+
+		std::vector<float> splits;
+		std::vector<mat4> projection;
 		mutable mat4 view;
 	};
 }

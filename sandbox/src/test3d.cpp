@@ -16,7 +16,8 @@ Test3D::Test3D() {
 	camera = new Camera(mat4::perspective(60.0f, width / height, 0.1f, 1000.0f));
 	camera->setPosition({4.0f, 3.0f, 20.0f});
 
-	ShadowParameters sp;
+	ShadowParameters sp(app.getConfig());
+
 	renderer = new DeferredRenderer(width, height, camera, sp);
 	renderer->enableLightObjects(true);
 	renderer->enableLightBounds(true);
@@ -77,36 +78,41 @@ Test3D::Test3D() {
 	player = new DummyPlayer(camera);
 
 
-	sl = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
+	sl = new SpotLight("l0");
 	sl->setPosition({12, 11, 10.0});
 	sl->rotate(vec3::UnitX(), -45);
 	sl->rotate(vec3::UnitZ(), -10);
 	sl->setColor({1.0f, 0.9f, 0.8f});
-	sl->setSpotAngle(40.0f);
-	sl->setIntensity(15);
-	sl->setFalloff(20.0f);
+	sl->setSpotAngle(50.0f);
+	sl->setIntensity(1.5f);
+	sl->setFalloff(15.0f);
 	sl->setShadowed(true);
-	sl->setShadowId(1);
 	scene->add(sl);
 
-	SpotLight *sl1 = new SpotLight("l0", Mesh::spotLightMesh("l0_m"));
+	SpotLight *sl1 = new SpotLight("l0");
 	sl1->setPosition({-8, 8, 12.0});
 	sl1->rotate(vec3::UnitX(), -50);
 	sl1->rotate(vec3::UnitY(), -15);
 	sl1->setColor({0.3f, 0.6f, 0.8f});
 	sl1->setSpotAngle(40.0f);
-	sl1->setIntensity(15);
+	sl1->setIntensity(1.5f);
 	sl1->setFalloff(20.0f);
 	sl1->setShadowed(true);
-	sl1->setShadowId(0);
 	scene->add(sl1);
 
-	pl = new PointLight("l1", Mesh::pointLightMesh("l1_m"));
+	pl = new PointLight("l1");
 	pl->setPosition({-10, 2, 0});
 	pl->setColor({0.5f, 0.8f, 0.8f});
-	pl->setIntensity(4.0f);
+	pl->setIntensity(0.4f);
 	pl->setFalloff(10.0f);
 	scene->add(pl);
+
+	dl = new DirectionalLight("dl0", {15.0f, 30.0f, 100.0f});
+	dl->rotate(vec3::UnitX(), -60.0f);
+	dl->rotate(vec3::UnitY(), 90.0f);
+	dl->setColor({1.0f, 1.0f, 0.7f});
+	dl->setIntensity(0.15f);
+	scene->setDirectionalLight(dl);
 }
 
 Test3D::~Test3D() {
@@ -137,7 +143,7 @@ void Test3D::renderImGui() {
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
 
-	static bool fxaa = true;
+	static bool fxaa = false;
 	if (ImGui::Checkbox("FXAA", &fxaa)) {
 		renderer->useFXAA(fxaa);
 	}

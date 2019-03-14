@@ -73,20 +73,27 @@ namespace xe {
 
 	void GBuffer::createShaders() {
 		geometryShader = GETSHADER("dGeomShader");
-		stencilShader = GETSHADER("dStencil");
-		accumulationShader = GETSHADER("dAccumulation");
-		spotShader = GETSHADER("dSpotLight");
-		pointShader = GETSHADER("dPointLight");
-
 		geometryShader->bindUniformBlock("Camera", 1);
+
+		stencilShader = GETSHADER("dStencil");
 		stencilShader->bindUniformBlock("Camera", 1);
+
+		spotShader = GETSHADER("dSpotLight");
 		spotShader->bindUniformBlock("Camera", 1);
+		spotShader->bindUniformBlock("SpotShadows", 2);
+
+		pointShader = GETSHADER("dPointLight");
 		pointShader->bindUniformBlock("Camera", 1);
 
-		spotShader->bindUniformBlock("SpotShadows", 2);
+		directionalShader = GETSHADER("dDirectionalLight");
+		directionalShader->bindUniformBlock("Camera", 1);
+		directionalShader->bindUniformBlock("DirectionalShadows", 4);
+
+		accumulationShader = GETSHADER("dAccumulation");
 	}
 
-	void GBuffer::passGeometry(const Scene *scene, const Shadows *shadows) const {
+	void
+	GBuffer::passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const {
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -105,30 +112,31 @@ namespace xe {
 		passGeometryInternal(scene);
 
 		//accumulate lighting
-		Renderer::enableStencilTest(true);
 		Renderer::enableBlend(true);
 		Renderer::setBlendEquation(BlendEquation::Add);
 		Renderer::setBlendFunction(BlendFunction::One, BlendFunction::One);
+		Renderer::enableStencilTest(true);
 
-		for (const auto &light : scene->getLights()) {
-			switch (light->getType()) {
-				case LightType::Spot: {
-					passStencil(light);
-					passSpotLight(dynamic_cast<const SpotLight *>(light), shadows);
-					break;
-				}
-
-				case LightType::Point: {
-					passStencil(light);
-					passPointLight(dynamic_cast<const PointLight *>(light));
-					break;
-				}
-
-				default: break;
-			}
+		//spot
+		for (const auto &light : scene->getSpotLights()) {
+			passStencil(light);
+			passSpotLight(light, shadows);
 		}
 
+		//point
+		for (const auto &light : scene->getPointLights()) {
+			passStencil(light);
+			passPointLight(light);
+		}
+
+		//directional
 		Renderer::enableStencilTest(false);
+		const DirectionalLight *light = scene->getDirectionalLight();
+		if (light) {
+			passDirectionalLight(light, shadows, quad);
+		}
+
+		Renderer::enableCullFace(false);
 
 		gBuffer->unbind();
 	}
@@ -256,8 +264,8 @@ namespace xe {
 		spotShader->setUniform("lightSpotBlur", &spotBlur, sizeof(float));
 
 		//shadows
-		int32 shadowId = light->getShadowId();
-		spotShader->setUniform("shadowId", &shadowId, sizeof(int32));
+		int32 sid = light->getShadowId();
+		spotShader->setUniform("sid", &sid, sizeof(int32));
 
 		//render
 		renderer->renderLightBounds(spotShader, light);
@@ -309,6 +317,55 @@ namespace xe {
 		positionTexture->unbind(p);
 
 		pointShader->unbind();
+	}
+
+	void GBuffer::passDirectionalLight(const DirectionalLight *light, const Shadows *shadows, const Quad *quad) const {
+		const Texture *shadowTexture = shadows->getDirShadows();
+
+		static Attachment attachments[2] = {Attachment::Color6,
+		                                    Attachment::Color7};
+
+		gBuffer->bindDrawAttachments(attachments, 2);
+
+		Renderer::enableDepthTesting(false);
+		Renderer::enableDepthMask(false);
+		Renderer::enableCullFace(false);
+
+		directionalShader->bind();
+		const uint n = directionalShader->getSampler("sampler0");
+		const uint s = directionalShader->getSampler("sampler1");
+		const uint p = directionalShader->getSampler("sampler2");
+		const uint m = directionalShader->getSampler("sampler3");
+
+		normalTexture->bind(n);
+		specularTexture->bind(s);
+		positionTexture->bind(p);
+		shadowTexture->bind(m);
+
+		const vec3 &dir = light->getRotation().getForward();
+		const vec3 &color = light->getColor();
+		const float intensity = light->getIntensity();
+
+		//dir light uniforms
+		directionalShader->setUniform("lightDirection", &dir, sizeof(vec3));
+		directionalShader->setUniform("lightColor", &color, sizeof(vec3));
+		directionalShader->setUniform("lightIntensity", &intensity, sizeof(float));
+
+		//shadows
+		int32 enableShadows = light->isShadowed();
+		directionalShader->setUniform("enableShadows", &enableShadows, sizeof(int32));
+
+		directionalShader->updateUniforms();
+
+		//render
+		quad->render();
+
+		specularTexture->unbind(s);
+		normalTexture->unbind(n);
+		positionTexture->unbind(p);
+		shadowTexture->bind(m);
+
+		directionalShader->unbind();
 	}
 
 }

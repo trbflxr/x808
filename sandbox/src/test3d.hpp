@@ -43,6 +43,7 @@ private:
 	xe::Material *material1;
 	xe::SpotLight *sl;
 	xe::PointLight *pl;
+	xe::DirectionalLight *dl;
 
 	xe::DeferredRenderer *renderer;
 };

@@ -34,8 +34,7 @@ int main() {
 	config.fps = 0;
 	config.srgb = true;
 	config.renderApi = xe::RenderAPI::OpenGL;
-	config.apiVersion = 430;
-	config.maxPointLights2D = 50;
+	config.apiVersion = 330;
 
 	Editor editor(config);
 	editor.start();

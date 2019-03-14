@@ -24,7 +24,7 @@ namespace xe {
 		shadows = new Shadows(sp);
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
-		final = new FinalFX(width, height);
+		final = new FinalFX(width, height, false);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {
@@ -38,9 +38,9 @@ namespace xe {
 	void DeferredRenderer::render(const Scene *scene) const {
 		updateCamera();
 
-		shadows->render(scene);
+		shadows->render(scene, camera);
 
-		gBuffer->passGeometry(scene, shadows);
+		gBuffer->passDeferred(scene, shadows, quad);
 
 		gBuffer->passLightAccumulation(ambientLight, quad, final->getFinalFBO());
 
@@ -129,6 +129,8 @@ namespace xe {
 			shader->setUniform("enableDispTexture", &disabled, sizeof(int32));
 			shader->setUniform("enableParallaxTexture", &disabled, sizeof(int32));
 
+			shader->updateUniforms();
+
 			//set cull face for light object
 			if (light->getType() == LightType::Spot) {
 				Renderer::setCullFace(CullFace::Back);
@@ -137,7 +139,6 @@ namespace xe {
 			}
 
 			//render
-			shader->updateUniforms();
 			light->getMesh()->render(mode);
 
 			//display bounds

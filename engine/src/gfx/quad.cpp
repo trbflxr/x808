@@ -33,6 +33,7 @@ namespace xe {
 		ibo = new IndexBuffer(indices, 6);
 
 		renderTexture2D = GETSHADER("dRenderTexture2D");
+		renderTexture2DArray = GETSHADER("dRenderTexture2DArray");
 	}
 
 	Quad::~Quad() {
@@ -84,26 +85,28 @@ namespace xe {
 		Renderer::enableBlend(false);
 	}
 
-	void Quad::renderTexture(const Texture *texture, float size, int32 pos, int32 channel) {
+	void Quad::renderTexture(const Texture *tex, float size, int32 pos, int32 data) {
 		const float sizeX = width * size;
 		const float sizeY = height * size;
 
 		const float posX = width - sizeX;
 		const float posY = sizeY * pos;
 
-		const int32 c = static_cast<const int32>(math::clampf(channel, -1, 3));
-
 		Renderer::setViewport((uint) posX, (uint) posY, (uint) sizeX, (uint) sizeY);
 
-		if (texture->getTarget() == TextureTarget::Tex2D) {
-			renderTexture(renderTexture2D, texture, c, false);
+		if (tex->getTarget() == TextureTarget::Tex2D) {
+			const int32 c = static_cast<const int32>(math::clampf(data, -1, 3));
+			renderTexture(renderTexture2D, tex, c, false);
+		} else if (tex->getTarget() == TextureTarget::Tex2DArray) {
+			const uint l = static_cast<uint>(math::clampf(data, 0, tex->getDepth()));
+			renderTexture(renderTexture2DArray, tex, l, false);
 		}
 	}
 
-	void Quad::renderTexture(const Shader *shader, const Texture *texture, int32 channel, bool fullQuad) {
+	void Quad::renderTexture(const Shader *shader, const Texture *texture, int32 data, bool fullQuad) {
 		shader->bind();
 
-		shader->setUniform("channel", &channel, sizeof(int32));
+		shader->setUniform("data", &data, sizeof(int32));
 		shader->updateUniforms();
 
 		const uint slot = shader->getSampler("sampler0");

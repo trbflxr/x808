@@ -10,7 +10,7 @@ namespace xe {
 
 
 	FinalFX::FinalFX(uint width, uint height, bool fxaa) :
-	RenderEffect(width,height){
+			RenderEffect(width, height) {
 		//fx final
 		finalShader = GETSHADER("dFinalFX");
 		sampler0 = finalShader->getSampler("sampler0");
@@ -48,7 +48,6 @@ namespace xe {
 	}
 
 	void FinalFX::render(const Quad *quad) const {
-		Renderer::clear(RendererBufferColor);
 		Renderer::setViewport(0, 0, width, height);
 
 		finalShader->bind();

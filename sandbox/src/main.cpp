@@ -28,10 +28,12 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
 		config.renderApi = xe::stringToRenderApi(value);
 	} else if (strcmp(key, "apiVersion") == 0) {
 		config.apiVersion = (uint) atoi(value);
-	}else if (strcmp(key, "maxSpotShadows") == 0) {
+	} else if (strcmp(key, "maxSpotShadows") == 0) {
 		config.maxSpotShadows = (uint) atoi(value);
-	}else if (strcmp(key, "maxPointShadows") == 0) {
+	} else if (strcmp(key, "maxPointShadows") == 0) {
 		config.maxPointShadows = (uint) atoi(value);
+	} else if (strcmp(key, "maxDirectionalCascades") == 0) {
+		config.maxDirectionalCascades = (uint) atoi(value);
 	}
 }
 
