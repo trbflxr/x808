@@ -55,7 +55,7 @@ GBuffer:
 ![gbuffer](/_md/gbuffer.png)
 
 Light volumes:
-![lw](/_md/lights.png)
+![lw](/_md/lightvolumes.png)
 
 Wireframe:
 ![lw](/_md/wireframe.png)
