@@ -39,8 +39,8 @@ else ()
             "renderApi=ogl\n"
             "apiVersion=330\n"
             "maxSpotShadows=4\n"
-            "maxPointShadows=2\n"
-            "maxDirectionalCascades=3\n")
+            "maxDirectionalCascades=4\n"
+            "shadowQuality=3 //0-3\n")
 
     file(COPY xeconfig DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif ()

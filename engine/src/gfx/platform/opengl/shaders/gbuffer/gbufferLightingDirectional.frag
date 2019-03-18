@@ -11,6 +11,7 @@ uniform vec3 lightColor;
 uniform float lightIntensity;
 
 uniform int enableShadows;
+uniform vec2 shadowTexelSize;
 
 bool isInsideTexture(vec2 uv) { return !(uv.y < 0.0 || uv.y > 1.0 || uv.x < 0.0 || uv.x > 1.0); }
 
@@ -26,16 +27,20 @@ void main() {
   vec4 tempSpecular;
 
   float shadowFactor = 1.0;
+
+#if SHADOW_QUALITY > 0
   if (enableShadows > 0) {
-    float compare = (dirShadows.view * vec4(worldPosition, 1.0)).z;
+    vec4 viewPos = dirShadows.view * vec4(worldPosition, 1.0);
+    float compare = viewPos.z;
     for (int i = 0; i < MAX_DIR_CASCADES; ++i) {
-      vec2 suv = (dirShadows.projection[i] * dirShadows.view * vec4(worldPosition, 1.0)).xy * 0.5 + 0.5;
+      vec2 suv = (dirShadows.projection[i] * viewPos).xy * 0.5 + 0.5;
       if (isInsideTexture(suv)) {
-        shadowFactor = shadowContributionSpot(vec3(suv, i), compare, sampler3);
+        shadowFactor = calcShadow(sampler3, suv, i, compare, shadowTexelSize);
         break;
       }
     }
   }
+#endif
 
   calcLightingDirectional(worldPosition, normal, camPosition.xyz, lightDirection, lightColor, lightIntensity,
                           specularProperties, tempDiffuse, tempSpecular);

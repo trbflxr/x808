@@ -16,15 +16,15 @@ void main() {
     clipPositions[i] = dirShadows.projection[id] * viewPositions[i];
   }
 
-  // bool cull = frustumCullTest(clipPositions);
-  // if (cull) {
-  for (int i = 0; i < 3; ++i) {
-    g_viewPosition0 = viewPositions[i];
-    gl_Position = clipPositions[i];
-    gl_Layer = id0[i];
+  bool cull = frustumCullTest(clipPositions);
+  if (cull) {
+    for (int i = 0; i < 3; ++i) {
+      g_viewPosition0 = viewPositions[i];
+      gl_Position = clipPositions[i];
+      gl_Layer = id0[i];
 
-    EmitVertex();
+      EmitVertex();
+    }
+    EndPrimitive();
   }
-  EndPrimitive();
-  // }
 }

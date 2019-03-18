@@ -30,10 +30,10 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
 		config.apiVersion = (uint) atoi(value);
 	} else if (strcmp(key, "maxSpotShadows") == 0) {
 		config.maxSpotShadows = (uint) atoi(value);
-	} else if (strcmp(key, "maxPointShadows") == 0) {
-		config.maxPointShadows = (uint) atoi(value);
 	} else if (strcmp(key, "maxDirectionalCascades") == 0) {
 		config.maxDirectionalCascades = (uint) atoi(value);
+	} else if (strcmp(key, "shadowQuality") == 0) {
+		config.shadowQuality = (uint) atoi(value);
 	}
 }
 

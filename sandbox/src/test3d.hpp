@@ -11,7 +11,6 @@
 #include <xe/gfx/model.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/deferredrenderer.hpp>
-#include <xe/gfx/shadowmap.hpp>
 #include "dummyplayer.hpp"
 
 
@@ -35,6 +34,7 @@ private:
 	bool hook = false;
 	bool hook2 = false;
 	bool rock = false;
+	bool dlr = false;
 
 	xe::Scene *scene;
 

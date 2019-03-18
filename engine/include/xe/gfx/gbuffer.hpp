@@ -27,6 +27,8 @@ namespace xe {
 		void passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const;
 		void passLightAccumulation(const vec3 &ambient, const Quad *quad, const FrameBuffer *final) const;
 
+		void setShadowQuality(uint value);
+
 		inline uint getWidth() const { return width; }
 		inline uint getHeight() const { return height; }
 

@@ -38,7 +38,7 @@ namespace xe {
 		tp.pixelType = PixelType::Float;
 		tp.magFilter = TextureMagFilter::Linear;
 		tp.minFilter = TextureMinFilter::Linear;
-		tp.wrap = TextureWrap::Clamp;
+		tp.wrap = TextureWrap::ClampToEdge;
 
 		spotTexture = new Texture("ST", params.spotSize, params.spotSize, params.maxSpotCount, tp);
 		dirTexture = new Texture("DT", params.dirSize, params.dirSize, params.dirCascades, tp);
@@ -70,7 +70,7 @@ namespace xe {
 		for (uint i = 0; i < params.dirCascades; ++i) {
 			dl.push<mat4>("projection");
 		}
-		dirUBO = new UniformBuffer(BufferStorage::Dynamic, 4, dl);
+		dirUBO = new UniformBuffer(BufferStorage::Dynamic, 3, dl);
 
 	}
 
@@ -79,7 +79,7 @@ namespace xe {
 		spotShader->bindUniformBlock("SpotShadows", 2);
 
 		dirShader = GETSHADER("dDirectionalShadows");
-		dirShader->bindUniformBlock("DirectionalShadows", 4);
+		dirShader->bindUniformBlock("DirectionalShadows", 3);
 	}
 
 	void Shadows::render(const Scene *scene, const Camera *camera) {
@@ -113,7 +113,9 @@ namespace xe {
 		dirUBO->bind();
 		const std::vector<mat4> &projection = light->getProjection();
 
-		light->setPosition(camera->getPosition());
+		if (light->getPosition() != camera->getPosition()) {
+			light->setPosition(camera->getPosition());
+		}
 
 		dirUBO->update(&light->getView(), 0);
 		for (uint i = 0; i < projection.size(); ++i) {
@@ -150,4 +152,5 @@ namespace xe {
 
 		buffer->unbind();
 	}
+
 }

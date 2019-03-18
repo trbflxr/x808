@@ -31,8 +31,8 @@ namespace xe {
 		for (auto &&s : sources) {
 			replaceAll(s.second, "@MAX_PLIGHTS", "1");
 			replaceAll(s.second, "@MAX_SHADOWS_SPOT", std::to_string(config.maxSpotShadows));
-			replaceAll(s.second, "@MAX_SHADOWS_POINT", std::to_string(config.maxPointShadows));
 			replaceAll(s.second, "@MAX_DIR_CASCADES", std::to_string(config.maxDirectionalCascades));
+			replaceAll(s.second, "@SHADOW_QUALITY", std::to_string(config.shadowQuality));
 		}
 	}
 
@@ -135,7 +135,7 @@ namespace xe {
 		lightingSpotInclude.push_back(sources["2_spotShadows_ubo"]);
 
 		std::vector<string> lightingDirInclude = lightingInclude;
-		lightingDirInclude.push_back(sources["4_dirShadows_ubo"]);
+		lightingDirInclude.push_back(sources["3_dirShadows_ubo"]);
 
 		//gbuffer geometry shader
 		shaders.emplace("dGeomShader", new Shader("dGeomShader", {
@@ -200,7 +200,8 @@ namespace xe {
 		//directional shadows
 		shaders.emplace("dDirectionalShadows", new Shader("dDirectionalShadows", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["shadow_vert"]),
-				ShaderFile::fromSource(ShaderType::Geom, sources["dirShadow_geom"], {sources["4_dirShadows_ubo"]}),
+				ShaderFile::fromSource(ShaderType::Geom, sources["dirShadow_geom"],
+				                       {sources["3_dirShadows_ubo"], sources["culling_include"]}),
 				ShaderFile::fromSource(ShaderType::Frag, sources["shadow_frag"])
 		}));
 

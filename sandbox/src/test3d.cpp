@@ -16,7 +16,7 @@ Test3D::Test3D() {
 	camera = new Camera(mat4::perspective(60.0f, width / height, 0.1f, 1000.0f));
 	camera->setPosition({4.0f, 3.0f, 20.0f});
 
-	ShadowParameters sp(app.getConfig());
+	ShadowParameters sp(app.getConfig(), 512, 1024);
 
 	renderer = new DeferredRenderer(width, height, camera, sp);
 	renderer->enableLightObjects(true);
@@ -48,15 +48,25 @@ Test3D::Test3D() {
 
 	Model *monkey = new Model("tm0", "monkey3.obj");
 	monkey->setMaterial(material1);
-	monkey->setPosition({-5, 2, 5});
+	monkey->setPosition({-5, -7, 5});
 	scene->add(monkey);
 
 	Model *plane = new Model("tm0", "plane0.obj");
 	plane->setMaterial(material);
-	plane->setPosition({-10, 0, 0});
-//	plane->rotate(vec3::UnitY(), 180.0f);
-//	plane->rotate(vec3::UnitZ(), -45.0f);
+	plane->setPosition({0, -10, 0});
+	plane->rotate(vec3::UnitY(), 180.0f);
+//	plane->rotate(vec3::UnitZ(), 45.0f);
 	scene->add(plane);
+
+	Model *plane1 = new Model("tm0", "plane0.obj");
+	plane1->setMaterial(material);
+	plane1->setPosition({16.5f, -10, 0});
+	scene->add(plane1);
+
+	Model *plane2 = new Model("tm0", "plane0.obj");
+	plane2->setMaterial(material);
+	plane2->setPosition({33, -10, 0});
+	scene->add(plane2);
 
 	float step = 6.0f;
 	float z = -step;
@@ -84,10 +94,10 @@ Test3D::Test3D() {
 	sl->rotate(vec3::UnitZ(), -10);
 	sl->setColor({1.0f, 0.9f, 0.8f});
 	sl->setSpotAngle(50.0f);
-	sl->setIntensity(1.5f);
+	sl->setIntensity(8.0f);
 	sl->setFalloff(15.0f);
 	sl->setShadowed(true);
-	scene->add(sl);
+//	scene->add(sl);
 
 	SpotLight *sl1 = new SpotLight("l0");
 	sl1->setPosition({-8, 8, 12.0});
@@ -98,20 +108,20 @@ Test3D::Test3D() {
 	sl1->setIntensity(1.5f);
 	sl1->setFalloff(20.0f);
 	sl1->setShadowed(true);
-	scene->add(sl1);
+//	scene->add(sl1);
 
 	pl = new PointLight("l1");
 	pl->setPosition({-10, 2, 0});
 	pl->setColor({0.5f, 0.8f, 0.8f});
 	pl->setIntensity(0.4f);
 	pl->setFalloff(10.0f);
-	scene->add(pl);
+//	scene->add(pl);
 
-	dl = new DirectionalLight("dl0", {15.0f, 30.0f, 100.0f});
-	dl->rotate(vec3::UnitX(), -60.0f);
-	dl->rotate(vec3::UnitY(), 90.0f);
+	dl = new DirectionalLight("dl0", {15.0f, 30.0f, 50.0f, 100.0f});
+	dl->rotate(vec3::UnitX(), -90.0f);
+//	dl->rotate(vec3::UnitY(), 90.0f);
 	dl->setColor({1.0f, 1.0f, 0.7f});
-	dl->setIntensity(0.15f);
+	dl->setIntensity(5.0f);
 	scene->setDirectionalLight(dl);
 }
 
@@ -178,6 +188,12 @@ void Test3D::renderImGui() {
 	}
 
 	ImGui::PushItemWidth(-1.0f);
+	static int32 shadows = Config::get().shadowQuality;
+	ImGui::Text("Shadow quality");
+	if (ImGui::SliderInt("Q", &shadows, 0, 3)) {
+		renderer->setShadowQuality(shadows);
+	}
+
 	static float intensity = pl->getIntensity();
 	if (ImGui::SliderFloat("I", &intensity, 0.1f, 100.0f, "%.2f", 1.5f)) {
 		pl->setIntensity(intensity);
@@ -241,6 +257,10 @@ void Test3D::update(float delta) {
 	if (rock) {
 		model->setPosition(camera->getPosition());
 	}
+
+	if (dlr) {
+		dl->setRotation(camera->getRotation());
+	}
 }
 
 void Test3D::input(Event &event) {
@@ -255,6 +275,9 @@ void Test3D::input(Event &event) {
 		}
 		if (event.key.code == Keyboard::R) {
 			rock = !rock;
+		}
+		if (event.key.code == Keyboard::H) {
+			dlr = !dlr;
 		}
 	}
 }

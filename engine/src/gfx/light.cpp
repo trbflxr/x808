@@ -51,10 +51,7 @@ namespace xe {
 			Light(name, LightType::Point, Mesh::pointLightMesh(name)) { }
 
 	void PointLight::update() const {
-		const float pointRadius = falloff;
-		const vec3 scaler(pointRadius, pointRadius, pointRadius);
-
-		boundsMatrix = toMatrix() * mat4::scale(scaler);
+		boundsMatrix = toMatrix() * mat4::scale(vec3(falloff));
 	}
 
 

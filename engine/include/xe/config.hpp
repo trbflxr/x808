@@ -26,8 +26,8 @@ namespace xe {
 		uint apiVersion;
 
 		uint maxSpotShadows;
-		uint maxPointShadows;
 		uint maxDirectionalCascades;
+		uint shadowQuality;
 
 		Config() :
 				width(1),
@@ -40,8 +40,8 @@ namespace xe {
 				renderApi(RenderAPI::OpenGL),
 				apiVersion(330),
 				maxSpotShadows(1),
-				maxPointShadows(1),
-				maxDirectionalCascades(3) { }
+				maxDirectionalCascades(3),
+				shadowQuality(3) { }
 
 		static const Config &get() {
 			static Config cfg;

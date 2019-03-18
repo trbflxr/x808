@@ -19,6 +19,9 @@ namespace xe {
 
 		virtual ~RenderEffect() = default;
 
+		inline uint getWidth() const { return width; }
+		inline uint getHeight() const { return height; }
+
 		inline bool isEnabled() const { return enabled; }
 		inline void setEnabled(bool enabled) { RenderEffect::enabled = enabled; }
 		inline void toggle() { enabled = !enabled; }

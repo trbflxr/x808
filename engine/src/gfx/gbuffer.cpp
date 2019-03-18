@@ -87,13 +87,22 @@ namespace xe {
 
 		directionalShader = GETSHADER("dDirectionalLight");
 		directionalShader->bindUniformBlock("Camera", 1);
-		directionalShader->bindUniformBlock("DirectionalShadows", 4);
+		directionalShader->bindUniformBlock("DirectionalShadows", 3);
 
 		accumulationShader = GETSHADER("dAccumulation");
 	}
 
-	void
-	GBuffer::passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const {
+	void GBuffer::setShadowQuality(uint value) {
+//		spotShader->setSourceConstant(ShaderType::Frag, "@SHADOW_QUALITY", std::to_string(value));
+//		spotShader->bindUniformBlock("Camera", 1);
+//		spotShader->bindUniformBlock("SpotShadows", 2);
+
+//		directionalShader->setSourceConstant(ShaderType::Frag, "@SHADOW_QUALITY", std::to_string(value));
+//		directionalShader->bindUniformBlock("Camera", 1);
+//		directionalShader->bindUniformBlock("DirectionalShadows", 3);
+	}
+
+	void GBuffer::passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const {
 		static Attachment attachments[2] = {Attachment::Color6,
 		                                    Attachment::Color7};
 
@@ -265,7 +274,10 @@ namespace xe {
 
 		//shadows
 		int32 sid = light->getShadowId();
+		const vec2 texel = vec2(1.0f / shadowTexture->getWidth());
+
 		spotShader->setUniform("sid", &sid, sizeof(int32));
+		spotShader->setUniform("shadowTexelSize", &texel, sizeof(vec2));
 
 		//render
 		renderer->renderLightBounds(spotShader, light);
@@ -353,7 +365,10 @@ namespace xe {
 
 		//shadows
 		int32 enableShadows = light->isShadowed();
+		const vec2 texel = vec2(1.0f / shadowTexture->getWidth());
+
 		directionalShader->setUniform("enableShadows", &enableShadows, sizeof(int32));
+		directionalShader->setUniform("shadowTexelSize", &texel, sizeof(vec2));
 
 		directionalShader->updateUniforms();
 

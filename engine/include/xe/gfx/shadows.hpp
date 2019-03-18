@@ -7,10 +7,9 @@
 
 
 #include <xe/config.hpp>
-#include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/uniformbuffer.hpp>
+#include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/shader.hpp>
-#include <xe/utils/noncopyable.hpp>
 
 namespace xe {
 
@@ -23,7 +22,9 @@ namespace xe {
 		uint dirSize;
 		uint dirCascades;
 
-		explicit ShadowParameters(const Config &config, uint spotSize = 512, uint dirSize = 512) :
+		explicit ShadowParameters(const Config &config,
+		                          uint spotSize = 512,
+		                          uint dirSize = 1024) :
 				spotSize(spotSize),
 				maxSpotCount(config.maxSpotShadows),
 				dirSize(dirSize),
@@ -53,6 +54,7 @@ namespace xe {
 	private:
 		ShadowParameters params;
 
+		//spot shadows
 		int32 spotShadowsIndex;
 		FrameBuffer *spotBuffer;
 		UniformBuffer *spotUBO;
@@ -60,6 +62,7 @@ namespace xe {
 		const Texture *spotTexture;
 		const Shader *spotShader;
 
+		//directional shadows
 		FrameBuffer *dirBuffer;
 		UniformBuffer *dirUBO;
 		const Texture *dirDepthTexture;

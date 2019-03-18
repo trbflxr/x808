@@ -64,14 +64,17 @@ Specular map:
 ![specularmap](/_md/specular.png)
 
 Normal map:
-![specularmap](/_md/normals.png)
+![normals](/_md/normals.png)
 
 ### Shadows
 
 Work in progress...
 
 Spot light shadows:
-![specularmap](/_md/spotshadows.png)
+![spotshadows](/_md/spotshadows.png)
 
 Directional light cascaded shadows:
-![specularmap](/_md/cascadedshadows.png)
+![cascadedshadows](/_md/cascadedshadows.png)
+
+PCF soft shadows:
+![softshadows](/_md/softshadows.png)
