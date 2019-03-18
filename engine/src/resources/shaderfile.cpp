@@ -11,8 +11,7 @@ namespace xe {
 
 	ShaderFile *ShaderFile::fromPreparedSource(ShaderType type, const string &source) {
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL :
-				return new internal::GLShaderFile(type, source);
+			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, source);
 
 			default: return nullptr;
 		}
@@ -23,8 +22,7 @@ namespace xe {
 	                                   const std::vector<string> &extensions) {
 
 		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL :
-				return new internal::GLShaderFile(type, source, dependenciesSource, extensions);
+			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, source, dependenciesSource, extensions);
 
 			default: return nullptr;
 		}
@@ -38,6 +36,16 @@ namespace xe {
 			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, path, dependencies, extensions, false);
 
 			default: return nullptr;
+		}
+	}
+
+	void ShaderFile::parseConstants(const string &source, ShaderConstantVec &constants) {
+		const char *token;
+		const char *sourcePtr = source.c_str();
+
+		while ((token = findChar(sourcePtr, '@'))) {
+			ShaderConstant c = {'@' + getWord(token + 1, &sourcePtr), "EMPTY"};
+			constants.push_back(c);
 		}
 	}
 

@@ -3,10 +3,13 @@
 //
 
 #include <GL/glew.h>
+#include <xe/utils/assert.hpp>
+#include <xe/resources/shadermanager.hpp>
 #include "glbaseshader.hpp"
+#include "glshaderfile.hpp"
 #include "glcommon.hpp"
 #include "glshadersampler.hpp"
-#include <xe/utils/assert.hpp>
+#include "glenums.hpp"
 
 namespace xe { namespace internal {
 
@@ -20,15 +23,20 @@ namespace xe { namespace internal {
 
 		for (const auto &s : shaderPipeline) {
 			ShaderType type = s->getType();
-			sources.emplace(type, s->getRawSource());
+			sources.emplace(type, s->getSource());
 
-			shaders[type] = s->compile();
+			GLShaderFile::parseConstants(s->getSource(), constants[type]);
+
+			string src = s->getSource();
+			ShaderManager::setConstants(src, constants[type]);
+
+			shaders[type] = compile(src, type);
 			if (!shaders[type]) {
 				glCall(glDeleteProgram(handle));
 				XE_CORE_FATAL("[GLBaseShader]: shader name: '", name, "'");
 				XE_ASSERT(false);
 			}
-			s->parse(uniformBuffers, samplers, structs);
+			GLShaderFile::parse(src, uniformBuffers, samplers, structs);
 
 			glCall(glAttachShader(handle, shaders[type]));
 		}
@@ -59,19 +67,61 @@ namespace xe { namespace internal {
 		glCall(glDeleteProgram(handle));
 	}
 
-	void GLBaseShader::setSourceConstant(ShaderType type, const string &valueName, const string &value) const {
-		auto &&it = sources.find(type);
-		if (it == sources.end()) {
+	uint GLBaseShader::compile(const string &source, ShaderType type) const {
+		glCall(uint id = glCreateShader(shaderTypeToGL(type)));
+
+		const char *sourcePtr = source.c_str();
+
+		glCall(glShaderSource(id, 1, &sourcePtr, nullptr));
+		glCall(glCompileShader(id));
+
+		GLint result;
+		glCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
+		if (result == GL_FALSE) {
+			GLint length;
+			glCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
+
+			std::vector<char> error(static_cast<uint>(length));
+			glCall(glGetShaderInfoLog(id, length, &length, &error[0]));
+
+			string errorMessage(&error[0]);
+
+			XE_CORE_FATAL("[GLShaderFile]: Failed to compile ", ShaderFile::typeToString(type), " shader.");
+			XE_CORE_FATAL("[GLShaderFile]: ", errorMessage);
+
+			glCall(glDeleteShader(id));
+			return 0;
+		}
+
+		return id;
+	}
+
+	void GLBaseShader::setSourceConstant(ShaderType type, const string &valueName, const string &value) {
+		auto &&it = constants.find(type);
+		if (it == constants.end()) {
 			XE_CORE_ERROR("[GLBaseShader]: '", name, "' doesn't have ", shaderTypeToString(type), " attachment!");
 			return;
 		}
 
-		string src = it->second;
-		replaceAll(src, valueName, value);
+		string src = sources.find(type)->second;
 
-		ShaderFile *sf = ShaderFile::fromPreparedSource(type, src);
+		bool found = false;
+		for (auto &&c : it->second) {
+			if (c.name == valueName) {
+				c.value = value;
+				found = true;
+			}
 
-		uint id = sf->compile();
+			replaceAll(src, c.name, c.value);
+		}
+
+		if (!found) {
+			XE_CORE_ERROR("[GLBaseShader]: '", name, "' doesn't have constant ", valueName, "!");
+			return;
+		}
+
+
+		uint id = compile(src, type);
 		if (!id) {
 			XE_CORE_ERROR("[GLBaseShader]: failed to set constant '", valueName, "' to shader '", name, "'");
 			return;
@@ -90,7 +140,7 @@ namespace xe { namespace internal {
 			glCall(glDetachShader(handle, s.second));
 		}
 
-		delete sf;
+		resolveUniforms();
 	}
 
 	void GLBaseShader::bind() const {
@@ -215,6 +265,18 @@ namespace xe { namespace internal {
 		return result;
 	}
 
+	const ShaderConstantVec &GLBaseShader::getConstants(ShaderType type) const {
+		static ShaderConstantVec empty;
+
+		auto &&it = constants.find(type);
+		if (it == constants.end()) {
+			XE_CORE_ERROR("[GLBaseShader]: '", name, "' doesn't have ", shaderTypeToString(type), " attachment!");
+			return empty;
+		}
+
+		return it->second;
+	}
+
 	void GLBaseShader::resolveAndSetUniforms(ShaderUniformBuffer *buffer, byte *data, uint size) const {
 		const ShaderUniformVec &uniforms = buffer->getUniforms();
 		for (auto &&uniform : uniforms) {
@@ -222,8 +284,7 @@ namespace xe { namespace internal {
 		}
 	}
 
-	void
-	GLBaseShader::resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size) const {
+	void GLBaseShader::resolveAndSetUniform(GLShaderUniform *uniform, byte *data, uint size) const {
 		if (uniform->getLocation() == -1) return;
 
 		uint offset = uniform->getOffset();
@@ -250,8 +311,7 @@ namespace xe { namespace internal {
 		}
 	}
 
-	void
-	GLBaseShader::setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset) const {
+	void GLBaseShader::setUniformStruct(const GLShaderUniform *uniform, byte *data, int32 offset) const {
 		const ShaderStruct &s = uniform->getShaderUniformStruct();
 		const auto &fields = s.getFields();
 

@@ -93,13 +93,15 @@ namespace xe {
 	}
 
 	void GBuffer::setShadowQuality(uint value) {
-//		spotShader->setSourceConstant(ShaderType::Frag, "@SHADOW_QUALITY", std::to_string(value));
-//		spotShader->bindUniformBlock("Camera", 1);
-//		spotShader->bindUniformBlock("SpotShadows", 2);
+		const_cast<Shader *>(spotShader)->setSourceConstant(ShaderType::Frag,
+		                                                    "@SHADOW_QUALITY", std::to_string(value));
+		spotShader->bindUniformBlock("Camera", 1);
+		spotShader->bindUniformBlock("SpotShadows", 2);
 
-//		directionalShader->setSourceConstant(ShaderType::Frag, "@SHADOW_QUALITY", std::to_string(value));
-//		directionalShader->bindUniformBlock("Camera", 1);
-//		directionalShader->bindUniformBlock("DirectionalShadows", 3);
+		const_cast<Shader *>(directionalShader)->setSourceConstant(ShaderType::Frag,
+		                                                           "@SHADOW_QUALITY", std::to_string(value));
+		directionalShader->bindUniformBlock("Camera", 1);
+		directionalShader->bindUniformBlock("DirectionalShadows", 3);
 	}
 
 	void GBuffer::passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const {

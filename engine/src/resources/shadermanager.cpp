@@ -2,10 +2,11 @@
 // Created by FLXR on 7/22/2018.
 //
 
+#include <xe/resources/shadermanager.hpp>
 #include <xetools/spak.hpp>
 #include <xe/utils/logger.hpp>
 #include <xe/gfx/context.hpp>
-#include <xe/resources/shadermanager.hpp>
+#include <xe/config.hpp>
 
 namespace xe {
 
@@ -17,23 +18,13 @@ namespace xe {
 		clean();
 	}
 
-	void ShaderManager::init(const Config &config) {
-		instance().setConstants(config);
+	void ShaderManager::init() {
 		instance().createDefaultShaders();
 	}
 
 	ShaderManager &ShaderManager::instance() {
 		static ShaderManager sm;
 		return sm;
-	}
-
-	void ShaderManager::setConstants(const Config &config) {
-		for (auto &&s : sources) {
-			replaceAll(s.second, "@MAX_PLIGHTS", "1");
-			replaceAll(s.second, "@MAX_SHADOWS_SPOT", std::to_string(config.maxSpotShadows));
-			replaceAll(s.second, "@MAX_DIR_CASCADES", std::to_string(config.maxDirectionalCascades));
-			replaceAll(s.second, "@SHADOW_QUALITY", std::to_string(config.shadowQuality));
-		}
 	}
 
 	bool ShaderManager::add(Shader *shader) {
@@ -212,6 +203,24 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["final_frag"],
 				                       {sources["fxaa_include"]})
 		}));
+	}
+
+	void ShaderManager::setConstants(string &source, ShaderConstantVec &constants) {
+		for (auto &&c : constants) {
+			if (c.name == "@MAX_PLIGHTS") {
+				c.value = "1";
+				replaceAll(source, c.name, c.value);
+			} else if (c.name == "@MAX_SHADOWS_SPOT") {
+				c.value = std::to_string(Config::get().maxSpotShadows);
+				replaceAll(source, c.name, c.value);
+			} else if (c.name == "@MAX_DIR_CASCADES") {
+				c.value = std::to_string(Config::get().maxDirectionalCascades);
+				replaceAll(source, c.name, c.value);
+			} else if (c.name == "@SHADOW_QUALITY") {
+				c.value = std::to_string(Config::get().shadowQuality);
+				replaceAll(source, c.name, c.value);
+			}
+		}
 	}
 
 }

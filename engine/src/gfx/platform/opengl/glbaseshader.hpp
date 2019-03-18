@@ -18,7 +18,7 @@ namespace xe { namespace internal {
 		explicit GLBaseShader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
 		~GLBaseShader() override;
 
-		void setSourceConstant(ShaderType type, const string &valueName, const string &value) const override;
+		void setSourceConstant(ShaderType type, const string &valueName, const string &value) override;
 
 		void bind() const override;
 		void unbind() const override;
@@ -29,11 +29,13 @@ namespace xe { namespace internal {
 
 		inline const ShaderUniformBufferVec &getUniforms() const override { return uniformBuffers; }
 		inline const ShaderSamplerVec &getSamplers() const override { return samplers; }
+		inline const ShaderConstantVec &getConstants(ShaderType type) const override;
 		inline const string &getName() const override { return name; }
 		inline uint getHandle() const override { return handle; }
-		inline const std::unordered_map<ShaderType, string> &getSources() const override { return sources; }
 
 	private:
+		uint compile(const string &source, ShaderType type) const;
+
 		void resolveUniforms();
 		uint getUniformLocation(const string &name, bool runTime = true) const;
 
@@ -69,7 +71,8 @@ namespace xe { namespace internal {
 		string name;
 		uint handle;
 		std::unordered_map<ShaderType, string> sources;
-		mutable std::unordered_map<ShaderType, uint> shaders;
+		std::unordered_map<ShaderType, ShaderConstantVec> constants;
+		std::unordered_map<ShaderType, uint> shaders;
 
 		ShaderUniformBufferVec uniformBuffers;
 		ShaderSamplerVec samplers;

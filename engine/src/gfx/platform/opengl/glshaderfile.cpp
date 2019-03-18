@@ -2,10 +2,8 @@
 // Created by FLXR on 8/6/2018.
 //
 
-#include <GL/glew.h>
 #include <xe/gfx/context.hpp>
 #include <xe/string.hpp>
-#include <xe/config.hpp>
 #include <xe/loaders/shaderloader.hpp>
 #include <xe/utils/assert.hpp>
 #include "glshaderfile.hpp"
@@ -18,10 +16,7 @@ namespace xe { namespace internal {
 
 	GLShaderFile::GLShaderFile(ShaderType type, const string &source) :
 			type(type),
-			source(source) {
-
-		rawSource = source;
-	}
+			source(source) { }
 
 	GLShaderFile::GLShaderFile(ShaderType type, const string &source,
 	                           const std::vector<string> &dependenciesSource,
@@ -50,7 +45,6 @@ namespace xe { namespace internal {
 		shaderSource << src;
 
 		source = shaderSource.str();
-		rawSource = source;
 	}
 
 	void GLShaderFile::createFromFile(const string &path,
@@ -75,7 +69,6 @@ namespace xe { namespace internal {
 		shaderSource << src;
 
 		source = shaderSource.str();
-		rawSource = source;
 	}
 
 	void GLShaderFile::appendConstants(std::stringstream &stream) {
@@ -111,45 +104,8 @@ namespace xe { namespace internal {
 		}
 	}
 
-	uint GLShaderFile::compile() {
-		glCall(uint id = glCreateShader(shaderTypeToGL(type)));
-
-		const char *sourcePtr = source.c_str();
-
-		glCall(glShaderSource(id, 1, &sourcePtr, nullptr));
-		glCall(glCompileShader(id));
-
-		GLint result;
-		glCall(glGetShaderiv(id, GL_COMPILE_STATUS, &result));
-		if (result == GL_FALSE) {
-			GLint length;
-			glCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length));
-
-			std::vector<char> error(static_cast<uint>(length));
-			glCall(glGetShaderInfoLog(id, length, &length, &error[0]));
-
-			string errorMessage(&error[0]);
-			string line;
-
-			//get error line
-			for (uint i = 2; i < error.size(); ++i) {
-				if (error[i] == ')') break;
-				line += error[i];
-			}
-			uint lineNumber = std::stoul(line) - addedLines;
-
-			XE_CORE_FATAL("[GLShaderFile]: Failed to compile ", typeToString(type), " shader.");
-			XE_CORE_FATAL("[GLShaderFile]: Line: ", lineNumber);
-			XE_CORE_FATAL("[GLShaderFile]: ", errorMessage);
-
-			glCall(glDeleteShader(id));
-			return 0;
-		}
-
-		return id;
-	}
-
-	void GLShaderFile::parse(ShaderUniformBufferVec &buffers,
+	void GLShaderFile::parse(const string &source,
+	                         ShaderUniformBufferVec &buffers,
 	                         ShaderSamplerVec &samplers,
 	                         ShaderStructVec &structs) {
 

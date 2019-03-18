@@ -16,9 +16,12 @@ namespace xe {
 
 	const char XE_API *findToken(const char *str, const string &token);
 	const char XE_API *findToken(const string &str, const string &token);
+	const char XE_API *findChar(const char *str, char ch);
 
 	string XE_API getBlock(const char *str, const char **outPosition = nullptr);
 	string XE_API getBlock(const string &str, uint offset = 0);
+
+	string XE_API getWord(const char *str, const char **outPosition = nullptr);
 
 	string XE_API getFileName(const string &str, bool includeExt = true);
 	string XE_API getFileExt(const string &str);

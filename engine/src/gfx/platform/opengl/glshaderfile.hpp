@@ -22,20 +22,18 @@ namespace xe { namespace internal {
 
 		inline ShaderType getType() const override { return type; }
 		inline const string &getSource() const override { return source; }
-		inline const string &getRawSource() const override { return rawSource; }
 
-		uint compile() override;
-
-		void parse(ShaderUniformBufferVec &buffers,
-		           ShaderSamplerVec &samplers,
-		           ShaderStructVec &structs) override;
-
-		void parseUniform(const string &statement,
+		static void parse(const string &source,
 		                  ShaderUniformBufferVec &buffers,
 		                  ShaderSamplerVec &samplers,
-		                  ShaderStructVec &structs) override;
+		                  ShaderStructVec &structs);
 
-		void parseUniformStruct(const string &block, ShaderStructVec &structs) override;
+		static void parseUniform(const string &statement,
+		                         ShaderUniformBufferVec &buffers,
+		                         ShaderSamplerVec &samplers,
+		                         ShaderStructVec &structs);
+
+		static void parseUniformStruct(const string &block, ShaderStructVec &structs);
 
 	private:
 		void appendConstants(std::stringstream &stream);
@@ -49,8 +47,6 @@ namespace xe { namespace internal {
 		ShaderType type;
 
 		string source;
-		string rawSource;
-		uint addedLines;
 	};
 
 }}

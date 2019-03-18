@@ -8,7 +8,6 @@
 
 #include <xe/gfx/shader.hpp>
 #include <xe/utils/noncopyable.hpp>
-#include <xe/config.hpp>
 
 namespace xe {
 
@@ -16,7 +15,7 @@ namespace xe {
 	public:
 		~ShaderManager() override;
 
-		static void init(const Config &config);
+		static void init();
 
 		static bool add(Shader *shader);
 		static const Shader *get(const string &name);
@@ -27,12 +26,12 @@ namespace xe {
 		static const std::unordered_map<string, const Shader *> &getShaders() { return instance().shaders; }
 		static const std::unordered_map<string, string> &getSources() { return instance().sources; }
 
+		static void setConstants(string &source, ShaderConstantVec &constants);
+
 	private:
 		ShaderManager();
 
 		static ShaderManager &instance();
-
-		void setConstants(const Config &config);
 
 		void createDefaultShaders();
 		void createGLShaders();

@@ -12,6 +12,7 @@
 #include <xe/gfx/enums.hpp>
 #include <xe/gfx/shaderuniform.hpp>
 #include <xe/gfx/shadersampler.hpp>
+#include <xe/gfx/shaderconstant.hpp>
 #include <xe/string.hpp>
 
 namespace xe {
@@ -22,20 +23,8 @@ namespace xe {
 
 		virtual ShaderType getType() const = 0;
 		virtual const string &getSource() const = 0;
-		virtual const string &getRawSource() const = 0;
 
-		virtual uint compile() = 0;
-
-		virtual void parse(ShaderUniformBufferVec &buffers,
-		                   ShaderSamplerVec &samplers,
-		                   ShaderStructVec &structs) = 0;
-
-		virtual void parseUniform(const string &statement,
-		                          ShaderUniformBufferVec &buffers,
-		                          ShaderSamplerVec &samplers,
-		                          ShaderStructVec &structs) = 0;
-
-		virtual void parseUniformStruct(const string &block, ShaderStructVec &structs) = 0;
+		static void parseConstants(const string &source, ShaderConstantVec &constants);
 
 		static ShaderFile *fromPreparedSource(ShaderType type, const string &source);
 

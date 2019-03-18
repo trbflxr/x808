@@ -52,7 +52,7 @@ namespace xe {
 		window.setFramerateLimit(config.fps);
 		window.setVerticalSyncEnabled(config.vSync);
 
-		ShaderManager::init(config);
+		ShaderManager::init();
 		FontManager::init();
 		TextureManager::init();
 

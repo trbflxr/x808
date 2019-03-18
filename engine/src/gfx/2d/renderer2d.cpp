@@ -66,7 +66,7 @@ namespace xe {
 
 		maxLights = lights;
 
-		shader->setSourceConstant(ShaderType::Frag, "@MAX_PLIGHTS", std::to_string(maxLights));
+		const_cast<Shader *>(shader)->setSourceConstant(ShaderType::Frag, "@MAX_PLIGHTS", std::to_string(maxLights));
 
 		//set back ambient
 		setAmbientLight(ambient);

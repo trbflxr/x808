@@ -41,7 +41,7 @@ namespace xe {
 		delete base;
 	}
 
-	void Shader::setSourceConstant(ShaderType type, const string &valueName, const string &value) const {
+	void Shader::setSourceConstant(ShaderType type, const string &valueName, const string &value) {
 		base->setSourceConstant(type, valueName, value);
 	}
 
@@ -111,12 +111,12 @@ namespace xe {
 		return base->getSamplers();
 	}
 
-	const ShaderUniformBufferVec &Shader::getUniforms() const {
-		return base->getUniforms();
+	const ShaderConstantVec &Shader::getConstants(ShaderType type) const {
+		return base->getConstants(type);
 	}
 
-	const std::unordered_map<ShaderType, string> &Shader::getSources() const {
-		return base->getSources();
+	const ShaderUniformBufferVec &Shader::getUniforms() const {
+		return base->getUniforms();
 	}
 
 }

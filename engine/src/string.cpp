@@ -32,6 +32,10 @@ namespace xe {
 		return findToken(str.data(), token);
 	}
 
+	const char *findChar(const char *str, char ch) {
+		return strchr(str, ch);
+	}
+
 	string getBlock(const char *str, const char **outPosition) {
 		const char *end = strstr(str, "}");
 		if (!end) return string(str);
@@ -45,6 +49,29 @@ namespace xe {
 	string getBlock(const string &str, uint offset) {
 		const char *s = str.data() + offset;
 		return getBlock(s);
+	}
+
+	string getWord(const char *str, const char **outPosition) {
+		size_t length = strlen(str);
+
+		string res = str;
+
+		for (size_t i = 0; i < length; ++i) {
+			if (str[i] == 95) continue; //underscore
+			if (str[i] < 48 || str[i] > 57) { //numbers
+				if (str[i] < 65 || str[i] > 90) { //cap letters
+					if (str[i] < 97 || str[i] > 122) { //letters
+						res = string(str, i);
+
+						if (outPosition) *outPosition = str + i;
+
+						break;
+					}
+				}
+			}
+		}
+
+		return res;
 	}
 
 	string getFileName(const string &str, bool includeExt) {
@@ -72,7 +99,7 @@ namespace xe {
 
 	string getFileExt(const string &str) {
 		const char *dot = strrchr(str.c_str(), '.');
-		if(!dot || dot == str) return "";
+		if (!dot || dot == str) return "";
 		return string(dot + 1);
 	}
 
