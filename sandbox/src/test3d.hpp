@@ -39,8 +39,14 @@ private:
 	xe::Scene *scene;
 
 	xe::Model *model;
+
 	xe::Material *material;
 	xe::Material *material1;
+	xe::Material *parallax;
+	xe::Material *disp;
+	xe::Material *bricks;
+	xe::Material *pebble;
+
 	xe::SpotLight *sl;
 	xe::PointLight *pl;
 	xe::DirectionalLight *dl;

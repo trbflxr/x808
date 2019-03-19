@@ -28,19 +28,57 @@ Test3D::Test3D() {
 
 	TextureManager::add(new Texture("diffuse1", "Fabric_Padded_diffuse.jpg", params));
 	TextureManager::add(new Texture("normal1", "Fabric_Padded_normal.jpg", params));
-//	TextureManager::add(new Texture("disp1", "pebble-d.bmp", params));
+
+	TextureManager::add(new Texture("r031_color", "Rock_031_COLOR.jpg", params));
+	TextureManager::add(new Texture("r031_norm", "Rock_031_NORM.jpg", params));
+	TextureManager::add(new Texture("r031_disp", "Rock_031_DISP.png", params));
+
+	TextureManager::add(new Texture("brick1_d", "brick1-d.jpg", params));
+	TextureManager::add(new Texture("brick1_n", "brick1-n.jpg", params));
+	TextureManager::add(new Texture("brick1_h", "brick1-h.jpg", params));
+	TextureManager::add(new Texture("brick1_s", "brick1-s.jpg", params));
+
+	TextureManager::add(new Texture("bricks2_d", "bricks.jpg", params));
+	TextureManager::add(new Texture("bricks2_n", "bricksNormal.jpg", params));
+	TextureManager::add(new Texture("bricks2_h", "bricksDisp.png", params));
+
+	TextureManager::add(new Texture("pebble_d", "pebble.bmp", params));
+	TextureManager::add(new Texture("pebble_n", "pebble-n.bmp", params));
+	TextureManager::add(new Texture("pebble_h", "pebble-h.bmp", params));
 
 	scene = new Scene();
 
 	material = new Material("material");
 	material->setDiffuse(GETTEXTURE("diffuse"));
-	material->setSpecular(GETTEXTURE("specular"));
+	material->setSpecularMap(GETTEXTURE("specular"));
 	material->setSpecularShininess(0.15f);
 
 	material1 = new Material("material1");
 	material1->setDiffuse(GETTEXTURE("diffuse1"));
-	material1->setNormal(GETTEXTURE("normal1"));
-//	material1->setDisplacement(GETTEXTURE("disp1"));
+	material1->setNormalMap(GETTEXTURE("normal1"));
+
+	disp = new Material("disp");
+	disp->setDiffuse(GETTEXTURE("r031_color"));
+	disp->setNormalMap(GETTEXTURE("r031_norm"));
+	disp->setHeightMap(GETTEXTURE("r031_disp"));
+
+	parallax = new Material("parallax");
+	parallax->setSpecularShininess(0.02f);
+	parallax->setDiffuse(GETTEXTURE("brick1_d"));
+	parallax->setNormalMap(GETTEXTURE("brick1_n"));
+	parallax->setHeightMap(GETTEXTURE("brick1_h"));
+	parallax->setSpecularMap(GETTEXTURE("brick1_s"));
+
+	bricks = new Material("bricks");
+	bricks->setDiffuse(GETTEXTURE("bricks2_d"));
+	bricks->setNormalMap(GETTEXTURE("bricks2_n"));
+	bricks->setHeightMap(GETTEXTURE("bricks2_h"));
+
+	pebble = new Material("pebble");
+	pebble->setHeightScale(0.03f);
+	pebble->setDiffuse(GETTEXTURE("pebble_d"));
+	pebble->setNormalMap(GETTEXTURE("pebble_n"));
+	pebble->setHeightMap(GETTEXTURE("pebble_h"));
 
 	model = new Model("tm0", "rock.obj");
 	model->setMaterial(material);
@@ -52,21 +90,26 @@ Test3D::Test3D() {
 	scene->add(monkey);
 
 	Model *plane = new Model("tm0", "plane0.obj");
-	plane->setMaterial(material);
+	plane->setMaterial(parallax);
 	plane->setPosition({0, -10, 0});
 	plane->rotate(vec3::UnitY(), 180.0f);
 //	plane->rotate(vec3::UnitZ(), 45.0f);
 	scene->add(plane);
 
 	Model *plane1 = new Model("tm0", "plane0.obj");
-	plane1->setMaterial(material);
+	plane1->setMaterial(disp);
 	plane1->setPosition({16.5f, -10, 0});
 	scene->add(plane1);
 
 	Model *plane2 = new Model("tm0", "plane0.obj");
-	plane2->setMaterial(material);
+	plane2->setMaterial(bricks);
 	plane2->setPosition({33, -10, 0});
 	scene->add(plane2);
+
+	Model *plane3 = new Model("tm0", "plane0.obj");
+	plane3->setMaterial(pebble);
+	plane3->setPosition({0, -10, 16.5f});
+	scene->add(plane3);
 
 	float step = 6.0f;
 	float z = -step;
@@ -97,7 +140,7 @@ Test3D::Test3D() {
 	sl->setIntensity(8.0f);
 	sl->setFalloff(15.0f);
 	sl->setShadowed(true);
-//	scene->add(sl);
+	scene->add(sl);
 
 	SpotLight *sl1 = new SpotLight("l0");
 	sl1->setPosition({-8, 8, 12.0});
@@ -115,11 +158,11 @@ Test3D::Test3D() {
 	pl->setColor({0.5f, 0.8f, 0.8f});
 	pl->setIntensity(0.4f);
 	pl->setFalloff(10.0f);
-//	scene->add(pl);
+	scene->add(pl);
 
 	dl = new DirectionalLight("dl0", {15.0f, 30.0f, 50.0f, 100.0f});
+	dl->rotate(vec3::UnitY(), -45.0f);
 	dl->rotate(vec3::UnitX(), -90.0f);
-//	dl->rotate(vec3::UnitY(), 90.0f);
 	dl->setColor({1.0f, 1.0f, 0.7f});
 	dl->setIntensity(5.0f);
 	scene->setDirectionalLight(dl);
@@ -131,6 +174,11 @@ Test3D::~Test3D() {
 	delete renderer;
 
 	delete material;
+	delete material1;
+	delete parallax;
+	delete disp;
+	delete bricks;
+	delete pebble;
 
 	delete scene;
 }
@@ -176,9 +224,9 @@ void Test3D::renderImGui() {
 	static bool m1n = true;
 	if (ImGui::Checkbox("M1 normals", &m1n)) {
 		if (m1n) {
-			material1->setNormal(GETTEXTURE("normal1"));
+			material1->setNormalMap(GETTEXTURE("normal1"));
 		} else {
-			material1->setNormal(nullptr);
+			material1->setNormalMap(nullptr);
 		}
 	}
 
@@ -233,9 +281,75 @@ void Test3D::renderImGui() {
 	ImGui::Image(reinterpret_cast<void *>(buffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::End();
 
-	ImGui::Begin("Test");
-//	ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), {512, 288}, {0, 1}, {1, 0});
-//	ImGui::Image(reinterpret_cast<void *>(sm->getTexture()->getHandle()), {512, 512}, {0, 1}, {1, 0});
+	ImGui::Begin("Materials");
+	ImGui::Text("Parallax");
+	static bool parallaxMap = true;
+	if (ImGui::Checkbox("Disp0", &parallaxMap)) {
+		if (parallaxMap) {
+			parallax->setHeightMap(GETTEXTURE("brick1_h"));
+		} else {
+			parallax->setHeightMap(nullptr);
+		}
+	}
+
+	ImGui::PushItemWidth(-1.0f);
+	static float parallaxStrength = parallax->getHeightScale();
+	if (ImGui::SliderFloat("W", &parallaxStrength, 0.0f, 0.1f, "%.3f")) {
+		parallax->setHeightScale(parallaxStrength);
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::Text("Disp");
+	static bool dispMap = true;
+	if (ImGui::Checkbox("Disp1", &dispMap)) {
+		if (dispMap) {
+			disp->setHeightMap(GETTEXTURE("r031_disp"));
+		} else {
+			disp->setHeightMap(nullptr);
+		}
+	}
+
+	ImGui::PushItemWidth(-1.0f);
+	static float dispStrength = disp->getHeightScale();
+	if (ImGui::SliderFloat("Q", &dispStrength, 0.0f, 0.1f, "%.3f")) {
+		disp->setHeightScale(dispStrength);
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::Text("Bricks");
+	static bool bricksDisp = true;
+	if (ImGui::Checkbox("Disp2", &bricksDisp)) {
+		if (bricksDisp) {
+			bricks->setHeightMap(GETTEXTURE("bricks2_h"));
+		} else {
+			bricks->setHeightMap(nullptr);
+		}
+	}
+
+	ImGui::PushItemWidth(-1.0f);
+	static float bricksDispStrength = bricks->getHeightScale();
+	if (ImGui::SliderFloat("E", &bricksDispStrength, 0.0f, 0.1f, "%.3f")) {
+		bricks->setHeightScale(bricksDispStrength);
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::Text("Pebble");
+	static bool pebbleDisp = true;
+	if (ImGui::Checkbox("Disp3", &pebbleDisp)) {
+		if (pebbleDisp) {
+			pebble->setHeightMap(GETTEXTURE("pebble_h"));
+		} else {
+			pebble->setHeightMap(nullptr);
+		}
+	}
+
+	ImGui::PushItemWidth(-1.0f);
+	static float pebbleDispStrength = pebble->getHeightScale();
+	if (ImGui::SliderFloat("R", &pebbleDispStrength, 0.0f, 0.1f, "%.3f")) {
+		pebble->setHeightScale(pebbleDispStrength);
+	}
+	ImGui::PopItemWidth();
+
 	ImGui::End();
 }
 

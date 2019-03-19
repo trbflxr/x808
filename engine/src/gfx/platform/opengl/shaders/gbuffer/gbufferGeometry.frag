@@ -25,20 +25,17 @@ uniform float specularShininess;
 uniform int enableNormalTexture;
 uniform sampler2D normalTexture;
 
-uniform int enableParallaxTexture;
-uniform sampler2D parallaxTexture;
-
-uniform int enableDispTexture;
-uniform sampler2D dispTexture;
-uniform float displacementStrength;
+uniform int enableHeightTexture;
+uniform sampler2D heightTexture;
+uniform float heightScale;
 
 void main() {
   mat3 TBN = calcTBN(g_normal0, g_tangent0);
 
   // Parallax Mapping
   vec2 uv = g_uv0;
-  if (enableParallaxTexture > 0) {
-    uv = calcParallaxMapping(parallaxTexture, uv, TBN, camPosition.xyz, g_worldPosition0);
+  if (enableHeightTexture > 0) {
+    uv = calcParallaxMapping(heightTexture, heightScale, uv, TBN, camPosition.xyz, g_worldPosition0);
   }
 
   // Diffuse Mapping + Material

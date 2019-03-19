@@ -75,30 +75,28 @@ namespace xe {
 			const vec3 &specularColor = mt->getSpecularColor();
 			const float emission = mt->getEmission();
 			const float specularShininess = mt->getSpecularShininess();
-			const float displacementStrength = mt->getDisplacementStrength();
+			const float heightScale = mt->getHeightScale();
 
 			//set mesh uniforms
 			shader->setUniform("diffuseColor", &diffuseColor, sizeof(vec3));
 			shader->setUniform("emissionStrength", &emission, sizeof(float));
 			shader->setUniform("specularColor", &specularColor, sizeof(vec3));
 			shader->setUniform("specularShininess", &specularShininess, sizeof(float));
-			shader->setUniform("displacementStrength", &displacementStrength, sizeof(float));
+			shader->setUniform("heightScale", &heightScale, sizeof(float));
 
 			//textures
 			uint df = setTexture(shader, mt->getDiffuse(), "diffuseTexture", "enableDiffuseTexture");
-			uint sp = setTexture(shader, mt->getSpecular(), "specularTexture", "enableSpecularTexture");
-			uint nr = setTexture(shader, mt->getNormal(), "normalTexture", "enableNormalTexture");
-			uint ds = setTexture(shader, mt->getDisplacement(), "dispTexture", "enableDispTexture");
-			uint pr = setTexture(shader, mt->getParallax(), "parallaxTexture", "enableParallaxTexture");
+			uint sp = setTexture(shader, mt->getSpecularMap(), "specularTexture", "enableSpecularTexture");
+			uint nr = setTexture(shader, mt->getNormalMap(), "normalTexture", "enableNormalTexture");
+			uint ds = setTexture(shader, mt->getHeightMap(), "heightTexture", "enableHeightTexture");
 
 			shader->updateUniforms();
 			m->render(mode);
 
 			if (df) mt->getDiffuse()->unbind(df);
-			if (sp) mt->getSpecular()->unbind(sp);
-			if (nr) mt->getNormal()->unbind(nr);
-			if (ds) mt->getDisplacement()->unbind(ds);
-			if (pr) mt->getParallax()->unbind(pr);
+			if (sp) mt->getSpecularMap()->unbind(sp);
+			if (nr) mt->getNormalMap()->unbind(nr);
+			if (ds) mt->getHeightMap()->unbind(ds);
 		}
 	}
 
@@ -118,16 +116,12 @@ namespace xe {
 			//values
 			shader->setUniform("diffuseColor", &light->getColor(), sizeof(vec3));
 			shader->setUniform("emissionStrength", &disabled, sizeof(float));
-			shader->setUniform("specularColor", &vec3::Zero(), sizeof(vec3));
-			shader->setUniform("specularShininess", &disabled, sizeof(float));
-			shader->setUniform("displacementStrength", &disabled, sizeof(float));
 
 			//disable textures
 			shader->setUniform("enableDiffuseTexture", &disabled, sizeof(int32));
 			shader->setUniform("enableSpecularTexture", &disabled, sizeof(int32));
 			shader->setUniform("enableNormalTexture", &disabled, sizeof(int32));
-			shader->setUniform("enableDispTexture", &disabled, sizeof(int32));
-			shader->setUniform("enableParallaxTexture", &disabled, sizeof(int32));
+			shader->setUniform("enableHeightTexture", &disabled, sizeof(int32));
 
 			shader->updateUniforms();
 

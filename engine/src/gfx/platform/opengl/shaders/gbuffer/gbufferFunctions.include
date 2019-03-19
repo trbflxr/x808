@@ -1,3 +1,6 @@
+#define MIN_PARALLAX_LAYERS 3.0
+#define MAX_PARALLAX_LAYERS 30.0
+
 mat3 calcTBN(vec3 normal, vec3 tangent) {
   vec3 N = normalize(normal);
   vec3 T = normalize(tangent);
@@ -10,45 +13,38 @@ vec3 calcNormalMapping(sampler2D normalTexture, vec2 uv, mat3 TBN) {
   return normalize(TBN * mapNormal);
 }
 
-vec2 calcParallaxMapping(sampler2D parallaxTexture, vec2 uv, mat3 TBN, vec3 cameraPosition, vec3 worldPosition) {
-  float heightScale = 0.02;
+vec2 calcParallaxMapping(sampler2D heightMap, float heightScale, vec2 uv, mat3 TBN, vec3 cameraPosition,
+                         vec3 worldPosition) {
+  vec3 tCamPosition = cameraPosition * TBN;
+  vec3 tWorldPosition = worldPosition * TBN;
 
-  mat3 tTBN = transpose(TBN);
+  vec3 viewDir = normalize(tCamPosition - tWorldPosition);
 
-  vec3 tCamPosition = tTBN * cameraPosition;
-  vec3 tWorldPosition = tTBN * worldPosition;
-
-  vec3 viewDir = normalize(-tCamPosition - tWorldPosition);
-
-  float minLayers = 5;
-  float maxLayers = 20;
-  float numLayers = mix(maxLayers, minLayers, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));
+  float numLayers = mix(MAX_PARALLAX_LAYERS, MIN_PARALLAX_LAYERS, abs(dot(vec3(0.0, 0.0, 1.0), viewDir)));
 
   float layerDepth = 1.0 / numLayers;
 
-  float currentLayerDepth = 0.0;
+  viewDir *= heightScale * layerDepth / viewDir.z;
 
-  vec2 P = viewDir.xy / viewDir.z * heightScale;
-  vec2 deltaTexCoords = P / numLayers;
+  float currLayerDepth = 0;
+  vec2 prevUV = uv;
+  vec2 nextUV = prevUV;
+  float prevDepth = texture(heightMap, uv).r;
+  float nextDepth = prevDepth;
 
-  vec2 currentTexCoords = uv;
-  float currentDepthMapValue = 1.0 - texture(parallaxTexture, currentTexCoords).r;
+  while (currLayerDepth < nextDepth) {
+    prevUV = nextUV;
+    nextUV = prevUV + viewDir.xy;
 
-  while (currentLayerDepth < currentDepthMapValue) {
-    currentTexCoords -= deltaTexCoords;
+    prevDepth = nextDepth;
+    nextDepth = texture(heightMap, nextUV).r;
 
-    currentDepthMapValue = 1.0 - texture(parallaxTexture, currentTexCoords).r;
-
-    currentLayerDepth += layerDepth;
+    currLayerDepth += layerDepth;
   }
 
-  vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+  float r1 = currLayerDepth - nextDepth;
+  float r2 = prevDepth - (currLayerDepth - layerDepth);
+  float r = r1 / (r1 + r2);
 
-  float afterDepth = currentDepthMapValue - currentLayerDepth;
-  float beforeDepth = 1.0 - texture(parallaxTexture, prevTexCoords).r - currentLayerDepth + layerDepth;
-
-  float weight = afterDepth / (afterDepth - beforeDepth);
-  vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
-
-  return finalTexCoords;
+  return mix(nextUV, prevUV, r);
 }

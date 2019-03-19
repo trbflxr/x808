@@ -19,12 +19,11 @@ namespace xe {
 				emission(1.0f),
 				specularColor(1.0f),
 				specularShininess(0.0f),
-				displacementStrength(0.5f),
+				heightScale(0.01f),
 				diffuse(nullptr),
 				specular(nullptr),
 				normal(nullptr),
-				displacement(nullptr),
-				parallax(nullptr) { }
+				height(nullptr) { }
 
 
 		inline const string &getName() const { return name; }
@@ -41,23 +40,20 @@ namespace xe {
 		inline float getSpecularShininess() const { return specularShininess; }
 		inline void setSpecularShininess(float shininess) { specularShininess = shininess; }
 
-		inline float getDisplacementStrength() const { return displacementStrength; }
-		inline void setDisplacementStrength(float strength) { displacementStrength = strength; }
+		inline float getHeightScale() const { return heightScale; }
+		inline void setHeightScale(float scale) { heightScale = scale; }
 
 		inline const Texture *getDiffuse() const { return diffuse; }
 		inline void setDiffuse(const Texture *texture) { diffuse = texture; }
 
-		inline const Texture *getSpecular() const { return specular; }
-		inline void setSpecular(const Texture *texture) { specular = texture; }
+		inline const Texture *getSpecularMap() const { return specular; }
+		inline void setSpecularMap(const Texture *texture) { specular = texture; }
 
-		inline const Texture *getNormal() const { return normal; }
-		inline void setNormal(const Texture *texture) { normal = texture; }
+		inline const Texture *getNormalMap() const { return normal; }
+		inline void setNormalMap(const Texture *texture) { normal = texture; }
 
-		inline const Texture *getDisplacement() const { return displacement; }
-		inline void setDisplacement(const Texture *texture) { displacement = texture; }
-
-		inline const Texture *getParallax() const { return parallax; }
-		inline void setParallax(const Texture *texture) { parallax = texture; }
+		inline const Texture *getHeightMap() const { return height; }
+		inline void setHeightMap(const Texture *texture) { height = texture; }
 
 	private:
 		string name;
@@ -68,13 +64,12 @@ namespace xe {
 		vec3 specularColor;
 		float specularShininess;
 
-		float displacementStrength;
+		float heightScale;
 
 		const Texture *diffuse;
 		const Texture *specular;
 		const Texture *normal;
-		const Texture *displacement;
-		const Texture *parallax;
+		const Texture *height;
 	};
 
 }
