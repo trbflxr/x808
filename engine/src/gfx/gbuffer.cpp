@@ -152,7 +152,9 @@ namespace xe {
 		gBuffer->unbind();
 	}
 
-	void GBuffer::passLightAccumulation(const vec3 &ambient, const Quad *quad, const FrameBuffer *final) const {
+	void GBuffer::passLightAccumulation(const Texture *aoTexture, const vec3 &ambient,
+	                                    const Quad *quad, const FrameBuffer *final) const {
+
 		final->bindDraw(Attachment::Color0);
 
 		Renderer::clear(RendererBufferColor);
@@ -163,10 +165,19 @@ namespace xe {
 		const uint ld = accumulationShader->getSampler("sampler1");
 		const uint sl = accumulationShader->getSampler("sampler2");
 
+		uint ao = 0;
+		if (aoTexture) {
+			ao = accumulationShader->getSampler("sampler3");
+		}
+
 		diffuseTexture->bind(d);
 		lightDiffuseTexture->bind(ld);
 		lightSpecularTexture->bind(sl);
+		if (aoTexture) {
+			aoTexture->bind(ao);
+		}
 
+		accumulationShader->setUniform("useAO", &ao, sizeof(int32));
 		accumulationShader->setUniform("ambient", &ambient, sizeof(vec3));
 
 		accumulationShader->updateUniforms();
@@ -175,6 +186,9 @@ namespace xe {
 		lightSpecularTexture->unbind(sl);
 		lightDiffuseTexture->unbind(ld);
 		diffuseTexture->unbind(d);
+		if (aoTexture) {
+			aoTexture->unbind(ao);
+		}
 
 		accumulationShader->unbind();
 

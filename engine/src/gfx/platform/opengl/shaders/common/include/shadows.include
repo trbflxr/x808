@@ -12,7 +12,7 @@
 #define NUM_SAMPLES 8.0
 #endif
 
-#define MAX_VARIANCE 0.6
+#define MAX_VARIANCE 0.02
 #define SAMPLES_START ((NUM_SAMPLES - 1.0) / 2.0)
 #define NUM_SAMPLES_SQUARED (NUM_SAMPLES * NUM_SAMPLES)
 
@@ -25,7 +25,7 @@ float chebyshevUpperBound(vec2 moments, float t) {
   if (t >= (moments.x)) return 1.0;
 
   // Compute variance.
-  float variance = moments.y - (moments.x * moments.x);
+  float variance = moments.y - moments.x * moments.x;
   variance = max(variance, MAX_VARIANCE);
 
   // Compute probabilistic upper bound.
@@ -37,12 +37,11 @@ float chebyshevUpperBound(vec2 moments, float t) {
 float shadowContributionSpot(vec3 uv, float distanceToLight, sampler2DArray shadowMap) {
   vec2 moments = texture(shadowMap, uv).xy;
   float pmax = chebyshevUpperBound(moments, distanceToLight);
-  return reduceLightBleeding(pmax, 0.6);
+  return reduceLightBleeding(pmax, 0.82);
 }
 
 float sampleShadowMap(sampler2DArray shadowMap, vec2 uv, int layer, float compare) {
-  vec2 moments = texture(shadowMap, vec3(uv, layer)).xy;
-  return chebyshevUpperBound(moments, compare);
+  return step(compare, texture(shadowMap, vec3(uv, layer)).r);
 }
 
 float sampleShadowMapPCF(sampler2DArray shadowMap, vec2 uv, int layer, float compare, vec2 texelSize) {
@@ -60,6 +59,6 @@ float calcShadow(sampler2DArray shadowMap, vec2 uv, int layer, float compare, ve
 #if SHADOW_QUALITY == 1
   return shadowContributionSpot(vec3(uv, layer), compare, shadowMap);
 #else
-  return sampleShadowMapPCF(shadowMap, uv, layer, compare, texelSize);
+  return 1.0 - sampleShadowMapPCF(shadowMap, uv, layer, compare, texelSize);
 #endif
 }

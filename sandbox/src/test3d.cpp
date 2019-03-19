@@ -111,6 +111,40 @@ Test3D::Test3D() {
 	plane3->setPosition({0, -10, 16.5f});
 	scene->add(plane3);
 
+
+	//bottom
+	Model *plane01 = new Model("p01", "plane0.obj");
+	plane01->setMaterial(material);
+	plane01->setPosition({-16.5f, -10, 0});
+	scene->add(plane01);
+
+	//top
+	Model *plane02 = new Model("p02", "plane0.obj");
+	plane02->setMaterial(material);
+	plane02->setPosition({-16.5f, 6.0f, 0});
+	scene->add(plane02);
+
+	//back
+	Model *plane03 = new Model("p03", "plane0.obj");
+	plane03->setMaterial(material);
+	plane03->setPosition({-16.5f, -2.0f, -8.0f});
+	plane03->rotate(vec3::UnitX(), 90);
+	scene->add(plane03);
+
+	//right
+	Model *plane04 = new Model("p04", "plane0.obj");
+	plane04->setMaterial(material);
+	plane04->setPosition({-8.45f, -2.0f, 0});
+	plane04->rotate(vec3::UnitZ(), 90);
+	scene->add(plane04);
+
+	//left
+	Model *plane05 = new Model("p04", "plane0.obj");
+	plane05->setMaterial(material);
+	plane05->setPosition({-24.55f, -2.0f, 0});
+	plane05->rotate(vec3::UnitZ(), 90);
+	scene->add(plane05);
+
 	float step = 6.0f;
 	float z = -step;
 	float x = 0.0f;
@@ -158,7 +192,7 @@ Test3D::Test3D() {
 	pl->setColor({0.5f, 0.8f, 0.8f});
 	pl->setIntensity(0.4f);
 	pl->setFalloff(10.0f);
-	scene->add(pl);
+//	scene->add(pl);
 
 	dl = new DirectionalLight("dl0", {15.0f, 30.0f, 50.0f, 100.0f});
 	dl->rotate(vec3::UnitY(), -45.0f);
@@ -221,6 +255,11 @@ void Test3D::renderImGui() {
 		renderer->enableCullTest(cull);
 	}
 
+	static bool ao = renderer->isAOEnabled();
+	if (ImGui::Checkbox("SSAO", &ao)) {
+		renderer->enableAO(ao);
+	}
+
 	static bool m1n = true;
 	if (ImGui::Checkbox("M1 normals", &m1n)) {
 		if (m1n) {
@@ -279,6 +318,8 @@ void Test3D::renderImGui() {
 	ImGui::Image(reinterpret_cast<void *>(buffer->getLightDiffuseTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(buffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	ImGui::SameLine();
+	ImGui::Image(reinterpret_cast<void *>(renderer->getAOTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::End();
 
 	ImGui::Begin("Materials");

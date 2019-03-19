@@ -33,7 +33,7 @@ namespace xe {
 
 	void Shadows::createTextures() {
 		TextureParameters tp(TextureTarget::Tex2DArray);
-		tp.internalFormat = PixelInternalFormat::Rg16f;
+		tp.internalFormat = PixelInternalFormat::Rg32f;
 		tp.format = PixelFormat::Rg;
 		tp.pixelType = PixelType::Float;
 		tp.magFilter = TextureMagFilter::Linear;
@@ -43,7 +43,7 @@ namespace xe {
 		spotTexture = new Texture("ST", params.spotSize, params.spotSize, params.maxSpotCount, tp);
 		dirTexture = new Texture("DT", params.dirSize, params.dirSize, params.dirCascades, tp);
 
-		tp.internalFormat = PixelInternalFormat::DepthComponent16;
+		tp.internalFormat = PixelInternalFormat::DepthComponent32f;
 		tp.format = PixelFormat::DepthComponent;
 		spotDepthTexture = new Texture("SDT", params.spotSize, params.spotSize, params.maxSpotCount, tp);
 		dirDepthTexture = new Texture("DDT", params.dirSize, params.dirSize, params.dirCascades, tp);

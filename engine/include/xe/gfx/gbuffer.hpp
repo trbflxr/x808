@@ -25,7 +25,8 @@ namespace xe {
 		~GBuffer() override;
 
 		void passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const;
-		void passLightAccumulation(const vec3 &ambient, const Quad *quad, const FrameBuffer *final) const;
+		void passLightAccumulation(const Texture *aoTexture, const vec3 &ambient,
+		                           const Quad *quad, const FrameBuffer *final) const;
 
 		void setShadowQuality(uint value);
 

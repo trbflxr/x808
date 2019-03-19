@@ -203,6 +203,13 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Frag, sources["final_frag"],
 				                       {sources["fxaa_include"]})
 		}));
+
+
+		///----- ssao shader -----///
+		shaders.emplace("dSSAO", new Shader("dSSAO", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["ssao_frag"])
+		}));
 	}
 
 	void ShaderManager::setConstants(string &source, ShaderConstantVec &constants) {

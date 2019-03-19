@@ -11,7 +11,8 @@ namespace xe {
 			width(width),
 			height(height),
 			camera(camera),
-			ambientLight(0.1f) {
+			ambientLight(0.1f),
+			useAO(false) {
 
 		BufferLayout layout;
 		layout.push<mat4>("view");
@@ -25,6 +26,7 @@ namespace xe {
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
 		final = new FinalFX(width, height);
+		ssao = new SSAO(width, height);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {
@@ -42,7 +44,13 @@ namespace xe {
 
 		gBuffer->passDeferred(scene, shadows, quad);
 
-		gBuffer->passLightAccumulation(ambientLight, quad, final->getFinalFBO());
+		if (useAO) {
+			ssao->calculateAO(gBuffer->getNormalTexture(), gBuffer->getPositionTexture(), quad);
+		}
+
+		const Texture *ao = useAO ? ssao->getAO() : nullptr;
+
+		gBuffer->passLightAccumulation(ao, ambientLight, quad, final->getFinalFBO());
 
 		//render to screen
 		final->render(quad);
