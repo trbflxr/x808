@@ -67,7 +67,7 @@ Normal map:
 ![normals](/_md/normals.png)
 
 Parallax displacement map:
-![parallaxDisplacement](/_md/parallaxDisplacement Map.png)
+![parallaxDisplacement](/_md/parallaxDisplacementMap.png)
 
 ### Shadows
 
