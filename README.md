@@ -83,3 +83,6 @@ PCF soft shadows:
 
 SSAO:
 ![ssao](/_md/ssao.png)
+
+HBAO:
+![hbao](/_md/hbao.png)

@@ -11,6 +11,7 @@
 #include <xe/gfx/gbuffer.hpp>
 #include <xe/gfx/finalfx.hpp>
 #include <xe/gfx/ssao.hpp>
+#include <xe/gfx/hbao.hpp>
 #include <xe/gfx/quad.hpp>
 #include <xe/gfx/shadows.hpp>
 
@@ -40,7 +41,8 @@ namespace xe {
 
 		inline const GBuffer *getGBuffer() const { return gBuffer; }
 
-		inline const Texture *getAOTexture() const { return ssao->getAO(); }
+//		inline const Texture *getAOTexture() const { return ssao->getAO(); }
+		inline const Texture *getAOTexture() const { return hbao->getAO(); }
 
 		inline void enableAO(bool enable) { useAO = enable; } // temp
 		inline bool isAOEnabled() { return useAO; }
@@ -71,6 +73,7 @@ namespace xe {
 
 		bool useAO; // temp
 		SSAO *ssao;
+		HBAO *hbao;
 	};
 
 }

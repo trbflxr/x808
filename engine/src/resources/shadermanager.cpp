@@ -205,10 +205,16 @@ namespace xe {
 		}));
 
 
-		///----- ssao shader -----///
+		///----- ao shaders -----///
 		shaders.emplace("dSSAO", new Shader("dSSAO", {
 				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["ssao_frag"])
+		}));
+
+
+		shaders.emplace("dHBAO", new Shader("dHBAO", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["hbao_frag"])
 		}));
 
 
