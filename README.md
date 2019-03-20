@@ -66,6 +66,9 @@ Specular map:
 Normal map:
 ![normals](/_md/normals.png)
 
+Parallax displacement map:
+![parallaxDisplacement](/_md/parallaxDisplacement Map.png)
+
 ### Shadows
 
 Work in progress...
