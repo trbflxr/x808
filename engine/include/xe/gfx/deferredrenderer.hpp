@@ -10,8 +10,7 @@
 #include <xe/gfx/uniformbuffer.hpp>
 #include <xe/gfx/gbuffer.hpp>
 #include <xe/gfx/finalfx.hpp>
-#include <xe/gfx/ssao.hpp>
-#include <xe/gfx/hbao.hpp>
+#include <xe/gfx/ambientocclusion.hpp>
 #include <xe/gfx/quad.hpp>
 #include <xe/gfx/shadows.hpp>
 
@@ -19,7 +18,7 @@ namespace xe {
 
 	class XE_API DeferredRenderer : NonCopyable {
 	public:
-		explicit DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp);
+		explicit DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp, AOType aoType);
 		~DeferredRenderer() override;
 
 		void render(const Scene *scene) const;
@@ -41,11 +40,10 @@ namespace xe {
 
 		inline const GBuffer *getGBuffer() const { return gBuffer; }
 
-//		inline const Texture *getAOTexture() const { return ssao->getAO(); }
-		inline const Texture *getAOTexture() const { return hbao->getAO(); }
+		inline const Texture *getAOTexture() const { return ao->getAO(); }
 
-		inline void enableAO(bool enable) { useAO = enable; } // temp
-		inline bool isAOEnabled() { return useAO; }
+		inline AOType getAOType() const { return ao->getType(); }
+		inline void setAOType(AOType type) { ao->setType(type); }
 
 	private:
 		void updateCamera() const;
@@ -70,10 +68,7 @@ namespace xe {
 		GBuffer *gBuffer;
 		Quad *quad;
 		FinalFX *final;
-
-		bool useAO; // temp
-		SSAO *ssao;
-		HBAO *hbao;
+		AmbientOcclusion *ao;
 	};
 
 }

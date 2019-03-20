@@ -7,12 +7,11 @@
 
 namespace xe {
 
-	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp) :
+	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp, AOType aoType) :
 			width(width),
 			height(height),
 			camera(camera),
-			ambientLight(0.1f),
-			useAO(false) {
+			ambientLight(0.1f) {
 
 		BufferLayout layout;
 		layout.push<mat4>("view");
@@ -26,9 +25,7 @@ namespace xe {
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
 		final = new FinalFX(width, height);
-
-		ssao = new SSAO(width / 2, height / 2);
-		hbao = new HBAO(width / 2, height / 2);
+		ao = new AmbientOcclusion(width / 2, height / 2, aoType);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {
@@ -37,9 +34,7 @@ namespace xe {
 		delete quad;
 		delete final;
 		delete cameraUBO;
-
-		delete ssao;
-		delete hbao;
+		delete ao;
 	}
 
 	void DeferredRenderer::render(const Scene *scene) const {
@@ -49,15 +44,12 @@ namespace xe {
 
 		gBuffer->passDeferred(scene, shadows, quad);
 
-		if (useAO) {
-//			ssao->calculateAO(gBuffer->getNormalTexture(), gBuffer->getPositionTexture(), quad);
-			hbao->calculateAO(gBuffer->getNormalTexture(), gBuffer->getDepthStencilTexture(), camera, quad);
-		}
+		ao->calculateAO(gBuffer->getPositionTexture(),
+		                gBuffer->getNormalTexture(),
+		                gBuffer->getDepthStencilTexture(),
+		                camera, quad);
 
-//		const Texture *ao = useAO ? ssao->getAO() : nullptr;
-		const Texture *ao = useAO ? hbao->getAO() : nullptr;
-
-		gBuffer->passLightAccumulation(ao, ambientLight, quad, final->getFinalFBO());
+		gBuffer->passLightAccumulation(ao->getAO(), ambientLight, quad, final->getFinalFBO());
 
 		//render to screen
 		final->render(quad);

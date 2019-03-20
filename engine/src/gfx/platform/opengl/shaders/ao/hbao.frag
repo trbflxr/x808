@@ -13,7 +13,7 @@ uniform mat4 invProj;
 #define SAMPLING_STEP 0.004
 #define NUM_SAMPLING_STEPS 4
 #define TANGENT_BIAS 0.2
-#define SCALE 2.0
+#define SCALE 2.5
 
 void main() {
   float startZ = texture(sampler1, uv0).r;

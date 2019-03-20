@@ -18,7 +18,7 @@ Test3D::Test3D() {
 
 	ShadowParameters sp(app.getConfig(), 512, 1024);
 
-	renderer = new DeferredRenderer(width, height, camera, sp);
+	renderer = new DeferredRenderer(width, height, camera, sp, AOType::Hbao);
 	renderer->enableLightObjects(true);
 	renderer->enableLightBounds(true);
 
@@ -84,10 +84,20 @@ Test3D::Test3D() {
 	model->setMaterial(material);
 	scene->add(model);
 
-	Model *monkey = new Model("tm0", "monkey3.obj");
-	monkey->setMaterial(material1);
-	monkey->setPosition({-5, -7, 5});
-	scene->add(monkey);
+	Model *monkey0 = new Model("m0", "monkey3.obj");
+	monkey0->setMaterial(material1);
+	monkey0->setPosition({-5.0f, -7, 5});
+	scene->add(monkey0);
+
+	Model *monkey1 = new Model("m1", "monkey3.obj");
+	monkey1->setMaterial(material1);
+	monkey1->setPosition({-2.3f, -7, 5});
+	scene->add(monkey1);
+
+	Model *monkey2 = new Model("m2", "monkey3.obj");
+	monkey2->setMaterial(material1);
+	monkey2->setPosition({0.6f, -7, 5});
+	scene->add(monkey2);
 
 	Model *plane = new Model("tm0", "plane0.obj");
 	plane->setMaterial(parallax);
@@ -145,23 +155,6 @@ Test3D::Test3D() {
 	plane05->rotate(vec3::UnitZ(), 90);
 	scene->add(plane05);
 
-	float step = 6.0f;
-	float z = -step;
-	float x = 0.0f;
-	for (int32 i = 0; i < 9; ++i) {
-		if (i != 0 && i % 3 == 0) {
-			z -= step;
-			x = 0.0f;
-		}
-
-		Model *m = new Model("tm0", "rock.obj");
-		m->setPosition({x, 0, z});
-		m->setMaterial(material1);
-		scene->add(m);
-
-		x += step;
-	}
-
 	player = new DummyPlayer(camera);
 
 
@@ -195,8 +188,8 @@ Test3D::Test3D() {
 //	scene->add(pl);
 
 	dl = new DirectionalLight("dl0", {15.0f, 30.0f, 50.0f, 100.0f});
-	dl->rotate(vec3::UnitY(), -45.0f);
-	dl->rotate(vec3::UnitX(), -90.0f);
+	dl->rotate(vec3::UnitX(), -35.0f);
+	dl->rotate(vec3::UnitY(), -10.0f);
 	dl->setColor({1.0f, 1.0f, 0.7f});
 	dl->setIntensity(5.0f);
 	scene->setDirectionalLight(dl);
@@ -255,9 +248,10 @@ void Test3D::renderImGui() {
 		renderer->enableCullTest(cull);
 	}
 
-	static bool ao = renderer->isAOEnabled();
-	if (ImGui::Checkbox("SSAO", &ao)) {
-		renderer->enableAO(ao);
+	static const char *aoTypes[] = {"SSAO", "HBAO", "None"};
+	static int32 currentAO = 1;
+	if (ImGui::Combo("AO", &currentAO, aoTypes, 3)) {
+		renderer->setAOType(AmbientOcclusion::stringToType(aoTypes[currentAO]));
 	}
 
 	static bool m1n = true;
@@ -319,7 +313,10 @@ void Test3D::renderImGui() {
 	ImGui::SameLine();
 	ImGui::Image(reinterpret_cast<void *>(buffer->getLightSpecularTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
 	ImGui::SameLine();
-	ImGui::Image(reinterpret_cast<void *>(renderer->getAOTexture()->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	const Texture *ao = renderer->getAOTexture();
+	if (ao) {
+		ImGui::Image(reinterpret_cast<void *>(ao->getHandle()), {128, 72}, {0, 1}, {1, 0});
+	}
 	ImGui::End();
 
 	ImGui::Begin("Materials");
