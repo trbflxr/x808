@@ -8,7 +8,6 @@
 
 namespace xe {
 
-
 	FinalFX::FinalFX(uint width, uint height) :
 			RenderEffect(width, height) {
 		//fx final

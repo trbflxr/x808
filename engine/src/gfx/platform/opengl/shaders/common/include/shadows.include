@@ -7,12 +7,13 @@
 #if SHADOW_QUALITY < 2
 #define NUM_SAMPLES 0.0
 #elif SHADOW_QUALITY == 2
-#define NUM_SAMPLES 3.0
+#define NUM_SAMPLES 5.0
 #elif SHADOW_QUALITY == 3
-#define NUM_SAMPLES 8.0
+#define NUM_SAMPLES 10.0
 #endif
 
-#define MAX_VARIANCE 0.02
+#define MAX_VARIANCE 0.03
+#define BLEED_REDUCE 0.6
 #define SAMPLES_START ((NUM_SAMPLES - 1.0) / 2.0)
 #define NUM_SAMPLES_SQUARED (NUM_SAMPLES * NUM_SAMPLES)
 
@@ -37,7 +38,7 @@ float chebyshevUpperBound(vec2 moments, float t) {
 float shadowContributionSpot(vec3 uv, float distanceToLight, sampler2DArray shadowMap) {
   vec2 moments = texture(shadowMap, uv).xy;
   float pmax = chebyshevUpperBound(moments, distanceToLight);
-  return reduceLightBleeding(pmax, 0.82);
+  return reduceLightBleeding(pmax, BLEED_REDUCE);
 }
 
 float sampleShadowMap(sampler2DArray shadowMap, vec2 uv, int layer, float compare) {
@@ -52,7 +53,8 @@ float sampleShadowMapPCF(sampler2DArray shadowMap, vec2 uv, int layer, float com
       result += sampleShadowMap(shadowMap, uv + offset, layer, compare);
     }
   }
-  return result / NUM_SAMPLES_SQUARED;
+  // return result / NUM_SAMPLES_SQUARED;
+  return reduceLightBleeding(result / NUM_SAMPLES_SQUARED, BLEED_REDUCE / 2.0);
 }
 
 float calcShadow(sampler2DArray shadowMap, vec2 uv, int layer, float compare, vec2 texelSize) {

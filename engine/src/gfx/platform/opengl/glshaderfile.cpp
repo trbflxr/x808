@@ -131,11 +131,12 @@ namespace xe { namespace internal {
 	                                ShaderStructVec &structs) {
 
 		std::vector<string> tokens = tokenize(statement);
-		uint index = 0;
+		uint index = static_cast<uint>(tokens.size() - 1);
 
-		index++; // "uniform"
-		string typeStr = tokens[index++];
-		string name = tokens[index];
+		if (tokens[2][0] == '{') return; // uniform buffer
+
+		string name = tokens[index--];
+		string typeStr = tokens[index];
 
 		// Strip ; from Name if present
 		if (const char *s = strstr(name.c_str(), ";")) {
@@ -157,7 +158,7 @@ namespace xe { namespace internal {
 		if (GLShaderSampler::isTypeStrSampler(typeStr)) {
 			auto *decl = new GLShaderSampler(GLShaderSampler::stringToType(typeStr), name, count);
 			samplers.push_back(decl);
-		} else if (name != "{" && name != "{\n" && name != "{\r") {
+		} else {
 			GLShaderUniform::Type t = GLShaderUniform::stringToType(typeStr);
 			GLShaderUniform *uniform = nullptr;
 
@@ -171,7 +172,11 @@ namespace xe { namespace internal {
 					}
 				}
 
-				XE_ASSERT(s, "[GLShaderFile]: Could not find struct: %s %s", typeStr.c_str(), name.c_str());
+				if (!s) {
+					XE_CORE_FATAL("[GLShaderFile]: Could not find struct:", typeStr.c_str(), " ", name.c_str());
+					XE_ASSERT(false);
+				}
+
 				uniform = new GLShaderUniform(s, name, count);
 			} else {
 				uniform = new GLShaderUniform(t, name, count);

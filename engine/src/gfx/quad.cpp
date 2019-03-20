@@ -13,19 +13,19 @@ namespace xe {
 			RenderEffect(width, height) {
 
 		//buffers
-		vec3 positions[] = {{-1.0f, 1.0f,  0.0f},
-		                    {1.0f,  1.0f,  0.0f},
-		                    {1.0f,  -1.0f, 0.0f},
-		                    {-1.0f, -1.0f, 0.0f}};
+		vec2 positions[] = {{-1.0f, 1.0f},
+		                    {1.0f,  1.0f},
+		                    {1.0f,  -1.0f},
+		                    {-1.0f, -1.0f}};
 
 		uint indices[] = {0, 1, 2, 0, 2, 3};
 
 		VertexBuffer *buffer = new VertexBuffer();
 		BufferLayout layout;
-		layout.push<vec3>("pos");
+		layout.push<vec2>("pos");
 
 		buffer->setLayout(layout);
-		buffer->setData(4 * sizeof(vec3), positions);
+		buffer->setData(4 * sizeof(vec2), positions);
 
 		vao = new VertexArray();
 		vao->pushBuffer(buffer);

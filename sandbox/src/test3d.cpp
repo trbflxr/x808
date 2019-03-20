@@ -174,7 +174,7 @@ Test3D::Test3D() {
 	sl->setIntensity(8.0f);
 	sl->setFalloff(15.0f);
 	sl->setShadowed(true);
-	scene->add(sl);
+//	scene->add(sl);
 
 	SpotLight *sl1 = new SpotLight("l0");
 	sl1->setPosition({-8, 8, 12.0});

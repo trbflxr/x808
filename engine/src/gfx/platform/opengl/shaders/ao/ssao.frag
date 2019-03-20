@@ -13,20 +13,19 @@ const vec3 taps[16] = vec3[](
     vec3(-0.316874, -0.374981, -0.345988), vec3(-0.567278, -0.297800, -0.271889), vec3(-0.123325, 0.197851, 0.626759),
     vec3(0.852626, -0.061007, -0.144475));
 
-#define TAP_SIZE 0.02
+#define TAP_SIZE 0.1
 #define NUM_TAPS 16
-#define THRESHOLD 0.1
-#define SCALE 1.0
+#define SCALE 2.0
 
 void main() {
   vec3 viewPos = texture(sampler1, uv0).xyz;
   vec3 viewNorm = texture(sampler0, uv0).xyz;
   for (int i = 0; i < NUM_TAPS; i++) {
     vec3 offset = TAP_SIZE * taps[i];
-    vec2 offTex = uv0 + offset.st;
-    vec3 offPos = texture(sampler1, offTex.st).xyz;
+    vec2 uvOffset = uv0 + offset.xy;
+    vec3 posOffset = texture(sampler1, uvOffset.xy).xyz;
 
-    vec3 diff = offPos - viewPos;
+    vec3 diff = posOffset - viewPos;
     float distance = length(diff);
     vec3 diffnorm = normalize(diff);
 

@@ -210,6 +210,13 @@ namespace xe {
 				ShaderFile::fromSource(ShaderType::Vert, sources["commonGeneric_vert"]),
 				ShaderFile::fromSource(ShaderType::Frag, sources["ssao_frag"])
 		}));
+
+
+		///----- blur shader -----///
+		shaders.emplace("dBlur", new Shader("dBlur", {
+				ShaderFile::fromSource(ShaderType::Vert, sources["blur_vert"]),
+				ShaderFile::fromSource(ShaderType::Frag, sources["blur_frag"])
+		}));
 	}
 
 	void ShaderManager::setConstants(string &source, ShaderConstantVec &constants) {

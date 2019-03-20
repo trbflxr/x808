@@ -156,7 +156,7 @@ namespace xe {
 	                                    const Quad *quad, const FrameBuffer *final) const {
 
 		final->bindDraw(Attachment::Color0);
-
+		Renderer::setViewport(0, 0, width, height);
 		Renderer::clear(RendererBufferColor);
 
 		accumulationShader->bind();

@@ -22,6 +22,8 @@ namespace xe {
 
 		void load(const std::unordered_map<Attachment, const Texture *> &attachments);
 
+		void copy(FrameBuffer *dest);
+
 		void bindDrawAttachment(Attachment attachment) const;
 		void bindDrawAttachments(Attachment *attachments, uint size) const;
 		void bindReadAttachment(Attachment attachment) const;

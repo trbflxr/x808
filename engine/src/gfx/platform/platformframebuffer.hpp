@@ -17,6 +17,8 @@ namespace xe { namespace internal {
 
 		virtual void load(const std::unordered_map<Attachment, const Texture *> &attachments) = 0;
 
+		virtual void copy(PlatformFrameBuffer *dest) = 0;
+
 		virtual void bindDrawAttachment(Attachment attachment) const = 0;
 		virtual void bindDrawAttachments(Attachment *attachments, uint size) const = 0;
 		virtual void bindReadAttachment(Attachment attachment) const = 0;
@@ -24,7 +26,7 @@ namespace xe { namespace internal {
 		virtual void bindDraw(Attachment attachment) const = 0;
 		virtual void bindDraw(Attachment *attachments, uint size) const = 0;
 		virtual void bindRead(Attachment attachment) const = 0;
-		virtual void unbind() = 0;
+		virtual void unbind() const = 0;
 
 		virtual void bindTexture(Attachment attachment, const Texture *texture) const = 0;
 

@@ -38,6 +38,57 @@ namespace xe { namespace internal {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
+	void GLFrameBuffer::copy(PlatformFrameBuffer *dest) {
+		const GLFrameBuffer *other = dynamic_cast<const GLFrameBuffer *>(dest);
+
+		if (attachments.size() != other->attachments.size()) {
+			XE_CORE_ERROR("[GLFrameBuffer]: Unable to copy framebuffer. Attachments count have to be same.");
+			return;
+		}
+
+		for (const auto &a : attachments) {
+			if (a.first == Attachment::None)continue;
+
+#ifdef XE_DEBUG
+			auto &&it = other->attachments.find(a.first);
+			if (it == other->attachments.end()) {
+				XE_CORE_ERROR(
+						"[GLFrameBuffer]: Unable to copy framebuffer. Buffer attachments have to be same.");
+				XE_ASSERT(false);
+			}
+#endif
+
+			const uint size = a.second->getWidth();
+			uint mode = 0;
+
+			if (a.first == Attachment::Depth) {
+				mode = GL_DEPTH_BUFFER_BIT;
+			} else if (a.first == Attachment::Stencil) {
+				mode = GL_STENCIL_BUFFER_BIT;
+			} else if (a.first == Attachment::DepthStencil) {
+				mode = GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
+			}
+
+			if (mode == 0) {
+				const uint attachment = attachmentToGL(a.first);
+				glCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, handle));
+				glCall(glReadBuffer(attachment));
+				glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, other->handle));
+				glCall(glDrawBuffer(attachment));
+
+				glCall(glBlitFramebuffer(0, 0, size, size, 0, 0, size, size, GL_COLOR_BUFFER_BIT, GL_NEAREST));
+			} else {
+				glCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, handle));
+				glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, other->handle));
+				glCall(glBlitFramebuffer(0, 0, size, size, 0, 0, size, size, mode, GL_NEAREST));
+			}
+		}
+
+		glCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, 0));
+		glCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0));
+
+	}
+
 	void GLFrameBuffer::bindDrawAttachment(Attachment attachment) const {
 		glCall(glDrawBuffer(attachmentToGL(attachment)));
 	}
@@ -54,7 +105,7 @@ namespace xe { namespace internal {
 	void GLFrameBuffer::bindReadAttachment(Attachment attachment) const {
 		uint mode = attachmentToGL(attachment);
 
-		if (mode == GL_DEPTH_ATTACHMENT || mode == GL_STENCIL_ATTACHMENT) {
+		if (mode == GL_DEPTH_ATTACHMENT || mode == GL_STENCIL_ATTACHMENT || mode == GL_DEPTH_STENCIL_ATTACHMENT) {
 			XE_CORE_ERROR("[GLFrameBuffer]: Can't read depth or stencil attachments.");
 			return;
 		}
@@ -77,7 +128,7 @@ namespace xe { namespace internal {
 		bindReadAttachment(attachment);
 	}
 
-	void GLFrameBuffer::unbind() {
+	void GLFrameBuffer::unbind() const {
 		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 

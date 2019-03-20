@@ -19,15 +19,14 @@ namespace xe {
 		explicit SSAO(uint width, uint height);
 		~SSAO() override;
 
-		void calculateAO(const Texture *normal, const Texture *position, const Quad* quad);
+		void calculateAO(const Texture *normal, const Texture *position, const Quad *quad);
 
-		inline const Texture *getAO() const { return texture; }
+		inline const Texture *getAO() const { return aoTexture; }
 
 	private:
-		FrameBuffer *buffer;
-		Texture *texture;
-
-		const Shader *shader;
+		FrameBuffer *aoBuffer;
+		Texture *aoTexture;
+		const Shader *aoShader;
 	};
 
 }

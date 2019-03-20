@@ -34,6 +34,10 @@ namespace xe {
 		buffer->load(attachments);
 	}
 
+	void FrameBuffer::copy(FrameBuffer *dest) {
+		buffer->copy(dest->buffer);
+	}
+
 	void FrameBuffer::bindDrawAttachment(Attachment attachment) const {
 		buffer->bindDrawAttachment(attachment);
 	}

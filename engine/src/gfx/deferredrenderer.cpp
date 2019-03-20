@@ -26,7 +26,7 @@ namespace xe {
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
 		final = new FinalFX(width, height);
-		ssao = new SSAO(width, height);
+		ssao = new SSAO(width / 2, height / 2);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {
