@@ -6,10 +6,10 @@
 #define X808_AMBIENTOCCLUSION_HPP
 
 
-#include <xe/gfx/ssao.hpp>
-#include <xe/gfx/hbao.hpp>
+#include <xe/gfx/fx/ssao.hpp>
+#include <xe/gfx/fx/hbao.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	enum class AOType {
 		Ssao,
@@ -40,7 +40,7 @@ namespace xe {
 		HBAO *hbao;
 	};
 
-}
+}}
 
 
 #endif //X808_AMBIENTOCCLUSION_HPP

@@ -2,11 +2,11 @@
 // Created by FLXR on 3/20/2019.
 //
 
-#include <xe/gfx/hbao.hpp>
+#include <xe/gfx/fx/hbao.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/shadermanager.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	HBAO::HBAO(uint width, uint height) :
 			RenderEffect(width, height) {
@@ -62,4 +62,4 @@ namespace xe {
 		aoBuffer->unbind();
 	}
 
-}
+}}

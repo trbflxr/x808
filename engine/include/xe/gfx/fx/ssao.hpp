@@ -8,11 +8,11 @@
 
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/shader.hpp>
-#include <xe/gfx/rendereffect.hpp>
+#include <xe/gfx/fx/rendereffect.hpp>
 #include <xe/gfx/quad.hpp>
 #include <xe/utils/noncopyable.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	class XE_API SSAO : public RenderEffect, NonCopyable {
 	public:
@@ -29,6 +29,6 @@ namespace xe {
 		const Shader *aoShader;
 	};
 
-}
+}}
 
 #endif //X808_SSAO_HPP

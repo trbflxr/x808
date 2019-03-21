@@ -18,7 +18,7 @@ Test3D::Test3D() {
 
 	ShadowParameters sp(app.getConfig(), 512, 1024);
 
-	renderer = new DeferredRenderer(width, height, camera, sp, AOType::Hbao);
+	renderer = new DeferredRenderer(width, height, camera, sp, fx::AOType::Hbao);
 	renderer->enableLightObjects(true);
 	renderer->enableLightBounds(true);
 
@@ -251,7 +251,7 @@ void Test3D::renderImGui() {
 	static const char *aoTypes[] = {"SSAO", "HBAO", "None"};
 	static int32 currentAO = 1;
 	if (ImGui::Combo("AO", &currentAO, aoTypes, 3)) {
-		renderer->setAOType(AmbientOcclusion::stringToType(aoTypes[currentAO]));
+		renderer->setAOType(fx::AmbientOcclusion::stringToType(aoTypes[currentAO]));
 	}
 
 	static bool m1n = true;

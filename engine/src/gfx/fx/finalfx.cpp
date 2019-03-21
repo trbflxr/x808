@@ -2,11 +2,11 @@
 // Created by FLXR on 3/2/2019.
 //
 
-#include <xe/gfx/finalfx.hpp>
+#include <xe/gfx/fx/finalfx.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/shadermanager.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	FinalFX::FinalFX(uint width, uint height) :
 			RenderEffect(width, height) {
@@ -50,4 +50,4 @@ namespace xe {
 		finalShader->unbind();
 	}
 
-}
+}}

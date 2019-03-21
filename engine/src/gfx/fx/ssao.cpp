@@ -2,11 +2,11 @@
 // Created by FLXR on 3/19/2019.
 //
 
-#include <xe/gfx/ssao.hpp>
+#include <xe/gfx/fx/ssao.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/shadermanager.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	SSAO::SSAO(uint width, uint height) :
 			RenderEffect(width, height) {
@@ -57,4 +57,4 @@ namespace xe {
 		aoBuffer->unbind();
 	}
 
-}
+}}

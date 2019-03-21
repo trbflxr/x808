@@ -10,7 +10,8 @@
 namespace xe {
 
 	Quad::Quad(uint width, uint height) :
-			RenderEffect(width, height) {
+			width(width),
+			height(height) {
 
 		//buffers
 		vec2 positions[] = {{-1.0f, 1.0f},

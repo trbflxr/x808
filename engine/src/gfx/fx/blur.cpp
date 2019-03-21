@@ -2,11 +2,11 @@
 // Created by FLXR on 3/20/2019.
 //
 
-#include <xe/gfx/blur.hpp>
+#include <xe/gfx/fx/blur.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/shadermanager.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	Blur::Blur(uint width, uint height) :
 			RenderEffect(width, height),
@@ -48,7 +48,7 @@ namespace xe {
 
 		blurBuffer->bindDraw(Attachment::Color0);
 		Renderer::setViewport(0, 0, width, height);
-		Renderer::clear(RendererBufferColor );
+		Renderer::clear(RendererBufferColor);
 
 		blurShader->bind();
 
@@ -80,4 +80,4 @@ namespace xe {
 		blurBuffer->unbind();
 	}
 
-}
+}}

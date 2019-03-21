@@ -7,7 +7,8 @@
 
 namespace xe {
 
-	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera, ShadowParameters sp, AOType aoType) :
+	DeferredRenderer::DeferredRenderer(uint width, uint height, Camera *camera,
+	                                   ShadowParameters sp, fx::AOType aoType) :
 			width(width),
 			height(height),
 			camera(camera),
@@ -24,8 +25,8 @@ namespace xe {
 		shadows = new Shadows(sp);
 		gBuffer = new GBuffer(width, height, this);
 		quad = new Quad(width, height);
-		final = new FinalFX(width, height);
-		ao = new AmbientOcclusion(width / 2, height / 2, aoType);
+		final = new fx::FinalFX(width, height);
+		ao = new fx::AmbientOcclusion(width / 2, height / 2, aoType);
 	}
 
 	DeferredRenderer::~DeferredRenderer() {

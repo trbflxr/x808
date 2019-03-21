@@ -7,12 +7,12 @@
 
 
 #include <xe/common.hpp>
-#include <xe/gfx/rendereffect.hpp>
+#include <xe/gfx/fx/rendereffect.hpp>
 #include <xe/gfx/quad.hpp>
 #include <xe/gfx/framebuffer.hpp>
 #include <xe/gfx/shader.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	class XE_API FinalFX : public RenderEffect {
 	public:
@@ -32,7 +32,7 @@ namespace xe {
 		Texture *finalTexture;
 	};
 
-}
+}}
 
 
 #endif //X808_FINALFX_HPP

@@ -2,9 +2,9 @@
 // Created by FLXR on 3/20/2019.
 //
 
-#include <xe/gfx/ambientocclusion.hpp>
+#include <xe/gfx/fx/ambientocclusion.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	AmbientOcclusion::AmbientOcclusion(uint width, uint height, AOType type) :
 			RenderEffect(width, height),
@@ -58,4 +58,4 @@ namespace xe {
 		return AOType::None;
 	}
 
-}
+}}

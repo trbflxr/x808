@@ -8,12 +8,11 @@
 
 #include <xe/xeint.hpp>
 
-namespace xe {
+namespace xe { namespace fx {
 
 	class RenderEffect {
 	public:
 		explicit RenderEffect(uint width, uint height) :
-				enabled(true),
 				width(width),
 				height(height) { }
 
@@ -22,18 +21,12 @@ namespace xe {
 		inline uint getWidth() const { return width; }
 		inline uint getHeight() const { return height; }
 
-		inline bool isEnabled() const { return enabled; }
-		inline void setEnabled(bool enabled) { RenderEffect::enabled = enabled; }
-		inline void toggle() { enabled = !enabled; }
-
 	protected:
-		bool enabled;
-
 		uint width;
 		uint height;
 	};
 
-}
+}}
 
 
 #endif //X808_RENDEREFFECT_HPP
