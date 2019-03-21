@@ -7,6 +7,7 @@
 #include "testl2d.hpp"
 #include "testp2d.hpp"
 #include "test3d.hpp"
+#include "emptyscene.hpp"
 
 
 static void writeKeyValue(xe::Config &config, const char *key, const char *value) {
@@ -70,7 +71,8 @@ public:
 		xe::VFS::mount("models", "xe_sandbox_assets/models/");
 		xe::VFS::mount("shaders", "/");
 
-		pushLayer(new Test3D());
+		pushLayer(new EmptyScene());
+//		pushLayer(new Test3D());
 //		pushLayer(new Test2D());
 //		pushLayer(new TestL2D());
 //		pushLayer(new TestP2D());

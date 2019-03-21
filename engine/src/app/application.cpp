@@ -2,12 +2,13 @@
 // Created by FLXR on 6/29/2018.
 //
 
+#include <xe/app/application.hpp>
 #include <xe/utils/random.hpp>
+#include <xe/utils/assert.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/resources/shadermanager.hpp>
-#include <xe/app/application.hpp>
 #include <xe/systems/shell.hpp>
 #include <xe/audio/audiomaster.hpp>
 #include <app/layerstack.hpp>
@@ -21,6 +22,8 @@ namespace xe {
 	Application::Application(const Config &config, const string &title) :
 			config(config),
 			frameTime(0.0f) {
+
+		XE_ASSERT(!instance, "[Application]: Only one application instance allowed!");
 
 		const_cast<Config &>(Config::get()) = config;
 

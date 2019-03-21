@@ -10,6 +10,7 @@
 #include <xe/config.hpp>
 #include <xe/gfx/context.hpp>
 #include <xe/window/window.hpp>
+#include <xe/utils/noncopyable.hpp>
 
 namespace xe {
 
@@ -19,10 +20,10 @@ namespace xe {
 	class LayerStack;
 	class SystemStack;
 
-	class XE_API Application {
+	class XE_API Application : NonCopyable {
 	public:
 		explicit Application(const Config &config, const string &title);
-		virtual ~Application();
+		~Application() override;
 
 		void pushLayer(Layer *layer);
 		Layer *popLayer();
@@ -52,6 +53,8 @@ namespace xe {
 		inline vec2 getWindowSize() const { return window.getSize(); }
 
 		inline static Application &get() { return *instance; }
+
+		inline static void exit() { instance->window.close(); }
 
 	private:
 		void init(const string &title);
