@@ -68,8 +68,6 @@ public:
 			if (xe::Keyboard::isKeyPressed(xe::Keyboard::LShift)) {
 				move(xe::vec3::UnitYN(), speed * delta);
 			}
-
-			camera->update();
 		}
 
 		if (!mouseLocked) {

@@ -241,8 +241,6 @@ void TestL2D::update(float delta) {
 		camPos.y -= 1000 * delta;
 	}
 	camera->setPosition(camPos);
-
-	camera->update();
 }
 
 void TestL2D::input(xe::Event &event) { }

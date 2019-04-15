@@ -343,8 +343,6 @@ namespace xe {
 
 				camera->move(vec3(change));
 
-				camera->update();
-
 				lastMousePos = newPos;
 
 				event.handled = true;

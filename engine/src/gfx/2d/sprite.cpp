@@ -48,7 +48,7 @@ namespace xe {
 		//bounds
 		const float width = fabsf(textureRect.width);
 		const float height = fabsf(textureRect.height);
-		const rect bounds(0.f, 0.0f, width, height);
+		const rect bounds(0.0f, 0.0f, width, height);
 
 		//positions
 		vertices[0].pos = vec2(0.0f, 0.0f);

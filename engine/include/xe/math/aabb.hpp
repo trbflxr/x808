@@ -12,17 +12,18 @@
 namespace xe {
 
 	struct rect;
+	struct IndexedModel;
 
 	struct XE_API aabb {
 		vec3 min;
 		vec3 max;
 
-		aabb();
 		explicit aabb(const rect &rect);
 		explicit aabb(const vec2 &min, const vec2 &max);
 		explicit aabb(const vec3 &min, const vec3 &max);
 		explicit aabb(float x, float y, float width, float height);
 		explicit aabb(float x, float y, float z, float width, float height, float depth);
+		explicit aabb(const IndexedModel *model);
 
 		bool intersects(const aabb &other) const;
 		bool contains(const vec2 &point) const;

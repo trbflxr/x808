@@ -8,7 +8,7 @@
 
 #include <xe/common.hpp>
 #include <xe/math/vec2.hpp>
-#include <xe/gfx/2d/itransformable2d.hpp>
+#include <xe/math/itransformable2d.hpp>
 
 class b2Body;
 struct b2BodyDef;

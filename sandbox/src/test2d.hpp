@@ -9,6 +9,8 @@
 #include <xe/gfx/layer.hpp>
 #include <xe/gfx/textureatlas.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
+#include <xe/gfx/2d/circleshape.hpp>
+#include <xe/gfx/2d/polygon.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
 
 class Test2D : public xe::Layer {
@@ -31,6 +33,8 @@ private:
 	xe::Camera *camera;
 	xe::Renderer2D *renderer;
 
+	xe::CircleShape *c0;
+	xe::Polygon *p0;
 	xe::RectangleShape *star;
 	xe::Text *inputText;
 

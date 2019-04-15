@@ -8,7 +8,7 @@
 
 #include <xe/gfx/color.hpp>
 #include <xe/resources/fontmanager.hpp>
-#include <xe/gfx/2d/itransformable2d.hpp>
+#include <xe/math/itransformable2d.hpp>
 
 namespace xe {
 

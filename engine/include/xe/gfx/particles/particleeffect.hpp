@@ -9,7 +9,7 @@
 #include <queue>
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
-#include <xe/gfx/2d/itransformable2d.hpp>
+#include <xe/math/itransformable2d.hpp>
 #include <xe/gfx/particles/particle.hpp>
 
 namespace xe {

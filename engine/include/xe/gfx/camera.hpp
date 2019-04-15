@@ -6,7 +6,7 @@
 #define X808_CAMERA_HPP
 
 
-#include <xe/gameobject.hpp>
+#include <xe/math/itransformable.hpp>
 
 namespace xe {
 
@@ -14,39 +14,16 @@ namespace xe {
 	public:
 		explicit Camera(const mat4 &projection) :
 				ITransformable(false),
-				projection(projection), view(1.0f), entity(nullptr) { }
-
-		~Camera() override = default;
-
-		virtual void update() const {
-			if (entity) {
-				const mat4 rotation = quat::conjugate(entity->getRotation()).toMatrix();
-				const mat4 translation = mat4::translation(-entity->getPosition());
-				view = rotation * translation;
-			} else {
-				const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
-				const mat4 translation = mat4::translation(-getPosition());
-				view = rotation * translation;
-			}
-			toMatrix();
-		}
-
-		inline void hookEntity(GameObject *entity) {
-			Camera::entity = entity;
-			update();
-		}
-
-		inline void unhookEntity() {
-			entity = nullptr;
-			update();
-		}
+				projection(projection), view(1.0f) { }
 
 		inline const mat4 &getProjection() const { return projection; }
 		inline void setProjection(const mat4 &matrix) { projection = matrix; }
 
 		inline const mat4 &getView() const {
 			if (isDirty()) {
-				update();
+				const mat4 rotation = quat::conjugate(getRotation()).toMatrix();
+				const mat4 translation = mat4::translation(-getPosition());
+				view = rotation * translation;
 			}
 			return view;
 		}
@@ -54,8 +31,6 @@ namespace xe {
 	private:
 		mutable mat4 projection;
 		mutable mat4 view;
-
-		GameObject *entity;
 	};
 
 }

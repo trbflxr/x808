@@ -10,7 +10,6 @@ namespace xe {
 			IRenderable2D(),
 			texture(nullptr) { }
 
-
 	void Shape::setTexture(const xe::Texture *texture) {
 		Shape::texture = texture;
 

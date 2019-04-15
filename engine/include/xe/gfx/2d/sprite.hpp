@@ -10,7 +10,7 @@
 #include <xe/gfx/texture.hpp>
 #include <xe/gfx/color.hpp>
 #include <xe/gfx/2d/irenderable2d.hpp>
-#include <xe/gfx/2d/itransformable2d.hpp>
+#include <xe/math/itransformable2d.hpp>
 
 namespace xe {
 

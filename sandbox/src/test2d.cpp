@@ -188,11 +188,22 @@ Test2D::Test2D() {
 	renderables.push_back(star);
 
 	//circle test
-	CircleShape *c0 = new CircleShape(50.0f);
+	c0 = new CircleShape(50.0f);
 	c0->setTexture(GETATLAS("atlas")->getTexture());
 	c0->setTextureRect(GETATLAS("atlas")->getArea("test1.png"));
 	c0->transformation({710.0f, 350.0f});
 	renderables.push_back(c0);
+
+	//polygon
+	p0 = new Polygon({{0.0f,   148.0f},
+	                  {70.0f,  82.0f},
+	                  {62.0f,  57.0f},
+	                  {101.0f, 13.0f},
+	                  {274.0f, 87.0f},
+	                  {134.0f, 165.0f}});
+	p0->transformation({510.0f, 150.0f});
+	p0->setTexture(GETTEXTURE("repeat"));
+	renderables.push_back(p0);
 
 //	Renderer::setClearColor(0xff57513c);
 }
@@ -247,22 +258,21 @@ void Test2D::update(float delta) {
 
 	///update camera
 	vec3 camPos = camera->getPosition();
+	static constexpr float speed = 500.0f;
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
-		camPos.x += 1000 * delta;
+		camPos.x += speed * delta;
 	}
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::A)) {
-		camPos.x -= 1000 * delta;
+		camPos.x -= speed * delta;
 	}
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::W)) {
-		camPos.y += 1000 * delta;
+		camPos.y += speed * delta;
 	}
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
-		camPos.y -= 1000 * delta;
+		camPos.y -= speed * delta;
 	}
 	camera->setPosition(camPos);
-
-	camera->update();
 }
 
 void Test2D::input(xe::Event &event) {
