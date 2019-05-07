@@ -209,6 +209,10 @@ namespace xe {
 		}
 	}
 
+	Layer *Application::getCurrentLayer() {
+		return layerStack->getCurrentLayer();
+	}
+
 	void Application::pushLayer(Layer *layer) {
 		layerStack->pushLayer(layer);
 	}

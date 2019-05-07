@@ -35,6 +35,8 @@ namespace xe {
 		void pushOverlay(Layer *overlay);
 		Layer *popOverlay();
 
+		inline Layer *getCurrentLayer() { return *(layers.begin() + (index - 1)); }
+
 		inline std::vector<Layer *>::iterator begin() { return layers.begin(); }
 		inline std::vector<Layer *>::iterator end() { return layers.end(); }
 

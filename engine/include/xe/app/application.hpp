@@ -25,6 +25,8 @@ namespace xe {
 		explicit Application(const Config &config, const string &title);
 		~Application() override;
 
+		Layer *getCurrentLayer();
+
 		void pushLayer(Layer *layer);
 		Layer *popLayer();
 		void pushOverlay(Layer *overlay);

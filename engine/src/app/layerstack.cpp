@@ -11,21 +11,20 @@ namespace xe {
 			index(0) { }
 
 	LayerStack::~LayerStack() {
-		for (const auto &l : layers) {
-			delete l;
-		}
+//		for (const auto &l : layers) {
+//			delete l;
+//		}
 	}
 
 	void LayerStack::pushLayer(Layer *layer) {
 		layers.emplace(layers.begin() + index, layer);
 		++index;
-		layer->init();
 	}
 
 	Layer *LayerStack::popLayer() {
+		--index;
 		Layer *layer = layers[index];
 		layers.erase(layers.begin() + index);
-		--index;
 		return layer;
 	}
 
@@ -90,8 +89,10 @@ namespace xe {
 
 		if (!event.handled || event.type == Event::Closed) {
 			for (auto it = layers.end(); it != layers.begin();) {
-				(*--it)->input(event);
-				if (event.handled && event.type != Event::Closed) break;
+				if ((*--it)->isVisible()) {
+					(*it)->input(event);
+					if (event.handled && event.type != Event::Closed) break;
+				}
 			}
 		}
 	}
