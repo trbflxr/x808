@@ -41,4 +41,9 @@ namespace xe {
 		}
 	}
 
+	void SpriteAnimation::reset() {
+		totalTime = 0.0f;
+		currentImage = vec2(0.0f);
+	}
+
 }

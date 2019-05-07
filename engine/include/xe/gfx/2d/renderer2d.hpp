@@ -55,6 +55,7 @@ namespace xe {
 		inline void setHeight(uint height) { Renderer2D::height = height; }
 
 		inline const Camera *getCamera() const { return camera; }
+		inline Camera *getCamera() { return camera; }
 		inline void setCamera(Camera *camera) { Renderer2D::camera = camera; }
 
 		inline const Shader *getShader() const { return shader; }

@@ -16,13 +16,10 @@ namespace xe {
 	public:
 		virtual ~Layer() = default;
 
-		inline bool isVisible() const { return visible; }
-		inline void setVisible(bool visible) { Layer::visible = visible; }
-
-		inline bool isActive() const { return active; }
-		inline void setActive(bool active) { Layer::active = active; }
-
 		virtual void init() { }
+
+		virtual void onShow() { }
+		virtual void onHide() { }
 
 		virtual void render() { }
 
@@ -35,6 +32,12 @@ namespace xe {
 		virtual void fixedUpdate(float delta) { }
 
 		virtual void input(Event &event) { }
+
+		inline bool isVisible() const { return visible; }
+		inline void setVisible(bool visible) { Layer::visible = visible; }
+
+		inline bool isActive() const { return active; }
+		inline void setActive(bool active) { Layer::active = active; }
 
 	protected:
 		explicit Layer() :

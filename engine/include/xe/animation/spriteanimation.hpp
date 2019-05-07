@@ -18,6 +18,8 @@ namespace xe {
 
 		void update(float delta, uint row, bool faceRight);
 
+		void reset();
+
 		inline const rect &getTextureRect() const { return textureRect; }
 
 	private:
