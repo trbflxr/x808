@@ -52,7 +52,7 @@ namespace xe {
 
 	void LayerStack::tick() {
 		for (auto &&layer : layers) {
-			if (layer->isVisible()) {
+			if (layer->isActive()) {
 				layer->tick();
 			}
 		}
@@ -60,7 +60,7 @@ namespace xe {
 
 	void LayerStack::update(float delta) {
 		for (auto &&layer : layers) {
-			if (layer->isVisible()) {
+			if (layer->isActive()) {
 				layer->update(delta);
 			}
 		}
@@ -68,7 +68,7 @@ namespace xe {
 
 	void LayerStack::lateUpdate(float delta) {
 		for (auto &&layer : layers) {
-			if (layer->isVisible()) {
+			if (layer->isActive()) {
 				layer->lateUpdate(delta);
 			}
 		}
@@ -76,7 +76,7 @@ namespace xe {
 
 	void LayerStack::fixedUpdate(float delta) {
 		for (auto &&layer : layers) {
-			if (layer->isVisible()) {
+			if (layer->isActive()) {
 				layer->fixedUpdate(delta);
 			}
 		}
@@ -89,7 +89,7 @@ namespace xe {
 
 		if (!event.handled || event.type == Event::Closed) {
 			for (auto it = layers.end(); it != layers.begin();) {
-				if ((*--it)->isVisible()) {
+				if ((*--it)->isActive()) {
 					(*it)->input(event);
 					if (event.handled && event.type != Event::Closed) break;
 				}

@@ -19,6 +19,9 @@ namespace xe {
 		inline bool isVisible() const { return visible; }
 		inline void setVisible(bool visible) { Layer::visible = visible; }
 
+		inline bool isActive() const { return active; }
+		inline void setActive(bool active) { Layer::active = active; }
+
 		virtual void init() { }
 
 		virtual void render() { }
@@ -37,7 +40,8 @@ namespace xe {
 		explicit Layer() :
 				app(Application::get()),
 				window(app.getWindow()),
-				visible(true) { }
+				visible(true),
+				active(true) { }
 
 		virtual void resize(int32 width, int32 height) { }
 
@@ -45,6 +49,7 @@ namespace xe {
 		Application &app;
 		Window &window;
 		bool visible;
+		bool active;
 
 	private:
 		friend class LayerStack;
