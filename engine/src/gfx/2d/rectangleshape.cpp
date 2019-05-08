@@ -15,6 +15,11 @@ namespace xe {
 		setSize(size);
 	}
 
+	RectangleShape::RectangleShape(const RectangleShape &other) :
+			Shape(other),
+			size(other.size),
+			sizeChanged(other.sizeChanged) { }
+
 	void RectangleShape::setSize(const vec2 &size) {
 		RectangleShape::size = size;
 		sizeChanged = true;

@@ -22,6 +22,16 @@ namespace xe {
 		create();
 	}
 
+	Polygon::Polygon(const Polygon &other) :
+			IRenderable2D(other),
+			ITransformable2D(other),
+			points(other.points),
+			pointsChanged(other.pointsChanged),
+			texture(other.texture),
+			textureRect(other.textureRect),
+			vertices(other.vertices),
+			indices(other.indices) { }
+
 	void Polygon::create() {
 		if (points.size() < 3) return;
 

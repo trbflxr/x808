@@ -10,6 +10,15 @@ namespace xe {
 			IRenderable2D(),
 			texture(nullptr) { }
 
+	Shape::Shape(const Shape &other) :
+			IRenderable2D(other),
+			ITransformable2D(other),
+			bounds(other.bounds),
+			textureRect(other.textureRect),
+			texture(other.texture),
+			vertices(other.vertices),
+			indices(other.indices) { }
+
 	void Shape::setTexture(const xe::Texture *texture) {
 		Shape::texture = texture;
 

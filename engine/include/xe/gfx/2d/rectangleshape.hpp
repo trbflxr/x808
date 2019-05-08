@@ -13,6 +13,7 @@ namespace xe {
 	class XE_API RectangleShape : public Shape {
 	public:
 		explicit RectangleShape(const vec2 &size);
+		RectangleShape(const RectangleShape &other);
 
 		inline const vec2 &getSize() const { return size; }
 		void setSize(const vec2 &size);

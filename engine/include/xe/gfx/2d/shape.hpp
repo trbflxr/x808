@@ -14,6 +14,8 @@ namespace xe {
 
 	class XE_API Shape : public IRenderable2D, public ITransformable2D {
 	public:
+		Shape(const Shape &other);
+
 		inline const Texture *getTexture() const override { return texture; }
 		void setTexture(const Texture *texture);
 

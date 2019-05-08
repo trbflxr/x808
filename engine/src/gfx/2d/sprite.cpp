@@ -24,6 +24,14 @@ namespace xe {
 		setTexture(texture);
 	}
 
+	Sprite::Sprite(const Sprite &other) :
+			IRenderable2D(other),
+			ITransformable2D(other),
+			texture(other.texture),
+			textureRect(other.textureRect),
+			vertices(other.vertices),
+			indices(other.indices) { }
+
 	Sprite::~Sprite() {
 		delete[] vertices;
 		delete[] indices;

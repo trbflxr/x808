@@ -17,6 +17,8 @@ namespace xe {
 		explicit Polygon();
 		explicit Polygon(const std::vector<vec2> &points);
 
+		Polygon(const Polygon &other);
+
 		void reshape(const std::vector<vec2> &points);
 
 		inline bool isPointsChanged() const { return pointsChanged; }

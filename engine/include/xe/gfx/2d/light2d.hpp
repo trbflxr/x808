@@ -29,6 +29,10 @@ namespace xe {
 				name(name),
 				data(pos, color, intensity) { }
 
+		inline Light2D(const Light2D &other) :
+				name(other.name),
+				data(other.data) { }
+
 		inline void move(const vec2 &dir) { data.position += dir; }
 
 		inline const string &getName() const { return name; }

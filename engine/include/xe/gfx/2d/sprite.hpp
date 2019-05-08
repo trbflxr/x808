@@ -17,6 +17,7 @@ namespace xe {
 	class XE_API Sprite : public IRenderable2D, public ITransformable2D {
 	public:
 		explicit Sprite(const Texture *texture);
+		Sprite(const Sprite &other);
 		~Sprite() override;
 
 		inline const Texture *getTexture() const override { return texture; }

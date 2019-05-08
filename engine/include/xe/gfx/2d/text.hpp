@@ -22,6 +22,15 @@ namespace xe {
 				outlineThickness(0.0f),
 				scale(scale) { }
 
+		inline Text(const Text &other) :
+				ITransformable2D(other),
+				font(other.font),
+				string(other.string),
+				textColor(other.textColor),
+				outlineColor(other.outlineColor),
+				outlineThickness(other.outlineThickness),
+				scale(other.scale) { }
+
 		inline const Font *getFont() const { return font; }
 		inline void setFont(const Font *font) { Text::font = font; }
 

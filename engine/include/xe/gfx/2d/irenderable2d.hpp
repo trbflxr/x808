@@ -19,6 +19,10 @@ namespace xe {
 
 	class IRenderable2D {
 	public:
+		inline IRenderable2D(const IRenderable2D &other) :
+				color(other.color),
+				visible(other.visible) { }
+
 		virtual ~IRenderable2D() = default;
 
 		inline uint getColor() const { return color; }

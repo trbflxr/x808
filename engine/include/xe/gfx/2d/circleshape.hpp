@@ -13,6 +13,7 @@ namespace xe {
 	class XE_API CircleShape : public Shape {
 	public:
 		explicit CircleShape(float radius, uint pointCount = 30);
+		CircleShape(const CircleShape &other);
 
 		inline float getRadius() const { return radius; }
 		inline void setRadius(float radius);

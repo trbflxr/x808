@@ -16,6 +16,12 @@ namespace xe {
 	}
 
 
+	CircleShape::CircleShape(const CircleShape &other) :
+			Shape(other),
+			radius(other.radius),
+			pointCount(other.pointCount),
+			radiusChanged(other.radiusChanged) { }
+
 	void CircleShape::setRadius(float radius) {
 		CircleShape::radius = radius;
 		radiusChanged = true;

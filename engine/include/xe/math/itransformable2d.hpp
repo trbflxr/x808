@@ -22,6 +22,13 @@ namespace xe {
 				dirty(true),
 				model(mat4::identity()) { }
 
+		inline ITransformable2D(const ITransformable2D &other) :
+				position(other.position),
+				rotation(other.rotation),
+				scale_(other.scale_),
+				origin(other.origin),
+				dirty(other.dirty),
+				model(other.model) { }
 
 		inline explicit ITransformable2D(const vec2 &position, float rotationDeg = 0.0f) :
 				position(position),
