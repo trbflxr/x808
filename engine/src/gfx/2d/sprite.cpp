@@ -27,10 +27,10 @@ namespace xe {
 	Sprite::Sprite(const Sprite &other) :
 			IRenderable2D(other),
 			ITransformable2D(other),
-			texture(other.texture),
-			textureRect(other.textureRect),
 			vertices(other.vertices),
-			indices(other.indices) { }
+			indices(other.indices),
+			textureRect(other.textureRect),
+			texture(other.texture) { }
 
 	Sprite::~Sprite() {
 		delete[] vertices;

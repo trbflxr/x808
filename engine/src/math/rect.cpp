@@ -14,7 +14,7 @@ namespace xe {
 	rect::rect(float x, float y, float width, float height) : position(x, y), size(width, height) { }
 
 	bool rect::intersects(const rect &other) const {
-		return (size > other.position && position < other.size) || (position > other.size && size < other.position);
+		return position < other.position + other.size && position + size > other.position;
 	}
 
 	bool rect::contains(const vec2 &point) const {

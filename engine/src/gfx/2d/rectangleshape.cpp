@@ -44,8 +44,7 @@ namespace xe {
 	}
 
 	bool RectangleShape::intersects(const RectangleShape &other) const {
-		return (size > other.getPosition() && getPosition() < other.size) ||
-		       (getPosition() > other.size && size < other.getPosition());
+		return getPosition() < other.getPosition() + other.size && getPosition() + size > other.getPosition();
 	}
 
 }
