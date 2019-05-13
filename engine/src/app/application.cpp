@@ -141,7 +141,7 @@ namespace xe {
 
 			//limit fps
 			const float frameEnd = frameTimer.elapsed() - frameStart;
-			if (TARGET_FPS > frameEnd) {
+			if (config.maxFps != 0 && TARGET_FPS > frameEnd) {
 				sleep(static_cast<uint>((TARGET_FPS - frameEnd) * 1000));
 			}
 
