@@ -32,6 +32,8 @@ namespace xe {
 
 		void set(const vec2 &position, float angle);
 
+		virtual void recreate() = 0;
+
 		vec2 getPosition() const;
 		float getRotation() const;
 

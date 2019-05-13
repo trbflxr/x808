@@ -18,6 +18,8 @@ namespace xe {
 		explicit CircleCollider2D(PhysicsWorld2D *world, ColliderType type, CircleShape *circle);
 		~CircleCollider2D() override;
 
+		void recreate() override;
+
 	protected:
 		void update() override;
 

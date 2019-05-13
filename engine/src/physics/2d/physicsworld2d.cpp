@@ -33,7 +33,17 @@ namespace xe {
 	}
 
 	void PhysicsWorld2D::destroyBody(b2Body *body) {
-		world->DestroyBody(body);
+		if (body) {
+			world->DestroyBody(body);
+			body = nullptr;
+		}
+	}
+
+	void PhysicsWorld2D::destroyCollider(Collider2D *collider) {
+		if (collider->body ) {
+			world->DestroyBody(collider->body);
+			collider->body = nullptr;
+		}
 	}
 
 }

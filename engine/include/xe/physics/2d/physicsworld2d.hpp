@@ -13,7 +13,7 @@
 
 class b2World;
 class b2Body;
-class b2BodyDef;
+struct b2BodyDef;
 
 namespace xe {
 
@@ -26,6 +26,8 @@ namespace xe {
 
 		b2Body *createBody(b2BodyDef *bodyDef);
 		void destroyBody(b2Body *body);
+
+		void destroyCollider(Collider2D *collider);
 
 	private:
 		b2World *world;

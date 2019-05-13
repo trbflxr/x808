@@ -75,8 +75,8 @@ public:
 //		pushLayer(new Test3D());
 //		pushLayer(new Test2D());
 //		pushLayer(new TestL2D());
-		pushLayer(new TestP2D());
-//		pushLayer(new TestB2D());
+//		pushLayer(new TestP2D());
+		pushLayer(new TestB2D());
 	}
 
 	~Test() override { }

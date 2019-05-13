@@ -24,18 +24,24 @@ namespace xe {
 		if (circle->isRadiusChanged()) {
 			circle->setRadiusChanged(false);
 
-			world->destroyBody(body);
-			create(world);
-
-			shape->m_radius = xeb2(circle->getRadius());
-
-			fixtureDef->shape = shape;
-
-			body->CreateFixture(fixtureDef);
+			recreate();
 		}
 
 		transformable->setPosition(getPosition());
 		transformable->setRotation(getRotation());
+	}
+
+	void CircleCollider2D::recreate() {
+		const CircleShape *circle = (CircleShape *) transformable;
+
+		world->destroyBody(body);
+		create(world);
+
+		shape->m_radius = xeb2(circle->getRadius());
+
+		fixtureDef->shape = shape;
+
+		body->CreateFixture(fixtureDef);
 	}
 
 }

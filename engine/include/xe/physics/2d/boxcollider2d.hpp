@@ -18,6 +18,8 @@ namespace xe {
 		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect);
 		~BoxCollider2D() override;
 
+		void recreate() override;
+
 	protected:
 		void update() override;
 

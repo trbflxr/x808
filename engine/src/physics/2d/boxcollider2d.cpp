@@ -24,19 +24,25 @@ namespace xe {
 		if (rect->isSizeChanged()) {
 			rect->setSizeChanged(false);
 
-			world->destroyBody(body);
-			create(world);
-
-			b2Vec2 s(rect->getSize() / 2.0f);
-			shape->SetAsBox(s.x, s.y);
-
-			fixtureDef->shape = shape;
-
-			body->CreateFixture(fixtureDef);
+			recreate();
 		}
 
 		transformable->setPosition(getPosition());
 		transformable->setRotation(getRotation());
+	}
+
+	void BoxCollider2D::recreate() {
+		const RectangleShape *rect = (RectangleShape *) transformable;
+
+		world->destroyBody(body);
+		create(world);
+
+		b2Vec2 s(rect->getSize() / 2.0f);
+		shape->SetAsBox(s.x, s.y);
+
+		fixtureDef->shape = shape;
+
+		body->CreateFixture(fixtureDef);
 	}
 
 }
