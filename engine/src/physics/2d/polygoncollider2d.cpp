@@ -9,8 +9,8 @@
 
 namespace xe {
 
-	PolygonCollider2D::PolygonCollider2D(PhysicsWorld2D *world, ColliderType type, Polygon *polygon)
-			: Collider2D(world, type, polygon) {
+	PolygonCollider2D::PolygonCollider2D(PhysicsWorld2D *world, ColliderType type, Polygon *polygon, bool fixedRotation)
+			: Collider2D(world, type, polygon, fixedRotation) {
 
 		XE_ASSERT(false, "Convex polygons is not implemented");
 

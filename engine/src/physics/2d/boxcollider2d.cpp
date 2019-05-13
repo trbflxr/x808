@@ -8,8 +8,8 @@
 
 namespace xe {
 
-	BoxCollider2D::BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect) :
-			Collider2D(world, type, rect) {
+	BoxCollider2D::BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect, bool fixedRotation) :
+			Collider2D(world, type, rect, fixedRotation) {
 
 		shape = new b2PolygonShape();
 	}

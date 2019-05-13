@@ -8,8 +8,9 @@
 
 namespace xe {
 
-	CircleCollider2D::CircleCollider2D(PhysicsWorld2D *world, ColliderType type, CircleShape *circle) :
-			Collider2D(world, type, circle) {
+	CircleCollider2D::CircleCollider2D(PhysicsWorld2D *world, ColliderType type,
+	                                   CircleShape *circle, bool fixedRotation) :
+			Collider2D(world, type, circle, fixedRotation) {
 
 		shape = new b2CircleShape();
 	}

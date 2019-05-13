@@ -15,7 +15,8 @@ namespace xe {
 
 	class XE_API PolygonCollider2D : public Collider2D {
 	public:
-		explicit PolygonCollider2D(PhysicsWorld2D *world, ColliderType type, Polygon *polygon);
+		explicit PolygonCollider2D(PhysicsWorld2D *world, ColliderType type,
+		                           Polygon *polygon, bool fixedRotation = false);
 		~PolygonCollider2D() override;
 
 	protected:

@@ -15,7 +15,8 @@ namespace xe {
 
 	class XE_API CircleCollider2D : public Collider2D {
 	public:
-		explicit CircleCollider2D(PhysicsWorld2D *world, ColliderType type, CircleShape *circle);
+		explicit CircleCollider2D(PhysicsWorld2D *world, ColliderType type,
+		                          CircleShape *circle, bool fixedRotation = false);
 		~CircleCollider2D() override;
 
 		void recreate() override;

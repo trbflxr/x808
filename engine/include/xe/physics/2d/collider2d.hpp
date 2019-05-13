@@ -87,7 +87,8 @@ namespace xe {
 		void setDensity(float density);
 
 	protected:
-		explicit Collider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable);
+		explicit Collider2D(PhysicsWorld2D *world, ColliderType type,
+		                    ITransformable2D *transformable, bool fixedRotation);
 
 		virtual void update();
 

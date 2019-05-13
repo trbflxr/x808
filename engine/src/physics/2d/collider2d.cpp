@@ -18,13 +18,16 @@ namespace xe {
 		}
 	}
 
-	Collider2D::Collider2D(PhysicsWorld2D *world, ColliderType type, ITransformable2D *transformable) :
+	Collider2D::Collider2D(PhysicsWorld2D *world, ColliderType type,
+	                       ITransformable2D *transformable, bool fixedRotation) :
 			world(world),
 			transformable(transformable),
 			type(type) {
 
 		bodyDef = new b2BodyDef();
 		fixtureDef = new b2FixtureDef();
+
+		bodyDef->fixedRotation = fixedRotation;
 
 		create(world);
 	}

@@ -15,7 +15,8 @@ namespace xe {
 
 	class XE_API BoxCollider2D : public Collider2D {
 	public:
-		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect);
+		explicit BoxCollider2D(PhysicsWorld2D *world, ColliderType type,
+		                       RectangleShape *rect, bool fixedRotation = false);
 		~BoxCollider2D() override;
 
 		void recreate() override;
