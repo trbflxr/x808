@@ -5,6 +5,7 @@
 #include <xe/app/application.hpp>
 #include <xe/utils/random.hpp>
 #include <xe/utils/assert.hpp>
+#include <xe/utils/sleep.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/fontmanager.hpp>
 #include <xe/resources/texturemanager.hpp>
@@ -20,8 +21,7 @@ namespace xe {
 	Application *Application::instance = nullptr;
 
 	Application::Application(const Config &config, const string &title) :
-			config(config),
-			frameTime(0.0f) {
+			config(config) {
 
 		XE_ASSERT(!instance, "[Application]: Only one application instance allowed!");
 
@@ -52,7 +52,6 @@ namespace xe {
 			window.create(mode, title, WindowStyle::Default);
 		}
 
-		window.setFramerateLimit(config.fps);
 		window.setVerticalSyncEnabled(config.vSync);
 
 		ShaderManager::init();
@@ -96,68 +95,68 @@ namespace xe {
 
 	void Application::run() {
 		Timer timer;
+		Timer frameTimer;
 
-		const float MS_PER_TICK = 1.0f / config.ups;
+		const float MS_PER_TICK = 1.0f / config.tickRate;
+		const float TARGET_FPS = 1.0f / (config.maxFps + 1);
 
 		uint tickCount = 0;
 		uint frames = 0;
 
-		float time = 0.0f;
-
 		float lastTime = timer.elapsed();
-		float tickLag = 0;
+		float time = 0.0f;
+		float tickLag = 0.0f;
 
 		while (running) {
-			Renderer::resetDC();
-
-			float currentTime = timer.elapsed();
-			float delta = currentTime - lastTime;
+			const float currentTime = timer.elapsed();
+			const float delta = currentTime - lastTime;
+			const float dt = delta / MS_PER_TICK;
 
 			lastTime = currentTime;
 			tickLag += delta;
 
+			const float frameStart = frameTimer.elapsed();
+
 			while (tickLag >= MS_PER_TICK) {
 				++tickCount;
 
-				fixedUpdate(delta);
+				fixedUpdate(MS_PER_TICK);
 
 				tickLag -= MS_PER_TICK;
 			}
 
-			update(delta);
+			update(dt);
 
 			window.clear();
+			Renderer::resetDC();
 
-			Timer frameTimer;
 			render();
 			frames++;
-			frameTime = frameTimer.elapsedMillis();
 
 			window.update();
 
 			processEvents();
 
+			lateUpdate(dt);
+
+			//limit fps
+			const float frameEnd = frameTimer.elapsed() - frameStart;
+			if (TARGET_FPS > frameEnd) {
+				sleep(static_cast<uint>((TARGET_FPS - frameEnd) * 1000));
+			}
+
 			if (timer.elapsed() - time > 1.0f) {
 				time += 1.0f;
 				fps = frames;
-				ups = tickCount;
+				tps = tickCount;
 				frames = 0;
 				tickCount = 0;
-
-				tick();
 			}
-
-			lateUpdate(delta);
 
 			if (!window.isOpen()) running = false;
 		}
 
 		shutdown();
-	}
-
-	void Application::tick() {
-		systemStack->tick();
-		layerStack->tick();
 	}
 
 	void Application::update(float delta) {
@@ -235,6 +234,11 @@ namespace xe {
 
 	System *Application::popSystem() {
 		return systemStack->popSystem();
+	}
+
+	void Application::setMaxFps(uint fps) {
+		const_cast<Config &>(Config::get()).maxFps = fps;
+		config.maxFps = fps;
 	}
 
 }

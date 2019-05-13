@@ -22,7 +22,8 @@ namespace xe {
 
 		void spawn(float lifeTime);
 
-		void update(float delta);
+		void update();
+		void fixedUpdate(float delta);
 
 		inline void setRotationRamp(Ramp<float> *ramp) { rotationRamp = ramp; }
 		inline void setTranslationRamp(Ramp<vec2> *ramp) { translationRamp = ramp; }
@@ -39,6 +40,11 @@ namespace xe {
 		Ramp<vec2> *translationRamp;
 		Ramp<vec2> *sizeRamp;
 		Ramp<vec4> *colorRamp;
+
+		bool updateRotation;
+		bool updateTranslation;
+		bool updateSize;
+		bool updateColor;
 	};
 
 }

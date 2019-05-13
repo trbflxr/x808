@@ -547,7 +547,7 @@ CODE
      perfectly fine, as the bool toggle fairly rarely. If you have on a touch device, you might find use for an early call to UpdateHoveredWindowAndCaptureFlags().
     Note: Text input widget releases focus on "Return KeyDown", so the subsequent "Return KeyUp" event that your application receive will typically
      have 'io.WantCaptureKeyboard=false'. Depending on your application logic it may or not be inconvenient. You might want to track which key-downs
-     were targeted for Dear ImGui, e.g. with an array of bool, and filter out the corresponding key-ups.)
+     were targeted for Dear ImGui, e.g. with an array of bool, and filter out the corresponding key-tps.)
 
  Q: How can I display an image? What is ImTextureID, how does it works?
  A: Short explanation:

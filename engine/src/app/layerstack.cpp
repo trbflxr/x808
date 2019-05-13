@@ -50,14 +50,6 @@ namespace xe {
 		}
 	}
 
-	void LayerStack::tick() {
-		for (auto &&layer : layers) {
-			if (layer->isActive()) {
-				layer->tick();
-			}
-		}
-	}
-
 	void LayerStack::update(float delta) {
 		for (auto &&layer : layers) {
 			if (layer->isActive()) {

@@ -17,7 +17,6 @@ namespace xe {
 		~SystemStack() override;
 
 		void render();
-		void tick();
 
 		void update(float delta);
 		void lateUpdate(float delta);

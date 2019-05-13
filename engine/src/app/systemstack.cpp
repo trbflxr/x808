@@ -31,12 +31,6 @@ namespace xe {
 		}
 	}
 
-	void SystemStack::tick() {
-		for (const auto &system : systems) {
-			system->tick();
-		}
-	}
-
 	void SystemStack::update(float delta) {
 		for (const auto &system : systems) {
 			system->update(delta);

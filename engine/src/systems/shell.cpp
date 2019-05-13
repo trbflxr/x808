@@ -358,8 +358,8 @@ namespace xe {
 			ss << "  - Height: " << Config::get().height << "\n";
 			ss << "  - Fullscreen: " << Config::get().fullScreen << "\n";
 			ss << "  - Vsync: " << Config::get().vSync << "\n";
-			ss << "  - Target FPS: " << Config::get().fps << "\n";
-			ss << "  - Target UPS: " << Config::get().ups << "\n";
+			ss << "  - Target FPS: " << Config::get().maxFps << "\n";
+			ss << "  - Target TPS: " << Config::get().tickRate << "\n";
 			ss << "  - Use SRGB: " << Config::get().srgb << "\n";
 			ss << "  - Render API: " << renderApiToString(Config::get().renderApi) << "\n";
 			ss << "  - Render API version: " << Config::get().apiVersion << "\n";

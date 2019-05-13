@@ -3,18 +3,24 @@
 //
 
 #include <xe/gfx/particles/particleeffect.hpp>
-#include <xe/timeline/ramp.hpp>
 #include <xe/gfx/2d/renderer2d.hpp>
+#include <xe/timeline/ramp.hpp>
+#include <xe/config.hpp>
 
 namespace xe {
 
-	ParticleEffect::ParticleEffect(float duration, float change, uint count, bool looped) :
+	ParticleEffect::ParticleEffect(float duration, float change, uint count, bool looped, uint maxTicks) :
 			duration(duration),
 			change(change),
 			looped(looped),
 			finished(true),
 			count(count),
+			time(0.0f),
+			tickTime(0.0f),
 			texture(nullptr) {
+
+		uint ups = maxTicks == 0 ? Config::get().tickRate : maxTicks;
+		tickTime = 1.0f / ups;
 
 		for (uint i = 0; i < count; ++i) {
 			Particle *p = new Particle(this);
@@ -48,14 +54,14 @@ namespace xe {
 		}
 	}
 
-	void ParticleEffect::update(float delta) {
+	void ParticleEffect::update() {
 		if (finished) return;
 
 		for (auto &&p : particles) {
 			if (p->isVisible()) {
 				Particle *s = dynamic_cast<Particle *>(p);
 
-				s->update(delta);
+				s->update();
 				if (!s->isVisible()) {
 					spawnQueue.push(s);
 
@@ -73,6 +79,22 @@ namespace xe {
 				Particle *p = spawnQueue.front();
 				spawnQueue.pop();
 				p->spawn(d);
+			}
+		}
+	}
+
+	void ParticleEffect::fixedUpdate(float delta) {
+		if (finished) return;
+
+		time += delta;
+		if (time >= tickTime) {
+			time = 0.0f;
+
+			for (auto &&p : particles) {
+				if (p->isVisible()) {
+					Particle *s = dynamic_cast<Particle *>(p);
+					s->fixedUpdate(delta);
+				}
 			}
 		}
 	}

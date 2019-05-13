@@ -18,13 +18,11 @@ namespace xe {
 
 	Window::Window() :
 			window(nullptr),
-			size(0, 0),
-			frameTimeLimit(0.0f) { }
+			size(0, 0) { }
 
 	Window::Window(VideoMode mode, const string &title, uint style) :
 			window(nullptr),
-			size(0, 0),
-			frameTimeLimit(0.0f) {
+			size(0, 0) {
 
 		create(mode, title, style);
 	}
@@ -172,26 +170,12 @@ namespace xe {
 		Renderer::enableVsync(enabled);
 	}
 
-	void Window::setFramerateLimit(uint limit) {
-		if (limit > 0) {
-			frameTimeLimit = 1000.0f / limit;
-		} else {
-			frameTimeLimit = 0;
-		}
-	}
-
 	void Window::clear() const {
 		Renderer::clear(RendererBufferColor | RendererBufferDepth);
 	}
 
 	void Window::update() {
 		Renderer::flush();
-
-		//limit fps
-		if (frameTimeLimit != 0) {
-			sleep(static_cast<uint>(frameTimeLimit - timer.elapsed()));
-			timer.reset();
-		}
 	}
 
 	void Window::init() {
@@ -203,11 +187,8 @@ namespace xe {
 		setMouseCursorVisible(true);
 		setVerticalSyncEnabled(false);
 		setKeyRepeatEnabled(true);
-		setFramerateLimit(0);
 
 		size = window->getSize();
-
-		timer.reset();
 
 		onCreate();
 	}

@@ -17,7 +17,7 @@ namespace xe {
 		textureRect.height = texture->getHeight() / imageCount.y;
 	}
 
-	void SpriteAnimation::update(float delta, uint row, bool faceRight) {
+	void SpriteAnimation::fixedUpdate(float delta, uint row, bool faceRight) {
 		currentImage.y = row;
 		totalTime += delta;
 

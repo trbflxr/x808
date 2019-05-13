@@ -159,6 +159,8 @@ namespace xe {
 	}
 
 	void UILayer::update(float delta) { }
+	
+	void UILayer::fixedUpdate(float delta){ }
 
 	void UILayer::input(xe::Event &event) { }
 

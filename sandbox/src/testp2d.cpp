@@ -39,6 +39,12 @@ TestP2D::TestP2D() {
 	r->setTextureRect(atlas->getArea("test1.png"));
 	renderables.push_back(r);
 
+	dummy = new RectangleShape({100, 100});
+	dummy->setPosition({500, height});
+	dummy->setTexture(atlas->getTexture());
+	dummy->setTextureRect(atlas->getArea("test1.png"));
+	renderables.push_back(dummy);
+
 	effect = new ParticleEffect(1.0f, 0.5f, 100, true);
 	effect->setPosition({width / 2, height / 3});
 
@@ -60,6 +66,8 @@ TestP2D::TestP2D() {
 //	effect->setTextureRect(atlas->getArea("test1.png"));
 
 	effect->create();
+
+	t.reset();
 }
 
 TestP2D::~TestP2D() {
@@ -92,7 +100,7 @@ void TestP2D::renderImGui() {
 	ImGui::Begin("Particle test");
 
 	ImGui::Text("fps: %i", app.getFPS());
-	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("tps: %i", app.getTPS());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
@@ -111,12 +119,37 @@ void TestP2D::renderImGui() {
 		effect->setLooped(looped);
 	}
 
+	if (ImGui::Button("dummy")) {
+		dummy->setPosition({500, app.getWindowSize().y});
+	}
 
 	ImGui::End();
 }
 
 void TestP2D::update(float delta) {
-	effect->update(delta);
+	static const float speed = 5.0f / Config::get().tickRate;
+
+	effect->update();
+
+	dummy->move({0.0f, y * delta});
+
+	if (Keyboard::isKeyPressed(Keyboard::Key::Q)) {
+		bg->rotate(-speed * delta);
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Key::E)) {
+		bg->rotate(speed * delta);
+	}
+}
+
+void TestP2D::fixedUpdate(float delta) {
+	effect->fixedUpdate(delta);
+	y = -500.0f * delta;
+
+	if (dummy->getPosition().y < 0) {
+		dummy->setPosition({500, app.getWindowSize().y});
+		XE_CORE_TRACE(t.elapsed());
+		t.reset();
+	}
 }
 
 void TestP2D::input(xe::Event &event) {

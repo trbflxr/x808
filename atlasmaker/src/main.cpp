@@ -30,8 +30,8 @@ int main() {
 	config.height = 720;
 	config.fullScreen = false;
 	config.vSync = true;
-	config.ups = 0;
-	config.fps = 90;
+	config.maxFps = 60;
+	config.tickRate = 0;
 	config.srgb = true;
 	config.renderApi = RenderAPI::OpenGL;
 	config.apiVersion = 330;

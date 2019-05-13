@@ -55,29 +55,36 @@ namespace xe {
 		}
 	}
 
-	void Particle::update(float delta) {
+	void Particle::update() {
 		if (time >= lifeTime) {
 			setVisible(false);
 			return;
 		}
 
-		time += delta;
-
-		if (rotationRamp && rotationRamp->update(delta)) {
+		if (updateRotation) {
 			setRotation(rotationRamp->getValue());
 		}
 
-		if (translationRamp && translationRamp->update(delta)) {
+		if (updateTranslation) {
 			setPosition(translationRamp->getValue());
 		}
 
-		if (sizeRamp && sizeRamp->update(delta)) {
+		if (updateSize) {
 			setSize(sizeRamp->getValue());
 		}
 
-		if (colorRamp && colorRamp->update(delta)) {
+		if (updateColor) {
 			setColor(color::encode(colorRamp->getValue()));
 		}
+	}
+
+	void Particle::fixedUpdate(float delta) {
+		time += delta;
+
+		updateRotation = rotationRamp && rotationRamp->fixedUpdate(delta);
+		updateTranslation = translationRamp && translationRamp->fixedUpdate(delta);
+		updateSize = sizeRamp && sizeRamp->fixedUpdate(delta);
+		updateColor = colorRamp && colorRamp->fixedUpdate(delta);
 	}
 
 }

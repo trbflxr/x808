@@ -19,10 +19,10 @@ namespace xe {
 		~UILayer() override;
 
 		void render() override;
-
 		void renderImGui() override;
 
 		void update(float delta) override;
+		void fixedUpdate(float delta) override;
 
 		void input(Event &event) override;
 

@@ -19,10 +19,10 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
 		config.fullScreen = (bool) atoi(value);
 	} else if (strcmp(key, "vSync") == 0) {
 		config.vSync = (bool) atoi(value);
-	} else if (strcmp(key, "ups") == 0) {
-		config.ups = (uint) atoi(value);
-	} else if (strcmp(key, "fps") == 0) {
-		config.fps = (uint) atoi(value);
+	} else if (strcmp(key, "tickRate") == 0) {
+		config.tickRate = (uint) atoi(value);
+	} else if (strcmp(key, "maxFps") == 0) {
+		config.maxFps = (uint) atoi(value);
 	} else if (strcmp(key, "srgb") == 0) {
 		config.srgb = (bool) atoi(value);
 	} else if (strcmp(key, "renderApi") == 0) {
@@ -72,10 +72,10 @@ public:
 		xe::VFS::mount("shaders", "/");
 
 //		pushLayer(new EmptyScene());
-		pushLayer(new Test3D());
+//		pushLayer(new Test3D());
 //		pushLayer(new Test2D());
 //		pushLayer(new TestL2D());
-//		pushLayer(new TestP2D());
+		pushLayer(new TestP2D());
 //		pushLayer(new TestB2D());
 	}
 

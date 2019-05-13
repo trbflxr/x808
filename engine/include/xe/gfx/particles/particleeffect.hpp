@@ -18,12 +18,13 @@ namespace xe {
 
 	class XE_API ParticleEffect : public ITransformable2D {
 	public:
-		explicit ParticleEffect(float duration, float change, uint count, bool looped);
+		explicit ParticleEffect(float duration, float change, uint count, bool looped, uint maxTicks = 0);
 		virtual ~ParticleEffect();
 
 		void create();
 
-		void update(float delta);
+		void update();
+		void fixedUpdate(float delta);
 
 		void play();
 		void stop();
@@ -65,6 +66,9 @@ namespace xe {
 		bool finished;
 
 		uint count;
+
+		float time;
+		float tickTime;
 
 		const Texture *texture;
 		rect textureRect;

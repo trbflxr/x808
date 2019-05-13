@@ -75,7 +75,7 @@ namespace xe {
 			}
 		}
 
-		bool update(float delta) {
+		bool fixedUpdate(float delta) {
 			if (!hasStates || states.size() == 1 || totalTime >= duration) return false;
 
 			totalTime += delta;

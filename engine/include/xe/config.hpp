@@ -11,14 +11,15 @@
 
 namespace xe {
 
-	struct Config {
+	class XE_API Config {
+	public:
 		uint width;
 		uint height;
 		bool fullScreen;
 		bool vSync;
 
-		uint ups;
-		uint fps;
+		uint maxFps;
+		uint tickRate;
 
 		bool srgb;
 
@@ -29,13 +30,14 @@ namespace xe {
 		uint maxDirectionalCascades;
 		uint shadowQuality;
 
-		Config() :
+	public:
+		explicit Config() :
 				width(1),
 				height(1),
 				fullScreen(false),
 				vSync(false),
-				ups(0),
-				fps(0),
+				maxFps(0),
+				tickRate(30),
 				srgb(true),
 				renderApi(RenderAPI::OpenGL),
 				apiVersion(330),
@@ -43,10 +45,13 @@ namespace xe {
 				maxDirectionalCascades(3),
 				shadowQuality(3) { }
 
-		static const Config &get() {
-			static Config cfg;
-			return cfg;
+		static inline const Config &get() {
+			if (!cfg) cfg = new Config();
+			return *cfg;
 		}
+
+	private:
+		static Config *cfg;
 	};
 
 }

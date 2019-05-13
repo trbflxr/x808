@@ -26,6 +26,10 @@ void EmptyScene::update(float delta) {
 
 }
 
+void EmptyScene::fixedUpdate(float delta){
+
+}
+
 void EmptyScene::input(Event &event) {
 	if (event.key.code == Keyboard::Escape) {
 		Application::exit();

@@ -18,8 +18,6 @@ namespace xe {
 
 		virtual void render() { }
 
-		virtual void tick() { }
-
 		virtual void update(float delta) { }
 		virtual void lateUpdate(float delta) { }
 		virtual void fixedUpdate(float delta) { }

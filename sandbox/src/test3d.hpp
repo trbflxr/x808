@@ -23,6 +23,7 @@ public:
 	void renderImGui() override;
 
 	void update(float delta) override;
+	void fixedUpdate(float delta) override;
 
 	void input(xe::Event &event) override;
 

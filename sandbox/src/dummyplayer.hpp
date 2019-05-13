@@ -19,8 +19,8 @@ public:
 			window(xe::Application::get().getWindow()),
 			camera(camera),
 			mouseSensitivity(sensitivity),
-			speed(speed),
-			sprintSpeed(speed * sprint) {
+			speed(speed / xe::Config::get().tickRate),
+			sprintSpeed(DummyPlayer::speed * sprint) {
 
 		windowSize = window.getSize();
 		windowCenter = windowSize / 2.0f;

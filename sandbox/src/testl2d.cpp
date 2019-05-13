@@ -132,7 +132,7 @@ void TestL2D::renderImGui() {
 	ImGui::Begin("Audio test");
 
 	ImGui::Text("fps: %i", app.getFPS());
-	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("tick rate: %i", app.getTPS());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
@@ -216,11 +216,10 @@ void TestL2D::renderImGui() {
 }
 
 void TestL2D::update(float delta) {
+	static const float speed = 1000.0f / Config::get().tickRate;
+
 	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->getPosition()));
 	player->setPosition(pos);
-
-	playerAnimation->update(delta, 0, true);
-	player->setTextureRect(playerAnimation->getTextureRect());
 
 	static vec2 halfScreen = app.getWindowSize() / 2.0f;
 	as0->setPosition(vec3((halfScreen - pos) * -1, 150.0f));
@@ -229,18 +228,23 @@ void TestL2D::update(float delta) {
 	vec3 camPos = camera->getPosition();
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
-		camPos.x += 1000 * delta;
+		camPos.x += speed * delta;
 	}
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::A)) {
-		camPos.x -= 1000 * delta;
+		camPos.x -= speed * delta;
 	}
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::W)) {
-		camPos.y += 1000 * delta;
+		camPos.y += speed * delta;
 	}
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::S)) {
-		camPos.y -= 1000 * delta;
+		camPos.y -= speed * delta;
 	}
 	camera->setPosition(camPos);
+}
+
+void TestL2D::fixedUpdate(float delta) {
+	playerAnimation->fixedUpdate(delta, 0, true);
+	player->setTextureRect(playerAnimation->getTextureRect());
 }
 
 void TestL2D::input(xe::Event &event) { }

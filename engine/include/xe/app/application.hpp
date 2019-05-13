@@ -40,9 +40,10 @@ namespace xe {
 		void resume();
 		void stop();
 
+		void setMaxFps(uint fps);
+
 		inline uint getFPS() const { return fps; }
-		inline uint getUPS() const { return ups; }
-		inline float getFrameTime() const { return frameTime; }
+		inline uint getTPS() const { return tps; }
 
 		inline Window &getWindow() { return window; }
 		inline const Window &getWindow() const { return window; }
@@ -65,8 +66,6 @@ namespace xe {
 
 		void run();
 
-		void tick();
-
 		void update(float delta);
 		void lateUpdate(float delta);
 		void fixedUpdate(float delta);
@@ -84,14 +83,12 @@ namespace xe {
 		bool suspend_;
 
 		uint fps;
-		uint ups;
-		float frameTime;
+		uint tps;
 
 		LayerStack *layerStack;
 		SystemStack *systemStack;
 
 		static Application *instance;
-
 	};
 
 }

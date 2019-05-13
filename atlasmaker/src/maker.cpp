@@ -179,7 +179,7 @@ namespace xe {
 		ImGui::Begin("Atlas maker");
 
 		ImGui::Text("fps: %i", app.getFPS());
-		ImGui::Text("frame time: %.3f", app.getFrameTime());
+		ImGui::Text("tick rate: %i", app.getTPS());
 		ImGui::Text("draw calls: %i", Renderer::getDC());
 		ImGui::Text("scale: %.2f", scale);
 		ImGui::Separator();

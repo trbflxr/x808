@@ -121,7 +121,6 @@ void TestB2D::renderImGui() {
 
 	//debug
 	ImGui::Text("fps: %i", app.getFPS());
-	ImGui::Text("frame time: %.3f", app.getFrameTime());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
@@ -135,7 +134,9 @@ void TestB2D::update(float delta) {
 		boxCollider->set(p, boxCollider->getRotation());
 		boxCollider->setAwake(true);
 	}
+}
 
+void TestB2D::fixedUpdate(float delta) {
 	world->update(delta, 6, 3);
 }
 

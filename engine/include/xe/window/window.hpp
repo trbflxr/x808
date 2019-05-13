@@ -65,8 +65,6 @@ namespace xe {
 
 		void setKeyRepeatEnabled(bool enabled) const;
 
-		void setFramerateLimit(uint limit);
-
 		void requestFocus() const;
 		bool hasFocus() const;
 
@@ -88,9 +86,6 @@ namespace xe {
 		internal::PlatformWindow *window;
 
 		vec2 size;
-		Timer timer;
-		float frameTimeLimit;
-
 	};
 
 }

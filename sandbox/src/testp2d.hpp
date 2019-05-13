@@ -22,6 +22,7 @@ public:
 	void renderImGui() override;
 
 	void update(float delta) override;
+	void fixedUpdate(float delta) override;
 
 	void input(xe::Event &event) override;
 
@@ -34,7 +35,11 @@ private:
 	xe::TextureAtlas *atlas;
 
 	xe::RectangleShape *bg;
+	xe::RectangleShape *dummy;
 	std::vector<xe::IRenderable2D *> renderables;
+
+	float y = 0.0f;
+	xe::Timer t;
 };
 
 

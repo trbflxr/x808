@@ -243,7 +243,7 @@ void Test2D::renderImGui() {
 
 	//debug
 	ImGui::Text("fps: %i", app.getFPS());
-	ImGui::Text("frame time: %.3f", app.getFrameTime());
+	ImGui::Text("tick rate: %i", app.getTPS());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
@@ -252,13 +252,14 @@ void Test2D::renderImGui() {
 }
 
 void Test2D::update(float delta) {
+	static const float speed = 500.0f / Config::get().tickRate;
+
 	const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->getPosition()));
 
 	star->setPosition(pos);
 
 	///update camera
 	vec3 camPos = camera->getPosition();
-	static constexpr float speed = 500.0f;
 
 	if (xe::Keyboard::isKeyPressed(xe::Keyboard::Key::D)) {
 		camPos.x += speed * delta;

@@ -20,7 +20,6 @@ namespace xe {
 		~LayerStack() override;
 
 		void render(bool renderImGui);
-		void tick();
 
 		void update(float delta);
 		void lateUpdate(float delta);

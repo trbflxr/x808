@@ -16,7 +16,7 @@ namespace xe {
 	public:
 		explicit SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime);
 
-		void update(float delta, uint row, bool faceRight);
+		void fixedUpdate(float delta, uint row, bool faceRight);
 
 		void reset();
 

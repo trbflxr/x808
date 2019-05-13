@@ -221,7 +221,6 @@ void Test3D::renderImGui() {
 	ImGui::Begin("Test3D");
 
 	ImGui::Text("fps: %i", app.getFPS());
-	ImGui::Text("frame time: %.3f", app.getFrameTime());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Text("camera: (%.1f, %.1f, %.1f)", cp.x, cp.y, cp.z);
 	ImGui::Text("look: (%.1f, %.1f, %.1f)", cl.x, cl.y, cl.z);
@@ -396,8 +395,6 @@ void Test3D::update(float delta) {
 
 	player->update(delta);
 
-	model->rotate(vec3::UnitY(), 30 * delta);
-
 	if (hook) {
 		sl->setRotation(camera->getRotation());
 		sl->setPosition(camera->getPosition());
@@ -413,6 +410,10 @@ void Test3D::update(float delta) {
 	if (dlr) {
 		dl->setRotation(camera->getRotation());
 	}
+}
+
+void Test3D::fixedUpdate(float delta){
+	model->rotate(vec3::UnitY(), 30 * delta);
 }
 
 void Test3D::input(Event &event) {
