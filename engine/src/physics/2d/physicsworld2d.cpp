@@ -40,10 +40,14 @@ namespace xe {
 	}
 
 	void PhysicsWorld2D::destroyCollider(Collider2D *collider) {
-		if (collider->body ) {
+		if (collider->body) {
 			world->DestroyBody(collider->body);
 			collider->body = nullptr;
 		}
+	}
+
+	void PhysicsWorld2D::setContactListener(ContactListener *listener) {
+		world->SetContactListener(listener);
 	}
 
 }

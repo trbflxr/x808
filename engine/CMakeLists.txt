@@ -14,6 +14,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS}")
 set(XE_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/tools/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/box2d
         CACHE STRING "XE include dirs" FORCE)
 
 set(XE_STATIC_LIB_DIRS
