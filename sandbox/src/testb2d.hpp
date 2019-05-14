@@ -17,6 +17,14 @@
 #include <xe/gfx/2d/polygon.hpp>
 #include <xe/gfx/2d/sprite.hpp>
 
+class MyListener : public xe::IContactListener {
+public:
+	void beginContact(b2Contact *contact) override;
+	void endContact(b2Contact *contact) override;
+	void preSolve(b2Contact *contact, const b2Manifold *oldManifold) override;
+	void postSolve(b2Contact *contact, const b2ContactImpulse *impulse) override;
+};
+
 class TestB2D : public xe::Layer {
 public:
 	explicit TestB2D();
@@ -35,6 +43,7 @@ private:
 	xe::Renderer2D *renderer;
 
 	//rectangles
+	MyListener *contactListener;
 	xe::PhysicsWorld2D *world;
 	xe::BoxCollider2D *boxCollider;
 	xe::BoxCollider2D *groundCollider;

@@ -9,6 +9,22 @@
 
 using namespace xe;
 
+void MyListener::beginContact(b2Contact *contact) {
+	XE_TRACE("begin contact");
+}
+
+void MyListener::endContact(b2Contact *contact) {
+	XE_TRACE("end contact");
+}
+
+void MyListener::preSolve(b2Contact *contact, const b2Manifold *oldManifold) {
+	XE_TRACE("presolve contact");
+}
+
+void MyListener::postSolve(b2Contact *contact, const b2ContactImpulse *impulse) {
+	XE_TRACE("postsolve contact");
+}
+
 TestB2D::TestB2D() {
 	const float width = app.getWindowSize().x;
 	const float height = app.getWindowSize().y;
@@ -30,7 +46,9 @@ TestB2D::TestB2D() {
 	camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
 	renderer = new Renderer2D(width, height, camera);
 
+	contactListener = new MyListener();
 	world = new PhysicsWorld2D({0.0f, -9.8f});
+	world->setContactListener(contactListener);
 
 	//rectangles
 	box = new RectangleShape({50.0f, 50.0f});
@@ -128,6 +146,7 @@ TestB2D::~TestB2D() {
 	}
 	delete poly0;
 
+	delete contactListener;
 	delete world;
 }
 

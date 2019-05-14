@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <xe/utils/logger.hpp>
 #include <xe/physics/2d/collider2d.hpp>
+#include <physics/2d/icontactlistenerimpl.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
 
 namespace xe {
@@ -46,8 +47,8 @@ namespace xe {
 		}
 	}
 
-	void PhysicsWorld2D::setContactListener(ContactListener *listener) {
-		world->SetContactListener(listener);
+	void PhysicsWorld2D::setContactListener(IContactListener *listener) {
+		world->SetContactListener(listener->listener);
 	}
 
 }

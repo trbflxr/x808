@@ -10,7 +10,7 @@
 #include <xe/xeint.hpp>
 #include <xe/math/vec2.hpp>
 #include <xe/physics/2d/collider2d.hpp>
-#include <xe/physics/2d/contactlistener.hpp>
+#include <xe/physics/2d/icontactlistener.hpp>
 
 class b2World;
 class b2Body;
@@ -30,7 +30,7 @@ namespace xe {
 
 		void destroyCollider(Collider2D *collider);
 
-		void setContactListener(ContactListener *listener);
+		void setContactListener(IContactListener *listener);
 
 	private:
 		b2World *world;
