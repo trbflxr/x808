@@ -160,7 +160,7 @@ namespace xe {
 	}
 
 	void Application::update(float delta) {
-		ImGui::xe::update(window, delta);
+		ImGui::xe::update(window, delta / config.tickRate);
 
 		shell->update(delta);
 

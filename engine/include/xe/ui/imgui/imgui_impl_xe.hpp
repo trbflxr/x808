@@ -13,7 +13,7 @@
 #include <xe/math/vec2.hpp>
 #include <xe/window/window.hpp>
 
-namespace ImGui { namespace xe {
+namespace ImGui::xe {
 
 	XE_API void init(::xe::Window &window, bool loadDefaultFont = true);
 
@@ -30,6 +30,6 @@ namespace ImGui { namespace xe {
 
 	XE_API void updateFontTexture();
 
-}}
+}
 
 #endif //X808_IMGUI_IMPL_XE_GL_HPP
