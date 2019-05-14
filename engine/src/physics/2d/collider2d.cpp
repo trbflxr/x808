@@ -56,6 +56,22 @@ namespace xe {
 		body->SetTransform(position, to_rad(angle));
 	}
 
+	uint16 Collider2D::getCategoryBits() const {
+		return fixtureDef->filter.categoryBits;
+	}
+
+	void Collider2D::setCategoryBits(uint16 bits) {
+		fixtureDef->filter.categoryBits = bits;
+	}
+
+	uint16 Collider2D::getMask() const {
+		return fixtureDef->filter.maskBits;
+	}
+
+	void Collider2D::setMask(uint16 bits) {
+		fixtureDef->filter.maskBits = bits;
+	}
+
 	vec2 Collider2D::getPosition() const {
 		return body->GetPosition();
 	}

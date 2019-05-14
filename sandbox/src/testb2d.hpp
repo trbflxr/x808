@@ -45,7 +45,11 @@ private:
 
 	//circles
 	xe::CircleShape *circle0;
+	xe::CircleShape *circle1;
+	xe::CircleShape *circle2;
 	xe::CircleCollider2D *circleCollider0;
+	xe::CircleCollider2D *circleCollider1;
+	xe::CircleCollider2D *circleCollider2;
 
 	//polygons
 	xe::Polygon *poly0;

@@ -34,6 +34,12 @@ namespace xe {
 
 		virtual void recreate() = 0;
 
+		uint16 getCategoryBits() const;
+		void setCategoryBits(uint16 bits);
+
+		uint16 getMask() const;
+		void setMask(uint16 bits);
+
 		vec2 getPosition() const;
 		float getRotation() const;
 

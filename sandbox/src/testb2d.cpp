@@ -48,13 +48,24 @@ TestB2D::TestB2D() {
 	jdm->transformation({400.0f, 400.0f});
 	renderables.push_back(jdm);
 
+	//filters
+	static constexpr uint16 GROUND = 2;
+	static constexpr uint16 BOX = 4;
+	static constexpr uint16 CIRCLE0 = 8;
+	static constexpr uint16 CIRCLE1 = 16;
+	static constexpr uint16 CIRCLE2 = 32;
+
 	//rect colliders
 	boxCollider = new BoxCollider2D(world, ColliderType::Dynamic, box);
 	boxCollider->setDensity(20.5f);
 	boxCollider->setFriction(0.2f);
 	boxCollider->setRestitution(0.5f);
+	boxCollider->setCategoryBits(BOX);
+	boxCollider->setMask(GROUND | CIRCLE0);
 
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
+	groundCollider->setCategoryBits(GROUND);
+	groundCollider->setMask(BOX | CIRCLE1 | CIRCLE2);
 
 	//circles
 	circle0 = new CircleShape(100.0f);
@@ -63,8 +74,28 @@ TestB2D::TestB2D() {
 	circle0->transformation({370.0f, 200.0f});
 	renderables.push_back(circle0);
 
+	circle1 = new CircleShape(50.0f);
+	circle1->setTexture(GETTEXTURE("4"));
+	circle1->transformation({470.0f, 500.0f});
+	renderables.push_back(circle1);
+
+	circle2 = new CircleShape(50.0f);
+	circle2->setTexture(GETTEXTURE("3"));
+	circle2->transformation({470.0f, 600.0f});
+	renderables.push_back(circle2);
+
 	//circle colliders
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
+	circleCollider0->setCategoryBits(CIRCLE0);
+	circleCollider0->setMask(BOX | CIRCLE1 | CIRCLE2);
+
+	circleCollider1 = new CircleCollider2D(world, ColliderType::Dynamic, circle1);
+	circleCollider1->setCategoryBits(CIRCLE1);
+	circleCollider1->setMask(GROUND | CIRCLE0);
+
+	circleCollider2 = new CircleCollider2D(world, ColliderType::Dynamic, circle2);
+	circleCollider2->setCategoryBits(CIRCLE2);
+	circleCollider2->setMask(GROUND | CIRCLE0);
 
 	//polygons
 	poly0 = new Polygon();
@@ -89,7 +120,8 @@ TestB2D::~TestB2D() {
 	delete boxCollider;
 	delete groundCollider;
 	delete circleCollider0;
-//	delete polyCollider0;
+	delete circleCollider1;
+	delete circleCollider2;
 
 	for (const auto &r : renderables) {
 		delete r;
@@ -121,6 +153,7 @@ void TestB2D::renderImGui() {
 
 	//debug
 	ImGui::Text("fps: %i", app.getFPS());
+	ImGui::Text("tick rate: %i", app.getTPS());
 	ImGui::Text("draw calls: %i", Renderer::getDC());
 	ImGui::Separator();
 	ImGui::Dummy({10.0f, 0.0f});
