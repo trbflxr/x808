@@ -46,9 +46,11 @@ private:
 	MyListener *contactListener;
 	xe::PhysicsWorld2D *world;
 	xe::BoxCollider2D *boxCollider;
+	xe::Sensor2D *boxSensor;
 	xe::BoxCollider2D *groundCollider;
 
 	xe::RectangleShape *box;
+	xe::RectangleShape *sensor;
 	xe::RectangleShape *ground;
 	xe::RectangleShape *jdm;
 

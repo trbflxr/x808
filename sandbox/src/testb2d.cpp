@@ -2,27 +2,53 @@
 // Created by FLXR on 9/11/2018.
 //
 
+#include <Box2D/Box2D.h>
 #include <xe/resources/texturemanager.hpp>
 #include <xe/gfx/renderer.hpp>
 #include <xe/ui/imgui/imgui.h>
+#include <xe/physics/2d/sensor2d.hpp>
 #include "testb2d.hpp"
 
 using namespace xe;
 
 void MyListener::beginContact(b2Contact *contact) {
-	XE_TRACE("begin contact");
+
+	const b2Fixture *fa = contact->GetFixtureA();
+	const b2Fixture *fb = contact->GetFixtureB();
+
+//	if (fa->GetUserData() && strcmp((const char *) fa->GetUserData(), "sensor") == 0) {
+//		XE_TRACE("begin contact");
+//		return;
+//	}
+//
+//	if (fb->GetUserData() && strcmp((const char *) fb->GetUserData(), "sensor") == 0) {
+//		XE_TRACE("begin contact");
+//		return;
+//	}
+
+	static uint i = 0;
+
+	if (fa->GetUserData()) {
+		XE_TRACE("fa: ", (const char *) fa->GetUserData(), i);
+		++i;
+	}
+
+	if (fb->GetUserData()) {
+		XE_TRACE("fb: ", (const char *) fb->GetUserData(), i);
+		++i;
+	}
 }
 
 void MyListener::endContact(b2Contact *contact) {
-	XE_TRACE("end contact");
+//	XE_TRACE("end contact");
 }
 
 void MyListener::preSolve(b2Contact *contact, const b2Manifold *oldManifold) {
-	XE_TRACE("presolve contact");
+//	XE_TRACE("presolve contact");
 }
 
 void MyListener::postSolve(b2Contact *contact, const b2ContactImpulse *impulse) {
-	XE_TRACE("postsolve contact");
+//	XE_TRACE("postsolve contact");
 }
 
 TestB2D::TestB2D() {
@@ -37,6 +63,7 @@ TestB2D::TestB2D() {
 	TextureManager::add(new Texture("3", "test1.png", params));
 	TextureManager::add(new Texture("4", "test6.png", params));
 	TextureManager::add(new Texture("5", "test8.png", params));
+	TextureManager::add(new Texture("f", "feelsconflictedman.jpg", params));
 
 	params.wrap = TextureWrap::Repeat;
 	TextureManager::add(new Texture("6", "sp0.png", params));
@@ -55,6 +82,10 @@ TestB2D::TestB2D() {
 	box->setTexture(GETTEXTURE("0"));
 	box->transformation({400.0f, 400.0f});
 	renderables.push_back(box);
+
+	sensor = new RectangleShape({110, 110});
+	sensor->setTexture(GETTEXTURE("f"));
+	renderables.push_back(sensor);
 
 	ground = new RectangleShape({500.0f, 5.0f});
 	ground->setTexture(GETTEXTURE("3"));
@@ -78,13 +109,20 @@ TestB2D::TestB2D() {
 	boxCollider->setDensity(20.5f);
 	boxCollider->setFriction(0.2f);
 	boxCollider->setRestitution(0.5f);
-	boxCollider->setCategoryBits(BOX);
-	boxCollider->setMask(GROUND | CIRCLE0);
-	boxCollider->setUserData((void *) "test");
+//	boxCollider->setCategoryBits(BOX);
+//	boxCollider->setMask(GROUND | CIRCLE0);
+	boxCollider->setUserData((void *) "box");
+
+	boxSensor = new Sensor2D(world, sensor, {0.0f, 0.0f});
+	boxCollider->addSensor(boxSensor);
+
+	boxSensor->setUserData((void *) "sensor");
+//	boxSensor->setCategoryBits(BOX);
+//	boxSensor->setMask(GROUND | CIRCLE0);
 
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
-	groundCollider->setCategoryBits(GROUND);
-	groundCollider->setMask(BOX | CIRCLE1 | CIRCLE2);
+//	groundCollider->setCategoryBits(GROUND);
+//	groundCollider->setMask(BOX | CIRCLE1 | CIRCLE2);
 
 	//circles
 	circle0 = new CircleShape(100.0f);
@@ -105,16 +143,16 @@ TestB2D::TestB2D() {
 
 	//circle colliders
 	circleCollider0 = new CircleCollider2D(world, ColliderType::Static, circle0);
-	circleCollider0->setCategoryBits(CIRCLE0);
-	circleCollider0->setMask(BOX | CIRCLE1 | CIRCLE2);
+//	circleCollider0->setCategoryBits(CIRCLE0);
+//	circleCollider0->setMask(BOX | CIRCLE1 | CIRCLE2);
 
 	circleCollider1 = new CircleCollider2D(world, ColliderType::Dynamic, circle1);
-	circleCollider1->setCategoryBits(CIRCLE1);
-	circleCollider1->setMask(GROUND | CIRCLE0);
+//	circleCollider1->setCategoryBits(CIRCLE1);
+//	circleCollider1->setMask(GROUND | CIRCLE0);
 
 	circleCollider2 = new CircleCollider2D(world, ColliderType::Dynamic, circle2);
-	circleCollider2->setCategoryBits(CIRCLE2);
-	circleCollider2->setMask(GROUND | CIRCLE0);
+//	circleCollider2->setCategoryBits(CIRCLE2);
+//	circleCollider2->setMask(GROUND | CIRCLE0);
 
 	//polygons
 	poly0 = new Polygon();
@@ -137,6 +175,7 @@ TestB2D::~TestB2D() {
 	delete renderer;
 
 	delete boxCollider;
+	delete boxSensor;
 	delete groundCollider;
 	delete circleCollider0;
 	delete circleCollider1;
@@ -232,6 +271,10 @@ void TestB2D::input(xe::Event &event) {
 				void *data = boxCollider->getUserData();
 				const char *s = static_cast<const char *>(data);
 				XE_TRACE(s);
+			}
+
+			if (event.key.code == Keyboard::I) {
+				XE_TRACE(sensor->getPosition());
 			}
 			break;
 		}

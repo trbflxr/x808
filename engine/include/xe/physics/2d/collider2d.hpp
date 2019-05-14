@@ -6,6 +6,7 @@
 #define X808_COLLIDER2D_HPP
 
 
+#include <vector>
 #include <xe/common.hpp>
 #include <xe/math/vec2.hpp>
 #include <xe/math/itransformable2d.hpp>
@@ -17,6 +18,7 @@ struct b2FixtureDef;
 namespace xe {
 
 	class PhysicsWorld2D;
+	class Sensor2D;
 
 	enum class ColliderType {
 		Static,
@@ -95,6 +97,8 @@ namespace xe {
 		void setUserData(void *data);
 		void *getUserData() const;
 
+		void addSensor(Sensor2D *sensor);
+
 	protected:
 		explicit Collider2D(PhysicsWorld2D *world, ColliderType type,
 		                    ITransformable2D *transformable, bool fixedRotation);
@@ -112,6 +116,8 @@ namespace xe {
 		b2BodyDef *bodyDef;
 		b2FixtureDef *fixtureDef;
 		b2Body *body;
+
+		std::vector<Sensor2D *> sensors;
 	};
 
 }

@@ -28,8 +28,7 @@ namespace xe {
 			recreate();
 		}
 
-		transformable->setPosition(getPosition());
-		transformable->setRotation(getRotation());
+		Collider2D::update();
 	}
 
 	void CircleCollider2D::recreate() {

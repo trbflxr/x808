@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <xe/math/math.hpp>
 #include <xe/physics/2d/physicsworld2d.hpp>
+#include <xe/physics/2d/sensor2d.hpp>
 #include <xe/physics/2d/collider2d.hpp>
 
 namespace xe {
@@ -48,6 +49,10 @@ namespace xe {
 	}
 
 	void Collider2D::update() {
+		for (auto &&s : sensors) {
+			s->update();
+		}
+
 		transformable->setPosition(getPosition());
 		transformable->setRotation(getRotation());
 	}
@@ -215,6 +220,11 @@ namespace xe {
 
 	void *Collider2D::getUserData() const {
 		return fixtureDef->userData;
+	}
+
+	void Collider2D::addSensor(Sensor2D *sensor) {
+		sensor->fixture = body->CreateFixture(sensor->fixtureDef);
+		sensors.push_back(sensor);
 	}
 
 }

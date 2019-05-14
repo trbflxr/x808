@@ -27,8 +27,7 @@ namespace xe {
 			recreate();
 		}
 
-		transformable->setPosition(getPosition());
-		transformable->setRotation(getRotation());
+		Collider2D::update();
 	}
 
 	void BoxCollider2D::recreate() {

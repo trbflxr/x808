@@ -46,8 +46,7 @@ namespace xe {
 			body->CreateFixture(fixtureDef);
 		}
 
-		transformable->setPosition(getPosition());
-		transformable->setRotation(getRotation());
+		Collider2D::update();
 	}
 
 }
