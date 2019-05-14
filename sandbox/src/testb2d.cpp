@@ -80,6 +80,7 @@ TestB2D::TestB2D() {
 	boxCollider->setRestitution(0.5f);
 	boxCollider->setCategoryBits(BOX);
 	boxCollider->setMask(GROUND | CIRCLE0);
+	boxCollider->setUserData((void *) "test");
 
 	groundCollider = new BoxCollider2D(world, ColliderType::Static, ground);
 	groundCollider->setCategoryBits(GROUND);
@@ -225,6 +226,12 @@ void TestB2D::input(xe::Event &event) {
 			if (event.key.code == Keyboard::W) {
 				bool wake = boxCollider->isAwake();
 				boxCollider->setAwake(!wake);
+			}
+
+			if (event.key.code == Keyboard::U) {
+				void *data = boxCollider->getUserData();
+				const char *s = static_cast<const char *>(data);
+				XE_TRACE(s);
 			}
 			break;
 		}

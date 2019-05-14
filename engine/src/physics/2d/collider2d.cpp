@@ -209,4 +209,12 @@ namespace xe {
 		body->ResetMassData();
 	}
 
+	void Collider2D::setUserData(void *data) {
+		fixtureDef->userData = data;
+	}
+
+	void *Collider2D::getUserData() const {
+		return fixtureDef->userData;
+	}
+
 }

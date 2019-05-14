@@ -92,6 +92,9 @@ namespace xe {
 		float getDensity() const;
 		void setDensity(float density);
 
+		void setUserData(void *data);
+		void *getUserData() const;
+
 	protected:
 		explicit Collider2D(PhysicsWorld2D *world, ColliderType type,
 		                    ITransformable2D *transformable, bool fixedRotation);
