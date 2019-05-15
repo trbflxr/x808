@@ -129,7 +129,7 @@ TestB2D::TestB2D() {
 	sp0->setScale({0.3f, 0.3f});
 	renderables.push_back(sp0);
 
-	Renderer::setClearColor(color::rgba(0.55f, 1.0f, 0.93f, 1.0f));
+	Renderer::setClearColor(0x007B90);
 }
 
 TestB2D::~TestB2D() {
