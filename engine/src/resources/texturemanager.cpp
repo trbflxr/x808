@@ -85,11 +85,11 @@ namespace xe {
 
   void TextureManager::createDefaultTextures() {
     TextureParameters params(TextureTarget::Tex2D,
-                             PixelInternalFormat::Rgba,
-                             PixelFormat::Rgba,
-                             PixelType::UnsignedByte,
-                             TextureMinFilter::Linear,
-                             TextureMagFilter::Linear);
+                             PixelInternalFormat::Rgb,
+                             PixelFormat::Rgb,
+                             PixelType::UnsignedByte);
+
+//    TextureParameters params;
 
     const Texture *errorTexture = new Texture("default", internal::DEFAULT_TEXTURE_W,
                                               internal::DEFAULT_TEXTURE_H, 0, params);

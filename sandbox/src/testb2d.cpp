@@ -10,19 +10,19 @@
 using namespace xe;
 
 void MyListener::beginContact(b2Contact *contact) {
-  XE_TRACE("begin contact");
+//  XE_TRACE("begin contact");
 }
 
 void MyListener::endContact(b2Contact *contact) {
-  XE_TRACE("end contact");
+//  XE_TRACE("end contact");
 }
 
 void MyListener::preSolve(b2Contact *contact, const b2Manifold *oldManifold) {
-  XE_TRACE("presolve contact");
+//  XE_TRACE("presolve contact");
 }
 
 void MyListener::postSolve(b2Contact *contact, const b2ContactImpulse *impulse) {
-  XE_TRACE("postsolve contact");
+//  XE_TRACE("postsolve contact");
 }
 
 TestB2D::TestB2D() {
@@ -88,8 +88,8 @@ TestB2D::TestB2D() {
 
   //circles
   circle0 = new CircleShape(100.0f);
-  circle0->setTexture(GETTEXTURE("5"));
-  circle0->setTextureRect({100, 100, 400, 400});
+  circle0->setTexture(GETTEXTURE("50"));
+//  circle0->setTextureRect({100, 100, 400, 400});
   circle0->transformation({370.0f, 200.0f});
   renderables.push_back(circle0);
 
