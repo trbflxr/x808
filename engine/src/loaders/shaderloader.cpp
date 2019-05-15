@@ -8,20 +8,20 @@
 
 namespace xe {
 
-	string ShaderLoader::load(const string &file) {
-		return load(file.c_str());
-	}
+  string ShaderLoader::load(const string &file) {
+    return load(file.c_str());
+  }
 
-	string ShaderLoader::load(const char *file) {
-		string path(basePath);
-		path += file;
+  string ShaderLoader::load(const char *file) {
+    string path(basePath);
+    path += file;
 
-		string source;
-		if (!VFS::readTextFile(path, source)) {
-			XE_CORE_ERROR("[ShaderFile]: file '", path, "' not found.");
-		}
+    string source;
+    if (!VFS::readTextFile(path, source)) {
+      XE_CORE_ERROR("[ShaderFile]: file '", path, "' not found.");
+    }
 
-		return source;
-	}
+    return source;
+  }
 
 }

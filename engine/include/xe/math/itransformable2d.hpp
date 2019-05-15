@@ -12,132 +12,132 @@
 
 namespace xe {
 
-	class ITransformable2D {
-	public:
-		inline ITransformable2D() :
-				position(0.0f, 0.0f),
-				rotation(0.0f),
-				scale_(1.0f, 1.0f),
-				origin(0.0f, 0.0f),
-				dirty(true),
-				model(mat4::identity()) { }
+  class ITransformable2D {
+  public:
+    inline ITransformable2D() :
+        position(0.0f, 0.0f),
+        rotation(0.0f),
+        scale_(1.0f, 1.0f),
+        origin(0.0f, 0.0f),
+        dirty(true),
+        model(mat4::identity()) { }
 
-		inline ITransformable2D(const ITransformable2D &other) :
-				position(other.position),
-				rotation(other.rotation),
-				scale_(other.scale_),
-				origin(other.origin),
-				dirty(other.dirty),
-				model(other.model) { }
+    inline ITransformable2D(const ITransformable2D &other) :
+        position(other.position),
+        rotation(other.rotation),
+        scale_(other.scale_),
+        origin(other.origin),
+        dirty(other.dirty),
+        model(other.model) { }
 
-		inline explicit ITransformable2D(const vec2 &position, float rotationDeg = 0.0f) :
-				position(position),
-				rotation(rotationDeg),
-				scale_(1.0f, 1.0f),
-				origin(0.0f, 0.0f),
-				dirty(true),
-				model(mat4::identity()) { }
+    inline explicit ITransformable2D(const vec2 &position, float rotationDeg = 0.0f) :
+        position(position),
+        rotation(rotationDeg),
+        scale_(1.0f, 1.0f),
+        origin(0.0f, 0.0f),
+        dirty(true),
+        model(mat4::identity()) { }
 
-		inline void transformation(const vec2 &position, float angleDeg = 0.0f);
+    inline void transformation(const vec2 &position, float angleDeg = 0.0f);
 
-		inline bool isDirty() const { return dirty; }
-		inline void setDirty(bool isDirty) const { dirty = isDirty; }
+    inline bool isDirty() const { return dirty; }
+    inline void setDirty(bool isDirty) const { dirty = isDirty; }
 
-		inline const vec2 &getScale() const { return scale_; }
-		inline const vec2 &getPosition() const { return position; }
-		inline float getRotation() const { return rotation; }
-		inline const vec2 &getOrigin() const { return origin; }
+    inline const vec2 &getScale() const { return scale_; }
+    inline const vec2 &getPosition() const { return position; }
+    inline float getRotation() const { return rotation; }
+    inline const vec2 &getOrigin() const { return origin; }
 
-		inline void setPosition(const vec2 &position) {
-			ITransformable2D::position = position;
-			dirty = true;
-		}
+    inline void setPosition(const vec2 &position) {
+      ITransformable2D::position = position;
+      dirty = true;
+    }
 
-		inline void setRotation(float angleDeg) {
-			ITransformable2D::rotation = angleDeg;
-			dirty = true;
-		}
+    inline void setRotation(float angleDeg) {
+      ITransformable2D::rotation = angleDeg;
+      dirty = true;
+    }
 
-		inline void setScale(const vec2 &scale) {
-			ITransformable2D::scale_ = scale;
-			dirty = true;
-		}
+    inline void setScale(const vec2 &scale) {
+      ITransformable2D::scale_ = scale;
+      dirty = true;
+    }
 
-		inline void setOrigin(const vec2 &origin) {
-			ITransformable2D::origin = origin;
-			dirty = true;
-		}
+    inline void setOrigin(const vec2 &origin) {
+      ITransformable2D::origin = origin;
+      dirty = true;
+    }
 
-		inline void move(const vec2 &dir);
-		inline void rotate(float angleDeg);
-		inline void scale(const vec2 &factor);
+    inline void move(const vec2 &dir);
+    inline void rotate(float angleDeg);
+    inline void scale(const vec2 &factor);
 
-		inline const mat4 &toMatrix() const;
+    inline const mat4 &toMatrix() const;
 
-	private:
-		vec2 position;
-		float rotation;
-		vec2 scale_;
-		vec2 origin;
+  private:
+    vec2 position;
+    float rotation;
+    vec2 scale_;
+    vec2 origin;
 
-		mutable bool dirty;
-		mutable mat4 model;
-	};
+    mutable bool dirty;
+    mutable mat4 model;
+  };
 
 
-	void ITransformable2D::transformation(const vec2 &position, float angleDeg) {
-		ITransformable2D::position = position;
-		rotation = angleDeg;
-		dirty = true;
-	}
+  void ITransformable2D::transformation(const vec2 &position, float angleDeg) {
+    ITransformable2D::position = position;
+    rotation = angleDeg;
+    dirty = true;
+  }
 
-	inline void ITransformable2D::move(const vec2 &dir) {
-		position.x += dir.x;
-		position.y += dir.y;
-		dirty = true;
-	}
+  inline void ITransformable2D::move(const vec2 &dir) {
+    position.x += dir.x;
+    position.y += dir.y;
+    dirty = true;
+  }
 
-	inline void ITransformable2D::rotate(float angleDeg) {
-		rotation += angleDeg;
+  inline void ITransformable2D::rotate(float angleDeg) {
+    rotation += angleDeg;
 
-		if (rotation < -360.0f) {
-			rotation += 360.0f;
-		} else if (rotation > 360.0f) {
-			rotation -= 360.0f;
-		}
+    if (rotation < -360.0f) {
+      rotation += 360.0f;
+    } else if (rotation > 360.0f) {
+      rotation -= 360.0f;
+    }
 
-		dirty = true;
-	}
+    dirty = true;
+  }
 
-	inline void ITransformable2D::scale(const vec2 &factor) {
-		scale_ += factor;
-		dirty = true;
-	}
+  inline void ITransformable2D::scale(const vec2 &factor) {
+    scale_ += factor;
+    dirty = true;
+  }
 
-	const mat4 &ITransformable2D::toMatrix() const {
-		if (dirty) {
-			dirty = false;
+  const mat4 &ITransformable2D::toMatrix() const {
+    if (dirty) {
+      dirty = false;
 
-			const float c = cosf(to_rad(-rotation));
-			const float s = sinf(to_rad(-rotation));
-			const float sxc = scale_.x * c;
-			const float syc = scale_.y * c;
-			const float sxs = scale_.x * s;
-			const float sys = scale_.y * s;
-			const float tx = -origin.x * sxc - origin.y * sys + position.x;
-			const float ty = origin.x * sxs - origin.y * syc + position.y;
+      const float c = cosf(to_rad(-rotation));
+      const float s = sinf(to_rad(-rotation));
+      const float sxc = scale_.x * c;
+      const float syc = scale_.y * c;
+      const float sxs = scale_.x * s;
+      const float sys = scale_.y * s;
+      const float tx = -origin.x * sxc - origin.y * sys + position.x;
+      const float ty = origin.x * sxs - origin.y * syc + position.y;
 
-			model.rows[0].x = sxc;
-			model.rows[0].y = sys;
-			model.rows[0].w = tx;
+      model.rows[0].x = sxc;
+      model.rows[0].y = sys;
+      model.rows[0].w = tx;
 
-			model.rows[1].x = -sxs;
-			model.rows[1].y = syc;
-			model.rows[1].w = ty;
-		}
+      model.rows[1].x = -sxs;
+      model.rows[1].y = syc;
+      model.rows[1].w = ty;
+    }
 
-		return model;
-	}
+    return model;
+  }
 
 }
 

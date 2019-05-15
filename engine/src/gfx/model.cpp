@@ -8,17 +8,17 @@
 namespace xe {
 
 
-	Model::Model(const string &name, const IndexedModel &model) :
-			Mesh(name, model) { }
+  Model::Model(const string &name, const IndexedModel &model) :
+      Mesh(name, model) { }
 
-	Model::Model(const string &name, const string &file) :
-			Mesh(name) {
+  Model::Model(const string &name, const string &file) :
+      Mesh(name) {
 
-		if (!ModelLoader::loadModel(this, file)) {
-			init(IndexedModel::getIcosphereModel());
-		}
-	}
+    if (!ModelLoader::loadModel(this, file)) {
+      init(IndexedModel::getIcosphereModel());
+    }
+  }
 
-	Model::~Model() { }
+  Model::~Model() { }
 
 }

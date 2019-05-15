@@ -13,29 +13,29 @@ class aiNode;
 class aiScene;
 
 namespace Assimp {
-	class Importer;
+  class Importer;
 }
 
 namespace xe {
 
-	class XE_API ModelLoader : NonCopyable {
-	public:
-		~ModelLoader() override;
+  class XE_API ModelLoader : NonCopyable {
+  public:
+    ~ModelLoader() override;
 
-		static IndexedModel *loadIndexedModel(const string &file);
-		static bool loadModel(Model *model, const string &file);
+    static IndexedModel *loadIndexedModel(const string &file);
+    static bool loadModel(Model *model, const string &file);
 
-	private:
-		explicit ModelLoader();
-		static ModelLoader &get();
+  private:
+    explicit ModelLoader();
+    static ModelLoader &get();
 
-		static const aiScene *loadScene(Assimp::Importer *importer, const string &file);
+    static const aiScene *loadScene(Assimp::Importer *importer, const string &file);
 
-	private:
-		Assimp::Importer *importer;
+  private:
+    Assimp::Importer *importer;
 
-		static constexpr const char *basePath = u8"/models/";
-	};
+    static constexpr const char *basePath = u8"/models/";
+  };
 
 }
 

@@ -12,39 +12,39 @@
 
 namespace xe {
 
-	class Application;
+  class Application;
 
-	class LayerStack : NonCopyable {
-	public:
-		explicit LayerStack(Application *app);
-		~LayerStack() override;
+  class LayerStack : NonCopyable {
+  public:
+    explicit LayerStack(Application *app);
+    ~LayerStack() override;
 
-		void render(bool renderImGui);
+    void render(bool renderImGui);
 
-		void update(float delta);
-		void lateUpdate(float delta);
-		void fixedUpdate(float delta);
+    void update(float delta);
+    void lateUpdate(float delta);
+    void fixedUpdate(float delta);
 
-		void input(Event &event);
+    void input(Event &event);
 
-		void resize(int32 width, int32 height);
+    void resize(int32 width, int32 height);
 
-		void pushLayer(Layer *layer);
-		Layer *popLayer();
-		void pushOverlay(Layer *overlay);
-		Layer *popOverlay();
+    void pushLayer(Layer *layer);
+    Layer *popLayer();
+    void pushOverlay(Layer *overlay);
+    Layer *popOverlay();
 
-		inline Layer *getCurrentLayer() { return *(layers.begin() + (index - 1)); }
+    inline Layer *getCurrentLayer() { return *(layers.begin() + (index - 1)); }
 
-		inline std::vector<Layer *>::iterator begin() { return layers.begin(); }
-		inline std::vector<Layer *>::iterator end() { return layers.end(); }
+    inline std::vector<Layer *>::iterator begin() { return layers.begin(); }
+    inline std::vector<Layer *>::iterator end() { return layers.end(); }
 
-	private:
-		Application &app;
+  private:
+    Application &app;
 
-		std::vector<Layer *> layers;
-		size_t index;
-	};
+    std::vector<Layer *> layers;
+    size_t index;
+  };
 
 }
 

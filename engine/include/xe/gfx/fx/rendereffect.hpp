@@ -10,21 +10,21 @@
 
 namespace xe { namespace fx {
 
-	class RenderEffect {
-	public:
-		explicit RenderEffect(uint width, uint height) :
-				width(width),
-				height(height) { }
+  class RenderEffect {
+  public:
+    explicit RenderEffect(uint width, uint height) :
+        width(width),
+        height(height) { }
 
-		virtual ~RenderEffect() = default;
+    virtual ~RenderEffect() = default;
 
-		inline uint getWidth() const { return width; }
-		inline uint getHeight() const { return height; }
+    inline uint getWidth() const { return width; }
+    inline uint getHeight() const { return height; }
 
-	protected:
-		uint width;
-		uint height;
-	};
+  protected:
+    uint width;
+    uint height;
+  };
 
 }}
 

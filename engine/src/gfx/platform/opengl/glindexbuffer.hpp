@@ -8,28 +8,28 @@
 
 #include <gfx/platform/platformindexbuffer.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class GLIndexBuffer : public PlatformIndexBuffer {
-	public:
-		explicit GLIndexBuffer(const uint16 *data, uint count);
-		explicit GLIndexBuffer(const uint *data, uint count);
-		explicit GLIndexBuffer();
-		~GLIndexBuffer() override;
+  class GLIndexBuffer : public PlatformIndexBuffer {
+  public:
+    explicit GLIndexBuffer(const uint16 *data, uint count);
+    explicit GLIndexBuffer(const uint *data, uint count);
+    explicit GLIndexBuffer();
+    ~GLIndexBuffer() override;
 
-		void bind() const override;
-		void unbind() const override;
+    void bind() const override;
+    void unbind() const override;
 
-		inline uint getCount() const override { return count; }
+    inline uint getCount() const override { return count; }
 
-		void setData(const uint16 *data, uint count) override;
-		void setData(const uint *data, uint count) override;
+    void setData(const uint16 *data, uint count) override;
+    void setData(const uint *data, uint count) override;
 
-	private:
-		uint handle;
-		uint count;
-	};
+  private:
+    uint handle;
+    uint count;
+  };
 
-}}
+}
 
 #endif //X808_GLINDEXBUFFER_HPP

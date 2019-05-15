@@ -7,49 +7,49 @@
 #include "glenums.hpp"
 #include "gluniformbuffer.hpp"
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) :
-			location(bind),
-			layout(layout),
-			bound(false) {
+  GLUniformBuffer::GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) :
+      location(bind),
+      layout(layout),
+      bound(false) {
 
-		glCall(glGenBuffers(1, &handle));
+    glCall(glGenBuffers(1, &handle));
 
-		GLUniformBuffer::bind();
-		glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride() * size, nullptr, bufferStorageToGL(storage)));
+    GLUniformBuffer::bind();
+    glCall(glBufferStorage(GL_UNIFORM_BUFFER, layout.getStride() * size, nullptr, bufferStorageToGL(storage)));
 
-		glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
+    glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
 
-		glCall(glBindBufferBase(GL_UNIFORM_BUFFER, bind, handle));
-	}
+    glCall(glBindBufferBase(GL_UNIFORM_BUFFER, bind, handle));
+  }
 
-	GLUniformBuffer::~GLUniformBuffer() {
-		glCall(glDeleteBuffers(1, &handle));
-	}
+  GLUniformBuffer::~GLUniformBuffer() {
+    glCall(glDeleteBuffers(1, &handle));
+  }
 
-	void GLUniformBuffer::bind() {
-		bound = true;
-		glCall(glBindBuffer(GL_UNIFORM_BUFFER, handle));
-	}
+  void GLUniformBuffer::bind() {
+    bound = true;
+    glCall(glBindBuffer(GL_UNIFORM_BUFFER, handle));
+  }
 
-	void GLUniformBuffer::unbind() {
-		bound = false;
+  void GLUniformBuffer::unbind() {
+    bound = false;
 #ifdef XE_DEBUG
-		glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
+    glCall(glBindBuffer(GL_UNIFORM_BUFFER, 0));
 #endif
-	}
+  }
 
-	void GLUniformBuffer::update(const void *data, uint index, uint layoutIndex) {
-		auto &l = layout.getLayout();
-		uint layoutOffset = layout.getStride() * layoutIndex;
+  void GLUniformBuffer::update(const void *data, uint index, uint layoutIndex) {
+    auto &l = layout.getLayout();
+    uint layoutOffset = layout.getStride() * layoutIndex;
 
-		uint offset = l[index].offset + layoutOffset;
-		uint size = l[index].size * l[index].count;
+    uint offset = l[index].offset + layoutOffset;
+    uint size = l[index].size * l[index].count;
 
-		XE_ASSERT(bound, "Error: You must call bind() first");
+    XE_ASSERT(bound, "Error: You must call bind() first");
 
-		glCall(glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data));
-	}
+    glCall(glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data));
+  }
 
-}}
+}

@@ -14,32 +14,32 @@
 
 class TestP2D : public xe::Layer {
 public:
-	explicit TestP2D();
-	~TestP2D() override;
+  explicit TestP2D();
+  ~TestP2D() override;
 
-	void render() override;
+  void render() override;
 
-	void renderImGui() override;
+  void renderImGui() override;
 
-	void update(float delta) override;
-	void fixedUpdate(float delta) override;
+  void update(float delta) override;
+  void fixedUpdate(float delta) override;
 
-	void input(xe::Event &event) override;
+  void input(xe::Event &event) override;
 
 private:
-	xe::Camera *camera;
-	xe::Renderer2D *renderer;
+  xe::Camera *camera;
+  xe::Renderer2D *renderer;
 
-	xe::ParticleEffect *effect;
+  xe::ParticleEffect *effect;
 
-	xe::TextureAtlas *atlas;
+  xe::TextureAtlas *atlas;
 
-	xe::RectangleShape *bg;
-	xe::RectangleShape *dummy;
-	std::vector<xe::IRenderable2D *> renderables;
+  xe::RectangleShape *bg;
+  xe::RectangleShape *dummy;
+  std::vector<xe::IRenderable2D *> renderables;
 
-	float y = 0.0f;
-	xe::Timer t;
+  float y = 0.0f;
+  xe::Timer t;
 };
 
 

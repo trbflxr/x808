@@ -8,48 +8,48 @@
 
 namespace xe {
 
-	SoundManager::~SoundManager() {
-		clean();
-	}
+  SoundManager::~SoundManager() {
+    clean();
+  }
 
-	SoundManager &SoundManager::instance() {
-		static SoundManager sm;
-		return sm;
-	}
+  SoundManager &SoundManager::instance() {
+    static SoundManager sm;
+    return sm;
+  }
 
-	void SoundManager::init() {
-		instance();
-	}
+  void SoundManager::init() {
+    instance();
+  }
 
-	bool SoundManager::add(const Sound *sound) {
-		auto &&it = instance().sounds.find(sound->getName());
+  bool SoundManager::add(const Sound *sound) {
+    auto &&it = instance().sounds.find(sound->getName());
 
-		if (it != instance().sounds.end()) {
-			XE_CORE_ERROR("[SoundManager]: sound '", sound->getName(), "' already exist and be deleted.");
+    if (it != instance().sounds.end()) {
+      XE_CORE_ERROR("[SoundManager]: sound '", sound->getName(), "' already exist and be deleted.");
 
-			delete sound;
-			return false;
-		}
+      delete sound;
+      return false;
+    }
 
-		instance().sounds.emplace(sound->getName(), sound);
+    instance().sounds.emplace(sound->getName(), sound);
 
-		return true;
-	}
+    return true;
+  }
 
-	const Sound *SoundManager::get(const string &name) {
-		auto &&it = instance().sounds.find(name);
-		if (it == instance().sounds.end()) {
-			XE_CORE_ERROR("[SoundManager]: sound '", name, "' not found!");
-			return nullptr;
-		}
+  const Sound *SoundManager::get(const string &name) {
+    auto &&it = instance().sounds.find(name);
+    if (it == instance().sounds.end()) {
+      XE_CORE_ERROR("[SoundManager]: sound '", name, "' not found!");
+      return nullptr;
+    }
 
-		return it->second;
-	}
+    return it->second;
+  }
 
-	void SoundManager::clean() {
-		for (const auto &s : instance().sounds) {
-			delete s.second;
-		}
-	}
+  void SoundManager::clean() {
+    for (const auto &s : instance().sounds) {
+      delete s.second;
+    }
+  }
 
 }

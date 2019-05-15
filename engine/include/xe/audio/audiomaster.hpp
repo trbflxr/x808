@@ -12,32 +12,32 @@
 
 namespace xe {
 
-	enum class DistanceModel {
-		Inverse = 0,
-		InverseClamped,
-		Linear,
-		LinearClamped,
-		Exponent,
-		ExponentClamped
-	};
+  enum class DistanceModel {
+    Inverse = 0,
+    InverseClamped,
+    Linear,
+    LinearClamped,
+    Exponent,
+    ExponentClamped
+  };
 
-	class XE_API AudioMaster : NonCopyable {
-	public:
-		static void initialize();
+  class XE_API AudioMaster : NonCopyable {
+  public:
+    static void initialize();
 
-		static void setDistanceModel(DistanceModel model);
+    static void setDistanceModel(DistanceModel model);
 
-		static std::vector<string> getDeviceList();
+    static std::vector<string> getDeviceList();
 
-	private:
-		~AudioMaster() override;
+  private:
+    ~AudioMaster() override;
 
-		static AudioMaster &get();
+    static AudioMaster &get();
 
-	private:
-		void *context;
-		void *device;
-	};
+  private:
+    void *context;
+    void *device;
+  };
 }
 
 

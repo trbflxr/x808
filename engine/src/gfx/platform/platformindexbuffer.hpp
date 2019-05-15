@@ -8,21 +8,21 @@
 
 #include <xe/xeint.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class PlatformIndexBuffer {
-	public:
-		virtual ~PlatformIndexBuffer() = default;
+  class PlatformIndexBuffer {
+  public:
+    virtual ~PlatformIndexBuffer() = default;
 
-		virtual void bind() const = 0;
-		virtual void unbind() const = 0;
+    virtual void bind() const = 0;
+    virtual void unbind() const = 0;
 
-		virtual uint getCount() const = 0;
+    virtual uint getCount() const = 0;
 
-		virtual void setData(const uint16 *data, uint count) = 0;
-		virtual void setData(const uint *data, uint count) = 0;
-	};
+    virtual void setData(const uint16 *data, uint count) = 0;
+    virtual void setData(const uint *data, uint count) = 0;
+  };
 
-}}
+}
 
 #endif //X808_PLATFORMINDEXBUFFER_HPP

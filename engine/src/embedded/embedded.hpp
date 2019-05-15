@@ -8,17 +8,17 @@
 
 #include <xe/xeint.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	extern byte* DEFAULT_TEXTURE;
-	extern uint DEFAULT_TEXTURE_SIZE;
-	extern uint DEFAULT_TEXTURE_W;
-	extern uint DEFAULT_TEXTURE_H;
+  extern byte *DEFAULT_TEXTURE;
+  extern uint DEFAULT_TEXTURE_SIZE;
+  extern uint DEFAULT_TEXTURE_W;
+  extern uint DEFAULT_TEXTURE_H;
 
-	extern byte* DEFAULT_FONT_DATA;
-	extern uint DEFAULT_FONT_DATA_SIZE;
+  extern byte *DEFAULT_FONT_DATA;
+  extern uint DEFAULT_FONT_DATA_SIZE;
 
-}}
+}
 
 
 #endif //X808_EMBEDDED_HPP

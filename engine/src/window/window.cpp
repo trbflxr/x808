@@ -11,197 +11,197 @@
 #include <window/platformwindow.hpp>
 
 namespace {
-	const xe::Window *fullscreenWindow = nullptr;
+  const xe::Window *fullscreenWindow = nullptr;
 }
 
 namespace xe {
 
-	Window::Window() :
-			window(nullptr),
-			size(0, 0) { }
+  Window::Window() :
+      window(nullptr),
+      size(0, 0) { }
 
-	Window::Window(VideoMode mode, const string &title, uint style) :
-			window(nullptr),
-			size(0, 0) {
+  Window::Window(VideoMode mode, const string &title, uint style) :
+      window(nullptr),
+      size(0, 0) {
 
-		create(mode, title, style);
-	}
+    create(mode, title, style);
+  }
 
-	Window::~Window() {
-		close();
-	}
+  Window::~Window() {
+    close();
+  }
 
-	void Window::create(VideoMode mode, const string &title, uint style) {
-		close();
+  void Window::create(VideoMode mode, const string &title, uint style) {
+    close();
 
-		if (style & WindowStyle::Fullscreen) {
-			if (fullscreenWindow) {
-				XE_CORE_ERROR("[Window]: Creating two fullscreen windows is not allowed, switching to windowed mode");
-				style &= ~WindowStyle::Fullscreen;
-			} else {
-				if (!mode.isValid()) {
-					XE_CORE_ERROR("[Window]: The requested video mode is not available, switching to a valid mode");
-					mode = VideoMode::getFullscreenModes()[0];
-				}
-				fullscreenWindow = this;
-			}
-		}
+    if (style & WindowStyle::Fullscreen) {
+      if (fullscreenWindow) {
+        XE_CORE_ERROR("[Window]: Creating two fullscreen windows is not allowed, switching to windowed mode");
+        style &= ~WindowStyle::Fullscreen;
+      } else {
+        if (!mode.isValid()) {
+          XE_CORE_ERROR("[Window]: The requested video mode is not available, switching to a valid mode");
+          mode = VideoMode::getFullscreenModes()[0];
+        }
+        fullscreenWindow = this;
+      }
+    }
 
-		window = internal::PlatformWindow::create(mode, title, style);
+    window = internal::PlatformWindow::create(mode, title, style);
 
-		init();
-	}
+    init();
+  }
 
-	void Window::close() {
-		delete window;
-		window = nullptr;
+  void Window::close() {
+    delete window;
+    window = nullptr;
 
-		if (this == fullscreenWindow) {
-			fullscreenWindow = nullptr;
-		}
-	}
+    if (this == fullscreenWindow) {
+      fullscreenWindow = nullptr;
+    }
+  }
 
-	vec2 Window::getPosition() const {
-		return window ? window->getPosition() : vec2();
-	}
+  vec2 Window::getPosition() const {
+    return window ? window->getPosition() : vec2();
+  }
 
-	void Window::setPosition(const vec2 &position) const {
-		if (window) {
-			window->setPosition(position);
-		}
-	}
+  void Window::setPosition(const vec2 &position) const {
+    if (window) {
+      window->setPosition(position);
+    }
+  }
 
-	void Window::setSize(const vec2 &size) {
-		if (window) {
-			window->setSize(size);
+  void Window::setSize(const vec2 &size) {
+    if (window) {
+      window->setSize(size);
 
-			Window::size.x = size.x;
-			Window::size.y = size.y;
+      Window::size.x = size.x;
+      Window::size.y = size.y;
 
-			onResize();
-		}
-	}
+      onResize();
+    }
+  }
 
-	void Window::setTitle(const string &title) const {
-		if (window) {
-			window->setTitle(title);
-		}
-	}
+  void Window::setTitle(const string &title) const {
+    if (window) {
+      window->setTitle(title);
+    }
+  }
 
-	string Window::getTitle() const {
-		if (window) {
-			return window->getTitle();
-		}
-		return "NULL";
-	}
+  string Window::getTitle() const {
+    if (window) {
+      return window->getTitle();
+    }
+    return "NULL";
+  }
 
-	void Window::setIcon(uint width, uint height, const byte *pixels) const {
-		if (window) {
-			window->setIcon(width, height, pixels);
-		}
-	}
+  void Window::setIcon(uint width, uint height, const byte *pixels) const {
+    if (window) {
+      window->setIcon(width, height, pixels);
+    }
+  }
 
-	void Window::setVisible(bool visible) const {
-		if (window) {
-			window->setVisible(visible);
-		}
-	}
+  void Window::setVisible(bool visible) const {
+    if (window) {
+      window->setVisible(visible);
+    }
+  }
 
-	void Window::setMouseCursorVisible(bool visible) const {
-		if (window) {
-			window->setMouseCursorVisible(visible);
-		}
-	}
+  void Window::setMouseCursorVisible(bool visible) const {
+    if (window) {
+      window->setMouseCursorVisible(visible);
+    }
+  }
 
-	void Window::setMouseCursorGrabbed(bool grabbed) const {
-		if (window) {
-			window->setMouseCursorGrabbed(grabbed);
-		}
-	}
+  void Window::setMouseCursorGrabbed(bool grabbed) const {
+    if (window) {
+      window->setMouseCursorGrabbed(grabbed);
+    }
+  }
 
-	bool Window::isMouseCursorGrabbed() const {
-		if (window) {
-			return window->isMouseCursorGrabbed();
-		}
-		return false;
-	}
+  bool Window::isMouseCursorGrabbed() const {
+    if (window) {
+      return window->isMouseCursorGrabbed();
+    }
+    return false;
+  }
 
-	void Window::setMouseCursor(const Cursor &cursor) const {
-		if (window) {
-			window->setMouseCursor(cursor);
-		}
-	}
+  void Window::setMouseCursor(const Cursor &cursor) const {
+    if (window) {
+      window->setMouseCursor(cursor);
+    }
+  }
 
-	void Window::setKeyRepeatEnabled(bool enabled) const {
-		if (window) {
-			window->setKeyRepeatEnabled(enabled);
-		}
-	}
+  void Window::setKeyRepeatEnabled(bool enabled) const {
+    if (window) {
+      window->setKeyRepeatEnabled(enabled);
+    }
+  }
 
-	void Window::requestFocus() const {
-		if (window) {
-			window->requestFocus();
-		}
-	}
-
-
-	bool Window::hasFocus() const {
-		return window && window->hasFocus();
-	}
+  void Window::requestFocus() const {
+    if (window) {
+      window->requestFocus();
+    }
+  }
 
 
-	void *Window::getHandle() const {
-		return window ? window->getHandle() : nullptr;
-	}
+  bool Window::hasFocus() const {
+    return window && window->hasFocus();
+  }
 
-	bool Window::isOpen() const {
-		return window != nullptr;
-	}
 
-	bool Window::pollEvent(Event &event) {
-		if (window && window->popEvent(event, false)) {
-			return filterEvent(event);
-		} else {
-			return false;
-		}
-	}
+  void *Window::getHandle() const {
+    return window ? window->getHandle() : nullptr;
+  }
 
-	void Window::setVerticalSyncEnabled(bool enabled) const {
-		Renderer::enableVsync(enabled);
-	}
+  bool Window::isOpen() const {
+    return window != nullptr;
+  }
 
-	void Window::clear() const {
-		Renderer::clear(RendererBufferColor | RendererBufferDepth);
-	}
+  bool Window::pollEvent(Event &event) {
+    if (window && window->popEvent(event, false)) {
+      return filterEvent(event);
+    } else {
+      return false;
+    }
+  }
 
-	void Window::update() {
-		Renderer::flush();
-	}
+  void Window::setVerticalSyncEnabled(bool enabled) const {
+    Renderer::enableVsync(enabled);
+  }
 
-	void Window::init() {
-		Context::create(getHandle());
-		Renderer::init();
-		Renderer::setClearColor(color::Black);
+  void Window::clear() const {
+    Renderer::clear(RendererBufferColor | RendererBufferDepth);
+  }
 
-		setVisible(true);
-		setMouseCursorVisible(true);
-		setVerticalSyncEnabled(false);
-		setKeyRepeatEnabled(true);
+  void Window::update() {
+    Renderer::flush();
+  }
 
-		size = window->getSize();
+  void Window::init() {
+    Context::create(getHandle());
+    Renderer::init();
+    Renderer::setClearColor(color::Black);
 
-		onCreate();
-	}
+    setVisible(true);
+    setMouseCursorVisible(true);
+    setVerticalSyncEnabled(false);
+    setKeyRepeatEnabled(true);
 
-	bool Window::filterEvent(const Event &event) {
-		if (event.type == Event::Resized) {
-			size.x = event.size.width;
-			size.y = event.size.height;
+    size = window->getSize();
 
-			onResize();
-		}
+    onCreate();
+  }
 
-		return true;
-	}
+  bool Window::filterEvent(const Event &event) {
+    if (event.type == Event::Resized) {
+      size.x = event.size.width;
+      size.y = event.size.height;
+
+      onResize();
+    }
+
+    return true;
+  }
 
 }

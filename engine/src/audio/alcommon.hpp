@@ -8,20 +8,20 @@
 
 #include <xe/xeint.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	int32 alCheckError();
+  int32 alCheckError();
 
-	bool alLogCall(const char *function, const char *file, uint line);
+  bool alLogCall(const char *function, const char *file, uint line);
 
-}}
+}
 
 #ifdef XE_DEBUG
-	#define alCall(x) ::xe::internal::alCheckError();\
+  #define alCall(x) ::xe::internal::alCheckError();\
         x; \
         if (!::xe::internal::alLogCall(#x, __FILE__, __LINE__)) __debugbreak();
 #else
-	#define alCall(x) x
+  #define alCall(x) x
 #endif //XE_DEBUG
 
 

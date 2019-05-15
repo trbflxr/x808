@@ -19,55 +19,55 @@
 
 class MyListener : public xe::IContactListener {
 public:
-	void beginContact(b2Contact *contact) override;
-	void endContact(b2Contact *contact) override;
-	void preSolve(b2Contact *contact, const b2Manifold *oldManifold) override;
-	void postSolve(b2Contact *contact, const b2ContactImpulse *impulse) override;
+  void beginContact(b2Contact *contact) override;
+  void endContact(b2Contact *contact) override;
+  void preSolve(b2Contact *contact, const b2Manifold *oldManifold) override;
+  void postSolve(b2Contact *contact, const b2ContactImpulse *impulse) override;
 };
 
 class TestB2D : public xe::Layer {
 public:
-	explicit TestB2D();
-	~TestB2D() override;
+  explicit TestB2D();
+  ~TestB2D() override;
 
-	void render() override;
-	void renderImGui() override;
+  void render() override;
+  void renderImGui() override;
 
-	void update(float delta) override;
-	void fixedUpdate(float delta) override;
+  void update(float delta) override;
+  void fixedUpdate(float delta) override;
 
-	void input(xe::Event &event) override;
+  void input(xe::Event &event) override;
 
 private:
-	xe::Camera *camera;
-	xe::Renderer2D *renderer;
+  xe::Camera *camera;
+  xe::Renderer2D *renderer;
 
-	//rectangles
-	MyListener *contactListener;
-	xe::PhysicsWorld2D *world;
-	xe::BoxCollider2D *boxCollider;
-	xe::BoxCollider2D *groundCollider;
+  //rectangles
+  MyListener *contactListener;
+  xe::PhysicsWorld2D *world;
+  xe::BoxCollider2D *boxCollider;
+  xe::BoxCollider2D *groundCollider;
 
-	xe::RectangleShape *box;
-	xe::RectangleShape *ground;
-	xe::RectangleShape *jdm;
+  xe::RectangleShape *box;
+  xe::RectangleShape *ground;
+  xe::RectangleShape *jdm;
 
-	//circles
-	xe::CircleShape *circle0;
-	xe::CircleShape *circle1;
-	xe::CircleShape *circle2;
-	xe::CircleCollider2D *circleCollider0;
-	xe::CircleCollider2D *circleCollider1;
-	xe::CircleCollider2D *circleCollider2;
+  //circles
+  xe::CircleShape *circle0;
+  xe::CircleShape *circle1;
+  xe::CircleShape *circle2;
+  xe::CircleCollider2D *circleCollider0;
+  xe::CircleCollider2D *circleCollider1;
+  xe::CircleCollider2D *circleCollider2;
 
-	//polygons
-	xe::Polygon *poly0;
-	xe::PolygonCollider2D *polyCollider0;
+  //polygons
+  xe::Polygon *poly0;
+  xe::PolygonCollider2D *polyCollider0;
 
-	std::vector<xe::IRenderable2D *> renderables;
-	std::vector<xe::IRenderable2D *> points;
+  std::vector<xe::IRenderable2D *> renderables;
+  std::vector<xe::IRenderable2D *> points;
 
-	std::vector<xe::vec2> polyPoints;
+  std::vector<xe::vec2> polyPoints;
 };
 
 #endif //X808_TESTB2D_HPP

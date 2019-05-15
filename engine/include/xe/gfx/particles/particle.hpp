@@ -13,39 +13,39 @@
 
 namespace xe {
 
-	class ParticleEffect;
+  class ParticleEffect;
 
-	class Particle : public RectangleShape {
-	public:
-		explicit Particle(ParticleEffect *effect);
-		~Particle() override;
+  class Particle : public RectangleShape {
+  public:
+    explicit Particle(ParticleEffect *effect);
+    ~Particle() override;
 
-		void spawn(float lifeTime);
+    void spawn(float lifeTime);
 
-		void update();
-		void fixedUpdate(float delta);
+    void update(float delta);
+    void fixedUpdate(float delta);
 
-		inline void setRotationRamp(Ramp<float> *ramp) { rotationRamp = ramp; }
-		inline void setTranslationRamp(Ramp<vec2> *ramp) { translationRamp = ramp; }
-		inline void setSizeRamp(Ramp<vec2> *ramp) { sizeRamp = ramp; }
-		inline void setColorRamp(Ramp<vec4> *ramp) { colorRamp = ramp; }
+    inline void setRotationRamp(Ramp<float> *ramp) { rotationRamp = ramp; }
+    inline void setTranslationRamp(Ramp<vec2> *ramp) { translationRamp = ramp; }
+    inline void setSizeRamp(Ramp<vec2> *ramp) { sizeRamp = ramp; }
+    inline void setColorRamp(Ramp<vec4> *ramp) { colorRamp = ramp; }
 
-	private:
-		ParticleEffect *effect;
+  private:
+    ParticleEffect *effect;
 
-		float time;
-		float lifeTime;
+    float time;
+    float lifeTime;
 
-		Ramp<float> *rotationRamp;
-		Ramp<vec2> *translationRamp;
-		Ramp<vec2> *sizeRamp;
-		Ramp<vec4> *colorRamp;
+    Ramp<float> *rotationRamp;
+    Ramp<vec2> *translationRamp;
+    Ramp<vec2> *sizeRamp;
+    Ramp<vec4> *colorRamp;
 
-		bool updateRotation;
-		bool updateTranslation;
-		bool updateSize;
-		bool updateColor;
-	};
+    bool updateRotation;
+    bool updateTranslation;
+    bool updateSize;
+    bool updateColor;
+  };
 
 }
 

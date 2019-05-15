@@ -10,14 +10,14 @@
 
 namespace xe {
 
-	template<typename T>
-	class Singleton : NonCopyable {
-	public:
-		static T &get() {
-			static T instance;
-			return instance;
-		}
-	};
+  template<typename T>
+  class Singleton : NonCopyable {
+  public:
+    static T &get() {
+      static T instance;
+      return instance;
+    }
+  };
 
 }
 

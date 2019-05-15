@@ -11,25 +11,25 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformUniformBuffer;
-	}
+  namespace internal {
+    class PlatformUniformBuffer;
+  }
 
-	class XE_API UniformBuffer {
-	public:
-		explicit UniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size = 1);
-		~UniformBuffer();
+  class XE_API UniformBuffer {
+  public:
+    explicit UniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size = 1);
+    ~UniformBuffer();
 
-		void bind();
-		void unbind();
+    void bind();
+    void unbind();
 
-		void update(const void *data, uint index, uint layoutIndex = 0);
+    void update(const void *data, uint index, uint layoutIndex = 0);
 
-		uint getHandle() const;
+    uint getHandle() const;
 
-	private:
-		internal::PlatformUniformBuffer *buffer;
-	};
+  private:
+    internal::PlatformUniformBuffer *buffer;
+  };
 
 }
 

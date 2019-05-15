@@ -7,21 +7,21 @@
 #include <xe/utils/logger.hpp>
 #include "alcommon.hpp"
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	int32 alCheckError() {
-		return alGetError();
-	}
+  int32 alCheckError() {
+    return alGetError();
+  }
 
-	bool alLogCall(const char *function, const char *file, uint line) {
-		int32 error = alGetError();
-		if (error != AL_NO_ERROR) {
-			char buffer[1024 * 10];
-			sprintf(buffer, "[OpenAL Error] (%u): %s, %s: %u", error, function, file, line);
-			XE_CORE_FATAL(buffer);
-			return false;
-		}
-		return true;
-	}
+  bool alLogCall(const char *function, const char *file, uint line) {
+    int32 error = alGetError();
+    if (error != AL_NO_ERROR) {
+      char buffer[1024 * 10];
+      sprintf(buffer, "[OpenAL Error] (%u): %s, %s: %u", error, function, file, line);
+      XE_CORE_FATAL(buffer);
+      return false;
+    }
+    return true;
+  }
 
-}}
+}

@@ -15,31 +15,31 @@
 
 namespace xe {
 
-	class XE_API TextureManager : NonCopyable {
-	public:
-		~TextureManager() override;
+  class XE_API TextureManager : NonCopyable {
+  public:
+    ~TextureManager() override;
 
-		static void init();
+    static void init();
 
-		static bool add(Texture *texture);
-		static bool add(TextureAtlas *atlas);
+    static bool add(Texture *texture);
+    static bool add(TextureAtlas *atlas);
 
-		static const Texture *get(const string &name);
-		static const TextureAtlas *getAtlas(const string &name);
+    static const Texture *get(const string &name);
+    static const TextureAtlas *getAtlas(const string &name);
 
-		static void clean();
+    static void clean();
 
-	private:
-		TextureManager();
+  private:
+    TextureManager();
 
-		void createDefaultTextures();
+    void createDefaultTextures();
 
-		static TextureManager &instance();
+    static TextureManager &instance();
 
-	private:
-		std::unordered_map<string, const Texture *> textures;
-		std::unordered_map<string, const TextureAtlas *> atlases;
-	};
+  private:
+    std::unordered_map<string, const Texture *> textures;
+    std::unordered_map<string, const TextureAtlas *> atlases;
+  };
 
 }
 

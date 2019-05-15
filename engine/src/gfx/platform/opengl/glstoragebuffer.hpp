@@ -8,28 +8,28 @@
 
 #include <gfx/platform/platformstoragebuffer.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class GLStorageBuffer : public PlatformStorageBuffer {
-	public:
-		explicit GLStorageBuffer(uint size);
-		~GLStorageBuffer() override;
+  class GLStorageBuffer : public PlatformStorageBuffer {
+  public:
+    explicit GLStorageBuffer(uint size);
+    ~GLStorageBuffer() override;
 
-		void update(const void *data, uint size) override;
+    void update(const void *data, uint size) override;
 
-		void bind() const override;
-		void bind(uint index) const override;
+    void bind() const override;
+    void bind(uint index) const override;
 
-		void unbind() const override;
-		void unbind(uint index) const override;
+    void unbind() const override;
+    void unbind(uint index) const override;
 
-		inline uint getHandle() const override { return handle; }
+    inline uint getHandle() const override { return handle; }
 
-	private:
-		uint handle;
-	};
+  private:
+    uint handle;
+  };
 
-}}
+}
 
 
 #endif //X808_GLSTORAGEBUFFER_HPP

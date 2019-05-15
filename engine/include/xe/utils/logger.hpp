@@ -16,121 +16,121 @@
 
 namespace xe {
 
-	class XE_API Logger : public Singleton<Logger> {
-	public:
-		template<typename... Args>
-		void logMessage(uint sender, uint level, Args... args) {
-			char buffer[XE_LOG_BUFFER_SIZE];
-			uint position = 0;
+  class XE_API Logger : public Singleton<Logger> {
+  public:
+    template<typename... Args>
+    void logMessage(uint sender, uint level, Args... args) {
+      char buffer[XE_LOG_BUFFER_SIZE];
+      uint position = 0;
 
-			buildLogMessage(buffer, position, std::forward<Args>(args)...);
+      buildLogMessage(buffer, position, std::forward<Args>(args)...);
 
-			buffer[position++] = '\n';
-			buffer[position] = '\0';
+      buffer[position++] = '\n';
+      buffer[position] = '\0';
 
-			if (sender == XE_CORE) {
-				platformLogMessage(level, "XE", buffer);
-			} else {
-				platformLogMessage(level, "Client", buffer);
-			}
-		}
+      if (sender == XE_CORE) {
+        platformLogMessage(level, "XE", buffer);
+      } else {
+        platformLogMessage(level, "Client", buffer);
+      }
+    }
 
-	private:
-		void platformLogMessage(uint level, const char *sender, const char *message);
+  private:
+    void platformLogMessage(uint level, const char *sender, const char *message);
 
-		template<typename T>
-		const char *toString(const T &t);
+    template<typename T>
+    const char *toString(const T &t);
 
-		template<typename First>
-		void buildLogMessage(char *buffer, uint &position, First &&first) {
-			const char *formatted = toString<First>(first);
-			size_t length = strlen(formatted);
+    template<typename First>
+    void buildLogMessage(char *buffer, uint &position, First &&first) {
+      const char *formatted = toString<First>(first);
+      size_t length = strlen(formatted);
 
-			memcpy(&buffer[position], &formatted[0], length);
-			position += length;
-		}
+      memcpy(&buffer[position], &formatted[0], length);
+      position += length;
+    }
 
-		template<typename First, typename... Args>
-		void buildLogMessage(char *buffer, uint &position, First &&first, Args &&... args) {
-			const char *formatted = toString<First>(first);
-			size_t length = strlen(formatted);
+    template<typename First, typename... Args>
+    void buildLogMessage(char *buffer, uint &position, First &&first, Args &&... args) {
+      const char *formatted = toString<First>(first);
+      size_t length = strlen(formatted);
 
-			memcpy(&buffer[position], &formatted[0], length);
-			position += length;
+      memcpy(&buffer[position], &formatted[0], length);
+      position += length;
 
-			if (sizeof...(Args)) {
-				buildLogMessage(buffer, position, std::forward<Args>(args)...);
-			}
-		}
+      if (sizeof...(Args)) {
+        buildLogMessage(buffer, position, std::forward<Args>(args)...);
+      }
+    }
 
-	private:
-		char buffer[XE_LOG_BUFFER_SIZE];
-	};
+  private:
+    char buffer[XE_LOG_BUFFER_SIZE];
+  };
 
 }
 
 
 //core
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_FATAL
-	#define XE_CORE_FATAL(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_FATAL, ##__VA_ARGS__)
+  #define XE_CORE_FATAL(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_FATAL, ##__VA_ARGS__)
 #else
-	#define XE_CORE_FATAL(...)
+  #define XE_CORE_FATAL(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_ERROR
-	#define XE_CORE_ERROR(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_ERROR, ##__VA_ARGS__)
+  #define XE_CORE_ERROR(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_ERROR, ##__VA_ARGS__)
 #else
-	#define XE_CORE_ERROR(...)
+  #define XE_CORE_ERROR(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_WARN
-	#define XE_CORE_WARN(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_WARN, ##__VA_ARGS__)
+  #define XE_CORE_WARN(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_WARN, ##__VA_ARGS__)
 #else
-	#define XE_CORE_WARN(...)
+  #define XE_CORE_WARN(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_INFO
-	#define XE_CORE_INFO(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_INFO, ##__VA_ARGS__)
+  #define XE_CORE_INFO(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_INFO, ##__VA_ARGS__)
 #else
-	#define XE_CORE_INFO(...)
+  #define XE_CORE_INFO(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_TRACE
-	#define XE_CORE_TRACE(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_TRACE, ##__VA_ARGS__)
+  #define XE_CORE_TRACE(...)  ::xe::Logger::get().logMessage(XE_CORE, XE_LOG_LEVEL_TRACE, ##__VA_ARGS__)
 #else
-	#define XE_CORE_TRACE(...)
+  #define XE_CORE_TRACE(...)
 #endif
 
 
 //client
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_FATAL
-	#define XE_FATAL(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_FATAL, ##__VA_ARGS__)
+  #define XE_FATAL(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_FATAL, ##__VA_ARGS__)
 #else
-	#define XE_FATAL(...)
+  #define XE_FATAL(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_ERROR
-	#define XE_ERROR(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_ERROR, ##__VA_ARGS__)
+  #define XE_ERROR(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_ERROR, ##__VA_ARGS__)
 #else
-	#define XE_ERROR(...)
+  #define XE_ERROR(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_WARN
-	#define XE_WARN(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_WARN, ##__VA_ARGS__)
+  #define XE_WARN(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_WARN, ##__VA_ARGS__)
 #else
-	#define XE_WARN(...)
+  #define XE_WARN(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_INFO
-	#define XE_INFO(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_INFO, ##__VA_ARGS__)
+  #define XE_INFO(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_INFO, ##__VA_ARGS__)
 #else
-	#define XE_INFO(...)
+  #define XE_INFO(...)
 #endif
 
 #if XE_LOG_LEVEL >= XE_LOG_LEVEL_TRACE
-	#define XE_TRACE(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_TRACE, ##__VA_ARGS__)
+  #define XE_TRACE(...)  ::xe::Logger::get().logMessage(XE_CLIENT, XE_LOG_LEVEL_TRACE, ##__VA_ARGS__)
 #else
-	#define XE_TRACE(...)
+  #define XE_TRACE(...)
 #endif
 
 

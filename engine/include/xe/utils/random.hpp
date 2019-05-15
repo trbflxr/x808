@@ -11,20 +11,20 @@
 
 namespace xe {
 
-	class random {
-	public:
-		template<typename T>
-		static T next(const T &low, const T &high);
+  class random {
+  public:
+    template<typename T>
+    static T next(const T &low, const T &high);
 
-	private:
-		random();
+  private:
+    random();
 
-		static random &get();
+    static random &get();
 
-	private:
-		std::mt19937_64 mt;
+  private:
+    std::mt19937_64 mt;
 
-	};
+  };
 
 }
 

@@ -11,41 +11,41 @@
 
 namespace xe {
 
-	class Camera;
+  class Camera;
 
-	class XE_API Scene : NonCopyable {
-	public:
-		explicit Scene();
-		~Scene() override;
+  class XE_API Scene : NonCopyable {
+  public:
+    explicit Scene();
+    ~Scene() override;
 
-		void add(Model *model);
-		void add(Light *light);
+    void add(Model *model);
+    void add(Light *light);
 
-		void updateLights(const Camera *camera);
+    void updateLights(const Camera *camera);
 
-		inline const std::vector<Model *> &getModels() const { return models; }
-		inline std::vector<Model *> &getModels() { return models; }
+    inline const std::vector<Model *> &getModels() const { return models; }
+    inline std::vector<Model *> &getModels() { return models; }
 
-		inline const std::vector<Light *> &getLights() const { return lights; }
-		inline std::vector<Light *> &getLights() { return lights; }
+    inline const std::vector<Light *> &getLights() const { return lights; }
+    inline std::vector<Light *> &getLights() { return lights; }
 
-		inline const std::vector<SpotLight *> &getSpotLights() const { return spotLights; }
-		inline std::vector<SpotLight *> &getSpotLights() { return spotLights; }
+    inline const std::vector<SpotLight *> &getSpotLights() const { return spotLights; }
+    inline std::vector<SpotLight *> &getSpotLights() { return spotLights; }
 
-		inline const std::vector<PointLight *> &getPointLights() const { return pointLights; }
-		inline std::vector<PointLight *> &getPointLights() { return pointLights; }
+    inline const std::vector<PointLight *> &getPointLights() const { return pointLights; }
+    inline std::vector<PointLight *> &getPointLights() { return pointLights; }
 
-		inline void setDirectionalLight(DirectionalLight *light) { directionalLight = light; }
-		inline const DirectionalLight *getDirectionalLight() const { return directionalLight; }
+    inline void setDirectionalLight(DirectionalLight *light) { directionalLight = light; }
+    inline const DirectionalLight *getDirectionalLight() const { return directionalLight; }
 
-	private:
-		std::vector<Model *> models;
+  private:
+    std::vector<Model *> models;
 
-		std::vector<Light *> lights;
-		std::vector<SpotLight *> spotLights;
-		std::vector<PointLight *> pointLights;
-		DirectionalLight *directionalLight;
-	};
+    std::vector<Light *> lights;
+    std::vector<SpotLight *> spotLights;
+    std::vector<PointLight *> pointLights;
+    DirectionalLight *directionalLight;
+  };
 
 }
 

@@ -10,15 +10,15 @@
 
 namespace xe {
 
-	class GameObject : public ITransformable {
-	public:
-		GameObject() = default;
+  class GameObject : public ITransformable {
+  public:
+    GameObject() = default;
 
-		explicit GameObject(const mat4 &transformation) :
-				ITransformable(transformation) { }
+    explicit GameObject(const mat4 &transformation) :
+        ITransformable(transformation) { }
 
-		~GameObject() override = default;
-	};
+    ~GameObject() override = default;
+  };
 
 }
 

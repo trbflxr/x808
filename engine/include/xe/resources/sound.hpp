@@ -12,42 +12,42 @@
 
 namespace xe {
 
-	class XE_API Sound final {
-	public:
-		enum class Format {
-			Mono8,
-			Mono16,
-			Stereo8,
-			Stereo16,
-			Invalid
-		};
+  class XE_API Sound final {
+  public:
+    enum class Format {
+      Mono8,
+      Mono16,
+      Stereo8,
+      Stereo16,
+      Invalid
+    };
 
-	public:
-		explicit Sound(const string &name, const string &file);
-		~Sound();
+  public:
+    explicit Sound(const string &name, const string &file);
+    ~Sound();
 
-		inline const uint getHandle() const { return handle; }
+    inline const uint getHandle() const { return handle; }
 
-		inline Format getFormat() const { return format; }
-		inline uint getSize() const { return size; }
-		inline uint getFreq() const { return freq; }
-		inline uint16 getChannels() const { return channels; }
-		inline uint16 getBps() const { return bps; }
+    inline Format getFormat() const { return format; }
+    inline uint getSize() const { return size; }
+    inline uint getFreq() const { return freq; }
+    inline uint16 getChannels() const { return channels; }
+    inline uint16 getBps() const { return bps; }
 
-		inline const string &getName() const { return name; }
+    inline const string &getName() const { return name; }
 
-	private:
-		friend class AudioLoader;
+  private:
+    friend class AudioLoader;
 
-		const string name;
+    const string name;
 
-		uint handle;
-		Format format;
-		uint size;
-		uint freq;
-		uint16 channels;
-		uint16 bps;
-	};
+    uint handle;
+    Format format;
+    uint size;
+    uint freq;
+    uint16 channels;
+    uint16 bps;
+  };
 
 }
 

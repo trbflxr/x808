@@ -10,168 +10,168 @@
 
 namespace xe {
 
-	struct vec2;
-	struct vec4;
-	struct quat;
-	struct mat4;
+  struct vec2;
+  struct vec4;
+  struct quat;
+  struct mat4;
 
-	struct XE_API vec3 {
-		float x;
-		float y;
-		float z;
+  struct XE_API vec3 {
+    float x;
+    float y;
+    float z;
 
-		vec3();
-		explicit vec3(float val);
-		vec3(float x, float y, float z);
-		explicit vec3(float x, float y);
-		vec3(const vec3 &other);
-		explicit vec3(const vec2 &other);
-		explicit vec3(const vec2 &xy, float z);
-		explicit vec3(const vec4 &other);
+    vec3();
+    explicit vec3(float val);
+    vec3(float x, float y, float z);
+    explicit vec3(float x, float y);
+    vec3(const vec3 &other);
+    explicit vec3(const vec2 &other);
+    explicit vec3(const vec2 &xy, float z);
+    explicit vec3(const vec4 &other);
 
-		vec3 rotate(const quat &rotation) const;
+    vec3 rotate(const quat &rotation) const;
 
-		static float length(const vec3 &v);
-		static float max(const vec3 &v);
+    static float length(const vec3 &v);
+    static float max(const vec3 &v);
 
-		static float dot(const vec3 &v1, const vec3 &v2);
-		static vec3 cross(const vec3 &v1, const vec3 &v2);
-		static vec3 normalize(const vec3 &v);
-		static vec3 rotate(const vec3 &v, const vec3 &axis, float angle);
-		static vec3 lerp(const vec3 &v, const vec3 &dest, float lerpFactor);
+    static float dot(const vec3 &v1, const vec3 &v2);
+    static vec3 cross(const vec3 &v1, const vec3 &v2);
+    static vec3 normalize(const vec3 &v);
+    static vec3 rotate(const vec3 &v, const vec3 &axis, float angle);
+    static vec3 lerp(const vec3 &v, const vec3 &dest, float lerpFactor);
 
-		static vec3 transformPerspective(const vec3 &vec, const mat4 &mat);
+    static vec3 transformPerspective(const vec3 &vec, const mat4 &mat);
 
-		static const vec3 &UnitX();
-		static const vec3 &UnitY();
-		static const vec3 &UnitZ();
-		static const vec3 &UnitXN();
-		static const vec3 &UnitYN();
-		static const vec3 &UnitZN();
-		static const vec3 &Zero();
-	};
+    static const vec3 &UnitX();
+    static const vec3 &UnitY();
+    static const vec3 &UnitZ();
+    static const vec3 &UnitXN();
+    static const vec3 &UnitYN();
+    static const vec3 &UnitZN();
+    static const vec3 &Zero();
+  };
 
-	typedef vec3 vec3;
+  typedef vec3 vec3;
 
 
-	///----- operators -----///
-	vec3 XE_API operator*(const vec3 &left, const mat4 &right);
+  ///----- operators -----///
+  vec3 XE_API operator*(const vec3 &left, const mat4 &right);
 
-	inline vec3 operator-(const vec3 &vec) {
-		return vec3(-vec.x, -vec.y, -vec.z);
-	}
+  inline vec3 operator-(const vec3 &vec) {
+    return vec3(-vec.x, -vec.y, -vec.z);
+  }
 
-	inline vec3 operator+(const vec3 &left, const vec3 &right) {
-		return vec3(left.x + right.x, left.y + right.y, left.z + right.z);
-	}
+  inline vec3 operator+(const vec3 &left, const vec3 &right) {
+    return vec3(left.x + right.x, left.y + right.y, left.z + right.z);
+  }
 
-	inline vec3 operator-(const vec3 &left, const vec3 &right) {
-		return vec3(left.x - right.x, left.y - right.y, left.z - right.z);
-	}
+  inline vec3 operator-(const vec3 &left, const vec3 &right) {
+    return vec3(left.x - right.x, left.y - right.y, left.z - right.z);
+  }
 
-	inline vec3 operator*(const vec3 &left, const vec3 &right) {
-		return vec3(left.x * right.x, left.y * right.x, left.z * right.z);
-	}
+  inline vec3 operator*(const vec3 &left, const vec3 &right) {
+    return vec3(left.x * right.x, left.y * right.x, left.z * right.z);
+  }
 
-	inline vec3 operator/(const vec3 &left, const vec3 &right) {
-		return vec3(left.x / right.x, left.y / right.x, left.z / right.z);
-	}
+  inline vec3 operator/(const vec3 &left, const vec3 &right) {
+    return vec3(left.x / right.x, left.y / right.x, left.z / right.z);
+  }
 
-	inline vec3 operator+(const vec3 &left, float right) {
-		return vec3(left.x + right, left.y + right, left.z + right);
-	}
+  inline vec3 operator+(const vec3 &left, float right) {
+    return vec3(left.x + right, left.y + right, left.z + right);
+  }
 
-	inline vec3 operator-(const vec3 &left, float right) {
-		return vec3(left.x - right, left.y - right, left.z - right);
-	}
+  inline vec3 operator-(const vec3 &left, float right) {
+    return vec3(left.x - right, left.y - right, left.z - right);
+  }
 
-	inline vec3 operator*(const vec3 &left, float right) {
-		return vec3(left.x * right, left.y * right, left.z * right);
-	}
+  inline vec3 operator*(const vec3 &left, float right) {
+    return vec3(left.x * right, left.y * right, left.z * right);
+  }
 
-	inline vec3 operator/(const vec3 &left, float right) {
-		return vec3(left.x / right, left.y / right, left.z / right);
-	}
+  inline vec3 operator/(const vec3 &left, float right) {
+    return vec3(left.x / right, left.y / right, left.z / right);
+  }
 
-	inline bool operator==(const vec3 &left, const vec3 &right) {
-		return (left.x == right.x) && (left.y == right.y) && (left.z == right.z);
-	}
+  inline bool operator==(const vec3 &left, const vec3 &right) {
+    return (left.x == right.x) && (left.y == right.y) && (left.z == right.z);
+  }
 
-	inline bool operator!=(const vec3 &left, const vec3 &right) {
-		return (left.x != right.x) || (left.y != right.y) || (left.z != right.z);
-	}
+  inline bool operator!=(const vec3 &left, const vec3 &right) {
+    return (left.x != right.x) || (left.y != right.y) || (left.z != right.z);
+  }
 
-	inline vec3 &operator+=(vec3 &left, const vec3 &right) {
-		left.x += right.x;
-		left.y += right.y;
-		left.z += right.z;
-		return left;
-	}
+  inline vec3 &operator+=(vec3 &left, const vec3 &right) {
+    left.x += right.x;
+    left.y += right.y;
+    left.z += right.z;
+    return left;
+  }
 
-	inline vec3 &operator-=(vec3 &left, const vec3 &right) {
-		left.x -= right.x;
-		left.y -= right.y;
-		left.z -= right.z;
-		return left;
-	}
+  inline vec3 &operator-=(vec3 &left, const vec3 &right) {
+    left.x -= right.x;
+    left.y -= right.y;
+    left.z -= right.z;
+    return left;
+  }
 
-	inline vec3 &operator*=(vec3 &left, const vec3 &right) {
-		left.x *= right.x;
-		left.y *= right.y;
-		left.z *= right.z;
-		return left;
-	}
+  inline vec3 &operator*=(vec3 &left, const vec3 &right) {
+    left.x *= right.x;
+    left.y *= right.y;
+    left.z *= right.z;
+    return left;
+  }
 
-	inline vec3 &operator/=(vec3 &left, const vec3 &right) {
-		left.x /= right.x;
-		left.y /= right.y;
-		left.z /= right.z;
-		return left;
-	}
+  inline vec3 &operator/=(vec3 &left, const vec3 &right) {
+    left.x /= right.x;
+    left.y /= right.y;
+    left.z /= right.z;
+    return left;
+  }
 
-	inline vec3 &operator+=(vec3 &left, float right) {
-		left.x += right;
-		left.y += right;
-		left.z += right;
-		return left;
-	}
+  inline vec3 &operator+=(vec3 &left, float right) {
+    left.x += right;
+    left.y += right;
+    left.z += right;
+    return left;
+  }
 
-	inline vec3 &operator-=(vec3 &left, float right) {
-		left.x -= right;
-		left.y -= right;
-		left.z -= right;
-		return left;
-	}
+  inline vec3 &operator-=(vec3 &left, float right) {
+    left.x -= right;
+    left.y -= right;
+    left.z -= right;
+    return left;
+  }
 
-	inline vec3 &operator*=(vec3 &left, float right) {
-		left.x *= right;
-		left.y *= right;
-		left.z *= right;
-		return left;
-	}
+  inline vec3 &operator*=(vec3 &left, float right) {
+    left.x *= right;
+    left.y *= right;
+    left.z *= right;
+    return left;
+  }
 
-	inline vec3 &operator/=(vec3 &left, float right) {
-		left.x /= right;
-		left.y /= right;
-		left.z /= right;
-		return left;
-	}
+  inline vec3 &operator/=(vec3 &left, float right) {
+    left.x /= right;
+    left.y /= right;
+    left.z /= right;
+    return left;
+  }
 
-	inline bool operator<(const vec3 &left, const vec3 &right) {
-		return (left.x < right.x) && (left.y < right.y) && (left.z < right.z);
-	}
+  inline bool operator<(const vec3 &left, const vec3 &right) {
+    return (left.x < right.x) && (left.y < right.y) && (left.z < right.z);
+  }
 
-	inline bool operator<=(const vec3 &left, const vec3 &right) {
-		return (left.x <= right.x) && (left.y <= right.y) && (left.z <= right.z);
-	}
+  inline bool operator<=(const vec3 &left, const vec3 &right) {
+    return (left.x <= right.x) && (left.y <= right.y) && (left.z <= right.z);
+  }
 
-	inline bool operator>(const vec3 &left, const vec3 &right) {
-		return (left.x > right.x) && (left.y > right.y) && (left.z > right.z);
-	}
+  inline bool operator>(const vec3 &left, const vec3 &right) {
+    return (left.x > right.x) && (left.y > right.y) && (left.z > right.z);
+  }
 
-	inline bool operator>=(const vec3 &left, const vec3 &right) {
-		return (left.x >= right.x) && (left.y >= right.y) && (left.z >= right.z);
-	}
+  inline bool operator>=(const vec3 &left, const vec3 &right) {
+    return (left.x >= right.x) && (left.y >= right.y) && (left.z >= right.z);
+  }
 
 }
 

@@ -14,16 +14,16 @@
 
 namespace xe {
 
-	class XE_API AudioLoader : NonCopyable {
-	public:
-		static byte *load(const string &file, Sound *sound);
-		static byte *load(const char *file, Sound *sound);
+  class XE_API AudioLoader : NonCopyable {
+  public:
+    static byte *load(const string &file, Sound *sound);
+    static byte *load(const char *file, Sound *sound);
 
-		static byte *loadWav(const byte *memory, Sound *sound);
+    static byte *loadWav(const byte *memory, Sound *sound);
 
-	private:
-		static constexpr const char *basePath = u8"/audio/";
-	};
+  private:
+    static constexpr const char *basePath = u8"/audio/";
+  };
 
 }
 

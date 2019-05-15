@@ -12,62 +12,62 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformBaseShader;
-	}
+  namespace internal {
+    class PlatformBaseShader;
+  }
 
-	struct UniformData {
-		byte *buffer;
-		uint size;
+  struct UniformData {
+    byte *buffer;
+    uint size;
 
-		UniformData() = default;
-		explicit UniformData(uint size);
-	};
+    UniformData() = default;
+    explicit UniformData(uint size);
+  };
 
-	struct Uniform {
-		const char *name;
-		UniformData data;
-		uint offset;
+  struct Uniform {
+    const char *name;
+    UniformData data;
+    uint offset;
 
-		Uniform() = default;
-		explicit Uniform(const char *name, const UniformData &data, uint offset) :
-				name(name), data(data), offset(offset) { }
-	};
+    Uniform() = default;
+    explicit Uniform(const char *name, const UniformData &data, uint offset) :
+        name(name), data(data), offset(offset) { }
+  };
 
-	class XE_API Shader {
-	public:
-		explicit Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
-		virtual ~Shader();
+  class XE_API Shader {
+  public:
+    explicit Shader(const string &name, const std::vector<ShaderFile *> &shaderPipeline);
+    virtual ~Shader();
 
-		void setSourceConstant(ShaderType type, const string &valueName, const string &value);
+    void setSourceConstant(ShaderType type, const string &valueName, const string &value);
 
-		void updateUniforms() const;
-		void setUniform(const string &name, const void *data, size_t size) const;
+    void updateUniforms() const;
+    void setUniform(const string &name, const void *data, size_t size) const;
 
-		uint getSampler(const string &name) const;
+    uint getSampler(const string &name) const;
 
-		void bind() const;
-		void unbind() const;
+    void bind() const;
+    void unbind() const;
 
-		void setUniformBuffer(byte *data, uint size, uint slot) const;
+    void setUniformBuffer(byte *data, uint size, uint slot) const;
 
-		void bindUniformBlock(const char *blockName, uint location) const;
+    void bindUniformBlock(const char *blockName, uint location) const;
 
-		const string &getName() const;
-		uint getHandle() const;
-		const ShaderSamplerVec &getSamplers() const;
-		const ShaderConstantVec &getConstants(ShaderType type) const;
-		const ShaderUniformBufferVec &getUniforms() const;
+    const string &getName() const;
+    uint getHandle() const;
+    const ShaderSamplerVec &getSamplers() const;
+    const ShaderConstantVec &getConstants(ShaderType type) const;
+    const ShaderUniformBufferVec &getUniforms() const;
 
-	private:
-		void init();
+  private:
+    void init();
 
-	protected:
-		internal::PlatformBaseShader *base;
+  protected:
+    internal::PlatformBaseShader *base;
 
-		std::vector<Uniform> uniforms;
-		std::vector<UniformData> uniformData;
-	};
+    std::vector<Uniform> uniforms;
+    std::vector<UniformData> uniformData;
+  };
 
 }
 

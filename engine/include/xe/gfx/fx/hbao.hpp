@@ -15,20 +15,20 @@
 
 namespace xe { namespace fx {
 
-	class XE_API HBAO : public RenderEffect, NonCopyable {
-	public:
-		explicit HBAO(uint width, uint height);
-		~HBAO() override;
+  class XE_API HBAO : public RenderEffect, NonCopyable {
+  public:
+    explicit HBAO(uint width, uint height);
+    ~HBAO() override;
 
-		void calculateAO(const Texture *normal, const Texture *depth, const Camera *camera, const Quad *quad);
+    void calculateAO(const Texture *normal, const Texture *depth, const Camera *camera, const Quad *quad);
 
-		inline const Texture *getAO() const { return aoTexture; }
+    inline const Texture *getAO() const { return aoTexture; }
 
-	private:
-		FrameBuffer *aoBuffer;
-		Texture *aoTexture;
-		const Shader *aoShader;
-	};
+  private:
+    FrameBuffer *aoBuffer;
+    Texture *aoTexture;
+    const Shader *aoShader;
+  };
 
 }}
 

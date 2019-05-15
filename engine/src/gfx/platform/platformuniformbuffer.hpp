@@ -8,21 +8,21 @@
 #include <xe/xeint.hpp>
 #include <xe/gfx/enums.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class PlatformUniformBuffer {
-	public:
-		virtual ~PlatformUniformBuffer() = default;
+  class PlatformUniformBuffer {
+  public:
+    virtual ~PlatformUniformBuffer() = default;
 
-		virtual void bind() = 0;
-		virtual void unbind() = 0;
+    virtual void bind() = 0;
+    virtual void unbind() = 0;
 
-		virtual void update(const void *data, uint index, uint layoutIndex) = 0;
+    virtual void update(const void *data, uint index, uint layoutIndex) = 0;
 
-		virtual uint getHandle() const = 0;
-	};
+    virtual uint getHandle() const = 0;
+  };
 
-}}
+}
 
 
 #endif //X808_UNIFORMBUFFER_HPP

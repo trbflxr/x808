@@ -7,12 +7,12 @@
 
 namespace xe {
 
-	IContactListener::IContactListener() {
-		listener = new internal::IContactListenerImpl(this);
-	}
+  IContactListener::IContactListener() {
+    listener = new internal::IContactListenerImpl(this);
+  }
 
-	IContactListener::~IContactListener() {
-		delete listener;
-	}
+  IContactListener::~IContactListener() {
+    delete listener;
+  }
 
 }

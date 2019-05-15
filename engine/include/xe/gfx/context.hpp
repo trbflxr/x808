@@ -10,41 +10,41 @@
 
 namespace xe {
 
-	struct GAPIInfo {
-		char vendor[256];
-		char renderer[256];
-		char version[256];
-		char shadingLevel[256];
+  struct GAPIInfo {
+    char vendor[256];
+    char renderer[256];
+    char version[256];
+    char shadingLevel[256];
 
-		int32 maxTexSize;
-		int32 maxTexUnits;
-		int32 maxTexImgUnits;
-	};
+    int32 maxTexSize;
+    int32 maxTexUnits;
+    int32 maxTexImgUnits;
+  };
 
-	class XE_API Context {
-	public:
-		static void create(void *deviceContext);
+  class XE_API Context {
+  public:
+    static void create(void *deviceContext);
 
-		static inline RenderAPI getRenderAPI() { return api; }
-		static inline uint getRenderAPIVersion() { return apiVersion; };
+    static inline RenderAPI getRenderAPI() { return api; }
+    static inline uint getRenderAPIVersion() { return apiVersion; };
 
-		static inline void setRenderAPI(RenderAPI api, uint version) {
-			Context::api = api;
-			Context::apiVersion = version;
-		}
+    static inline void setRenderAPI(RenderAPI api, uint version) {
+      Context::api = api;
+      Context::apiVersion = version;
+    }
 
-		static GAPIInfo getInfo() { return context->getInfoInternal(); }
+    static GAPIInfo getInfo() { return context->getInfoInternal(); }
 
-	protected:
-		virtual uint getMaxTexUnits() const = 0;
+  protected:
+    virtual uint getMaxTexUnits() const = 0;
 
-		virtual GAPIInfo getInfoInternal() const = 0;
+    virtual GAPIInfo getInfoInternal() const = 0;
 
-	protected:
-		static Context *context;
-		static RenderAPI api;
-		static uint apiVersion;
-	};
+  protected:
+    static Context *context;
+    static RenderAPI api;
+    static uint apiVersion;
+  };
 
 }
 

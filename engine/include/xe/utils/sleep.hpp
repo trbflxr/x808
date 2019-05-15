@@ -11,7 +11,7 @@
 
 namespace xe {
 
-	void XE_API sleep(uint time);
+  void XE_API sleep(uint time);
 
 }
 

@@ -12,82 +12,82 @@
 
 namespace xe {
 
-	struct quat;
+  struct quat;
 
-	struct XE_API mat4 {
-		union {
-			// [row + col * 4]
-			float elements[4 * 4];
-			vec4 rows[4];
-		};
+  struct XE_API mat4 {
+    union {
+      // [row + col * 4]
+      float elements[4 * 4];
+      vec4 rows[4];
+    };
 
-		explicit mat4();
-		explicit mat4(float diagonal);
-		explicit mat4(float *elements);
-		mat4(const mat4 &other);
-		explicit mat4(const vec4 &row0, const vec4 &row1, const vec4 &row2, const vec4 &row3);
+    explicit mat4();
+    explicit mat4(float diagonal);
+    explicit mat4(float *elements);
+    mat4(const mat4 &other);
+    explicit mat4(const vec4 &row0, const vec4 &row1, const vec4 &row2, const vec4 &row3);
 
-		vec4 getColumn(int index) const;
-		void setColumn(int index, const vec4 &column);
+    vec4 getColumn(int index) const;
+    void setColumn(int index, const vec4 &column);
 
-		vec3 transform(const vec3 &r) const;
+    vec3 transform(const vec3 &r) const;
 
-		mat4 &invert();
+    mat4 &invert();
 
-		void rotateVec(float angleDeg, const vec3 &axis);
+    void rotateVec(float angleDeg, const vec3 &axis);
 
-		inline vec3 getTranslation() const { return vec3(getColumn(3)); }
-		vec3 getScale() const;
-		quat getRotation() const;
+    inline vec3 getTranslation() const { return vec3(getColumn(3)); }
+    vec3 getScale() const;
+    quat getRotation() const;
 
-		mat4 clearScale() const;
-		mat4 clearTranslation() const;
-		mat4 clearRotation() const;
+    mat4 clearScale() const;
+    mat4 clearTranslation() const;
+    mat4 clearRotation() const;
 
-		static mat4 rotateMatZ(float deg);
+    static mat4 rotateMatZ(float deg);
 
-		static vec3 translateXY(const mat4 &mat, const vec3 &vec);
-		static vec3 translateXY(const mat4 &mat, const vec2 &vec);
-		static vec3 translateXY(const mat4 &mat, float x, float y);
+    static vec3 translateXY(const mat4 &mat, const vec3 &vec);
+    static vec3 translateXY(const mat4 &mat, const vec2 &vec);
+    static vec3 translateXY(const mat4 &mat, float x, float y);
 
-		static mat4 initRotation(const vec3 &forward, const vec3 &up);
-		static mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
+    static mat4 initRotation(const vec3 &forward, const vec3 &up);
+    static mat4 initRotation(const vec3 &forward, const vec3 &up, const vec3 &right);
 
-		static const mat4 &identity();
-		static mat4 ortho(float left, float right, float bottom, float top, float near, float far);
-		static mat4 ortho(float width, float height, float near, float far);
-		static mat4 perspective(float fovDeg, float aspectRatio, float near, float far);
-		static mat4 lookAt(const vec3 &camera, const vec3 &object, const vec3 &up);
+    static const mat4 &identity();
+    static mat4 ortho(float left, float right, float bottom, float top, float near, float far);
+    static mat4 ortho(float width, float height, float near, float far);
+    static mat4 perspective(float fovDeg, float aspectRatio, float near, float far);
+    static mat4 lookAt(const vec3 &camera, const vec3 &object, const vec3 &up);
 
-		static mat4 translation(const vec3 &translation);
-		static mat4 rotation(float angleDeg, const vec3 &axis);
-		static mat4 rotation(const quat &q);
-		static mat4 scale(const vec3 &scale);
-		static mat4 invert(const mat4 &m);
+    static mat4 translation(const vec3 &translation);
+    static mat4 rotation(float angleDeg, const vec3 &axis);
+    static mat4 rotation(const quat &q);
+    static mat4 scale(const vec3 &scale);
+    static mat4 invert(const mat4 &m);
 
-		static mat4 transpose(const mat4 &m);
+    static mat4 transpose(const mat4 &m);
 
-		static mat4 transform(const vec3 &translation, const quat &rotation, const vec3 &scale);
-		static mat4 transform(const vec3 &translation, float rotationDeg);
-	};
+    static mat4 transform(const vec3 &translation, const quat &rotation, const vec3 &scale);
+    static mat4 transform(const vec3 &translation, float rotationDeg);
+  };
 
-	typedef mat4 mat4;
+  typedef mat4 mat4;
 
-	///----- operators -----///
-	mat4 XE_API &operator*=(mat4 &left, const mat4 &right);
+  ///----- operators -----///
+  mat4 XE_API &operator*=(mat4 &left, const mat4 &right);
 
-	inline mat4 operator*(const mat4 &left, const mat4 &right) {
-		mat4 r = left;
-		return r *= right;
-	}
+  inline mat4 operator*(const mat4 &left, const mat4 &right) {
+    mat4 r = left;
+    return r *= right;
+  }
 
-	inline vec3 operator*(const mat4 &left, const vec3 &right) {
-		return right * left;
-	}
+  inline vec3 operator*(const mat4 &left, const vec3 &right) {
+    return right * left;
+  }
 
-	inline vec4 operator*(const mat4 &left, const vec4 &right) {
-		return right * left;
-	}
+  inline vec4 operator*(const mat4 &left, const vec4 &right) {
+    return right * left;
+  }
 
 }
 

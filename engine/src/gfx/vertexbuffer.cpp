@@ -9,51 +9,51 @@
 
 namespace xe {
 
-	VertexBuffer::VertexBuffer(BufferUsage usage) {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : {
-				buffer = new internal::GLVertexBuffer(usage);
-				break;
-			}
+  VertexBuffer::VertexBuffer(BufferUsage usage) {
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : {
+        buffer = new internal::GLVertexBuffer(usage);
+        break;
+      }
 
-			default: {
-				XE_CORE_FATAL("[VertexBuffer]: selected render API is not supported");
-				buffer = nullptr;
-				break;
-			}
-		}
-	}
+      default: {
+        XE_CORE_FATAL("[VertexBuffer]: selected render API is not supported");
+        buffer = nullptr;
+        break;
+      }
+    }
+  }
 
-	VertexBuffer::~VertexBuffer() {
-		delete buffer;
-	}
+  VertexBuffer::~VertexBuffer() {
+    delete buffer;
+  }
 
-	void VertexBuffer::resize(uint size) {
-		buffer->resize(size);
-	}
+  void VertexBuffer::resize(uint size) {
+    buffer->resize(size);
+  }
 
-	void VertexBuffer::setLayout(const BufferLayout &layout) const {
-		buffer->setLayout(layout);
-	}
+  void VertexBuffer::setLayout(const BufferLayout &layout) const {
+    buffer->setLayout(layout);
+  }
 
-	void VertexBuffer::setData(uint size, const void *data) const {
-		buffer->setData(size, data);
-	}
+  void VertexBuffer::setData(uint size, const void *data) const {
+    buffer->setData(size, data);
+  }
 
-	void VertexBuffer::releasePointer() const {
-		buffer->releasePointer();
-	}
+  void VertexBuffer::releasePointer() const {
+    buffer->releasePointer();
+  }
 
-	void *VertexBuffer::getPointer() const {
-		return buffer->getPointer();
-	}
+  void *VertexBuffer::getPointer() const {
+    return buffer->getPointer();
+  }
 
-	void VertexBuffer::bind() const {
-		buffer->bind();
-	}
+  void VertexBuffer::bind() const {
+    buffer->bind();
+  }
 
-	void VertexBuffer::unbind() const {
-		buffer->unbind();
-	}
+  void VertexBuffer::unbind() const {
+    buffer->unbind();
+  }
 
 }

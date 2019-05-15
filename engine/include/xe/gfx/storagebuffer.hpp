@@ -11,28 +11,28 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformStorageBuffer;
-	}
+  namespace internal {
+    class PlatformStorageBuffer;
+  }
 
-	class XE_API StorageBuffer {
-	public:
-		explicit StorageBuffer(uint size);
-		~StorageBuffer();
+  class XE_API StorageBuffer {
+  public:
+    explicit StorageBuffer(uint size);
+    ~StorageBuffer();
 
-		void update(const void *data, uint size);
+    void update(const void *data, uint size);
 
-		void bind();
-		void bind(uint index);
+    void bind();
+    void bind(uint index);
 
-		void unbind();
-		void unbind(uint index);
+    void unbind();
+    void unbind(uint index);
 
-		uint getHandle();
+    uint getHandle();
 
-	private:
-		internal::PlatformStorageBuffer *buffer;
-	};
+  private:
+    internal::PlatformStorageBuffer *buffer;
+  };
 
 }
 

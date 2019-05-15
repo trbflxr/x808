@@ -14,23 +14,23 @@
 
 namespace xe { namespace fx {
 
-	class XE_API FinalFX : public RenderEffect {
-	public:
-		explicit FinalFX(uint width, uint height);
-		~FinalFX() override;
+  class XE_API FinalFX : public RenderEffect {
+  public:
+    explicit FinalFX(uint width, uint height);
+    ~FinalFX() override;
 
-		void render(const Quad *quad) const;
+    void render(const Quad *quad) const;
 
-		inline const FrameBuffer *getFinalFBO() const { return finalFBO; }
-		inline const Texture *getFinalTexture() const { return finalTexture; }
+    inline const FrameBuffer *getFinalFBO() const { return finalFBO; }
+    inline const Texture *getFinalTexture() const { return finalTexture; }
 
-	private:
-		uint sampler0;
+  private:
+    uint sampler0;
 
-		const Shader *finalShader;
-		FrameBuffer *finalFBO;
-		Texture *finalTexture;
-	};
+    const Shader *finalShader;
+    FrameBuffer *finalFBO;
+    Texture *finalTexture;
+  };
 
 }}
 

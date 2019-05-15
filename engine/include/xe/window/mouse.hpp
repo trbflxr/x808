@@ -11,27 +11,27 @@
 
 namespace xe {
 
-	class Window;
+  class Window;
 
-	struct XE_API Mouse {
-		enum Button {
-			Left,
-			Right,
-			Middle,
-			XButton1,
-			XButton2,
+  struct XE_API Mouse {
+    enum Button {
+      Left,
+      Right,
+      Middle,
+      XButton1,
+      XButton2,
 
-			ButtonCount
-		};
+      ButtonCount
+    };
 
-		static bool isButtonPressed(Button button);
+    static bool isButtonPressed(Button button);
 
-		static vec2 getPosition();
-		static vec2 getPosition(const Window &relativeTo);
+    static vec2 getPosition();
+    static vec2 getPosition(const Window &relativeTo);
 
-		static void setPosition(const vec2 &position);
-		static void setPosition(const vec2 &position, const Window &relativeTo);
-	};
+    static void setPosition(const vec2 &position);
+    static void setPosition(const vec2 &position, const Window &relativeTo);
+  };
 
 }
 

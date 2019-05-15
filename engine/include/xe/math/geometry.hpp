@@ -14,15 +14,15 @@
 
 namespace xe {
 
-	class XE_API geometry : NonCopyable {
-	public:
-		static std::pair<std::vector<vec3>, std::vector<uint>> makeIcosphere(uint subdivisions = 1);
+  class XE_API geometry : NonCopyable {
+  public:
+    static std::pair<std::vector<vec3>, std::vector<uint>> makeIcosphere(uint subdivisions = 1);
 
-		static std::pair<std::vector<vec3>, std::vector<uint>> makeCone(float radius, float height, uint subdivisions);
+    static std::pair<std::vector<vec3>, std::vector<uint>> makeCone(float radius, float height, uint subdivisions);
 
-	private:
+  private:
 
-	};
+  };
 
 }
 

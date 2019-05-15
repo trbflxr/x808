@@ -11,106 +11,106 @@
 
 class DummyPlayer {
 public:
-	explicit DummyPlayer(xe::Camera *camera,
-	                     float speed = 4.0f,
-	                     float sprint = 4.0f,
-	                     float sensitivity = 0.15f) :
-			mouseLocked(false),
-			window(xe::Application::get().getWindow()),
-			camera(camera),
-			mouseSensitivity(sensitivity),
-			speed(speed / xe::Config::get().tickRate),
-			sprintSpeed(DummyPlayer::speed * sprint) {
+  explicit DummyPlayer(xe::Camera *camera,
+                       float speed = 4.0f,
+                       float sprint = 4.0f,
+                       float sensitivity = 0.15f) :
+      mouseLocked(false),
+      window(xe::Application::get().getWindow()),
+      camera(camera),
+      mouseSensitivity(sensitivity),
+      speed(speed / xe::Config::get().tickRate),
+      sprintSpeed(DummyPlayer::speed * sprint) {
 
-		windowSize = window.getSize();
-		windowCenter = windowSize / 2.0f;
-		lastMousePosition = windowCenter;
-	}
+    windowSize = window.getSize();
+    windowCenter = windowSize / 2.0f;
+    lastMousePosition = windowCenter;
+  }
 
-	void update(float delta) {
-		if (mouseLocked) {
-			window.setMouseCursorGrabbed(true);
-			window.setMouseCursorVisible(false);
-		} else {
-			window.setMouseCursorGrabbed(false);
-			window.setMouseCursorVisible(true);
-		}
+  void update(float delta) {
+    if (mouseLocked) {
+      window.setMouseCursorGrabbed(true);
+      window.setMouseCursorVisible(false);
+    } else {
+      window.setMouseCursorGrabbed(false);
+      window.setMouseCursorVisible(true);
+    }
 
-		if (window.isMouseCursorGrabbed()) {
-			xe::vec2 mouseChange = xe::Mouse::getPosition(window) - lastMousePosition;
+    if (window.isMouseCursorGrabbed()) {
+      xe::vec2 mouseChange = xe::Mouse::getPosition(window) - lastMousePosition;
 
-			//rotate
-			camera->rotate(xe::vec3::UnitYN(), mouseChange.x * mouseSensitivity);
-			camera->rotate(camera->getRotation().getRight(), mouseChange.y * mouseSensitivity);
+      //rotate
+      camera->rotate(xe::vec3::UnitYN(), mouseChange.x * mouseSensitivity);
+      camera->rotate(camera->getRotation().getRight(), mouseChange.y * mouseSensitivity);
 
-			xe::Mouse::setPosition(windowCenter, window);
-			lastMousePosition = xe::Mouse::getPosition(window);
+      xe::Mouse::setPosition(windowCenter, window);
+      lastMousePosition = xe::Mouse::getPosition(window);
 
-			//move
-			float speed = xe::Keyboard::isKeyPressed(xe::Keyboard::LControl) ? sprintSpeed : DummyPlayer::speed;
-			if (xe::Keyboard::isKeyPressed(xe::Keyboard::W)) {
-				move(camera->getRotation().getForward(), speed * delta);
-			}
-			if (xe::Keyboard::isKeyPressed(xe::Keyboard::S)) {
-				move(camera->getRotation().getBackward(), speed * delta);
-			}
+      //move
+      float speed = xe::Keyboard::isKeyPressed(xe::Keyboard::LControl) ? sprintSpeed : DummyPlayer::speed;
+      if (xe::Keyboard::isKeyPressed(xe::Keyboard::W)) {
+        move(camera->getRotation().getForward(), speed * delta);
+      }
+      if (xe::Keyboard::isKeyPressed(xe::Keyboard::S)) {
+        move(camera->getRotation().getBackward(), speed * delta);
+      }
 
-			if (xe::Keyboard::isKeyPressed(xe::Keyboard::A)) {
-				move(camera->getRotation().getLeft(), speed * delta);
-			}
-			if (xe::Keyboard::isKeyPressed(xe::Keyboard::D)) {
-				move(camera->getRotation().getRight(), speed * delta);
-			}
+      if (xe::Keyboard::isKeyPressed(xe::Keyboard::A)) {
+        move(camera->getRotation().getLeft(), speed * delta);
+      }
+      if (xe::Keyboard::isKeyPressed(xe::Keyboard::D)) {
+        move(camera->getRotation().getRight(), speed * delta);
+      }
 
-			if (xe::Keyboard::isKeyPressed(xe::Keyboard::Space)) {
-				move(xe::vec3::UnitY(), speed * delta);
-			}
-			if (xe::Keyboard::isKeyPressed(xe::Keyboard::LShift)) {
-				move(xe::vec3::UnitYN(), speed * delta);
-			}
-		}
+      if (xe::Keyboard::isKeyPressed(xe::Keyboard::Space)) {
+        move(xe::vec3::UnitY(), speed * delta);
+      }
+      if (xe::Keyboard::isKeyPressed(xe::Keyboard::LShift)) {
+        move(xe::vec3::UnitYN(), speed * delta);
+      }
+    }
 
-		if (!mouseLocked) {
-			window.setMouseCursorGrabbed(false);
-			window.setMouseCursorVisible(true);
-		}
-	}
+    if (!mouseLocked) {
+      window.setMouseCursorGrabbed(false);
+      window.setMouseCursorVisible(true);
+    }
+  }
 
-	void input(xe::Event &event) {
-		if (event.type == xe::Event::MouseButtonPressed) {
-			if (event.mouseButton.button == xe::Mouse::Right) {
-				mouseLocked = !mouseLocked;
-				if (mouseLocked) {
-					xe::Mouse::setPosition(windowCenter, window);
-				}
-			}
-			event.handled = true;
-		}
-		if (event.type == xe::Event::KeyPressed) {
-			if (event.key.code == xe::Keyboard::Escape) {
-				mouseLocked = false;
-			}
-			event.handled = true;
-		}
-	}
-
-private:
-	void move(const xe::vec3 &dir, float amt) {
-		camera->setPosition(camera->getPosition() + (dir * amt));
-	}
+  void input(xe::Event &event) {
+    if (event.type == xe::Event::MouseButtonPressed) {
+      if (event.mouseButton.button == xe::Mouse::Right) {
+        mouseLocked = !mouseLocked;
+        if (mouseLocked) {
+          xe::Mouse::setPosition(windowCenter, window);
+        }
+      }
+      event.handled = true;
+    }
+    if (event.type == xe::Event::KeyPressed) {
+      if (event.key.code == xe::Keyboard::Escape) {
+        mouseLocked = false;
+      }
+      event.handled = true;
+    }
+  }
 
 private:
-	bool mouseLocked;
-	xe::Window &window;
-	xe::vec2 windowSize;
-	xe::vec2 windowCenter;
-	xe::vec2 lastMousePosition;
+  void move(const xe::vec3 &dir, float amt) {
+    camera->setPosition(camera->getPosition() + (dir * amt));
+  }
 
-	xe::Camera *camera;
+private:
+  bool mouseLocked;
+  xe::Window &window;
+  xe::vec2 windowSize;
+  xe::vec2 windowCenter;
+  xe::vec2 lastMousePosition;
 
-	float mouseSensitivity;
-	float speed;
-	float sprintSpeed;
+  xe::Camera *camera;
+
+  float mouseSensitivity;
+  float speed;
+  float sprintSpeed;
 };
 
 

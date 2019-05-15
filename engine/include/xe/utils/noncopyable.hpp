@@ -7,16 +7,16 @@
 
 namespace xe {
 
-	struct NonCopyable{
-		NonCopyable(NonCopyable &) = delete;
-        NonCopyable(NonCopyable &&) = delete;
-        NonCopyable &operator=(NonCopyable &) = delete;
-        NonCopyable &operator=(NonCopyable &&) = delete;
+  struct NonCopyable {
+    NonCopyable(NonCopyable &) = delete;
+    NonCopyable(NonCopyable &&) = delete;
+    NonCopyable &operator=(NonCopyable &) = delete;
+    NonCopyable &operator=(NonCopyable &&) = delete;
 
-	protected:
-		NonCopyable() = default;
-		virtual ~NonCopyable() = default;
-	};
+  protected:
+    NonCopyable() = default;
+    virtual ~NonCopyable() = default;
+  };
 
 }
 

@@ -11,51 +11,51 @@
 
 namespace xe {
 
-	class XE_API BaseECSSystem {
-	public:
-		enum {
-			FlagOptional = 1,
-		};
+  class XE_API BaseECSSystem {
+  public:
+    enum {
+      FlagOptional = 1,
+    };
 
-	public:
-		BaseECSSystem() = default;
+  public:
+    BaseECSSystem() = default;
 
-		virtual void preUpdateComponents(float delta, BaseECSComponent **components) { }
-		virtual void updateComponents(float delta, BaseECSComponent **components) { }
-		virtual void lateUpdateComponents(float delta, BaseECSComponent **components) { }
+    virtual void preUpdateComponents(float delta, BaseECSComponent **components) { }
+    virtual void updateComponents(float delta, BaseECSComponent **components) { }
+    virtual void lateUpdateComponents(float delta, BaseECSComponent **components) { }
 
-		virtual void inputComponents(Event &event, BaseECSComponent **components) { }
+    virtual void inputComponents(Event &event, BaseECSComponent **components) { }
 
-		inline const std::vector<uint> &getComponentTypes() const { return componentTypes; }
-		inline const std::vector<uint> &getComponentFlags() const { return componentFlags; }
+    inline const std::vector<uint> &getComponentTypes() const { return componentTypes; }
+    inline const std::vector<uint> &getComponentFlags() const { return componentFlags; }
 
-		bool isValid();
+    bool isValid();
 
-	protected:
-		void addComponentType(uint componentType, uint componentFlag = 0) {
-			componentTypes.push_back(componentType);
-			componentFlags.push_back(componentFlag);
-		}
+  protected:
+    void addComponentType(uint componentType, uint componentFlag = 0) {
+      componentTypes.push_back(componentType);
+      componentFlags.push_back(componentFlag);
+    }
 
-	private:
-		std::vector<uint> componentTypes;
-		std::vector<uint> componentFlags;
-	};
+  private:
+    std::vector<uint> componentTypes;
+    std::vector<uint> componentFlags;
+  };
 
 
-	///-------- ECSSystemList --------///
-	class XE_API ECSSystemList {
-	public:
-		bool addSystem(BaseECSSystem &system);
-		bool removeSystem(BaseECSSystem &system);
+  ///-------- ECSSystemList --------///
+  class XE_API ECSSystemList {
+  public:
+    bool addSystem(BaseECSSystem &system);
+    bool removeSystem(BaseECSSystem &system);
 
-		inline size_t size() { return systems.size(); }
+    inline size_t size() { return systems.size(); }
 
-		inline BaseECSSystem *operator[](uint index) { return systems[index]; }
+    inline BaseECSSystem *operator[](uint index) { return systems[index]; }
 
-	private:
-		std::vector<BaseECSSystem *> systems;
-	};
+  private:
+    std::vector<BaseECSSystem *> systems;
+  };
 
 
 }

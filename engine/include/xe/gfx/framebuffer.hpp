@@ -11,37 +11,37 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformFrameBuffer;
-	}
+  namespace internal {
+    class PlatformFrameBuffer;
+  }
 
-	class XE_API FrameBuffer {
-	public:
-		explicit FrameBuffer(const string &name);
-		~FrameBuffer();
+  class XE_API FrameBuffer {
+  public:
+    explicit FrameBuffer(const string &name);
+    ~FrameBuffer();
 
-		void load(const std::unordered_map<Attachment, const Texture *> &attachments);
+    void load(const std::unordered_map<Attachment, const Texture *> &attachments);
 
-		void copy(FrameBuffer *dest);
+    void copy(FrameBuffer *dest);
 
-		void bindDrawAttachment(Attachment attachment) const;
-		void bindDrawAttachments(Attachment *attachments, uint size) const;
-		void bindReadAttachment(Attachment attachment) const;
+    void bindDrawAttachment(Attachment attachment) const;
+    void bindDrawAttachments(Attachment *attachments, uint size) const;
+    void bindReadAttachment(Attachment attachment) const;
 
-		void bindDraw(Attachment attachment) const;
-		void bindDraw(Attachment *attachments, uint size) const;
-		void bindRead(Attachment attachment) const;
-		void unbind() const;
+    void bindDraw(Attachment attachment) const;
+    void bindDraw(Attachment *attachments, uint size) const;
+    void bindRead(Attachment attachment) const;
+    void unbind() const;
 
-		void bindTexture(Attachment attachment, const Texture *texture) const;
+    void bindTexture(Attachment attachment, const Texture *texture) const;
 
-		uint getHandle() const;
-		const string &getName() const;
-		const Texture *getTexture(Attachment attachment) const;
+    uint getHandle() const;
+    const string &getName() const;
+    const Texture *getTexture(Attachment attachment) const;
 
-	private:
-		internal::PlatformFrameBuffer *buffer;
-	};
+  private:
+    internal::PlatformFrameBuffer *buffer;
+  };
 
 }
 

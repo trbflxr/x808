@@ -11,48 +11,48 @@
 
 namespace xe {
 
-	class XE_API Config {
-	public:
-		uint width;
-		uint height;
-		bool fullScreen;
-		bool vSync;
+  class XE_API Config {
+  public:
+    uint width;
+    uint height;
+    bool fullScreen;
+    bool vSync;
 
-		uint maxFps;
-		uint tickRate;
+    uint maxFps;
+    uint tickRate;
 
-		bool srgb;
+    bool srgb;
 
-		RenderAPI renderApi;
-		uint apiVersion;
+    RenderAPI renderApi;
+    uint apiVersion;
 
-		uint maxSpotShadows;
-		uint maxDirectionalCascades;
-		uint shadowQuality;
+    uint maxSpotShadows;
+    uint maxDirectionalCascades;
+    uint shadowQuality;
 
-	public:
-		explicit Config() :
-				width(1),
-				height(1),
-				fullScreen(false),
-				vSync(false),
-				maxFps(0),
-				tickRate(30),
-				srgb(true),
-				renderApi(RenderAPI::OpenGL),
-				apiVersion(330),
-				maxSpotShadows(1),
-				maxDirectionalCascades(3),
-				shadowQuality(3) { }
+  public:
+    explicit Config() :
+        width(1),
+        height(1),
+        fullScreen(false),
+        vSync(false),
+        maxFps(0),
+        tickRate(30),
+        srgb(true),
+        renderApi(RenderAPI::OpenGL),
+        apiVersion(330),
+        maxSpotShadows(1),
+        maxDirectionalCascades(3),
+        shadowQuality(3) { }
 
-		static inline const Config &get() {
-			if (!cfg) cfg = new Config();
-			return *cfg;
-		}
+    static inline const Config &get() {
+      if (!cfg) cfg = new Config();
+      return *cfg;
+    }
 
-	private:
-		static Config *cfg;
-	};
+  private:
+    static Config *cfg;
+  };
 
 }
 

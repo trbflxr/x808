@@ -9,56 +9,56 @@
 
 namespace xe {
 
-	ShaderFile *ShaderFile::fromPreparedSource(ShaderType type, const string &source) {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, source);
+  ShaderFile *ShaderFile::fromPreparedSource(ShaderType type, const string &source) {
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : return new internal::GLShaderFile(type, source);
 
-			default: return nullptr;
-		}
-	}
+      default: return nullptr;
+    }
+  }
 
-	ShaderFile *ShaderFile::fromSource(ShaderType type, const string &source,
-	                                   const std::vector<string> &dependenciesSource,
-	                                   const std::vector<string> &extensions) {
+  ShaderFile *ShaderFile::fromSource(ShaderType type, const string &source,
+                                     const std::vector<string> &dependenciesSource,
+                                     const std::vector<string> &extensions) {
 
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, source, dependenciesSource, extensions);
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : return new internal::GLShaderFile(type, source, dependenciesSource, extensions);
 
-			default: return nullptr;
-		}
-	}
+      default: return nullptr;
+    }
+  }
 
-	ShaderFile *ShaderFile::fromFile(ShaderType type, const string &path,
-	                                 const std::vector<string> &dependencies,
-	                                 const std::vector<string> &extensions) {
+  ShaderFile *ShaderFile::fromFile(ShaderType type, const string &path,
+                                   const std::vector<string> &dependencies,
+                                   const std::vector<string> &extensions) {
 
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : return new internal::GLShaderFile(type, path, dependencies, extensions, false);
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : return new internal::GLShaderFile(type, path, dependencies, extensions, false);
 
-			default: return nullptr;
-		}
-	}
+      default: return nullptr;
+    }
+  }
 
-	void ShaderFile::parseConstants(const string &source, ShaderConstantVec &constants) {
-		const char *token;
-		const char *sourcePtr = source.c_str();
+  void ShaderFile::parseConstants(const string &source, ShaderConstantVec &constants) {
+    const char *token;
+    const char *sourcePtr = source.c_str();
 
-		while ((token = findChar(sourcePtr, '@'))) {
-			ShaderConstant c = {'@' + getWord(token + 1, &sourcePtr), "EMPTY"};
-			constants.push_back(c);
-		}
-	}
+    while ((token = findChar(sourcePtr, '@'))) {
+      ShaderConstant c = {'@' + getWord(token + 1, &sourcePtr), "EMPTY"};
+      constants.push_back(c);
+    }
+  }
 
-	const char *ShaderFile::typeToString(ShaderType type) {
-		switch (type) {
-			case ShaderType::Vert: return "Vert";
-			case ShaderType::Frag: return "Frag";
-			case ShaderType::Geom: return "Geom";
-			case ShaderType::TessEval: return "TessEval";
-			case ShaderType::TessControl: return "TessControl";
-			case ShaderType::Compute: return "Compute";
-		}
-		return "Invalid";
-	}
+  const char *ShaderFile::typeToString(ShaderType type) {
+    switch (type) {
+      case ShaderType::Vert: return "Vert";
+      case ShaderType::Frag: return "Frag";
+      case ShaderType::Geom: return "Geom";
+      case ShaderType::TessEval: return "TessEval";
+      case ShaderType::TessControl: return "TessControl";
+      case ShaderType::Compute: return "Compute";
+    }
+    return "Invalid";
+  }
 
 }

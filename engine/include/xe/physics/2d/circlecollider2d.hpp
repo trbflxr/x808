@@ -13,20 +13,20 @@ class b2CircleShape;
 
 namespace xe {
 
-	class XE_API CircleCollider2D : public Collider2D {
-	public:
-		explicit CircleCollider2D(PhysicsWorld2D *world, ColliderType type,
-		                          CircleShape *circle, bool fixedRotation = false);
-		~CircleCollider2D() override;
+  class XE_API CircleCollider2D : public Collider2D {
+  public:
+    explicit CircleCollider2D(PhysicsWorld2D *world, ColliderType type,
+                              CircleShape *circle, bool fixedRotation = false);
+    ~CircleCollider2D() override;
 
-		void recreate() override;
+    void recreate() override;
 
-	protected:
-		void update() override;
+  protected:
+    void update() override;
 
-	private:
-		b2CircleShape *shape;
-	};
+  private:
+    b2CircleShape *shape;
+  };
 
 }
 

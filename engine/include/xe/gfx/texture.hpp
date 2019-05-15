@@ -13,112 +13,112 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformTexture;
-	}
+  namespace internal {
+    class PlatformTexture;
+  }
 
 #define MIP_MAP_AUTO static_cast<uint>(-1)
 #define ANISOTROPY_AUTO static_cast<uint>(-1)
 
-	struct TextureParameters {
-		TextureTarget target;
-		PixelInternalFormat internalFormat;
-		PixelFormat format;
-		PixelType pixelType;
-		TextureMinFilter minFilter;
-		TextureMagFilter magFilter;
-		TextureWrap wrap;
+  struct TextureParameters {
+    TextureTarget target;
+    PixelInternalFormat internalFormat;
+    PixelFormat format;
+    PixelType pixelType;
+    TextureMinFilter minFilter;
+    TextureMagFilter magFilter;
+    TextureWrap wrap;
 
-		uint mipMapLevels;
-		uint anisotropy;
-
-
-		explicit TextureParameters(TextureTarget target = TextureTarget::Tex2D,
-		                           TextureWrap wrap = TextureWrap::Clamp,
-		                           uint mipMapLevels = MIP_MAP_AUTO,
-		                           uint anisotropy = ANISOTROPY_AUTO) :
-				target(target),
-				internalFormat(PixelInternalFormat::Rgba),
-				format(PixelFormat::Rgba),
-				pixelType(PixelType::UnsignedByte),
-				minFilter(TextureMinFilter::LinearMipMapLinear),
-				magFilter(TextureMagFilter::Linear),
-				wrap(wrap),
-				mipMapLevels(mipMapLevels),
-				anisotropy(anisotropy) { }
-
-		explicit TextureParameters(TextureTarget target,
-		                           PixelInternalFormat internalFormat,
-		                           PixelFormat format,
-		                           PixelType pixelType,
-		                           TextureMinFilter minFilter = TextureMinFilter::Linear,
-		                           TextureMagFilter magFilter = TextureMagFilter::Linear,
-		                           TextureWrap wrap = TextureWrap::Clamp,
-		                           uint mipMapLevels = 0,
-		                           uint anisotropy = 0) :
-				target(target),
-				internalFormat(internalFormat),
-				format(format),
-				pixelType(pixelType),
-				minFilter(minFilter),
-				magFilter(magFilter),
-				wrap(wrap),
-				mipMapLevels(mipMapLevels),
-				anisotropy(anisotropy) { }
-	};
+    uint mipMapLevels;
+    uint anisotropy;
 
 
-	class XE_API Texture {
-	public:
-		explicit Texture(const string &name, uint width, uint height, uint depth,
-		                 const TextureParameters &params, bool flip = false);
+    explicit TextureParameters(TextureTarget target = TextureTarget::Tex2D,
+                               TextureWrap wrap = TextureWrap::Clamp,
+                               uint mipMapLevels = MIP_MAP_AUTO,
+                               uint anisotropy = ANISOTROPY_AUTO) :
+        target(target),
+        internalFormat(PixelInternalFormat::Rgba),
+        format(PixelFormat::Rgba),
+        pixelType(PixelType::UnsignedByte),
+        minFilter(TextureMinFilter::LinearMipMapLinear),
+        magFilter(TextureMagFilter::Linear),
+        wrap(wrap),
+        mipMapLevels(mipMapLevels),
+        anisotropy(anisotropy) { }
 
-		explicit Texture(const string &name,
-		                 const string &path,
-		                 const TextureParameters &params, bool flip = false);
+    explicit TextureParameters(TextureTarget target,
+                               PixelInternalFormat internalFormat,
+                               PixelFormat format,
+                               PixelType pixelType,
+                               TextureMinFilter minFilter = TextureMinFilter::Linear,
+                               TextureMagFilter magFilter = TextureMagFilter::Linear,
+                               TextureWrap wrap = TextureWrap::Clamp,
+                               uint mipMapLevels = 0,
+                               uint anisotropy = 0) :
+        target(target),
+        internalFormat(internalFormat),
+        format(format),
+        pixelType(pixelType),
+        minFilter(minFilter),
+        magFilter(magFilter),
+        wrap(wrap),
+        mipMapLevels(mipMapLevels),
+        anisotropy(anisotropy) { }
+  };
 
-		explicit Texture(const string &name, byte *data, uint width, uint height,
-		                 const TextureParameters &params, bool flip = false);
 
-		virtual ~Texture();
+  class XE_API Texture {
+  public:
+    explicit Texture(const string &name, uint width, uint height, uint depth,
+                     const TextureParameters &params, bool flip = false);
 
-		void bind(uint slot) const;
-		void bindImageUnit(uint index, TextureAccess access, uint level = 0, uint layer = 0) const;
-		void unbind(uint slot) const;
+    explicit Texture(const string &name,
+                     const string &path,
+                     const TextureParameters &params, bool flip = false);
 
-		void setData2D(const void *pixels) const;
-		byte *getData2D() const;
+    explicit Texture(const string &name, byte *data, uint width, uint height,
+                     const TextureParameters &params, bool flip = false);
 
-		void generateMipMaps(const TextureTarget &target);
+    virtual ~Texture();
 
-		void copyTo(const Texture *texture) const;
+    void bind(uint slot) const;
+    void bindImageUnit(uint index, TextureAccess access, uint level = 0, uint layer = 0) const;
+    void unbind(uint slot) const;
 
-		const string &getName() const;
-		const string &getFilePath() const;
+    void setData2D(const void *pixels) const;
+    byte *getData2D() const;
 
-		bool hasTransparency() const;
+    void generateMipMaps(const TextureTarget &target);
 
-		uint getWidth() const;
-		uint getHeight() const;
-		uint getDepth() const;
+    void copyTo(const Texture *texture) const;
 
-		uint getHandle() const;
+    const string &getName() const;
+    const string &getFilePath() const;
 
-		TextureTarget getTarget() const;
-		const TextureParameters &getParams() const;
+    bool hasTransparency() const;
 
-		uint getMaxMipMap() const;
+    uint getWidth() const;
+    uint getHeight() const;
+    uint getDepth() const;
 
-		inline bool isFlipped() const { return flipped; }
-		inline void setFlip(bool flip) { flipped = flip; }
+    uint getHandle() const;
 
-		static uint getMaxMipMap(uint width, uint height);
+    TextureTarget getTarget() const;
+    const TextureParameters &getParams() const;
 
-	private:
-		internal::PlatformTexture *texture;
+    uint getMaxMipMap() const;
 
-		bool flipped;
-	};
+    inline bool isFlipped() const { return flipped; }
+    inline void setFlip(bool flip) { flipped = flip; }
+
+    static uint getMaxMipMap(uint width, uint height);
+
+  private:
+    internal::PlatformTexture *texture;
+
+    bool flipped;
+  };
 
 }
 

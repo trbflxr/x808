@@ -14,36 +14,36 @@
 
 namespace xe {
 
-	class XE_API Sprite : public IRenderable2D, public ITransformable2D {
-	public:
-		explicit Sprite(const Texture *texture);
-		Sprite(const Sprite &other);
-		~Sprite() override;
+  class XE_API Sprite : public IRenderable2D, public ITransformable2D {
+  public:
+    explicit Sprite(const Texture *texture);
+    Sprite(const Sprite &other);
+    ~Sprite() override;
 
-		inline const Texture *getTexture() const override { return texture; }
-		void setTexture(const Texture *texture);
+    inline const Texture *getTexture() const override { return texture; }
+    void setTexture(const Texture *texture);
 
-		inline const rect &getTextureRect() const { return textureRect; }
-		void setTextureRect(const rect &rect);
+    inline const rect &getTextureRect() const { return textureRect; }
+    void setTextureRect(const rect &rect);
 
-		inline uint getPointCount() const override { return 4; }
-		inline const Vertex2D *getVertices() const override { return vertices; }
+    inline uint getPointCount() const override { return 4; }
+    inline const Vertex2D *getVertices() const override { return vertices; }
 
-		inline uint getIndicesCount() const override { return 6; }
-		inline const uint *getIndices() const override { return indices; }
+    inline uint getIndicesCount() const override { return 6; }
+    inline const uint *getIndices() const override { return indices; }
 
-		inline const mat4 &getTransformation() const override { return toMatrix(); }
+    inline const mat4 &getTransformation() const override { return toMatrix(); }
 
-	private:
-		void update();
+  private:
+    void update();
 
-	private:
-		Vertex2D *vertices;
-		uint *indices;
+  private:
+    Vertex2D *vertices;
+    uint *indices;
 
-		rect textureRect;
-		const Texture *texture;
-	};
+    rect textureRect;
+    const Texture *texture;
+  };
 
 }
 

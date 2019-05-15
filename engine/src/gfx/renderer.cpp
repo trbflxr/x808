@@ -8,19 +8,19 @@
 
 namespace xe {
 
-	Renderer *Renderer::instance = nullptr;
-	uint Renderer::dc = 0;
+  Renderer *Renderer::instance = nullptr;
+  uint Renderer::dc = 0;
 
-	void Renderer::init() {
-		dc = 0;
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : instance = new internal::GLRenderer();
-				break;
+  void Renderer::init() {
+    dc = 0;
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : instance = new internal::GLRenderer();
+        break;
 
-			default:break;
-		}
+      default:break;
+    }
 
-		instance->initInternal();
-	}
+    instance->initInternal();
+  }
 
 }

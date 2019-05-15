@@ -12,28 +12,28 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformVertexBuffer;
-	}
+  namespace internal {
+    class PlatformVertexBuffer;
+  }
 
-	class XE_API VertexBuffer {
-	public:
-		explicit VertexBuffer(BufferUsage usage = BufferUsage::StaticDraw);
-		~VertexBuffer();
+  class XE_API VertexBuffer {
+  public:
+    explicit VertexBuffer(BufferUsage usage = BufferUsage::StaticDraw);
+    ~VertexBuffer();
 
-		void resize(uint size);
-		void setLayout(const BufferLayout &layout) const;
-		void setData(uint size, const void *data) const;
+    void resize(uint size);
+    void setLayout(const BufferLayout &layout) const;
+    void setData(uint size, const void *data) const;
 
-		void releasePointer() const;
-		void *getPointer() const;
+    void releasePointer() const;
+    void *getPointer() const;
 
-		void bind() const;
-		void unbind() const;
+    void bind() const;
+    void unbind() const;
 
-	private:
-		internal::PlatformVertexBuffer *buffer;
-	};
+  private:
+    internal::PlatformVertexBuffer *buffer;
+  };
 
 }
 

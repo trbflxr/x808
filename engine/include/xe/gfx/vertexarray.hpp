@@ -10,29 +10,29 @@
 
 namespace xe {
 
-	namespace internal {
-		class PlatformVertexArray;
-	}
+  namespace internal {
+    class PlatformVertexArray;
+  }
 
-	class XE_API VertexArray {
-	public:
-		explicit VertexArray();
-		~VertexArray();
+  class XE_API VertexArray {
+  public:
+    explicit VertexArray();
+    ~VertexArray();
 
-		void bind() const;
-		void unbind() const;
+    void bind() const;
+    void unbind() const;
 
-		void drawElements(uint count, BeginMode mode, const void *indices = nullptr) const;
-		void drawElementsInstanced(uint count, BeginMode mode, uint instances, const void *indices = nullptr) const;
-		void drawArrays(uint count, BeginMode mode) const;
-		void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const;
+    void drawElements(uint count, BeginMode mode, const void *indices = nullptr) const;
+    void drawElementsInstanced(uint count, BeginMode mode, uint instances, const void *indices = nullptr) const;
+    void drawArrays(uint count, BeginMode mode) const;
+    void drawArraysInstanced(uint count, uint instanceCount, BeginMode mode) const;
 
-		VertexBuffer *getBuffer(uint index = 0);
-		void pushBuffer(VertexBuffer *buffer);
+    VertexBuffer *getBuffer(uint index = 0);
+    void pushBuffer(VertexBuffer *buffer);
 
-	private:
-		internal::PlatformVertexArray *array;
-	};
+  private:
+    internal::PlatformVertexArray *array;
+  };
 
 }
 

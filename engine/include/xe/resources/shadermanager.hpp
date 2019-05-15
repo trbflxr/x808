@@ -11,35 +11,35 @@
 
 namespace xe {
 
-	class XE_API ShaderManager : NonCopyable {
-	public:
-		~ShaderManager() override;
+  class XE_API ShaderManager : NonCopyable {
+  public:
+    ~ShaderManager() override;
 
-		static void init();
+    static void init();
 
-		static bool add(Shader *shader);
-		static const Shader *get(const string &name);
-		static const string &getSource(const string &name);
+    static bool add(Shader *shader);
+    static const Shader *get(const string &name);
+    static const string &getSource(const string &name);
 
-		static void clean();
+    static void clean();
 
-		static const std::unordered_map<string, const Shader *> &getShaders() { return instance().shaders; }
-		static const std::unordered_map<string, string> &getSources() { return instance().sources; }
+    static const std::unordered_map<string, const Shader *> &getShaders() { return instance().shaders; }
+    static const std::unordered_map<string, string> &getSources() { return instance().sources; }
 
-		static void setConstants(string &source, ShaderConstantVec &constants);
+    static void setConstants(string &source, ShaderConstantVec &constants);
 
-	private:
-		ShaderManager();
+  private:
+    ShaderManager();
 
-		static ShaderManager &instance();
+    static ShaderManager &instance();
 
-		void createDefaultShaders();
-		void createGLShaders();
+    void createDefaultShaders();
+    void createGLShaders();
 
-	private:
-		std::unordered_map<string, const Shader *> shaders;
-		std::unordered_map<string, string> sources;
-	};
+  private:
+    std::unordered_map<string, const Shader *> shaders;
+    std::unordered_map<string, string> sources;
+  };
 
 }
 

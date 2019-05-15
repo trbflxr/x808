@@ -10,12 +10,12 @@
 
 namespace xe {
 
-	struct ShaderConstant {
-		string name;
-		string value;
-	};
+  struct ShaderConstant {
+    string name;
+    string value;
+  };
 
-	typedef std::vector<ShaderConstant> ShaderConstantVec;
+  typedef std::vector<ShaderConstant> ShaderConstantVec;
 }
 
 

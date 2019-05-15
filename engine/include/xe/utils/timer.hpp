@@ -11,21 +11,21 @@
 
 namespace xe {
 
-	struct TimerMembers;
+  struct TimerMembers;
 
-	class XE_API Timer {
-	public:
-		Timer();
+  class XE_API Timer {
+  public:
+    Timer();
 
-		void reset();
+    void reset();
 
-		float elapsed();
-		float elapsedMillis();
+    float elapsed();
+    float elapsedMillis();
 
-	private:
-		byte reserved[32];
-		TimerMembers* members;
-	};
+  private:
+    byte reserved[32];
+    TimerMembers *members;
+  };
 
 }
 

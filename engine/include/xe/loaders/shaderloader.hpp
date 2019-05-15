@@ -12,14 +12,14 @@
 
 namespace xe {
 
-	class XE_API ShaderLoader : NonCopyable {
-	public:
-		static string load(const string &file);
-		static string load(const char *file);
+  class XE_API ShaderLoader : NonCopyable {
+  public:
+    static string load(const string &file);
+    static string load(const char *file);
 
-	private:
-		static constexpr const char *basePath = u8"/shaders/";
-	};
+  private:
+    static constexpr const char *basePath = u8"/shaders/";
+  };
 
 }
 

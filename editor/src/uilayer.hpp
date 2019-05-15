@@ -13,31 +13,31 @@
 
 namespace xe {
 
-	class UILayer : public Layer {
-	public:
-		explicit UILayer();
-		~UILayer() override;
+  class UILayer : public Layer {
+  public:
+    explicit UILayer();
+    ~UILayer() override;
 
-		void render() override;
-		void renderImGui() override;
+    void render() override;
+    void renderImGui() override;
 
-		void update(float delta) override;
-		void fixedUpdate(float delta) override;
+    void update(float delta) override;
+    void fixedUpdate(float delta) override;
 
-		void input(Event &event) override;
+    void input(Event &event) override;
 
-	private:
-		//framebuffer
-		FrameBuffer *renderWindow;
-		Texture *renderTexture;
-		Quad *quad;
+  private:
+    //framebuffer
+    FrameBuffer *renderWindow;
+    Texture *renderTexture;
+    Quad *quad;
 
-		//test
-		Camera *camera;
-		Renderer2D *renderer;
+    //test
+    Camera *camera;
+    Renderer2D *renderer;
 
-		std::vector<IRenderable2D *> renderables;
-	};
+    std::vector<IRenderable2D *> renderables;
+  };
 
 }
 

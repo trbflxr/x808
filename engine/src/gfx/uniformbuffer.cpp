@@ -9,39 +9,39 @@
 
 namespace xe {
 
-	UniformBuffer::UniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : {
-				buffer = new internal::GLUniformBuffer(storage, bind, layout, size);
-				break;
-			}
+  UniformBuffer::UniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size) {
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : {
+        buffer = new internal::GLUniformBuffer(storage, bind, layout, size);
+        break;
+      }
 
-			default: {
-				XE_CORE_FATAL("[UniformBuffer]: selected render API is not supported");
-				buffer = nullptr;
-				break;
-			}
-		}
-	}
+      default: {
+        XE_CORE_FATAL("[UniformBuffer]: selected render API is not supported");
+        buffer = nullptr;
+        break;
+      }
+    }
+  }
 
-	UniformBuffer::~UniformBuffer() {
-		delete buffer;
-	}
+  UniformBuffer::~UniformBuffer() {
+    delete buffer;
+  }
 
-	void UniformBuffer::bind() {
-		buffer->bind();
-	}
+  void UniformBuffer::bind() {
+    buffer->bind();
+  }
 
-	void UniformBuffer::unbind() {
-		buffer->unbind();
-	}
+  void UniformBuffer::unbind() {
+    buffer->unbind();
+  }
 
-	void UniformBuffer::update(const void *data, uint index, uint layoutIndex) {
-		buffer->update(data, index, layoutIndex);
-	}
+  void UniformBuffer::update(const void *data, uint index, uint layoutIndex) {
+    buffer->update(data, index, layoutIndex);
+  }
 
-	uint UniformBuffer::getHandle() const {
-		return buffer->getHandle();
-	}
+  uint UniformBuffer::getHandle() const {
+    return buffer->getHandle();
+  }
 
 }

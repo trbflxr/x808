@@ -8,41 +8,41 @@
 
 namespace xe {
 
-	BoxCollider2D::BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect, bool fixedRotation) :
-			Collider2D(world, type, rect, fixedRotation) {
+  BoxCollider2D::BoxCollider2D(PhysicsWorld2D *world, ColliderType type, RectangleShape *rect, bool fixedRotation) :
+      Collider2D(world, type, rect, fixedRotation) {
 
-		shape = new b2PolygonShape();
-	}
+    shape = new b2PolygonShape();
+  }
 
-	BoxCollider2D::~BoxCollider2D() {
-		delete shape;
-	}
+  BoxCollider2D::~BoxCollider2D() {
+    delete shape;
+  }
 
-	void BoxCollider2D::update() {
-		RectangleShape *rect = (RectangleShape *) transformable;
+  void BoxCollider2D::update() {
+    RectangleShape *rect = (RectangleShape *) transformable;
 
-		if (rect->isSizeChanged()) {
-			rect->setSizeChanged(false);
+    if (rect->isSizeChanged()) {
+      rect->setSizeChanged(false);
 
-			recreate();
-		}
+      recreate();
+    }
 
-		transformable->setPosition(getPosition());
-		transformable->setRotation(getRotation());
-	}
+    transformable->setPosition(getPosition());
+    transformable->setRotation(getRotation());
+  }
 
-	void BoxCollider2D::recreate() {
-		const RectangleShape *rect = (RectangleShape *) transformable;
+  void BoxCollider2D::recreate() {
+    const RectangleShape *rect = (RectangleShape *) transformable;
 
-		world->destroyBody(body);
-		create(world);
+    world->destroyBody(body);
+    create(world);
 
-		b2Vec2 s(rect->getSize() / 2.0f);
-		shape->SetAsBox(s.x, s.y);
+    b2Vec2 s(rect->getSize() / 2.0f);
+    shape->SetAsBox(s.x, s.y);
 
-		fixtureDef->shape = shape;
+    fixtureDef->shape = shape;
 
-		body->CreateFixture(fixtureDef);
-	}
+    body->CreateFixture(fixtureDef);
+  }
 
 }

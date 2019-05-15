@@ -8,41 +8,41 @@
 
 namespace xe {
 
-	CircleCollider2D::CircleCollider2D(PhysicsWorld2D *world, ColliderType type,
-	                                   CircleShape *circle, bool fixedRotation) :
-			Collider2D(world, type, circle, fixedRotation) {
+  CircleCollider2D::CircleCollider2D(PhysicsWorld2D *world, ColliderType type,
+                                     CircleShape *circle, bool fixedRotation) :
+      Collider2D(world, type, circle, fixedRotation) {
 
-		shape = new b2CircleShape();
-	}
+    shape = new b2CircleShape();
+  }
 
-	CircleCollider2D::~CircleCollider2D() {
-		delete shape;
-	}
+  CircleCollider2D::~CircleCollider2D() {
+    delete shape;
+  }
 
-	void CircleCollider2D::update() {
-		CircleShape *circle = (CircleShape *) transformable;
+  void CircleCollider2D::update() {
+    CircleShape *circle = (CircleShape *) transformable;
 
-		if (circle->isRadiusChanged()) {
-			circle->setRadiusChanged(false);
+    if (circle->isRadiusChanged()) {
+      circle->setRadiusChanged(false);
 
-			recreate();
-		}
+      recreate();
+    }
 
-		transformable->setPosition(getPosition());
-		transformable->setRotation(getRotation());
-	}
+    transformable->setPosition(getPosition());
+    transformable->setRotation(getRotation());
+  }
 
-	void CircleCollider2D::recreate() {
-		const CircleShape *circle = (CircleShape *) transformable;
+  void CircleCollider2D::recreate() {
+    const CircleShape *circle = (CircleShape *) transformable;
 
-		world->destroyBody(body);
-		create(world);
+    world->destroyBody(body);
+    create(world);
 
-		shape->m_radius = xeb2(circle->getRadius());
+    shape->m_radius = xeb2(circle->getRadius());
 
-		fixtureDef->shape = shape;
+    fixtureDef->shape = shape;
 
-		body->CreateFixture(fixtureDef);
-	}
+    body->CreateFixture(fixtureDef);
+  }
 
 }

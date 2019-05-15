@@ -14,20 +14,20 @@
 
 namespace xe { namespace fx {
 
-	class XE_API SSAO : public RenderEffect, NonCopyable {
-	public:
-		explicit SSAO(uint width, uint height);
-		~SSAO() override;
+  class XE_API SSAO : public RenderEffect, NonCopyable {
+  public:
+    explicit SSAO(uint width, uint height);
+    ~SSAO() override;
 
-		void calculateAO(const Texture *normal, const Texture *position, const Quad *quad);
+    void calculateAO(const Texture *normal, const Texture *position, const Quad *quad);
 
-		inline const Texture *getAO() const { return aoTexture; }
+    inline const Texture *getAO() const { return aoTexture; }
 
-	private:
-		FrameBuffer *aoBuffer;
-		Texture *aoTexture;
-		const Shader *aoShader;
-	};
+  private:
+    FrameBuffer *aoBuffer;
+    Texture *aoTexture;
+    const Shader *aoShader;
+  };
 
 }}
 

@@ -13,47 +13,47 @@
 
 namespace xe {
 
-	class XE_API Light2D {
-	private:
-		struct Data {
-			vec2 position;
-			vec3 color;
-			float intensity;
+  class XE_API Light2D {
+  private:
+    struct Data {
+      vec2 position;
+      vec3 color;
+      float intensity;
 
-			Data(const vec2 &pos, const vec3 &color, float intensity) :
-					position(pos), color(color), intensity(intensity) { }
-		};
+      Data(const vec2 &pos, const vec3 &color, float intensity) :
+          position(pos), color(color), intensity(intensity) { }
+    };
 
-	public:
-		inline explicit Light2D(const string &name, const vec2 &pos, const vec3 &color, float intensity) :
-				name(name),
-				data(pos, color, intensity) { }
+  public:
+    inline explicit Light2D(const string &name, const vec2 &pos, const vec3 &color, float intensity) :
+        name(name),
+        data(pos, color, intensity) { }
 
-		inline Light2D(const Light2D &other) :
-				name(other.name),
-				data(other.data) { }
+    inline Light2D(const Light2D &other) :
+        name(other.name),
+        data(other.data) { }
 
-		inline void move(const vec2 &dir) { data.position += dir; }
+    inline void move(const vec2 &dir) { data.position += dir; }
 
-		inline const string &getName() const { return name; }
+    inline const string &getName() const { return name; }
 
-		inline const vec2 &getPosition() const { return data.position; }
-		inline void setPosition(const vec2 &position) { data.position = position; }
+    inline const vec2 &getPosition() const { return data.position; }
+    inline void setPosition(const vec2 &position) { data.position = position; }
 
-		inline const vec3 &getColor() const { return data.color; }
-		inline void setColor(const vec3 &color) { data.color = color; }
+    inline const vec3 &getColor() const { return data.color; }
+    inline void setColor(const vec3 &color) { data.color = color; }
 
-		inline float getIntensity() const { return data.intensity; }
-		inline void setIntensity(float intensity) { data.intensity = intensity; }
+    inline float getIntensity() const { return data.intensity; }
+    inline void setIntensity(float intensity) { data.intensity = intensity; }
 
-		inline const void *getData() const { return &data; }
-		inline static uint getDataSize() { return sizeof(Data); }
+    inline const void *getData() const { return &data; }
+    inline static uint getDataSize() { return sizeof(Data); }
 
-	private:
-		string name;
+  private:
+    string name;
 
-		Data data;
-	};
+    Data data;
+  };
 
 }
 

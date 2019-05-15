@@ -12,20 +12,20 @@
 
 namespace xe {
 
-	class ShaderSampler {
-	public:
-		enum class Type {
-			None, Sampler1D, Sampler2D, Sampler2DArray, Sampler3D, SamplerCube, SamplerCubeArray
-		};
+  class ShaderSampler {
+  public:
+    enum class Type {
+      None, Sampler1D, Sampler2D, Sampler2DArray, Sampler3D, SamplerCube, SamplerCubeArray
+    };
 
-	public:
-		virtual ~ShaderSampler() = default;
-		virtual const string &getName() const = 0;
-		virtual uint getLocation() const = 0;
-		virtual uint getCount() const = 0;
-		virtual Type getType() const = 0;
-	};
-	typedef std::vector<ShaderSampler *> ShaderSamplerVec;
+  public:
+    virtual ~ShaderSampler() = default;
+    virtual const string &getName() const = 0;
+    virtual uint getLocation() const = 0;
+    virtual uint getCount() const = 0;
+    virtual Type getType() const = 0;
+  };
+  typedef std::vector<ShaderSampler *> ShaderSamplerVec;
 
 }
 

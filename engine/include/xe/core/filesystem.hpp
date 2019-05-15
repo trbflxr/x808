@@ -12,31 +12,31 @@
 
 namespace xe {
 
-	class XE_API FileSystem : NonCopyable {
-	public:
-		static bool exists(const string &file);
-		static int64 size(const string &file);
+  class XE_API FileSystem : NonCopyable {
+  public:
+    static bool exists(const string &file);
+    static int64 size(const string &file);
 
-		static byte *read(const string &file, int64 *outSize = nullptr);
-		static bool read(const string &file, void *buff, int64 size = -1);
-		static bool readText(const string &file, string &outString);
+    static byte *read(const string &file, int64 *outSize = nullptr);
+    static bool read(const string &file, void *buff, int64 size = -1);
+    static bool readText(const string &file, string &outString);
 
-		static bool write(const string &file, void *buff, uint64 size);
+    static bool write(const string &file, void *buff, uint64 size);
 
-		static string getWorkingDirectory();
+    static string getWorkingDirectory();
 
-		static std::vector<string> getLogicalDrives();
+    static std::vector<string> getLogicalDrives();
 
-		static void updateVolumes() { get().shouldUpdateVolumes = true; }
+    static void updateVolumes() { get().shouldUpdateVolumes = true; }
 
-	private:
-		explicit FileSystem();
+  private:
+    explicit FileSystem();
 
-		static FileSystem &get();
+    static FileSystem &get();
 
-	private:
-		bool shouldUpdateVolumes;
-	};
+  private:
+    bool shouldUpdateVolumes;
+  };
 
 }
 

@@ -6,99 +6,99 @@
 
 namespace xe {
 
-	Shape::Shape() :
-			IRenderable2D(),
-			texture(nullptr) { }
+  Shape::Shape() :
+      IRenderable2D(),
+      texture(nullptr) { }
 
-	Shape::Shape(const Shape &other) :
-			IRenderable2D(other),
-			ITransformable2D(other),
-			bounds(other.bounds),
-			textureRect(other.textureRect),
-			texture(other.texture),
-			vertices(other.vertices),
-			indices(other.indices) { }
+  Shape::Shape(const Shape &other) :
+      IRenderable2D(other),
+      ITransformable2D(other),
+      bounds(other.bounds),
+      textureRect(other.textureRect),
+      texture(other.texture),
+      vertices(other.vertices),
+      indices(other.indices) { }
 
-	void Shape::setTexture(const xe::Texture *texture) {
-		Shape::texture = texture;
+  void Shape::setTexture(const xe::Texture *texture) {
+    Shape::texture = texture;
 
-		if (texture) {
-			setTextureRect(rect(0.0f, 0.0f, texture->getWidth(), texture->getHeight()));
-		}
-	}
+    if (texture) {
+      setTextureRect(rect(0.0f, 0.0f, texture->getWidth(), texture->getHeight()));
+    }
+  }
 
-	void Shape::setTextureRect(const rect &rect) {
-		Shape::textureRect = rect;
-		updateUVs();
-	}
+  void Shape::setTextureRect(const rect &rect) {
+    Shape::textureRect = rect;
+    updateUVs();
+  }
 
-	void Shape::update() {
-		const uint count = getPointCount();
+  void Shape::update() {
+    const uint count = getPointCount();
 
-		if (count < 3) {
-			vertices.resize(0);
-			indices.resize(0);
-			return;
-		}
+    if (count < 3) {
+      vertices.resize(0);
+      indices.resize(0);
+      return;
+    }
 
-		vertices.resize(count);
+    vertices.resize(count);
 
-		//positions
-		vertices[0].pos = getPoint(0);
+    //positions
+    vertices[0].pos = getPoint(0);
 
-		//bounds
-		float left = vertices[0].pos.x;
-		float top = vertices[0].pos.y;
-		float right = vertices[0].pos.x;
-		float bottom = vertices[0].pos.y;
+    //bounds
+    float left = vertices[0].pos.x;
+    float top = vertices[0].pos.y;
+    float right = vertices[0].pos.x;
+    float bottom = vertices[0].pos.y;
 
-		//positions
-		for (uint i = 1; i < count; ++i) {
-			vertices[i].pos = getPoint(i);
+    //positions
+    for (uint i = 1; i < count; ++i) {
+      vertices[i].pos = getPoint(i);
 
-			if (vertices[i].pos.x < left) {
-				left = vertices[i].pos.x;
-			} else if (vertices[i].pos.x > right) {
-				right = vertices[i].pos.x;
-			}
+      if (vertices[i].pos.x < left) {
+        left = vertices[i].pos.x;
+      } else if (vertices[i].pos.x > right) {
+        right = vertices[i].pos.x;
+      }
 
-			if (vertices[i].pos.y < top) {
-				top = vertices[i].pos.y;
-			} else if (vertices[i].pos.y > bottom) {
-				bottom = vertices[i].pos.y;
-			}
-		}
+      if (vertices[i].pos.y < top) {
+        top = vertices[i].pos.y;
+      } else if (vertices[i].pos.y > bottom) {
+        bottom = vertices[i].pos.y;
+      }
+    }
 
-		//update bounds
-		bounds = rect(left, top, right - left, bottom - top);
+    //update bounds
+    bounds = rect(left, top, right - left, bottom - top);
 
-		updateUVs();
+    updateUVs();
 
-		//update indices
-		const uint indicesCount = 3 * (count - 2);
-		indices.resize(indicesCount);
+    //update indices
+    const uint indicesCount = 3 * (count - 2);
+    indices.resize(indicesCount);
 
-		uint index = 0;
-		for (uint i = 2; i < count; ++i) {
-			indices[index++] = 0;
-			indices[index++] = i - 1;
-			indices[index++] = i;
-		}
-	}
+    uint index = 0;
+    for (uint i = 2; i < count; ++i) {
+      indices[index++] = 0;
+      indices[index++] = i - 1;
+      indices[index++] = i;
+    }
+  }
 
-	void Shape::updateUVs() {
-		for (uint i = 0; i < getPointCount(); ++i) {
-			if (texture) {
-				const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
-				const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
+  void Shape::updateUVs() {
+    for (uint i = 0; i < getPointCount(); ++i) {
+      if (texture) {
+        const float xRatio = bounds.width > 0.0f ? (vertices[i].pos.x - bounds.x) / bounds.width : 0.0f;
+        const float yRatio = bounds.height > 0.0f ? (vertices[i].pos.y - bounds.y) / bounds.height : 0.0f;
 
-				vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
-				vertices[i].uv.y = 1.0f - (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
-			} else {
-				vertices[i].uv.x = 0.0f;
-				vertices[i].uv.y = 0.0f;
-			}
-		}
-	}
+        vertices[i].uv.x = (textureRect.x + textureRect.width * xRatio) / texture->getWidth();
+        vertices[i].uv.y = 1.0f - (textureRect.y + textureRect.height * yRatio) / texture->getHeight();
+      } else {
+        vertices[i].uv.x = 0.0f;
+        vertices[i].uv.y = 0.0f;
+      }
+    }
+  }
 
 }

@@ -3,10 +3,13 @@
 //
 
 #undef NOGDI
-	#ifndef WIN32_LEAN_AND_MEAN
-		#define WIN32_LEAN_AND_MEAN
-	#endif
-	#include <windows.h>
+#ifndef WIN32_LEAN_AND_MEAN
+  #define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef WIN32_EXTRA_LEAN
+  #define WIN32_EXTRA_LEAN
+#endif
+#include <windows.h>
 #define NOGDI
 
 #include <cstdio>
@@ -20,67 +23,67 @@
 #include "glcommon.hpp"
 #include "glcontext.hpp"
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	static HDC hDc;
+  static HDC hDc;
 
-	GLContext::GLContext(void *deviceContext) {
-		hDc = GetDC(static_cast<HWND>(deviceContext));
-		HGLRC hrc = wglCreateContext(hDc);
+  GLContext::GLContext(void *deviceContext) {
+    hDc = GetDC(static_cast<HWND>(deviceContext));
+    HGLRC hrc = wglCreateContext(hDc);
 
-		if (hrc) {
-			if (!wglMakeCurrent(hDc, hrc)) {
-				XE_CORE_FATAL("Failed setting OpenGL context!");
-			}
-		} else {
-			XE_CORE_FATAL("Failed creating OpenGL context!");
-		}
+    if (hrc) {
+      if (!wglMakeCurrent(hDc, hrc)) {
+        XE_CORE_FATAL("Failed setting OpenGL context!");
+      }
+    } else {
+      XE_CORE_FATAL("Failed creating OpenGL context!");
+    }
 
-		if (glewInit() != GLEW_OK) {
-			XE_CORE_FATAL("Could not initialize GLEW!");
-		}
+    if (glewInit() != GLEW_OK) {
+      XE_CORE_FATAL("Could not initialize GLEW!");
+    }
 
-		if (Config::get().srgb) {
-			glCall(glEnable(GL_FRAMEBUFFER_SRGB));
-		} else {
-			glCall(glDisable(GL_FRAMEBUFFER_SRGB));
-		}
+    if (Config::get().srgb) {
+      glCall(glEnable(GL_FRAMEBUFFER_SRGB));
+    } else {
+      glCall(glDisable(GL_FRAMEBUFFER_SRGB));
+    }
 
-		glCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
-	}
+    glCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
+  }
 
-	void GLContext::swapBuffers() {
-		SwapBuffers(hDc);
-	}
+  void GLContext::swapBuffers() {
+    SwapBuffers(hDc);
+  }
 
-	void GLContext::enableVsync(bool enabled) {
-		glCall(wglSwapIntervalEXT(enabled));
-	}
+  void GLContext::enableVsync(bool enabled) {
+    glCall(wglSwapIntervalEXT(enabled));
+  }
 
-	uint GLContext::getMaxTexUnits() const {
-		int32 size;
-		glCall(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &size));
+  uint GLContext::getMaxTexUnits() const {
+    int32 size;
+    glCall(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &size));
 
-		return static_cast<uint>(size);
-	}
+    return static_cast<uint>(size);
+  }
 
-	GAPIInfo GLContext::getInfoInternal() const {
-		static GAPIInfo *info = nullptr;
+  GAPIInfo GLContext::getInfoInternal() const {
+    static GAPIInfo *info = nullptr;
 
-		if (!info) {
-			info = new GAPIInfo();
+    if (!info) {
+      info = new GAPIInfo();
 
-			sprintf(info->vendor, "%s", glGetString(GL_VENDOR));
-			sprintf(info->renderer, "%s", glGetString(GL_RENDERER));
-			sprintf(info->version, "%s", glGetString(GL_VERSION));
-			sprintf(info->shadingLevel, "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+      sprintf(info->vendor, "%s", glGetString(GL_VENDOR));
+      sprintf(info->renderer, "%s", glGetString(GL_RENDERER));
+      sprintf(info->version, "%s", glGetString(GL_VERSION));
+      sprintf(info->shadingLevel, "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-			glGetIntegerv(GL_MAX_TEXTURE_SIZE, &info->maxTexSize);
-			glGetIntegerv(GL_MAX_TEXTURE_UNITS, &info->maxTexUnits);
-			glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &info->maxTexImgUnits);
-		}
+      glGetIntegerv(GL_MAX_TEXTURE_SIZE, &info->maxTexSize);
+      glGetIntegerv(GL_MAX_TEXTURE_UNITS, &info->maxTexUnits);
+      glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &info->maxTexImgUnits);
+    }
 
-		return *info;
-	}
+    return *info;
+  }
 
-}}
+}

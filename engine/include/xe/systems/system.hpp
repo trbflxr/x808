@@ -10,39 +10,39 @@
 
 namespace xe {
 
-	class System {
-	public:
-		virtual ~System() = default;
+  class System {
+  public:
+    virtual ~System() = default;
 
-		virtual void init() { }
+    virtual void init() { }
 
-		virtual void render() { }
+    virtual void render() { }
 
-		virtual void update(float delta) { }
-		virtual void lateUpdate(float delta) { }
-		virtual void fixedUpdate(float delta) { }
+    virtual void update(float delta) { }
+    virtual void lateUpdate(float delta) { }
+    virtual void fixedUpdate(float delta) { }
 
-		virtual void input(Event &event) { }
+    virtual void input(Event &event) { }
 
-		inline bool isActive() const { return active; }
-		inline void setActive(bool active) { System::active = active; }
+    inline bool isActive() const { return active; }
+    inline void setActive(bool active) { System::active = active; }
 
-	protected:
-		explicit System() :
-				app(Application::get()),
-				window(app.getWindow()),
-				active(false) { }
+  protected:
+    explicit System() :
+        app(Application::get()),
+        window(app.getWindow()),
+        active(false) { }
 
-		virtual void resize(int32 width, int32 height) { }
+    virtual void resize(int32 width, int32 height) { }
 
-	protected:
-		friend class SystemStack;
+  protected:
+    friend class SystemStack;
 
-		Application &app;
-		Window &window;
+    Application &app;
+    Window &window;
 
-		bool active;
-	};
+    bool active;
+  };
 
 }
 

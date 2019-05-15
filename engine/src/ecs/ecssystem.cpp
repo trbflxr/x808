@@ -6,34 +6,34 @@
 
 namespace xe {
 
-	///-------- BaseECSSystem --------///
-	bool BaseECSSystem::isValid() {
-		for (uint componentFlag : componentFlags) {
-			if((componentFlag & BaseECSSystem::FlagOptional) == 0) {
-				return true;
-			}
-		}
-		return false;
-	}
+  ///-------- BaseECSSystem --------///
+  bool BaseECSSystem::isValid() {
+    for (uint componentFlag : componentFlags) {
+      if ((componentFlag & BaseECSSystem::FlagOptional) == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 
-	///-------- ECSSystemList --------///
-	bool ECSSystemList::addSystem(BaseECSSystem &system) {
-		if (!system.isValid()) {
-			return false;
-		}
-		systems.push_back(&system);
-		return true;
-	}
+  ///-------- ECSSystemList --------///
+  bool ECSSystemList::addSystem(BaseECSSystem &system) {
+    if (!system.isValid()) {
+      return false;
+    }
+    systems.push_back(&system);
+    return true;
+  }
 
-	bool ECSSystemList::removeSystem(BaseECSSystem &system) {
-		for(uint i = 0; i < systems.size(); i++) {
-			if(&system == systems[i]) {
-				systems.erase(systems.begin() + i);
-				return true;
-			}
-		}
-		return false;
-	}
+  bool ECSSystemList::removeSystem(BaseECSSystem &system) {
+    for (uint i = 0; i < systems.size(); i++) {
+      if (&system == systems[i]) {
+        systems.erase(systems.begin() + i);
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

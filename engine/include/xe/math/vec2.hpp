@@ -12,140 +12,140 @@ struct b2Vec2;
 
 namespace xe {
 
-	struct vec3;
+  struct vec3;
 
-	struct XE_API vec2 {
-		float x;
-		float y;
+  struct XE_API vec2 {
+    float x;
+    float y;
 
-		vec2();
-		explicit vec2(float val);
-		vec2(float x, float y);
-		vec2(const vec2 &other);
-		explicit vec2(const vec3 &other);
-		vec2(const b2Vec2 &vec, bool scale = true);
+    vec2();
+    explicit vec2(float val);
+    vec2(float x, float y);
+    vec2(const vec2 &other);
+    explicit vec2(const vec3 &other);
+    vec2(const b2Vec2 &vec, bool scale = true);
 
-		vec2 normalize();
+    vec2 normalize();
 
-		static float length(const vec2 &v);
-		static float max(const vec2 &v);
+    static float length(const vec2 &v);
+    static float max(const vec2 &v);
 
-		static float dot(const vec2 &v1, const vec2 &v2);
-		static vec2 normalize(const vec2 &v);
-		static float cross(const vec2 &v1, const vec2 &v2);
-		static vec2 lerp(const vec2 &v, const vec2 &dest, float lerpFactor);
-		static vec2 rotate(const vec2 &v, float angle);
+    static float dot(const vec2 &v1, const vec2 &v2);
+    static vec2 normalize(const vec2 &v);
+    static float cross(const vec2 &v1, const vec2 &v2);
+    static vec2 lerp(const vec2 &v, const vec2 &dest, float lerpFactor);
+    static vec2 rotate(const vec2 &v, float angle);
 
-		vec2 &operator=(const b2Vec2 &vec);
-	};
+    vec2 &operator=(const b2Vec2 &vec);
+  };
 
-	//just in case
-	typedef vec2 vec2;
+  //just in case
+  typedef vec2 vec2;
 
-	///----- operators -----///
-	inline vec2 operator+(const vec2 &left, const vec2 &right) {
-		return vec2(left.x + right.x, left.y + right.y);
-	}
+  ///----- operators -----///
+  inline vec2 operator+(const vec2 &left, const vec2 &right) {
+    return vec2(left.x + right.x, left.y + right.y);
+  }
 
-	inline vec2 operator-(const vec2 &left, const vec2 &right) {
-		return vec2(left.x - right.x, left.y - right.y);
-	}
+  inline vec2 operator-(const vec2 &left, const vec2 &right) {
+    return vec2(left.x - right.x, left.y - right.y);
+  }
 
-	inline vec2 operator*(const vec2 &left, const vec2 &right) {
-		return vec2(left.x * right.x, left.y * right.x);
-	}
+  inline vec2 operator*(const vec2 &left, const vec2 &right) {
+    return vec2(left.x * right.x, left.y * right.x);
+  }
 
-	inline vec2 operator/(const vec2 &left, const vec2 &right) {
-		return vec2(left.x / right.x, left.y / right.x);
-	}
+  inline vec2 operator/(const vec2 &left, const vec2 &right) {
+    return vec2(left.x / right.x, left.y / right.x);
+  }
 
-	inline vec2 operator+(const vec2 &left, float right) {
-		return vec2(left.x + right, left.y + right);
-	}
+  inline vec2 operator+(const vec2 &left, float right) {
+    return vec2(left.x + right, left.y + right);
+  }
 
-	inline vec2 operator-(const vec2 &left, float right) {
-		return vec2(left.x - right, left.y - right);
-	}
+  inline vec2 operator-(const vec2 &left, float right) {
+    return vec2(left.x - right, left.y - right);
+  }
 
-	inline vec2 operator*(const vec2 &left, float right) {
-		return vec2(left.x * right, left.y * right);
-	}
+  inline vec2 operator*(const vec2 &left, float right) {
+    return vec2(left.x * right, left.y * right);
+  }
 
-	inline vec2 operator/(const vec2 &left, float right) {
-		return vec2(left.x / right, left.y / right);
-	}
+  inline vec2 operator/(const vec2 &left, float right) {
+    return vec2(left.x / right, left.y / right);
+  }
 
-	inline vec2 &operator+=(vec2 &left, const vec2 &right) {
-		left.x += right.x;
-		left.y += right.y;
-		return left;
-	}
+  inline vec2 &operator+=(vec2 &left, const vec2 &right) {
+    left.x += right.x;
+    left.y += right.y;
+    return left;
+  }
 
-	inline vec2 &operator-=(vec2 &left, const vec2 &right) {
-		left.x -= right.x;
-		left.y -= right.y;
-		return left;
-	}
+  inline vec2 &operator-=(vec2 &left, const vec2 &right) {
+    left.x -= right.x;
+    left.y -= right.y;
+    return left;
+  }
 
-	inline vec2 &operator*=(vec2 &left, const vec2 &right) {
-		left.x *= right.x;
-		left.y *= right.y;
-		return left;
-	}
+  inline vec2 &operator*=(vec2 &left, const vec2 &right) {
+    left.x *= right.x;
+    left.y *= right.y;
+    return left;
+  }
 
-	inline vec2 &operator/=(vec2 &left, const vec2 &right) {
-		left.x /= right.x;
-		left.y /= right.y;
-		return left;
-	}
+  inline vec2 &operator/=(vec2 &left, const vec2 &right) {
+    left.x /= right.x;
+    left.y /= right.y;
+    return left;
+  }
 
-	inline vec2 &operator+=(vec2 &left, float right) {
-		left.x += right;
-		left.y += right;
-		return left;
-	}
+  inline vec2 &operator+=(vec2 &left, float right) {
+    left.x += right;
+    left.y += right;
+    return left;
+  }
 
-	inline vec2 &operator-=(vec2 &left, float right) {
-		left.x -= right;
-		left.y -= right;
-		return left;
-	}
+  inline vec2 &operator-=(vec2 &left, float right) {
+    left.x -= right;
+    left.y -= right;
+    return left;
+  }
 
-	inline vec2 &operator*=(vec2 &left, float right) {
-		left.x *= right;
-		left.y *= right;
-		return left;
-	}
+  inline vec2 &operator*=(vec2 &left, float right) {
+    left.x *= right;
+    left.y *= right;
+    return left;
+  }
 
-	inline vec2 &operator/=(vec2 &left, float right) {
-		left.x /= right;
-		left.y /= right;
-		return left;
-	}
+  inline vec2 &operator/=(vec2 &left, float right) {
+    left.x /= right;
+    left.y /= right;
+    return left;
+  }
 
-	inline bool operator==(const vec2 &left, const vec2 &right) {
-		return (left.x == right.x) && (left.y == right.y);
-	}
+  inline bool operator==(const vec2 &left, const vec2 &right) {
+    return (left.x == right.x) && (left.y == right.y);
+  }
 
-	inline bool operator!=(const vec2 &left, const vec2 &right) {
-		return (left.x != right.x) || (left.y != right.y);
-	}
+  inline bool operator!=(const vec2 &left, const vec2 &right) {
+    return (left.x != right.x) || (left.y != right.y);
+  }
 
-	inline bool operator<(const vec2 &left, const vec2 &right) {
-		return (left.x < right.x) && (left.y < right.y);
-	}
+  inline bool operator<(const vec2 &left, const vec2 &right) {
+    return (left.x < right.x) && (left.y < right.y);
+  }
 
-	inline bool operator<=(const vec2 &left, const vec2 &right) {
-		return (left.x <= right.x) && (left.y <= right.y);
-	}
+  inline bool operator<=(const vec2 &left, const vec2 &right) {
+    return (left.x <= right.x) && (left.y <= right.y);
+  }
 
-	inline bool operator>(const vec2 &left, const vec2 &right) {
-		return (left.x > right.x) && (left.y > right.y);
-	}
+  inline bool operator>(const vec2 &left, const vec2 &right) {
+    return (left.x > right.x) && (left.y > right.y);
+  }
 
-	inline bool operator>=(const vec2 &left, const vec2 &right) {
-		return (left.x >= right.x) && (left.y >= right.y);
-	}
+  inline bool operator>=(const vec2 &left, const vec2 &right) {
+    return (left.x >= right.x) && (left.y >= right.y);
+  }
 
 }
 

@@ -9,73 +9,73 @@
 
 namespace xe {
 
-	IndexBuffer::IndexBuffer(const uint16 *data, uint count) {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : {
-				buffer = new internal::GLIndexBuffer(data, count);
-				break;
-			}
+  IndexBuffer::IndexBuffer(const uint16 *data, uint count) {
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : {
+        buffer = new internal::GLIndexBuffer(data, count);
+        break;
+      }
 
-			default: {
-				XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
-				buffer = nullptr;
-				break;
-			}
-		}
-	}
+      default: {
+        XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
+        buffer = nullptr;
+        break;
+      }
+    }
+  }
 
-	IndexBuffer::IndexBuffer(const uint *data, uint count) {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : {
-				buffer = new internal::GLIndexBuffer(data, count);
-				break;
-			}
+  IndexBuffer::IndexBuffer(const uint *data, uint count) {
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : {
+        buffer = new internal::GLIndexBuffer(data, count);
+        break;
+      }
 
-			default: {
-				XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
-				buffer = nullptr;
-				break;
-			}
-		}
-	}
+      default: {
+        XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
+        buffer = nullptr;
+        break;
+      }
+    }
+  }
 
-	IndexBuffer::IndexBuffer() {
-		switch (Context::getRenderAPI()) {
-			case RenderAPI::OpenGL : {
-				buffer = new internal::GLIndexBuffer();
-				break;
-			}
+  IndexBuffer::IndexBuffer() {
+    switch (Context::getRenderAPI()) {
+      case RenderAPI::OpenGL : {
+        buffer = new internal::GLIndexBuffer();
+        break;
+      }
 
-			default: {
-				XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
-				buffer = nullptr;
-				break;
-			}
-		}
-	}
+      default: {
+        XE_CORE_FATAL("[IndexBuffer]: selected render API is not supported");
+        buffer = nullptr;
+        break;
+      }
+    }
+  }
 
-	IndexBuffer::~IndexBuffer() {
-		delete buffer;
-	}
+  IndexBuffer::~IndexBuffer() {
+    delete buffer;
+  }
 
-	void IndexBuffer::bind() const {
-		buffer->bind();
-	}
+  void IndexBuffer::bind() const {
+    buffer->bind();
+  }
 
-	void IndexBuffer::unbind() const {
-		buffer->unbind();
-	}
+  void IndexBuffer::unbind() const {
+    buffer->unbind();
+  }
 
-	uint IndexBuffer::getCount() const {
-		return buffer->getCount();
-	}
+  uint IndexBuffer::getCount() const {
+    return buffer->getCount();
+  }
 
-	void IndexBuffer::setData(const uint16 *data, uint count) {
-		buffer->setData(data, count);
-	}
+  void IndexBuffer::setData(const uint16 *data, uint count) {
+    buffer->setData(data, count);
+  }
 
-	void IndexBuffer::setData(const uint *data, uint count) {
-		buffer->setData(data, count);
-	}
+  void IndexBuffer::setData(const uint *data, uint count) {
+    buffer->setData(data, count);
+  }
 
 }

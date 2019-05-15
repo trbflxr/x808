@@ -12,39 +12,39 @@
 
 namespace xe {
 
-	class Cursor : NonCopyable {
-	private:
-		friend class PlatformWindowWin32;
+  class Cursor : NonCopyable {
+  private:
+    friend class PlatformWindowWin32;
 
-	public:
-		enum Type {
-			Arrow,
-			ArrowWait,
-			Wait,
-			Text,
-			Hand,
-			SizeHorizontal,
-			SizeVertical,
-			SizeTopLeftBottomRight,
-			SizeBottomLeftTopRight,
-			SizeAll,
-			Cross,
-			Help,
-			NotAllowed
-		};
+  public:
+    enum Type {
+      Arrow,
+      ArrowWait,
+      Wait,
+      Text,
+      Hand,
+      SizeHorizontal,
+      SizeVertical,
+      SizeTopLeftBottomRight,
+      SizeBottomLeftTopRight,
+      SizeAll,
+      Cross,
+      Help,
+      NotAllowed
+    };
 
-	public:
-		explicit Cursor(const byte *pixels, vec2 size, vec2 hotspot);
-		explicit Cursor(Type type);
-		~Cursor() override;
+  public:
+    explicit Cursor(const byte *pixels, vec2 size, vec2 hotspot);
+    explicit Cursor(Type type);
+    ~Cursor() override;
 
-		inline void *raw() const { return cursor; }
-	private:
-		void release();
+    inline void *raw() const { return cursor; }
+  private:
+    void release();
 
-	private:
-		void *cursor;
-	};
+  private:
+    void *cursor;
+  };
 
 }
 

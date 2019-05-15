@@ -9,45 +9,45 @@
 
 namespace xe {
 
-	PolygonCollider2D::PolygonCollider2D(PhysicsWorld2D *world, ColliderType type, Polygon *polygon, bool fixedRotation)
-			: Collider2D(world, type, polygon, fixedRotation) {
+  PolygonCollider2D::PolygonCollider2D(PhysicsWorld2D *world, ColliderType type, Polygon *polygon, bool fixedRotation)
+      : Collider2D(world, type, polygon, fixedRotation) {
 
-		XE_ASSERT(false, "Convex polygons is not implemented");
+    XE_ASSERT(false, "Convex polygons is not implemented");
 
-		shape = new b2PolygonShape();
-	}
+    shape = new b2PolygonShape();
+  }
 
-	PolygonCollider2D::~PolygonCollider2D() {
-		delete shape;
-	}
+  PolygonCollider2D::~PolygonCollider2D() {
+    delete shape;
+  }
 
-	void PolygonCollider2D::update() {
-		Polygon *polygon = (Polygon *) transformable;
+  void PolygonCollider2D::update() {
+    Polygon *polygon = (Polygon *) transformable;
 
-		if (polygon->isPointsChanged()) {
-			polygon->setPointsChanged(false);
+    if (polygon->isPointsChanged()) {
+      polygon->setPointsChanged(false);
 
-			world->destroyBody(body);
-			create(world);
+      world->destroyBody(body);
+      create(world);
 
-			const uint size = polygon->getPointCount();
-			const vec2 *rp = polygon->getRawPoints();
+      const uint size = polygon->getPointCount();
+      const vec2 *rp = polygon->getRawPoints();
 
-			b2Vec2 points[size];
+      b2Vec2 points[size];
 
-			for (uint i = 0; i < size; ++i) {
-				points[i] = rp[i];
-			}
+      for (uint i = 0; i < size; ++i) {
+        points[i] = rp[i];
+      }
 
-			shape->Set(points, size);
+      shape->Set(points, size);
 
-			fixtureDef->shape = shape;
+      fixtureDef->shape = shape;
 
-			body->CreateFixture(fixtureDef);
-		}
+      body->CreateFixture(fixtureDef);
+    }
 
-		transformable->setPosition(getPosition());
-		transformable->setRotation(getRotation());
-	}
+    transformable->setPosition(getPosition());
+    transformable->setRotation(getRotation());
+  }
 
 }

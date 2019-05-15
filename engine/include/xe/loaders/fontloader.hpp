@@ -11,16 +11,16 @@
 
 namespace xe {
 
-	class XE_API FontLoader : NonCopyable {
-	public:
-		static bool load(Font *font, const char *file, float size, uint atlasSize);
-		static bool load(Font *font, const string &file, float size, uint atlasSize);
+  class XE_API FontLoader : NonCopyable {
+  public:
+    static bool load(Font *font, const char *file, float size, uint atlasSize);
+    static bool load(Font *font, const string &file, float size, uint atlasSize);
 
-		static bool load(Font *font, const byte *data, size_t dataSize, float size, uint atlasSize);
+    static bool load(Font *font, const byte *data, size_t dataSize, float size, uint atlasSize);
 
-	private:
-		static constexpr const char *basePath = u8"/fonts/";
-	};
+  private:
+    static constexpr const char *basePath = u8"/fonts/";
+  };
 
 }
 

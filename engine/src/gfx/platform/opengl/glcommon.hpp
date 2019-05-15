@@ -8,13 +8,13 @@
 
 #include <xe/xeint.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	uint glCheckError();
+  uint glCheckError();
 
-	bool glLogCall(const char *function, const char *file, uint line);
+  bool glLogCall(const char *function, const char *file, uint line);
 
-}}
+}
 
 #ifdef XE_DEBUG
 #define glCall(x) ::xe::internal::glCheckError();\

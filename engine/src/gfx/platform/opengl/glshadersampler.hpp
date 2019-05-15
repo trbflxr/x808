@@ -9,33 +9,33 @@
 #include <xe/gfx/shadersampler.hpp>
 #include <xe/string.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class GLShaderSampler : public ShaderSampler {
-	private:
-		friend class GLBaseShader;
+  class GLShaderSampler : public ShaderSampler {
+  private:
+    friend class GLBaseShader;
 
-	public:
-		explicit GLShaderSampler(Type type, const string &name, uint count);
-		~GLShaderSampler() override = default;
+  public:
+    explicit GLShaderSampler(Type type, const string &name, uint count);
+    ~GLShaderSampler() override = default;
 
-		inline const string &getName() const override { return name; }
-		inline uint getLocation() const override { return location; }
-		inline uint getCount() const override { return count; }
-		inline Type getType() const override { return type; }
+    inline const string &getName() const override { return name; }
+    inline uint getLocation() const override { return location; }
+    inline uint getCount() const override { return count; }
+    inline Type getType() const override { return type; }
 
-		static Type stringToType(const string &type);
-		static string typeToString(Type type);
-		static bool isTypeStrSampler(const string &type);
+    static Type stringToType(const string &type);
+    static string typeToString(Type type);
+    static bool isTypeStrSampler(const string &type);
 
-	private:
-		Type type;
-		string name;
-		uint count;
-		uint location;
-	};
+  private:
+    Type type;
+    string name;
+    uint count;
+    uint location;
+  };
 
-}}
+}
 
 
 #endif //X808_GLSHADERSAMPLER_HPP

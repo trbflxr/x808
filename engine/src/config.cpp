@@ -6,6 +6,6 @@
 
 namespace xe {
 
-	Config *Config::cfg = nullptr;
+  Config *Config::cfg = nullptr;
 
 }

@@ -20,31 +20,31 @@
 
 namespace xe { namespace math {
 
-	static float clampf(float n, float min, float max) {
-		return __max(__min(n, max), min);
-	}
+  static float clampf(float n, float min, float max) {
+    return __max(__min(n, max), min);
+  }
 
-	static float logf(float a, float newBase) {
-		if (std::isnan(a)) return a;
-		if (std::isnan(newBase)) return newBase;
-		if (newBase == 1.0f || (a != 1.0f && (newBase == 0.0f || std::isinf(newBase)))) return NAN;
+  static float logf(float a, float newBase) {
+    if (std::isnan(a)) return a;
+    if (std::isnan(newBase)) return newBase;
+    if (newBase == 1.0f || (a != 1.0f && (newBase == 0.0f || std::isinf(newBase)))) return NAN;
 
-		return std::log(a) / std::log(newBase);
-	}
+    return std::log(a) / std::log(newBase);
+  }
 
-	template<class T>
-	static T lerp(const T &start, const T &end, float t) {
-		return (1.0f - t) * start + t * end;
-	}
+  template<class T>
+  static T lerp(const T &start, const T &end, float t) {
+    return (1.0f - t) * start + t * end;
+  }
 
-	static float slerp(float src0, float src1, float t) {
-		src0 = __max(src0, 0.000001f);
-		return powf(src1 / src0, t) * src0;
-	}
+  static float slerp(float src0, float src1, float t) {
+    src0 = __max(src0, 0.000001f);
+    return powf(src1 / src0, t) * src0;
+  }
 
-	static float signum(float val) {
-		return (val == 0.0f || std::isnan(val)) ? val : copysignf(1.0f, val);
-	}
+  static float signum(float val) {
+    return (val == 0.0f || std::isnan(val)) ? val : copysignf(1.0f, val);
+  }
 
 }}
 

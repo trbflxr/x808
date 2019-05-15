@@ -21,102 +21,102 @@ namespace xe {
 
 #define XE_R2D_MAX_SPRITES 120000
 
-	class XE_API Renderer2D {
-	private:
-		struct VertexData {
-			vec3 vertex;
-			vec2 uv;
-			uint color;
-			int32 useTexture;
-			int32 text;
-		};
+  class XE_API Renderer2D {
+  private:
+    struct VertexData {
+      vec3 vertex;
+      vec2 uv;
+      uint color;
+      int32 useTexture;
+      int32 text;
+    };
 
-	public:
-		explicit Renderer2D(uint width, uint height, Camera *camera, uint maxLights = 0);
-		virtual ~Renderer2D();
+  public:
+    explicit Renderer2D(uint width, uint height, Camera *camera, uint maxLights = 0);
+    virtual ~Renderer2D();
 
-		void submit(const IRenderable2D *target);
-		void submit(const Text *text);
+    void submit(const IRenderable2D *target);
+    void submit(const Text *text);
 
-		void begin();
-		void end();
-		void flush();
+    void begin();
+    void end();
+    void flush();
 
-		void push(const mat4 &matrix, bool override = false);
-		void pop();
+    void push(const mat4 &matrix, bool override = false);
+    void pop();
 
-		void useLight(const Light2D *light);
-		void setAmbientLight(const vec3 &color);
+    void useLight(const Light2D *light);
+    void setAmbientLight(const vec3 &color);
 
-		inline uint getWidth() const { return width; }
-		inline void setWidth(uint width) { Renderer2D::width = width; }
+    inline uint getWidth() const { return width; }
+    inline void setWidth(uint width) { Renderer2D::width = width; }
 
-		inline uint getHeight() const { return height; }
-		inline void setHeight(uint height) { Renderer2D::height = height; }
+    inline uint getHeight() const { return height; }
+    inline void setHeight(uint height) { Renderer2D::height = height; }
 
-		inline const Camera *getCamera() const { return camera; }
-		inline Camera *getCamera() { return camera; }
-		inline void setCamera(Camera *camera) { Renderer2D::camera = camera; }
+    inline const Camera *getCamera() const { return camera; }
+    inline Camera *getCamera() { return camera; }
+    inline void setCamera(Camera *camera) { Renderer2D::camera = camera; }
 
-		inline const Shader *getShader() const { return shader; }
+    inline const Shader *getShader() const { return shader; }
 
-		inline void enableWireframe(bool flag) { Renderer2D::enableWireframe_ = flag; }
+    inline void enableWireframe(bool flag) { Renderer2D::enableWireframe_ = flag; }
 
-		inline bool isLightingEnabled() const { return enableLighting; }
+    inline bool isLightingEnabled() const { return enableLighting; }
 
-		inline uint getMaxLights() const { return maxLights; }
-		void setMaxLights(uint lights);
+    inline uint getMaxLights() const { return maxLights; }
+    void setMaxLights(uint lights);
 
-	private:
-		void beginInternal();
+  private:
+    void beginInternal();
 
-		void setupBuffer();
+    void setupBuffer();
 
-		void updateCamera();
-		void updateIndexBuffer();
+    void updateCamera();
+    void updateIndexBuffer();
 
-		int32 submitTexture(const Texture *texture);
+    int32 submitTexture(const Texture *texture);
 
-		void releaseBuffer();
+    void releaseBuffer();
 
-		void appendIndices(const uint *indices, uint size, uint offset);
+    void appendIndices(const uint *indices, uint size, uint offset);
 
-		void submitString(const string &str, const Font *font, uint color,
-		                  float scale, const mat4 &transform, float &x, float &y);
+    void submitString(const string &str, const Font *font, uint color,
+                      float scale, const mat4 &transform, float &x, float &y);
 
-	private:
-		uint width;
-		uint height;
+  private:
+    uint width;
+    uint height;
 
-		Camera *camera;
-		const Shader *shader;
+    Camera *camera;
+    const Shader *shader;
 
-		IndexBuffer *indexBuffer;
-		uint *indices;
-		uint indicesSize;
-		uint indicesOffset;
+    IndexBuffer *indexBuffer;
+    uint *indices;
+    uint indicesSize;
+    uint indicesOffset;
 
-		VertexArray *vertexArray;
+    VertexArray *vertexArray;
 
-		std::vector<mat4> transformationStack;
-		const mat4 *transformationBack;
+    std::vector<mat4> transformationStack;
+    const mat4 *transformationBack;
 
-		uint sampler0;
-		const Texture *activeTexture;
+    uint sampler0;
+    const Texture *activeTexture;
 
-		bool enableWireframe_;
+    bool enableWireframe_;
 
-		VertexData *buffer;
+    VertexData *buffer;
 
-		//light stuff
-		bool enableLighting;
-		uint maxLights;
-		vec3 ambient;
-		BufferLayout lightLayout;
-		UniformBuffer *lightUBO;
+    //light stuff
+    bool enableLighting;
+    uint maxLights;
+    vec3 ambient;
+    BufferLayout lightLayout;
+    UniformBuffer *lightUBO;
 
-		std::vector<const Light2D *> lights;
-	};
+    std::vector<const Light2D *> lights;
+  };
 }
 
 

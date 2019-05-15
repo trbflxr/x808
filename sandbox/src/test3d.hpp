@@ -16,43 +16,43 @@
 
 class Test3D : public xe::Layer {
 public:
-	explicit Test3D();
-	~Test3D() override;
+  explicit Test3D();
+  ~Test3D() override;
 
-	void render() override;
-	void renderImGui() override;
+  void render() override;
+  void renderImGui() override;
 
-	void update(float delta) override;
-	void fixedUpdate(float delta) override;
+  void update(float delta) override;
+  void fixedUpdate(float delta) override;
 
-	void input(xe::Event &event) override;
+  void input(xe::Event &event) override;
 
 private:
-	DummyPlayer *player;
-	xe::Camera *camera;
+  DummyPlayer *player;
+  xe::Camera *camera;
 
-	//test
-	bool hook = false;
-	bool hook2 = false;
-	bool rock = false;
-	bool dlr = false;
+  //test
+  bool hook = false;
+  bool hook2 = false;
+  bool rock = false;
+  bool dlr = false;
 
-	xe::Scene *scene;
+  xe::Scene *scene;
 
-	xe::Model *model;
+  xe::Model *model;
 
-	xe::Material *material;
-	xe::Material *material1;
-	xe::Material *parallax;
-	xe::Material *disp;
-	xe::Material *bricks;
-	xe::Material *pebble;
+  xe::Material *material;
+  xe::Material *material1;
+  xe::Material *parallax;
+  xe::Material *disp;
+  xe::Material *bricks;
+  xe::Material *pebble;
 
-	xe::SpotLight *sl;
-	xe::PointLight *pl;
-	xe::DirectionalLight *dl;
+  xe::SpotLight *sl;
+  xe::PointLight *pl;
+  xe::DirectionalLight *dl;
 
-	xe::DeferredRenderer *renderer;
+  xe::DeferredRenderer *renderer;
 };
 
 

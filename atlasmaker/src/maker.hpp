@@ -15,60 +15,60 @@
 
 namespace xe {
 
-	class Maker : public Layer {
-	public:
-		explicit Maker();
-		~Maker() override;
+  class Maker : public Layer {
+  public:
+    explicit Maker();
+    ~Maker() override;
 
-		void render() override;
-		void renderImGui() override;
+    void render() override;
+    void renderImGui() override;
 
-		void input(Event &event) override;
+    void input(Event &event) override;
 
-	protected:
-		void resize(int32 width, int32 height) override;
+  protected:
+    void resize(int32 width, int32 height) override;
 
-	private:
-		void create(int32 size);
+  private:
+    void create(int32 size);
 
-		void pack();
+    void pack();
 
-		void store();
+    void store();
 
-		void renderSizeCombo();
-		void renderTextureList();
+    void renderSizeCombo();
+    void renderTextureList();
 
-		FreeRectChoice chooseBestFit() const;
+    FreeRectChoice chooseBestFit() const;
 
-	private:
-		const TextureParameters params;
+  private:
+    const TextureParameters params;
 
-		bool renderToTexture;
-		bool openFileDialog;
-		bool saveFileDialog;
-		bool mouseGrabbed;
-		bool allowDrag;
-		bool uiFocused;
-		bool updateTextureList;
+    bool renderToTexture;
+    bool openFileDialog;
+    bool saveFileDialog;
+    bool mouseGrabbed;
+    bool allowDrag;
+    bool uiFocused;
+    bool updateTextureList;
 
-		Camera *camera;
-		Camera *renderCamera;
-		Renderer2D *renderer;
+    Camera *camera;
+    Camera *renderCamera;
+    Renderer2D *renderer;
 
-		FrameBuffer *buffer;
-		Texture *renderTexture;
+    FrameBuffer *buffer;
+    Texture *renderTexture;
 
-		Sprite *atlas;
+    Sprite *atlas;
 
-		vec2 atlasSize;
-		vec2 screenSize;
-		float scale;
+    vec2 atlasSize;
+    vec2 screenSize;
+    float scale;
 
-		std::vector<const Texture *> textures;
+    std::vector<const Texture *> textures;
 
-		std::vector<Sprite *> sprites;
-		std::vector<std::pair<string, rect>> pairs;
-	};
+    std::vector<Sprite *> sprites;
+    std::vector<std::pair<string, rect>> pairs;
+  };
 
 }
 

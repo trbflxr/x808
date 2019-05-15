@@ -11,34 +11,34 @@
 
 namespace xe { namespace fx {
 
-	enum class AOType {
-		Ssao,
-		Hbao,
-		None
-	};
+  enum class AOType {
+    Ssao,
+    Hbao,
+    None
+  };
 
-	class XE_API AmbientOcclusion : public RenderEffect, NonCopyable {
-	public:
-		explicit AmbientOcclusion(uint width, uint height, AOType type);
-		~AmbientOcclusion() override;
+  class XE_API AmbientOcclusion : public RenderEffect, NonCopyable {
+  public:
+    explicit AmbientOcclusion(uint width, uint height, AOType type);
+    ~AmbientOcclusion() override;
 
-		void calculateAO(const Texture *position, const Texture *normal, const Texture *depth,
-		                 const Camera *camera, const Quad *quad);
+    void calculateAO(const Texture *position, const Texture *normal, const Texture *depth,
+                     const Camera *camera, const Quad *quad);
 
-		inline AOType getType() const { return type; }
-		inline void setType(AOType type) { AmbientOcclusion::type = type; }
+    inline AOType getType() const { return type; }
+    inline void setType(AOType type) { AmbientOcclusion::type = type; }
 
-		const Texture *getAO() const;
+    const Texture *getAO() const;
 
-		static const char *typeToString(AOType type);
-		static AOType stringToType(const char *ao);
+    static const char *typeToString(AOType type);
+    static AOType stringToType(const char *ao);
 
-	private:
-		AOType type;
+  private:
+    AOType type;
 
-		SSAO *ssao;
-		HBAO *hbao;
-	};
+    SSAO *ssao;
+    HBAO *hbao;
+  };
 
 }}
 

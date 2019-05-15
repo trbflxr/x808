@@ -14,23 +14,23 @@
 
 namespace xe { namespace fx {
 
-	class XE_API Blur : public RenderEffect, NonCopyable {
-	public:
-		explicit Blur(uint width, uint height);
-		~Blur() override;
+  class XE_API Blur : public RenderEffect, NonCopyable {
+  public:
+    explicit Blur(uint width, uint height);
+    ~Blur() override;
 
-		void blur(const Texture *texture, const Quad *quad);
+    void blur(const Texture *texture, const Quad *quad);
 
-		inline const Texture *getTexture() const { return blurTextureHor; }
+    inline const Texture *getTexture() const { return blurTextureHor; }
 
-	private:
-		uint sampler0;
+  private:
+    uint sampler0;
 
-		FrameBuffer *blurBuffer;
-		Texture *blurTextureVert;
-		Texture *blurTextureHor;
-		const Shader *blurShader;
-	};
+    FrameBuffer *blurBuffer;
+    Texture *blurTextureVert;
+    Texture *blurTextureHor;
+    const Shader *blurShader;
+  };
 
 }}
 

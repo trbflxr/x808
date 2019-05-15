@@ -13,25 +13,25 @@
 
 namespace xe {
 
-	class XE_API FontManager : NonCopyable {
-	public:
-		~FontManager() override;
+  class XE_API FontManager : NonCopyable {
+  public:
+    ~FontManager() override;
 
-		static void init();
+    static void init();
 
-		static bool add(Font *font);
-		static const Font *get(const string &name);
+    static bool add(Font *font);
+    static const Font *get(const string &name);
 
-		static void clean();
+    static void clean();
 
-	private:
-		FontManager();
+  private:
+    FontManager();
 
-		static FontManager &instance();
+    static FontManager &instance();
 
-	private:
-		std::unordered_map<string, const Font *> fonts;
-	};
+  private:
+    std::unordered_map<string, const Font *> fonts;
+  };
 
 }
 

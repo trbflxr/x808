@@ -13,18 +13,18 @@ class b2PolygonShape;
 
 namespace xe {
 
-	class XE_API PolygonCollider2D : public Collider2D {
-	public:
-		explicit PolygonCollider2D(PhysicsWorld2D *world, ColliderType type,
-		                           Polygon *polygon, bool fixedRotation = false);
-		~PolygonCollider2D() override;
+  class XE_API PolygonCollider2D : public Collider2D {
+  public:
+    explicit PolygonCollider2D(PhysicsWorld2D *world, ColliderType type,
+                               Polygon *polygon, bool fixedRotation = false);
+    ~PolygonCollider2D() override;
 
-	protected:
-		void update() override;
+  protected:
+    void update() override;
 
-	private:
-		b2PolygonShape *shape;
-	};
+  private:
+    b2PolygonShape *shape;
+  };
 
 }
 

@@ -18,227 +18,227 @@
 
 namespace xe {
 
-	Application *Application::instance = nullptr;
+  Application *Application::instance = nullptr;
 
-	Application::Application(const Config &config, const string &title) :
-			config(config) {
+  Application::Application(const Config &config, const string &title) :
+      config(config) {
 
-		XE_ASSERT(!instance, "[Application]: Only one application instance allowed!");
+    XE_ASSERT(!instance, "[Application]: Only one application instance allowed!");
 
-		const_cast<Config &>(Config::get()) = config;
+    const_cast<Config &>(Config::get()) = config;
 
-		//init random
-		random::next<int32>(0, 1);
+    //init random
+    random::next<int32>(0, 1);
 
-		Context::setRenderAPI(config.renderApi, config.apiVersion);
+    Context::setRenderAPI(config.renderApi, config.apiVersion);
 
-		instance = this;
+    instance = this;
 
-		init(title);
-	}
+    init(title);
+  }
 
-	Application::~Application() {
-		delete shell;
-		delete layerStack;
-		delete systemStack;
-	}
+  Application::~Application() {
+    delete shell;
+    delete layerStack;
+    delete systemStack;
+  }
 
-	void Application::init(const string &title) {
-		if (config.fullScreen) {
-			window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
+  void Application::init(const string &title) {
+    if (config.fullScreen) {
+      window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
 
-		} else {
-			VideoMode mode(config.width, config.height);
-			window.create(mode, title, WindowStyle::Default);
-		}
+    } else {
+      VideoMode mode(config.width, config.height);
+      window.create(mode, title, WindowStyle::Default);
+    }
 
-		window.setVerticalSyncEnabled(config.vSync);
+    window.setVerticalSyncEnabled(config.vSync);
 
-		ShaderManager::init();
-		FontManager::init();
-		TextureManager::init();
+    ShaderManager::init();
+    FontManager::init();
+    TextureManager::init();
 
-		AudioMaster::initialize();
+    AudioMaster::initialize();
 
-		ImGui::xe::init(window);
-		ImGui::StyleColorsDark();
+    ImGui::xe::init(window);
+    ImGui::StyleColorsDark();
 
-		shell = new Shell();
-		shell->init();
+    shell = new Shell();
+    shell->init();
 
-		layerStack = new LayerStack(this);
-		systemStack = new SystemStack();
-	}
+    layerStack = new LayerStack(this);
+    systemStack = new SystemStack();
+  }
 
-	void Application::shutdown() {
-		ImGui::SaveIniSettingsToDisk("imgui.ini");
-		ImGui::xe::shutdown();
-	}
+  void Application::shutdown() {
+    ImGui::SaveIniSettingsToDisk("imgui.ini");
+    ImGui::xe::shutdown();
+  }
 
-	void Application::start() {
-		running = true;
-		suspend_ = false;
-		run();
-	}
+  void Application::start() {
+    running = true;
+    suspend_ = false;
+    run();
+  }
 
-	void Application::suspend() {
-		suspend_ = true;
-	}
+  void Application::suspend() {
+    suspend_ = true;
+  }
 
-	void Application::resume() {
-		suspend_ = false;
-	}
+  void Application::resume() {
+    suspend_ = false;
+  }
 
-	void Application::stop() {
-		running = false;
-	}
+  void Application::stop() {
+    running = false;
+  }
 
-	void Application::run() {
-		Timer timer;
-		Timer frameTimer;
+  void Application::run() {
+    Timer timer;
+    Timer frameTimer;
 
-		const float MS_PER_TICK = 1.0f / config.tickRate;
-		const float TARGET_FPS = 1.0f / (config.maxFps + 1);
+    const float MS_PER_TICK = 1.0f / config.tickRate;
+    const float TARGET_FPS = 1.0f / (config.maxFps + 1);
 
-		uint tickCount = 0;
-		uint frames = 0;
+    uint tickCount = 0;
+    uint frames = 0;
 
-		float lastTime = timer.elapsed();
-		float time = 0.0f;
-		float tickLag = 0.0f;
+    float lastTime = timer.elapsed();
+    float time = 0.0f;
+    float tickLag = 0.0f;
 
-		while (running) {
-			const float currentTime = timer.elapsed();
-			const float delta = currentTime - lastTime;
-			const float dt = delta / MS_PER_TICK;
+    while (running) {
+      const float currentTime = timer.elapsed();
+      const float delta = currentTime - lastTime;
+      const float dt = delta / MS_PER_TICK;
 
-			lastTime = currentTime;
-			tickLag += delta;
+      lastTime = currentTime;
+      tickLag += delta;
 
-			const float frameStart = frameTimer.elapsed();
+      const float frameStart = frameTimer.elapsed();
 
-			while (tickLag >= MS_PER_TICK) {
-				++tickCount;
+      while (tickLag >= MS_PER_TICK) {
+        ++tickCount;
 
-				fixedUpdate(MS_PER_TICK);
+        fixedUpdate(MS_PER_TICK);
 
-				tickLag -= MS_PER_TICK;
-			}
+        tickLag -= MS_PER_TICK;
+      }
 
-			update(dt);
+      update(dt);
 
-			window.clear();
-			Renderer::resetDC();
+      window.clear();
+      Renderer::resetDC();
 
-			render();
-			frames++;
+      render();
+      frames++;
 
-			window.update();
+      window.update();
 
-			processEvents();
+      processEvents();
 
-			lateUpdate(dt);
+      lateUpdate(dt);
 
-			//limit fps
-			const float frameEnd = frameTimer.elapsed() - frameStart;
-			if (config.maxFps != 0 && TARGET_FPS > frameEnd) {
-				sleep(static_cast<uint>((TARGET_FPS - frameEnd) * 1000));
-			}
+      //limit fps
+      const float frameEnd = frameTimer.elapsed() - frameStart;
+      if (config.maxFps != 0 && TARGET_FPS > frameEnd) {
+        sleep(static_cast<uint>((TARGET_FPS - frameEnd) * 1000));
+      }
 
-			if (timer.elapsed() - time > 1.0f) {
-				time += 1.0f;
-				fps = frames;
-				tps = tickCount;
-				frames = 0;
-				tickCount = 0;
-			}
+      if (timer.elapsed() - time > 1.0f) {
+        time += 1.0f;
+        fps = frames;
+        tps = tickCount;
+        frames = 0;
+        tickCount = 0;
+      }
 
-			if (!window.isOpen()) running = false;
-		}
+      if (!window.isOpen()) running = false;
+    }
 
-		shutdown();
-	}
+    shutdown();
+  }
 
-	void Application::update(float delta) {
-		ImGui::xe::update(window, delta / config.tickRate);
+  void Application::update(float delta) {
+    ImGui::xe::update(window, delta / config.tickRate);
 
-		shell->update(delta);
+    shell->update(delta);
 
-		systemStack->update(delta);
-		layerStack->update(delta);
-	}
+    systemStack->update(delta);
+    layerStack->update(delta);
+  }
 
-	void Application::lateUpdate(float delta) {
-		systemStack->lateUpdate(delta);
-		layerStack->lateUpdate(delta);
-	}
+  void Application::lateUpdate(float delta) {
+    systemStack->lateUpdate(delta);
+    layerStack->lateUpdate(delta);
+  }
 
-	void Application::fixedUpdate(float delta) {
-		systemStack->fixedUpdate(delta);
-		layerStack->fixedUpdate(delta);
-	}
+  void Application::fixedUpdate(float delta) {
+    systemStack->fixedUpdate(delta);
+    layerStack->fixedUpdate(delta);
+  }
 
-	void Application::render() {
-		ImGui::xe::newFrame();
+  void Application::render() {
+    ImGui::xe::newFrame();
 
-		layerStack->render(!shell->isActive());
-		systemStack->render();
+    layerStack->render(!shell->isActive());
+    systemStack->render();
 
-		shell->render();
+    shell->render();
 
-		ImGui::xe::render();
-	}
+    ImGui::xe::render();
+  }
 
-	void Application::processEvents() {
-		xe::Event event{ };
+  void Application::processEvents() {
+    xe::Event event{ };
 
-		while (window.pollEvent(event)) {
+    while (window.pollEvent(event)) {
 
-			ImGui::xe::processEvent(event);
+      ImGui::xe::processEvent(event);
 
-			shell->input(event);
+      shell->input(event);
 
-			systemStack->input(event);
-			layerStack->input(event);
+      systemStack->input(event);
+      layerStack->input(event);
 
-			if (event.type == Event::Closed) {
-				window.close();
-				break;
-			}
-		}
-	}
+      if (event.type == Event::Closed) {
+        window.close();
+        break;
+      }
+    }
+  }
 
-	Layer *Application::getCurrentLayer() {
-		return layerStack->getCurrentLayer();
-	}
+  Layer *Application::getCurrentLayer() {
+    return layerStack->getCurrentLayer();
+  }
 
-	void Application::pushLayer(Layer *layer) {
-		layerStack->pushLayer(layer);
-	}
+  void Application::pushLayer(Layer *layer) {
+    layerStack->pushLayer(layer);
+  }
 
-	Layer *Application::popLayer() {
-		return layerStack->popLayer();
-	}
+  Layer *Application::popLayer() {
+    return layerStack->popLayer();
+  }
 
-	void Application::pushOverlay(Layer *overlay) {
-		layerStack->pushOverlay(overlay);
-	}
+  void Application::pushOverlay(Layer *overlay) {
+    layerStack->pushOverlay(overlay);
+  }
 
-	Layer *Application::popOverlay() {
-		return layerStack->popOverlay();
-	}
+  Layer *Application::popOverlay() {
+    return layerStack->popOverlay();
+  }
 
-	void Application::pushSystem(System *system) {
-		systemStack->pushSystem(system);
-	}
+  void Application::pushSystem(System *system) {
+    systemStack->pushSystem(system);
+  }
 
-	System *Application::popSystem() {
-		return systemStack->popSystem();
-	}
+  System *Application::popSystem() {
+    return systemStack->popSystem();
+  }
 
-	void Application::setMaxFps(uint fps) {
-		const_cast<Config &>(Config::get()).maxFps = fps;
-		config.maxFps = fps;
-	}
+  void Application::setMaxFps(uint fps) {
+    const_cast<Config &>(Config::get()).maxFps = fps;
+    config.maxFps = fps;
+  }
 
 }

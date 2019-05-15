@@ -8,25 +8,25 @@
 
 #include <xe/gfx/context.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class GLContext : public Context {
-	public:
-		explicit GLContext(void *deviceContext);
+  class GLContext : public Context {
+  public:
+    explicit GLContext(void *deviceContext);
 
-		void swapBuffers();
+    void swapBuffers();
 
-		void enableVsync(bool enabled);
+    void enableVsync(bool enabled);
 
-		inline static GLContext *get() { return (GLContext *) context; }
+    inline static GLContext *get() { return (GLContext *) context; }
 
-	protected:
-		uint getMaxTexUnits() const override;
+  protected:
+    uint getMaxTexUnits() const override;
 
-		GAPIInfo getInfoInternal() const override;
-	};
+    GAPIInfo getInfoInternal() const override;
+  };
 
-}}
+}
 
 
 #endif //X808_GLCONTEXT_HPP

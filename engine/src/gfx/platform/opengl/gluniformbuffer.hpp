@@ -9,29 +9,29 @@
 #include <gfx/platform/platformuniformbuffer.hpp>
 #include <xe/gfx/bufferlayout.hpp>
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	class GLUniformBuffer : public PlatformUniformBuffer {
-	public:
-		explicit GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size);
-		~GLUniformBuffer() override;
+  class GLUniformBuffer : public PlatformUniformBuffer {
+  public:
+    explicit GLUniformBuffer(BufferStorage storage, uint bind, const BufferLayout &layout, uint size);
+    ~GLUniformBuffer() override;
 
-		void bind() override;
-		void unbind() override;
+    void bind() override;
+    void unbind() override;
 
-		void update(const void *data, uint index, uint layoutIndex) override;
+    void update(const void *data, uint index, uint layoutIndex) override;
 
-		inline uint getHandle() const override { return handle; }
+    inline uint getHandle() const override { return handle; }
 
-	private:
-		uint location;
-		BufferLayout layout;
-		uint handle;
+  private:
+    uint location;
+    BufferLayout layout;
+    uint handle;
 
-		bool bound;
-	};
+    bool bound;
+  };
 
-}}
+}
 
 
 #endif //X808_GLUNIFORMBUFFER_HPP

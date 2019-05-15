@@ -18,23 +18,23 @@ struct b2BodyDef;
 
 namespace xe {
 
-	class XE_API PhysicsWorld2D {
-	public:
-		explicit PhysicsWorld2D(const vec2 &gravity);
-		~PhysicsWorld2D();
+  class XE_API PhysicsWorld2D {
+  public:
+    explicit PhysicsWorld2D(const vec2 &gravity);
+    ~PhysicsWorld2D();
 
-		void update(float timeStep, uint velocityIterations, uint positionIterations);
+    void update(float timeStep, uint velocityIterations, uint positionIterations);
 
-		b2Body *createBody(b2BodyDef *bodyDef);
-		void destroyBody(b2Body *body);
+    b2Body *createBody(b2BodyDef *bodyDef);
+    void destroyBody(b2Body *body);
 
-		void destroyCollider(Collider2D *collider);
+    void destroyCollider(Collider2D *collider);
 
-		void setContactListener(IContactListener *listener);
+    void setContactListener(IContactListener *listener);
 
-	private:
-		b2World *world;
-	};
+  private:
+    b2World *world;
+  };
 
 }
 

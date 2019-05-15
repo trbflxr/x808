@@ -12,27 +12,27 @@
 
 namespace xe {
 
-	struct XE_API VideoMode {
-		VideoMode();
-		explicit VideoMode(uint width, uint height, uint bitsPerPixel = 32);
+  struct XE_API VideoMode {
+    VideoMode();
+    explicit VideoMode(uint width, uint height, uint bitsPerPixel = 32);
 
-		static VideoMode getDesktopMode();
+    static VideoMode getDesktopMode();
 
-		static const std::vector<VideoMode> &getFullscreenModes();
+    static const std::vector<VideoMode> &getFullscreenModes();
 
-		bool isValid() const;
+    bool isValid() const;
 
-		uint width;
-		uint height;
-		uint bitsPerPixel;
-	};
+    uint width;
+    uint height;
+    uint bitsPerPixel;
+  };
 
-	bool XE_API operator==(const VideoMode &left, const VideoMode &right);
-	bool XE_API operator!=(const VideoMode &left, const VideoMode &right);
-	bool XE_API operator<(const VideoMode &left, const VideoMode &right);
-	bool XE_API operator>(const VideoMode &left, const VideoMode &right);
-	bool XE_API operator<=(const VideoMode &left, const VideoMode &right);
-	bool XE_API operator>=(const VideoMode &left, const VideoMode &right);
+  bool XE_API operator==(const VideoMode &left, const VideoMode &right);
+  bool XE_API operator!=(const VideoMode &left, const VideoMode &right);
+  bool XE_API operator<(const VideoMode &left, const VideoMode &right);
+  bool XE_API operator>(const VideoMode &left, const VideoMode &right);
+  bool XE_API operator<=(const VideoMode &left, const VideoMode &right);
+  bool XE_API operator>=(const VideoMode &left, const VideoMode &right);
 }
 
 

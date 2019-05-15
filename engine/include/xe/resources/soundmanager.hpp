@@ -14,23 +14,23 @@
 
 namespace xe {
 
-	class XE_API SoundManager : NonCopyable {
-	public:
-		~SoundManager() override;
+  class XE_API SoundManager : NonCopyable {
+  public:
+    ~SoundManager() override;
 
-		static void init();
+    static void init();
 
-		static bool add(const Sound *sound);
-		static const Sound *get(const string &name);
+    static bool add(const Sound *sound);
+    static const Sound *get(const string &name);
 
-		static void clean();
+    static void clean();
 
-	private:
-		static SoundManager &instance();
+  private:
+    static SoundManager &instance();
 
-	private:
-		std::unordered_map<string, const Sound *> sounds;
-	};
+  private:
+    std::unordered_map<string, const Sound *> sounds;
+  };
 
 }
 

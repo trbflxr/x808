@@ -15,34 +15,34 @@
 
 namespace xe {
 
-	class XE_API Quad : NonCopyable {
-	public:
-		explicit Quad(uint width, uint height);
-		~Quad() override;
+  class XE_API Quad : NonCopyable {
+  public:
+    explicit Quad(uint width, uint height);
+    ~Quad() override;
 
-		void render() const;
-		void renderBlend() const;
-		void renderFullQuad() const;
-		void renderFullQuadBlend() const;
+    void render() const;
+    void renderBlend() const;
+    void renderFullQuad() const;
+    void renderFullQuadBlend() const;
 
-		void renderTexture(const Texture *tex, float size = 1.0f, int32 pos = 0, int32 data = 0);
+    void renderTexture(const Texture *tex, float size = 1.0f, int32 pos = 0, int32 data = 0);
 
-		inline uint getWidth() const { return width; }
-		inline uint getHeight() const { return height; }
+    inline uint getWidth() const { return width; }
+    inline uint getHeight() const { return height; }
 
-	private:
-		void renderTexture(const Shader *shader, const Texture *tex, int32 data, bool fullQuad);
+  private:
+    void renderTexture(const Shader *shader, const Texture *tex, int32 data, bool fullQuad);
 
-	private:
-		uint width;
-		uint height;
+  private:
+    uint width;
+    uint height;
 
-		VertexArray *vao;
-		IndexBuffer *ibo;
+    VertexArray *vao;
+    IndexBuffer *ibo;
 
-		const Shader *renderTexture2D;
-		const Shader *renderTexture2DArray;
-	};
+    const Shader *renderTexture2D;
+    const Shader *renderTexture2DArray;
+  };
 
 }
 

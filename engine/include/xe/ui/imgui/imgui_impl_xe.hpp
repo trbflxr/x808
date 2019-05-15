@@ -15,20 +15,20 @@
 
 namespace ImGui::xe {
 
-	XE_API void init(::xe::Window &window, bool loadDefaultFont = true);
+  XE_API void init(::xe::Window &window, bool loadDefaultFont = true);
 
-	XE_API void processEvent(const ::xe::Event &event);
+  XE_API void processEvent(const ::xe::Event &event);
 
-	XE_API void update(::xe::Window &window, float delta);
-	XE_API void update(const ::xe::vec2 &mousePos, const ::xe::vec2 &windowSize, float delta);
+  XE_API void update(::xe::Window &window, float delta);
+  XE_API void update(const ::xe::vec2 &mousePos, const ::xe::vec2 &windowSize, float delta);
 
-	XE_API void newFrame();
+  XE_API void newFrame();
 
-	XE_API void render();
+  XE_API void render();
 
-	XE_API void shutdown();
+  XE_API void shutdown();
 
-	XE_API void updateFontTexture();
+  XE_API void updateFontTexture();
 
 }
 

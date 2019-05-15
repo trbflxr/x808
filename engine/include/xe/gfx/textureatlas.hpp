@@ -12,29 +12,29 @@
 
 namespace xe {
 
-	class XE_API TextureAtlas {
-	public:
-		explicit TextureAtlas(const string &name, const string &path, const TextureParameters &params);
-		explicit TextureAtlas(const Texture *texture, const std::vector<std::pair<string, rect>> &areas);
+  class XE_API TextureAtlas {
+  public:
+    explicit TextureAtlas(const string &name, const string &path, const TextureParameters &params);
+    explicit TextureAtlas(const Texture *texture, const std::vector<std::pair<string, rect>> &areas);
 
-		virtual ~TextureAtlas();
+    virtual ~TextureAtlas();
 
-		const rect &getArea(const string &name) const;
+    const rect &getArea(const string &name) const;
 
-		inline const string &getName() const { return texture->getName(); }
-		inline const string &getPath() const { return path; }
+    inline const string &getName() const { return texture->getName(); }
+    inline const string &getPath() const { return path; }
 
-		inline const Texture *getTexture() const { return texture; }
+    inline const Texture *getTexture() const { return texture; }
 
-		inline const std::vector<std::pair<string, rect>> &getAreas() const { return areas; }
+    inline const std::vector<std::pair<string, rect>> &getAreas() const { return areas; }
 
-	private:
-		string path;
-		bool deleteTexture;
-		const Texture *texture;
+  private:
+    string path;
+    bool deleteTexture;
+    const Texture *texture;
 
-		std::vector<std::pair<string, rect>> areas;
-	};
+    std::vector<std::pair<string, rect>> areas;
+  };
 
 }
 

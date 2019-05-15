@@ -14,26 +14,26 @@ struct b2ContactImpulse;
 
 namespace xe {
 
-	namespace internal {
-		class IContactListenerImpl;
-	}
+  namespace internal {
+    class IContactListenerImpl;
+  }
 
-	class XE_API IContactListener {
-	public:
-		explicit IContactListener();
-		virtual ~IContactListener();
+  class XE_API IContactListener {
+  public:
+    explicit IContactListener();
+    virtual ~IContactListener();
 
-		virtual void beginContact(b2Contact *contact) { }
-		virtual void endContact(b2Contact *contact) { }
+    virtual void beginContact(b2Contact *contact) { }
+    virtual void endContact(b2Contact *contact) { }
 
-		virtual void preSolve(b2Contact *contact, const b2Manifold *oldManifold) { }
-		virtual void postSolve(b2Contact *contact, const b2ContactImpulse *impulse) { }
+    virtual void preSolve(b2Contact *contact, const b2Manifold *oldManifold) { }
+    virtual void postSolve(b2Contact *contact, const b2ContactImpulse *impulse) { }
 
-	private:
-		friend class PhysicsWorld2D;
+  private:
+    friend class PhysicsWorld2D;
 
-		internal::IContactListenerImpl *listener;
-	};
+    internal::IContactListenerImpl *listener;
+  };
 
 }
 

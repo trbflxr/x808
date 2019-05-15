@@ -6,40 +6,40 @@ using namespace xe;
 
 class AtlasMaker : public Application {
 public:
-	explicit AtlasMaker(const Config &config) :
-			Application(config, "AtlasMaker") {
+  explicit AtlasMaker(const Config &config) :
+      Application(config, "AtlasMaker") {
 
-		VFS::mount("textures", "xe_sandbox_assets/textures/");
+    VFS::mount("textures", "xe_sandbox_assets/textures/");
 
-		Maker *m = new Maker();
+    Maker *m = new Maker();
 
-		pushLayer(m);
-	}
+    pushLayer(m);
+  }
 
-	~AtlasMaker() override { }
+  ~AtlasMaker() override { }
 
 private:
 
 };
 
 int main() {
-	initialize();
+  initialize();
 
-	Config config;
-	config.width = 1280;
-	config.height = 720;
-	config.fullScreen = false;
-	config.vSync = true;
-	config.maxFps = 60;
-	config.tickRate = 0;
-	config.srgb = true;
-	config.renderApi = RenderAPI::OpenGL;
-	config.apiVersion = 330;
+  Config config;
+  config.width = 1280;
+  config.height = 720;
+  config.fullScreen = false;
+  config.vSync = true;
+  config.maxFps = 60;
+  config.tickRate = 0;
+  config.srgb = true;
+  config.renderApi = RenderAPI::OpenGL;
+  config.apiVersion = 330;
 
-	AtlasMaker test(config);
-	test.start();
+  AtlasMaker test(config);
+  test.start();
 
-	shutdown();
+  shutdown();
 
-	return 0;
+  return 0;
 }

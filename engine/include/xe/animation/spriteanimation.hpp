@@ -12,25 +12,25 @@
 
 namespace xe {
 
-	class XE_API SpriteAnimation {
-	public:
-		explicit SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime);
+  class XE_API SpriteAnimation {
+  public:
+    explicit SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime);
 
-		void fixedUpdate(float delta, uint row, bool faceRight);
+    void fixedUpdate(float delta, uint row, bool faceRight);
 
-		void reset();
+    void reset();
 
-		inline const rect &getTextureRect() const { return textureRect; }
+    inline const rect &getTextureRect() const { return textureRect; }
 
-	private:
-		float switchTime;
-		float totalTime;
+  private:
+    float switchTime;
+    float totalTime;
 
-		rect textureRect;
+    rect textureRect;
 
-		vec2 currentImage;
-		vec2 imageCount;
-	};
+    vec2 currentImage;
+    vec2 imageCount;
+  };
 
 }
 

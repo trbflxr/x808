@@ -15,31 +15,31 @@
 
 class Test2D : public xe::Layer {
 public:
-	explicit Test2D();
-	~Test2D() override;
+  explicit Test2D();
+  ~Test2D() override;
 
-	void render() override;
+  void render() override;
 
-	void renderImGui() override;
+  void renderImGui() override;
 
-	void update(float delta) override;
+  void update(float delta) override;
 
-	void input(xe::Event &event) override;
-
-private:
-	void addShellCommands();
+  void input(xe::Event &event) override;
 
 private:
-	xe::Camera *camera;
-	xe::Renderer2D *renderer;
+  void addShellCommands();
 
-	xe::CircleShape *c0;
-	xe::Polygon *p0;
-	xe::RectangleShape *star;
-	xe::Text *inputText;
+private:
+  xe::Camera *camera;
+  xe::Renderer2D *renderer;
 
-	std::vector<xe::IRenderable2D *> renderables;
-	std::vector<xe::Text *> text;
+  xe::CircleShape *c0;
+  xe::Polygon *p0;
+  xe::RectangleShape *star;
+  xe::Text *inputText;
+
+  std::vector<xe::IRenderable2D *> renderables;
+  std::vector<xe::Text *> text;
 };
 
 

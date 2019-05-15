@@ -10,16 +10,16 @@
 
 class EmptyScene : public xe::Layer {
 public:
-	explicit EmptyScene();
-	~EmptyScene() override;
+  explicit EmptyScene();
+  ~EmptyScene() override;
 
-	void render() override;
-	void renderImGui() override;
+  void render() override;
+  void renderImGui() override;
 
-	void update(float delta) override;
-	void fixedUpdate(float delta) override;
+  void update(float delta) override;
+  void fixedUpdate(float delta) override;
 
-	void input(xe::Event &event) override;
+  void input(xe::Event &event) override;
 };
 
 #endif //X808_EMPTYSCENE_HPP

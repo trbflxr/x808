@@ -12,36 +12,36 @@ typedef xe::internal::PlatformWindowWin32 PlatformWindowType;
 
 #include "platformwindow.hpp"
 
-namespace xe { namespace internal {
+namespace xe::internal {
 
-	PlatformWindow *PlatformWindow::create(VideoMode mode, const string &title, uint style) {
-		return new PlatformWindowType(mode, title, style);
-	}
+  PlatformWindow *PlatformWindow::create(VideoMode mode, const string &title, uint style) {
+    return new PlatformWindowType(mode, title, style);
+  }
 
-	bool PlatformWindow::popEvent(Event &event, bool block) {
-		if (events.empty()) {
-			processEvents();
+  bool PlatformWindow::popEvent(Event &event, bool block) {
+    if (events.empty()) {
+      processEvents();
 
-			if (block) {
-				while (events.empty()) {
-					sleep(10);
-					processEvents();
-				}
-			}
-		}
+      if (block) {
+        while (events.empty()) {
+          sleep(10);
+          processEvents();
+        }
+      }
+    }
 
-		if (!events.empty()) {
-			event = events.front();
-			events.pop();
+    if (!events.empty()) {
+      event = events.front();
+      events.pop();
 
-			return true;
-		}
+      return true;
+    }
 
-		return false;
-	}
+    return false;
+  }
 
-	void PlatformWindow::pushEvent(const Event &event) {
-		events.push(event);
-	}
+  void PlatformWindow::pushEvent(const Event &event) {
+    events.push(event);
+  }
 
-}}
+}

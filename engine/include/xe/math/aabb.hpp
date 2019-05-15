@@ -11,46 +11,46 @@
 
 namespace xe {
 
-	struct rect;
-	struct IndexedModel;
+  struct rect;
+  struct IndexedModel;
 
-	struct XE_API aabb {
-		vec3 min;
-		vec3 max;
+  struct XE_API aabb {
+    vec3 min;
+    vec3 max;
 
-		explicit aabb(const rect &rect);
-		explicit aabb(const vec2 &min, const vec2 &max);
-		explicit aabb(const vec3 &min, const vec3 &max);
-		explicit aabb(float x, float y, float width, float height);
-		explicit aabb(float x, float y, float z, float width, float height, float depth);
-		explicit aabb(const IndexedModel *model);
+    explicit aabb(const rect &rect);
+    explicit aabb(const vec2 &min, const vec2 &max);
+    explicit aabb(const vec3 &min, const vec3 &max);
+    explicit aabb(float x, float y, float width, float height);
+    explicit aabb(float x, float y, float z, float width, float height, float depth);
+    explicit aabb(const IndexedModel *model);
 
-		bool intersects(const aabb &other) const;
-		bool contains(const vec2 &point) const;
-		bool contains(const vec3 &point) const;
+    bool intersects(const aabb &other) const;
+    bool contains(const vec2 &point) const;
+    bool contains(const vec3 &point) const;
 
-		vec3 center() const;
-		vec3 getSize() const;
-	};
+    vec3 center() const;
+    vec3 getSize() const;
+  };
 
-	typedef aabb aabb;
+  typedef aabb aabb;
 
-	///----- operators -----///
-	inline bool operator==(const aabb &left, const aabb &right) {
-		return left.max == right.min && left.max == right.max;
-	}
+  ///----- operators -----///
+  inline bool operator==(const aabb &left, const aabb &right) {
+    return left.max == right.min && left.max == right.max;
+  }
 
-	inline bool operator!=(const aabb &left, const aabb &right) {
-		return left.max != right.min && left.max != right.max;
-	}
+  inline bool operator!=(const aabb &left, const aabb &right) {
+    return left.max != right.min && left.max != right.max;
+  }
 
-	inline bool operator<(const aabb &left, const aabb &right) {
-		return left.max < right.max;
-	}
+  inline bool operator<(const aabb &left, const aabb &right) {
+    return left.max < right.max;
+  }
 
-	inline bool operator>(const aabb &left, const aabb &right) {
-		return left.min > right.min;
-	}
+  inline bool operator>(const aabb &left, const aabb &right) {
+    return left.min > right.min;
+  }
 
 }
 

@@ -10,28 +10,28 @@
 
 namespace xe {
 
-	class XE_API CircleShape : public Shape {
-	public:
-		explicit CircleShape(float radius, uint pointCount = 30);
-		CircleShape(const CircleShape &other);
+  class XE_API CircleShape : public Shape {
+  public:
+    explicit CircleShape(float radius, uint pointCount = 30);
+    CircleShape(const CircleShape &other);
 
-		inline float getRadius() const { return radius; }
-		inline void setRadius(float radius);
+    inline float getRadius() const { return radius; }
+    inline void setRadius(float radius);
 
-		inline bool isRadiusChanged() const { return radiusChanged; }
-		inline void setRadiusChanged(bool changed) { radiusChanged = changed; }
+    inline bool isRadiusChanged() const { return radiusChanged; }
+    inline void setRadiusChanged(bool changed) { radiusChanged = changed; }
 
-		inline uint getPointCount() const override { return pointCount; }
+    inline uint getPointCount() const override { return pointCount; }
 
-	protected:
-		vec2 getPoint(uint index) override;
+  protected:
+    vec2 getPoint(uint index) override;
 
-	private:
-		float radius;
-		uint pointCount;
+  private:
+    float radius;
+    uint pointCount;
 
-		bool radiusChanged;
-	};
+    bool radiusChanged;
+  };
 
 }
 

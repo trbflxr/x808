@@ -11,53 +11,53 @@
 
 namespace xe {
 
-	class XE_API Font {
-	public:
-		enum class RenderMode {
-			Normal, OutlineEdge, SignedDistanceField
-		};
+  class XE_API Font {
+  public:
+    enum class RenderMode {
+      Normal, OutlineEdge, SignedDistanceField
+    };
 
-	public:
-		explicit Font(const string &name, const string &path, float size);
-		explicit Font(const string &name, const byte *data, uint dataSize, float size, bool deleteData = true);
-		~Font();
+  public:
+    explicit Font(const string &name, const string &path, float size);
+    explicit Font(const string &name, const byte *data, uint dataSize, float size, bool deleteData = true);
+    ~Font();
 
-		inline const string &getName() const { return name; }
-		inline const string &getPath() const { return path; }
-		inline float getSize() const { return size; }
+    inline const string &getName() const { return name; }
+    inline const string &getPath() const { return path; }
+    inline float getSize() const { return size; }
 
-		const Texture *getTexture() const;
+    const Texture *getTexture() const;
 
-		void *getGlyph(const char *code) const;
+    void *getGlyph(const char *code) const;
 
-		float getKerning(void *glyph, const char *c) const;
+    float getKerning(void *glyph, const char *c) const;
 
-		void setOutlineThickness(float thickness) const;
+    void setOutlineThickness(float thickness) const;
 
-		void setRenderMode(RenderMode mode) const;
+    void setRenderMode(RenderMode mode) const;
 
-	private:
-		void updateAtlas() const;
+  private:
+    void updateAtlas() const;
 
-		void createAtlas(uint size);
+    void createAtlas(uint size);
 
-		uint computeAtlasSize(float fontSize);
+    uint computeAtlasSize(float fontSize);
 
-	private:
-		friend class FontLoader;
+  private:
+    friend class FontLoader;
 
-		string name;
-		string path;
-		float size;
+    string name;
+    string path;
+    float size;
 
-		mutable Texture *texture;
+    mutable Texture *texture;
 
-		bool deleteFontData;
-		byte *fontData;
+    bool deleteFontData;
+    byte *fontData;
 
-		void *font;
-		void *atlas;
-	};
+    void *font;
+    void *atlas;
+  };
 
 }
 

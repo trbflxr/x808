@@ -12,27 +12,27 @@
 
 namespace xe {
 
-	class XE_API VFS {
-	public:
-		static void mount(const string &virtualPath, const string &physicalPath);
-		static void unmount(const string &virtualPath, const string &physicalPath);
-		static void unmount(const string &virtualPath);
+  class XE_API VFS {
+  public:
+    static void mount(const string &virtualPath, const string &physicalPath);
+    static void unmount(const string &virtualPath, const string &physicalPath);
+    static void unmount(const string &virtualPath);
 
-		static bool resolvePhysicalPath(const string &path, string &outPhysicalPath);
+    static bool resolvePhysicalPath(const string &path, string &outPhysicalPath);
 
-		static byte *readFile(const string &path, int64 *outSize = nullptr);
-		static bool readTextFile(const string &path, string &outString);
+    static byte *readFile(const string &path, int64 *outSize = nullptr);
+    static bool readTextFile(const string &path, string &outString);
 
-		static bool writeFile(const string &path, byte *buffer, uint64 size);
+    static bool writeFile(const string &path, byte *buffer, uint64 size);
 
-		static void init();
-		static void shutdown();
+    static void init();
+    static void shutdown();
 
-	private:
-		std::unordered_map<string, std::vector<string>> mountPoints;
+  private:
+    std::unordered_map<string, std::vector<string>> mountPoints;
 
-		static VFS *instance;
-	};
+    static VFS *instance;
+  };
 
 }
 
