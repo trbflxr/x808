@@ -58,8 +58,8 @@ TestP2D::TestP2D() {
   effect->setSizeStates({std::make_tuple(0.0f, vec2(10.0f, 10.0f), vec2(1.0f, 1.0f)),
                          std::make_tuple(1.0f, vec2(5.0f, 5.0f), vec2(0.5f, 0.5f))});
 
-  effect->setColorStates({std::make_tuple(0.0f, vec4(1.0f, 0.1f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 0.0f, 0.0f)),
-                          std::make_tuple(1.0f, vec4(1.0f, 0.8f, 0.0f, 0.95f), vec4(0.0f, 0.2f, 0.0f, 0.0f))});
+  effect->setColorStates({std::make_tuple(0.0f, vec4(0.0f, 0.1f, 1.0f, 1.0f), vec4(0.0f, 0.0f, 0.0f, 0.0f)),
+                          std::make_tuple(1.0f, vec4(0.0f, 0.8f, 1.0f, 0.95f), vec4(0.0f, 0.2f, 0.0f, 0.0f))});
 
 
 //	effect->setTexture(atlas->getTexture());
@@ -127,7 +127,7 @@ void TestP2D::renderImGui() {
 }
 
 void TestP2D::update(float delta) {
-  static const float speed = 5.0f / Config::get().tickRate;
+  static const float speed = 5.0f;
 
   effect->update(delta);
 
@@ -143,7 +143,7 @@ void TestP2D::update(float delta) {
 
 void TestP2D::fixedUpdate(float delta) {
   effect->fixedUpdate(delta);
-  y = -500.0f * delta;
+  y = -5000.0f * delta;
 
   if (dummy->getPosition().y < 0) {
     dummy->setPosition({500, app.getWindowSize().y});

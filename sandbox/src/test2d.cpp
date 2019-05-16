@@ -252,7 +252,7 @@ void Test2D::renderImGui() {
 }
 
 void Test2D::update(float delta) {
-  static const float speed = 500.0f / Config::get().tickRate;
+  static const float speed = 500.0f;
 
   const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->getPosition()));
 

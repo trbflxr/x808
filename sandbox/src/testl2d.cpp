@@ -216,7 +216,7 @@ void TestL2D::renderImGui() {
 }
 
 void TestL2D::update(float delta) {
-  static const float speed = 1000.0f / Config::get().tickRate;
+  static const float speed = 1000.0f;
 
   const vec2 pos = vec2(Mouse::getPosition(window) + vec2(camera->getPosition()));
   player->setPosition(pos);

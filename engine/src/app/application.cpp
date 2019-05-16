@@ -110,7 +110,7 @@ namespace xe {
     while (running) {
       const float currentTime = timer.elapsed();
       const float delta = currentTime - lastTime;
-      const float dt = delta / MS_PER_TICK;
+      const float dt = delta / MS_PER_TICK / config.tickRate;
 
       lastTime = currentTime;
       tickLag += delta;
@@ -160,7 +160,7 @@ namespace xe {
   }
 
   void Application::update(float delta) {
-    ImGui::xe::update(window, delta / config.tickRate);
+    ImGui::xe::update(window, delta);
 
     shell->update(delta);
 

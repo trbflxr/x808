@@ -12,10 +12,10 @@ uniform int lightsSize;
 uniform sampler2D sampler0;
 
 void main() {
-  vec4 diffuse = color0;
+  vec4 diffuse = color0.bgra;
 
   if (text0 > 0) {
-    diffuse = color0 * texture(sampler0, uv0).a;
+    diffuse = color0.bgra * texture(sampler0, uv0).a;
   } else if (useTexture0 > 0) {
     diffuse *= texture(sampler0, uv0);
   }

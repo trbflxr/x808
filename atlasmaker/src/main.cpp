@@ -31,7 +31,7 @@ int main() {
   config.fullScreen = false;
   config.vSync = true;
   config.maxFps = 60;
-  config.tickRate = 0;
+  config.tickRate = 10;
   config.srgb = true;
   config.renderApi = RenderAPI::OpenGL;
   config.apiVersion = 330;
