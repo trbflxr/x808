@@ -1,13 +1,8 @@
 #include <xe/app/application.hpp>
-#include <xe/utils/logger.hpp>
 #include <xe/core/vfs.hpp>
 #include <xe/core/filesystem.hpp>
-#include "test2d.hpp"
-#include "testb2d.hpp"
-#include "testl2d.hpp"
-#include "testp2d.hpp"
-#include "test3d.hpp"
-#include "emptyscene.hpp"
+#include <xe/resources/texturemanager.hpp>
+#include "mainmenu.hpp"
 
 
 static void writeKeyValue(xe::Config &config, const char *key, const char *value) {
@@ -71,18 +66,28 @@ public:
     xe::VFS::mount("models", "xe_sandbox_assets/models/");
     xe::VFS::mount("shaders", "/");
 
+    xe::TextureParameters params;
+    xe::TextureManager::add(new xe::Texture("bg", "bg.png", params));
+
+    menu = new MainMenu();
+
+    pushOverlay(menu);
+
 //		pushLayer(new EmptyScene());
 //		pushLayer(new Test3D());
 //		pushLayer(new Test2D());
 //		pushLayer(new TestL2D());
 //		pushLayer(new TestP2D());
-    pushLayer(new TestB2D());
+//    pushLayer(new TestB2D());
+//    pushLayer(new TestB2D());
   }
 
-  ~Test() override { }
+  ~Test() override {
+    delete menu;
+  }
 
 private:
-
+  MainMenu *menu;
 };
 
 int main() {

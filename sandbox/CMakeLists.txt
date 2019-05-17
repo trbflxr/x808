@@ -7,11 +7,15 @@ set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS} -D S2D_DEBUG")
 
 include_directories(${XE_INCLUDE_DIRS})
+include_directories(src)
 link_directories(${XE_STATIC_LIB_DIRS})
 
 #sandbox
 file(GLOB SANDBOX_SRC
-        src/*.cpp)
+        src/*.cpp
+        src/2d/*.cpp
+        src/2d/0/*.cpp
+        src/3d/*.cpp)
 
 add_executable(sandbox ${SANDBOX_SRC})
 
