@@ -78,6 +78,12 @@ public:
     params.wrap = xe::TextureWrap::Repeat;
     xe::TextureManager::add(new xe::Texture("sp0", "sp0.png", params));
 
+    xe::FontManager::add(new xe::Font("consolata72", "consolata.otf", 72.0f));
+    xe::FontManager::add(new xe::Font("fogsans42", "fogsans.otf", 42.0f));
+    xe::FontManager::add(new xe::Font("fogsansit72", "fogsansit.otf", 72.0f));
+    xe::FontManager::add(new xe::Font("robotobold22", "robotobold.ttf", 22.0f));
+    xe::FontManager::add(new xe::Font("robotoregular72", "robotoregular.ttf", 72.0f));
+
     menu = new MainMenu();
 
     pushOverlay(menu);

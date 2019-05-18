@@ -79,6 +79,9 @@ void ExampleLights2D::renderImGui() {
     renderer->setAmbientLight(ambientColor);
   }
   ImGui::Separator();
+  ImGui::Text("WASD - move");
+  ImGui::Text("LMB - spawn light");
+  ImGui::Separator();
 
   ImGui::Text("Lights count: %i", lightsCount);
 

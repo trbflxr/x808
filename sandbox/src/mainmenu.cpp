@@ -7,6 +7,7 @@
 #include "2d/1/exampleshapes2d.hpp"
 #include "2d/2/examplelights2d.hpp"
 #include "2d/3/examplebox2d.hpp"
+#include "2d/4/exampletext.hpp"
 #include <xe/ui/imgui/imgui.h>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
@@ -79,6 +80,9 @@ void MainMenu::renderImGui() {
         if (ImGui::MenuItem("Basics", nullptr)) {
           showTest(Example0::create());
         }
+        if (ImGui::MenuItem("Text", nullptr)) {
+          showTest(ExampleText::create());
+        }
         if (ImGui::MenuItem("2D Shapes", nullptr)) {
           showTest(ExampleShapes2D::create());
         }
@@ -93,6 +97,10 @@ void MainMenu::renderImGui() {
 
       if (ImGui::MenuItem("Close all", nullptr)) {
         popTest();
+      }
+
+      if (ImGui::MenuItem("Exit", nullptr)) {
+        Application::exit();
       }
       ImGui::EndMenuBar();
     }

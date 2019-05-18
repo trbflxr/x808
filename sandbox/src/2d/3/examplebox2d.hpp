@@ -7,7 +7,6 @@
 
 
 #include "iexamplelayer.hpp"
-#include "2d/cameramovement2d.hpp"
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
 #include <xe/gfx/2d/circleshape.hpp>
