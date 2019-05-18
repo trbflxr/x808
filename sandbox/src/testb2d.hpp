@@ -17,7 +17,7 @@
 #include <xe/gfx/2d/polygon.hpp>
 #include <xe/gfx/2d/sprite.hpp>
 
-class MyListener : public xe::IContactListener {
+class MyListener1 : public xe::IContactListener {
 public:
   void beginContact(b2Contact *contact) override;
   void endContact(b2Contact *contact) override;
@@ -43,7 +43,7 @@ private:
   xe::Renderer2D *renderer;
 
   //rectangles
-  MyListener *contactListener;
+  MyListener1 *contactListener;
   xe::PhysicsWorld2D *world;
   xe::BoxCollider2D *boxCollider;
   xe::BoxCollider2D *groundCollider;

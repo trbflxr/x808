@@ -17,6 +17,7 @@ file(GLOB SANDBOX_SRC
         src/2d/0/*.cpp
         src/2d/1/*.cpp
         src/2d/2/*.cpp
+        src/2d/3/*.cpp
         src/3d/*.cpp)
 
 add_executable(sandbox ${SANDBOX_SRC})

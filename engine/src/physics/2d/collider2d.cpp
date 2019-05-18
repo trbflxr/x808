@@ -22,12 +22,11 @@ namespace xe {
                          ITransformable2D *transformable, bool fixedRotation) :
       world(world),
       transformable(transformable),
-      type(type) {
+      type(type),
+      fixedRotation(fixedRotation) {
 
     bodyDef = new b2BodyDef();
     fixtureDef = new b2FixtureDef();
-
-    bodyDef->fixedRotation = fixedRotation;
 
     create(world);
   }
@@ -42,6 +41,7 @@ namespace xe {
     bodyDef->position = transformable->getPosition();
     bodyDef->angle = to_rad(transformable->getRotation());
     bodyDef->type = xeToBox2DBody(type);
+    bodyDef->fixedRotation = fixedRotation;
 
     body = world->createBody(bodyDef);
     body->SetUserData(this);
@@ -178,10 +178,11 @@ namespace xe {
 
   void Collider2D::setFixedRotation(bool flag) {
     body->SetFixedRotation(flag);
+    fixedRotation = flag;
   }
 
   bool Collider2D::isFixedRotation() const {
-    return body->IsFixedRotation();
+    return fixedRotation;
   }
 
   float Collider2D::getFriction() const {

@@ -112,6 +112,7 @@ namespace xe {
     b2BodyDef *bodyDef;
     b2FixtureDef *fixtureDef;
     b2Body *body;
+    bool fixedRotation;
   };
 
 }

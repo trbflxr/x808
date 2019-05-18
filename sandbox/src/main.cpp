@@ -71,6 +71,9 @@ public:
     xe::TextureManager::add(new xe::Texture("grass", "grass.png", params));
     xe::TextureManager::add(new xe::Texture("rock", "rock.png", params));
     xe::TextureManager::add(new xe::Texture("pepe", "feelsconflictedman.jpg", params));
+    xe::TextureManager::add(new xe::Texture("test1", "test1.png", params));
+    xe::TextureManager::add(new xe::Texture("test2", "test2.png", params));
+    xe::TextureManager::add(new xe::Texture("test3", "test3.png", params));
 
     params.wrap = xe::TextureWrap::Repeat;
     xe::TextureManager::add(new xe::Texture("sp0", "sp0.png", params));
@@ -78,14 +81,6 @@ public:
     menu = new MainMenu();
 
     pushOverlay(menu);
-
-//		pushLayer(new EmptyScene());
-//		pushLayer(new Test3D());
-//		pushLayer(new Test2D());
-//		pushLayer(new TestL2D());
-//		pushLayer(new TestP2D());
-//    pushLayer(new TestB2D());
-//    pushLayer(new TestB2D());
   }
 
   ~Test() override {
