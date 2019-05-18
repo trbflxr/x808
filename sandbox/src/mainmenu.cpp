@@ -4,7 +4,8 @@
 
 #include "mainmenu.hpp"
 #include "2d/0/example0.hpp"
-#include "2d/1/examplelights2d.hpp"
+#include "2d/1/exampleshapes2d.hpp"
+#include "2d/2/examplelights2d.hpp"
 #include <xe/ui/imgui/imgui.h>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
@@ -76,6 +77,9 @@ void MainMenu::renderImGui() {
       if (ImGui::BeginMenu("Examples")) {
         if (ImGui::MenuItem("Layers", nullptr)) {
           showTest(Example0::create());
+        }
+        if (ImGui::MenuItem("2D Shapes", nullptr)) {
+          showTest(ExampleShapes2D::create());
         }
         if (ImGui::MenuItem("2D Lights", nullptr)) {
           showTest(ExampleLights2D::create());

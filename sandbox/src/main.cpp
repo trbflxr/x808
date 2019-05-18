@@ -72,6 +72,9 @@ public:
     xe::TextureManager::add(new xe::Texture("rock", "rock.png", params));
     xe::TextureManager::add(new xe::Texture("pepe", "feelsconflictedman.jpg", params));
 
+    params.wrap = xe::TextureWrap::Repeat;
+    xe::TextureManager::add(new xe::Texture("sp0", "sp0.png", params));
+
     menu = new MainMenu();
 
     pushOverlay(menu);
