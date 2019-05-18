@@ -2,15 +2,15 @@
 // Created by FLXR on 5/18/2019.
 //
 
-#include "test01.hpp"
+#include "example01.hpp"
 #include <xe/resources/texturemanager.hpp>
 #include <xe/ui/imgui/imgui.h>
 
 using namespace xe;
 
-Test01 *Test01::instance = nullptr;
+Example01 *Example01::instance = nullptr;
 
-Test01::Test01() :
+Example01::Example01() :
     block(false) {
 
   const float width = app.getWindowSize().x;
@@ -22,18 +22,18 @@ Test01::Test01() :
   shape = new RectangleShape({250.0f, 250.0f});
 }
 
-Test01::~Test01() {
+Example01::~Example01() {
   delete camera;
   delete renderer;
   delete shape;
 }
 
-void Test01::init() {
+void Example01::init() {
   shape->setTexture(GETTEXTURE("rock"));
   shape->move(app.getWindowSize() / 2.0f);
 }
 
-void Test01::render() {
+void Example01::render() {
   renderer->begin();
 
   renderer->submit(shape);
@@ -42,8 +42,8 @@ void Test01::render() {
   renderer->flush();
 }
 
-void Test01::renderImGui() {
-  ImGui::Begin("Test0_1", nullptr);
+void Example01::renderImGui() {
+  ImGui::Begin("Example0_1", nullptr);
 
   if (ImGui::Button("Toggle block")) {
     block = !block;
@@ -53,7 +53,7 @@ void Test01::renderImGui() {
   ImGui::End();
 }
 
-void Test01::update(float delta) {
+void Example01::update(float delta) {
   if (shape->contains(Mouse::getPosition(app.getWindow()))) {
     shape->setColor(color::Red);
   } else {
@@ -61,7 +61,7 @@ void Test01::update(float delta) {
   }
 }
 
-void Test01::input(xe::Event &event) {
+void Example01::input(xe::Event &event) {
   if (event.type == Event::MouseButtonPressed) {
     if (event.mouseButton.button == Mouse::Left) {
       if (shape->contains({event.mouseButton.x, event.mouseButton.y})) {
@@ -71,4 +71,3 @@ void Test01::input(xe::Event &event) {
     }
   }
 }
-

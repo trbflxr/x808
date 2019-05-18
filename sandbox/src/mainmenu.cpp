@@ -3,7 +3,8 @@
 //
 
 #include "mainmenu.hpp"
-#include "2d/0/test0.hpp"
+#include "2d/0/example0.hpp"
+#include "2d/1/examplelights2d.hpp"
 #include <xe/ui/imgui/imgui.h>
 #include <xe/gfx/renderer.hpp>
 #include <xe/resources/texturemanager.hpp>
@@ -74,7 +75,10 @@ void MainMenu::renderImGui() {
     if (ImGui::BeginMenuBar()) {
       if (ImGui::BeginMenu("Examples")) {
         if (ImGui::MenuItem("Layers", nullptr)) {
-          showTest(Test0::create());
+          showTest(Example0::create());
+        }
+        if (ImGui::MenuItem("2D Lights", nullptr)) {
+          showTest(ExampleLights2D::create());
         }
         ImGui::EndMenu();
       }
@@ -116,10 +120,14 @@ void MainMenu::fixedUpdate(float delta) {
 }
 
 void MainMenu::input(Event &event) {
-
+  if (event.type == Event::KeyPressed) {
+    if (event.key.code == Keyboard::Escape) {
+      popTest();
+    }
+  }
 }
 
-void MainMenu::showTest(ITestLayer *layer) {
+void MainMenu::showTest(IExampleLayer *layer) {
   if (current == layer) return;
 
   if (current) {

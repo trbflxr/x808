@@ -2,16 +2,16 @@
 // Created by FLXR on 5/17/2019.
 //
 
-#ifndef X808_TEST0_HPP
-#define X808_TEST0_HPP
+#ifndef X808_EXAMPLE0_HPP
+#define X808_EXAMPLE0_HPP
 
 
-#include "itestlayer.hpp"
-#include "test01.hpp"
+#include "iexamplelayer.hpp"
+#include "example01.hpp"
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
 
-class Test0 : public ITestLayer {
+class Example0 : public IExampleLayer {
 public:
   void init() override;
 
@@ -19,22 +19,22 @@ public:
 
   void input(xe::Event &event) override;
 
-  ITEST_LAYER_METHODS(Test0)
+  IEXAMPLE_LAYER_METHODS(Example0)
 
 protected:
-  explicit Test0();
-  ~Test0() override;
+  explicit Example0();
+  ~Example0() override;
 
 private:
-  static Test0 *instance;
+  static Example0 *instance;
 
   xe::Camera *camera;
   xe::Renderer2D *renderer;
 
   xe::RectangleShape *shape;
 
-  Test01 *other;
+  Example01 *other;
 };
 
 
-#endif //X808_TEST0_HPP
+#endif //X808_EXAMPLE0_HPP

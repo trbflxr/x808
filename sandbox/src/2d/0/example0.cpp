@@ -2,14 +2,14 @@
 // Created by FLXR on 5/17/2019.
 //
 
-#include "test0.hpp"
+#include "example0.hpp"
 #include <xe/resources/texturemanager.hpp>
 
 using namespace xe;
 
-Test0 *Test0::instance = nullptr;
+Example0 *Example0::instance = nullptr;
 
-Test0::Test0() {
+Example0::Example0() {
   const float width = app.getWindowSize().x;
   const float height = app.getWindowSize().y;
 
@@ -18,19 +18,19 @@ Test0::Test0() {
 
   shape = new RectangleShape({500.0f, 500.0f});
 
-  other = Test01::create();
+  other = Example01::create();
 }
 
-Test0::~Test0() {
+Example0::~Example0() {
   delete camera;
   delete renderer;
   delete shape;
 
   app.popLayer();
-  Test01::destroy();
+  Example01::destroy();
 }
 
-void Test0::init() {
+void Example0::init() {
   app.pushLayer(other);
   other->init();
 
@@ -38,7 +38,7 @@ void Test0::init() {
   shape->move(app.getWindowSize() / 2.0f);
 }
 
-void Test0::render() {
+void Example0::render() {
   renderer->begin();
 
   renderer->submit(shape);
@@ -47,7 +47,7 @@ void Test0::render() {
   renderer->flush();
 }
 
-void Test0::input(xe::Event &event) {
+void Example0::input(xe::Event &event) {
   if (event.type == Event::MouseButtonPressed) {
     if (event.mouseButton.button == Mouse::Left) {
       if (shape->contains(vec2(event.mouseButton.x, event.mouseButton.y))) {

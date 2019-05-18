@@ -6,7 +6,7 @@
 #define X808_MAINMENU_HPP
 
 
-#include "itestlayer.hpp"
+#include "iexamplelayer.hpp"
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
 
@@ -27,11 +27,11 @@ protected:
   void resize(int32 width, int32 height) override;
 
 private:
-  void showTest(ITestLayer *layer);
+  void showTest(IExampleLayer *layer);
   void popTest();
 
 private:
-  ITestLayer *current;
+  IExampleLayer *current;
 
   xe::Camera *camera;
   xe::Renderer2D *renderer;

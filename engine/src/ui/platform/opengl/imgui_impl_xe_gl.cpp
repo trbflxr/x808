@@ -53,7 +53,7 @@ static bool checkProgram(uint handle, const char *desc);
 
 void renderDrawLists(ImDrawData *drawData);
 
-namespace ImGui { namespace xe {
+namespace ImGui::xe {
 
   void init(::xe::Window &window, bool loadDefaultFont) {
     ImGui::CreateContext();
@@ -150,35 +150,45 @@ namespace ImGui { namespace xe {
     ImGui::DestroyContext();
   }
 
-  void processEvent(const ::xe::Event &event) {
+  void processEvent(::xe::Event &event) {
     if (windowHasFocus) {
       ImGuiIO &io = ImGui::GetIO();
 
       switch (event.type) {
         case ::xe::Event::MouseButtonPressed: // fall-through
         case ::xe::Event::MouseButtonReleased: {
-          int32 button = event.mouseButton.button;
-          if (event.type == ::xe::Event::MouseButtonPressed &&
-              button >= 0 && button < 3) {
+          const int32 button = event.mouseButton.button;
+          if (event.type == ::xe::Event::MouseButtonPressed && button >= 0 && button < 3) {
             mousePressed[event.mouseButton.button] = true;
+            event.handled = io.WantCaptureMouse;
           }
+          break;
         }
-          break;
 
-        case ::xe::Event::MouseWheelMoved: io.MouseWheel += static_cast<float>(event.mouseWheel.delta);
+        case ::xe::Event::MouseWheelMoved: {
+          io.MouseWheel += static_cast<float>(event.mouseWheel.delta);
+          event.handled = io.WantCaptureMouse;
           break;
+        }
+
         case ::xe::Event::KeyPressed: // fall-through
-        case ::xe::Event::KeyReleased: io.KeysDown[event.key.code] = (event.type == ::xe::Event::KeyPressed);
+        case ::xe::Event::KeyReleased: {
+          io.KeysDown[event.key.code] = (event.type == ::xe::Event::KeyPressed);
           io.KeyCtrl = event.key.control;
           io.KeyShift = event.key.shift;
           io.KeyAlt = event.key.alt;
-          break;
 
-        case ::xe::Event::TextEntered:
+          event.handled = io.WantCaptureKeyboard;
+          break;
+        }
+
+        case ::xe::Event::TextEntered: {
           if (event.text.unicode > 0 && event.text.unicode < 0x10000) {
             io.AddInputCharactersUTF8((const char *) &event.text.unicode);
           }
+          event.handled = io.WantCaptureKeyboard;
           break;
+        }
 
         default: break;
       }
@@ -261,7 +271,7 @@ namespace ImGui { namespace xe {
     io.Fonts->TexID = reinterpret_cast<ImTextureID>(fontTexture->getHandle());
   }
 
-}}
+}
 
 void renderDrawLists(ImDrawData *drawData) {
   // Avoid rendering when minimized, scale coordinates for retina displays (screen coordinates != framebuffer coordinates)
