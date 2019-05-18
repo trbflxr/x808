@@ -75,7 +75,7 @@ void MainMenu::renderImGui() {
   if (ImGui::Begin("MainMenu", nullptr, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | flags)) {
     if (ImGui::BeginMenuBar()) {
       if (ImGui::BeginMenu("Examples")) {
-        if (ImGui::MenuItem("Layers", nullptr)) {
+        if (ImGui::MenuItem("Basics", nullptr)) {
           showTest(Example0::create());
         }
         if (ImGui::MenuItem("2D Shapes", nullptr)) {
@@ -148,6 +148,8 @@ void MainMenu::popTest() {
     app.popLayer();
     current->destroyInstance();
     current = nullptr;
+
+    Renderer::setClearColor(color::Black);
   }
 }
 

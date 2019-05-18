@@ -5,12 +5,14 @@
 #include "example01.hpp"
 #include <xe/resources/texturemanager.hpp>
 #include <xe/ui/imgui/imgui.h>
+#include <xe/gfx/renderer.hpp>
 
 using namespace xe;
 
 Example01 *Example01::instance = nullptr;
 
 Example01::Example01() :
+    clearColor(color::decode(0x946EC6)),
     block(false) {
 
   const float width = app.getWindowSize().x;
@@ -31,6 +33,8 @@ Example01::~Example01() {
 void Example01::init() {
   shape->setTexture(GETTEXTURE("rock"));
   shape->move(app.getWindowSize() / 2.0f);
+
+  Renderer::setClearColor(color::encode(clearColor));
 }
 
 void Example01::render() {
@@ -43,9 +47,14 @@ void Example01::render() {
 }
 
 void Example01::renderImGui() {
-  ImGui::Begin("Example0_1", nullptr);
+  ImGui::Begin("Basics", nullptr);
 
-  if (ImGui::Button("Toggle block")) {
+  if (ImGui::ColorPicker4("Clear color", reinterpret_cast<float *>(&clearColor))) {
+    Renderer::setClearColor(color::encode(clearColor));
+  }
+
+  ImGui::Separator();
+  if (ImGui::Button("Toggle event block")) {
     block = !block;
   }
   ImGui::Text("Event blocked: %s", block ? "true" : "false");
