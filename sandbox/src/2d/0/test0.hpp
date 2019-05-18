@@ -7,6 +7,7 @@
 
 
 #include "itestlayer.hpp"
+#include "test01.hpp"
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/2d/rectangleshape.hpp>
 
@@ -31,6 +32,8 @@ private:
   xe::Renderer2D *renderer;
 
   xe::RectangleShape *shape;
+
+  Test01 *other;
 };
 
 

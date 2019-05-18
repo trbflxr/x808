@@ -43,6 +43,10 @@ namespace xe {
   typedef vec2 vec2;
 
   ///----- operators -----///
+  inline vec2 operator-(const vec2 &left) {
+    return vec2(-left.x, -left.y);
+  }
+
   inline vec2 operator+(const vec2 &left, const vec2 &right) {
     return vec2(left.x + right.x, left.y + right.y);
   }

@@ -86,7 +86,14 @@ void MainMenu::renderImGui() {
     }
   }
 
+  ImGui::Text("fps: %i", app.getFPS());
+  ImGui::Text("tick rate: %i", app.getTPS());
+  ImGui::Text("draw calls: %i", Renderer::getDC());
+  ImGui::Separator();
+  ImGui::Dummy({10.0f, 0.0f});
+
   ImGui::Text("Right-click to change position");
+
   if (ImGui::BeginPopupContextWindow()) {
     if (ImGui::MenuItem("Custom", nullptr, corner == -1)) corner = -1;
     if (ImGui::MenuItem("Top-left", nullptr, corner == 0)) corner = 0;
@@ -99,7 +106,9 @@ void MainMenu::renderImGui() {
 }
 
 void MainMenu::update(float delta) {
+  const vec2 mousePos = Mouse::getPosition(app.getWindow());
 
+  bg->setPosition(-mousePos / 30.0f);
 }
 
 void MainMenu::fixedUpdate(float delta) {

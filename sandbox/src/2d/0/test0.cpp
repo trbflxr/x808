@@ -13,21 +13,29 @@ Test0::Test0() {
   const float width = app.getWindowSize().x;
   const float height = app.getWindowSize().y;
 
-  camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1000.0f));
+  camera = new Camera(mat4::ortho(0.0f, width, 0.0f, height, -1.0f, 1.0f));
   renderer = new Renderer2D(width, height, camera);
 
-  shape = new RectangleShape({width, height});
+  shape = new RectangleShape({500.0f, 500.0f});
+
+  other = Test01::create();
 }
 
 Test0::~Test0() {
   delete camera;
   delete renderer;
   delete shape;
+
+  app.popLayer();
+  Test01::destroy();
 }
 
 void Test0::init() {
-  shape->setTexture(GETTEXTURE("grass.png"));
-//  shape->setPosition()
+  app.pushLayer(other);
+  other->init();
+
+  shape->setTexture(GETTEXTURE("grass"));
+  shape->move(app.getWindowSize() / 2.0f);
 }
 
 void Test0::render() {
@@ -40,5 +48,11 @@ void Test0::render() {
 }
 
 void Test0::input(xe::Event &event) {
-
+  if (event.type == Event::MouseButtonPressed) {
+    if (event.mouseButton.button == Mouse::Left) {
+      if (shape->contains(vec2(event.mouseButton.x, event.mouseButton.y))) {
+        XE_INFO("Hello from layer 0");
+      }
+    }
+  }
 }

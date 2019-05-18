@@ -68,6 +68,8 @@ public:
 
     xe::TextureParameters params;
     xe::TextureManager::add(new xe::Texture("bg", "bg.png", params));
+    xe::TextureManager::add(new xe::Texture("grass", "grass.png", params));
+    xe::TextureManager::add(new xe::Texture("rock", "rock.png", params));
 
     menu = new MainMenu();
 
