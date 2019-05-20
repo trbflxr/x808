@@ -11,7 +11,7 @@
 #include <xe/gfx/model.hpp>
 #include <xe/gfx/shader.hpp>
 #include <xe/gfx/deferredrenderer.hpp>
-#include "dummyplayer.hpp"
+#include "3d/dummyplayer.hpp"
 
 
 class Test3D : public xe::Layer {

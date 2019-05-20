@@ -21,6 +21,9 @@ namespace xe {
     void add(Model *model);
     void add(Light *light);
 
+    Model *removeModel(const string &name);
+    Light *removeLight(const string &name);
+
     void updateLights(const Camera *camera);
 
     inline const std::vector<Model *> &getModels() const { return models; }

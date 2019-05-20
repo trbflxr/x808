@@ -3,6 +3,7 @@
 #include <xe/core/filesystem.hpp>
 #include <xe/resources/texturemanager.hpp>
 #include "mainmenu.hpp"
+#include "3d/examplescene.hpp"
 
 
 static void writeKeyValue(xe::Config &config, const char *key, const char *value) {
@@ -84,6 +85,8 @@ public:
     xe::FontManager::add(new xe::Font("robotobold22", "robotobold.ttf", 22.0f));
     xe::FontManager::add(new xe::Font("robotoregular72", "robotoregular.ttf", 72.0f));
 
+    ExampleScene::get().create();
+
     menu = new MainMenu();
 
     pushOverlay(menu);
@@ -91,6 +94,8 @@ public:
 
   ~Test() override {
     delete menu;
+
+    ExampleScene::get().dispose();
   }
 
 private:

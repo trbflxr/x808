@@ -42,7 +42,7 @@ else ()
             "fullScreen=0\n"
             "vSync=0\n"
             "maxFps=0\n"
-            "tickRate=30\n"
+            "tickRate=60\n"
             "srgb=1\n"
             "renderApi=ogl\n"
             "apiVersion=330\n"

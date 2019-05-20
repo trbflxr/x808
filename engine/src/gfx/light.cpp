@@ -58,6 +58,7 @@ namespace xe {
   ///----- Directional Light -----///
   DirectionalLight::DirectionalLight(const string &name, const std::vector<float> &splits) :
       ITransformable(false),
+      enabled(true),
       shadowed(true),
       splits(splits) {
 

@@ -34,7 +34,7 @@ void Example01::init() {
   shape->setTexture(GETTEXTURE("rock"));
   shape->move(app.getWindowSize() / 2.0f);
 
-  Renderer::setClearColor(color::encode(clearColor));
+  Renderer::setClearColor(color::encode(vec4(clearColor, 1.0f)));
 }
 
 void Example01::render() {
@@ -49,8 +49,8 @@ void Example01::render() {
 void Example01::renderImGui() {
   ImGui::Begin("Basics", nullptr);
 
-  if (ImGui::ColorPicker4("Clear color", reinterpret_cast<float *>(&clearColor))) {
-    Renderer::setClearColor(color::encode(clearColor));
+  if (ImGui::ColorPicker3("Clear color", reinterpret_cast<float *>(&clearColor))) {
+    Renderer::setClearColor(color::encode(vec4(clearColor, 1.0f)));
   }
 
   ImGui::Separator();

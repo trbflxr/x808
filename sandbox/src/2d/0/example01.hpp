@@ -35,7 +35,7 @@ private:
 
   xe::RectangleShape *shape;
 
-  xe::vec4 clearColor;
+  xe::vec3 clearColor;
 
   bool block;
 };

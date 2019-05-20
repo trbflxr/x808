@@ -30,6 +30,8 @@ private:
   void showTest(IExampleLayer *layer);
   void popTest();
 
+  void addShellCommands();
+
 private:
   IExampleLayer *current;
 

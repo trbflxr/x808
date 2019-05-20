@@ -80,7 +80,7 @@ Test3D::Test3D() {
   pebble->setNormalMap(GETTEXTURE("pebble_n"));
   pebble->setHeightMap(GETTEXTURE("pebble_h"));
 
-  model = new Model("tm0", "rock.obj");
+  model = new Model("tm", "rock.obj");
   model->setMaterial(material);
   scene->add(model);
 
@@ -169,7 +169,7 @@ Test3D::Test3D() {
   sl->setShadowed(true);
 //	scene->add(sl);
 
-  SpotLight *sl1 = new SpotLight("l0");
+  SpotLight *sl1 = new SpotLight("l1");
   sl1->setPosition({-8, 8, 12.0});
   sl1->rotate(vec3::UnitX(), -50);
   sl1->rotate(vec3::UnitY(), -15);
@@ -431,6 +431,14 @@ void Test3D::input(Event &event) {
     }
     if (event.key.code == Keyboard::H) {
       dlr = !dlr;
+    }
+    if (event.key.code == Keyboard::J) {
+//      delete scene->removeModel(model->getName());
+//      scene->removeLight(sl->getName());
+    }
+    if (event.key.code == Keyboard::K) {
+//      delete sl;
+//      scene->removeModel(model->getName());
     }
   }
 }

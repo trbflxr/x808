@@ -29,6 +29,8 @@ namespace xe {
 
     static void clean();
 
+    static const std::unordered_map<string, const Texture *> &getTextures() { return instance().textures; }
+
   private:
     TextureManager();
 

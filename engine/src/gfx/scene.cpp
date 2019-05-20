@@ -2,6 +2,7 @@
 // Created by FLXR on 3/6/2019.
 //
 
+#include <algorithm>
 #include <xe/gfx/scene.hpp>
 
 namespace xe {
@@ -41,6 +42,41 @@ namespace xe {
 
       default: break;
     }
+  }
+
+  Model *Scene::removeModel(const string &name) {
+    auto it = std::find_if(models.begin(), models.end(), [&](const Model *x) { return x->getName() == name; });
+    if (it != models.end()) {
+      models.erase(it);
+      return *it;
+    }
+
+    return nullptr;
+  }
+
+  Light *Scene::removeLight(const string &name) {
+    auto it = std::find_if(lights.begin(), lights.end(), [&](const Light *x) { return x->getName() == name; });
+    if (it != lights.end()) {
+      lights.erase(it);
+
+      if ((*it)->getType() == LightType::Spot) {
+        auto s = std::find_if(spotLights.begin(), spotLights.end(),
+                              [&](const Light *x) { return x->getName() == name; });
+        if (s != spotLights.end()) {
+          spotLights.erase(s);
+        }
+      } else if ((*it)->getType() == LightType::Point) {
+        auto s = std::find_if(pointLights.begin(), pointLights.end(),
+                              [&](const Light *x) { return x->getName() == name; });
+        if (s != pointLights.end()) {
+          pointLights.erase(s);
+        }
+      }
+
+      return *it;
+    }
+
+    return nullptr;
   }
 
   void Scene::updateLights(const Camera *camera) {

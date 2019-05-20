@@ -219,7 +219,7 @@ namespace xe {
   }
 
   void Shell::addLog(ShellItemType type, const char *fmt, ...) {
-    char buff[1024];
+    char buff[8196];
     va_list args;
 
     va_start(args, fmt);

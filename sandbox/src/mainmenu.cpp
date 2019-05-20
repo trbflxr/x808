@@ -8,9 +8,12 @@
 #include "2d/2/examplelights2d.hpp"
 #include "2d/3/examplebox2d.hpp"
 #include "2d/4/exampletext.hpp"
+#include "3d/example3d.hpp"
 #include <xe/ui/imgui/imgui.h>
 #include <xe/gfx/renderer.hpp>
+#include <xe/systems/shell.hpp>
 #include <xe/resources/texturemanager.hpp>
+#include <sstream>
 
 using namespace xe;
 
@@ -25,6 +28,8 @@ MainMenu::MainMenu() :
 
   bg = new RectangleShape({1920 * 2.0f, 1080 * 2.0f});
   bg->setTexture(GETTEXTURE("bg"));
+
+  addShellCommands();
 }
 
 MainMenu::~MainMenu() {
@@ -91,6 +96,9 @@ void MainMenu::renderImGui() {
         }
         if (ImGui::MenuItem("2D Physics", nullptr)) {
           showTest(ExampleBox2D::create());
+        }
+        if (ImGui::MenuItem("3D Scene", nullptr)) {
+          showTest(Example3D::create());
         }
         ImGui::EndMenu();
       }
@@ -169,4 +177,24 @@ void MainMenu::resize(int32 width, int32 height) {
   camera->setProjection(mat4::ortho(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f, -1.0f, 1.0f));
   renderer->setWidth(width);
   renderer->setHeight(height);
+}
+
+void MainMenu::addShellCommands() {
+  Shell &shell = app.getShell();
+
+  shell.addCommand("out_textures", [&](const std::vector<string> &args, bool hint) -> string {
+    if (hint) return "Prints loaded texture names.";
+
+    std::stringstream ss;
+
+    ss << "Textures:\n";
+    for (const auto &p : TextureManager::getTextures()) {
+      const Texture *t = p.second;
+
+      ss << "\t" << t->getName() << "(" << t->getFilePath() << "), " <<
+         "size(" << t->getWidth() << ", " << t->getHeight() << ")\n";
+    }
+
+    return ss.str();
+  });
 }

@@ -91,6 +91,7 @@ namespace xe {
     spotShadowsIndex = 0;
     spotUBO->bind();
     for (const auto &light : scene->getSpotLights()) {
+      if (!light->isEnabled()) continue;
       if (!light->isShadowed() || (uint) spotShadowsIndex - 1 == params.maxSpotCount) {
         light->setShadowId(-1);
         continue;
@@ -108,7 +109,7 @@ namespace xe {
 
   void Shadows::renderDirectionalShadows(const Scene *scene, const Camera *camera) {
     DirectionalLight *light = const_cast<DirectionalLight *>(scene->getDirectionalLight());
-    if (!light || !light->isShadowed()) return;
+    if (!light || !light->isShadowed() || !light->isEnabled()) return;
 
     dirUBO->bind();
     const std::vector<mat4> &projection = light->getProjection();

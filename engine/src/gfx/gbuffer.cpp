@@ -130,12 +130,14 @@ namespace xe {
 
     //spot
     for (const auto &light : scene->getSpotLights()) {
+      if (!light->isEnabled()) continue;
       passStencil(light);
       passSpotLight(light, shadows);
     }
 
     //point
     for (const auto &light : scene->getPointLights()) {
+      if (!light->isEnabled()) continue;
       passStencil(light);
       passPointLight(light);
     }
@@ -143,7 +145,7 @@ namespace xe {
     //directional
     Renderer::enableStencilTest(false);
     const DirectionalLight *light = scene->getDirectionalLight();
-    if (light) {
+    if (light && light->isEnabled()) {
       passDirectionalLight(light, shadows, quad);
     }
 

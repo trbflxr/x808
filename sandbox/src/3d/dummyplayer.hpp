@@ -27,6 +27,11 @@ public:
     lastMousePosition = windowCenter;
   }
 
+  virtual ~DummyPlayer() {
+    window.setMouseCursorGrabbed(false);
+    window.setMouseCursorVisible(true);
+  }
+
   void update(float delta) {
     if (mouseLocked) {
       window.setMouseCursorGrabbed(true);
@@ -87,7 +92,7 @@ public:
       event.handled = true;
     }
     if (event.type == xe::Event::KeyPressed) {
-      if (event.key.code == xe::Keyboard::Escape) {
+      if (event.key.code == xe::Keyboard::Escape || event.key.code == xe::Keyboard::R) {
         mouseLocked = false;
       }
       event.handled = true;

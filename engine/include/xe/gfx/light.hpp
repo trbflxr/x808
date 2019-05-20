@@ -134,6 +134,9 @@ namespace xe {
 
     inline const string &getName() const { return name; }
 
+    inline bool isEnabled() const { return enabled; }
+    inline void setEnabled(bool enabled) { DirectionalLight::enabled = enabled; }
+
     inline bool isShadowed() const { return shadowed; }
     inline void setShadowed(bool shadowed) { DirectionalLight::shadowed = shadowed; }
 
@@ -155,6 +158,7 @@ namespace xe {
   private:
     string name;
 
+    bool enabled;
     bool shadowed;
 
     vec3 color;

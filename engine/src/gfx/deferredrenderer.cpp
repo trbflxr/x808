@@ -114,7 +114,7 @@ namespace xe {
     static constexpr int32 disabled = 0;
 
     for (const auto &light : lights) {
-      if (!light->getMesh()) continue;
+      if (!light->getMesh() || !light->isEnabled()) continue;
 
       //transform
       light->getBoundsMatrix();
