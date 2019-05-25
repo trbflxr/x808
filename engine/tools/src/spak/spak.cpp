@@ -41,7 +41,7 @@ namespace xe {
     //file
     std::ifstream fin(path, std::ios::in | std::ios::binary);
     if (!fin.is_open()) {
-      fprintf(stderr, "Bad input file: %s\n", path.c_str());
+      fprintf(stderr, "Unable to open file: %s\n", path.c_str());
       return shaders;
     }
 

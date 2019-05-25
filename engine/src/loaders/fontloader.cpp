@@ -12,23 +12,42 @@ namespace xe {
 
   using namespace ftgl;
 
+  static byte *readFile(const string &path, int64 *outMemorySize) {
+    FILE *f = _wfopen(toWstring(path).c_str(), L"rb");
+    if (!f) return nullptr;
+
+    fseek(f, 0, SEEK_END);
+    *outMemorySize = ftell(f);
+    fseek(f, 0, SEEK_SET);
+
+    byte *buff = new byte[*outMemorySize];
+
+    fread(buff, *outMemorySize, 1, f);
+
+    fclose(f);
+
+    return buff;
+  }
+
   bool FontLoader::load(Font *font, const char *file, float size, uint atlasSize) {
     string path(basePath);
     path += file;
 
-    int64 fileSize;
-    byte *data = VFS::readFile(path, &fileSize);
+    XE_CORE_TRACE("Loading: ", path);
 
-    if (!data) {
+    int64 memorySize;
+    byte *memory = VFS::readFile(path, &memorySize);
+
+    if (!memory) {
       XE_CORE_ERROR("[FontLoader]: unable to load font: '", path, "'");
       return false;
     }
 
-    font->fontData = data;
+    font->fontData = memory;
 
     font->atlas = texture_atlas_new(atlasSize, atlasSize, 1);
     font->font = texture_font_new_from_memory(static_cast<texture_atlas_t *>(font->atlas),
-                                              size, font->fontData, fileSize);
+                                              size, font->fontData, memorySize);
 
     return true;
   }

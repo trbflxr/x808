@@ -1,15 +1,27 @@
 cmake_minimum_required(VERSION 3.10)
 project(xe)
 
-option(XE_PLATFORM_WIN32 "Win32" ON)
-option(XE_PLATFORM_GL "OpenGL" ON)
+macro(xe_set_option var default type docstring)
+    if (NOT DEFINED ${var})
+        set(${var} ${default})
+    endif ()
+    set(${var} ${${var}} CACHE ${type} ${docstring} FORCE)
+endmacro()
+
+xe_set_option(XE_BUILD_SHARED_LIB TRUE BOOL "Build shared lib")
+xe_set_option(XE_PLATFORM_WIN32 TRUE BOOL "Win32")
+xe_set_option(XE_PLATFORM_GL TRUE BOOL "OpenGL")
+xe_set_option(XE_USE_GENERIC_FS TRUE BOOL "Generic filesystem")
 
 set(XE_DEBUG_FLAGS "-D XE_DEBUG -Wall -Wno-unused-function -Wno-class-memaccess"
         CACHE STRING "xe_debug defines, compile options")
 
+set(XE_RELEASE_FLAGS "-D NDEBUG" CACHE STRING "xe_release defines, compile options")
+
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${XE_DEBUG_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${XE_RELEASE_FLAGS}")
 
 set(XE_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -30,6 +42,10 @@ add_definitions(
         -D UNICODE
         -D _UNICODE
         -D XE_STATIC)
+
+if (XE_USE_GENERIC_FS)
+    add_definitions(-D XE_USE_GENERIC_FS)
+endif ()
 
 #external libs
 add_subdirectory(external/box2d)
@@ -112,7 +128,12 @@ endif ()
 
 
 #xe lib
-add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
+if (XE_BUILD_SHARED_LIB)
+    add_library(xe SHARED ${PLATFORM_SRC} ${ENGINE_SRC})
+else ()
+    add_library(xe STATIC ${PLATFORM_SRC} ${ENGINE_SRC})
+endif ()
+
 
 target_link_libraries(xe
         spk

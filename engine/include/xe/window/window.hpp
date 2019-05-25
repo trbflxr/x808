@@ -31,7 +31,6 @@ namespace xe {
 
   class XE_API Window : NonCopyable {
   public:
-
     Window();
     explicit Window(VideoMode mode, const string &title, uint style = WindowStyle::Default);
     ~Window() override;

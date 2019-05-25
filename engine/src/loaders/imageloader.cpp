@@ -22,6 +22,8 @@ namespace xe {
       path.insert(0, basePath);
     }
 
+    XE_CORE_TRACE("Loading: ", path);
+
     int64 memorySize;
     byte *memory = VFS::readFile(path, &memorySize);
 
@@ -120,6 +122,8 @@ namespace xe {
     if (!FileSystem::exists(path)) {
       path.insert(0, basePath);
     }
+
+    XE_CORE_TRACE("Loading: ", path);
 
     int64 memorySize;
     uint64 index = 0;

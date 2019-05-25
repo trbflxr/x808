@@ -14,6 +14,8 @@
 
 namespace xe {
 
+#ifndef XE_USE_GENERIC_FS
+
   void CALLBACK fileIOCompletionRoutine(DWORD errorCode, DWORD numberOfBytesTransfered, LPOVERLAPPED overlapped) { }
 
   static HANDLE openFileForReading(const string &path) {
@@ -120,6 +122,7 @@ namespace xe {
 
     return static_cast<bool>(result);
   }
+#endif //XE_USE_GENERIC_FS
 
   string FileSystem::getWorkingDirectory() {
     static constexpr uint maxSize = 512;

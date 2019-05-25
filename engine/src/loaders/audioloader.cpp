@@ -32,6 +32,8 @@ namespace xe {
     string path(basePath);
     path += file;
 
+    XE_CORE_TRACE("Loading: ", path);
+
     int64 memorySize;
     byte *memory = VFS::readFile(path, &memorySize);
 
