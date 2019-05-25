@@ -12,7 +12,7 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
   } else if (strcmp(key, "height") == 0) {
     config.height = (uint) atoi(value);
   } else if (strcmp(key, "fullScreen") == 0) {
-    config.fullScreen = (bool) atoi(value);
+    config.fullScreen = (uint) atoi(value);
   } else if (strcmp(key, "vSync") == 0) {
     config.vSync = (bool) atoi(value);
   } else if (strcmp(key, "tickRate") == 0) {

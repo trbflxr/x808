@@ -28,7 +28,7 @@ int main() {
   xe::Config config;
   config.width = 1280;
   config.height = 720;
-  config.fullScreen = false;
+  config.fullScreen = 0;
   config.vSync = false;
   config.maxFps = 0;
   config.tickRate = 30;

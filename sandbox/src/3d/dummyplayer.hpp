@@ -97,6 +97,10 @@ public:
       }
       event.handled = true;
     }
+    if (event.type == xe::Event::LostFocus) {
+      mouseLocked = false;
+      event.handled = true;
+    }
   }
 
 private:

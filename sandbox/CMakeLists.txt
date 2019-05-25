@@ -40,6 +40,7 @@ else ()
     file(WRITE xeconfig
             "width=1280\n"
             "height=720\n"
+            "//0-window 1-borderless 2-fullscreen\n"
             "fullScreen=0\n"
             "vSync=0\n"
             "maxFps=0\n"

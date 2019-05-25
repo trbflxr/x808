@@ -69,7 +69,7 @@ namespace xe::internal {
 
     DWORD win32Style = WS_VISIBLE;
     if (style == WindowStyle::None) {
-      win32Style |= WS_POPUP;
+      win32Style |= WS_POPUPWINDOW;
     } else {
       win32Style |= WS_POPUP;
       if (style & WindowStyle::Titlebar) win32Style |= WS_CAPTION | WS_MINIMIZEBOX;

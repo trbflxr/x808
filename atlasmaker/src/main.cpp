@@ -28,7 +28,7 @@ int main() {
   Config config;
   config.width = 1280;
   config.height = 720;
-  config.fullScreen = false;
+  config.fullScreen = 0;
   config.vSync = true;
   config.maxFps = 60;
   config.tickRate = 10;

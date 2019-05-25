@@ -44,9 +44,10 @@ namespace xe {
   }
 
   void Application::init(const string &title) {
-    if (config.fullScreen) {
+    if (config.fullScreen == 2) {
       window.create(VideoMode::getDesktopMode(), title, WindowStyle::Fullscreen);
-
+    } else if (config.fullScreen == 1) {
+      window.create(VideoMode::getDesktopMode(), title, WindowStyle::None);
     } else {
       VideoMode mode(config.width, config.height);
       window.create(mode, title, WindowStyle::Default);

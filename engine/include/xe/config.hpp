@@ -15,7 +15,7 @@ namespace xe {
   public:
     uint width;
     uint height;
-    bool fullScreen;
+    uint fullScreen;
     bool vSync;
 
     uint maxFps;
@@ -34,7 +34,7 @@ namespace xe {
     explicit Config() :
         width(1),
         height(1),
-        fullScreen(false),
+        fullScreen(0),
         vSync(false),
         maxFps(0),
         tickRate(30),
