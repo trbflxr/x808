@@ -25,17 +25,14 @@ void ExampleScene::dispose() {
 
   delete scene;
 
-  delete mat_pebble;
-  delete mat_rock;
-  delete mat_cloth;
-  delete mat_bricks0;
-  delete mat_bricks1;
-  delete mat_bricks2;
+  for (auto &&m: materials) {
+    delete m;
+  }
 }
 
 void ExampleScene::createModels() {
   mod_rock = new Model("mod_rock", *im_rock);
-  mod_rock->setMaterial(mat_bricks0);
+  mod_rock->setMaterial(mat_rock);
   scene->add(mod_rock);
 
   mod_monkey0 = new Model("mod_monkey0", *im_suzanne);
@@ -60,12 +57,12 @@ void ExampleScene::createModels() {
   scene->add(mod_plane0);
 
   mod_plane1 = new Model("mod_plane1", *im_plane);
-  mod_plane1->setMaterial(mat_rock);
+  mod_plane1->setMaterial(mat_ground);
   mod_plane1->setPosition({16.5f, -10, 0});
   scene->add(mod_plane1);
 
   mod_plane2 = new Model("mod_plane2", *im_plane);
-  mod_plane2->setMaterial(mat_bricks2);
+  mod_plane2->setMaterial(mat_rock);
   mod_plane2->setPosition({33, -10, 0});
   scene->add(mod_plane2);
 
@@ -140,20 +137,36 @@ void ExampleScene::createMaterials() {
   mat_pebble->setDiffuse(GETTEXTURE("pebble_d"));
   mat_pebble->setNormalMap(GETTEXTURE("pebble_n"));
   mat_pebble->setHeightMap(GETTEXTURE("pebble_h"));
+  materials.push_back(mat_pebble);
+
+  mat_ground = new Material("ground");
+  mat_ground->setHeightScale(0.04f);
+  mat_ground->setSpecularShininess(0.9f);
+  mat_ground->setDiffuse(GETTEXTURE("ground_d"));
+  mat_ground->setNormalMap(GETTEXTURE("ground_n"));
+  mat_ground->setHeightMap(GETTEXTURE("ground_h"));
+  mat_ground->setSpecularMap(GETTEXTURE("ground_s"));
+  materials.push_back(mat_ground);
 
   mat_rock = new Material("rock");
-  mat_rock->setDiffuse(GETTEXTURE("r031_color"));
-  mat_rock->setNormalMap(GETTEXTURE("r031_norm"));
-  mat_rock->setHeightMap(GETTEXTURE("r031_disp"));
+  mat_rock->setHeightScale(0.004f);
+  mat_rock->setSpecularShininess(0.3f);
+  mat_rock->setDiffuse(GETTEXTURE("rock_d"));
+  mat_rock->setNormalMap(GETTEXTURE("rock_n"));
+  mat_rock->setHeightMap(GETTEXTURE("rock_h"));
+  mat_rock->setSpecularMap(GETTEXTURE("rock_s"));
+  materials.push_back(mat_rock);
 
   mat_cloth = new Material("cloth");
   mat_cloth->setDiffuse(GETTEXTURE("cloth_diffuse"));
   mat_cloth->setNormalMap(GETTEXTURE("cloth_normal"));
+  materials.push_back(mat_cloth);
 
   mat_bricks0 = new Material("bricks0");
   mat_bricks0->setSpecularShininess(0.15f);
   mat_bricks0->setDiffuse(GETTEXTURE("diffuse"));
   mat_bricks0->setSpecularMap(GETTEXTURE("specular"));
+  materials.push_back(mat_bricks0);
 
   mat_bricks1 = new Material("bricks1");
   mat_bricks1->setSpecularShininess(0.02f);
@@ -161,11 +174,7 @@ void ExampleScene::createMaterials() {
   mat_bricks1->setNormalMap(GETTEXTURE("brick1_n"));
   mat_bricks1->setHeightMap(GETTEXTURE("brick1_h"));
   mat_bricks1->setSpecularMap(GETTEXTURE("brick1_s"));
-
-  mat_bricks2 = new Material("bricks2");
-  mat_bricks2->setDiffuse(GETTEXTURE("bricks2_d"));
-  mat_bricks2->setNormalMap(GETTEXTURE("bricks2_n"));
-  mat_bricks2->setHeightMap(GETTEXTURE("bricks2_h"));
+  materials.push_back(mat_bricks1);
 }
 
 void ExampleScene::loadTextures() {
@@ -176,22 +185,24 @@ void ExampleScene::loadTextures() {
   TextureManager::add(new Texture("cloth_diffuse", "Fabric_Padded_diffuse.jpg", params));
   TextureManager::add(new Texture("cloth_normal", "Fabric_Padded_normal.jpg", params));
 
-  TextureManager::add(new Texture("r031_color", "Rock_031_COLOR.jpg", params));
-  TextureManager::add(new Texture("r031_norm", "Rock_031_NORM.jpg", params));
-  TextureManager::add(new Texture("r031_disp", "Rock_031_DISP.png", params));
-
   TextureManager::add(new Texture("brick1_d", "brick1-d.jpg", params));
   TextureManager::add(new Texture("brick1_n", "brick1-n.jpg", params));
   TextureManager::add(new Texture("brick1_h", "brick1-h.jpg", params));
   TextureManager::add(new Texture("brick1_s", "brick1-s.jpg", params));
 
-  TextureManager::add(new Texture("bricks2_d", "bricks.jpg", params));
-  TextureManager::add(new Texture("bricks2_n", "bricksNormal.jpg", params));
-  TextureManager::add(new Texture("bricks2_h", "bricksDisp.png", params));
-
   TextureManager::add(new Texture("pebble_d", "pebble.bmp", params));
   TextureManager::add(new Texture("pebble_n", "pebble-n.bmp", params));
   TextureManager::add(new Texture("pebble_h", "pebble-h.bmp", params));
+
+  TextureManager::add(new Texture("rock_d", "Rock14_col.jpg", params));
+  TextureManager::add(new Texture("rock_n", "Rock14_nrm.jpg", params));
+  TextureManager::add(new Texture("rock_h", "Rock14_disp.jpg", params));
+  TextureManager::add(new Texture("rock_s", "Rock14_rgh.jpg", params));
+
+  TextureManager::add(new Texture("ground_d", "Ground27_col.jpg", params));
+  TextureManager::add(new Texture("ground_n", "Ground27_nrm.jpg", params));
+  TextureManager::add(new Texture("ground_h", "Ground27_disp.jpg", params));
+  TextureManager::add(new Texture("ground_s", "Ground27_rgh.jpg", params));
 }
 
 void ExampleScene::loadModels() {

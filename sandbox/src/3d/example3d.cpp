@@ -13,6 +13,7 @@ Example3D *Example3D::instance = nullptr;
 
 Example3D::Example3D() :
     lightsConfig(false),
+    materialsConfig(false),
     dlHooked(false),
     slHooked(false),
     plHooked(false) {
@@ -94,15 +95,22 @@ void Example3D::renderImGui() {
   ImGui::Separator();
   ImGui::Dummy({10.0f, 0.0f});
   if (ImGui::Button("Configure lights")) {
-    lightsConfig = true;
+    lightsConfig = !lightsConfig;
+  }
+
+  if (ImGui::Button("Configure materials")) {
+    materialsConfig = !materialsConfig;
   }
 
   drawLightsConfig();
+  drawMaterialsConfig();
 
   ImGui::End();
 }
 
 void Example3D::update(float delta) {
+  scene->mod_rock->rotate(vec3::UnitY(), 30.0f * delta);
+
   scene->scene->updateLights(camera);
 
   player->update(delta);
@@ -117,10 +125,6 @@ void Example3D::update(float delta) {
   if (dlHooked) {
     scene->directionalLight->setRotation(camera->getRotation());
   }
-}
-
-void Example3D::fixedUpdate(float delta) {
-  scene->mod_rock->rotate(vec3::UnitY(), 30.0f * delta);
 }
 
 void Example3D::input(xe::Event &event) {
@@ -160,6 +164,76 @@ void Example3D::drawLightsConfig() {
     if (ImGui::BeginTabItem("Point")) {
       drawPointTab();
       ImGui::EndTabItem();
+    }
+    ImGui::EndTabBar();
+  }
+
+  ImGui::End();
+}
+
+void Example3D::drawMaterialsConfig() {
+  if (!materialsConfig)return;
+
+  ImGui::Begin("Configure materials", &materialsConfig);
+
+  if (ImGui::BeginTabBar("MaterialsConfig")) {
+    for (auto &&m: scene->materials) {
+      const char *name = m->getName().c_str();
+      if (ImGui::BeginTabItem(name)) {
+        if (m->getDiffuse()) {
+          bool d = m->isUseDiffuse();
+          if (ImGui::Checkbox((string("Use diffuse##") + name).c_str(), &d)) {
+            m->setUseDiffuse(d);
+          }
+          float emission = m->getEmission();
+          if (ImGui::SliderFloat((string("Emission##") + name).c_str(), &emission, 0.0f, 2.0f)) {
+            m->setEmission(emission);
+          }
+
+          ImGui::Image(reinterpret_cast<void *>(m->getDiffuse()->getHandle()), {64, 64}, {1, 1}, {0, 0});
+          ImGui::Separator();
+        }
+
+        if (m->getNormalMap()) {
+          bool n = m->isUseNormal();
+          if (ImGui::Checkbox((string("Use normal##") + name).c_str(), &n)) {
+            m->setUseNormal(n);
+          }
+
+          ImGui::Image(reinterpret_cast<void *>(m->getNormalMap()->getHandle()), {64, 64}, {1, 1}, {0, 0});
+          ImGui::Separator();
+        }
+
+        if (m->getHeightMap()) {
+          bool h = m->isUseHeight();
+          if (ImGui::Checkbox((string("Use height##") + name).c_str(), &h)) {
+            m->setUseHeight(h);
+          }
+          float hs = m->getHeightScale();
+          if (ImGui::SliderFloat((string("Height scale##") + name).c_str(), &hs, 0.0f, 0.1f)) {
+            m->setHeightScale(hs);
+          }
+
+          ImGui::Image(reinterpret_cast<void *>(m->getHeightMap()->getHandle()), {64, 64}, {1, 1}, {0, 0});
+          ImGui::Separator();
+        }
+
+        if (m->getSpecularMap()) {
+          bool s = m->isUseSpecular();
+          if (ImGui::Checkbox((string("Use specular##") + name).c_str(), &s)) {
+            m->setUseSpecular(s);
+          }
+          float ss = m->getSpecularShininess();
+          if (ImGui::SliderFloat((string("Specular shininess##") + name).c_str(), &ss, 0.0f, 1.0f)) {
+            m->setSpecularShininess(ss);
+          }
+
+          ImGui::Image(reinterpret_cast<void *>(m->getSpecularMap()->getHandle()), {64, 64}, {1, 1}, {0, 0});
+          ImGui::Separator();
+        }
+
+        ImGui::EndTabItem();
+      }
     }
     ImGui::EndTabBar();
   }

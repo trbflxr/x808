@@ -19,11 +19,12 @@ struct ExampleScene : xe::Singleton<ExampleScene> {
   xe::IndexedModel *im_rock;
 
   xe::Material *mat_pebble;
-  xe::Material *mat_rock;
+  xe::Material *mat_ground;
   xe::Material *mat_cloth;
   xe::Material *mat_bricks0;
   xe::Material *mat_bricks1;
-  xe::Material *mat_bricks2;
+  xe::Material *mat_rock;
+  std::vector<xe::Material *> materials;
 
   xe::Model *mod_rock;
   xe::Model *mod_monkey0;

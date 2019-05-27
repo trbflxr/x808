@@ -55,6 +55,9 @@ private:
   bool updateTS;
   bool updateSS;
   bool updateCS;
+
+  bool e0Hooked;
+  bool e1Hooked;
 };
 
 

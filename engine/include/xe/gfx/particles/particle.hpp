@@ -20,7 +20,7 @@ namespace xe {
     explicit Particle(ParticleEffect *effect);
     ~Particle() override;
 
-    void spawn(float lifeTime);
+    void spawn(float lifeTime, const vec2 &spawnPosition);
 
     void update(float delta);
     void fixedUpdate(float delta);
@@ -42,6 +42,8 @@ namespace xe {
 
     float time;
     float lifeTime;
+
+    vec2 spawnPosition;
 
     Ramp<float> *rotationRamp;
     Ramp<vec2> *translationRamp;

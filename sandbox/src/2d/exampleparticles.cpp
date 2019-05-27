@@ -15,7 +15,9 @@ ExampleParticles::ExampleParticles() :
     updateRS(true),
     updateTS(true),
     updateSS(true),
-    updateCS(true) {
+    updateCS(true),
+    e0Hooked(false),
+    e1Hooked(false) {
 
   const float width = app.getWindowSize().x;
   const float height = app.getWindowSize().y;
@@ -195,9 +197,9 @@ void ExampleParticles::drawTranslationStates() {
           continue;
         }
       }
-      if (ImGui::SliderFloat2(v.c_str(), reinterpret_cast<float *>(&std::get<1>(ts[i])), -100.0f, 100.0f, "%.1f"))
+      if (ImGui::SliderFloat2(v.c_str(), reinterpret_cast<float *>(&std::get<1>(ts[i])), -300.0f, 300.0f, "%.1f"))
         updateTS = true;
-      if (ImGui::SliderFloat2(c.c_str(), reinterpret_cast<float *>(&std::get<2>(ts[i])), 0.0f, 100.0f, "%.1f"))
+      if (ImGui::SliderFloat2(c.c_str(), reinterpret_cast<float *>(&std::get<2>(ts[i])), 0.0f, 300.0f, "%.1f"))
         updateTS = true;
       ImGui::Separator();
     }
@@ -289,6 +291,13 @@ void ExampleParticles::update(float delta) {
   if (updateCS) {
     effect0->setColorStates(cs);
   }
+
+  if (e0Hooked) {
+    effect0->setPosition(Mouse::getPosition(window));
+  }
+  if (e1Hooked) {
+    effect1->setPosition(Mouse::getPosition(window));
+  }
 }
 
 void ExampleParticles::fixedUpdate(float delta) {
@@ -299,10 +308,17 @@ void ExampleParticles::fixedUpdate(float delta) {
 void ExampleParticles::input(xe::Event &event) {
   if (event.type == Event::MouseButtonPressed) {
     if (event.mouseButton.button == Mouse::Left) {
-      effect0->setPosition({event.mouseButton.x, event.mouseButton.y});
+      e0Hooked = true;
     }
     if (event.mouseButton.button == Mouse::Right) {
-      effect1->setPosition({event.mouseButton.x, event.mouseButton.y});
+      e1Hooked = true;
+    }
+  } else if (event.type == Event::MouseButtonReleased) {
+    if (event.mouseButton.button == Mouse::Left) {
+      e0Hooked = false;
+    }
+    if (event.mouseButton.button == Mouse::Right) {
+      e1Hooked = false;
     }
   }
 }

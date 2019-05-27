@@ -99,7 +99,7 @@ namespace xe {
 
         Particle *p = spawnQueue.front();
         spawnQueue.pop();
-        p->spawn(d);
+        p->spawn(d, getPosition());
       }
     }
   }
@@ -131,7 +131,7 @@ namespace xe {
       Particle *s = dynamic_cast<Particle *>(p);
       const float d = random::next<float>(duration - change, duration + change);
 
-      s->spawn(d);
+      s->spawn(d, getPosition());
     }
 
     while (!spawnQueue.empty()) {
@@ -154,13 +154,9 @@ namespace xe {
   }
 
   void ParticleEffect::render(Renderer2D *renderer) {
-    renderer->push(toMatrix());
-
     for (auto &&p : particles) {
       renderer->submit(p);
     }
-
-    renderer->pop();
   }
 
   void ParticleEffect::setRotationStates(const std::vector<std::tuple<float, float, float>> &states) {

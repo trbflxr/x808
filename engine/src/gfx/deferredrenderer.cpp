@@ -93,10 +93,10 @@ namespace xe {
       shader->setUniform("heightScale", &heightScale, sizeof(float));
 
       //textures
-      uint df = setTexture(shader, mt->getDiffuse(), "diffuseTexture", "enableDiffuseTexture");
-      uint sp = setTexture(shader, mt->getSpecularMap(), "specularTexture", "enableSpecularTexture");
-      uint nr = setTexture(shader, mt->getNormalMap(), "normalTexture", "enableNormalTexture");
-      uint ds = setTexture(shader, mt->getHeightMap(), "heightTexture", "enableHeightTexture");
+      uint df = setTexture(shader, mt->isUseDiffuse(), mt->getDiffuse(), "diffuseTexture", "enableDiffuseTexture");
+      uint sp = setTexture(shader, mt->isUseSpecular(), mt->getSpecularMap(), "specularTexture", "enableSpecularTexture");
+      uint nr = setTexture(shader, mt->isUseNormal(), mt->getNormalMap(), "normalTexture", "enableNormalTexture");
+      uint ds = setTexture(shader, mt->isUseHeight(), mt->getHeightMap(), "heightTexture", "enableHeightTexture");
 
       shader->updateUniforms();
       m->render(mode);
@@ -165,13 +165,13 @@ namespace xe {
     light->getMesh()->render(BeginMode::Triangles);
   }
 
-  uint DeferredRenderer::setTexture(const Shader *shader, const Texture *texture,
+  uint DeferredRenderer::setTexture(const Shader *shader, bool use, const Texture *texture,
                                     const char *sampler, const char *enable) const {
 
     static constexpr int32 enabled = 1;
     static constexpr int32 disabled = 0;
 
-    if (!texture) {
+    if (!use || !texture) {
       shader->setUniform(enable, &disabled, sizeof(int32));
       return 0;
     }

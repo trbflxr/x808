@@ -29,8 +29,9 @@ namespace xe {
   }
 
 
-  void Particle::spawn(float lifeTime) {
+  void Particle::spawn(float lifeTime, const vec2 &spawnPosition) {
     setVisible(true);
+    Particle::spawnPosition = spawnPosition;
     Particle::lifeTime = lifeTime;
     time = 0.0f;
 
@@ -41,7 +42,7 @@ namespace xe {
 
     if (translationRamp) {
       translationRamp->reset(lifeTime);
-      setPosition(translationRamp->getValue());
+      setPosition(Particle::spawnPosition + translationRamp->getValue());
     }
 
     if (sizeRamp) {
@@ -66,7 +67,7 @@ namespace xe {
     }
 
     if (updateTranslation) {
-      setPosition(translationRamp->getValue());
+      setPosition(Particle::spawnPosition + translationRamp->getValue());
     }
 
     if (updateSize) {

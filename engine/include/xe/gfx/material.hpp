@@ -20,6 +20,10 @@ namespace xe {
         specularColor(1.0f),
         specularShininess(0.0f),
         heightScale(0.01f),
+        useDiffuse(true),
+        useSpecular(true),
+        useNormal(true),
+        useHeight(true),
         diffuse(nullptr),
         specular(nullptr),
         normal(nullptr),
@@ -55,6 +59,18 @@ namespace xe {
     inline const Texture *getHeightMap() const { return height; }
     inline void setHeightMap(const Texture *texture) { height = texture; }
 
+    inline bool isUseDiffuse() const { return useDiffuse; }
+    inline void setUseDiffuse(bool use) { useDiffuse = use; }
+
+    inline bool isUseSpecular() const { return useSpecular; }
+    inline void setUseSpecular(bool use) { useSpecular = use; }
+
+    inline bool isUseNormal() const { return useNormal; }
+    inline void setUseNormal(bool use) { useNormal = use; }
+
+    inline bool isUseHeight() const { return useHeight; }
+    inline void setUseHeight(bool use) { useHeight = use; }
+
   private:
     string name;
 
@@ -65,6 +81,11 @@ namespace xe {
     float specularShininess;
 
     float heightScale;
+
+    bool useDiffuse;
+    bool useSpecular;
+    bool useNormal;
+    bool useHeight;
 
     const Texture *diffuse;
     const Texture *specular;

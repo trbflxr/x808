@@ -31,7 +31,7 @@ Example01::~Example01() {
 }
 
 void Example01::init() {
-  shape->setTexture(GETTEXTURE("rock"));
+  shape->setTexture(GETTEXTURE("pepe"));
   shape->move(app.getWindowSize() / 2.0f);
 
   Renderer::setClearColor(color::encode(vec4(clearColor, 1.0f)));

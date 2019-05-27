@@ -19,7 +19,6 @@ public:
   void renderImGui() override;
 
   void update(float delta) override;
-  void fixedUpdate(float delta) override;
 
   void input(xe::Event &event) override;
 
@@ -36,6 +35,7 @@ private:
   void drawSpotTab();
   void drawPointTab();
 
+  void drawMaterialsConfig();
 
 private:
   static Example3D *instance;
@@ -47,6 +47,7 @@ private:
   xe::DeferredRenderer *renderer;
 
   bool lightsConfig;
+  bool materialsConfig;
   bool dlHooked;
   bool slHooked;
   bool plHooked;
