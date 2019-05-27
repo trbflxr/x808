@@ -123,6 +123,7 @@ namespace xe {
     inline void setHasChange(bool hasChange) { Ramp::hasChange = hasChange; }
 
     static T lerp(const T &s, const T &e, float t);
+    static T lerpc1(const T &s, const T &e, float t);
 
   private:
     bool hasChange;

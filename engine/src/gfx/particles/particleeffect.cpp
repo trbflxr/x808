@@ -60,7 +60,7 @@ namespace xe {
       Ramp<vec2> *size = new Ramp<vec2>(sizeStates, Ramp<vec2>::lerp);
       size->setHasChange(sizeChange);
 
-      Ramp<vec4> *color = new Ramp<vec4>(colorStates, Ramp<vec4>::lerp);
+      Ramp<vec4> *color = new Ramp<vec4>(colorStates, Ramp<vec4>::lerpc1);
       color->setHasChange(colorChange);
 
       s->setRotationRamp(rotation);

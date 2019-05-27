@@ -18,7 +18,7 @@
 #define __min(a, b) (((a) < (b)) ? (a) : (b))
 
 
-namespace xe { namespace math {
+namespace xe::math {
 
   static float clampf(float n, float min, float max) {
     return __max(__min(n, max), min);
@@ -46,7 +46,7 @@ namespace xe { namespace math {
     return (val == 0.0f || std::isnan(val)) ? val : copysignf(1.0f, val);
   }
 
-}}
+}
 
 
 #endif //X808_MATHFUNC_HPP

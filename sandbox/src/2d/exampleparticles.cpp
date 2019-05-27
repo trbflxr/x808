@@ -38,11 +38,13 @@ ExampleParticles::ExampleParticles() :
   cs.emplace_back(0.0f, vec4(0.0f, 0.1f, 1.0f, 1.0f), vec4(0.0f));
   cs.emplace_back(1.0f, vec4(0.0f, 0.8f, 1.0f, 0.95f), vec4(0.0f));
 
-  effect0 = new ParticleEffect(1.0f, 1.0f, 100, true);
+  effect0 = new ParticleEffect(1.0f, 0.3f, 100, true);
   effect0->setPosition({width / 2, height / 3});
+  effect0->setColorChange(false);
   effect0->create();
 
 
+  //flame effect
   effect1 = new ParticleEffect(1.0f, 0.5f, 100, true);
   effect1->setPosition({1000, 250});
 
@@ -84,8 +86,8 @@ void ExampleParticles::render() {
     renderer->submit(bg);
   }
 
-  effect0->render(renderer);
   effect1->render(renderer);
+  effect0->render(renderer);
 
   renderer->end();
   renderer->flush();
@@ -95,22 +97,28 @@ void ExampleParticles::renderImGui() {
   ImGui::Begin("Particles 2D", nullptr);
 
   ImGui::Checkbox("Render BG", &renderBg);
+  ImGui::Separator();
 
-  if (ImGui::Button("play")) {
+  ImGui::Text("LMB - move effect0\nRMB - move effect1");
 
+  ImGui::Separator();
+  if (ImGui::Button("Play")) {
+    effect0->play();
   }
 
-  if (ImGui::Button("stop")) {
+  ImGui::SameLine();
+  if (ImGui::Button("Stop")) {
     effect0->stop();
   }
 
+  ImGui::SameLine();
   static bool looped = true;
-  if (ImGui::Button("toggle loop")) {
+  if (ImGui::Button("Toggle loop")) {
     looped = !looped;
     effect0->setLooped(looped);
   }
 
-
+  ImGui::Separator();
   static float d = effect0->getDuration();
   if (ImGui::SliderFloat("Duration", &d, 0.3f, 10.0f)) {
     effect0->setDuration(d);
@@ -289,5 +297,12 @@ void ExampleParticles::fixedUpdate(float delta) {
 }
 
 void ExampleParticles::input(xe::Event &event) {
-
+  if (event.type == Event::MouseButtonPressed) {
+    if (event.mouseButton.button == Mouse::Left) {
+      effect0->setPosition({event.mouseButton.x, event.mouseButton.y});
+    }
+    if (event.mouseButton.button == Mouse::Right) {
+      effect1->setPosition({event.mouseButton.x, event.mouseButton.y});
+    }
+  }
 }
