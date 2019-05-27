@@ -111,25 +111,26 @@ void ExampleScene::createModels() {
   directionalLight = new DirectionalLight("directionalLight", {15.0f, 30.0f, 50.0f, 100.0f});
   directionalLight->rotate(vec3::UnitX(), -35.0f);
   directionalLight->rotate(vec3::UnitY(), -10.0f);
-  directionalLight->setColor({1.0f, 1.0f, 0.7f});
+  directionalLight->setColor({0.068f, 0.111f, 0.190f});
   directionalLight->setIntensity(5.0f);
   scene->setDirectionalLight(directionalLight);
 
   spotLight = new SpotLight("spotLight");
   spotLight->setPosition({6.3f, 2.8f, -0.8});
   spotLight->rotate(vec3::UnitY(), 90);
-  spotLight->setColor({0.3f, 0.6f, 0.8f});
-  spotLight->setSpotAngle(40.0f);
-  spotLight->setIntensity(13.5f);
-  spotLight->setFalloff(20.0f);
+  spotLight->setColor({0.068f, 0.111f, 0.190f});
+  spotLight->setSpotAngle(48.0f);
+  spotLight->setSpotBlur(0.08f);
+  spotLight->setIntensity(15.5f);
+  spotLight->setFalloff(22.0f);
   spotLight->setShadowed(true);
   scene->add(spotLight);
 
   pointLight = new PointLight("pointLight");
   pointLight->setPosition({8, -5, 8});
-  pointLight->setColor({0.5f, 0.2f, 0.2f});
-  pointLight->setIntensity(10.4f);
-  pointLight->setFalloff(10.0f);
+  pointLight->setColor({0.945f, 0.217f, 0.032f});
+  pointLight->setIntensity(22.0f);
+  pointLight->setFalloff(14.0f);
   scene->add(pointLight);
 }
 

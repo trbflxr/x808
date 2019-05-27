@@ -4,6 +4,7 @@
 
 
 #include <freetype-gl/freetype-gl.h>
+#include <embedded/embedded.hpp>
 #include <xe/utils/assert.hpp>
 #include <xe/loaders/fontloader.hpp>
 #include <xe/resources/font.hpp>
@@ -30,7 +31,8 @@ namespace xe {
     const uint atlasSize = computeAtlasSize(size);
 
     if (!FontLoader::load(this, path, Font::size, atlasSize)) {
-      XE_ASSERT(false);
+      XE_CORE_INFO("[Font]: default font set instead of '", path, "'");
+      FontLoader::load(this, internal::DEFAULT_FONT_DATA, internal::DEFAULT_FONT_DATA_SIZE, size, atlasSize);
     }
 
     createAtlas(atlasSize);
@@ -46,9 +48,7 @@ namespace xe {
 
     const uint atlasSize = computeAtlasSize(size);
 
-    if (!FontLoader::load(this, data, dataSize, Font::size, atlasSize)) {
-      XE_ASSERT(false);
-    }
+    FontLoader::load(this, data, dataSize, Font::size, atlasSize);
 
     createAtlas(atlasSize);
   }

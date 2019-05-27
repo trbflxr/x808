@@ -25,9 +25,16 @@ namespace xe {
     void update(float delta);
     void fixedUpdate(float delta);
 
+    inline Ramp<float> *getRotationRamp() const { return rotationRamp; }
     inline void setRotationRamp(Ramp<float> *ramp) { rotationRamp = ramp; }
+
+    inline Ramp<vec2> *getTranslationRamp() const { return translationRamp; }
     inline void setTranslationRamp(Ramp<vec2> *ramp) { translationRamp = ramp; }
+
+    inline Ramp<vec2> *getSizeRamp() const { return sizeRamp; }
     inline void setSizeRamp(Ramp<vec2> *ramp) { sizeRamp = ramp; }
+
+    inline Ramp<vec4> *getColorRamp() const { return colorRamp; }
     inline void setColorRamp(Ramp<vec4> *ramp) { colorRamp = ramp; }
 
   private:

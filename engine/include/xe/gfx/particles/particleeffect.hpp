@@ -42,23 +42,32 @@ namespace xe {
     inline const rect &getTextureRect() const { return textureRect; }
     inline void setTextureRect(const rect &rect) { textureRect = rect; }
 
-    inline void setRotationStates(const std::vector<std::tuple<float, float, float>> &states) {
-      rotationStates = states;
-    }
+    inline float getDuration() const { return duration; }
+    inline void setDuration(float time) { duration = time; }
 
-    inline void setTranslationStates(const std::vector<std::tuple<float, vec2, vec2>> &states) {
-      translationStates = states;
-    }
+    inline float getChange() const { return change; }
+    inline void setChange(float time) { change = time; }
 
-    inline void setSizeStates(const std::vector<std::tuple<float, vec2, vec2>> &states) {
-      sizeStates = states;
-    }
+    inline bool hasRotationChange() const { return rotationChange; }
+    void setRotationChange(bool change);
 
-    inline void setColorStates(const std::vector<std::tuple<float, vec4, vec4>> &states) {
-      colorStates = states;
-    }
+    inline bool hasTranslationChange() const { return translationChange; }
+    void setTranslationChange(bool change);
+
+    inline bool hasSizeChange() const { return sizeChange; }
+    void setSizeChange(bool change);
+
+    inline bool hasColorChange() const { return colorChange; }
+    void setColorChange(bool change);
+
+    void setRotationStates(const std::vector<std::tuple<float, float, float>> &states);
+    void setTranslationStates(const std::vector<std::tuple<float, vec2, vec2>> &states);
+    void setSizeStates(const std::vector<std::tuple<float, vec2, vec2>> &states);
+    void setColorStates(const std::vector<std::tuple<float, vec4, vec4>> &states);
 
   private:
+    bool created;
+
     float duration;
     float change;
 
@@ -75,6 +84,11 @@ namespace xe {
 
     std::vector<IRenderable2D *> particles;
     std::queue<Particle *> spawnQueue;
+
+    bool rotationChange;
+    bool translationChange;
+    bool sizeChange;
+    bool colorChange;
 
     std::vector<std::tuple<float, float, float>> rotationStates;
     std::vector<std::tuple<float, vec2, vec2>> translationStates;

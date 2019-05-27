@@ -3,11 +3,12 @@
 //
 
 #include "mainmenu.hpp"
-#include "2d/0/example0.hpp"
-#include "2d/1/exampleshapes2d.hpp"
-#include "2d/2/examplelights2d.hpp"
-#include "2d/3/examplebox2d.hpp"
-#include "2d/4/exampletext.hpp"
+#include "2d/example0.hpp"
+#include "2d/exampleshapes2d.hpp"
+#include "2d/examplelights2d.hpp"
+#include "2d/examplebox2d.hpp"
+#include "2d/exampletext.hpp"
+#include "2d/exampleparticles.hpp"
 #include "3d/example3d.hpp"
 #include <xe/ui/imgui/imgui.h>
 #include <xe/gfx/renderer.hpp>
@@ -96,6 +97,9 @@ void MainMenu::renderImGui() {
         }
         if (ImGui::MenuItem("2D Physics", nullptr)) {
           showTest(ExampleBox2D::create());
+        }
+        if (ImGui::MenuItem("2D Particles", nullptr)) {
+          showTest(ExampleParticles::create());
         }
         if (ImGui::MenuItem("3D Scene", nullptr)) {
           showTest(Example3D::create());

@@ -151,6 +151,12 @@ namespace ImGui::xe {
   }
 
   void processEvent(::xe::Event &event) {
+    if (event.type == ::xe::Event::LostFocus) {
+      windowHasFocus = false;
+    } else if (event.type == ::xe::Event::GainedFocus) {
+      windowHasFocus = true;
+    }
+
     if (windowHasFocus) {
       ImGuiIO &io = ImGui::GetIO();
 
@@ -192,14 +198,6 @@ namespace ImGui::xe {
 
         default: break;
       }
-    }
-
-    switch (event.type) {
-      case ::xe::Event::LostFocus: windowHasFocus = false;
-        break;
-      case ::xe::Event::GainedFocus: windowHasFocus = true;
-        break;
-      default: break;
     }
   }
 

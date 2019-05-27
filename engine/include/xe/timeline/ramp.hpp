@@ -42,6 +42,16 @@ namespace xe {
       }
     }
 
+    inline const std::vector<std::tuple<float, T, T>> &getStates() const { return states; }
+
+    inline void setStates(const std::vector<std::tuple<float, T, T>> &states) {
+      hasStates = states.size() > 1;
+
+      Ramp::states = states;
+
+      XE_ASSERT(!states.empty(), "Must have at least one state!");
+    }
+
     void reset(float duration) {
       Ramp::duration = duration;
       time = 0.0f;
@@ -108,6 +118,9 @@ namespace xe {
     }
 
     inline const T &getValue() const { return value; }
+
+    inline bool isHasChange() const { return hasChange; }
+    inline void setHasChange(bool hasChange) { Ramp::hasChange = hasChange; }
 
     static T lerp(const T &s, const T &e, float t);
 

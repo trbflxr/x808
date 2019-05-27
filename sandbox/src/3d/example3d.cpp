@@ -28,6 +28,7 @@ Example3D::Example3D() :
   ShadowParameters sp(app.getConfig(), 512, 1024);
 
   renderer = new DeferredRenderer(width, height, camera, sp, fx::AOType::None);
+  renderer->setAmbientLight({0.010f, 0.014f, 0.025f});
   renderer->enableLightObjects(true);
 
   scene = &ExampleScene::get();
@@ -116,6 +117,10 @@ void Example3D::update(float delta) {
   if (dlHooked) {
     scene->directionalLight->setRotation(camera->getRotation());
   }
+}
+
+void Example3D::fixedUpdate(float delta) {
+  scene->mod_rock->rotate(vec3::UnitY(), 30.0f * delta);
 }
 
 void Example3D::input(xe::Event &event) {

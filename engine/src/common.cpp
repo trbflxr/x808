@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <xe/utils/logger.hpp>
+#include <xe/utils/random.hpp>
 #include <xe/common.hpp>
 #include <xe/core/vfs.hpp>
 
@@ -43,6 +44,9 @@ namespace xe {
     SetConsoleOutputCP(CP_UTF8);
     setvbuf(stdout, nullptr, _IONBF, 2048);
 #endif
+    //init random
+    random::next<int32>(0, 1);
+    
     Logger::get();
 
     VFS::init();

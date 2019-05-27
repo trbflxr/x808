@@ -12,7 +12,7 @@
 
 namespace xe {
 
-  class Cursor : NonCopyable {
+  class XE_API Cursor : NonCopyable {
   private:
     friend class PlatformWindowWin32;
 

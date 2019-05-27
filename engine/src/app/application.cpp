@@ -27,9 +27,6 @@ namespace xe {
 
     const_cast<Config &>(Config::get()) = config;
 
-    //init random
-    random::next<int32>(0, 1);
-
     Context::setRenderAPI(config.renderApi, config.apiVersion);
 
     instance = this;
