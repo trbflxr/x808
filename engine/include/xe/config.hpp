@@ -26,6 +26,8 @@ namespace xe {
     RenderAPI renderApi;
     uint apiVersion;
 
+    uint maxParallaxLayers;
+
     uint maxSpotShadows;
     uint maxDirectionalCascades;
     uint shadowQuality;
@@ -41,6 +43,7 @@ namespace xe {
         srgb(true),
         renderApi(RenderAPI::OpenGL),
         apiVersion(330),
+        maxParallaxLayers(20),
         maxSpotShadows(1),
         maxDirectionalCascades(3),
         shadowQuality(3) { }

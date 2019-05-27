@@ -29,6 +29,7 @@ namespace xe {
                                const Quad *quad, const FrameBuffer *final) const;
 
     void setShadowQuality(uint value);
+    void setMaxParallaxLayers(uint value);
 
     inline uint getWidth() const { return width; }
     inline uint getHeight() const { return height; }

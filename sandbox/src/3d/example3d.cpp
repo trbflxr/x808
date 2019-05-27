@@ -90,6 +90,12 @@ void Example3D::renderImGui() {
   if (ImGui::SliderInt("Q", &shadows, 0, 3)) {
     renderer->setShadowQuality(shadows);
   }
+
+  static int32 parallax = Config::get().maxParallaxLayers;
+  ImGui::Text("Max parallax layers");
+  if (ImGui::SliderInt("MPL", &parallax, 5, 60)) {
+    renderer->setMaxParallaxLayers(parallax);
+  }
   ImGui::PopItemWidth();
 
   ImGui::Separator();
@@ -180,12 +186,14 @@ void Example3D::drawMaterialsConfig() {
     for (auto &&m: scene->materials) {
       const char *name = m->getName().c_str();
       if (ImGui::BeginTabItem(name)) {
+        ImGui::PushItemWidth(-1.0f);
         if (m->getDiffuse()) {
           bool d = m->isUseDiffuse();
           if (ImGui::Checkbox((string("Use diffuse##") + name).c_str(), &d)) {
             m->setUseDiffuse(d);
           }
           float emission = m->getEmission();
+          ImGui::Text("Emission");
           if (ImGui::SliderFloat((string("Emission##") + name).c_str(), &emission, 0.0f, 2.0f)) {
             m->setEmission(emission);
           }
@@ -210,6 +218,7 @@ void Example3D::drawMaterialsConfig() {
             m->setUseHeight(h);
           }
           float hs = m->getHeightScale();
+          ImGui::Text("Height scale");
           if (ImGui::SliderFloat((string("Height scale##") + name).c_str(), &hs, 0.0f, 0.1f)) {
             m->setHeightScale(hs);
           }
@@ -224,6 +233,7 @@ void Example3D::drawMaterialsConfig() {
             m->setUseSpecular(s);
           }
           float ss = m->getSpecularShininess();
+          ImGui::Text("Specular shininess");
           if (ImGui::SliderFloat((string("Specular shininess##") + name).c_str(), &ss, 0.0f, 1.0f)) {
             m->setSpecularShininess(ss);
           }
@@ -231,6 +241,7 @@ void Example3D::drawMaterialsConfig() {
           ImGui::Image(reinterpret_cast<void *>(m->getSpecularMap()->getHandle()), {64, 64}, {1, 1}, {0, 0});
           ImGui::Separator();
         }
+        ImGui::PopItemWidth();
 
         ImGui::EndTabItem();
       }

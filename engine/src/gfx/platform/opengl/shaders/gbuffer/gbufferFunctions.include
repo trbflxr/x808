@@ -1,5 +1,5 @@
 #define MIN_PARALLAX_LAYERS 3.0
-#define MAX_PARALLAX_LAYERS 30.0
+#define MAX_PARALLAX_LAYERS @MAX_PARALLAX_LAYERS
 
 mat3 calcTBN(vec3 normal, vec3 tangent) {
   vec3 N = normalize(normal);

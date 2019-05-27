@@ -43,6 +43,7 @@ else ()
             "srgb=1\n"
             "renderApi=ogl\n"
             "apiVersion=330\n"
+            "maxParallaxLayers=20\n"
             "maxSpotShadows=4\n"
             "maxDirectionalCascades=4\n"
             "shadowQuality=3 //0-3\n")

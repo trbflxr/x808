@@ -239,6 +239,9 @@ namespace xe {
       } else if (c.name == "@SHADOW_QUALITY") {
         c.value = std::to_string(Config::get().shadowQuality);
         replaceAll(source, c.name, c.value);
+      }else if (c.name == "@MAX_PARALLAX_LAYERS") {
+        c.value = std::to_string(Config::get().maxParallaxLayers);
+        replaceAll(source, c.name, c.value);
       }
     }
   }

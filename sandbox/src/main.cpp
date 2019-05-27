@@ -31,6 +31,8 @@ static void writeKeyValue(xe::Config &config, const char *key, const char *value
     config.maxDirectionalCascades = (uint) atoi(value);
   } else if (strcmp(key, "shadowQuality") == 0) {
     config.shadowQuality = (uint) atoi(value);
+  } else if (strcmp(key, "maxParallaxLayers") == 0) {
+    config.maxParallaxLayers = (uint) atoi(value);
   }
 }
 

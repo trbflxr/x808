@@ -104,6 +104,12 @@ namespace xe {
     directionalShader->bindUniformBlock("DirectionalShadows", 3);
   }
 
+  void GBuffer::setMaxParallaxLayers(uint value) {
+    const_cast<Shader *>(geometryShader)->setSourceConstant(ShaderType::Frag,
+                                                        "@MAX_PARALLAX_LAYERS", std::to_string(value));
+    geometryShader->bindUniformBlock("Camera", 1);
+  }
+
   void GBuffer::passDeferred(const Scene *scene, const Shadows *shadows, const Quad *quad) const {
     static Attachment attachments[2] = {Attachment::Color6,
                                         Attachment::Color7};

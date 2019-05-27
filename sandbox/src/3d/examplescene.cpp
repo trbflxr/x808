@@ -133,14 +133,14 @@ void ExampleScene::createModels() {
 
 void ExampleScene::createMaterials() {
   mat_pebble = new Material("pebble");
-  mat_pebble->setHeightScale(0.03f);
+  mat_pebble->setHeightScale(0.015f);
   mat_pebble->setDiffuse(GETTEXTURE("pebble_d"));
   mat_pebble->setNormalMap(GETTEXTURE("pebble_n"));
   mat_pebble->setHeightMap(GETTEXTURE("pebble_h"));
   materials.push_back(mat_pebble);
 
   mat_ground = new Material("ground");
-  mat_ground->setHeightScale(0.04f);
+  mat_ground->setHeightScale(0.015f);
   mat_ground->setSpecularShininess(0.9f);
   mat_ground->setDiffuse(GETTEXTURE("ground_d"));
   mat_ground->setNormalMap(GETTEXTURE("ground_n"));

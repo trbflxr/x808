@@ -25,6 +25,7 @@ namespace xe {
     void render(const Scene *scene) const;
 
     inline void setShadowQuality(uint value) { gBuffer->setShadowQuality(value); }
+    inline void setMaxParallaxLayers(uint value) { gBuffer->setMaxParallaxLayers(value); }
     inline void enableCullTest(bool enabled) { gBuffer->enableCullTest(enabled); }
     inline void enableWireframe(bool enabled) { gBuffer->enableWireframe(enabled); }
     inline void enableLightObjects(bool enabled) { gBuffer->enableLightObjects(enabled); }
