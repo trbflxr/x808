@@ -12,6 +12,7 @@ using namespace xe;
 Example3D *Example3D::instance = nullptr;
 
 Example3D::Example3D() :
+    buffers(false),
     lightsConfig(false),
     materialsConfig(false),
     dlHooked(false),
@@ -108,8 +109,13 @@ void Example3D::renderImGui() {
     materialsConfig = !materialsConfig;
   }
 
+  if (ImGui::Button("Buffers")) {
+    buffers = !buffers;
+  }
+
   drawLightsConfig();
   drawMaterialsConfig();
+  drawBuffers();
 
   ImGui::End();
 }
@@ -119,7 +125,7 @@ void Example3D::update(float delta) {
 
   scene->scene->updateLights(camera);
 
-  player->update(delta);
+//  player->update(delta);
 
   if (slHooked) {
     scene->spotLight->setRotation(camera->getRotation());
@@ -131,6 +137,10 @@ void Example3D::update(float delta) {
   if (dlHooked) {
     scene->directionalLight->setRotation(camera->getRotation());
   }
+}
+
+void Example3D::fixedUpdate(float delta) {
+  player->update(delta);
 }
 
 void Example3D::input(xe::Event &event) {
@@ -145,6 +155,12 @@ void Example3D::input(xe::Event &event) {
     }
     if (event.key.code == Keyboard::H) {
       dlHooked = !dlHooked;
+    }
+
+    static bool n = true;
+    if (event.key.code == Keyboard::N) {
+      n = !n;
+      scene->mat_bricks1->setUseSpecular(n);
     }
   }
 }
@@ -178,7 +194,7 @@ void Example3D::drawLightsConfig() {
 }
 
 void Example3D::drawMaterialsConfig() {
-  if (!materialsConfig)return;
+  if (!materialsConfig) return;
 
   ImGui::Begin("Configure materials", &materialsConfig);
 
@@ -344,4 +360,29 @@ void Example3D::drawPointTab() {
   }
 
   ImGui::Checkbox("Hook(G)", &plHooked);
+}
+
+void Example3D::drawBuffers() {
+  if (!buffers) return;
+
+  static const vec2 ws = window.getSize() / 2.0f;
+  static const ImVec2 size(ws.x, ws.y);
+
+  const GBuffer *buffer = renderer->getGBuffer();
+
+  ImGui::SetNextWindowBgAlpha(1.0f);
+  ImGui::Begin("Buffers", &buffers);
+  ImGui::Image(reinterpret_cast<void *>(buffer->getDepthStencilTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::Image(reinterpret_cast<void *>(buffer->getDiffuseTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::Image(reinterpret_cast<void *>(buffer->getPositionTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::Image(reinterpret_cast<void *>(buffer->getNormalTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::Image(reinterpret_cast<void *>(buffer->getSpecularTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::Image(reinterpret_cast<void *>(buffer->getLightDiffuseTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::Image(reinterpret_cast<void *>(buffer->getLightSpecularTexture()->getHandle()), size, {0, 1}, {1, 0});
+  const Texture *ao = renderer->getAOTexture();
+  if (ao) {
+    ImGui::Image(reinterpret_cast<void *>(ao->getHandle()), size, {0, 1}, {1, 0});
+  }
+  ImGui::Image(reinterpret_cast<void *>(renderer->getFinalTexture()->getHandle()), size, {0, 1}, {1, 0});
+  ImGui::End();
 }

@@ -9,6 +9,7 @@
 #include "2d/examplebox2d.hpp"
 #include "2d/exampletext.hpp"
 #include "2d/exampleparticles.hpp"
+#include "2d/exampleperformance2d.hpp"
 #include "3d/example3d.hpp"
 #include <xe/ui/imgui/imgui.h>
 #include <xe/gfx/renderer.hpp>
@@ -100,6 +101,9 @@ void MainMenu::renderImGui() {
         }
         if (ImGui::MenuItem("2D Particles", nullptr)) {
           showTest(ExampleParticles::create());
+        }
+        if (ImGui::MenuItem("2D Performance", nullptr)) {
+          showTest(ExamplePerformance2D::create());
         }
         if (ImGui::MenuItem("3D Scene", nullptr)) {
           showTest(Example3D::create());

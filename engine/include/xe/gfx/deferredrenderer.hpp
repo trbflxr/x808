@@ -47,6 +47,8 @@ namespace xe {
     inline fx::AOType getAOType() const { return ao->getType(); }
     inline void setAOType(fx::AOType type) { ao->setType(type); }
 
+    inline const Texture *getFinalTexture() const { return final->getFinalTexture(); }
+
   private:
     void updateCamera() const;
 

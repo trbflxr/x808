@@ -151,9 +151,9 @@ namespace ImGui::xe {
   }
 
   void processEvent(::xe::Event &event) {
-    if (event.type == ::xe::Event::LostFocus) {
+    if (event.type == ::xe::Event::LostFocus || event.type == ::xe::Event::MouseLeft) {
       windowHasFocus = false;
-    } else if (event.type == ::xe::Event::GainedFocus) {
+    } else if (event.type == ::xe::Event::GainedFocus || event.type == ::xe::Event::MouseEntered) {
       windowHasFocus = true;
     }
 

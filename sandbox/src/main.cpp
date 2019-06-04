@@ -77,6 +77,8 @@ public:
     xe::TextureManager::add(new xe::Texture("test2", "test2.png", params));
     xe::TextureManager::add(new xe::Texture("test3", "test3.png", params));
 
+    xe::TextureManager::add(new xe::TextureAtlas("atlas", "test.atlas", params));
+
     params.wrap = xe::TextureWrap::Repeat;
     xe::TextureManager::add(new xe::Texture("sp0", "sp0.png", params));
 
