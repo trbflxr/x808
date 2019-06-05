@@ -2,6 +2,7 @@
 #include <xe/core/vfs.hpp>
 #include <xe/core/filesystem.hpp>
 #include <xe/resources/texturemanager.hpp>
+#include <xe/resources/soundmanager.hpp>
 #include "mainmenu.hpp"
 #include "3d/examplescene.hpp"
 
@@ -87,6 +88,8 @@ public:
     xe::FontManager::add(new xe::Font("fogsansit72", "fogsansit.otf", 72.0f));
     xe::FontManager::add(new xe::Font("robotobold22", "robotobold.ttf", 22.0f));
     xe::FontManager::add(new xe::Font("robotoregular72", "robotoregular.ttf", 72.0f));
+
+    xe::SoundManager::add(new xe::Sound("orunec", "orunec.wav"));
 
     ExampleScene::get().create();
 

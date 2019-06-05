@@ -190,6 +190,11 @@ void TestL2D::renderImGui() {
     as0->setReferenceDistance(refDistance);
   }
 
+  static float gain = 0.0f;
+  if (ImGui::DragFloat("gain", &gain, 0.1f, 0.1f, 100.0f)) {
+    as0->setGain(gain);
+  }
+
   static float rolloff = 0.0f;
   if (ImGui::DragFloat("rolloff", &rolloff, 0.1f)) {
     if (rolloff < 0.0f) rolloff = 0.0f;

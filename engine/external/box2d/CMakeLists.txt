@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 2.8)
 project(lib-box2d)
 
 set(CMAKE_CXX_STANDARD 17)
