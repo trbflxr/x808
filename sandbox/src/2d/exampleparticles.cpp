@@ -122,12 +122,12 @@ void ExampleParticles::renderImGui() {
 
   ImGui::Separator();
   static float d = effect0->getDuration();
-  if (ImGui::SliderFloat("Duration", &d, 0.3f, 10.0f)) {
+  if (ImGui::DragFloat("Duration", &d, 0.1f, 0.3f, 10.0f)) {
     effect0->setDuration(d);
   }
 
   static float c = effect0->getChange();
-  if (ImGui::SliderFloat("Change", &c, 0.0f, 10.0f)) {
+  if (ImGui::DragFloat("Change", &c, 0.1f, 0.0f, 10.0f)) {
     effect0->setChange(c);
   }
 
@@ -153,7 +153,7 @@ void ExampleParticles::drawRotationStates() {
       const string c = "change##r" + std::to_string(i);
       const string b = "-##r" + std::to_string(i);
 
-      if (ImGui::SliderFloat(t.c_str(), &std::get<0>(rs[i]), 0.0f, 1.0f)) updateRS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(rs[i]), 0.1f, 0.0f, 1.0f)) updateRS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
@@ -187,7 +187,7 @@ void ExampleParticles::drawTranslationStates() {
       const string c = "change##t" + std::to_string(i);
       const string b = "-##t" + std::to_string(i);
 
-      if (ImGui::SliderFloat(t.c_str(), &std::get<0>(ts[i]), 0.0f, 1.0f)) updateTS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(ts[i]), 0.1f, 0.0f, 1.0f)) updateTS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
@@ -197,9 +197,9 @@ void ExampleParticles::drawTranslationStates() {
           continue;
         }
       }
-      if (ImGui::SliderFloat2(v.c_str(), reinterpret_cast<float *>(&std::get<1>(ts[i])), -300.0f, 300.0f, "%.1f"))
+      if (ImGui::DragFloat2(v.c_str(), reinterpret_cast<float *>(&std::get<1>(ts[i])), 1.0f, -300.0f, 300.0f, "%.1f"))
         updateTS = true;
-      if (ImGui::SliderFloat2(c.c_str(), reinterpret_cast<float *>(&std::get<2>(ts[i])), 0.0f, 300.0f, "%.1f"))
+      if (ImGui::DragFloat2(c.c_str(), reinterpret_cast<float *>(&std::get<2>(ts[i])), 1.0f, 0.0f, 300.0f, "%.1f"))
         updateTS = true;
       ImGui::Separator();
     }
@@ -223,7 +223,7 @@ void ExampleParticles::drawSizeStates() {
       const string c = "change##s" + std::to_string(i);
       const string b = "-##s" + std::to_string(i);
 
-      if (ImGui::SliderFloat(t.c_str(), &std::get<0>(ss[i]), 0.0f, 1.0f)) updateSS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(ss[i]), 0.1f, 0.0f, 1.0f)) updateSS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
@@ -233,10 +233,10 @@ void ExampleParticles::drawSizeStates() {
           continue;
         }
       }
-      if (ImGui::SliderFloat2(v.c_str(), reinterpret_cast<float *>(&std::get<1>(ss[i])), 0.0f, 100.0f, "%.1f")) {
+      if (ImGui::DragFloat2(v.c_str(), reinterpret_cast<float *>(&std::get<1>(ss[i])), 0.1f, 0.0f, 100.0f, "%.1f")) {
         updateSS = true;
       }
-      if (ImGui::SliderFloat2(c.c_str(), reinterpret_cast<float *>(&std::get<2>(ss[i])), 0.0f, 100.0f, "%.1f")) {
+      if (ImGui::DragFloat2(c.c_str(), reinterpret_cast<float *>(&std::get<2>(ss[i])), 0.1f, 0.0f, 100.0f, "%.1f")) {
         updateSS = true;
       }
       ImGui::Separator();
@@ -255,7 +255,7 @@ void ExampleParticles::drawColorStates() {
       const string v = "value##c" + std::to_string(i);
       const string b = "-##c" + std::to_string(i);
 
-      if (ImGui::SliderFloat(t.c_str(), &std::get<0>(cs[i]), 0.0f, 1.0f)) updateCS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(cs[i]), 0.1f, 0.0f, 1.0f)) updateCS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {

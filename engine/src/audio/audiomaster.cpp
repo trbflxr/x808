@@ -8,6 +8,7 @@
 #include <audio/alcommon.hpp>
 #include <xe/utils/logger.hpp>
 #include <xe/audio/audiomaster.hpp>
+#include <xe/gfx/camera.hpp>
 
 namespace xe {
 
@@ -32,6 +33,14 @@ namespace xe {
     } else {
       XE_CORE_FATAL("[AudioMaster]: Cant open device");
     }
+  }
+
+  void AudioMaster::update(const Camera *camera) {
+    const vec3 &pos = camera->getPosition();
+    const vec3 &dir = camera->getRotation().getForward();
+
+    alCall(alListener3f(AL_POSITION, pos.x, pos.y, pos.z));
+    alCall(alListener3f(AL_DIRECTION, dir.x, dir.y, dir.z));
   }
 
   AudioMaster::~AudioMaster() {

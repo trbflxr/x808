@@ -12,6 +12,8 @@
 
 namespace xe {
 
+  class Camera;
+
   enum class DistanceModel {
     Inverse = 0,
     InverseClamped,
@@ -24,6 +26,8 @@ namespace xe {
   class XE_API AudioMaster : NonCopyable {
   public:
     static void initialize();
+
+    static void update(const Camera *camera);
 
     static void setDistanceModel(DistanceModel model);
 
