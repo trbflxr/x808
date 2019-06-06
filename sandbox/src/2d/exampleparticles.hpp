@@ -9,6 +9,7 @@
 #include "iexamplelayer.hpp"
 #include <xe/gfx/2d/renderer2d.hpp>
 #include <xe/gfx/particles/particleeffect.hpp>
+#include <xe/animation/spriteanimation.hpp>
 
 class ExampleParticles : public IExampleLayer {
 public:
@@ -42,6 +43,9 @@ private:
 
   bool renderBg;
   xe::RectangleShape *bg;
+
+  xe::RectangleShape *shape;
+  xe::SpriteAnimation *anim0;
 
   xe::ParticleEffect *effect0;
   xe::ParticleEffect *effect1;

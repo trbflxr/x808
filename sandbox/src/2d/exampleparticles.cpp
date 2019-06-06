@@ -63,6 +63,12 @@ ExampleParticles::ExampleParticles() :
   effect1->setColorStates({std::make_tuple(0.0f, vec4(1.0f, 0.1f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 0.0f, 0.0f)),
                            std::make_tuple(1.0f, vec4(1.0f, 0.8f, 0.0f, 0.95f), vec4(0.0f, 0.2f, 0.0f, 0.0f))});
   effect1->create();
+
+  shape = new RectangleShape({50.0f, 50.0f});
+  shape->setPosition({400.0f, 100.0f});
+  shape->setTexture(GETTEXTURE("anim0"));
+
+  anim0 = new SpriteAnimation(shape->getTexture(), {4, 8}, 0.5f, true);
 }
 
 ExampleParticles::~ExampleParticles() {
@@ -88,6 +94,7 @@ void ExampleParticles::render() {
     renderer->submit(bg);
   }
 
+  renderer->submit(shape);
   effect1->render(renderer);
   effect0->render(renderer);
 
@@ -135,6 +142,17 @@ void ExampleParticles::renderImGui() {
   drawTranslationStates();
   drawSizeStates();
   drawColorStates();
+
+  ImGui::Separator();
+  static bool l = anim0->isLooped();
+  if (ImGui::Checkbox("Animation loop", &l)) {
+    anim0->setLooped(l);
+  };
+
+  static bool r = anim0->isRunning();
+  if (ImGui::Checkbox("Run animation", &r)) {
+    anim0->setRunning(r);
+  };
 
   ImGui::End();
 }
@@ -279,6 +297,8 @@ void ExampleParticles::update(float delta) {
   effect0->update(delta);
   effect1->update(delta);
 
+  shape->setTextureRect(anim0->getTextureRect());
+
   if (updateRS) {
     effect0->setRotationStates(rs);
   }
@@ -303,6 +323,8 @@ void ExampleParticles::update(float delta) {
 void ExampleParticles::fixedUpdate(float delta) {
   effect0->fixedUpdate(delta);
   effect1->fixedUpdate(delta);
+
+  anim0->fixedUpdate(delta, 0, true);
 }
 
 void ExampleParticles::input(xe::Event &event) {

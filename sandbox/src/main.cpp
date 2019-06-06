@@ -80,6 +80,8 @@ public:
 
     xe::TextureManager::add(new xe::TextureAtlas("atlas", "test.atlas", params));
 
+    xe::TextureManager::add(new xe::Texture("anim0", "anim0.png", params));
+
     params.wrap = xe::TextureWrap::Repeat;
     xe::TextureManager::add(new xe::Texture("sp0", "sp0.png", params));
 

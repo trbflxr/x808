@@ -14,7 +14,7 @@ namespace xe {
 
   class XE_API SpriteAnimation {
   public:
-    explicit SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime);
+    explicit SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime, bool looped = true);
 
     void fixedUpdate(float delta, uint row, bool faceRight);
 
@@ -22,7 +22,16 @@ namespace xe {
 
     inline const rect &getTextureRect() const { return textureRect; }
 
+    inline bool isLooped() const { return looped; }
+    inline void setLooped(bool looped) { SpriteAnimation::looped = looped; }
+
+    inline bool isRunning() const { return running; }
+    inline void setRunning(bool running) { SpriteAnimation::running = running; }
+
   private:
+    bool looped;
+    bool running;
+
     float switchTime;
     float totalTime;
 

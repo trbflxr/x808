@@ -7,7 +7,9 @@
 
 namespace xe {
 
-  SpriteAnimation::SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime) :
+  SpriteAnimation::SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime, bool looped) :
+      running(true),
+      looped(looped),
       switchTime(switchTime),
       totalTime(0.0f),
       currentImage(0.0f, 0.0f),
@@ -18,6 +20,8 @@ namespace xe {
   }
 
   void SpriteAnimation::fixedUpdate(float delta, uint row, bool faceRight) {
+    if (!running) return;
+
     currentImage.y = row;
     totalTime += delta;
 
@@ -26,7 +30,7 @@ namespace xe {
       ++currentImage.x;
 
       if (currentImage.x >= imageCount.x) {
-        currentImage.x = 0.0f;
+        currentImage.x = !looped ? imageCount.x - 1 : 0.0f;
       }
     }
 
@@ -44,6 +48,7 @@ namespace xe {
   void SpriteAnimation::reset() {
     totalTime = 0.0f;
     currentImage = vec2(0.0f);
+    running = true;
   }
 
 }
