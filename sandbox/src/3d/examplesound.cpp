@@ -39,12 +39,12 @@ ExampleSound::ExampleSound() {
 
   as0 = new AudioSource("as0", GETSOUND("orunec"));
   as0->setPosition({0.0f, 0.0f, 0.0f});
-  as0->setGain(200);
+  as0->setGain(1.0f);
   as0->setRolloffFactor(1.0f);
   as0->setPitch(1.2f);
   as0->setMaxDistance(100);
 
-  AudioMaster::setDistanceModel(DistanceModel::Exponent);
+  AudioMaster::setDistanceModel(DistanceModel::Linear);
 }
 
 ExampleSound::~ExampleSound() {
@@ -76,6 +76,31 @@ void ExampleSound::renderImGui() {
 
   if (ImGui::Button("Orunec")) {
     as0->play();
+  }
+
+  static bool looped = as0->isLooped();
+  if (ImGui::Checkbox("Looped", &looped)) {
+    as0->setLooping(looped);
+  }
+
+  static float gain = as0->getGain();
+  if (ImGui::DragFloat("Gain", &gain, 0.1f, 0.0f, 1.0f)) {
+    as0->setGain(gain);
+  }
+
+  static float rolloff = as0->getRolloffFactor();
+  if (ImGui::DragFloat("Rolloff factor", &rolloff, 0.1f, 0.0f, 10.0f)) {
+    as0->setRolloffFactor(rolloff);
+  }
+
+  static float pitch = as0->getPitch();
+  if (ImGui::DragFloat("Pitch", &pitch, 0.03f, 0.3f, 2.0f)) {
+    as0->setPitch(pitch);
+  }
+
+  static float maxDistance = as0->getMaxDistance();
+  if (ImGui::DragFloat("Max distance", &maxDistance, 1.0f, 1.0f, 100.0f)) {
+    as0->setMaxDistance(maxDistance);
   }
 
   ImGui::End();

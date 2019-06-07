@@ -8,6 +8,7 @@
 
 #include <xe/string.hpp>
 #include <xe/common.hpp>
+#include <xe/math/vec3.hpp>
 #include <xe/utils/noncopyable.hpp>
 
 namespace xe {
@@ -33,7 +34,10 @@ namespace xe {
 
     static std::vector<string> getDeviceList();
 
+    static void setUpVector(const vec3 &up) { get().up = up; }
+
   private:
+    explicit AudioMaster();
     ~AudioMaster() override;
 
     static AudioMaster &get();
@@ -41,6 +45,8 @@ namespace xe {
   private:
     void *context;
     void *device;
+
+    vec3 up;
   };
 }
 

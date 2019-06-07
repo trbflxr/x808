@@ -8,8 +8,8 @@
 namespace xe {
 
   SpriteAnimation::SpriteAnimation(const Texture *texture, const vec2 &imageCount, float switchTime, bool looped) :
-      running(true),
       looped(looped),
+      running(true),
       switchTime(switchTime),
       totalTime(0.0f),
       currentImage(0.0f, 0.0f),

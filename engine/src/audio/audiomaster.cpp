@@ -25,6 +25,20 @@ namespace xe {
     return 0;
   }
 
+  AudioMaster::AudioMaster() :
+      up(vec3::UnitY()) { }
+
+  AudioMaster::~AudioMaster() {
+    alCall(alcMakeContextCurrent(nullptr));
+    alCall(alcDestroyContext(static_cast<ALCcontext *>(context)));
+    alCall(alcCloseDevice(static_cast<ALCdevice *>(device)));
+  }
+
+  AudioMaster &AudioMaster::get() {
+    static AudioMaster am;
+    return am;
+  }
+
   void AudioMaster::initialize() {
     alCall(get().device = alcOpenDevice(nullptr));
     if (get().device) {
@@ -38,20 +52,12 @@ namespace xe {
   void AudioMaster::update(const Camera *camera) {
     const vec3 &pos = camera->getPosition();
     const vec3 &dir = camera->getRotation().getForward();
+    const vec3 &up = get().up;
 
+    const float orientation[] = {dir.x, dir.y, dir.z, up.x, up.y, up.z};
+
+    alCall(alListenerfv(AL_ORIENTATION, orientation));
     alCall(alListener3f(AL_POSITION, pos.x, pos.y, pos.z));
-    alCall(alListener3f(AL_DIRECTION, dir.x, dir.y, dir.z));
-  }
-
-  AudioMaster::~AudioMaster() {
-    alCall(alcMakeContextCurrent(nullptr));
-    alCall(alcDestroyContext(static_cast<ALCcontext *>(context)));
-    alCall(alcCloseDevice(static_cast<ALCdevice *>(device)));
-  }
-
-  AudioMaster &AudioMaster::get() {
-    static AudioMaster am;
-    return am;
   }
 
   void AudioMaster::setDistanceModel(DistanceModel model) {
