@@ -29,7 +29,7 @@ namespace xe {
 
   protected:
     explicit System() :
-        app(Application::get()),
+        app(*Application::get()),
         window(app.getWindow()),
         active(false) { }
 

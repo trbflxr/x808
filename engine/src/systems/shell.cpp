@@ -155,6 +155,10 @@ namespace xe {
     }
   }
 
+  void Shell::printString(const char *str, ShellItemType type, bool newLine) {
+    addLog(type, "%s%s", str, newLine ? "\n" : "");
+  }
+
   bool Shell::addCommand(const string &command,
                          const std::function<string(const std::vector<string> &, bool)> &callback) {
 

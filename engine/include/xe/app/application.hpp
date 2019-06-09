@@ -55,7 +55,7 @@ namespace xe {
 
     inline vec2 getWindowSize() const { return window.getSize(); }
 
-    inline static Application &get() { return *instance; }
+    inline static Application *get() { return instance; }
 
     inline static void exit() { instance->window.close(); }
 

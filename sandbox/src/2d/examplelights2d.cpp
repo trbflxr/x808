@@ -28,6 +28,8 @@ ExampleLights2D::ExampleLights2D() :
 
   bg = new RectangleShape({1920 * 2.0f, 1080 * 2.0f});
   pepe = new RectangleShape({200.0f, 200.0f});
+  rock = new RectangleShape({400.0f, 400.0f});
+  sand = new RectangleShape({400.0f, 400.0f});
 }
 
 ExampleLights2D::~ExampleLights2D() {
@@ -36,6 +38,8 @@ ExampleLights2D::~ExampleLights2D() {
   delete renderer;
   delete bg;
   delete pepe;
+  delete rock;
+  delete sand;
 
   for (auto &&l : lights) {
     delete l;
@@ -49,6 +53,12 @@ void ExampleLights2D::init() {
 
   pepe->setTexture(GETTEXTURE("pepe"));
   pepe->move({400.0f, 200.0f});
+
+  rock->setTexture(GETTEXTURE("rock_d"));
+  rock->move({800.0f, 200.0f});
+
+  sand->setTexture(GETTEXTURE("ground_d"));
+  sand->move({1300.0f, 200.0f});
 
   const vec2 spawnPos = Mouse::getPosition(app.getWindow()) / 2.0f;
   Light2D *l = new Light2D("light", spawnPos, {1.0f, 0.0f, 1.0f}, 200.0f);
@@ -67,6 +77,8 @@ void ExampleLights2D::render() {
 
   renderer->submit(bg);
   renderer->submit(pepe);
+  renderer->submit(rock);
+  renderer->submit(sand);
 
   renderer->end();
   renderer->flush();
@@ -75,7 +87,7 @@ void ExampleLights2D::render() {
 void ExampleLights2D::renderImGui() {
   ImGui::Begin("Lights 2D", nullptr);
 
-  if (ImGui::DragFloat3("Ambient color", reinterpret_cast<float *>(&ambientColor), 0.01f, 0.0f, 1.0f)) {
+  if (ImGui::ColorEdit3("Ambient color", reinterpret_cast<float *>(&ambientColor))) {
     renderer->setAmbientLight(ambientColor);
   }
   ImGui::Separator();
@@ -89,7 +101,7 @@ void ExampleLights2D::renderImGui() {
     renderer->setMaxLights(lightsToRender);
   }
 
-  ImGui::DragFloat3("Color", reinterpret_cast<float *>(&color), 0.01f, 0.0f, 1.0f);
+  ImGui::ColorEdit3("Color", reinterpret_cast<float *>(&color));
   ImGui::DragFloat("Intensity", &intensity, 0.1f, 0.02f, 200.0f);
 
   ImGui::End();

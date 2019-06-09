@@ -91,6 +91,7 @@ public:
     xe::FontManager::add(new xe::Font("robotobold22", "robotobold.ttf", 22.0f));
     xe::FontManager::add(new xe::Font("robotoregular72", "robotoregular.ttf", 72.0f));
 
+    xe::SoundManager::add(new xe::Sound("loop", "loop.wav"));
     xe::SoundManager::add(new xe::Sound("orunec", "orunec.wav"));
 
     ExampleScene::get().create();

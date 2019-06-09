@@ -125,7 +125,7 @@ void Example3D::update(float delta) {
 
   scene->scene->updateLights(camera);
 
-//  player->update(delta);
+  player->update(delta);
 
   if (slHooked) {
     scene->spotLight->setRotation(camera->getRotation());
@@ -137,10 +137,6 @@ void Example3D::update(float delta) {
   if (dlHooked) {
     scene->directionalLight->setRotation(camera->getRotation());
   }
-}
-
-void Example3D::fixedUpdate(float delta) {
-  player->update(delta);
 }
 
 void Example3D::input(xe::Event &event) {

@@ -23,20 +23,30 @@ namespace xe {
       char buffer[XE_LOG_BUFFER_SIZE];
       uint position = 0;
 
+      static const char *xe = "[XE]:\t";
+      static const char *client = "[Client]:\t";
+
+      if (sender == XE_CORE) {
+        const size_t length = strlen(xe);
+        memcpy(&buffer[position], &xe[0], length);
+        position += length;
+      } else {
+        const size_t length = strlen(client);
+        memcpy(&buffer[position], &client[0], length);
+        position += length;
+      }
+
       buildLogMessage(buffer, position, std::forward<Args>(args)...);
 
       buffer[position++] = '\n';
       buffer[position] = '\0';
 
-      if (sender == XE_CORE) {
-        platformLogMessage(level, "XE", buffer);
-      } else {
-        platformLogMessage(level, "Client", buffer);
-      }
+      platformLogMessage(level, buffer);
+
     }
 
   private:
-    void platformLogMessage(uint level, const char *sender, const char *message);
+    void platformLogMessage(uint level, const char *message);
 
     template<typename T>
     const char *toString(const T &t);

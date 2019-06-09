@@ -39,7 +39,7 @@ namespace xe {
 
   protected:
     explicit Layer() :
-        app(Application::get()),
+        app(*Application::get()),
         window(app.getWindow()),
         visible(true),
         active(true) { }

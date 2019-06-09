@@ -16,7 +16,7 @@ public:
                        float sprint = 4.0f,
                        float sensitivity = 0.15f) :
       mouseLocked(false),
-      window(xe::Application::get().getWindow()),
+      window(xe::Application::get()->getWindow()),
       camera(camera),
       mouseSensitivity(sensitivity),
       speed(speed),

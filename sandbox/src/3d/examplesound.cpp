@@ -39,10 +39,19 @@ ExampleSound::ExampleSound() {
 
   as0 = new AudioSource("as0", GETSOUND("orunec"));
   as0->setPosition({0.0f, 0.0f, 0.0f});
-  as0->setGain(1.0f);
+  as0->setGain(0.3f);
   as0->setRolloffFactor(1.0f);
   as0->setPitch(1.2f);
   as0->setMaxDistance(100);
+
+  as1 = new AudioSource("as0", GETSOUND("loop"));
+  as1->setPosition({0.0f, 0.0f, 0.0f});
+  as1->setGain(0.1f);
+  as1->setRolloffFactor(1.0f);
+  as1->setPitch(1.0f);
+  as1->setMaxDistance(100);
+  as1->setLooping(true);
+  as1->play();
 
   AudioMaster::setDistanceModel(DistanceModel::Linear);
 }
@@ -55,6 +64,7 @@ ExampleSound::~ExampleSound() {
   delete scene;
 
   delete as0;
+  delete as1;
 }
 
 void ExampleSound::init() {
@@ -74,6 +84,13 @@ void ExampleSound::renderImGui() {
   ImGui::Text("camera: (%.1f, %.1f, %.1f)", cp.x, cp.y, cp.z);
   ImGui::Text("look: (%.1f, %.1f, %.1f)", cl.x, cl.y, cl.z);
 
+  static float gainBg = as1->getGain();
+  if (ImGui::DragFloat("Background gain", &gainBg, 0.01f, 0.0f, 1.0f)) {
+    as1->setGain(gainBg);
+  }
+
+  ImGui::Separator();
+
   if (ImGui::Button("Orunec")) {
     as0->play();
   }
@@ -84,12 +101,12 @@ void ExampleSound::renderImGui() {
   }
 
   static float gain = as0->getGain();
-  if (ImGui::DragFloat("Gain", &gain, 0.1f, 0.0f, 1.0f)) {
+  if (ImGui::DragFloat("Gain", &gain, 0.01f, 0.0f, 1.0f)) {
     as0->setGain(gain);
   }
 
   static float rolloff = as0->getRolloffFactor();
-  if (ImGui::DragFloat("Rolloff factor", &rolloff, 0.1f, 0.0f, 10.0f)) {
+  if (ImGui::DragFloat("Rolloff factor", &rolloff, 0.01f, 0.0f, 10.0f)) {
     as0->setRolloffFactor(rolloff);
   }
 
@@ -112,10 +129,6 @@ void ExampleSound::update(float delta) {
   scene->updateLights(camera);
 
   AudioMaster::update(camera);
-}
-
-void ExampleSound::fixedUpdate(float delta) {
-  player->update(delta);
 }
 
 void ExampleSound::input(xe::Event &event) {

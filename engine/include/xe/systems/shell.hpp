@@ -38,8 +38,9 @@ namespace xe {
 
     void executeCommand(const string &command);
 
-    bool addCommand(const string &command,
-                    const std::function<string(const std::vector<string> &, bool)> &callback);
+    bool addCommand(const string &command, const std::function<string(const std::vector<string> &, bool)> &callback);
+
+    void printString(const char *str, ShellItemType type, bool newLine = true);
 
   private:
     void createDefaultCommands();

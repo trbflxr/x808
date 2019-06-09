@@ -20,7 +20,6 @@ public:
 	void renderImGui() override;
 
 	void update(float delta) override;
-	void fixedUpdate(float delta) override;
 
 	void input(xe::Event &event) override;
 
@@ -41,6 +40,7 @@ private:
 	xe::DeferredRenderer *renderer;
 
 	xe::AudioSource *as0;
+	xe::AudioSource *as1;
 };
 
 

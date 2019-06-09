@@ -40,6 +40,8 @@ private:
 
   xe::RectangleShape *bg;
   xe::RectangleShape *pepe;
+  xe::RectangleShape *rock;
+  xe::RectangleShape *sand;
   std::vector<xe::Light2D *> lights;
 
   static constexpr int32 maxLights = 50;
