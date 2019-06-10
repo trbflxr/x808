@@ -41,11 +41,12 @@ namespace xe {
       buffer[position++] = '\n';
       buffer[position] = '\0';
 
-      platformLogMessage(level, buffer);
+      logMessage(level, buffer);
 
     }
 
   private:
+    void logMessage(uint level, const char *message);
     void platformLogMessage(uint level, const char *message);
 
     template<typename T>

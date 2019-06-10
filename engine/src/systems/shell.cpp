@@ -394,6 +394,24 @@ namespace xe {
 
       return ss.str();
     };
-  }
 
+    commands["log"] = [&](const std::vector<string> &args, bool hint) -> string {
+      if (hint) return "Log message.";
+
+      std::stringstream ss;
+
+      if (args.empty()) {
+        ss << "No arguments given.";
+        return ss.str();
+      }
+
+      for (size_t i = 0; i < args.size() - 1; ++i) {
+        ss << args[i] << " ";
+      }
+      ss << args[args.size() - 1];
+
+      XE_INFO(ss.str());
+      return "";
+    };
+  }
 }

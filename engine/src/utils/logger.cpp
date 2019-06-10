@@ -9,9 +9,29 @@
 #include <xe/math/quat.hpp>
 #include <xe/math/mat4.hpp>
 #include <xe/math/rect.hpp>
+#include <xe/app/application.hpp>
+#include <xe/systems/shell.hpp>
 #include <xe/utils/logger.hpp>
 
 namespace xe {
+
+  static ShellItemType levelToType(uint level) {
+    switch (level) {
+      case XE_LOG_LEVEL_FATAL:return ShellItemType::Fatal;
+      case XE_LOG_LEVEL_ERROR:return ShellItemType::Error;
+      case XE_LOG_LEVEL_WARN: return ShellItemType::Warn;
+      case XE_LOG_LEVEL_INFO: return ShellItemType::Info;
+      default: return ShellItemType::Info;
+    }
+  }
+
+  void Logger::logMessage(uint level, const char *message) {
+    Application *app = Application::get();
+    ShellItemType type = levelToType(level);
+    if (app) app->getShell().printString(message, type, false);
+
+    platformLogMessage(level, message);
+  }
 
   template<>
   XE_API const char *Logger::toString<char>(const char &t) { return &t; }

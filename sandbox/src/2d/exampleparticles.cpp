@@ -171,7 +171,7 @@ void ExampleParticles::drawRotationStates() {
       const string c = "change##r" + std::to_string(i);
       const string b = "-##r" + std::to_string(i);
 
-      if (ImGui::DragFloat(t.c_str(), &std::get<0>(rs[i]), 0.1f, 0.0f, 1.0f)) updateRS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(rs[i]), 0.01f, 0.0f, 1.0f)) updateRS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
@@ -205,7 +205,7 @@ void ExampleParticles::drawTranslationStates() {
       const string c = "change##t" + std::to_string(i);
       const string b = "-##t" + std::to_string(i);
 
-      if (ImGui::DragFloat(t.c_str(), &std::get<0>(ts[i]), 0.1f, 0.0f, 1.0f)) updateTS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(ts[i]), 0.01f, 0.0f, 1.0f)) updateTS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
@@ -241,7 +241,7 @@ void ExampleParticles::drawSizeStates() {
       const string c = "change##s" + std::to_string(i);
       const string b = "-##s" + std::to_string(i);
 
-      if (ImGui::DragFloat(t.c_str(), &std::get<0>(ss[i]), 0.1f, 0.0f, 1.0f)) updateSS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(ss[i]), 0.01f, 0.0f, 1.0f)) updateSS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
@@ -273,7 +273,7 @@ void ExampleParticles::drawColorStates() {
       const string v = "value##c" + std::to_string(i);
       const string b = "-##c" + std::to_string(i);
 
-      if (ImGui::DragFloat(t.c_str(), &std::get<0>(cs[i]), 0.1f, 0.0f, 1.0f)) updateCS = true;
+      if (ImGui::DragFloat(t.c_str(), &std::get<0>(cs[i]), 0.01f, 0.0f, 1.0f)) updateCS = true;
       if (i != 0) {
         ImGui::SameLine();
         if (ImGui::Button(b.c_str())) {
