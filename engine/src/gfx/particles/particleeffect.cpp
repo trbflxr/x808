@@ -49,8 +49,6 @@ namespace xe {
     created = true;
 
     for (auto &&p : particles) {
-      Particle *s = dynamic_cast<Particle *>(p);
-
       Ramp<float> *rotation = new Ramp<float>(rotationStates, Ramp<float>::lerp);
       rotation->setHasChange(rotationChange);
 
@@ -63,13 +61,13 @@ namespace xe {
       Ramp<vec4> *color = new Ramp<vec4>(colorStates, Ramp<vec4>::lerpc1);
       color->setHasChange(colorChange);
 
-      s->setRotationRamp(rotation);
-      s->setTranslationRamp(translation);
-      s->setSizeRamp(size);
-      s->setColorRamp(color);
+      p->setRotationRamp(rotation);
+      p->setTranslationRamp(translation);
+      p->setSizeRamp(size);
+      p->setColorRamp(color);
 
-      s->setTexture(texture);
-      s->setTextureRect(textureRect);
+      p->setTexture(texture);
+      p->setTextureRect(textureRect);
     }
   }
 
@@ -80,11 +78,9 @@ namespace xe {
 
     for (auto &&p : particles) {
       if (p->isVisible()) {
-        Particle *s = dynamic_cast<Particle *>(p);
-
-        s->update(delta);
-        if (!s->isVisible()) {
-          spawnQueue.push(s);
+        p->update(delta);
+        if (!p->isVisible()) {
+          spawnQueue.push_back(p);
 
           if (spawnQueue.size() == count) {
             finished = true;
@@ -94,13 +90,11 @@ namespace xe {
     }
 
     if (looped) {
-      if (!spawnQueue.empty()) {
+      for (auto &&s : spawnQueue) {
         const float d = random::next<float>(duration - change, duration + change);
-
-        Particle *p = spawnQueue.front();
-        spawnQueue.pop();
-        p->spawn(d, getPosition());
+        s->spawn(d, getPosition());
       }
+      spawnQueue.clear();
     }
   }
 
@@ -115,8 +109,7 @@ namespace xe {
 
       for (auto &&p : particles) {
         if (p->isVisible()) {
-          Particle *s = dynamic_cast<Particle *>(p);
-          s->fixedUpdate(delta);
+          p->fixedUpdate(delta);
         }
       }
     }
@@ -128,15 +121,12 @@ namespace xe {
     finished = false;
 
     for (auto &&p : particles) {
-      Particle *s = dynamic_cast<Particle *>(p);
       const float d = random::next<float>(duration - change, duration + change);
 
-      s->spawn(d, getPosition());
+      p->spawn(d, getPosition());
     }
 
-    while (!spawnQueue.empty()) {
-      spawnQueue.pop();
-    }
+    spawnQueue.clear();
   }
 
   void ParticleEffect::stop() {
@@ -148,9 +138,7 @@ namespace xe {
       p->setVisible(false);
     }
 
-    while (!spawnQueue.empty()) {
-      spawnQueue.pop();
-    }
+    spawnQueue.clear();
   }
 
   void ParticleEffect::render(Renderer2D *renderer) {
@@ -163,7 +151,7 @@ namespace xe {
     rotationStates = states;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getRotationRamp()->setStates(rotationStates);
+        p->getRotationRamp()->setStates(rotationStates);
       }
     }
   }
@@ -172,7 +160,7 @@ namespace xe {
     translationStates = states;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getTranslationRamp()->setStates(translationStates);
+        p->getTranslationRamp()->setStates(translationStates);
       }
     }
   }
@@ -181,7 +169,7 @@ namespace xe {
     sizeStates = states;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getSizeRamp()->setStates(sizeStates);
+        p->getSizeRamp()->setStates(sizeStates);
       }
     }
   }
@@ -190,7 +178,7 @@ namespace xe {
     colorStates = states;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getColorRamp()->setStates(colorStates);
+        p->getColorRamp()->setStates(colorStates);
       }
     }
   }
@@ -199,7 +187,7 @@ namespace xe {
     rotationChange = change;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getRotationRamp()->setHasChange(rotationChange);
+        p->getRotationRamp()->setHasChange(rotationChange);
       }
     }
   }
@@ -208,7 +196,7 @@ namespace xe {
     translationChange = change;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getTranslationRamp()->setHasChange(translationChange);
+        p->getTranslationRamp()->setHasChange(translationChange);
       }
     }
   }
@@ -217,7 +205,7 @@ namespace xe {
     sizeChange = change;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getSizeRamp()->setHasChange(sizeChange);
+        p->getSizeRamp()->setHasChange(sizeChange);
       }
     }
   }
@@ -226,7 +214,7 @@ namespace xe {
     colorChange = change;
     if (created) {
       for (auto &&p : particles) {
-        dynamic_cast<Particle *>(p)->getColorRamp()->setHasChange(colorChange);
+        p->getColorRamp()->setHasChange(colorChange);
       }
     }
   }

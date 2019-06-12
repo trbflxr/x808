@@ -6,7 +6,6 @@
 #define X808_PARTICLEEFFECT_HPP
 
 
-#include <queue>
 #include <xe/xeint.hpp>
 #include <xe/common.hpp>
 #include <xe/math/itransformable2d.hpp>
@@ -82,8 +81,8 @@ namespace xe {
     const Texture *texture;
     rect textureRect;
 
-    std::vector<IRenderable2D *> particles;
-    std::queue<Particle *> spawnQueue;
+    std::vector<Particle *> particles;
+    std::vector<Particle *> spawnQueue;
 
     bool rotationChange;
     bool translationChange;

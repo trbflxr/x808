@@ -31,8 +31,9 @@ ExampleParticles::ExampleParticles() :
   rs.emplace_back(0.5f, 90.0f, 20.0f);
   rs.emplace_back(1.0f, -90.0f, 10.0f);
 
-  ts.emplace_back(0.0f, vec2(0.0f, 0.0f), vec2(5.0f, 10.0f));
-  ts.emplace_back(1.0f, vec2(0.0f, 100.0f), vec2(20.0f, 50.0f));
+  ts.emplace_back(0.0f, vec2(0.0f, 0.0f), vec2(15.0f, 15.0f));
+  ts.emplace_back(0.5f, vec2(0.0f, 0.0f), vec2(70.0f, 70.0f));
+  ts.emplace_back(1.0f, vec2(0.0f, 0.0f), vec2(10.0f, 10.0f));
 
   ss.emplace_back(0.0f, vec2(10.0f, 10.0f), vec2(1.0f, 1.0f));
   ss.emplace_back(1.0f, vec2(5.0f, 5.0f), vec2(0.5f, 0.5f));
@@ -40,7 +41,7 @@ ExampleParticles::ExampleParticles() :
   cs.emplace_back(0.0f, vec4(0.0f, 0.1f, 1.0f, 1.0f), vec4(0.0f));
   cs.emplace_back(1.0f, vec4(0.0f, 0.8f, 1.0f, 0.95f), vec4(0.0f));
 
-  effect0 = new ParticleEffect(1.0f, 0.3f, 100, true);
+  effect0 = new ParticleEffect(1.0f, 0.3f, 200, true);
   effect0->setPosition({width / 2, height / 3});
   effect0->setColorChange(false);
   effect0->create();

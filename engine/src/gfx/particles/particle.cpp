@@ -5,8 +5,6 @@
 #include <xe/gfx/particles/particleeffect.hpp>
 #include <xe/gfx/particles/particle.hpp>
 
-#include <xe/utils/logger.hpp> //fixme
-
 namespace xe {
 
   Particle::Particle(ParticleEffect *effect) :
